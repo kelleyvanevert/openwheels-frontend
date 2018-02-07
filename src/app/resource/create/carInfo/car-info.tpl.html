@@ -45,6 +45,13 @@
                     <span class="text-danger">{{ 'REQUIRED' | translate }}</span>
                 </div>
             </div>
+            <div class="icon today">
+                <input type="text" id="bouwjaar" name="bouwjaar" ng-model="resource.bouwjaar" placeholder="{{ 'TIME_OF_ORGIN' | translate }}" ng-disabled="disabledFields.bouwjaar" restrict-to="[0-9]" maxlength="4" max="2025" min="1950">
+
+                <div class="err-block" ng-show="editResourceForm.$submitted && !resource.bouwjaar">
+                    <span class="text-danger">{{ 'REQUIRED' | translate }}</span>
+                </div>
+            </div>
             <div class="icon seat select">
                 <label for="numberOfSeats">{{ 'NUMBER_OF_SEATS' | translate }}</label>
 

@@ -22,7 +22,7 @@
 
         <div class="form-group" ng-if="!ownerflow">
           <br><br>
-          <button type="button" class="btn btn-primary" ng-disabled="locationForm.$pristine" ng-click="stepTwo()">{{ 'STEP_NEXT' | translate }}</button>
+          <button type="button" class="btn btn-primary" ng-disabled="locationForm.$pristine">{{ 'STEP_NEXT' | translate }}</button>
         </div>
       </div>
 
@@ -31,10 +31,21 @@
         <p>Is het onderstaande adres correct?<p>
 
         <p>
-        <input class="form-control" style="width: 60%; display: inline;" ng-model="clickedAddress.route" required />
-        <input class="form-control" style="width: 30%; display: inline;" ng-model="clickedAddress.streetNumber" required />
+        <div class="icon location resource-location-searchbar" style="width: 65%; display: inline-block;">
+          <input class="form-control" ng-model="clickedAddress.route" placeholder="{{ 'STREET_NAME' | translate }}" ow-geocoder="{onDetails: newLocationSelectedDropdown}" required />
+        </div>
+          <input class="form-control" style="width: 34%; display: inline;" ng-model="clickedAddress.streetNumber" placeholder="{{ 'STREET_NUMBER' | translate }}" required />
         </p>
 
+        <ui-gmap-google-map center="map.center" control="map.control" zoom="map.zoom" draggable="true" dragging="map.dragging" bounds="map.bounds" events="map.events" options="map.options">
+          <!-- prefedined markers -->
+          <ui-gmap-marker coords="map.resourceMarker" idKey="1"></ui-gmap-marker>
+          <!-- marker for clicked position -->
+          <!-- can not put google.map.animations.BOUNCE , since it is not initiaized yet -->
+          <div ng-init="opts = {animation:1}">
+            <ui-gmap-marker coords="map.clickedMarker" idKey="1" options="opts" click="map.clickedMarker.onClicked"></ui-gmap-marker>
+          </div>
+        </ui-gmap-google-map>
 
         <div class="form-group" ng-if="!ownerflow">
           <br><br>
