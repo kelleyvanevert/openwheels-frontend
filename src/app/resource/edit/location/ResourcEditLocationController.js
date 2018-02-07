@@ -13,11 +13,12 @@ angular.module('owm.resource.edit.location', ['geocoderDirective'])
     var masterResource = $scope.$parent.resource;
     $scope.clickedAddress = {};
 
-    $scope.stepTwo = function() {
-      $scope.location_step = 2;
-    };
     $scope.stepOne = function() {
       $scope.location_step = 1;
+    };
+
+    $scope.stepTwo = function() {
+      $scope.location_step = 2;
     };
 
     $scope.map = {
@@ -159,6 +160,7 @@ angular.module('owm.resource.edit.location', ['geocoderDirective'])
         lng: $scope.resource.longitude
       });
       $scope.locationForm.$setDirty();
+      $scope.stepTwo();
     };
 
     function onMapClick(maps, eventName, args) {
@@ -192,6 +194,7 @@ angular.module('owm.resource.edit.location', ['geocoderDirective'])
           }
         });
         $scope.locationForm.$setDirty();
+        $scope.stepTwo();
       }
     }
 
