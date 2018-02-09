@@ -108,6 +108,8 @@ angular.module('owm.trips.index', [])
     var bookingsPromise = {};
 
     if(role === 'asRenter') {
+      parameters.cancelled = true;
+
       bookingsPromise = bookingService.getBookingList(parameters);
     }
 

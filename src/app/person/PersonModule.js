@@ -143,6 +143,7 @@ angular.module('owm.person', [
         return bookingService.getBookingList({
             person: me.id,
             timeFrame: timeFrame,
+            cancelled: true,
             limit: 10
           })
           .then(function (bookings) {

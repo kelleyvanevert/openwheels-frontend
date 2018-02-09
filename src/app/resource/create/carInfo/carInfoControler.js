@@ -55,7 +55,7 @@ angular.module('owm.resource.create.carInfo', [])
           $scope.resource.resourceType = 'camper';
         }
         else {
-          $scope.resource.resourceType = $stateParams.type;
+          $scope.resource.resourceType = 'car';
         }
       }
       alertService.loaded();
