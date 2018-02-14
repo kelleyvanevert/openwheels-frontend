@@ -91,6 +91,7 @@
     "IS_AVAILABLE_RESOURCE_SAVE_SUCCESS": "De beschikbaarheid van jouw auto is gewijzigd.",
     "NOT_AVAILABLE_RESOURCE": "Beschikbaar maken",
     "AVAILABLE_RESOURCE": "Niet beschikbaar maken",
+    "SHOW_LOCATION_ON_MAP": "Locatie tonen",
     "RESOURCE_AVAILABLE": "Deze auto is beschikbaar",
     "RESOURCE_NOT_AVAILABLE_WARNING": "Deze auto is niet beschikbaar",
     "CANCEL_BOOKING": "Annuleer reservering",

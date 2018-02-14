@@ -274,7 +274,6 @@ angular.module('owm.booking.show', [])
     $scope.setMarkersForMap();
   }
 
-
   // check is resource has fuelcard
   if ([282, 519038].indexOf(booking.resource.owner.id) >= 0 && booking.resource.boardcomputer) {
     $scope.fuelCard = true;
