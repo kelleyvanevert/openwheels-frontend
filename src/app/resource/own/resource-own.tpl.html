@@ -52,7 +52,7 @@
             </div>
 
             <div class="truncate" ng-if="resource.boardcomputer && resource.boardcomputer !== 'ccome' && resource.owner.id === me.id">
-              <md-icon>place</md-icon> <a ng-click="getCurrentLocation(resource)">{{ 'SHOW_LOCATION_ON_MAP' | translate }}</a>
+              <md-icon>place</md-icon> <a ng-click="location(resource)">{{ 'SHOW_LOCATION_ON_MAP' | translate }}</a>
             </div>
 
             <parkingpermit ng-if="features.parkingpermit" resource="resource" resource-list="resources"></parkingpermit>
