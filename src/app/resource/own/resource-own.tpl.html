@@ -25,7 +25,7 @@
               <md-icon>location_on</md-icon> {{ resource.location }} {{ resource.streetNumber }}, {{ resource.city }}
             </div>
 
-            <div class="truncate" ng-if="!resource.isActive" class="not-available">
+            <div class="truncate not-available" ng-if="!resource.isActive">
               <md-icon>warning</md-icon> {{ 'RESOURCE_INACTIVE_WARNING' | translate }}
             </div>
 
@@ -74,7 +74,7 @@
             <md-icon>location_on</md-icon> {{ resource.location }} {{ resource.streetNumber }}, {{ resource.city }}
           </div>
 
-          <div class="truncate" ng-if="!resource.isActive" class="not-available">
+          <div class="truncate not-available" ng-if="!resource.isActive">
             <md-icon>warning</md-icon> {{ 'RESOURCE_INACTIVE_WARNING' | translate }}
           </div>
 
