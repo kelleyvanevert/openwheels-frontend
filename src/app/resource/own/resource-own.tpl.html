@@ -26,7 +26,7 @@
             </div>
 
             <div class="truncate not-available" ng-if="!resource.isActive">
-              <md-icon>warning</md-icon> {{ 'RESOURCE_INACTIVE_WARNING' | translate }}
+              <md-icon class="not-available">warning</md-icon> {{ 'RESOURCE_INACTIVE_WARNING' | translate }}
             </div>
 
             <div class="truncate available" ng-if="(resource.isAvailableOthers || resource.isAvailableFriends) && resource.isActive">
@@ -75,7 +75,7 @@
           </div>
 
           <div class="truncate not-available" ng-if="!resource.isActive">
-            <md-icon>warning</md-icon> {{ 'RESOURCE_INACTIVE_WARNING' | translate }}
+            <md-icon class="not-available">warning</md-icon> {{ 'RESOURCE_INACTIVE_WARNING' | translate }}
           </div>
 
           <div class="truncate available" ng-if="(resource.isAvailableOthers || resource.isAvailableFriends) && resource.isActive">
