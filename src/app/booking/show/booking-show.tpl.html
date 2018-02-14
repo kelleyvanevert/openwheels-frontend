@@ -918,4 +918,7 @@
        options="map.options">
        <ui-gmap-marker ng-repeat="m in map.markers" idKey="m.idKey" coords="m" icon="m.icon"></ui-gmap-marker>
   </ui-gmap-google-map>
+  <div class="card-heading" ng-if="locationError">
+    <span>{{ locationError }}</span>
+  </div>
 </div>
