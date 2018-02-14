@@ -18,7 +18,7 @@
 
           <div class="pull-left text-left">
             <div class="truncate" ui-sref="owm.resource.edit({ resourceId: resource.id })">
-              <md-icon>directions_car</md-icon> {{ resource.alias }}
+              <md-icon>directions_car</md-icon> {{ resource.alias }} {{ resource.registrationPlate | surroundWith : '(' : ')' }}
             </div>
 
             <div class="truncate">
