@@ -2,7 +2,7 @@
 
 angular.module('owm.resource.own', [])
 
-.controller('ResourceOwnController', function ($scope, $filter, $state, $translate, resources, resourceService, authService, alertService, dialogService, boardcomputerService, $window) {
+.controller('ResourceOwnController', function ($scope, $filter, $state, me, $translate, resources, resourceService, authService, alertService, dialogService, boardcomputerService, $window) {
   $scope.resources = resources;
 
   $scope.save = function (resource) {

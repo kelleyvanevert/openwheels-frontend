@@ -51,7 +51,7 @@
               <md-icon>check</md-icon> <a ng-click="setResourceAvailability(resource, true)">{{ 'NOT_AVAILABLE_RESOURCE' | translate }}</a>
             </div>
 
-            <div class="truncate" ng-if="resource.boardcomputer && resource.boardcomputer !== 'ccome'">
+            <div class="truncate" ng-if="resource.boardcomputer && resource.boardcomputer !== 'ccome' && resource.owner.id = me.id">
               <md-icon>place</md-icon> <a ng-click="getCurrentLocation(resource)">{{ 'SHOW_LOCATION_ON_MAP' | translate }}</a>
             </div>
 
@@ -99,7 +99,7 @@
             <md-icon>check</md-icon> <a ng-click="setResourceAvailability(resource, true)">{{ 'NOT_AVAILABLE_RESOURCE' | translate }}</a>
           </div>
 
-          <div class="truncate" ng-if="resource.boardcomputer && resource.boardcomputer !== 'ccome'">
+          <div class="truncate" ng-if="resource.boardcomputer && resource.boardcomputer !== 'ccome' && resource.owner.id = me.id">
             <md-icon>place</md-icon> <a ng-click="location(resource)">{{ 'SHOW_LOCATION_ON_MAP' | translate }}</a>
           </div>
 
