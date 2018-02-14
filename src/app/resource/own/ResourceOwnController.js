@@ -4,7 +4,8 @@ angular.module('owm.resource.own', [])
 
 .controller('ResourceOwnController', function ($scope, $filter, $state, me, $translate, resources, resourceService, authService, alertService, dialogService, boardcomputerService, $window) {
   $scope.resources = resources;
-
+  $scope.me = me;
+  
   $scope.save = function (resource) {
     var createResource = function() {
       return authService.me()
