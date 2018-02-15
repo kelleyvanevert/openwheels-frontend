@@ -2,9 +2,10 @@
 
 angular.module('owm.resource.own', [])
 
-.controller('ResourceOwnController', function ($scope, $filter, $state, $translate, resources, resourceService, authService, alertService, dialogService) {
+.controller('ResourceOwnController', function ($scope, $filter, $state, me, $translate, resources, resourceService, authService, alertService, dialogService, boardcomputerService, $window) {
   $scope.resources = resources;
-
+  $scope.me = me;
+  
   $scope.save = function (resource) {
     var createResource = function() {
       return authService.me()
@@ -64,4 +65,18 @@ angular.module('owm.resource.own', [])
       });
     });
   };
+
+  $scope.location = function(resource) {
+    boardcomputerService.currentLocation({
+      resource: resource.id
+    })
+    .then(function(location) {
+      var locationUrl = 'https://www.google.nl/maps/search/' + location.lat + ',%20' + location.lng;
+      $window.open(locationUrl);
+    })
+    .catch(function (err) {
+      alertService.addError(err);
+    });
+  };
+
 });
