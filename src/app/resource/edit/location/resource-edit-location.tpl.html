@@ -6,7 +6,10 @@
         <h4>Selecteer op locatie op de kaart</h4>
 
         <div class="icon location resource-location-searchbar">
-          <input class="form-control" ow-geocoder="{onDetails: newLocationSelectedDropdown}" placeholder="{{ 'RESOURCE_LOCATION_ADDRESS_LABEL' | translate }}" ng-model="locationtext" required />
+          <input class="form-control" ow-geocoder="{onDetails: newLocationSelectedDropdown}" placeholder="{{ 'RESOURCE_LOCATION_ADDRESS_LABEL' | translate }}" ng-model="locationtext" />
+
+          <p class="text-danger" style="margin-top:10px;" ng-if="locationError">Selecteer een locatie waar de auto staat.</p>
+          <p class="text-danger" style="margin-top:10px;" ng-if="streetNumberError">Vul een huisnummer in.</p>
         </div>
 
         <ui-gmap-google-map center="map.center" control="map.control" zoom="map.zoom" draggable="true" dragging="map.dragging" bounds="map.bounds" events="map.events" options="map.options">
@@ -32,9 +35,11 @@
 
         <p>
         <div class="icon location resource-location-searchbar" style="width: 65%; display: inline-block;">
-          <input class="form-control" ng-model="clickedAddress.route" placeholder="{{ 'STREET_NAME' | translate }}" ow-geocoder="{onDetails: newLocationSelectedDropdown}" required />
+          <input class="form-control" ng-model="clickedAddress.route" placeholder="{{ 'STREET_NAME' | translate }}" ow-geocoder="{onDetails: newLocationSelectedDropdown}" />
+          <p class="text-danger" style="margin-top:10px;" ng-if="locationError">Selecteer een locatie waar de auto staat.</p>
         </div>
-          <input class="form-control" style="width: 34%; display: inline;" ng-model="clickedAddress.streetNumber" placeholder="{{ 'STREET_NUMBER' | translate }}" required />
+          <input class="form-control" style="width: 34%; display: inline;" ng-model="clickedAddress.streetNumber" placeholder="{{ 'STREET_NUMBER' | translate }}" />
+          <p class="text-danger" ng-if="streetNumberError">Vul een huisnummer in.</p>
         </p>
 
         <ui-gmap-google-map center="map.center" control="map.control" zoom="map.zoom" draggable="true" dragging="map.dragging" bounds="map.bounds" events="map.events" options="map.options">
@@ -60,7 +65,7 @@
                 <md-icon>navigate_before</md-icon>
                 {{ 'PREVIOUS' | translate}}
             </button>
-            <button type="submit" name="button" ng-disabled="!locationForm.$valid" ng-click="submit()" class="mywheels-btn mywheels-btn-default btn--navigation__next">
+            <button type="submit" name="button" ng-click="submit()" class="mywheels-btn mywheels-btn-default btn--navigation__next">
                 {{ 'NEXT' | translate }}
                 <md-icon class="text-white">navigate_next</md-icon>
             </button>

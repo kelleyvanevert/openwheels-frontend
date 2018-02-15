@@ -55,6 +55,10 @@
               <md-icon>place</md-icon> <a ng-click="location(resource)">{{ 'SHOW_LOCATION_ON_MAP' | translate }}</a>
             </div>
 
+            <div class="truncate" ng-if="!resource.boardcomputer && !features.parkingpermit && resource.isActive && (resource.isAvailableOthers || resource.isAvailableFriends)">
+              <md-icon>date_range</md-icon> <a ng-href="{{ $state.href('owm.resource.calendar', { city: resource.city, resourceId: resource.id }) }}" ga-track-event="['interaction', 'updateAvailability', 'resourceOwn']">{{ 'RESOURCE_EDIT_CALENDAR' | translate }}</a>
+            </div>
+
             <parkingpermit ng-if="features.parkingpermit" resource="resource" resource-list="resources"></parkingpermit>
           </div>
         </div>
@@ -101,6 +105,10 @@
 
           <div class="truncate" ng-if="resource.boardcomputer && resource.boardcomputer !== 'ccome' && resource.owner.id === me.id">
             <md-icon>place</md-icon> <a ng-click="location(resource)">{{ 'SHOW_LOCATION_ON_MAP' | translate }}</a>
+          </div>
+
+          <div class="truncate" ng-if="!resource.boardcomputer && !features.parkingpermit && resource.isActive && (resource.isAvailableOthers || resource.isAvailableFriends)">
+            <md-icon>date_range</md-icon> <a ng-href="{{ $state.href('owm.resource.calendar', { city: resource.city, resourceId: resource.id }) }}" ga-track-event="['interaction', 'updateAvailability', 'resourceOwn']">{{ 'RESOURCE_EDIT_CALENDAR' | translate }}</a>
           </div>
 
           <parkingpermit ng-if="features.parkingpermit" resource="resource" resource-list="resources"></parkingpermit>
