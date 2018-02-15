@@ -15,22 +15,20 @@
       </div>
     </div>
 
-    <div class="row" ng-if="!bookings.asOwner.total && !bookings.asRenter.total">
+    <div class="row" ng-if="!totalBookings.asOwner && !totalBookings.asRenter">
       <div class="col-xs-12">
-        <h3 ng-if="showLoaderSpinner" class="no-margin"><i class="fa fa-spinner fa-spin fa-fw text-primary"></i></h3>
-        <span ng-if="!showLoaderSpinner">{{ 'NO_TRIPS' | translate }}</span>
+        <h3 ng-if="showLoaderSpinner" class="text-center" style="margin-top:10px;"><i class="fa fa-spinner fa-spin fa-fw text-primary"></i></h3>
+        <span ng-if="!showLoaderSpinner && totalBookings.asRenter === 0 && totalBookings.asOwner === 0">{{ 'NO_TRIPS' | translate }}</span>
       </div>
     </div>
   </div>
 
 </div>
 
-<div class="card" ng-if="bookings.asRenter.total > 0">
+<div class="card" ng-if="totalBookings.asRenter > 0">
   <div class="card-heading">
     <h3 class="card-title">
-      <a href="">
-        {{ 'TRIPS_BOOKINGS_FOR_RENTER' | translate }}
-      </a>
+      {{ 'TRIPS_BOOKINGS_FOR_RENTER' | translate }}
     </h3>
   </div>
 
@@ -40,28 +38,39 @@
     <p class="btn">{{ curPage.asRenter }}</p>
     <button class="btn" ng-click="nextPage('asRenter')" ng-disabled="curPage.asRenter >= lastPage.asRenter"> &gt; </button>
 
-    <table class="table">
+    <div ng-if="showLoaderSpinner" class="text-center" style="margin-top:10px;">
+      <h3><i class="fa fa-spinner fa-spin fa-fw text-primary"></i></h3>
+    </div>
+
+    <table class="table" ng-if="!showLoaderSpinner">
       <thead>
         <tr>
           <th>{{ 'DATE' | translate }}</th>
           <th hide-xs>{{ 'STATUS' | translate }}</th>
           <th>{{ 'RESOURCE' | translate }}</th>
-          <th hide-xs>{{ 'OWNER' | translate }}</th>
+          <th>{{ 'OWNER' | translate }}</th>
           <th hide-xs></th>
-          <th></th>
+          <th hide-xs></th>
         </tr>
       </thead>
       <tbody>
         <tr 
           ng-class="{danger: ['cancelled', 'owner_cancelled'].indexOf(booking.status) >= 0, warning: booking.status === 'rejected'}"
-          ng-repeat="booking in bookings.asRenter.result | orderBy:['booking.beginBooking','booking.beginRequested']"
+          ng-repeat="booking in bookings.asRenter | orderBy:['booking.beginBooking','booking.beginRequested']"
+          class="clickable-row"
+          ui-sref="owm.booking.show({bookingId: booking.id})"
         >
-          <td>{{ (booking.beginBooking | amDateFormat:'DD-MM-YYYY') || (booking.beginRequested | amDateFormat:'DD-MM-YYYY') }}</td>
+          <td><a ui-sref="owm.booking.show({bookingId: booking.id})">
+            {{ (booking.beginBooking | amDateFormat:'DD-MM-YYYY') || (booking.beginRequested | amDateFormat:'DD-MM-YYYY') }}
+          </a></td>
           <td hide-xs>{{ booking.status | bookingStatus }}</td>
           <td>{{ booking.resource.alias}}</td>
-          <td hide-xs>{{ booking.resource.owner | fullname }}</td>
+          <td>{{ booking.resource.owner | fullname }}</td>
           <td hide-xs><span booking-approval-icon="booking"></span></td>
-          <td class="text-right"><a ui-sref="owm.booking.show({bookingId: booking.id})">Details</a> <a ng-if="provider === 50" target="_blank" ng-href="{{ createTripDetailsLink(booking) }}"><i class="fa fa-fw fa-external-link-square"></i>PDF</a></td>
+          <td class="text-right" hide-xs>
+            <a ui-sref="owm.booking.show({bookingId: booking.id})">Details</a>
+            <a ng-if="provider === 50" target="_blank" ng-href="{{ createTripDetailsLink(booking) }}"><i class="fa fa-fw fa-external-link-square"></i>PDF</a>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -69,12 +78,10 @@
   </div>
 </div>
 
-<div class="card" ng-if="bookings.asOwner.total > 0">
+<div class="card" ng-if="totalBookings.asOwner > 0">
   <div class="card-heading">
     <h3 class="card-title">
-      <a href="">
-        {{ 'TRIPS_BOOKINGS_FOR_OWNER' | translate }}
-      </a>
+      {{ 'TRIPS_BOOKINGS_FOR_OWNER' | translate }}
     </h3>
   </div>
 
@@ -83,26 +90,34 @@
     <p class="btn">{{ curPage.asOwner }}</p>
     <button class="btn" ng-click="nextPage('asOwner')" ng-disabled="curPage.asOwner >= lastPage.asOwner"> &gt; </button>
 
-    <table class="table">
+    <div ng-if="showLoaderSpinner" class="text-center" style="margin-top:10px;">
+      <h3><i class="fa fa-spinner fa-spin fa-fw text-primary"></i></h3>
+    </div>
+
+    <table class="table" ng-if!="showLoaderSpinner">
       <thead>
         <tr>
           <th>{{ 'DATE' | translate }}</th>
           <th hide-xs>{{ 'STATUS' | translate }}</th>
           <th>{{ 'RESOURCE' | translate }}</th>
           <th>{{ 'RENTER' | translate }}</th>
-          <th></th>
+          <th hide-xs></th>
         </tr>
       </thead>
       <tbody>
         <tr
           ng-class="{danger: ['cancelled', 'owner_cancelled'].indexOf(booking.status) >= 0, warning: booking.status === 'rejected'}"
-          ng-repeat="booking in bookings.asOwner.result | orderBy:['booking.beginBooking','booking.beginRequested']"
+          ng-repeat="booking in bookings.asOwner | orderBy:['booking.beginBooking','booking.beginRequested']"
+          class="clickable-row"
+          ui-sref="owm.booking.show({bookingId: booking.id})"
         >
-          <td>{{ (booking.beginBooking | amDateFormat:'DD-MM-YYYY') || (booking.beginRequested | amDateFormat:'DD-MM-YYYY') }}</td>
+          <td><a ui-sref="owm.booking.show({bookingId: booking.id})">
+            {{ (booking.beginBooking | amDateFormat:'DD-MM-YYYY') || (booking.beginRequested | amDateFormat:'DD-MM-YYYY') }}
+          </a></td>
           <td hide-xs>{{ booking.status | bookingStatus }}</td>
           <td>{{ booking.resource.alias }}</td>
-          <td><a ui-sref="member({ personId: booking.person.id })">{{ booking.person | fullname }}</a></td>
-          <td class="text-right">
+          <td>{{ booking.person | fullname }}</td>
+          <td class="text-right" hide-xs>
             <a ui-sref="owm.booking.show({bookingId: booking.id})">Details</a>
             <a ng-if="provider === 50" target="_blank" ng-href="{{ createTripDetailsLink(booking) }}"><i class="fa fa-fw fa-external-link-square"></i>PDF</a>
           </td>

@@ -8,17 +8,14 @@ angular.module('owm.trips.index', [])
   $scope.provider = me.provider.id;
 
   // Set the default values for the loader spinner and collapsible toggles
-
   $scope.showLoaderSpinner = false;
   $scope.showBookings = {};
   $scope.showBookings.asRenter = false;
   $scope.showBookings.asOwner = false;
 
   // Define the booking variables
-
   $scope.bookings = {};
   $scope.totalBookings = {};
-
   // Set pagination defaults
 
   $scope.curPage = {};
@@ -88,6 +85,8 @@ angular.module('owm.trips.index', [])
 
   function loadBookings(role)
   {
+    $scope.showLoaderSpinner = true;
+
     // Set the offset for the pagination for this role based on the current page and elements per page
     //$scope.offset[role] = ($scope.curPage[role] - 1) * $scope.perPage[role];
 
@@ -103,13 +102,10 @@ angular.module('owm.trips.index', [])
     };
 
     // Define which API call to use for which role
-
-    $scope.showLoaderSpinner = true;
     var bookingsPromise = {};
 
     if(role === 'asRenter') {
       parameters.cancelled = true;
-
       bookingsPromise = bookingService.getBookingList(parameters);
     }
 
@@ -118,12 +114,18 @@ angular.module('owm.trips.index', [])
     }
 
     // Get the bookings
-
     bookingsPromise
       .then(function(bookings) {
+        var tempCount = 0;
+
+        if(bookings){
+          if(bookings[0]){
+            tempCount = bookings[0].count;
+          }
+        }
 
         $scope.bookings[role] = bookings;
-        $scope.totalBookings[role] = bookings.total;
+        $scope.totalBookings[role] = tempCount;
         $scope.lastPage[role] = Math.ceil($scope.totalBookings[role] / $scope.perPage[role]);
 
         $scope.showLoaderSpinner = false;

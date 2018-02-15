@@ -131,7 +131,7 @@ angular.module('owm.person', [
 
       bookingList: ['$stateParams', 'me', 'authService', 'bookingService', 'API_DATE_FORMAT', function ($stateParams, me, authService, bookingService, API_DATE_FORMAT) {
         var timeFrame = {
-          startDate: moment().add(-1, 'hours').format(API_DATE_FORMAT),
+          startDate: moment().add(-1, 'day').format(API_DATE_FORMAT),
           endDate: moment().startOf('day').add(1, 'years').format(API_DATE_FORMAT)
         };
         if (me.preference === 'owner') {
@@ -147,13 +147,22 @@ angular.module('owm.person', [
             limit: 10
           })
           .then(function (bookings) {
+            var tempCount = 0;
+
+            if(bookings){
+              if(bookings[0]){
+                tempCount = bookings[0].count;
+              }
+            }
+
             return {
-              bookings: bookings.result,
-              totalBookings: bookings.total,
+              bookings: bookings,
+              totalBookings: tempCount,
               timeFrame: timeFrame
             };
           });
       }],
+
       rentalList: ['$stateParams', 'me', 'authService', 'bookingService', 'API_DATE_FORMAT', function ($stateParams, me, authService, bookingService, API_DATE_FORMAT) {
         var timeFrame = {
           startDate: moment().startOf('day').add(-1, 'weeks').format(API_DATE_FORMAT),
@@ -172,13 +181,22 @@ angular.module('owm.person', [
             limit: 10
           })
           .then(function (bookings) {
+            var tempCount = 0;
+
+            if(bookings){
+              if(bookings[0]){
+                tempCount = bookings[0].count;
+              }
+            }
+
             return {
-              bookings: bookings.result,
-              totalBookings: bookings.total,
+              bookings: bookings,
+              totalBookings: tempCount,
               timeFrame: timeFrame
             };
           });
       }],
+
       actions: ['actionService', 'me', function (actionService, me) {
         return actionService.all({
           person: me.id
