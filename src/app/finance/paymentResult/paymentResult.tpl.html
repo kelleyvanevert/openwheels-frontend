@@ -138,12 +138,17 @@
           <md-icon class="text-warning">warning</md-icon> {{ 'PAYMENT_FAILURE_TITLE' | translate }} </h2>
         <p>{{ 'PAYMENT_FAILURE_BODY' | translate }}</p>
 
-        <button ng-if="afterPayment" ng-click="goAfterPayment()" type="button" class="mywheels-btn mywheels-btn-default" md-ink-ripple="#3a6d81">
+        <button ng-if="afterPayment && me.provider.id !== 5" ng-click="goAfterPayment()" type="button" class="mywheels-btn mywheels-btn-default" md-ink-ripple="#3a6d81">
             {{ 'GO' | translate }}
         </button>
 
-        <div ng-if="!afterPayment">
+        <div ng-if="!afterPayment && me.provider.id !== 5">
             <button ui-sref="owm.finance.vouchers" class="mywheels-btn mywheels-btn-default" md-ink-ripple="#3a6d81">{{ 'MY_VOUCHERS' | translate }}</button>
         </div>
+
+        <div ng-if="me.provider.id === 5">
+            <button ui-sref="owm.finance.contributie" class="mywheels-btn mywheels-btn-default" md-ink-ripple="#3a6d81">{{ 'PAY_SUBSCRIPTION' | translate }}</button>
+        </div>
+
     </div>
 </section>

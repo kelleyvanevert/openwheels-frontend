@@ -5,36 +5,29 @@ angular.module('owm.resource.own', [])
 .controller('ResourceOwnController', function ($scope, $filter, $state, me, $translate, resources, resourceService, authService, alertService, dialogService, boardcomputerService, $window) {
   $scope.resources = resources;
   $scope.me = me;
+
+  $scope.licencePlate = {
+    content: '',
+    data: false,
+    showError: false,
+    error: ''
+  };
   
-  $scope.save = function (resource) {
-    var createResource = function() {
-      return authService.me()
-      .then(function (me) {
-        resourceService.create({
-          'owner': me.id,
-          'registrationPlate': resource.registrationPlate
-        }).then(function (resource) {
-            alertService.add('success', $filter('translate')('RESOURCE_CREATED'), 3000);
-            $state.go('owm.resource.edit', {'resourceId': resource.id});
-          }, function (error) {
-            alertService.add('danger', error.message, 5000);
-          });
-      });
-    };
-
-    //show dialog if user already has resources
-    if(resources.length > 0) {
-      dialogService.showModal(null, {
-        closeButtonText: $translate.instant('CANCEL'),
-        actionButtonText: $translate.instant('OK'),
-        headerText: $translate.instant('CREATE_RESOURCE_TITLE'),
-        bodyText: $translate.instant('ADD_MORE_THAN_ONE_RESOURCE')
-      })
-      .then(createResource);
-    } else {
-      createResource();
-    }
-
+  $scope.save = function (registrationPlate) {
+    alertService.load();
+    return authService.me()
+    .then(function (me) {
+      resourceService.create({
+        'owner': me.id,
+        'registrationPlate': registrationPlate
+      }).then(function (resource) {
+          alertService.loaded();
+          $state.go('owm.resource.edit', {'resourceId': resource.id});
+        }, function (error) {
+          alertService.loaded();
+          alertService.add('danger', error.message, 5000);
+        });
+    });
   };
   
   $scope.setResourceAvailability = function (resource, value) {

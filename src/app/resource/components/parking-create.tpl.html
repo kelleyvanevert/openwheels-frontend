@@ -3,31 +3,51 @@
   <h4 class="modal-title">Extra parkeervergunning aanvragen</h4>
 </div>
 <div class="modal-body">
-  <p>Wil je een parkeervergunning aanvragen met de onderstaande gegevens?</P>
+
+  <p>Controleer de volgende punten voordat u een parkeervergunning aanvraagt:
+    <ul>
+      <li>U heeft uw <a ui-sref="owm.person.profile">persoonsgegevens</a> ingevuld en de <a ui-sref="owm.finance.contributie">contributie betaald</a>.</li>
+      <li>De gebruikers zijn als <a ng-href="{{ $state.href('owm.resource.edit', { city: modalOptions.resource.city, resourceId: modalOptions.resource.id }) }}">vriend aan de auto</a> toegevoegd.</li>
+      <li>De gebruikers hebben ook hun persoongegevens ingevuld en de contributie betaald.</li>
+    </ul>
+  </p>
+
+  <br/>
+
+  <p>Heeft u bovenstaande punten gedaan? Dan kunt u hieronder een parkeervergunning aanvragen.</p>
+
   <div>
     Selecteer gemeente: <select ng-model="city">
                 <option ng-repeat="x in modalOptions.cities">{{x}}</option>
               </select>
   </div>
+
+  <br/>
+
   <div>
-    Kenteken: {{modalOptions.resource.registrationPlate}}
+    <strong>Kenteken:</strong> {{modalOptions.resource.registrationPlate}}
   </div>
+
+  <br/>
+
   <div>
-    Auto-eigenaar:
+    <strong>Auto-eigenaar:</strong>
       {{modalOptions.resource.owner.firstName}} {{modalOptions.resource.owner.preposition}} {{modalOptions.resource.owner.surname}}, 
       {{modalOptions.resource.owner.streetName}} {{modalOptions.resource.owner.streetNumber}}, 
       {{modalOptions.resource.owner.zipcode}} {{modalOptions.resource.owner.city}}
   </div>
+
+  <br/>
+
   <div ng-repeat="member in modalOptions.members">
-    Auto-gebruiker:
+    <strong>Auto-gebruiker:</strong>
       {{member.firstName}}, 
       {{member.city}}
   </div>
   
 </div>
+
 <div class="modal-footer">
-  <button ng-disabled="!city" type="button" class="btn btn-primary"
-          data-ng-click="modalOptions.ok();">{{modalOptions.actionButtonText}}</button>
-  <button type="button" class="btn btn-link"
-          data-ng-click="modalOptions.close()">{{modalOptions.closeButtonText}}</button>
+  <button ng-disabled="!city" type="button" class="btn btn-primary" data-ng-click="modalOptions.ok();">{{modalOptions.actionButtonText}}</button>
+  <button type="button" class="btn btn-link" data-ng-click="modalOptions.close()">{{modalOptions.closeButtonText}}</button>
 </div>
