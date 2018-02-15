@@ -52,7 +52,7 @@
             <section ng-repeat="booking in bookings | limitTo: 3" class="payment-result__card" ng-class="{'payment-result__only-one': bookings.length === 1, 'payment-result__middle': bookings.length === 3 && $middle }">
                 <md-card>
                     <div>
-                        <md-card-header class="blue-header">
+                        <md-card-header class="blue-header" style="min-height: 70px;">
                             <md-card-header-text>
                                 <span class="md-title">
                                   {{ booking.resource.alias || ('RESOURCE_NO_NAME' | translate) }}

@@ -171,7 +171,8 @@ angular.module('openwheels', [
 
 .config(function (uiGmapGoogleMapApiProvider) {
   uiGmapGoogleMapApiProvider.configure({
-    key: 'AIzaSyC1QrtfmsYNsJAfx9OOl5QX0oNpMVo3fbw',
+    key: 'AIzaSyB39nNemoZuMwpmzKk8Vdb-fd8LJDwFsCE',
+    // key: 'AIzaSyC1QrtfmsYNsJAfx9OOl5QX0oNpMVo3fbw',
     v: '3.30.0',
     libraries: 'places',
     language: 'nl'
