@@ -11,6 +11,7 @@ angular.module('owm.finance.paymentResult', [])
   $scope.person = '';
   $scope.fish = false;
   $scope.bookings = [];
+  $scope.me = me;
 
   $scope.result = {
     success: (orderStatusId > 0)
