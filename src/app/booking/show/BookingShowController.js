@@ -829,7 +829,8 @@ angular.module('owm.booking.show', [])
         ($scope.requested && booking.person.numberOfBookings === 0) ||
         booking.approved === 'BUY_VOUCHER' ||
         $scope.addExtraDriver) &&
-        ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0
+        ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 &&
+        me.id === $scope.contract.contractor.id
       ) {
       $scope.paymentInit = true;
     } else {

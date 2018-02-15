@@ -23,14 +23,6 @@
                 </button>
             </div>
 
-            <div ng-if="resource.isActive && features.social && me && (resource.owner.id === me.id || resource.contactPerson.id === me.id)" class="card card-notice">
-                <div class="card-body">
-                    {{ 'SOCIAL_SHARE_RESOURCE' | translateOrDefault }}
-                    <br/>
-                    <div share-buttons url="shareUrl" resource="resource"></div>
-                </div>
-            </div>
-
             <!-- header -->
             <div flex>
                 <md-card ng-class="{'ow-card': !isWindowSizeSM}">
@@ -246,6 +238,14 @@
                 </div>
             </div>
 
+            <div ng-if="resource.isActive && features.social && !isWindowSizeMD" class="card">
+                <div class="card-body">
+                    <p ng-if="resource.owner.id === me.id || resource.contactPerson.id === me.id">{{ 'SOCIAL_SHARE_RESOURCE' | translateOrDefault }}</p>
+                    <p ng-if="resource.owner.id !== me.id && resource.contactPerson.id !== me.id">{{ 'SOCIAL_SHARE_RESOURCE_NOT_OWNER' | translateOrDefault }}</p>
+                    <div share-buttons url="shareUrl" resource="resource"></div>
+                </div>
+            </div>
+
             <!-- location -->
             <div class="card">
                 <div class="card-heading">
@@ -278,6 +278,15 @@
                     <reservation-form person="me" resource="resource" booking="booking" show-price="true"></reservation-form>
                 </div>
             </div>
+
+            <div ng-if="resource.isActive && features.social" class="card">
+                <div class="card-body">
+                    <p ng-if="resource.owner.id === me.id || resource.contactPerson.id === me.id">{{ 'SOCIAL_SHARE_RESOURCE' | translateOrDefault }}</p>
+                    <p ng-if="resource.owner.id !== me.id && resource.contactPerson.id !== me.id">{{ 'SOCIAL_SHARE_RESOURCE_NOT_OWNER' | translateOrDefault }}</p>
+                    <div share-buttons url="shareUrl" resource="resource"></div>
+                </div>
+            </div>
+
         </div>
 
     </div>
