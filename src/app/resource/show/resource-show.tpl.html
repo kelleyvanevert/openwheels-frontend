@@ -143,6 +143,114 @@
                 </div>
             </div>
 
+            <!-- resource info -->
+            <div class="card" id="resourceInfo">
+                <div class="card-heading">
+                    <h3 class="card-title">{{ 'RESOURCE_INFO' | translate }}</h3>
+                </div>
+                <div class="card-body">
+
+                    <div class="specifics">
+                        <div flex layout-gt-xs="row" class="specificRow">
+                            <div flex-xs="100" flex="50" layout="row" class="item fuel_type">
+                                <div flex="50" class="title">{{ 'FUEL_TYPE' | translate }}</div>
+                                <div flex="50" class="info">{{ (resource.fuelType | translate | toTitleCase) || ('UNKNOWN_FUELTYPE' | translate | toTitleCase) }}</div>
+                            </div>
+                            <div flex-xs="100" flex="50" layout="row" class="item gear">
+                                <div flex="50" class="title">{{ 'GEAR' | translate }}</div>
+                                <div flex="50" class="info" ng-if="automaticGear >= 0">{{ 'AUTOMATIC_GEAR' | translate }}</div>
+                                <div flex="50" class="info" ng-if="automaticGear < 0">{{ 'MANUAL_GEAR' | translate }}</div>
+                            </div>
+                        </div>
+                        <div flex="100" layout-gt-xs="row" class="specificRow">
+                            <div flex-xs="100" flex="50" layout="row" class="item resource_type">
+                                <div flex="50" class="title">{{ 'RESOURCE_TYPE' | translate }}</div>
+                                <div flex="50" class="info">{{ resourceTypeValue }}</div>
+                            </div>
+                            <div flex-xs="100" flex="50" layout="row" class="item minimum_age">
+                                <div flex="50" class="title">{{ 'MINIMUM_AGE' | translate }}</div>
+                                <div flex="50" class="info">{{ resource.minimumAge }} {{ 'YEAR' | translate }}</div>
+                            </div>
+                        </div>
+                        <div flex="100" layout-gt-xs="row" class="specificRow">
+                            <div flex-xs="100" flex="50" layout="row" class="item time_of_origin">
+                                <div flex="50" class="title">{{ 'TIME_OF_ORGIN' | translate }}</div>
+                                <div flex="50" class="info">{{ resource.bouwjaar }}</div>
+                            </div>
+                            <div flex-xs="100" flex="50" layout="row" class="item number_of_seats">
+                                <div flex="50" class="title">{{ 'NUMBER_OF_SEATS' | translate }}</div>
+                                <div flex="50" class="info">{{ resource.numberOfSeats }}</div>
+                            </div>
+                        </div>
+                        <div flex="100" layout-gt-xs="row" class="specificRow">
+                            <div flex-xs="100" flex="50" layout="row" class="item color">
+                                <div flex="50" class="title">{{ 'COLOR' | translate }}</div>
+                                <div flex="50" class="info">{{ resource.color | toTitleCase }}</div>
+                            </div>
+                            <div flex-xs="100" flex="50" layout="row" class="item created">
+                                <div flex="50" class="title">{{ 'RESOURCE_AGE' | translate }}</div>
+                                <div flex="50" class="info">{{ resource.created | resourceAge }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subTitle">
+                        <h3 class="card-title">{{ 'RESOURCE_PROPERTIES' | translate }}</h3>
+                    </div>
+                    <div class="specifics">
+                        <div flex="100" layout-gt-xs="row" class="specificRow">
+                            <div flex-xs="100" flex="50" layout="row" class="item airconditioning">
+                                <div flex="50" class="title">{{ 'ACCESSORIES.AIRCONDITIONING' | translate }}</div>
+                                <div flex="50" class="info" ng-if="airconditioning >= 0"><md-icon class="text-success">check<md-icon></div>
+                                <div flex="50" class="info" ng-if="airconditioning < 0"><md-icon class="text-danger">close<md-icon></div>
+                            </div>
+                            <div flex-xs="100" flex="50" layout="row" class="item bike_carrier">
+                                <div flex="50" class="title">{{ 'ACCESSORIES.BIKE_CARRIER' | translate }}</div>
+                                <div flex="50" class="info" ng-if="bikeCarrier >= 0"><md-icon class="text-success">check<md-icon></div>
+                                <div flex="50" class="info" ng-if="bikeCarrier < 0"><md-icon class="text-danger">close<md-icon></div>
+                            </div>
+                        </div>
+                        <div flex="100" layout-gt-xs="row" class="specificRow">
+                            <div flex-xs="100" flex="50" layout="row" class="item child_seat">
+                                <div flex="50" class="title">{{ 'ACCESSORIES.CHILD_SEAT' | translate }}</div>
+                                <div flex="50" class="info" ng-if="childSeat >= 0"><md-icon class="text-success">check<md-icon></div>
+                                <div flex="50" class="info" ng-if="childSeat < 0"><md-icon class="text-danger">close<md-icon></div>
+                            </div>
+                            <div flex-xs="100" flex="50" layout="row" class="item mp3_connection">
+                                <div flex="50" class="title">{{ 'ACCESSORIES.MP3_CONNECTION' | translate }}</div>
+                                <div flex="50" class="info" ng-if="mp3Connection >= 0"><md-icon class="text-success">check<md-icon></div>
+                                <div flex="50" class="info" ng-if="mp3Connection < 0"><md-icon class="text-danger">close<md-icon></div>
+                            </div>
+                        </div>
+                        <div flex="100" layout-gt-xs="row" class="specificRow">
+                            <div flex-xs="100" flex="50" layout="row" class="item navigation">
+                                <div flex="50" class="title">{{ 'ACCESSORIES.NAVIGATION' | translate }}</div>
+                                <div flex="50" class="info" ng-if="navigation >= 0"><md-icon class="text-success">check<md-icon></div>
+                                <div flex="50" class="info" ng-if="navigation < 0"><md-icon class="text-danger">close<md-icon></div>
+                            </div>
+                            <div flex-xs="100" flex="50" layout="row" class="item wheelchair_friendly">
+                                <div flex="50" class="title">{{ 'ACCESSORIES.WHEELCHAIR_FRIENDLY' | translate }}</div>
+                                <div flex="50" class="info" ng-if="wheelchairFriendly >= 0"><md-icon class="text-success">check<md-icon></div>
+                                <div flex="50" class="info" ng-if="wheelchairFriendly < 0"><md-icon class="text-danger">close<md-icon></div>
+                            </div>
+                        </div>
+                        <div flex="100" layout-gt-xs="row" class="specificRow">
+                            <div flex-xs="100" flex="50" layout="row" class="item towbar">
+                                <div flex="50" class="title">{{ 'ACCESSORIES.TOW_BAR' | translate }}</div>
+                                <div flex="50" class="info" ng-if="towbar >= 0"><md-icon class="text-success">check<md-icon></div>
+                                <div flex="50" class="info" ng-if="towbar < 0"><md-icon class="text-danger">close<md-icon></div>
+                            </div>
+                            <div flex-xs="100" flex="50" layout="row" class="item winter_tires">
+                                <div flex="50" class="title">{{ 'ACCESSORIES.WINTER_TIRES' | translate }}</div>
+                                <div flex="50" class="info" ng-if="winterTires >= 0"><md-icon class="text-success">check<md-icon></div>
+                                <div flex="50" class="info" ng-if="winterTires < 0"><md-icon class="text-danger">close<md-icon></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
             <!-- smartwheels benefits -->
             <div class="card" ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0" id="smartwheels_info">
                 <div class="card-heading">

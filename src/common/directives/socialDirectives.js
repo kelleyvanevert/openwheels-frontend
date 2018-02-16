@@ -44,7 +44,7 @@ angular.module('socialDirectives', [])
       scope: {
         url: '='
       },
-      template: '<a ng-click = "shareFacebook()" ga-track-event="["interaction", "facebookShareResource", "resourceShow"]><i class="fa fa-fw fa-facebook-square"></i>{{ "SOCIAL_SHARE_FACEBOOK" | translateOrDefault }}</a>',
+      template: '<a ng-click="shareFacebook()"><i class="fa fa-fw fa-facebook-square"></i>{{ "SOCIAL_SHARE_FACEBOOK" | translateOrDefault }}</a>',
       link: function (scope, elm) {
         var link = 'http://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(scope.url);
         var w = 600;
@@ -70,7 +70,7 @@ angular.module('socialDirectives', [])
     scope: {
       url: '='
     },
-    template: '<a ng-click = "shareTwitter()" ga-track-event="["interaction", "twitterShareResource", "resourceShow"]><i class="fa fa-fw fa-twitter-square"></i>{{ "SOCIAL_SHARE_TWITTER" | translateOrDefault }}</a>',
+    template: '<a ng-click = "shareTwitter()"><i class="fa fa-fw fa-twitter-square"></i>{{ "SOCIAL_SHARE_TWITTER" | translateOrDefault }}</a>',
     link: function (scope, elm) {
       var link = 'http://twitter.com/home?status=' + encodeURIComponent(scope.url);
       var w = 600;
