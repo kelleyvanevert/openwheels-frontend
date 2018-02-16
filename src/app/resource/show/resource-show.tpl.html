@@ -45,13 +45,13 @@
                                 <div class="card-body-margin">
                                     <h3 style="margin-bottom: 5px;">{{ (resource.brand | toTitleCase) || ('UNKNOWN_BRAND' | translate) }}
                                       <span ng-if="resource.model"> {{ resource.model }}</span>
-                                      <div ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0" class="tag tag-warning" style="margin-bottom: 8px" id="smartwheels-tip-label"> {{ 'SMART_WHEELS_TIP' | translate }}
-                                        <md-tooltip md-direction="bottom" class="multiline">
-                                        {{ 'SMART_WHEELS_INFO' | translate }}
-                                        </md-tooltip>
-                                      </div>
-                                      <span class="tag tag-success" ng-if="resource.isNew" flex="none"> {{ 'NEW_TIP' | translate }} </span>
                                     </h3>
+                                    <div ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0" class="tag tag-warning" 
+                                        style="margin-bottom: 8px" id="smartwheels-tip-label"> 
+                                        {{ 'SMART_WHEELS_TIP' | translate }}
+                                        <md-tooltip md-direction="bottom" class="multiline">{{ 'SMART_WHEELS_INFO' | translate }}</md-tooltip>
+                                    </div>
+                                    <span class="tag tag-success" ng-if="resource.isNew" flex="none"> {{ 'NEW_TIP' | translate }} </span>
                                     <div ng-include="'resource/partials/resource-features.tpl.html'"></div>
                                 </div>
                             </md-card-body>
@@ -175,7 +175,7 @@
                         <div flex="100" layout-gt-xs="row" class="specificRow">
                             <div flex-xs="100" flex="50" layout="row" class="item time_of_origin">
                                 <div flex="50" class="title">{{ 'TIME_OF_ORGIN' | translate }}</div>
-                                <div flex="50" class="info">{{ resource.bouwjaar }}</div>
+                                <div flex="50" class="info">{{ resource.bouwjaar || ('UNKNOWN' | translate) }}</div>
                             </div>
                             <div flex-xs="100" flex="50" layout="row" class="item number_of_seats">
                                 <div flex="50" class="title">{{ 'NUMBER_OF_SEATS' | translate }}</div>
@@ -185,11 +185,12 @@
                         <div flex="100" layout-gt-xs="row" class="specificRow">
                             <div flex-xs="100" flex="50" layout="row" class="item color">
                                 <div flex="50" class="title">{{ 'COLOR' | translate }}</div>
-                                <div flex="50" class="info">{{ resource.color | toTitleCase }}</div>
+                                <div flex="50" class="info">{{ (resource.color | toTitleCase) || ('UNKNOWN' | translate) }}</div>
                             </div>
                             <div flex-xs="100" flex="50" layout="row" class="item created">
                                 <div flex="50" class="title">{{ 'RESOURCE_AGE' | translate }}</div>
-                                <div flex="50" class="info">{{ resource.created | resourceAge }}</div>
+                                <div flex="50" class="info" ng-if="resource.created">{{ resource.created | resourceAge }}</div>
+                                <div flex="50" class="info" ng-if="!resource.created">{{ 'UNKNOWN' | translate }}</div>
                             </div>
                         </div>
                     </div>
