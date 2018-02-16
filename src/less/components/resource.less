@@ -186,3 +186,53 @@ label[for=smartwheels] {
         color: #82b955;
     }
 }
+
+#resourceInfo {
+    .specifics {
+        .item {
+            .title {
+                font-weight: 550;
+            }
+            md-icon {
+                font-size: 20px;
+                max-height: 20px;
+            }
+            padding: 10px;
+            border-top: 1px solid #f2f2f2;
+            border-bottom: 1px solid #f2f2f2;
+            height: 42px;
+        }
+        .item:nth-child(odd) {
+            border-right: 1px solid #f2f2f2;
+        }
+        .item:nth-child(even) {
+            padding-left: 10px;
+            border-left: 1px solid #f2f2f2;
+        }
+    }
+    .subTitle {
+        margin-top: 20px;
+    }
+}
+@media all and (max-width: 600px) {
+     #resourceInfo {
+        .specifics {
+            .item:nth-child(odd) {
+                border-right: 0;
+            }
+            .item:nth-child(even) {
+                border-left: 0;
+                background-color: #eee;
+            }
+        }
+    }
+}
+@media all and (min-width: 600px) {
+     #resourceInfo {
+        .specifics {
+            .specificRow:nth-child(odd) {
+                background-color: #eee;
+            }
+        }
+    }
+}

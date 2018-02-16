@@ -11,8 +11,13 @@
 
 <div class="card">
 
-  <!--/ show normal calender if me is not contactPerson of the resource -->
-  <div class="card-body" id="resource-calendar" ng-show="me.id !== resource.contactPerson.id && me.id !== resource.owner.id) || resource.locktype === 'meeting'">
+  <!--/ show overview of trips if me is contactPerson of the resource -->
+  <div class="card-body" id="resourceShowCalendarContactPerson" ng-if="(me && me.id === resource.contactPerson.id && me.id !== resource.owner.id) || (resource.locktype !== 'meeting' && me.id === resource.owner.id)">
+    <booking-list resource="resource" />
+  </div><!--/ card-body -->
+
+  <!--/ show normal calender -->
+  <div class="card-body" id="resource-calendar">
 
     <div ng-if="me && me.id === resource.owner.id">
       <i class="fa fa-fw fa-info-circle text-info"></i>{{ 'RESOURCE_CAL_INFO_FOR_OWNER' | translateOrDefault }}
@@ -29,11 +34,6 @@
     </div>
 
     <div class="calendar" ui-calendar="calendarConfig" ng-model="eventSources" calendar="calendar"></div>
-  </div><!--/ card-body -->
-
-  <!--/ show overview of trips if me is contactPerson of the resource -->
-  <div class="card-body" id="resourceShowCalendarContactPerson" ng-show="(me && me.id === resource.contactPerson.id && me.id !== resource.owner.id) || (resource.locktype !== 'meeting' && me.id === resource.owner.id)">
-    <booking-list resource="resource" />
   </div><!--/ card-body -->
 
 </div><!--/ card -->
