@@ -343,6 +343,7 @@
     "BRAND": "Merk",
     "MODEL": "Type",
     "UNKNOWN_BRAND": "Onbekend merk",
+    "UNKNOWN": "Onbekend",
     "COLOR": "Kleur",
     "NUMBER_OF_SEATS": "Aantal zitplaatsen",
     "FUEL_TYPE": "Brandstof",
