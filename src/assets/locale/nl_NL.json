@@ -462,7 +462,7 @@
     "FUEL_TYPE.HYBRID": "Hybride",
     "FUEL_TYPE.CNG": "Aardgas",
     "RESOURCE_TYPE.ALL": "Alle",
-    "RESOURCE_TYPE.CAR": "Auto",
+    "RESOURCE_TYPE.CAR": "Personenauto",
     "RESOURCE_TYPE.BIKE": "Fiets",
     "RESOURCE_TYPE.BOAT": "Boot",
     "RESOURCE_TYPE.SCOOTER": "Scooter",
