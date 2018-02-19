@@ -27,11 +27,44 @@
                     <md-icon>directions_car</md-icon>
                     <div flex>
                         <span ng-if="resource.brand || resource.model" flex="none">{{ (resource.brand + ' ' + resource.model) | toTitleCase }}</span>
-                        <span class="tag tag-warning" ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0" flex="none"> {{ 'SMART_WHEELS_TIP' | translate }} 
-                        <md-tooltip class="multiline" md-direction="bottom" ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0">
-                            {{ 'SMART_WHEELS_INFO' | translate }}
-                        </md-tooltip></span>
-                        <span class="tag tag-success" ng-if="resource.isNew" flex="none"> {{ 'NEW_TIP' | translate }} </span>
+                        <span hide-xs>
+                            <span class="tag tag-warning" ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0" flex="none"> {{ 'SMART_WHEELS_TIP' | translate }} 
+                            <md-tooltip class="multiline" md-direction="bottom" ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0">
+                                {{ 'SMART_WHEELS_INFO' | translate }}
+                            </md-tooltip></span>
+                            <span class="tag tag-success" ng-if="resource.isNew" flex="none"> {{ 'NEW_TIP' | translate }} </span>
+                        </span>
+                    </div>
+                </md-list-item>
+                <md-list-item 
+                    ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0 || resource.isNew"
+                    style="margin-top:-10px; margin-bottom:-10px;"
+                    show-xs>
+                    <!-- tags -->
+                    <div flex>
+                        <span 
+                            ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0" 
+                            class="tag tag-warning" 
+                            style="margin-left: 0px;"
+                            id="smartwheels-tip-label"
+                        >
+                            {{ 'SMART_WHEELS_TIP' | translate }}
+                            <md-tooltip md-direction="bottom" class="multiline">{{ 'SMART_WHEELS_INFO' | translate }}</md-tooltip>
+                        </span>
+                        <span 
+                            ng-if="resource.isNew && ['smartphone', 'chipcard'].indexOf(resource.locktype) < 0"
+                            class="tag tag-success"
+                            style="margin-left: 0px;"
+                        >
+                            {{ 'NEW_TIP' | translate }}
+                        </span>
+                        <span 
+                            ng-if="resource.isNew && ['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0"
+                            class="tag tag-success"
+                            style="margin-left: 0px;"
+                        >
+                            {{ 'NEW_TIP' | translate }}
+                        </span>
                     </div>
                 </md-list-item>
                 <md-list-item>
@@ -59,9 +92,6 @@
                     {{ resource.numberOfBookings | wasBookedTimes }}
                 </span>
                     </div>
-                </md-list-item>
-                <md-list-item ng-if="resource.properties.length >= 1">
-                    <span ng-repeat="prop in resource.properties">{{ prop.id | toSentenceCase }}<span ng-if="$index !== resource.properties.length - 1">, </span></span>
                 </md-list-item>
             </md-list>
             <div class="next-icon">
