@@ -46,12 +46,29 @@
                                     <h3 style="margin-bottom: 5px;">{{ (resource.brand | toTitleCase) || ('UNKNOWN_BRAND' | translate) }}
                                       <span ng-if="resource.model"> {{ resource.model }}</span>
                                     </h3>
-                                    <div ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0" class="tag tag-warning" 
-                                        style="margin-bottom: 8px" id="smartwheels-tip-label"> 
-                                        {{ 'SMART_WHEELS_TIP' | translate }}
-                                        <md-tooltip md-direction="bottom" class="multiline">{{ 'SMART_WHEELS_INFO' | translate }}</md-tooltip>
-                                    </div>
-                                    <span class="tag tag-success" ng-if="resource.isNew" flex="none"> {{ 'NEW_TIP' | translate }} </span>
+                                        <span 
+                                            ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0" 
+                                            class="tag tag-warning" 
+                                            style="margin-top: 8px; margin-bottom: 8px; margin-left: 0px;"
+                                            id="smartwheels-tip-label"
+                                        >
+                                            {{ 'SMART_WHEELS_TIP' | translate }}
+                                            <md-tooltip md-direction="bottom" class="multiline">{{ 'SMART_WHEELS_INFO' | translate }}</md-tooltip>
+                                        </span>
+                                        <span 
+                                            ng-if="resource.isNew && ['smartphone', 'chipcard'].indexOf(resource.locktype) < 0"
+                                            class="tag tag-success"
+                                            style="margin-top: 8px; margin-bottom: 8px; margin-left: 0px;"
+                                        >
+                                            {{ 'NEW_TIP' | translate }}
+                                        </span>
+                                        <span 
+                                            ng-if="resource.isNew && ['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0"
+                                            class="tag tag-success"
+                                            style="margin-left: 0px;"
+                                        >
+                                            {{ 'NEW_TIP' | translate }}
+                                        </span>
                                     <div ng-include="'resource/partials/resource-features.tpl.html'"></div>
                                 </div>
                             </md-card-body>
@@ -143,6 +160,49 @@
                 </div>
             </div>
 
+            <!-- smartwheels benefits -->
+            <div class="card" ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0" id="smartwheels_info">
+                <div class="card-heading">
+                    <h3 class="card-title">{{ 'SMARTWHEELS_TITLE' | translate }}</h3>
+                </div>
+                <div class="card-body">
+                    <div layout="row" layout-xs="column">
+                        <div flex="50" flex-xs="100">
+                            <md-list style="padding: 0px;">
+                              <md-list-item ng-if="resource.locktypes.indexOf('chipcard') >= 0 && resource.locktypes.indexOf('smartphone') < 0">
+                                <md-icon class="text-success list-margin">vpn_key</md-icon>
+                                <span>Openen met je <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-ik-een-auto-met-mijn-chipkaart/">chipkaart</a></span>
+                              </md-list-item>
+                              <md-list-item ng-if="resource.locktypes.indexOf('chipcard') < 0 && resource.locktypes.indexOf('smartphone') >= 0">
+                                <md-icon class="text-success list-margin">vpn_key</md-icon>
+                                <span>Openen met je <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-auto-smartphone/">smartphone</a></span>
+                              </md-list-item>
+                              <md-list-item ng-if="resource.locktypes.indexOf('chipcard') >= 0 && resource.locktypes.indexOf('smartphone') >= 0">
+                                <md-icon class="text-success list-margin">vpn_key</md-icon>
+                                <span>Openen met je <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-auto-smartphone/">smartphone</a> & <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-ik-een-auto-met-mijn-chipkaart/">chipkaart</a></span>
+                              </md-list-item>
+                              <md-list-item>
+                                <md-icon class="text-success list-margin">date_range</md-icon>
+                                <span>24 uur per dag te huur</span>
+                              </md-list-item>
+                            </md-list>
+                        </div>
+                        <div flex="50" flex-xs="100">
+                            <md-list style="padding: 0px;">
+                              <md-list-item>
+                                <md-icon class="text-success list-margin">access_time</md-icon>
+                                <span>Direct geaccepteerd</span>
+                              </md-list-item>
+                              <md-list-item>
+                                <md-icon class="text-success list-margin">mode_edit</md-icon>
+                                <span>Automatische kilometerregistratie</span>
+                              </md-list-item>
+                            </md-list>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- resource info -->
             <div class="card" id="resourceInfo">
                 <div class="card-heading">
@@ -154,7 +214,7 @@
                         <div flex layout-gt-xs="row" class="specificRow">
                             <div flex-xs="100" flex="50" layout="row" class="item fuel_type">
                                 <div flex="50" class="title">{{ 'FUEL_TYPE' | translate }}</div>
-                                <div flex="50" class="info">{{ (resource.fuelType | translate | toTitleCase) || ('UNKNOWN_FUELTYPE' | translate | toTitleCase) }}</div>
+                                <div flex="50" class="info">{{ (resource.fuelType | translate | toTitleCase) || ('UNKNOWN' | translate | toTitleCase) }}</div>
                             </div>
                             <div flex-xs="100" flex="50" layout="row" class="item gear">
                                 <div flex="50" class="title">{{ 'GEAR' | translate }}</div>
@@ -249,57 +309,6 @@
                         </div>
                     </div>
 
-                </div>
-            </div>
-
-            <!-- smartwheels benefits -->
-            <div class="card" ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0" id="smartwheels_info">
-                <div class="card-heading">
-                    <h3 class="card-title">{{ 'SMARTWHEELS_TITLE' | translate }}</h3>
-                </div>
-                <div class="card-body">
-                    <div layout="row" layout-xs="column">
-                        <div flex="50" flex-xs="100">
-                            <md-list style="padding: 0px;">
-                              <md-list-item ng-if="resource.locktypes.indexOf('chipcard') >= 0 && resource.locktypes.indexOf('smartphone') < 0">
-                                <md-icon class="text-success list-margin">vpn_key</md-icon>
-                                <span>Openen met je <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-ik-een-auto-met-mijn-chipkaart/">chipkaart</a></span>
-                              </md-list-item>
-                              <md-list-item ng-if="resource.locktypes.indexOf('chipcard') < 0 && resource.locktypes.indexOf('smartphone') >= 0">
-                                <md-icon class="text-success list-margin">vpn_key</md-icon>
-                                <span>Openen met je <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-auto-smartphone/">smartphone</a></span>
-                              </md-list-item>
-                              <md-list-item ng-if="resource.locktypes.indexOf('chipcard') >= 0 && resource.locktypes.indexOf('smartphone') >= 0">
-                                <md-icon class="text-success list-margin">vpn_key</md-icon>
-                                <span>Openen met je <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-auto-smartphone/">smartphone</a> & <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-ik-een-auto-met-mijn-chipkaart/">chipkaart</a></span>
-                              </md-list-item>
-                              <md-list-item>
-                                <md-icon class="text-success list-margin">date_range</md-icon>
-                                <span>24 uur per dag te huur</span>
-                              </md-list-item>
-                              <md-list-item>
-                                <md-icon class="text-success list-margin">check</md-icon>
-                                <span>Geen sleuteloverdracht nodig</span>
-                              </md-list-item>
-                            </md-list>
-                        </div>
-                        <div flex="50" flex-xs="100">
-                            <md-list style="padding: 0px;">
-                              <md-list-item>
-                                <md-icon class="text-success list-margin">access_time</md-icon>
-                                <span>Direct geaccepteerd</span>
-                              </md-list-item>
-                              <md-list-item>
-                                <md-icon class="text-success list-margin">local_parking</md-icon>
-                                <span>Vaste parkeerplek</span>
-                              </md-list-item>
-                              <md-list-item>
-                                <md-icon class="text-success list-margin">mode_edit</md-icon>
-                                <span>Automatische kilometerregistratie</span>
-                              </md-list-item>
-                            </md-list>
-                        </div>
-                    </div>
                 </div>
             </div>
 
