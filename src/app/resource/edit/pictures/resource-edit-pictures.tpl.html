@@ -1,6 +1,6 @@
 <div ng-controller="ResourceEditPicturesController">
 
-  <p ng-if="!ownerflow">{{ 'RESOURCE_PICTURES_INTRO' | translate }}</p>
+  <p ng-if="!ownerflow">{{ ('RESOURCE_PICTURES_INTRO' | translate).split('&nbsp;').join(' ') }}</p>
 
   <form ng-show="photos.length < 11">
     <div class="form-group">
