@@ -32,24 +32,30 @@
 	
 	<% styles.forEach( function ( file ) { %>
 		<link rel="stylesheet" type="text/css" href="<%= file %>" />
-		<% }); %>
-			<link rel="stylesheet" type="text/css" href="branding/style.css">
-			<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<% }); %>
 
-			<!-- OpenGraph -->
-			<meta property="og:type" content="website" />
-			<meta property="og:url" content="" bind-meta bind-meta-attr="content" bind-meta-prop="url" />
-			<meta property="og:title" content="Huur voordelig een auto" bind-meta bind-meta-attr="content" bind-meta-prop="title" />
-			<meta property="og:description" content="" bind-meta bind-meta-attr="content" bind-meta-prop="description" />
-			<meta property="og:image" content="" bind-meta bind-meta-attr="content" bind-meta-prop="image" />
+	<link rel="stylesheet" type="text/css" href="branding/style.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-			<meta property="robots" content="all" bind-meta bind-meta-attr="content" bind-meta-prop="robots" />
+	<!-- OpenGraph -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="" bind-meta bind-meta-attr="content" bind-meta-prop="url" />
+	<meta property="og:title" content="Huur voordelig een auto" bind-meta bind-meta-attr="content" bind-meta-prop="title" />
+	<meta property="og:description" content="" bind-meta bind-meta-attr="content" bind-meta-prop="description" />
+	<meta property="og:image" content="" bind-meta bind-meta-attr="content" bind-meta-prop="image" />
 
-			<!-- Twitter -->
-			<meta name="twitter:card" content="summary" />
-			<meta name="twitter:title" content="" bind-meta bind-meta-attr="content" bind-meta-prop="title" />
-			<meta name="twitter:description" content="" bind-meta bind-meta-attr="content" bind-meta-prop="description" />
-			<meta name="twitter:image:src" content="" bind-meta bind-meta-attr="content" bind-meta-prop="image" />
+	<meta property="robots" content="all" bind-meta bind-meta-attr="content" bind-meta-prop="robots" />
+
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content="" bind-meta bind-meta-attr="content" bind-meta-prop="title" />
+	<meta name="twitter:description" content="" bind-meta bind-meta-attr="content" bind-meta-prop="description" />
+	<meta name="twitter:image:src" content="" bind-meta bind-meta-attr="content" bind-meta-prop="image" />
+	
+	<!-- Mailchimp goal tracking -->
+	<script id="mcjs">
+		!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/33c2c4a296c61fb67ac1ed501/4374b6da1660dd385c9eb14d9.js");
+	</script>
 </head>
 
 <body layout="column">

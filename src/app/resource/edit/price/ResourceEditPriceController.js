@@ -23,7 +23,11 @@ angular.module('owm.resource.edit.price', [])
         newProps: newProps
       })
         .then(function (resource) {
-          alertService.addSaveSuccess();
+          if(resource.minimumAge !== $scope.resource.minimumAge && resource.price.dayRateTotal >= 45) {
+            alertService.add('success', 'De minimum leeftijd van jouw auto is automatisch verhoogd naar ' + resource.minimumAge + ' omdat de dagprijs hoger dan 45 euro is.' , 5000);
+          } else {
+            alertService.addSaveSuccess();
+          }
 
           // Update master
           angular.forEach(newProps, function (value, key) {

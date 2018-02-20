@@ -30,10 +30,12 @@ angular.module('owm.booking.show', [])
   $scope.bookingStarted = moment().isAfter(moment(booking.beginBooking));
   $scope.bookingEnded = moment().isAfter(moment(booking.endBooking));
   $scope.bookingRequestEnded = moment().isAfter(moment(booking.endRequested));
+  $scope.bookingStartsWithinOneHour = moment().isAfter(moment(booking.beginBooking).add(-1, 'hour'));
   $scope.bookingEndedRealy = moment().isAfter(moment(booking.endBooking).add(1, 'hour'));
   $scope.bookingRequestEndedRealy = moment().isAfter(moment(booking.endRequested).add(1, 'hour'));
   $scope.showBookingForm = !$scope.bookingEndedRealy;
   $scope.requested = $scope.booking.status === 'requested' ? true : false;
+  $scope.accepted = $scope.booking.status === 'accepted' ? true : false;
 
   $scope.userInput = {
     acceptRejectRemark: ''
@@ -153,26 +155,6 @@ angular.module('owm.booking.show', [])
     booking.beginRequested = moment().add('days', addDays).format(API_DATE_FORMAT);
   };
 
-  angular.extend($scope, {
-    map: {
-      center: {
-        latitude: $scope.resource.latitude,
-        longitude: $scope.resource.longitude
-      },
-      draggable: true,
-      markers: [{
-        idKey: 1,
-        latitude: $scope.resource.latitude,
-        longitude: $scope.resource.longitude,
-        title: $scope.resource.alias
-      }], // an array of markers,
-      zoom: 14,
-      options: {
-        scrollwheel: false
-      }
-    }
-  });
-
   $scope.dateConfig = {
     //model
     modelFormat: API_DATE_FORMAT,
@@ -242,6 +224,55 @@ angular.module('owm.booking.show', [])
       alertService.loaded();
     });
   };
+
+  //get currenct location of the resource if locktypes contains smartphone and booking begins within 60 minutes
+  var longitude = null;
+  var latitude = null;
+  var zoom = 14;
+
+  $scope.setMarkersForMap = function() {
+    angular.extend($scope, {
+      map: {
+        center: {
+          latitude: latitude,
+          longitude: longitude
+        },
+        draggable: true,
+        markers: [{
+          idKey: 1,
+          latitude: latitude,
+          longitude: longitude,
+          title: $scope.resource.alias
+        }], // an array of markers,
+        zoom: zoom,
+        options: {
+          scrollwheel: false
+        }
+      }
+    });
+  };
+
+  if (booking.resource.locktypes.indexOf('smartphone') >= 0 && !$scope.bookingEndedRealy && $scope.accepted && booking.ok && $scope.bookingStartsWithinOneHour) {
+    boardcomputerService.currentLocation({
+      resource: $scope.resource.id
+    })
+    .then(function(location) {
+      latitude = location.lat;
+      longitude = location.lng;
+      zoom = 16;
+      $scope.setMarkersForMap();
+    })
+    .catch(function (error) {
+      $scope.locationError = error.message;
+      latitude = $scope.resource.latitude;
+      longitude = $scope.resource.longitude;
+      $scope.setMarkersForMap();
+    });
+  } else {
+    latitude = $scope.resource.latitude;
+    longitude = $scope.resource.longitude;
+    $scope.setMarkersForMap();
+  }
 
   // check is resource has fuelcard
   if ([282, 519038].indexOf(booking.resource.owner.id) >= 0 && booking.resource.boardcomputer) {
@@ -798,7 +829,8 @@ angular.module('owm.booking.show', [])
         ($scope.requested && booking.person.numberOfBookings === 0) ||
         booking.approved === 'BUY_VOUCHER' ||
         $scope.addExtraDriver) &&
-        ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0
+        ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 &&
+        me.id === $scope.contract.contractor.id
       ) {
       $scope.paymentInit = true;
     } else {

@@ -5,6 +5,8 @@ angular.module('owm.resource.edit.location', ['geocoderDirective'])
     $scope.ownerflow = $state.current.name === 'owm.resource.create.location' ? true : false;
     $scope.locationtext = null;
     $scope.location_step = 1;
+    $scope.locationError = false;
+    $scope.streetNumberError = false;
 
     var DEFAULT_LOCATION = { // Utrecht CS
       lat: 52.08950077150554,
@@ -13,11 +15,12 @@ angular.module('owm.resource.edit.location', ['geocoderDirective'])
     var masterResource = $scope.$parent.resource;
     $scope.clickedAddress = {};
 
-    $scope.stepTwo = function() {
-      $scope.location_step = 2;
-    };
     $scope.stepOne = function() {
       $scope.location_step = 1;
+    };
+
+    $scope.stepTwo = function() {
+      $scope.location_step = 2;
     };
 
     $scope.map = {
@@ -60,7 +63,13 @@ angular.module('owm.resource.edit.location', ['geocoderDirective'])
     };
 
     $scope.submit = function () {
-      if(!$scope.resource.location) {
+      if(!$scope.clickedAddress.route) {
+        $scope.locationError = true;
+        return;
+      }
+
+      if(!$scope.clickedAddress.streetNumber) {
+        $scope.streetNumberError = true;
         return;
       }
 
@@ -158,7 +167,9 @@ angular.module('owm.resource.edit.location', ['geocoderDirective'])
         lat: $scope.resource.latitude,
         lng: $scope.resource.longitude
       });
-      $scope.locationForm.$setDirty();
+      $scope.locationError = false;
+      $scope.streetNumberError = false;
+      $scope.stepTwo();
     };
 
     function onMapClick(maps, eventName, args) {
@@ -191,7 +202,9 @@ angular.module('owm.resource.edit.location', ['geocoderDirective'])
             $scope.me.longitude = address.longitude;
           }
         });
-        $scope.locationForm.$setDirty();
+        $scope.locationError = false;
+        $scope.streetNumberError = false;
+        $scope.stepTwo();
       }
     }
 

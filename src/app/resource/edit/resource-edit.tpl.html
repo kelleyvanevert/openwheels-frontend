@@ -1,5 +1,11 @@
 <div ng-if="hasPermission">
 
+  <div class="card" ng-if="previousState.name == 'owm.resource.own'" id="bookingNavigation">
+    <div class="card-body card-inverse">
+      <a ui-sref="owm.resource.own"><i class="fa fa-fw fa-chevron-left"></i>Terug naar Mijn auto's</a>
+    </div>
+  </div>
+
   <md-card id="resourceEditHeader">
     <md-card-header class="blue-header">
       <md-card-header-text>
@@ -139,7 +145,7 @@
     <md-card-header>
       <md-card-header-text>
         <span class="md-title">
-        <a ng-href="{{ $state.href('owm.resource.calendar', { city: resource.city, resourceId: resource.id }) }}">
+        <a ng-href="{{ $state.href('owm.resource.calendar', { city: resource.city, resourceId: resource.id }) }}" ga-track-event="['interaction', 'updateAvailability', 'resourceEdit']">
           {{ 'RESOURCE_EDIT_CALENDAR' | translate }}
         </a>
         </span>

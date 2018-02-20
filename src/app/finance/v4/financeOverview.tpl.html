@@ -6,10 +6,19 @@
   </div>
 </div>
 
+<div class="card" id="menu-item-contributie" ng-if="me.provider.id === 5">
+  <div class="card-heading">
+    <h3 class="card-title">
+      <a ui-sref="owm.finance.contributie">{{ 'PAY_SUBSCRIPTION' | translate }}</a>
+    </h3>
+  </div>
+</div>
+
+
 <md-tabs md-selected="activeTab.active" class="md-primary" md-dynamic-height >
 
   <md-tab label="Facturen">
-    <div class="card">
+    <div class="card" ng-if="me.provider.id !== 5">
       <div class="card-heading">
         <h3 class="card-title">
           <a href="" ng-click="is3Collapsed = !is3Collapsed">
@@ -225,7 +234,7 @@
     </div><!--/card-->
   </md-tab>
 
-  <md-tab id="financeOverviewVoucher" label="Rijtegoed">
+  <md-tab id="financeOverviewVoucher" label="Rijtegoed" ng-if="me.provider.id !== 5">
     <div class="card">
       <div class="card-heading">
         <h3 class="card-title">

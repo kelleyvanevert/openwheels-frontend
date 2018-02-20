@@ -2,7 +2,7 @@
 
 angular.module('owm.resource.show', [])
 
-.controller('ResourceShowController', function ($window, $log, $q, $timeout, $location, $mdDialog, $mdMedia, $scope, $state, $filter, authService, resourceService, bookingService, invoice2Service, boardcomputerService, alertService, chatPopupService, ratingService, API_DATE_FORMAT, resource, me, resourceQueryService, featuresService, $stateParams, linksService, Analytics, metaInfoService, $localStorage) {
+.controller('ResourceShowController', function ($window, $log, $q, $timeout, $location, $mdDialog, $mdMedia, $scope, $state, $filter, authService, resourceService, bookingService, invoice2Service, boardcomputerService, alertService, chatPopupService, ratingService, API_DATE_FORMAT, resource, me, resourceQueryService, featuresService, $stateParams, linksService, Analytics, metaInfoService, $localStorage, $translate) {
   Analytics.trackEvent('discovery', 'show_car', resource.id, undefined, true);
 
   metaInfoService.set({robots: resource.isActive && !resource.removed ? 'all' : 'noindex'});
@@ -32,6 +32,40 @@ angular.module('owm.resource.show', [])
 
   var ageInDays = moment().diff($scope.resource.created, 'days');
   $scope.resource.isNew = ageInDays < 180;
+
+  setResourceType(resource);
+
+  function setResourceType (resource) {
+    if (resource.resourceType === 'car') {
+      $scope.resourceTypeValue = $translate.instant('RESOURCE_TYPE.CAR');
+    } else if (resource.resourceType === 'cabrio') {
+      $scope.resourceTypeValue = $translate.instant('RESOURCE_TYPE.CABRIO');
+    } else if (resource.resourceType === 'camper') {
+      $scope.resourceTypeValue = $translate.instant('RESOURCE_TYPE.CAMPER');
+    } else if (resource.resourceType === 'van') {
+      $scope.resourceTypeValue = $translate.instant('RESOURCE_TYPE.VAN');
+    } else if (resource.resourceType === 'station') {
+      $scope.resourceTypeValue = $translate.instant('RESOURCE_TYPE.STATION');
+    } else if (resource.resourceType === 'oldtimer') {
+      $scope.resourceTypeValue = $translate.instant('RESOURCE_TYPE.OLDTIMER');
+    } else {
+      $scope.resourceTypeValue = $translate.instant('RESOURCE_TYPE.CAR');
+    }
+  }
+
+  //check resource properties
+  $scope.airconditioning = resource.properties.map(function(o) { return o.id;}).indexOf('airconditioning');
+  $scope.automaticGear = resource.properties.map(function(o) { return o.id;}).indexOf('automaat');
+  $scope.bikeCarrier = resource.properties.map(function(o) { return o.id;}).indexOf('fietsendrager');
+  $scope.childSeat = resource.properties.map(function(o) { return o.id;}).indexOf('kinderzitje');
+  $scope.mp3Connection = resource.properties.map(function(o) { return o.id;}).indexOf('mp3-aansluiting');
+  $scope.navigation = resource.properties.map(function(o) { return o.id;}).indexOf('navigatie');
+  $scope.wheelchairFriendly = resource.properties.map(function(o) { return o.id;}).indexOf('rolstoelvriendelijk');
+  $scope.towbar = resource.properties.map(function(o) { return o.id;}).indexOf('trekhaak');
+  $scope.winterTires = resource.properties.map(function(o) { return o.id;}).indexOf('winterbanden');
+
+  //get age of resource on platform
+  $scope.ageInDays = moment().diff($scope.resource.created, 'days');
 
   /**
    * Init

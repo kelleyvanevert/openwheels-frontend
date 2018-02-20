@@ -131,6 +131,7 @@ angular.module('rpcServices', [])
     return api.createRpcMethod('boardcomputer.' + name);
   };
   this.control = m('control');
+  this.currentLocation = m('currentLocation');
 })
 
 .service('invoiceService', function (api) {
