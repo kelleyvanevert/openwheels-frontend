@@ -2,38 +2,32 @@
 
 angular.module('owm.resource.own', [])
 
-.controller('ResourceOwnController', function ($scope, $filter, $state, $translate, resources, resourceService, authService, alertService, dialogService) {
+.controller('ResourceOwnController', function ($scope, $filter, $state, me, $translate, resources, resourceService, authService, alertService, dialogService, boardcomputerService, $window) {
   $scope.resources = resources;
+  $scope.me = me;
 
-  $scope.save = function (resource) {
-    var createResource = function() {
-      return authService.me()
-      .then(function (me) {
-        resourceService.create({
-          'owner': me.id,
-          'registrationPlate': resource.registrationPlate
-        }).then(function (resource) {
-            alertService.add('success', $filter('translate')('RESOURCE_CREATED'), 3000);
-            $state.go('owm.resource.edit', {'resourceId': resource.id});
-          }, function (error) {
-            alertService.add('danger', error.message, 5000);
-          });
-      });
-    };
-
-    //show dialog if user already has resources
-    if(resources.length > 0) {
-      dialogService.showModal(null, {
-        closeButtonText: $translate.instant('CANCEL'),
-        actionButtonText: $translate.instant('OK'),
-        headerText: $translate.instant('CREATE_RESOURCE_TITLE'),
-        bodyText: $translate.instant('ADD_MORE_THAN_ONE_RESOURCE')
-      })
-      .then(createResource);
-    } else {
-      createResource();
-    }
-
+  $scope.licencePlate = {
+    content: '',
+    data: false,
+    showError: false,
+    error: ''
+  };
+  
+  $scope.save = function (registrationPlate) {
+    alertService.load();
+    return authService.me()
+    .then(function (me) {
+      resourceService.create({
+        'owner': me.id,
+        'registrationPlate': registrationPlate
+      }).then(function (resource) {
+          alertService.loaded();
+          $state.go('owm.resource.edit', {'resourceId': resource.id});
+        }, function (error) {
+          alertService.loaded();
+          alertService.add('danger', error.message, 5000);
+        });
+    });
   };
   
   $scope.setResourceAvailability = function (resource, value) {
@@ -64,4 +58,18 @@ angular.module('owm.resource.own', [])
       });
     });
   };
+
+  $scope.location = function(resource) {
+    boardcomputerService.currentLocation({
+      resource: resource.id
+    })
+    .then(function(location) {
+      var locationUrl = 'https://www.google.nl/maps/search/' + location.lat + ',%20' + location.lng;
+      $window.open(locationUrl);
+    })
+    .catch(function (err) {
+      alertService.addError(err);
+    });
+  };
+
 });

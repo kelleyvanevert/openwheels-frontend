@@ -21,4 +21,11 @@ angular.module('filters.dateUtil', [])
     ).trim();
   };
 })
-;
+
+.filter('resourceAge', function ($translate) {
+  return function (date) {
+    return (
+      moment(date).fromNow()
+    ).trim();
+  };
+});

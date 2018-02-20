@@ -13,7 +13,7 @@ angular.module('owm.resource.parkingpermit', ['alertService'])
   };
 })
     
-.controller('ParkingpermitController', function($scope, $log, alertService, resourceService, dialogService, $state) {
+.controller('ParkingpermitController', function($scope, $log, alertService, resourceService, dialogService, $state, $translate) {
 //  $log.log($scope.resourceList);
   var show = function (permits) {
     if(permits.length === 0) {
@@ -34,7 +34,9 @@ angular.module('owm.resource.parkingpermit', ['alertService'])
       }, {
         resource: $scope.resource,
         members: members,
-        cities: ['Den Haag', 'Rijswijk', 'Groningen', 'Haarlem', 'Leiden', 'Nijmegen', 'Utrecht']
+        cities: ['Den Haag', 'Rijswijk', 'Gooise Meren', 'Groningen', 'Haarlem', 'Leiden', 'Nijmegen', 'Utrecht'],
+        closeButtonText: $translate.instant('CANCEL'),
+        actionButtonText: 'Aanvragen'
       });
     }).then(function () {
       alertService.load($scope, 'success', 'Parkeervergunning aanvragen');
@@ -61,7 +63,9 @@ angular.module('owm.resource.parkingpermit', ['alertService'])
       }, {
         resource: $scope.resource,
         resourceList: $scope.resourceList,
-        members: members
+        members: members,
+        closeButtonText: $translate.instant('CANCEL'),
+        actionButtonText: 'Wijzigen'
       });
     }).then(function (resource) {
       $log.log('resource', $scope.resource.id);

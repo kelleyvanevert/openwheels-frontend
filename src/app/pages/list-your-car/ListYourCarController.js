@@ -21,7 +21,7 @@ angular.module('owm.pages.list-your-car', [])
   };
   $scope.calculateYourPrice = {
     total: 265,
-    dayPrice: 25,
+    dayPrice: 30,
     numberOfDays: 4
   };
 

@@ -100,6 +100,10 @@ angular.module('owm.person.dashboard', [])
     loadMemberResources();
   }
 
+  if (me.preference === 'owner') {
+    loadResources();
+  }
+
   if(me.registerSource === 'facebook_register') {
     Analytics.trackEvent('person', 'created', me.id, undefined, true);
     saveRegisterSource('facebook_login');
@@ -209,6 +213,18 @@ angular.module('owm.person.dashboard', [])
       .finally(function () {
         alertService.loaded();
         $scope.busy = false;
+      });
+  }
+
+  function loadResources() {
+    resourceService.forOwner({
+        person: me.id,
+        removed: false
+      }).then(function (resources) {
+        $scope.resources = resources || [];
+      })
+      .catch(function () {
+        $scope.resources = [];
       });
   }
 

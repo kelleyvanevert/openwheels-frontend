@@ -29,8 +29,11 @@
   <!-- If renter needs to pay -->
   <div class="card-body card-inverse" ng-if="booking.approved === 'BUY_VOUCHER'">
     <h2 class="text-white">Bijna klaar! Alleen nog rijtegoed kopen</h2>
-    <p class="text-white">
+    <p class="text-white" ng-if="booking.person.id === contract.contractor.id">
       Je reservering is gemaakt. Je hoeft alleen de reservering nog te betalen.
+    </p>
+    <p class="text-white" ng-if="booking.person.id !== contract.contractor.id">
+      Je reservering is gemaakt. Vraag aan {{ contract.contractor.firstName }} om de reservering te betalen.
     </p>
   </div>
   <!-- If booking is requested -->
@@ -918,4 +921,7 @@
        options="map.options">
        <ui-gmap-marker ng-repeat="m in map.markers" idKey="m.idKey" coords="m" icon="m.icon"></ui-gmap-marker>
   </ui-gmap-google-map>
+  <div class="card-heading" ng-if="locationError">
+    <span>{{ locationError }}</span>
+  </div>
 </div>

@@ -32,6 +32,9 @@ angular.module('owm.resource.create.carInfo', [])
       if($stateParams.color) {
         $scope.resource.color = $stateParams.color;
       }
+      if($stateParams.year) {
+        $scope.resource.bouwjaar = $stateParams.year;
+      }
       if($stateParams.seats) {
         $scope.resource.numberOfSeats = parseInt($stateParams.seats);
       }
@@ -52,7 +55,7 @@ angular.module('owm.resource.create.carInfo', [])
           $scope.resource.resourceType = 'camper';
         }
         else {
-          $scope.resource.resourceType = $stateParams.type;
+          $scope.resource.resourceType = 'car';
         }
       }
       alertService.loaded();
@@ -169,6 +172,7 @@ angular.module('owm.resource.create.carInfo', [])
       brand: false,
       model: false,
       color: false,
+      bouwjaar: false,
       numberOfSeats: false,
       fuelType: false,
       resourceType: false
@@ -189,7 +193,7 @@ angular.module('owm.resource.create.carInfo', [])
 
     var newProps;
     if($scope.resourceAdded) {
-      newProps = $filter('returnDirtyItems')(angular.copy($scope.resource), $scope.editResourceForm, ['location', 'streetNumber', 'city', 'latitude', 'longitude', 'brand', 'model', 'numberOfSeats', 'fuelType', 'color', 'resourceType']);
+      newProps = $filter('returnDirtyItems')(angular.copy($scope.resource), $scope.editResourceForm, ['location', 'streetNumber', 'city', 'latitude', 'longitude', 'brand', 'model', 'numberOfSeats', 'fuelType', 'color', 'bouwjaar', 'resourceType']);
     } else {
       newProps = $filter('returnDirtyItems')(angular.copy($scope.resource), $scope.editResourceForm, ['location', 'streetNumber', 'city', 'latitude', 'longitude']);
     }
@@ -198,39 +202,45 @@ angular.module('owm.resource.create.carInfo', [])
       brand = $scope.resource.brand,
       model = $scope.resource.model,
       color = $scope.resource.color,
+      bouwjaar = $scope.resource.bouwjaar,
       fuelType = $scope.resource.fuelType;
 
     // check if every input field is filled in
     if (brand && model) {
       if (alias) {
-        if (color) {
-          if (fuelType) {
-            saveResourceProperties()
-            .then(function () {
-              alertService.load();
-              resourceService.alter({
-                  resource: $scope.resource.id,
-                  newProps: newProps
-                })
-                .then(function (resource) {
-                  masterResource = resource;
-                  masterResourceProperties = $scope.resourceProperties;
-                  $scope.cancel();
-                  $state.go('owm.resource.create.location', {brand: false, model: false, color: false, numberOfSeats: false, fuelType: false, resourceType: false});
-                })
-                .catch(function (err) {
-                  alertService.addError(err);
-                })
-                .finally(function () {
-                  alertService.loaded();
-                });
-            });
+        if (bouwjaar) {
+          if (color) {
+            if (fuelType) {
+              saveResourceProperties()
+              .then(function () {
+                alertService.load();
+                resourceService.alter({
+                    resource: $scope.resource.id,
+                    newProps: newProps
+                  })
+                  .then(function (resource) {
+                    masterResource = resource;
+                    masterResourceProperties = $scope.resourceProperties;
+                    $scope.cancel();
+                    $state.go('owm.resource.create.location', {brand: false, model: false, color: false, bouwjaar: false, numberOfSeats: false, fuelType: false, resourceType: false});
+                  })
+                  .catch(function (err) {
+                    alertService.addError(err);
+                  })
+                  .finally(function () {
+                    alertService.loaded();
+                  });
+              });
+            } else {
+              alertService.add('danger', 'Op welke brandstof rijdt jouw auto?', 5000);
+              alertService.loaded();
+            }
           } else {
-            alertService.add('danger', 'Op welke brandstof rijdt jouw auto?', 5000);
+            alertService.add('danger', 'Welke kleur heeft jouw auto?', 5000);
             alertService.loaded();
           }
         } else {
-          alertService.add('danger', 'Welke kleur heeft jouw auto?', 5000);
+          alertService.add('danger', 'Hoe oud is jouw auto?', 5000);
           alertService.loaded();
         }
       } else {

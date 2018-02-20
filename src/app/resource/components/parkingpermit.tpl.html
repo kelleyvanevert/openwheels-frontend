@@ -1,3 +1,5 @@
-<a ng-if="create" ng-click="createParkingPermit()" class="btn btn-link"><i class="fa fa-plus"></i> Nieuwe parkeervergunning aanvragen</a>
-<a ng-if="update" ng-click="updateParkingPermit(permit_id)" class="btn btn-link"><i class="fa fa-cog"></i> Wijzig parkeervergunning</a><br />
-<a ng-if="update" ng-click="removeParkingPermit(permit_id)" class="btn btn-link"><i class="fa fa-times"></i> Beëindig parkeervergunning</a>
+<div>
+	<a ng-if="create" ng-click="createParkingPermit()" class="btn btn-link truncate" style="padding:0;border:0;"><md-icon>add</md-icon> Parkeervergunning aanvragen</a>
+	<a ng-if="update" ng-click="updateParkingPermit(permit_id)" class="btn btn-link truncate" style="padding:0;border:0;"><md-icon>settings</md-icon> Wijzig parkeervergunning</a><br />
+	<a ng-if="update" ng-click="removeParkingPermit(permit_id)" class="btn btn-link truncate" style="padding:0;border:0;"><md-icon>close</md-icon> Beëindig parkeervergunning</a>
+</div>

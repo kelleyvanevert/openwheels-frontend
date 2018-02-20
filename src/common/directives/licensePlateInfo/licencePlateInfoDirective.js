@@ -8,7 +8,13 @@ angular.module('licencePlateInfoDirective', [])
     replace: true,
     transclude: true,
     templateUrl: 'directives/licensePlateInfo/licencePlateInfo.tpl.html',
-    controller: function functionName($scope, $http, $log, appConfig) {
+    controller: function functionName($scope, $http, $log, appConfig, $state) {
+      if ($state.current.name === 'list-your-car') {
+        $scope.buttonText = 'Berekenen';
+      } else if ($state.current.name === 'owm.resource.own') {
+        $scope.buttonText = 'Kenteken controleren';
+      }
+
       function showError(show) {
         if (show) {
           $scope.licencePlate.showError = true;
