@@ -9,7 +9,7 @@
     <md-card-body class="card-body">
         <div class=" mywheels-form">
             
-            <p>{{ 'LIST_YOUR_CAR_PHOTOS' | translate }}</p>
+            <p>{{ ('LIST_YOUR_CAR_PHOTOS' | translate).split('&nbsp;').join(' ') }}</p>
 
             <div ng-include="'resource/edit/pictures/resource-edit-pictures.tpl.html'"></div>
 
