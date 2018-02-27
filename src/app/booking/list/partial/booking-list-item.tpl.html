@@ -28,7 +28,7 @@
 
       <!-- BUY_VOUCHER LINK -->
       <div id="booking-list-item_approved">
-        <div ng-if="b.approved === 'BUY_VOUCHER'">
+        <div ng-if="b.approved === 'BUY_VOUCHER' && b.status === 'accepted'">
           <a ui-sref="owm.booking.show({ bookingId: b.id })" class="btn btn-link text-danger">
             <i class="fa fa-exclamation-circle"></i> Betaal rit</a> 
         </div>
