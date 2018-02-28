@@ -198,7 +198,7 @@
                 <td class="text-right">{{invoiceGroup.invoice.total < 0 ? -1 * invoiceGroup.invoice.total : invoiceGroup.invoice.total | currency}}</td>
                 <td class="text-right">
                   <a ng-if="(me.provider.id === 1 || me.provider.id === 5) && invoiceGroup.invoice.status === 'USER_PAY'" class="btn btn-xs btn-info" ui-sref="owm.finance.vouchers">Betaal</a> 
-                  <a target="_blank" ng-href="{{invoiceGroup.invoice.pdflink}}"><i title="Download pdf" class="fa fa-fw fa-file-pdf-o"></i></a>
+                  <a target="_blank" ng-href="{{invoiceGroup.invoice.pdflink}}" ga-track-event="['interaction', 'openInvoicePDF', 'financeOverview']"><i title="Download pdf" class="fa fa-fw fa-file-pdf-o"></i></a>
                 </td>
               </tr>
               <tr ng-repeat-end ng-show="invoiceGroup.type == 'old'" class="clickable">
@@ -213,7 +213,7 @@
                 </td>
                 <td ng-if="!invoiceGroup.invoice.due">In opbouw</td>
                 <td class="text-right">{{invoiceGroup.invoice.total < 0 ? -invoiceGroup.invoice.total : invoiceGroup.invoice.total | currency}}</td>
-                <td class="text-right"><a target="_blank" ng-href="{{invoiceGroup.invoice.pdflink}}"><i title="Download pdf" class="fa fa-fw fa-file-pdf-o"></i></a></td>
+                <td class="text-right"><a target="_blank" ng-href="{{invoiceGroup.invoice.pdflink}}" ga-track-event="['interaction', 'openInvoicePDF', 'financeOverview']"><i title="Download pdf" class="fa fa-fw fa-file-pdf-o"></i></a></td>
               </tr>
             </tbody>
             <tbody ng-hide="!allGroupedInvoices || allGroupedInvoices.length <= groupedInvoicesPerPage" style="border-top-width: 1px">

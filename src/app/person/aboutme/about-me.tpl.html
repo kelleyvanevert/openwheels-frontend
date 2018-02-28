@@ -7,7 +7,7 @@
             <h2>  {{ 'DASHBOARD_INTRO_TREE_STEPS_TWO' | translate }}</h2>
             <h3>{{ 'PROFILE_PICTURE' | translate }}</h3>
             <section class="upload-profile-image">
-                <img class="media-object " ng-if="!refreshProfileImage" person-profile-image="{ person: person, size: 'small', noCache: true }" />
+                <img class="media-object " ng-if="!refreshProfileImage" person-profile-image="{ person: person, size: 'normal', noCache: true }" />
                 <div class="file-input">
                     <span class="filename" id="filename"><md-icon class="text-success" ng-if="profileImageSuccess">check</md-icon> {{profileFileName}} </span>
                     <label for="ProfileImage" class="mywheels-btn mywheels-btn-normal">Selecteer

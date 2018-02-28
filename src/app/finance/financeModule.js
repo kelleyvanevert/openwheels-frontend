@@ -20,7 +20,7 @@ angular.module('owm.finance', [
    */
 
   .state('owm.finance.v4', {
-    url: '/finance',
+    url: '/finance?vouchers',
     views: {
       'main@shell': {
         templateUrl: 'finance/v4/financeOverview.tpl.html',
