@@ -38,10 +38,16 @@ angular.module('owm.resource.parkingpermit', ['alertService'])
         closeButtonText: $translate.instant('CANCEL'),
         actionButtonText: 'Aanvragen'
       });
-    }).then(function () {
+    })
+    .then(function (city) {
+      $scope.city = city;
       alertService.load($scope, 'success', 'Parkeervergunning aanvragen');
-      return resourceService.createParkingpermit({resource: $scope.resource.id});
-    }).then(function(permit) {
+      return resourceService.createParkingpermit({
+        resource: $scope.resource.id,
+        city: $scope.city
+      });
+    })
+    .then(function(permit) {
       $log.debug('Parkeervergunning aangevraagd', permit);
       alertService.loaded($scope);
       alertService.add($scope, 'success', 'Parkeervergunning brief verzonden.');
