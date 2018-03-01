@@ -17,9 +17,10 @@
   <p>Heeft u bovenstaande punten gedaan? Dan kunt u hieronder een parkeervergunning aanvragen.</p>
 
   <div>
-    Selecteer gemeente: <select ng-model="city">
-                <option ng-repeat="x in modalOptions.cities">{{x}}</option>
-              </select>
+    Selecteer gemeente: 
+      <select ng-model="city">
+        <option ng-repeat="x in modalOptions.cities">{{x}}</option>
+      </select>
   </div>
 
   <br/>
@@ -48,6 +49,6 @@
 </div>
 
 <div class="modal-footer">
-  <button ng-disabled="!city" type="button" class="btn btn-primary" data-ng-click="modalOptions.ok();">{{modalOptions.actionButtonText}}</button>
+  <button ng-disabled="!city" type="button" class="btn btn-primary" data-ng-click="modalOptions.ok(city);">{{modalOptions.actionButtonText}}</button>
   <button type="button" class="btn btn-link" data-ng-click="modalOptions.close()">{{modalOptions.closeButtonText}}</button>
 </div>
