@@ -371,8 +371,8 @@ angular.module('owm.resource', [
               owner: $filter('fullname')(resource.owner)
             };
             metaInfoService.set({
-              title: $translate.instant('META_RESOURCE_TITLE', substitutions),
-              description: $translate.instant('META_RESOURCE_DESCRIPTION', substitutions),
+              title: $translate.instant('META_RESOURCE_CALENDAR_TITLE', substitutions),
+              description: $translate.instant('META_RESOURCE_CALENDAR_DESCRIPTION', substitutions),
               url: appConfig.appUrl + $state.href('owm.resource.show', {
                 resourceId: resource.id
               }),

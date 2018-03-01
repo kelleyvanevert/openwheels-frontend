@@ -80,7 +80,7 @@
         <tr>
           <td>
             <b>Totale huurprijs</b>
-            <span style="padding-top:1em" ng-if="booking.cancelAfter && booking.status !== 'OK' && booking.details.discount === 0">
+            <span style="padding-top:1em" ng-if="booking.cancelAfter && booking.approved !== 'OK' && booking.details.discount === 0">
                 <br><br>
                 Betaal voor {{booking.cancelAfter | amDateFormat:'D MMMM YYYY HH:mm'}} om automatische annulering te voorkomen.
             </span>
@@ -97,7 +97,7 @@
         <tr ng-if="booking.details.discount > 0">
           <td>
             <b>Totaal</b>
-            <span style="margin-top:1em" ng-if="booking.cancelAfter && booking.status !== 'OK'">
+            <span style="margin-top:1em" ng-if="booking.cancelAfter && booking.approved !== 'OK'">
                 <br><br>
                 Betaal voor {{booking.cancelAfter | amDateFormat:'D MMMM YYYY HH:mm'}} om automatische annulering te voorkomen.
             </span>

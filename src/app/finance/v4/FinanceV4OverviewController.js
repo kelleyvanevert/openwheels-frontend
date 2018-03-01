@@ -23,6 +23,10 @@ angular.module('owm.finance.v4', [])
   var offset = 0;
   var openInvoicesRawCollector = [];
 
+  if ($stateParams.vouchers) {
+    $scope.activeTab.active = 1;
+  }
+
   // get ungrouped invoices
   function loadUngroupedInvoices() {
     invoice2Service.getUngroupedForPerson({person: me.id, limit: limit, offset: offset})
