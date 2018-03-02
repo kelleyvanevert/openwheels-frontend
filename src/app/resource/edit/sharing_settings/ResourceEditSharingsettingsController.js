@@ -111,7 +111,7 @@ angular.module('owm.resource.edit.sharing_settings', [])
     newProps.isConfirmationRequiredFriends = $scope.userInput.confirmationRequired === 'ALWAYS';
     newProps.isConfirmationRequiredOthers  = ['ALWAYS', 'OTHERS'].indexOf($scope.userInput.confirmationRequired) >= 0;
 
-    $scope.$emit('ResourceEditSharingsettings:AvailableOthersChange', newProps.isAvailableOthers);
+    // $scope.$emit('ResourceEditSharingsettings:AvailableOthersChange', newProps.isAvailableOthers);
 
     if ($scope.resource.isAvailableFriends === newProps.isAvailableFriends) {
       delete newProps.isAvailableFriends;
