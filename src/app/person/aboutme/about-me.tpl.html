@@ -18,7 +18,7 @@
 
             <h3>{{ 'ABOUT_ME' | translate }}</h3>
             <div id="about" class="icon user">
-                <textarea name="about" class="form-control" ng-model="person.about" placeholder="{{ 'ABOUT_ME' | translate }}" null-if-empty></textarea>
+                <textarea name="about" class="form-control" ng-model="person.about" placeholder="{{ 'ABOUT_ME' | translate }}" rows="4" null-if-empty></textarea>
                 <div class="err-block" ng-show="aboutMeForm.$submitted || aboutMeForm.twitterUid.$touched">
                     <span class="text-danger" ng-show="aboutMeForm.twitterUid.$error.required">{{ 'REQUIRED' | translate }}</span>
                 </div>

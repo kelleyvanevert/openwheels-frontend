@@ -77,22 +77,6 @@
                 </md-card>
             </div>
 
-            <!-- board computer -->
-            <div class="card" ng-if="me && resource.locktypes.indexOf('smartphone') >= 0 && (resource.owner.id === me.id || resource.contactPerson.id === me.id)">
-                <div class="card-body">
-                    <div class="text-center">
-                        <ul class="list-inline">
-                            <li>
-                                <button ng-click="openDoor(resource)" class="btn btn-lg btn-default btn-success"><i class="fa fa-unlock fa-fw fa-lg"></i></button>
-                            </li>
-                            <li>
-                                <button ng-click="closeDoor(resource)" class="btn btn-lg btn-default btn-danger"><i class="fa fa-lock fa-fw fa-lg"></i></button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
             <!-- resource sidebar smaller screens (not in sidebar) -->
             <div class="card" ng-if="!features.resourceSidebar || !isWindowSizeMD">
                 <div class="card-body">
