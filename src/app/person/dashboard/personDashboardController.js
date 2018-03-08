@@ -125,15 +125,6 @@ angular.module('owm.person.dashboard', [])
     $state.go('owm.resource.search.list', resourceQueryService.createStateParams());
   };
 
-  $scope.allowBoardComputer = function (booking) {
-    return (booking.status === 'accepted' &&
-      booking.resource.locktypes.indexOf('smartphone') >= 0 &&
-      booking.beginBooking && booking.endBooking &&
-      moment().isAfter(moment(booking.beginBooking).add(-5, 'minutes')) && // hooguit 5 minuten geleden begonnen
-      moment().isBefore(moment(booking.endBooking).add(1, 'hours')) // hooguit een uur geleden afgelopen
-    );
-  };
-
   $scope.openDoor = function (resource, booking) {
     alertService.load();
     boardcomputerService.control({
