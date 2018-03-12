@@ -137,7 +137,7 @@ angular.module('owm.resource.show', [])
       if(response.result === 'ERROR') {
         return alertService.add('danger', response.message, 5000);
       }
-      alertService.add('success', 'Boardcomputer opened door and enabled start', 3000);
+      alertService.add('success', 'De deuren van de auto worden geopend.', 3000);
     }, function(error) {
       alertService.add('danger', error.message, 5000);
     })
@@ -156,7 +156,7 @@ angular.module('owm.resource.show', [])
       if(response.result === 'ERROR') {
         return alertService.add('danger', response.message, 5000);
       }
-      alertService.add('success', 'Boardcomputer closed door and disabled start', 3000);
+      alertService.add('success', 'De deuren van de auto worden gesloten.', 3000);
     }, function(error) {
       alertService.add('danger', error.message, 5000);
     })
