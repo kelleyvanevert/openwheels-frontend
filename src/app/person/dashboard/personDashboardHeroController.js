@@ -2,11 +2,10 @@
 
 angular.module('owm.person.dashboard.v1', [])
 
-.controller('PersonDashboardHeroController', function ($q, $scope, $sce, $state, me,
-  authService, resourceService, resourceQueryService, blogItems) {
+.controller('PersonDashboardHeroController', function ($q, $scope, $sce, $state, me, authService, resourceService, resourceQueryService, blogItems) {
 
-  $scope.blogItems = blogItems;
   $scope.search = { text: '' };
+  $scope.homeAddress = me.streetName + ' ' + me.streetNumber + ', ' + me.city;
 
   $scope.renderHtml = function(html_code) {
     return $sce.trustAsHtml(html_code);
