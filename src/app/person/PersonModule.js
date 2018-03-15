@@ -118,7 +118,7 @@ angular.module('owm.person', [
             return $http.get(url);
           })
           .then(function (response) {
-            var maxResults = 2;
+            var maxResults = 4;
             if (response.data && response.data.items) {
               return response.data.items.slice(0, maxResults);
             }
