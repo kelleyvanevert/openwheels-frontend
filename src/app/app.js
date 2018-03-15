@@ -100,6 +100,7 @@ angular.module('openwheels', [
   'filters.bookingStatus',
   'filters.booking',
   'filters.translateOrDefault',
+  'filters.removeEntersFilter',
 
   /* Components */
   'openwheels.analytics',
