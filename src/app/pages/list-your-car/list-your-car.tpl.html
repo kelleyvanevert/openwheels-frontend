@@ -38,8 +38,33 @@
         <!-- /list-your-car container -->
 
         <!-- list-your-car container -->
-        <h2 class="list-your-car--container--heading" ng-show="licencePlate.data" translate="LIST_YOUR_CAR_CONTAINER_TITLE" translate-values="{ brand: (licencePlate.data.merk | toTitleCase) || 'auto' }"></h2>
-        <section class="list-your-car--container container-home" ng-show="licencePlate.data">
+        <section ng-show="licencePlate.data && licencePlate.data.teDureAuto">
+            <h2 class="list-your-car--container--error">Helaas, de catalogusprijs van jouw auto is te hoog.</h2>
+            <p class="text-center">
+                Onze verzekering is alleen geschikt voor auto's met een catalogusprijs lager dan 50.000 euro.
+                <br>
+                Jouw auto heeft een catalogusprijs van {{ licencePlate.data.catalogusprijs | currency }} en kan daarom niet via MyWheels verhuurd worden.
+            </p>
+        </section>
+
+        <section ng-show="licencePlate.data && !licencePlate.data.teDureAuto && licencePlate.data.camper">
+            <h2 class="list-your-car--container--error">Helaas, je kunt via MyWheels geen campers verhuren.</h2>
+            <p class="text-center">
+                Onze verzekering is niet geschikt voor het verhuren van campers, je kunt jouw camper daarom niet via MyWheels verhuren.
+            </p>
+        </section>
+
+        <h2
+            class="list-your-car--container--heading" 
+            translate="LIST_YOUR_CAR_CONTAINER_TITLE" 
+            translate-values="{ brand: (licencePlate.data.merk | toTitleCase) || 'auto' }"
+            ng-show="licencePlate.data && !licencePlate.data.teDureAuto && !licencePlate.data.camper"
+        ></h2>
+
+        <section 
+            class="list-your-car--container container-home" 
+            ng-show="licencePlate.data && !licencePlate.data.teDureAuto && !licencePlate.data.camper"
+        >
             <div class="list-your-car--car-info-list">
                 <ul>
                     <li class="list-your-car--car-info-list--item">
@@ -109,7 +134,7 @@
             </div>
         </section>
         <div layout="column" layout-align="center center" class="list-your-car--buttons layout-align-center-center layout-column">
-            <button type="button" name="button" class="mywheels-btn mywheels-btn-default mywheels-btn-big" ng-click="beginRentingOut()" ng-show="licencePlate.data" ng-disabled="!licencePlate.data">{{'LIST_YOUR_CAR_ACTION' | translate }}</button>
+            <button type="button" name="button" class="mywheels-btn mywheels-btn-default mywheels-btn-big" ng-click="beginRentingOut()" ng-show="licencePlate.data && !licencePlate.data.teDureAuto && !licencePlate.data.camper" ng-disabled="!licencePlate.data">{{'LIST_YOUR_CAR_ACTION' | translate }}</button>
             <button type="button" name="button" class="mywheels-btn mywheels-btn-light" ng-show="licencePlate.data" ng-click="resetlicencePlate()">{{'OTHER_REGISTRATION_PLATE' | translate }}</button>
         </div>
         <!-- /list-your-car container -->
