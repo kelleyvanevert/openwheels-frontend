@@ -42,9 +42,25 @@ angular.module('licencePlateInfoDirective', [])
             } else {
               showError(true);
             }
-          }).then(function (responseCarData) {
+          })
+          .then(function (responseCarData) {
             $http.get(urlFuel).then(function (response) {
               if (response.data.length > 0) {
+
+                // check if the list price of the car is higher than 50/000 euro
+                if (responseCarData.data[0].catalogusprijs && responseCarData.data[0].catalogusprijs > 50000) {
+                  $scope.expensiveCar = true;
+                } else {
+                  $scope.expensiveCar = false;
+                }
+
+                // check if the resource type is camper
+                if (responseCarData.data[0].inrichting && responseCarData.data[0].inrichting === 'kampeerwagen') {
+                  $scope.camper = true;
+                } else {
+                  $scope.camper = false;
+                }
+
                 $scope.licencePlate.data = {
                   merk: responseCarData.data[0].merk,
                   handelsbenaming: responseCarData.data[0].handelsbenaming,
@@ -54,7 +70,10 @@ angular.module('licencePlateInfoDirective', [])
                   datum_eerste_toelating: moment(responseCarData.data[0].datum_eerste_toelating, 'DD/MM/YYYY').format('YYYY'),
                   kleur: responseCarData.data[0].eerste_kleur,
                   verzekerd: responseCarData.data[0].wam_verzekerd,
-                  vervaldatum_apk:  responseCarData.data[0].vervaldatum_apk
+                  vervaldatum_apk:  responseCarData.data[0].vervaldatum_apk,
+                  catalogusprijs:  responseCarData.data[0].catalogusprijs,
+                  teDureAuto: $scope.expensiveCar,
+                  camper: $scope.camper
                 };
                 showError(false);
               } else {

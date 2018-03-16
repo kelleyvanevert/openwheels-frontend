@@ -40,8 +40,6 @@ angular.module('owm.resource.show', [])
       $scope.resourceTypeValue = $translate.instant('RESOURCE_TYPE.CAR');
     } else if (resource.resourceType === 'cabrio') {
       $scope.resourceTypeValue = $translate.instant('RESOURCE_TYPE.CABRIO');
-    } else if (resource.resourceType === 'camper') {
-      $scope.resourceTypeValue = $translate.instant('RESOURCE_TYPE.CAMPER');
     } else if (resource.resourceType === 'van') {
       $scope.resourceTypeValue = $translate.instant('RESOURCE_TYPE.VAN');
     } else if (resource.resourceType === 'station') {
