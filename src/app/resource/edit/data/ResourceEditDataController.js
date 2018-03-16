@@ -92,9 +92,6 @@ angular.module('owm.resource.edit.data', [])
     value: 'cabrio',
     label: $translate.instant('RESOURCE_TYPE.CABRIO')
   }, {
-    value: 'camper',
-    label: $translate.instant('RESOURCE_TYPE.CAMPER')
-  }, {
     value: 'van',
     label: $translate.instant('RESOURCE_TYPE.VAN')
   }, {
