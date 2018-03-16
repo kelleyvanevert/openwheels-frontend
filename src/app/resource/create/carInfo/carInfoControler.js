@@ -51,9 +51,6 @@ angular.module('owm.resource.create.carInfo', [])
         else if ($stateParams.type === 'gesloten opbouw') {
           $scope.resource.resourceType = 'van';
         }
-        else if ($stateParams.type === 'kampeerwagen') {
-          $scope.resource.resourceType = 'camper';
-        }
         else {
           $scope.resource.resourceType = 'car';
         }
@@ -123,9 +120,6 @@ angular.module('owm.resource.create.carInfo', [])
   }, {
     value: 'cabrio',
     label: $translate.instant('RESOURCE_TYPE.CABRIO')
-  }, {
-    value: 'camper',
-    label: $translate.instant('RESOURCE_TYPE.CAMPER')
   }, {
     value: 'van',
     label: $translate.instant('RESOURCE_TYPE.VAN')
