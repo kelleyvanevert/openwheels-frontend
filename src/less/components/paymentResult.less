@@ -52,20 +52,20 @@
         flex-basis: 50%;
         margin: 0 1em 0 0;
     }
-    .payment-result__middle {
-        margin: 0 1em 0 0;
+    .payment-result__second:nth-child(odd) {
+        margin: 0 0.5em 0 0;
+    }
+    .payment-result__second:nth-child(even) {
+        margin: 0 0 0 0.5em;
     }
     .payment-result__only-one.payment-result__card {
         margin: 0;
         md-card {
             display: flex;
-            flex-direction: row;
             flex-wrap: wrap;
+            width: 50%;
             md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
                 min-height: 15.5em;
-            }
-            div {
-                flex-basis: 50%;
             }
         }
     }

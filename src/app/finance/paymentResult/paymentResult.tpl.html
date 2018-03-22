@@ -49,28 +49,59 @@
         </section>
         <div class="payment-result">
             <!-- repeat bookings -->
-            <section ng-repeat="booking in bookings | limitTo: 3" class="payment-result__card" ng-class="{'payment-result__only-one': bookings.length === 1, 'payment-result__middle': bookings.length === 3 && $middle }">
+            <section ng-repeat="booking in bookings | limitTo: 2" class="payment-result__card" ng-class="{'payment-result__only-one': bookings.length === 1, 'payment-result__second': bookings.length > 1 }">
                 <md-card>
-                    <div>
-                        <md-card-header class="blue-header" style="min-height: 70px;">
-                            <md-card-header-text>
-                                <span class="md-title">
-                                  {{ booking.resource.alias || ('RESOURCE_NO_NAME' | translate) }}
-                              </span>
-                            </md-card-header-text>
-                        </md-card-header>
-                        <section class="md-card-image">
-                            <img class="media-object payment-result__booking--image" ng-src="{{ booking.resource.pictures[0] | resourceAvatar:'large' }}" />
-                        </section>
+
+                    <div class="md-card-image" style="position: relative;max-width: 100%;">
+                        <ow-resource-picture resource="booking.resource" size="large"></ow-resource-picture>
+                        <div class="alias">
+                            <h2 class="no-margin" style="color:#fff;">{{ booking.resource.alias | limitTo: 30}}{{booking.resource.alias.length > 30 ? '...' : ''}}</h2>
+                            <h3 class="no-margin" style="color:#fff" ng-if="booking.resource.houseNumber">{{ booking.resource.location }} {{ booking.resource.houseNumber }}, {{ booking.resource.city }}</h3>
+                            <h3 class="no-margin" style="color:#fff" ng-if="!booking.resource.houseNumber">{{ booking.resource.location }}, {{ booking.resource.city }}</h3>
+                        </div>
                     </div>
+
                     <div>
-                        <md-card-header ng-class="{'blue-header': $root.isWindowSizeSM == true && bookings.length === 1}">
-                            <span><datetime datetime="{{ booking.beginBooking || booking.beginRequested }}"></datetime> <span ng-if="$root.isWindowSizeSM == true && bookings.length === 1">tot</span>
-                            <br ng-if="$root.isWindowSizeSM == true && bookings.length > 1">
-                            <datetime datetime="{{ booking.endBooking || booking.endRequested }}"></datetime>
+                        <md-list-item ng-if="hasAcceptedTimeframe(booking)" class="bookingDate" style="padding-bottom: 0px !important;">
+                        <div layout="row" layout-wrap class="bookingDateRow">
+                          <div flex="50" class="bookingBeginDate" ng-class="{ 'accepted': booking.status === 'accepted', 'cancelled': (booking.status === 'cancelled' || booking.status === 'owner_cancelled'), 'rejected': booking.status === 'rejected', 'requested': booking.status === 'requested' }">
+                            <md-icon>access_time</md-icon>
+                            <span>
+                              <strong>{{ booking.beginBooking | amDateFormat:'DD-MM-YYYY' }}</strong>
+                              <br/>
+                              {{ booking.beginBooking | amDateFormat:'HH:mm' }}
                             </span>
-                        </md-card-header>
-                        <md-divider></md-divider>
+                          </div>
+                          <div flex="50" class="bookingEndDate" ng-class="{ 'accepted': booking.status === 'accepted', 'cancelled': (booking.status === 'cancelled' || booking.status === 'owner_cancelled'), 'rejected': booking.status === 'rejected', 'requested': booking.status === 'requested' }">
+                            <span>
+                              <strong>{{ booking.endBooking | amDateFormat:'DD-MM-YYYY' }}</strong>
+                              <br/>
+                              {{ booking.endBooking | amDateFormat:'HH:mm' }}
+                            </span>
+                          </div>
+                        </div>
+                        </md-list-item>
+
+                        <md-list-item ng-if="!hasAcceptedTimeframe(b)" class="bookingDate" style="padding-bottom: 0px !important;">
+                        <div layout="row" layout-wrap class="bookingDateRow">
+                          <div flex="50" class="bookingBeginDate" ng-class="{ 'accepted': booking.status === 'accepted', 'cancelled': (booking.status === 'cancelled' || booking.status === 'owner_cancelled'), 'rejected': booking.status === 'rejected', 'requested': booking.status === 'requested' }">
+                            <md-icon>access_time</md-icon>
+                            <span>
+                              <strong>{{ booking.beginRequested | amDateFormat:'DD-MM-YYYY' }}</strong>
+                              <br/>
+                              {{ booking.beginRequested | amDateFormat:'HH:mm' }}
+                            </span>
+                          </div>
+                          <div flex="50" class="bookingEndDate" ng-class="{ 'accepted': booking.status === 'accepted', 'cancelled': (booking.status === 'cancelled' || booking.status === 'owner_cancelled'), 'rejected': booking.status === 'rejected', 'requested': booking.status === 'requested' }">
+                            <span>
+                              <strong>{{ booking.endRequested | amDateFormat:'DD-MM-YYYY' }}</strong>
+                              <br/>
+                              {{ booking.endRequested | amDateFormat:'HH:mm' }}
+                            </span>
+                          </div>
+                        </div>
+                        </md-list-item>
+
                         <md-tabs md-selected="data.selectedIndex" md-align-tabs="top">
                             <!-- Convadis boardcomputer, only chipcard -->
                             <md-tab id="tab1" ng-if="booking.resource.locktypes.indexOf('smartphone') < 0 && booking.resource.locktypes.indexOf('chipcard') >= 0">
