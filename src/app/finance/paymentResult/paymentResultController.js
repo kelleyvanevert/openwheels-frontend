@@ -69,7 +69,7 @@ angular.module('owm.finance.paymentResult', [])
           startDate: moment().format(API_DATE_FORMAT),
           endDate: moment().add(1, 'year').format(API_DATE_FORMAT)
         },
-        cancelled: false,
+        cancelled: false
       })
       .then(function (bookings) {
         var data = [];
