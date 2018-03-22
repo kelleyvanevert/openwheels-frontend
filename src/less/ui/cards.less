@@ -32,6 +32,10 @@
         color: #fff;
         padding: 8px;
     }
+    .no-shadow {
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+    }
     .next-icon {
         font-size: 2em;
         position: absolute;
@@ -68,6 +72,33 @@
         }
         div {
             flex-grow: 1;
+        }
+    }
+}
+.alias {
+    position: absolute;
+    text-align: left;
+    background: rgba(0, 0, 0, 0.40);
+    color: #fff;
+    padding: 10px;
+    width: 100%;
+    top: 0;
+    h2 {
+        font-size: 20px;
+    }
+    h3 {
+        font-weight: normal;
+        font-size: 16px;
+        padding-top: 5px;
+    }
+}
+@media all and (max-width: 374px) {
+    .alias {
+        h2 {
+            font-size: 18px;
+        }
+        h3 {
+            font-size: 16px;
         }
     }
 }
@@ -113,6 +144,10 @@ md-card {
     md-subhead {
         display: inline-block;
     }
+    .no-shadow {
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+    }
 }
 .card {
     position: relative;
@@ -141,6 +176,11 @@ md-card {
     &-heading + .collapse > &-body,
     &-heading + .collapsing > &-body {
         padding-top: 0;
+    }
+    .no-shadow {
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        border: 1px solid #eee;
     }
 }
 .card-navigation {

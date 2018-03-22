@@ -27,7 +27,7 @@
     </p>
   </div>
   <!-- If renter needs to pay -->
-  <div class="card-body card-inverse" ng-if="booking.approved === 'BUY_VOUCHER'">
+  <div class="card-body card-inverse" ng-if="booking.approved === 'BUY_VOUCHER' && booking.status === 'accepted'">
     <h2 class="text-white">Bijna klaar! Alleen nog rijtegoed kopen</h2>
     <p class="text-white" ng-if="booking.person.id === contract.contractor.id">
       Je reservering is gemaakt. Je hoeft alleen de reservering nog te betalen.

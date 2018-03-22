@@ -18,6 +18,17 @@
     <div class="triangle--bar--home triangle--bar--home-white"></div>
     <!-- /TRIANGLE BAR -->
 
+    <!-- MYWHEELS OPEN -->
+    <div class="mywheels--open--card" ng-if="features.homePage" hide-xs>
+       <img src="../branding/img/mywheels_open_desktop.png" class="banner" />
+           <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary" href="http://open.mywheels.nl" target="_blank">Meld je aan</a>
+    </div>
+   
+    <div class="mywheels--open--card" ng-if="features.homePage" hide-gt-xs>
+       <img src="../branding/img/mywheels_open_mobiel.png" class="banner" />
+           <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary" href="http://open.mywheels.nl" target="_blank">Meld je aan</a>
+    </div>
+
     <!-- BLOG ITEMS -->   
     <div class="blog--overview" ng-if="features.homePage">
         <section class="center">
@@ -40,36 +51,36 @@
         </div>
     </div>
 
+    <!-- RENTER CALL TO ACTION -->
     <div class="renter--actions" ng-if="features.homePage">
-        <!-- RENTER CALL TO ACTION -->
         <div class="renter--action">
             <section>
                 <h2>Huur in de buurt</h2>
-                <p>Met auto's in meer dan 500 plaatsen, vind je altijd wel een auto bij jou in de buurt. Boek een auto, haal de sleutel op en rijden maar! In veel plaatsen staan ook Smartwheels, dat zijn auto's die je opent met je OV-chipkaart of smartphone.
-                    Ideaal! Geen vaste abonnementskosten en voordelige tarieven, bij ons betaal je alleen wanneer je een auto gebruikt.</p>
+                <p>Met auto's in meer dan 500 plaatsen, vind je altijd wel een auto bij jou in de buurt. Geen vaste abonnementskosten en voordelige tarieven, bij ons betaal je alleen wanneer je een auto gebruikt.</p>
                 <a type="button" name="button" class="mywheels-btn mywheels-btn-default mywheels-btn-margin-top mywheels-btn-big" href="/auto-huren?page=1" md-ink-ripple="#3a6d81">
                     Bekijk het aanbod
                 </a>
             </section>
-            <div class="renter--action--image renter--action--image--vw"></div>
+            <div class="renter--action--image"></div>
         </div>
-        <!-- /RENTER CALL TO ACTION -->
+    </div>
+    <!-- /RENTER CALL TO ACTION -->
 
-        <!-- RENTER CALL TO ACTION -->
-        <div class="renter--action">
+    <!-- OWNER CALL TO ACTION -->
+    <div class="owner--actions" ng-if="features.homePage">
+        <div class="owner--action">
             <section>
                 <h2>Verhuur en verdien</h2>
-                <p>Je auto aanbieden is gratis. We vragen een kleine vergoeding zodra deze is verhuurd. En je weet zeker dat je goed verzekerd bent, want dat regelen wij voor je. Vul je kenteken in, plaats een paar mooie foto's en je kunt beginnen. Zo verdien
-                    jij iets extra's aan je auto en kunnen jouw buren op pad.</p>
-                  <p>Met <a href="http://open.mywheels.nl/?utm_source=website&utm_medium=homepage&utm_campaign=activation-mywheels-open-header&utm_term=list-your-car-copy">MyWheels Open</a> kan je nog makkelijker en vaker je auto delen. Lees <a href="http://open.mywheels.nl/?utm_source=website&utm_medium=homepage&utm_campaign=activation-mywheels-open-header&utm_term=list-your-car-copy">hier</a> hoe het werkt.</p>
+                <p>Je auto aanbieden is gratis. Vul je kenteken in, plaats een paar mooie foto's en je kunt beginnen. Zo verdien jij iets extra's aan je auto en kunnen jouw buren op pad.</p>
+                <p>Met <a href="http://open.mywheels.nl/?utm_source=website&utm_medium=homepage&utm_campaign=activation-mywheels-open-header&utm_term=list-your-car-copy" target="_blank">MyWheels Open</a> kan je nog makkelijker en vaker je auto delen.</p>
                 <button type="button" name="button" class="mywheels-btn mywheels-btn-default mywheels-btn-margin-top mywheels-btn-big" ui-sref="list-your-car" md-ink-ripple="#3a6d81">
                     Meld je auto aan
                 </button>
             </section>
-            <div class="renter--action--image renter--action--image-handshake"></div>
+            <div class="owner--action--image"></div>
         </div>
-        <!-- /RENTER CALL TO ACTION -->
     </div>
+    <!-- /OWNER CALL TO ACTION -->
 
     <!-- FEATURED SLIDER -->
     <div class="container-fluid slider" ng-if="features.featuredSlider">

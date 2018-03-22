@@ -248,4 +248,13 @@ angular.module('owm.person.dashboard', [])
       city: resource.city
     });
   };
+
+  $scope.hasAcceptedTimeframe = function (booking) {
+    return booking.beginBooking && ( ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 );
+  };
+
+  $scope.hasRequestedTimeframe = function (booking) {
+    return booking.beginRequested && ( ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 );
+  };
+
 });
