@@ -128,24 +128,18 @@
 <!-- CURRENT BOOKINGS -->
 <div id="current_bookings" class="card" ng-if="bookings.length > 0">
   <div class="card-heading">
-    <h2 class="card-title">{{ 'CURRENT_BOOKINGS' | translate }}
-      <span class="pull-right" hide-xs>
-        <small>
-          Getoond: {{ bookings.length }} van {{ totalBookings }} (<a ui-sref="owm.trips">Bekijk ritgeschiedenis</a>)
-        </small>
-      </span>
-      <span class="pull-left" hide-gt-xs>
-        <small>
-          Getoond: {{ bookings.length }} van {{ totalBookings }} (<a ui-sref="owm.trips">Bekijk alles</a>)
-        </small>
-      </span>
-    </h2>
+    <h2 class="card-title">{{ 'CURRENT_BOOKINGS' | translate }}</h2>
   </div>
   <div class="card-body">
-    <ul class="list-row booking-list">
-      <li ng-repeat="b in bookings" ng-include="'booking/list/partial/booking-list-item.tpl.html'">
+    <ul class="list-row booking-list booking-dashboard no-border" layout="row" layout-wrap>
+      <li ng-repeat="b in bookings | limitTo: 2" ng-include="'booking/list/partial/booking-list-item-dashboard.tpl.html'" class="no-border" flex-gt-xs="50">
       </li>
     </ul>
+    <center>
+      <a type="button" name="button" class="mywheels-btn mywheels-btn-big mywheels-btn-default mywheels-btn-big" ui-sref="owm.trips" md-ink-ripple="#3a6d81">
+        Bekijk alles <span ng-if="totalBookings > 2">({{ totalBookings }})</span>
+      </a>
+    </center>
   </div>
 </div>
 

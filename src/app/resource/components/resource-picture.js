@@ -3,7 +3,7 @@
 
   angular.module('owm.resource')
 
-  .directive('owResourcePicture', function (appConfig) {
+  .directive('owResourcePicture', function (appConfig, $filter) {
     return {
       restrict: 'E',
       template: '<img ng-cloak alt="{{alttext}}" ng-src="{{ imageUrl }}">',
@@ -19,8 +19,10 @@
             return;
           }
 
-          if (resource.pictures[0][size]) {
-            scope.imageUrl = appConfig.serverUrl + '/' + resource.pictures[0][size];
+          var pictures = $filter('orderBy')(resource.pictures, 'order', false);
+
+          if (pictures[0][size]) {
+            scope.imageUrl = appConfig.serverUrl + '/' + pictures[0][size];
           }
         });
         attrs.$observe('alttext', function (alttext) {

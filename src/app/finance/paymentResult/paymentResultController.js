@@ -69,7 +69,7 @@ angular.module('owm.finance.paymentResult', [])
           startDate: moment().format(API_DATE_FORMAT),
           endDate: moment().add(1, 'year').format(API_DATE_FORMAT)
         },
-        cancelled: false
+        cancelled: false,
       })
       .then(function (bookings) {
         var data = [];
@@ -145,5 +145,13 @@ angular.module('owm.finance.paymentResult', [])
 
   //start page
   init();
+
+  $scope.hasAcceptedTimeframe = function (booking) {
+    return booking.beginBooking && ( ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 );
+  };
+
+  $scope.hasRequestedTimeframe = function (booking) {
+    return booking.beginRequested && ( ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 );
+  };
 
 });
