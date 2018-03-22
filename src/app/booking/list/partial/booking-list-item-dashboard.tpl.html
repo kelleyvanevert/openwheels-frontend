@@ -1,0 +1,77 @@
+<md-card class="ow-card no-shadow" ui-sref="owm.booking.show({ bookingId: b.id })" style="align-items: unset; flex-direction: column;">
+    <div class="md-card-image" style="position: relative; max-width: 100%;">
+        <ow-resource-picture resource="b.resource" size="large"></ow-resource-picture>
+        <div class="alias">
+            <h2 class="no-margin" style="color:#fff;">{{ b.resource.alias | limitTo: 30}}{{b.resource.alias.length > 30 ? '...' : ''}}</h2>
+            <h3 class="no-margin" style="color:#fff" ng-if="b.resource.houseNumber">{{ b.resource.location }} {{ b.resource.houseNumber }}, {{ b.resource.city }}</h3>
+            <h3 class="no-margin" style="color:#fff" ng-if="!b.resource.houseNumber">{{ b.resource.location }}, {{ b.resource.city }}</h3>
+        </div>
+    </div>
+    <div style="position: relative">
+      <md-card-body class="ow-list-compact">
+        <md-list role="list" style="padding-top:0px;">
+
+          <md-list-item ng-if="hasAcceptedTimeframe(b)" class="bookingDate">
+            <div layout="row" layout-wrap class="bookingDateRow">
+              <div flex="50" class="bookingBeginDate" ng-class="{ 'accepted': b.status === 'accepted', 'cancelled': (b.status === 'cancelled' || b.status === 'owner_cancelled'), 'rejected': b.status === 'rejected', 'requested': b.status === 'requested' }">
+                <md-icon>access_time</md-icon>
+                <span>
+                  <strong>{{ b.beginBooking | amDateFormat:'DD-MM-YYYY' }}</strong>
+                  <br/>
+                  {{ b.beginBooking | amDateFormat:'HH:mm' }}
+                </span>
+              </div>
+              <div flex="50" class="bookingEndDate" ng-class="{ 'accepted': b.status === 'accepted', 'cancelled': (b.status === 'cancelled' || b.status === 'owner_cancelled'), 'rejected': b.status === 'rejected', 'requested': b.status === 'requested' }">
+                <span>
+                  <strong>{{ b.endBooking | amDateFormat:'DD-MM-YYYY' }}</strong>
+                  <br/>
+                  {{ b.endBooking | amDateFormat:'HH:mm' }}
+                </span>
+              </div>
+            </div>
+          </md-list-item>
+
+          <md-list-item ng-if="!hasAcceptedTimeframe(b)" class="bookingDate">
+            <div layout="row" layout-wrap class="bookingDateRow">
+              <div flex="50" class="bookingBeginDate" ng-class="{ 'accepted': b.status === 'accepted', 'cancelled': (b.status === 'cancelled' || b.status === 'owner_cancelled'), 'rejected': b.status === 'rejected', 'requested': b.status === 'requested' }">
+                <md-icon>access_time</md-icon>
+                <span>
+                  <strong>{{ b.beginRequested | amDateFormat:'DD-MM-YYYY' }}</strong>
+                  <br/>
+                  {{ b.beginRequested | amDateFormat:'HH:mm' }}
+                </span>
+              </div>
+              <div flex="50" class="bookingEndDate" ng-class="{ 'accepted': b.status === 'accepted', 'cancelled': (b.status === 'cancelled' || b.status === 'owner_cancelled'), 'rejected': b.status === 'rejected', 'requested': b.status === 'requested' }">
+                <span>
+                  <strong>{{ b.endRequested | amDateFormat:'DD-MM-YYYY' }}</strong>
+                  <br/>
+                  {{ b.endRequested | amDateFormat:'HH:mm' }}
+                </span>
+              </div>
+            </div>
+          </md-list-item>
+
+          <md-list-item role="listitem" class="md-no-proxy">
+            <div layout="row" style="width:100%; padding-top:20px;padding-bottom:10px;">
+              <div flex="50">
+                <center style="width: 100%;" ng-if="b.approved !== 'BUY_VOUCHER' || b.status !== 'accepted'">
+                  <md-icon class="text-info">settings</md-icon>
+                  <a href="" ga-track-event="['interaction', 'editBooking', 'dashboard']" class="text-info">Wijzig</a>
+                </center>
+                <center style="width: 100%;" ng-if="b.approved === 'BUY_VOUCHER' && b.status === 'accepted'">
+                  <md-icon class="text-danger">payment</md-icon>
+                  <a href="" ga-track-event="['interaction', 'payBooking', 'dashboard']" class="text-danger">Betaal rit</a>
+                </center>
+              </div>
+              <div flex="50">
+                <center style="width: 100%;">
+                  <md-icon class="text-info">search</md-icon>
+                  <a href="" ga-track-event="['interaction', 'detailsBooking', 'dashboard']" class="text-info">Details</a>
+                </center>
+              </div>
+          </md-list-item>
+
+        </md-list>
+      </md-card-body>
+    </div>
+</md-card>

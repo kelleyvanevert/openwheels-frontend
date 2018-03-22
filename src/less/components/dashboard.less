@@ -2,7 +2,7 @@
     &-hero {
         position: relative;
         background-image: url('../branding/img/dashboard.jpg');
-        background-position: 50% 0;
+        background-position: 50% 10%;
         background-repeat: no-repeat;
         background-size: cover;
         height: 175px;
@@ -49,7 +49,7 @@
 }
 @media (min-width:@screen-lg) {
     .dashboard-hero {
-        height: 240px;
+        height: 300px;
         margin-left: auto;
         margin-right: auto;
     }
@@ -105,5 +105,102 @@ span.action-button:last-child a.btn {
     }
     .blog--item:first-child {
         border-top: 1px solid #efefef;
+    }
+}
+.triangle--bar--booking {
+    position: relative;
+}
+
+/* ---------------------- BOOKING DATES  ------------------- */
+.booking-dashboard {
+    margin-bottom: 0px;
+}
+.booking-dashboard li {
+    padding-top: 0;
+}
+@media only screen and (min-width: @screen-sm) {
+    .booking-dashboard li:nth-child(odd) {
+        padding-right: 10px
+    }
+    .booking-dashboard li:nth-child(even) {
+        padding-left: 10px;
+    }
+}
+
+.bookingDate {
+    margin: 0 -16px 0 -16px;
+    padding-bottom: 10px !important;
+    .bookingDateRow {
+        width: 100%;
+        padding:0px;
+    }
+    md-icon {
+        margin-left: 6px;
+        float: left;
+        margin-right: 16px;
+        line-height: 40px;
+    }
+    .bookingBeginDate {
+        opacity: 1;
+        padding:10px;
+        height: 60px;
+        &.accepted {
+            background-color: @mywheels-green;
+            border-color: transparent transparent transparent @mywheels-green;
+        }
+        &.cancelled {
+            background-color: @mywheels-red;
+            border-color: transparent transparent transparent @mywheels-red;
+        }
+        &.rejected {
+            background-color: @mywheels-orange;
+            border-color: transparent transparent transparent @mywheels-orange;
+        }
+        &.requested {
+            background-color: #f5e8a3;
+            border-color: transparent transparent transparent #f5e8a3;
+        }
+    }
+    .bookingEndDate:before {
+        width: 15px;
+        border-style: solid;
+        border-width: 30px 0 30px 20px;
+        content: '';
+        left: 50%;
+        top: 0;
+        display: inline-block;
+        float: left;
+        border-color: inherit;
+    }
+    .bookingEndDate {
+        background-color: #aace8c;
+        height: 60px;
+        &.accepted {
+            background-color: #cae1b7; /* 80% */
+            border-color: transparent transparent transparent @mywheels-green;
+        }
+        &.cancelled {
+            background-color: #f4b4a4;
+            border-color: transparent transparent transparent @mywheels-red;
+        }
+        &.rejected {
+            background-color: #ffe299;
+            border-color: transparent transparent transparent @mywheels-orange;
+        }
+        &.requested {
+            background-color: #fcf8e3;
+            border-color: transparent transparent transparent #f5e8a3;
+        }
+    }
+    .bookingEndDate span {
+        padding:10px;
+        float: left;
+    }
+}
+@media only screen and (max-width: 374px) {
+    .bookingDate {
+        md-icon {
+            display: none;
+        }
     }
 }
