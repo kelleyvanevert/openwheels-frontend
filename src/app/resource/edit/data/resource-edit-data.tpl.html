@@ -41,7 +41,7 @@
 
     <div id="time_of_origin" class="form-group">
       <label for="bouwjaar">{{ 'TIME_OF_ORGIN' | translate }}</label>
-      <input type="text" id="bouwjaar" name="bouwjaar" class="form-control" ng-model="resource.bouwjaar" ng-disabled="disabledFields.bouwjaar" restrict-to="[0-9]" maxlength="4" max="2025" min="1950">
+      <input type="text" id="bouwjaar" name="bouwjaar" class="form-control" ng-model="resource.bouwjaar" ng-disabled="disabledFields.bouwjaar" pattern="[0-9]*" maxlength="4" max="2025" min="1950">
     </div>
 
     <div id="resource_fuel_type" form-group label="{{ 'FUEL_TYPE' | translate }}">
