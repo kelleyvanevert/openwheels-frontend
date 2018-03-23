@@ -30,7 +30,7 @@ angular.module('owm.person.license', [])
   }
 
   $scope.submitDriverLicense = function () {
-    if($scope.driverLicenseNumber !== undefined && $scope.driverLicenseNumber.length === 10)
+    if($scope.driverLicenseNumber !== undefined && $scope.driverLicenseNumber.length === 10 && ['3', '4', '5'].indexOf($scope.driverLicenseNumber.charAt(0)) >= 0)
     {
       if($scope.driverLicenseNumberRepeat !== undefined && $scope.driverLicenseNumberRepeat.length === 10)
       {
