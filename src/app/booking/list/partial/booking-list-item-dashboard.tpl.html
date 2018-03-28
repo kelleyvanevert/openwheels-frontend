@@ -3,15 +3,15 @@
         <ow-resource-picture resource="b.resource" size="large"></ow-resource-picture>
         <div class="alias">
             <h2 class="no-margin" style="color:#fff;">{{ b.resource.alias | limitTo: 30}}{{b.resource.alias.length > 30 ? '...' : ''}}</h2>
-            <h3 class="no-margin" style="color:#fff" ng-if="b.resource.houseNumber">{{ b.resource.location }} {{ b.resource.houseNumber }}, {{ b.resource.city }}</h3>
-            <h3 class="no-margin" style="color:#fff" ng-if="!b.resource.houseNumber">{{ b.resource.location }}, {{ b.resource.city }}</h3>
+            <h3 class="no-margin" style="color:#fff" ng-if="b.resource.streetNumber">{{ b.resource.location }} {{ b.resource.streetNumber }}, {{ b.resource.city }}</h3>
+            <h3 class="no-margin" style="color:#fff" ng-if="!b.resource.streetNumber">{{ b.resource.location }}, {{ b.resource.city }}</h3>
         </div>
     </div>
     <div style="position: relative">
       <md-card-body class="ow-list-compact">
         <md-list role="list" style="padding-top:0px;">
 
-          <md-list-item ng-if="hasAcceptedTimeframe(b)" class="bookingDate">
+          <md-list-item ng-if="b.beginBooking" class="bookingDate">
             <div layout="row" layout-wrap class="bookingDateRow">
               <div flex="50" class="bookingBeginDate" ng-class="{ 'accepted': b.status === 'accepted', 'cancelled': (b.status === 'cancelled' || b.status === 'owner_cancelled'), 'rejected': b.status === 'rejected', 'requested': b.status === 'requested' }">
                 <md-icon>access_time</md-icon>
@@ -31,7 +31,7 @@
             </div>
           </md-list-item>
 
-          <md-list-item ng-if="!hasAcceptedTimeframe(b)" class="bookingDate">
+          <md-list-item ng-if="b.beginRequested && !b.beginBooking" class="bookingDate">
             <div layout="row" layout-wrap class="bookingDateRow">
               <div flex="50" class="bookingBeginDate" ng-class="{ 'accepted': b.status === 'accepted', 'cancelled': (b.status === 'cancelled' || b.status === 'owner_cancelled'), 'rejected': b.status === 'rejected', 'requested': b.status === 'requested' }">
                 <md-icon>access_time</md-icon>

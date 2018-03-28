@@ -70,7 +70,7 @@
       <label>{{ 'RESOURCE_PROPERTIES' | translate }}</label><hr>
       <div class="checkbox" ng-repeat="(key, value) in optionsLabels">
           <input type="checkbox" ng-model="options[key]" id="{{key}}" />
-          <label for="{{ option.value }}">
+          <label for="{{key}}">
             {{optionsLabels[key]}}
           </label>
       </div>

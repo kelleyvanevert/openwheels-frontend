@@ -57,6 +57,8 @@
     "NOT_AVAILABLE": "Not available",
     "COSTS": "Costs",
     "DATE": "Date",
+    "FROM": "From",
+    "UNTIL": "Until",
     "AMOUNT": "Amount",
     "PAID": "Paid",
     "CONCEPT": "Concept",
