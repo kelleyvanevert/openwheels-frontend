@@ -15,7 +15,7 @@
             <md-card-title-text>
               <a ui-sref="owm.resource.show({city: resource.city, resourceId: resource.id})">
                 <h3 class="no-margin" style="font-size: 2rem" >
-                  <span>{{ resource.alias || ('RESOURCE_NO_NAME' | translate) }} </span>
+                  <span>{{ resource.alias | limitTo: 50 || ('RESOURCE_NO_NAME' | translate)}}{{resource.alias.length > 50 ? '...' : ''}} </span>
                 </h3>
               </a>
             </md-card-title-text>
