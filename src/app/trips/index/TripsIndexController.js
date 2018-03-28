@@ -5,107 +5,70 @@ angular.module('owm.trips.index', [])
 .controller('TripsIndexController', function ($log, $timeout, $q, API_DATE_FORMAT, alertService, bookingService, me, $scope, linksService) {
 
   $scope.me = me;
-  $scope.provider = me.provider.id;
-
-  // Set the default values for the loader spinner and collapsible toggles
   $scope.showLoaderSpinner = false;
-  $scope.showBookings = {};
-  $scope.showBookings.asRenter = false;
-  $scope.showBookings.asOwner = false;
+  $scope.showCancelled = false;
+  $scope.renew = false;
+  $scope.now = moment().format('YYYY-MM-DD HH:mm');
+
+  $scope.dateConfig = {
+    modelFormat: API_DATE_FORMAT,
+    formatSubmit: 'yyyy-mm-dd',
+    viewFormat: 'DD-MM-YYYY',
+    format: 'dd-mm-yyyy',
+    selectMonths: true
+  };
 
   // Define the booking variables
   $scope.bookings = {};
   $scope.totalBookings = {};
+
   // Set pagination defaults
-
-  $scope.curPage = {};
-  $scope.perPage = {};
+  $scope.perCall = {};
   $scope.offset = {};
-  $scope.lastPage = {};
 
-  //TODO: ???
   setPaginationDefaults('asRenter');
   setPaginationDefaults('asOwner');
 
   function setPaginationDefaults (role) {
-    $scope.curPage[role] = 1;
-    $scope.perPage[role] = 10;
+    $scope.bookings[role] = {};
+    $scope.perCall[role] = 10;
     $scope.offset[role] = 0;
   }
 
-  // Pagination buttons and their actions
-
-  $scope.nextPage = function(role) {
-    $scope.offset[role] = $scope.curPage[role] * $scope.perPage[role];
-    $scope.curPage[role] = $scope.curPage[role] + 1;
-    loadBookings(role);
+  // Default first and last day of current month
+  $scope.currentTimeFrame = {
+    fromDate: moment().startOf('month').format('YYYY-MM-DD HH:mm'),
+    untilDate: moment().endOf('month').format('YYYY-MM-DD HH:mm')
   };
-
-  $scope.prevPage = function(role) {
-    $scope.offset[role] = ($scope.curPage[role] - 2) * $scope.perPage[role];
-    $scope.curPage[role] = $scope.curPage[role] - 1;
-    loadBookings(role);
-  };
-
-  // Define the years to be displayed
-
-  $scope.years = (function () {
-    var y = moment().year();
-    return [y-2, y-1, y, y+1];
-  }());
-
-  // Load all bookings for the current year on first run
-
-  $scope.selectedYear = moment().year();
-  loadYear();
-
-  // When the year changes, load all bookings for the selected year
-  $scope.$watch('selectedYear', function (year) {
-    $scope.selectedYear = year;
-    loadYear();
-  });
-
-  // Load all bookings for the selected year
-
-  function loadYear()
-  {
-    // Convert the year to a start and end  date
-
-    $scope.startDate = moment([$scope.selectedYear, 0, 1]);
-    $scope.endDate = moment([$scope.selectedYear + 1, 0, 1]);
-
-    // Get the bookings for this person as renter
-    loadBookings('asRenter');
-
-    // Get the bookings for this person as an owner
-    loadBookings('asOwner');
-  }
 
   // Load all bookings for this person in the role of either a renter or an owner with pagination
-
-  function loadBookings(role)
-  {
+  $scope.loadBookings = function (role) {
+    $scope.lastCallRenter = false;
+    $scope.lastCallOwner = false;
     $scope.showLoaderSpinner = true;
-
-    // Set the offset for the pagination for this role based on the current page and elements per page
-    //$scope.offset[role] = ($scope.curPage[role] - 1) * $scope.perPage[role];
 
     // Define the parameters for getting the bookings
     var parameters = {
       person: me.id,
       timeFrame: {
-        startDate: $scope.startDate.format(API_DATE_FORMAT),
-        endDate: $scope.endDate.format(API_DATE_FORMAT)
+        startDate: moment($scope.startDate).format(API_DATE_FORMAT),
+        endDate: moment($scope.endDate).format(API_DATE_FORMAT)
       },
       offset: $scope.offset[role],
-      limit: $scope.perPage[role]
+      limit: $scope.perCall[role]
     };
 
     // Define which API call to use for which role
     var bookingsPromise = {};
 
     if(role === 'asRenter') {
-      parameters.cancelled = true;
+
+      if ($scope.showCancelled) {
+        parameters.cancelled = true;
+      } else {
+        parameters.cancelled = false;
+      }
+
       bookingsPromise = bookingService.getBookingList(parameters);
     }
 
@@ -124,13 +87,67 @@ angular.module('owm.trips.index', [])
           }
         }
 
-        $scope.bookings[role] = bookings;
-        $scope.totalBookings[role] = tempCount;
-        $scope.lastPage[role] = Math.ceil($scope.totalBookings[role] / $scope.perPage[role]);
+        if ($scope.offset[role] === 0) {
+          $scope.bookings[role] = bookings;
+        } else {
+          $scope.bookings[role] = $scope.bookings[role].concat(bookings);
+        }
 
-        $scope.showLoaderSpinner = false;
+        $scope.offset[role] += $scope.perCall[role];
+        $scope.totalBookings[role] = tempCount;
+
+        // Are there more bookings to show?
+        if($scope.bookings[role].length >= $scope.totalBookings[role]) {
+          if(role === 'asRenter') {
+            $scope.lastCallRenter = true;
+          } else if (role === 'asOwner') {
+            $scope.lastCallOwner = true;
+          }
+        }
+
+        $timeout(function () {
+          $scope.showLoaderSpinner = false;
+          $scope.renew = false;
+        }, 1000);
+
       });
-  }
+  };
+
+  // Load all bookings for the selected period
+  $scope.loadDate = function (role, renew) {
+    $scope.startDate = moment($scope.currentTimeFrame.fromDate).format('YYYY-MM-DD HH:mm');
+    $scope.endDate = moment($scope.currentTimeFrame.untilDate).format('YYYY-MM-DD HH:mm');
+
+    // Reset offset and bookings for specific role
+    if (renew) {
+      $scope.renew = true;
+      if (role === 'asRenter') {
+        $scope.totalBookings.asRenter = 0;
+        setPaginationDefaults('asRenter');
+      } else if (role === 'asOwner') {
+        $scope.totalBookings.asOwner = 0;
+        setPaginationDefaults('asOwner');
+      } else {
+        $scope.totalBookings.asRenter = 0;
+        $scope.totalBookings.asOwner = 0;
+        setPaginationDefaults('asRenter');
+        setPaginationDefaults('asOwner');
+      }
+    }
+
+    // Load bookings
+    if (role === 'asRenter') {
+      $scope.loadBookings('asRenter');
+    } else if (role === 'asOwner') {
+      $scope.loadBookings('asOwner');
+    } else {
+      $scope.loadBookings('asRenter');
+      $scope.loadBookings('asOwner');
+    }
+
+  };
+
+  $scope.loadDate();
 
   $scope.createTripDetailsLink = function (booking) {
     return linksService.tripDetailsPdf(booking.id);

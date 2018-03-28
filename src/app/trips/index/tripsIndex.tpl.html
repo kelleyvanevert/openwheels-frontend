@@ -1,4 +1,5 @@
 <div class="card">
+
   <div class="card-heading">
     <h2 class="card-title">
       {{ 'MY_TRIPS' | translate }}
@@ -6,124 +7,297 @@
   </div>
 
   <div class="card-body">
-
     <div class="row">
-      <div class="col-xs-12">
-        <div class="form-group">
-          <select class="form-control" ng-options="year for year in years" ng-model="selectedYear"></select>
+
+      <div class="col-xs-6">
+        <div class="mywheels-form">
+          <div class="icon date">
+            <input id="fromDate" type="text" placeholder="{{ 'FROM' | translate }}" class="pickadate-input" ng-model="currentTimeFrame.fromDate" pickadate="dateConfig" ng-change="loadDate('both', true)">
+          </div>
         </div>
       </div>
-    </div>
+      <div class="col-xs-6">
+        <div class="mywheels-form">
+          <div class="icon date">
+            <input id="untilDate" type="text" placeholder="{{ 'UNTIL' | translate }}" class="pickadate-input" ng-model="currentTimeFrame.untilDate" pickadate="dateConfig" ng-change="loadDate('both', true)">
+          </div>
+        </div>
+      </div>
 
-    <div class="row" ng-if="!totalBookings.asOwner && !totalBookings.asRenter">
+      <div class="col-xs-12" ng-show="me.preference !== 'owner'">
+        <div class="mywheels-form">
+          <div class="checkbox">
+            <input type="checkbox" ng-model="showCancelled" id="showCancelled" ng-click="loadDate('asRenter', true)" />
+            <label class="text-muded" for="showCancelled">Toon geannuleerde en afgewezen ritten</label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="card" ng-if="(!totalBookings.asOwner && !totalBookings.asRenter) || renew">
+  <div class="card-body">
+    <div class="row">
       <div class="col-xs-12">
-        <h3 ng-if="showLoaderSpinner" class="text-center" style="margin-top:10px;"><i class="fa fa-spinner fa-spin fa-fw text-primary"></i></h3>
-        <span ng-if="!showLoaderSpinner && totalBookings.asRenter === 0 && totalBookings.asOwner === 0">{{ 'NO_TRIPS' | translate }}</span>
+        <h3 ng-if="showLoaderSpinner" class="text-center" style="margin-top: 10px;">
+          <i class="fa fa-spinner fa-spin fa-fw text-primary"></i>
+        </h3>
+        <span ng-if="!showLoaderSpinner && !renew">{{ 'NO_TRIPS' | translate }}</span>
       </div>
     </div>
   </div>
-
 </div>
 
-<div class="card" ng-if="totalBookings.asRenter > 0">
+<!-- Bookings for renter -->
+<div class="card" ng-if="totalBookings.asRenter > 0 && !renew">
+
   <div class="card-heading">
     <h3 class="card-title">
-      {{ 'TRIPS_BOOKINGS_FOR_RENTER' | translate }}
+      {{ 'TRIPS_BOOKINGS_FOR_RENTER' | translate }} <small style="font-size:14px;">(totaal: {{totalBookings.asRenter}})</small>
     </h3>
   </div>
 
   <div class="card-body">
 
-    <button class="btn" ng-click="prevPage('asRenter')" ng-disabled="curPage.asRenter == 1"> &lt; </button>
-    <p class="btn">{{ curPage.asRenter }}</p>
-    <button class="btn" ng-click="nextPage('asRenter')" ng-disabled="curPage.asRenter >= lastPage.asRenter"> &gt; </button>
-
-    <div ng-if="showLoaderSpinner" class="text-center" style="margin-top:10px;">
-      <h3><i class="fa fa-spinner fa-spin fa-fw text-primary"></i></h3>
-    </div>
-
-    <table class="table" ng-if="!showLoaderSpinner">
-      <thead>
-        <tr>
-          <th>{{ 'DATE' | translate }}</th>
-          <th hide-xs>{{ 'STATUS' | translate }}</th>
-          <th>{{ 'RESOURCE' | translate }}</th>
-          <th>{{ 'OWNER' | translate }}</th>
-          <th hide-xs></th>
-          <th hide-xs></th>
-        </tr>
-      </thead>
+    <!-- desktop view -->
+    <table class="table trips" hide-xs>
       <tbody>
         <tr 
-          ng-class="{danger: ['cancelled', 'owner_cancelled'].indexOf(booking.status) >= 0, warning: booking.status === 'rejected'}"
-          ng-repeat="booking in bookings.asRenter | orderBy:['booking.beginBooking','booking.beginRequested']"
+          ng-class="{
+            cancelled: ['cancelled', 'owner_cancelled'].indexOf(booking.status) >= 0, 
+            rejected: booking.status === 'rejected', 
+            requested: booking.status === 'requested'
+          }"
+          ng-repeat="booking in bookings.asRenter"
           class="clickable-row"
           ui-sref="owm.booking.show({bookingId: booking.id})"
         >
-          <td><a ui-sref="owm.booking.show({bookingId: booking.id})">
-            {{ (booking.beginBooking | amDateFormat:'DD-MM-YYYY') || (booking.beginRequested | amDateFormat:'DD-MM-YYYY') }}
-          </a></td>
-          <td hide-xs>{{ booking.status | bookingStatus }}</td>
-          <td>{{ booking.resource.alias}}</td>
-          <td>{{ booking.resource.owner | fullname }}</td>
-          <td hide-xs><span booking-approval-icon="booking"></span></td>
-          <td class="text-right" hide-xs>
-            <a ui-sref="owm.booking.show({bookingId: booking.id})">Details</a>
-            <a ng-if="provider === 50" target="_blank" ng-href="{{ createTripDetailsLink(booking) }}"><i class="fa fa-fw fa-external-link-square"></i>PDF</a>
+          <td width="15%" class="media">
+            <ow-resource-picture class="media-object img-resource-small pull-left align-middle" resource="booking.resource" size="small"></ow-resource-picture>
+          </td>
+          <td width="25%">
+            <strong>{{ (booking.beginBooking | amDateFormat:'DD-MM-YYYY') || (booking.beginRequested | amDateFormat:'DD-MM-YYYY') }}</strong>
+            {{ (booking.beginBooking | amDateFormat:'HH:mm') || (booking.beginRequested | amDateFormat:'HH:mm') }}
+            <br/>
+            <strong>{{ (booking.endBooking | amDateFormat:'DD-MM-YYYY') || (booking.endRequested | amDateFormat:'DD-MM-YYYY') }}</strong>
+            {{ (booking.endBooking | amDateFormat:'HH:mm') || (booking.endRequested | amDateFormat:'HH:mm') }}
+          </td>
+          <td width="40%">
+            {{ booking.resource.alias | limitTo: 30}}{{booking.resource.alias.length > 30 ? '...' : ''}}
+            <br/>
+            van {{ booking.resource.owner | fullname }}
+          </td>
+          <td width="20%">
+            <span ng-if="booking.status === 'accepted' && (booking.approved === 'OK' || !booking.approved) && (now < booking.beginBooking || booking.trip.odoBegin || booking.trip.finalized || booking.resource.boardcomputer)">
+              Geaccepteerd
+            </span>
+            <span ng-if="booking.status === 'requested'">In aanvraag</span>
+            <span ng-if="booking.status === 'rejected'">Afgewezen</span>
+            <span ng-if="['cancelled', 'owner_cancelled'].indexOf(booking.status) >= 0">Geannuleerd</span>
+            <span ng-if="booking.status === 'accepted' && booking.approved === 'BUY_VOUCHER'" class="text-danger">
+              <md-button class="md-raised md-primary red">Betaal rit</md-button>
+            </span>
+            <span ng-if="booking.status === 'accepted' && now > booking.beginBooking && !booking.resource.boardcomputer && (booking.approved === 'OK' || !booking.approved) && !booking.trip.odoBegin && !booking.trip.finalized">
+              <md-button class="md-raised md-primary">Rit administreren</md-button>
+            </span>
+          </td>
+          <td class="text-right" ng-if="me.provider.id === 50">
+            <a target="_blank" ng-href="{{ createTripDetailsLink(booking) }}"><i class="fa fa-fw fa-external-link-square"></i>PDF</a>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <!-- mobile view -->
+    <table class="table trips" hide-gt-xs>
+      <tbody>
+        <tr 
+          ng-class="{
+            cancelled: ['cancelled', 'owner_cancelled'].indexOf(booking.status) >= 0, 
+            rejected: booking.status === 'rejected', 
+            requested: booking.status === 'requested'
+          }"
+          ng-repeat="booking in bookings.asRenter"
+          class="clickable-row"
+          ui-sref="owm.booking.show({bookingId: booking.id})"
+        >
+          <td>
+            <table>
+              <tr>
+                <td>
+                  <h4>{{ booking.resource.alias | limitTo: 30}}{{booking.resource.alias.length > 30 ? '...' : ''}}</h4>
+                </td>
+              </tr>
+              <tr layout="row" class="align-middle">
+                <td flex="30" class="media">
+                  <ow-resource-picture class="media-object img-resource-small pull-left align-middle" resource="booking.resource" size="small"></ow-resource-picture>
+                </td>
+                <td flex="70">
+                  <strong>{{ (booking.beginBooking | amDateFormat:'DD-MM-YYYY') || (booking.beginRequested | amDateFormat:'DD-MM-YYYY') }}</strong>
+                  {{ (booking.beginBooking | amDateFormat:'HH:mm') || (booking.beginRequested | amDateFormat:'HH:mm') }}
+                  <br/>
+                  <strong>{{ (booking.endBooking | amDateFormat:'DD-MM-YYYY') || (booking.endRequested | amDateFormat:'DD-MM-YYYY') }}</strong>
+                  {{ (booking.endBooking | amDateFormat:'HH:mm') || (booking.endRequested | amDateFormat:'HH:mm') }}
+                  <br/>
+                  <span ng-if="booking.status === 'accepted'">Geaccepteerd</span>
+                  <span ng-if="booking.status === 'requested'">In aanvraag</span>
+                  <span ng-if="booking.status === 'rejected'">Afgewezen</span>
+                  <span ng-if="['cancelled', 'owner_cancelled'].indexOf(booking.status) >= 0">Geannuleerd</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-center action">
+                  <span ng-if="booking.status === 'accepted' && booking.approved === 'BUY_VOUCHER'" class="text-danger">
+                    <md-button class="md-raised md-primary red">Betaal rit</md-button>
+                  </span>
+                  <span ng-if="booking.status === 'accepted' && now > booking.beginBooking && !booking.resource.boardcomputer && (booking.approved === 'OK' || !booking.approved) && !booking.trip.odoBegin && !booking.trip.finalized">
+                    <md-button class="md-raised md-primary">Rit administreren</md-button>
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- load more bookings -->
+    <center><button ng-click="loadDate('asRenter')" class="mywheels-btn mywheels-btn-normal mywheels-btn-big" ng-if="!lastCallRenter">
+        <span ng-if="!showLoaderSpinner">Laad meer</span>
+        <span ng-if="showLoaderSpinner"><i class="fa fa-spinner fa-spin"></i></span>
+    </button></center>
 
   </div>
 </div>
 
-<div class="card" ng-if="totalBookings.asOwner > 0">
+<!-- Bookings for owner -->
+<div class="card" ng-if="totalBookings.asOwner > 0 && !renew">
+
   <div class="card-heading">
     <h3 class="card-title">
-      {{ 'TRIPS_BOOKINGS_FOR_OWNER' | translate }}
+      {{ 'TRIPS_BOOKINGS_FOR_OWNER' | translate }} <small style="font-size:14px;">(totaal: {{totalBookings.asOwner}})</small>
     </h3>
   </div>
 
   <div class="card-body">
-    <button class="btn" ng-click="prevPage('asOwner')" ng-disabled="curPage.asOwner == 1"> &lt; </button>
-    <p class="btn">{{ curPage.asOwner }}</p>
-    <button class="btn" ng-click="nextPage('asOwner')" ng-disabled="curPage.asOwner >= lastPage.asOwner"> &gt; </button>
 
-    <div ng-if="showLoaderSpinner" class="text-center" style="margin-top:10px;">
-      <h3><i class="fa fa-spinner fa-spin fa-fw text-primary"></i></h3>
-    </div>
-
-    <table class="table" ng-if!="showLoaderSpinner">
-      <thead>
-        <tr>
-          <th>{{ 'DATE' | translate }}</th>
-          <th hide-xs>{{ 'STATUS' | translate }}</th>
-          <th>{{ 'RESOURCE' | translate }}</th>
-          <th>{{ 'RENTER' | translate }}</th>
-          <th hide-xs></th>
-        </tr>
-      </thead>
+    <!-- desktop view -->
+    <table class="table trips" hide-xs>
       <tbody>
-        <tr
-          ng-class="{danger: ['cancelled', 'owner_cancelled'].indexOf(booking.status) >= 0, warning: booking.status === 'rejected'}"
-          ng-repeat="booking in bookings.asOwner | orderBy:['booking.beginBooking','booking.beginRequested']"
+        <tr 
+          ng-class="{
+            cancelled: ['cancelled', 'owner_cancelled'].indexOf(booking.status) >= 0, 
+            rejected: booking.status === 'rejected', 
+            requested: booking.status === 'requested'
+          }"
+          ng-repeat="booking in bookings.asOwner"
           class="clickable-row"
           ui-sref="owm.booking.show({bookingId: booking.id})"
         >
-          <td><a ui-sref="owm.booking.show({bookingId: booking.id})">
-            {{ (booking.beginBooking | amDateFormat:'DD-MM-YYYY') || (booking.beginRequested | amDateFormat:'DD-MM-YYYY') }}
-          </a></td>
-          <td hide-xs>{{ booking.status | bookingStatus }}</td>
-          <td>{{ booking.resource.alias }}</td>
-          <td>{{ booking.person | fullname }}</td>
-          <td class="text-right" hide-xs>
-            <a ui-sref="owm.booking.show({bookingId: booking.id})">Details</a>
-            <a ng-if="provider === 50" target="_blank" ng-href="{{ createTripDetailsLink(booking) }}"><i class="fa fa-fw fa-external-link-square"></i>PDF</a>
+          <td width="15%" class="media">
+            <img class="media-object img-user-small pull-left align-middle" person-profile-image="{ person: booking.person, size: 'small' }" />
+          </td>
+          <td width="25%">
+            <strong>{{ (booking.beginBooking | amDateFormat:'DD-MM-YYYY') || (booking.beginRequested | amDateFormat:'DD-MM-YYYY') }}</strong>
+            {{ (booking.beginBooking | amDateFormat:'HH:mm') || (booking.beginRequested | amDateFormat:'HH:mm') }}
+            <br/>
+            <strong>{{ (booking.endBooking | amDateFormat:'DD-MM-YYYY') || (booking.endRequested | amDateFormat:'DD-MM-YYYY') }}</strong>
+            {{ (booking.endBooking | amDateFormat:'HH:mm') || (booking.endRequested | amDateFormat:'HH:mm') }}
+          </td>
+          <td width="40%">
+            {{ booking.person | fullname }}
+            <br/>
+            {{ booking.resource.alias | limitTo: 30}}{{booking.resource.alias.length > 30 ? '...' : ''}}
+          </td>
+          <td width="20%">
+            <span ng-if="booking.status === 'accepted' && booking.ok && (now < booking.beginBooking || booking.trip.odoBegin || booking.trip.finalized || booking.resource.boardcomputer)">
+              Geaccepteerd
+            </span>
+            <span ng-if="booking.status === 'accepted' && booking.approved === 'BUY_VOUCHER'" class="text-danger">
+              Te betalen
+            </span>
+            <span ng-if="booking.status === 'accepted' && booking.approved !== 'BUY_VOUCHER' && !booking.ok" class="text-danger">
+              De boeking is nog niet in orde
+            </span>
+            <span ng-if="booking.status === 'rejected'">Afgewezen</span>
+            <span ng-if="['cancelled', 'owner_cancelled'].indexOf(booking.status) >= 0">Geannuleerd</span>
+            <span ng-if="booking.status === 'requested'"">
+              <md-button class="md-raised md-primary">Reageer</md-button>
+            </span>
+            <span ng-if="booking.status === 'accepted' && now > booking.beginBooking && !booking.resource.boardcomputer && (booking.approved === 'OK' || !booking.approved) && !booking.trip.odoBegin && !booking.trip.finalized">
+              <md-button class="md-raised md-primary">Rit administreren</md-button>
+            </span>
+          </td>
+          <td class="text-right" ng-if="me.provider.id === 50">
+            <a target="_blank" ng-href="{{ createTripDetailsLink(booking) }}"><i class="fa fa-fw fa-external-link-square"></i>PDF</a>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <!-- mobile view -->
+    <table class="table trips" hide-gt-xs>
+      <tbody>
+        <tr 
+          ng-class="{
+            cancelled: ['cancelled', 'owner_cancelled'].indexOf(booking.status) >= 0, 
+            rejected: booking.status === 'rejected', 
+            requested: booking.status === 'requested'
+          }"
+          ng-repeat="booking in bookings.asOwner"
+          class="clickable-row"
+          ui-sref="owm.booking.show({bookingId: booking.id})"
+        >
+          <td>
+            <table>
+              <tr>
+                <td>
+                  <h4>{{ booking.person | fullname }}</h4>
+                </td>
+              </tr>
+              <tr layout="row" class="align-middle">
+                <td flex="30" class="media">
+                  <img class="media-object img-user-small pull-left align-middle" person-profile-image="{ person: booking.person, size: 'small' }" />
+                </td>
+                <td flex="70">
+                  {{ booking.resource.alias | limitTo: 20}}{{booking.resource.alias.length > 20 ? '...' : ''}}
+                  <br/>
+                  <strong>{{ (booking.beginBooking | amDateFormat:'DD-MM-YYYY') || (booking.beginRequested | amDateFormat:'DD-MM-YYYY') }}</strong>
+                  {{ (booking.beginBooking | amDateFormat:'HH:mm') || (booking.beginRequested | amDateFormat:'HH:mm') }}
+                  <br/>
+                  <strong>{{ (booking.endBooking | amDateFormat:'DD-MM-YYYY') || (booking.endRequested | amDateFormat:'DD-MM-YYYY') }}</strong>
+                  {{ (booking.endBooking | amDateFormat:'HH:mm') || (booking.endRequested | amDateFormat:'HH:mm') }}
+                  <br/>
+                  <span ng-if="booking.status === 'accepted'">Geaccepteerd</span>
+                  <span ng-if="booking.status === 'requested'">In aanvraag</span>
+                  <span ng-if="booking.status === 'rejected'">Afgewezen</span>
+                  <span ng-if="['cancelled', 'owner_cancelled'].indexOf(booking.status) >= 0">Geannuleerd</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-center action">
+                  <span ng-if="booking.status === 'requested'"" class="text-danger">
+                    <md-button class="md-raised md-primary">Reageer</md-button>
+                  </span>
+                  <span ng-if="booking.status === 'accepted' && now > booking.beginBooking && !booking.resource.boardcomputer && (booking.approved === 'OK' || !booking.approved) && !booking.trip.odoBegin && !booking.trip.finalized">
+                    <md-button class="md-raised md-primary">Rit administreren</md-button>
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- load more bookings -->
+    <center><button ng-click="loadDate('asOwner')" class="mywheels-btn mywheels-btn-normal mywheels-btn-big" ng-if="!lastCallOwner">
+        <span ng-if="!showLoaderSpinner">Laad meer</span>
+        <span ng-if="showLoaderSpinner"><i class="fa fa-spinner fa-spin"></i></span>
+    </button></center>
 
   </div>
 </div>

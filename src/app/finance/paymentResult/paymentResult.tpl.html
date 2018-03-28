@@ -56,8 +56,8 @@
                         <ow-resource-picture resource="booking.resource" size="large"></ow-resource-picture>
                         <div class="alias">
                             <h2 class="no-margin" style="color:#fff;">{{ booking.resource.alias | limitTo: 30}}{{booking.resource.alias.length > 30 ? '...' : ''}}</h2>
-                            <h3 class="no-margin" style="color:#fff" ng-if="booking.resource.houseNumber">{{ booking.resource.location }} {{ booking.resource.houseNumber }}, {{ booking.resource.city }}</h3>
-                            <h3 class="no-margin" style="color:#fff" ng-if="!booking.resource.houseNumber">{{ booking.resource.location }}, {{ booking.resource.city }}</h3>
+                            <h3 class="no-margin" style="color:#fff" ng-if="booking.resource.streetNumber">{{ booking.resource.location }} {{ booking.resource.streetNumber }}, {{ booking.resource.city }}</h3>
+                            <h3 class="no-margin" style="color:#fff" ng-if="!booking.resource.streetNumber">{{ booking.resource.location }}, {{ booking.resource.city }}</h3>
                         </div>
                     </div>
 

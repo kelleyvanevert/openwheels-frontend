@@ -66,7 +66,7 @@ angular.module('owm.finance.paymentResult', [])
         person: me.id,
         asc: true,
         timeFrame: {
-          startDate: moment().format(API_DATE_FORMAT),
+          startDate: moment().add(-1, 'hour').format(API_DATE_FORMAT),
           endDate: moment().add(1, 'year').format(API_DATE_FORMAT)
         },
         cancelled: false
