@@ -25,18 +25,18 @@ angular.module('personalDataDirective', [])
       $scope.personSubmitted = $stateParams.personSubmitted === 'true' ? true : false;
 
       $scope.months = [
-        {label: $translate.instant('JANUARY'), value: '1'},
-        {label: $translate.instant('FEBRUARY'), value: '2'},
-        {label: $translate.instant('MARCH'), value: '3'},
-        {label: $translate.instant('APRIL'), value: '4'},
-        {label: $translate.instant('MAY'), value: '5'},
-        {label: $translate.instant('JUNE'), value: '6'},
-        {label: $translate.instant('JULY'), value: '7'},
-        {label: $translate.instant('AUGUST'), value: '8'},
-        {label: $translate.instant('SEPTEMBER'), value: '9'},
-        {label: $translate.instant('OCTOBER'), value: '10'},
-        {label: $translate.instant('NOVEMBER'), value: '11'},
-        {label: $translate.instant('DECEMBER'), value: '12'}
+        {label: $translate.instant('JANUARY'), value: 1},
+        {label: $translate.instant('FEBRUARY'), value: 2},
+        {label: $translate.instant('MARCH'), value: 3},
+        {label: $translate.instant('APRIL'), value: 4},
+        {label: $translate.instant('MAY'), value: 5},
+        {label: $translate.instant('JUNE'), value: 6},
+        {label: $translate.instant('JULY'), value: 7},
+        {label: $translate.instant('AUGUST'), value: 8},
+        {label: $translate.instant('SEPTEMBER'), value: 9},
+        {label: $translate.instant('OCTOBER'), value: 10},
+        {label: $translate.instant('NOVEMBER'), value: 11},
+        {label: $translate.instant('DECEMBER'), value: 12}
       ];
 
       $timeout(function () {
