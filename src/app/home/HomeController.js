@@ -36,14 +36,14 @@ angular.module('owm.home', ['owm.resource', 'slick'])
     getFeaturedResources();
   });
 
-  function getFeaturedResources() {
-    resourceService.all({
-      'onlyFeatured': 'true'
-    })
-    .then(function (res) {
-      $scope.resources_slider = res;
-    });
-  }
+  // function getFeaturedResources() {
+  //   resourceService.all({
+  //     'onlyFeatured': 'true'
+  //   })
+  //   .then(function (res) {
+  //     $scope.resources_slider = res;
+  //   });
+  // }
 
   $scope.gotoProfile = function (resource) {
     $state.go('owm.resource.show', {
