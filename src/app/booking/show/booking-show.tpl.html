@@ -496,10 +496,10 @@
   </div>
 </div>
 
-<!-- Smartwheels information -->
-<div class="card" ng-if="userPerspective==='renter' && ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 && (booking.resource.locktypes.indexOf('chipcard') >= 0 || booking.resource.locktypes.indexOf('smartphone') >= 0) && !bookingEndedRealy" id="smartwheelsInfo">
+<!-- MyWheels Open information -->
+<div class="card" ng-if="userPerspective==='renter' && ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 && (booking.resource.locktypes.indexOf('chipcard') >= 0 || booking.resource.locktypes.indexOf('smartphone') >= 0) && !bookingEndedRealy" id="mywheelsOpenInfo">
   <div class="card-heading">
-    <h3 class="card-title">Smartwheels</h3>
+    <h3 class="card-title">MyWheels Open</h3>
   </div>
 
   <!-- Convadis boardcomputer, only chipcard -->

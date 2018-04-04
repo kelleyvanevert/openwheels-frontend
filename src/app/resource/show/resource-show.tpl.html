@@ -50,10 +50,10 @@
                                             ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0" 
                                             class="tag tag-warning" 
                                             style="margin-top: 8px; margin-bottom: 8px; margin-left: 0px;"
-                                            id="smartwheels-tip-label"
+                                            id="mywheels-open-tip-label"
                                         >
-                                            {{ 'SMART_WHEELS_TIP' | translate }}
-                                            <md-tooltip md-direction="bottom" class="multiline">{{ 'SMART_WHEELS_INFO' | translate }}</md-tooltip>
+                                            {{ 'MYWHEELS_OPEN_TIP' | translate }}
+                                            <md-tooltip md-direction="bottom" class="multiline">{{ 'MYWHEELS_OPEN_INFO' | translate }}</md-tooltip>
                                         </span>
                                         <span 
                                             ng-if="resource.isNew && ['smartphone', 'chipcard'].indexOf(resource.locktype) < 0"
@@ -160,10 +160,10 @@
                 </div>
             </div>
 
-            <!-- smartwheels benefits -->
-            <div class="card" ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0" id="smartwheels_info">
+            <!-- mywheels open benefits -->
+            <div class="card" ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0" id="mywheels_open_info">
                 <div class="card-heading">
-                    <h3 class="card-title">{{ 'SMARTWHEELS_TITLE' | translate }}</h3>
+                    <h3 class="card-title">{{ 'MYWHEELS_OPEN_TITLE' | translate }}</h3>
                 </div>
                 <div class="card-body">
                     <div layout="row" layout-xs="column">
