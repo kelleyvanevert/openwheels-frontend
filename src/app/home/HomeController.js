@@ -32,18 +32,18 @@ angular.module('owm.home', ['owm.resource', 'slick'])
   }
 
   //get resources for slider if page is loaded
-  angular.element($window.document).ready(function () {
-    getFeaturedResources();
-  });
+  // angular.element($window.document).ready(function () {
+  //   getFeaturedResources();
+  // });
 
-  function getFeaturedResources() {
-    resourceService.all({
-      'onlyFeatured': 'true'
-    })
-    .then(function (res) {
-      $scope.resources_slider = res;
-    });
-  }
+  // function getFeaturedResources() {
+  //   resourceService.all({
+  //     'onlyFeatured': 'true'
+  //   })
+  //   .then(function (res) {
+  //     $scope.resources_slider = res;
+  //   });
+  // }
 
   $scope.gotoProfile = function (resource) {
     $state.go('owm.resource.show', {

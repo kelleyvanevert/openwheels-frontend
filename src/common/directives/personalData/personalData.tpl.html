@@ -67,7 +67,9 @@
             <h3>{{ 'DATE_OF_BIRTH' | translate }}</h3>
             <div id="date" class="icon date">
                 <input type="number" id="day" name="day" inputmode="numeric" pattern="[0-9]*" ng-model="date.day" placeholder="DD" maxlength="2" max="31" min="0">
-                <input type="number" id="month" name="month" inputmode="numeric" pattern="[0-9]*" ng-model="date.month" placeholder="MM" maxlength="2" max="12" min="0">
+                <select id="month" name="month" ng-model="date.month" ng-options="month.value as month.label for month in months" class="maand">
+                    <option value="">maand</option>
+                </select>
                 <input type="number" id="year" name="year" inputmode="numeric" pattern="[0-9]*" ng-model="date.year" placeholder="JJJJ" maxlength="4" max="2016" min="1900">
             </div>
 
