@@ -361,8 +361,117 @@
 /* ---------------------- ADVATAGE ------------------- */
 .advantage-mywheels {
     padding: 1em;
-    margin: 3em auto;
+    margin: 0 auto 3em auto;
     // max-width: 100vw;
+}
+/* ---------------------- RATINGS ------------------- */
+.ratings-mywheels {
+    margin: 0 auto;
+}
+.ratings {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+}
+.ratings--heading {
+    text-align: center;
+    color: #fff;
+    padding-bottom: 0.5em;
+}
+.ratings--average {
+    text-align: center;
+    padding-bottom: 1em;
+    font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+}
+.ratings--average--text {
+    font-size: 22px;
+    padding-left: 10px;
+    vertical-align: middle;   
+}
+.ratings--average--stars {
+    display: inline-block;
+    margin: 0 auto;
+    width: 275px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 1em;
+    border-radius: 5px;
+}
+.rating {
+    flex-basis: 49%;
+    display: inline-block;
+    max-width: 100%;
+    background: #fff;
+    box-sizing: border-box;
+    display: block;
+    padding: 1.5em;
+    margin: 1rem 0;
+    box-shadow: 0 0 3.57rem 0 rgba(0, 0, 0, .1);
+    min-height: 250px;
+    position:relative;
+}
+.rating--title--stars {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+.rating--title--text {
+    margin: 0;
+    h3 {
+        color: @mywheels-green;
+        font-size: 1.8em;
+        float: right;
+        margin: 0;
+        padding: 0;
+    }
+}
+.material-icons.rating--title--icon {
+    padding: 0;
+    margin: 0;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #f8c541;
+    height: auto;
+}
+.rating--content {
+    font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+    font-weight: normal;
+    font-size: 1.1em;
+    padding-top: 1em;
+    padding-bottom: 3em;
+    margin: 0;
+}
+.rating--sender {
+    font-size:1em;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    padding: 1.5em;
+    margin: 0;
+}
+@media (min-width:500px) {
+    .ratings {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+@media (min-width:769px) {
+    .rating:nth-child(odd) {
+        margin-right: 1%;
+    }
+    .rating:nth-child(even) {
+        margin-left: 1%;
+    }
+}
+@media (min-width:500px) and (max-width:1025px) {
+    .rating {
+        flex-basis: 30em;;
+    }
 }
 /* ---------------------- SLIDER ------------------- */
 .slider {
