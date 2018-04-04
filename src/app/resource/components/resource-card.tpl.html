@@ -28,9 +28,9 @@
                     <div flex>
                         <span ng-if="resource.brand || resource.model" flex="none">{{ (resource.brand + ' ' + resource.model) | toTitleCase }}</span>
                         <span hide-xs>
-                            <span class="tag tag-warning" ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0" flex="none"> {{ 'SMART_WHEELS_TIP' | translate }} 
+                            <span class="tag tag-warning" ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0" flex="none"> {{ 'MYWHEELS_OPEN_TIP' | translate }} 
                             <md-tooltip class="multiline" md-direction="bottom" ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0">
-                                {{ 'SMART_WHEELS_INFO' | translate }}
+                                {{ 'MYWHEELS_OPEN_INFO' | translate }}
                             </md-tooltip></span>
                             <span class="tag tag-success" ng-if="resource.isNew" flex="none"> {{ 'NEW_TIP' | translate }} </span>
                         </span>
@@ -46,10 +46,10 @@
                             ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0" 
                             class="tag tag-warning" 
                             style="margin-left: 0px;"
-                            id="smartwheels-tip-label"
+                            id="mywheels-open-tip-label"
                         >
-                            {{ 'SMART_WHEELS_TIP' | translate }}
-                            <md-tooltip md-direction="bottom" class="multiline">{{ 'SMART_WHEELS_INFO' | translate }}</md-tooltip>
+                            {{ 'MYWHEELS_OPEN_TIP' | translate }}
+                            <md-tooltip md-direction="bottom" class="multiline">{{ 'MYWHEELS_OPEN_INFO' | translate }}</md-tooltip>
                         </span>
                         <span 
                             ng-if="resource.isNew && ['smartphone', 'chipcard'].indexOf(resource.locktype) < 0"
