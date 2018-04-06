@@ -43,7 +43,7 @@
     <!-- form -->
     <form name="form" ng-submit="submit()">
 
-      <div class="row">
+      <div class="row" ng-if="!booking.resource.boardcomputer">
         <div class="col col-sm-6">
           <div class="form-group" ng-class="{'has-error': form.odoBegin.$invalid && form.odoBegin.$touched}">
             <label>{{ 'BOOKING.ADMINISTER.ODOBEGIN_LABEL' | translate }}</label>
@@ -70,7 +70,9 @@
           <p ng-class="{'text-danger': trip.odoEnd < trip.odoBegin, 'text-warning': trip.odoEnd - trip.odoBegin > 5000}" translate="DECL_DISTANCE" translate-values="{dist: trip.odoEnd - trip.odoBegin}"></p>
         </div>
       </div>
-      <hr>
+
+      <hr ng-if="!booking.resource.boardcomputer">
+      
       <div class="row" ng-if="allowDeclarations">
         <div class="col-sm-12">
           <h2>{{ 'DECLARATION_TITLE' | translate }}</h2>
