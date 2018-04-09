@@ -19,8 +19,8 @@
         <md-icon>access_time</md-icon><span> Datum</span>
       </button>
     </div>
-    <div ng-if="showFilters" class="hide-xs button button--small md-ink-ripple" md-ink-ripple="#232521">
-      <button ng-class="{'active': filters.filters.smartwheels || filters.filters.fuelType || filters.filters.resourceType || filters.filters.minSeats || filters.props.radius !== 25000}" class="hidden-lg hidden-md btn btn-default" type="button" ng-click="doClickFilters()">
+    <div ng-if="showFilters" class="hide-xs hidden-lg hidden-md button button--small md-ink-ripple" md-ink-ripple="#232521">
+      <button ng-class="{'active': filters.filters.smartwheels || filters.filters.fuelType || filters.filters.resourceType || filters.filters.minSeats || filters.props.radius !== 25000}" class="btn btn-default" type="button" ng-click="doClickFilters()">
         <md-icon>filter_list</md-icon><span> Filter</span>
       </button>
     </div>
@@ -37,10 +37,10 @@
       </md-menu>
     </div>
     <div class="button button--no-grow md-ink-ripple" md-ink-ripple="#232521" id="searchButton">
-      <button ng-if="!searcher.loading" hide-xs hide-sm type="button" class="btn btn-success" ng-click="doSearch()">Zoek een auto</button>
-      <button ng-if="searcher.loading" hide-xs hide-sm disabled type="button" class="btn btn-success"><i class="fa fa-fw fa-circle-o-notch fa-spin"></i></button>
-      <button ng-if="!searcher.loading" hide-gt-sm type="button" class="btn auto-width btn-success" ng-click="doSearch()"><md-icon class="text-white">search</md-icon></button>
-      <button ng-if="searcher.loading" hide-gt-sm disabled type="button" class="btn auto-width btn-success"><i class="fa fa-fw fa-circle-o-notch fa-spin"></i></button>
+      <button ng-if="!searcher.loading" hide-xs type="button" class="btn btn-success" ng-click="doSearch()">Zoek een auto</button>
+      <button ng-if="searcher.loading" hide-xs disabled type="button" class="btn btn-success"><i class="fa fa-fw fa-circle-o-notch fa-spin"></i></button>
+      <button ng-if="!searcher.loading" hide-gt-xs type="button" class="btn auto-width btn-success" ng-click="doSearch()"><md-icon class="text-white">search</md-icon></button>
+      <button ng-if="searcher.loading" hide-gt-xs disabled type="button" class="btn auto-width btn-success"><i class="fa fa-fw fa-circle-o-notch fa-spin"></i></button>
     </div>
   </form>
 
