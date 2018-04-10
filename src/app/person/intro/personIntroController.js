@@ -2,7 +2,7 @@
 
 angular.module('owm.person.intro', [])
 
-.controller('PersonIntroController', function ($scope, me, resourceService, $state) {
+.controller('PersonIntroController', function ($scope, me, $state) {
   activate();
 
   function activate() {
@@ -19,18 +19,4 @@ angular.module('owm.person.intro', [])
     }
   };
 
-  function loadFeaturedSlider() {
-    resourceService.all({
-        'onlyFeatured': 'true'
-      })
-      .then(function (res) {
-        $scope.resources_slider = res;
-      });
-    $scope.gotoProfile = function (resource) {
-      $state.go('owm.resource.show', {
-        city: resource.city,
-        resourceId: resource.id
-      });
-    };
-  }
 });
