@@ -140,11 +140,16 @@
     font-weight: bolder;
   }
 }
-@media (min-width:37.5em) {
+@media (min-width:600px) {
     .button {
         min-width: 10em;
         &--small {
-          min-width: initial;
+          min-width: 8em;
+        }
+    }
+    .homepage-searchbar {
+        .button--no-grow {
+          min-width: 10em;
         }
     }
 }
