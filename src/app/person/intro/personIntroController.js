@@ -8,7 +8,6 @@ angular.module('owm.person.intro', [])
   function activate() {
     $scope.openboxes = {};
     $scope.me = me;
-    loadFeaturedSlider();
   }
 
   $scope.toggleBox = function (box) {
