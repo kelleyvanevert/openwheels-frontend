@@ -95,7 +95,7 @@ angular.module('personalDataDirective', [])
           if($scope.person.companyName) {
             newProps.isCompany = true;
           }
-          if (moment($scope.person.dateOfBirth).format('YYYY') + '-' + moment($scope.person.dateOfBirth).format('M') + '-' + moment($scope.person.dateOfBirth).format('D') !== $scope.date.year + '-' + $scope.date.month + '-' + $scope.date.day) {
+          if (moment(masterPerson.dateOfBirth).format('YYYY') + '-' + moment(masterPerson.dateOfBirth).format('M') + '-' + moment(masterPerson.dateOfBirth).format('D') !== $scope.date.year + '-' + $scope.date.month + '-' + $scope.date.day) {
             $scope.person.dateOfBirth = $scope.date.year + '-' + $scope.date.month + '-' + $scope.date.day;
             newProps.dateOfBirth = $scope.person.dateOfBirth;
           }
