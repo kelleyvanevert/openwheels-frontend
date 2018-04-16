@@ -13,6 +13,23 @@ angular.module('owm.resource.own', [])
     error: ''
   };
   
+  $scope.saveOld = function (resource) {
+    alertService.load();
+    return authService.me()
+    .then(function (me) {
+      resourceService.create({
+        'owner': me.id,
+        'registrationPlate': resource.registrationPlate
+      }).then(function (resource) {
+          alertService.loaded();
+          $state.go('owm.resource.edit', {'resourceId': resource.id});
+        }, function (error) {
+          alertService.loaded();
+          alertService.add('danger', error.message, 5000);
+        });
+    });
+  };
+
   $scope.save = function (registrationPlate) {
     alertService.load();
     return authService.me()
