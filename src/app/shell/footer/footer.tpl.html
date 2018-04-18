@@ -25,6 +25,7 @@
           <a href="https://mywheels.nl/autodelen/hoe-huren-werkt/verzekering">{{ 'INSURANCE' | translate }}</a><br/>
           <a href="https://mywheels.nl/autodelen/hoe-huren-werkt/tarieven-huren/">{{ 'PRICING' | translate }}</a><br/>
           <a href="https://mywheels.nl/autodelen/hoe-autodelen-werkt/voorwaarden/">{{ 'TERMS' | translate }}</a><br/>
+          <a ng-if="user.isAuthenticated && user.identity.provider.id === 1" ui-sref="invite">{{ 'INVITE_FRIENDS_MENU' | translate }}</a><br/>
         </div>
 
         <div class="col-md-3 col-sm-3 col-xs-6">
