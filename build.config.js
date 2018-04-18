@@ -48,6 +48,7 @@ module.exports = {
       'vendor/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
       'vendor/angular-translate-storage-local/angular-translate-storage-local.js',
       'vendor/angular-ui-utils/modules/unique/unique.js',
+      'vendor/angularjs-socialshare/dist/angular-socialshare.js',
       'vendor/angular-ui-calendar/src/calendar.js',
       'vendor/fullcalendar/fullcalendar.js',
       'vendor/angularjs-geolocation/src/geolocation.js',

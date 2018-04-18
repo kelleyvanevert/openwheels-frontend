@@ -1,0 +1,276 @@
+.invite {
+    box-sizing: border-box;
+    position: relative;
+    max-width: 100vw;
+    label {
+        color: #fff;
+        font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+        font-size: 1.2em;
+    }
+    .copyLink {
+        height: 38px;
+        margin: 2em;
+        padding: 0;
+        .personal-link {
+            color: #000 !important;
+            height: 100%;
+            padding: 10px;
+            min-width: 22em;
+            font-size: 16px;
+            border: 0;
+            border-radius: 3px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #fff;
+            color: #000;
+            height: 100%;
+            padding-left: 15px;
+            padding-right: 15px;
+            font-size: 1.1em;
+            margin: 0;
+            border-left: 1px dashed #777;
+            border-radius: 0 3px 3px 0;
+            margin-left: -5px;
+            line-height: unset;
+            width: unset;
+            box-shadow: none !important;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        button:active {
+            opacity: 0.8;
+        }
+        md-icon {
+            color: #000;
+            font-size: 1.1em;
+            line-height: 21px;
+        }
+    }
+}
+.invite-image {
+    margin: auto;
+    vertical-align: middle;
+    text-align: center;
+    .border-radius(50%);
+    min-height: 155px;
+    color: #fff;
+    .fa-spin {
+        margin-top: 75px;
+    }
+}
+.invite--heading {
+    height: 50rem;
+    padding: 2em;
+    background-color: @mywheels-blue;
+    z-index: 0;
+    position: relative;
+    md-icon {
+        color: #fff;
+        font-size: 1.2em;
+    }
+    &.large {
+        height: 60rem !important;
+    }
+    h1 {
+        margin: auto;
+        padding-top: 2.5rem;
+        padding-bottom: 0.5rem;
+        color: #fff;
+        font-size: 2.3em;
+        text-align: center;
+        text-shadow: 0 0.07rem 0.21rem #444;
+    }
+    p {
+        margin: auto;
+        padding: 0.5rem;
+        color: #fff;
+        font-size: 1.3em;
+        max-width: 100%;
+        text-align: center;
+        text-shadow: 0 0.07rem 0.21rem #444;
+    }
+    .md-button {
+        margin-top: 1.5em;
+        padding: 0.5em 2em 0.5em 2em;
+        font-size: 1.3em;
+        font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+        font-size: 16px;
+    }
+    .share-buttons {
+        .mail {
+            background-color: #c71610 !important;
+            color: #fff;
+        }
+        .facebook {
+            background-color: #3b5998 !important;
+            color: #fff;
+        }
+        .twitter {
+            background-color: #1da1f2 !important;
+            color: #fff;
+        }
+        .whatsapp {
+            background-color: #25d366 !important;
+            color: #fff;
+        }
+        .md-button {
+            width: 11em;
+            padding: 0.5em;
+            margin: 0.5em !important;
+            .fa-fw {
+                vertical-align: middle;
+                font-size: 1.8em;
+                margin-right: 0.3em;
+            }
+        }
+    }
+}
+.invite-dialog--heading {
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.1em;
+}
+.invite-three-steps {
+    background-color: #fff;
+    padding-bottom: 3em;
+    text-align: center;
+    margin: auto;
+    md-icon {
+        font-size: 5em;
+        height: auto;
+        width: auto;
+        padding: 5px;
+        color: @mywheels-green;
+    }
+    p {
+        max-width: 75%;
+        margin: auto;
+    }
+    &--heading {
+        padding-bottom: 1.42em;
+        color: #82b955;
+        text-align: center;
+        background-color: #fff;
+        margin: 0;
+    }
+}
+.resource-of-inviter {
+    padding: 0 1em;
+    background-color: @mywheels-green;
+    &--heading {
+        color: #fff;
+        padding: 1.42em 0;
+        font-size: 24.5px;
+    }
+    ul {
+        list-style-type: none;
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+        li {
+            overflow:hidden;
+            position: relative;
+            float: left;
+            padding-bottom: 1em;
+            img {
+                width: 100%;
+                margin: 1em;
+            }
+        }
+        .information {
+            position: absolute;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.40);
+            color: #fff;
+            margin: 1em;
+            padding: 10px;
+            width: 100%;
+            top: 0;
+            h2 {
+                font-size: 20px;
+            }
+            h3 {
+                font-weight: normal;
+                font-size: 16px;
+                padding-top: 5px;
+            }
+        }
+    }
+}
+.invited-friends {
+    padding: 0 1em 1em 1em;
+    background-color: #EFEFEF;
+    &--heading {
+        color: #777777;
+        padding: 1.42em 0;
+        font-size: 24.5px;
+    }
+    ul {
+        list-style-type: none;
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+    }
+}
+@media (min-width: 996px) {
+    .invite-image {
+        margin: 0.5em auto;
+        min-height: 180px;
+    }
+    .invite--heading {
+        p {
+            max-width:40%;
+            margin-top: 0.5em;
+        }
+        .md-button {
+            margin-top: 1.5em;
+        }
+    }
+    md-dialog {
+        margin-left: -5px;
+    }
+    .invite-dialog--heading {
+    }
+}
+@media (max-width: 500px) {
+    .invite--heading {
+        background-position: 20% 50%;
+        h1 {
+            font-size: 1.7em;
+        }
+        p {
+            font-size: 1.2em;
+        }
+        .md-button {
+            margin-top: 1em;
+            padding: 0.5em;
+            font-size: 1em;
+        }
+    }
+    .invite-three-stepts--heading {
+        font-size: 20px;
+    }
+}
+@media (max-width: 768px) {
+    .invite-three-stepts {
+        &--step {
+            padding-bottom: 2em !important;
+        }
+    }
+    .resource-of-inviter {
+        ul {
+            li {
+                img {
+                    margin: 0;
+                }
+                .information {
+                    margin: 0;
+                }
+            }
+        }
+    }
+}

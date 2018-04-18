@@ -1,7 +1,11 @@
 <div class="app-menu">
 
   <md-list ng-if="!user.isAuthenticated">
-    <md-list-item id= "menuSignup" class="menu-item-signup" ng-click="navigate('owm.auth.signup')">
+    <md-list-item id= "menuSignup" class="menu-item-signup" ng-click="navigate('owm.auth.signup')" ng-show="!invitedBySlug">
+      <md-icon>person_outline</md-icon><p>{{ 'SIGNUP' | translate }}</p>
+    </md-list-item>
+
+    <md-list-item id= "menuSignup" class="menu-item-signup" ng-click="navigate('subscribe', {slug: invitedBySlug})" ng-show="invitedBySlug">
       <md-icon>person_outline</md-icon><p>{{ 'SIGNUP' | translate }}</p>
     </md-list-item>
 

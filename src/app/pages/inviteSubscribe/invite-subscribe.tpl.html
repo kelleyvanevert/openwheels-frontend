@@ -1,0 +1,131 @@
+<div class="invite">
+
+    <div class="invite--heading text-center">
+        <section style="z-index:2">
+            <img class="invite-image media-object img-user-large" person-profile-image="{ person: inviter, size: 'large' }" />
+            <span><h1 class="fadeInDown animated">Krijg €10 korting op je eerste rit van {{ inviter.firstName | toTitleCase }}!</h1></span>
+            <span hide-xs><p class="fadeInDown animated">Met MyWheels huur je makkelijk een auto in de buurt. Je opent een auto met je smartphone en/of OV-chipkaart, of door de sleutel bij verhuurder op te halen.</p></span>
+            <span hide-gt-xs><br/><p class="fadeInDown animated">Met MyWheels huur je makkelijk een auto in de buurt.</p><br/></span>
+
+            <md-button class="md-raised " ng-click="openModal()">Accepteer de uitnodiging</md-button>
+        </section>
+    </div>
+
+    <div class="triangle--bar triangle--bar-white"></div>
+
+    <!-- Hire a car in 3 steps -->
+    <div class="invite-three-steps text-center">
+        <div class="container-home">
+            <h2 class="invite-three-stepts--heading">{{'DASHBOARD_INTRO_TREE_STEPS' | translate }}</h2>
+            <div layout="row" layout-wrap>
+                <div flex="33" flex-xs="100" class="invite-three-stepts--step">
+                    <md-icon>search</md-icon>
+                    <h3>{{ 'DASHBOARD_INTRO_TREE_STEPS_ONE' | translate}}</h3>
+                    <p>{{ 'DASHBOARD_INTRO_TREE_STEPS_ONE_TEXT' | translate }}</p>
+                </div>
+                <div flex="33" flex-xs="100" class="invite-three-stepts--step">
+                    <md-icon>person_outline</md-icon>
+                    <h3>{{ 'DASHBOARD_INTRO_TREE_STEPS_TWO' | translate}}</h3>
+                    <p>{{ 'DASHBOARD_INTRO_TREE_STEPS_TWO_TEXT' | translate }}</p>
+                </div>
+                <div flex="33" flex-xs="100" class="invite-three-stepts--step">
+                    <md-icon>directions_car</md-icon>
+                    <h3>{{ 'DASHBOARD_INTRO_TREE_STEPS_TREE' | translate}}</h3>
+                    <p>{{ 'DASHBOARD_INTRO_TREE_STEPS_TREE_TEXT' | translate }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Hire a car in 3 steps -->
+
+    <div class="resource-of-inviter text-center" ng-if="resources.length > 0">
+        <div class="container-home">
+            <h2 class="resource-of-inviter--heading" ng-if="resources.length > 1">Auto's van {{ inviter.firstName | toTitleCase }}</h2>
+            <h2 class="resource-of-inviter--heading" ng-if="resources.length === 1">De auto van {{ inviter.firstName | toTitleCase }}</h2>
+            <ul>
+                <li ng-repeat="resource in resources | limitTo: 2" ui-sref="owm.resource.show({ resourceId: resource.id, city: resource.city })">
+                    <ow-resource-picture resource="resource" size="large"></ow-resource-picture>
+                    <div class="information">
+                        <h2 class="no-margin" style="color:#fff;">{{ resource.alias | limitTo: 30}}{{resource.alias.length > 30 ? '...' : ''}}</h2>
+                        <h3 class="no-margin" style="color:#fff"">{{ resource.location }}, {{ resource.city }}</h3>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="intro-section">
+        <section class="intro-section__faq">
+            <div class="intro__page">
+                <h2 class="intro-section__faq__heading">{{'FAQ' | translate}}</h2>
+                <div class="intro-section__faq__boxes">
+                    <div class="intro-section__faq__boxes_divider">
+                        <div class="intro-section__faq__box">
+                            <md-card>
+                                <md-card-header ng-click="toggleBox(1)">
+                                    <md-card-header-text>
+                                        <span class="md-title">{{ 'FAQ_ESCROW' | translate}}<md-icon class="pull-right">{{openboxes[1] ? 'expand_less' : 'expand_more'}}</md-icon></span>
+                                    </md-card-header-text>
+                                </md-card-header>
+                                <md-divider></md-divider>
+                                <md-card-content class="intro-section__faq__answer" ng-show="openboxes[1]">
+                                    {{ 'FAQ_ESCRO_TEXT' | translate}}
+                                </md-card-content>
+                            </md-card>
+                        </div>
+
+                        <div class="intro-section__faq__box">
+                            <md-card>
+                                <md-card-header ng-click="toggleBox(3)">
+                                    <md-card-header-text>
+                                        <span class="md-title">  {{ 'FAQ_INSURANCE' | translate}}<md-icon class="pull-right">{{openboxes[3] ? 'expand_less' : 'expand_more'}}</md-icon></span>
+                                    </md-card-header-text>
+                                </md-card-header>
+                                <md-divider></md-divider>
+                                <md-card-content class="intro-section__faq__answer" ng-show="openboxes[3]">
+                                    {{ 'FAQ_INSURANCE_TEXT' | translate}}
+                                </md-card-content>
+                            </md-card>
+                        </div>
+
+                    </div>
+
+                    <div class="intro-section__faq__boxes_divider">
+                        <div class="intro-section__faq__box">
+                            <md-card>
+                                <md-card-header ng-click="toggleBox(4)">
+                                    <md-card-header-text>
+                                        <span class="md-title">  {{ 'FAQ_MYWHEELS_OPEN' | translate}}<md-icon class="pull-right">{{openboxes[4] ? 'expand_less' : 'expand_more'}}</md-icon></span>
+                                    </md-card-header-text>
+                                </md-card-header>
+                                <md-divider></md-divider>
+                                <md-card-content ng-show="openboxes[4]">
+                                    {{ 'FAQ_MYWHEELS_OPEN_TEXT' | translate}}
+                                </md-card-content>
+                            </md-card>
+                        </div>
+
+                        <div class="intro-section__faq__box">
+                            <md-card>
+                                <md-card-header ng-click="toggleBox(6)">
+                                    <md-card-header-text>
+                                        <span class="md-title">  {{ 'FAQ_COUNTRY' | translate}}<md-icon class="pull-right">{{openboxes[6] ? 'expand_less' : 'expand_more'}}</md-icon></span>
+                                    </md-card-header-text>
+                                </md-card-header>
+                                <md-divider></md-divider>
+                                <md-card-content ng-show="openboxes[6]">
+                                    {{ 'FAQ_COUNTRY_TEXT' | translate}}
+                                </md-card-content>
+                            </md-card>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="intro-section__faq__button">
+                    <a href="https://mywheels.nl/autodelen/" class="mywheels-btn mywheels-btn-default mywheels-btn-normal" md-ink-ripple="#4b702c">{{ 'FAQ_ALL' | translate }}</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</div>

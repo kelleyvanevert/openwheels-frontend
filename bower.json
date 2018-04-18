@@ -1,6 +1,6 @@
 {
   "name": "OpenWheels",
-  "version": "2.16.0",
+  "version": "2.17.0",
   "dependencies": {
     "angular": "1.4.8",
     "angular-animate": "1.4.8",
@@ -24,13 +24,13 @@
     "ngstorage": "0.3.0",
     "pickadate": "3.5.3",
     "angular-aria": "~1.4.8",
+    "angularjs-socialshare": "2.3.11",
     "font-awesome": "~4.4.0",
     "angular-material": "1.0.2",
     "bootstrap": "3.3.6",
     "angular-slick": "~0.2.1",
     "slick-carousel": "1.6.0",
     "ui-cropper": "^1.0.4"
-    // "angular-recaptcha": "^4.1.2"
   },
   "resolutions": {
     "jquery": "~2.x",
