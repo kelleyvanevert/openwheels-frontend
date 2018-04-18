@@ -25,6 +25,10 @@
       <md-icon>message</md-icon><p>{{ 'MY_MESSAGES' | translate }}</p>
     </md-list-item>
 
+    <md-list-item id="menuMessages" class="menu-item-invite" ng-click="navigate('invite')" ng-if="user.identity.provider.id === 1">
+      <md-icon>share</md-icon><p>{{ 'INVITE_FRIENDS_MENU' | translate }}</p>
+    </md-list-item>
+
     <md-divider></md-divider>
   </md-list>
 
@@ -42,7 +46,6 @@
       <md-icon>help_outline</md-icon><p>{{ 'NAVBAR.HOW_IT_WORKS' | translate }}</p>
     </md-list-item>
   </md-list>
-
 
   <md-list ng-if="user.isAuthenticated">
 
