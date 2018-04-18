@@ -86,7 +86,9 @@ angular.module('owm.pages', [
     },
     resolve: {
       me: ['authService', function (authService) {
-        return authService.me();
+        return authService.userPromise().then(function (user) {
+          return user.isAuthenticated ? user.identity : null;
+        });
       }],
       metaInfo: ['$translate', 'metaInfoService', '$filter',
         function ($translate, metaInfoService) {
