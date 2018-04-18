@@ -84,6 +84,13 @@ angular.module('owm.pages', [
         controller: 'InviteController'
       }
     },
+    data: {
+      access: {
+        deny: {
+          anonymous: true
+        }
+      }
+    },
     resolve: {
       me: ['authService', function (authService) {
         return authService.userPromise().then(function (user) {
@@ -110,6 +117,13 @@ angular.module('owm.pages', [
       'main-full@shell': {
         templateUrl: 'pages/inviteSubscribe/invite-subscribe.tpl.html',
         controller: 'InviteSubscribeController'
+      }
+    },
+    data: {
+      access: {
+        deny: {
+          anonymous: false
+        }
       }
     },
     resolve: {
