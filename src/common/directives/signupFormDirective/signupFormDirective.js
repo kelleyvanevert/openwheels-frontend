@@ -4,9 +4,12 @@ angular.module('signupFormDirective', [])
 
 .directive('signupForm', function () {
   return {
-    restrict: 'A',
+    restrict: 'AE',
     replace: true,
     transclude: true,
+    scope: {
+      mail: '@'
+    },
     templateUrl: 'directives/signupFormDirective/signupFormDirective.tpl.html',
     controller: function ($scope, $rootScope, $state, $stateParams, $translate, $q, authService, featuresService, alertService, personService, $mdDialog, Analytics, appConfig, $localStorage, $window) {
       $scope.auth = {};
@@ -14,6 +17,9 @@ angular.module('signupFormDirective', [])
       $scope.me = {};
       $scope.auth.terms = false;
       $scope.closeAlert = alertService.closeAlert;
+      if ($scope.mail) {
+        $scope.auth.email = $scope.mail;
+      }
 
       $scope.facebookSignup = function() {
         var booking = $scope.booking;

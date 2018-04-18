@@ -28,6 +28,10 @@ angular.module('personDirectives', [])
             w = 72;
             h = 72;
             break;
+          case 'large':
+            w = 150;
+            h = 150;
+            break;
           default:
             w = 50;
             h = 50;
