@@ -14,7 +14,7 @@
             <span><p class="fadeInDown animated">Geef je vrienden 10 euro korting op hun eerste rit. Voor elke vriend die een rit maakt, ontvang jij 5 euro.</p></span>
 
             <div class="copyLink">
-                <input class="personal-link" ng-model="personalLink" />
+                <input id="personalLink" class="personal-link" ng-model="personalLink" ng-click="selectLink()" />
                 <button class="md-raised md-button md-ink-ripple"" href="#" ng-click="copyPersonalLink()">
                     <md-icon>content_copy</md-icon> 
                     <span ng-if="!personalLinkCopied">Kopiëren</span>

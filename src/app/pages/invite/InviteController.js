@@ -22,8 +22,14 @@ angular.module('owm.pages.invite', [])
 		}
 	};
 
+	$scope.selectLink = function() {
+		var input = document.getElementById('personalLink');
+		input.select();
+	};
+
 	$scope.copyPersonalLink = function() {
-		document.querySelector('.personal-link').select();
+		var input = document.getElementById('personalLink');
+		input.select();
 		document.execCommand('copy');
 		$scope.personalLinkCopied = true;
 	};
