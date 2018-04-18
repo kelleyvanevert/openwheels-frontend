@@ -17,7 +17,9 @@ angular.module('signupFormDirective', [])
       $scope.me = {};
       $scope.auth.terms = false;
       $scope.closeAlert = alertService.closeAlert;
-      $scope.auth.email = $scope.mail;
+      if ($scope.mail) {
+        $scope.auth.email = $scope.mail;
+      }
 
       $scope.facebookSignup = function() {
         var booking = $scope.booking;
