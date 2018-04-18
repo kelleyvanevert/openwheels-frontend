@@ -23,13 +23,12 @@
             </div>
 
             <div class="share-buttons">
-                <a class="md-button md-raised mail"><i class="fa fa-fw fa-2x fa-envelope"></i>E-mail</a>
-                <a class="md-button md-raised facebook"><i class="fa fa-fw fa-2x fa-facebook"></i>Facebook</a>
+                <a class="md-button md-raised mail" ng-click="openModal()"><i class="fa fa-fw fa-2x fa-envelope"></i>E-mail</a>
                 <a 
                     href="#"
                     socialshare
                     socialshare-provider="facebook"
-                    socialshare-type="share"
+                    socialshare-via="appConfig.fbAppId"
                     socialshare-text="Meld je via mij aan bij MyWheels en ontvang 10 euro korting op je eerst rit!"
                     socialshare-hashtags="autodelen"
                     socialshare-url="{{ personalLink }}"
@@ -55,6 +54,7 @@
                     socialshare-text="Meld je via mij aan bij MyWheels en ontvang 10 euro korting op je eerst rit!"
                     socialshare-url="{{ personalLink }}"
                     class="md-button md-raised whatsapp"
+                    hide-gt-xs
                 >
                     <i class="fa fa-fw fa-2x fa-whatsapp"></i>WhatsApp
                 </a>

@@ -9,7 +9,7 @@
     }
     .copyLink {
         height: 38px;
-        margin: 2em;
+        margin: 2em 0;
         padding: 0;
         .personal-link {
             color: #000 !important;
@@ -73,7 +73,7 @@
         font-size: 1.2em;
     }
     &.large {
-        height: 60rem !important;
+        height: 62rem;
     }
     h1 {
         margin: auto;
@@ -230,15 +230,34 @@
             margin-top: 1.5em;
         }
     }
-    md-dialog {
+    .md-dialog-margin {
         margin-left: -5px;
     }
     .invite-dialog--heading {
     }
 }
 @media (max-width: 500px) {
+    .invite {
+        .copyLink {
+            height: auto;
+            margin: 1em 0;
+            .personal-link {
+                min-width: 100%;
+                max-width: 100%;
+            }
+            button {
+                border-radius: 3px;
+                margin: 1em 2em;
+                border-left: 0;
+                margin-left: 2em;
+            }
+        }
+    }
     .invite--heading {
         background-position: 20% 50%;
+        &.large {
+            height: 90rem;
+        }
         h1 {
             font-size: 1.7em;
         }
@@ -248,11 +267,16 @@
         .md-button {
             margin-top: 1em;
             padding: 0.5em;
-            font-size: 1em;
         }
     }
     .invite-three-stepts--heading {
         font-size: 20px;
+    }
+    .share-buttons {
+        .md-button {
+            width: 15em !important;
+            font-size: 1.2em;
+        }
     }
 }
 @media (max-width: 768px) {

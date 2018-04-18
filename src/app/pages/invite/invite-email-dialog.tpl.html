@@ -1,0 +1,33 @@
+<md-dialog flex-xs="100" flex-sm="70" flex-md="50" flex-lg="30" flex-xl="25" class="md-dialog-margin">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Vrienden uitnodigen</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon>close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content  class="md-dialog-content">
+        <p>Vul het e-mailadres van een vriend in en klik op uitnoding versturen. Jouw vriend ontvangt dan van ons een mail met jouw persoonlijke link.</p>
+
+        <div flex layout="row" layout-align="center">
+
+            <form role="form" class="mywheels-form" name="inviteFriendsForm" ng-submit="inviteFriends()">
+                <div class="">
+                    <div id="email_group" class="icon email">
+                        <input type="email" autocomplete="off" id="email" name="email" ng-model="friend.email" placeholder="{{ 'EMAIL' | translate }}" required>
+                        <div class="help-block" ng-show="inviteFriendsForm.$submitted || inviteFriendsForm.email.$touched">
+                            <span class="text-danger" ng-show="inviteFriendsForm.email.$error.required">{{ 'REQUIRED' | translate }}</span>
+                            <span class="text-danger" ng-show="inviteFriendsForm.email.$error.email">{{ 'EMAIL_NOT_VALID' | translate }}</span>
+                        </div>
+                    </div>
+                    <center><button type="button" name="button" class="mywheels-btn mywheels-btn-default mywheels-btn-form-margin mywheels-btn-big" ng-click="inviteFriends()" md-ink-ripple="#3a6d81">
+                        {{ 'OK_INVITE' | translate }}
+                    </button></center>
+                </div>
+            </form>
+
+        </div>
+    </md-dialog-content>
+</md-dialog>

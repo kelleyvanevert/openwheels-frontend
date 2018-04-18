@@ -1,14 +1,14 @@
 'use strict';
 angular.module('owm.pages.invite', [])
 
-.controller('InviteController', function ($scope, $state, $stateParams, me, metaInfoService, personService, alertService, Analytics, $filter, appConfig) {
+.controller('InviteController', function ($scope, $state, $stateParams, me, metaInfoService, personService, alertService, Analytics, $filter, appConfig, $mdDialog, $mdMedia) {
 	
 	metaInfoService.set({url: 'https://mywheels.nl/uitnodigen'});
 	metaInfoService.set({canonical: 'https://mywheels.nl/uitnodigen'});
 
 	$scope.me = me;
 	$scope.appConfig = appConfig;
-	$scope.personalLink = 'https://mywheels.nl/uitnodigen/' + $filter('lowercase')($scope.me.slug);
+	$scope.personalLink = 'https://test.openwheels.nl/uitnodigen/' + $filter('lowercase')($scope.me.slug);
 	$scope.personalLinkCopied = false;
 	$scope.shareText = 'Meld je via' + $scope.me.firstName + 'mij aan bij MyWheels en ontvang 10 euro korting op je eerst rit!';
 	$scope.openboxes = {};
@@ -59,5 +59,31 @@ angular.module('owm.pages.invite', [])
 			$scope.refreshProfileImage = false;
 		});
 	};
+
+	$scope.openModal = function(ev) {
+		$mdDialog.show({
+			clickOutsideToClose: true,
+			targetEvent: ev,
+			preserveScope: true,
+			locals: {
+			  me: $scope.me,
+			},
+			fullscreen: $mdMedia('xs'),
+			templateUrl: 'pages/invite/invite-email-dialog.tpl.html',
+			controller: ['$scope', '$mdDialog', 'me', '$filter', function ($scope, $mdDialog, me, $filter) {
+			  $scope.me = me;
+			  $scope.hide = function () {
+			    $mdDialog.hide();
+			  };
+			  $scope.cancel = function () {
+			    $mdDialog.cancel();
+			  };
+			  $scope.answer = function (answer) {
+			    $mdDialog.hide(answer);
+			  };
+			}]
+		});
+	};
+
 
 });
