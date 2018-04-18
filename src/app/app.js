@@ -60,6 +60,7 @@ angular.module('openwheels', [
   'form.validation',
   'signupFormDirective',
   'pickadate',
+  '720kb.socialshare',
   'timeframe',
   'datetimeDirective',
   'bookingListDirective',
@@ -287,6 +288,8 @@ angular.module('openwheels', [
       (featuresService.get('filtersSidebar') && $state.includes('owm.resource.search')) ||
       (featuresService.get('filtersSidebar') && $state.includes('owm.resource.place')) ||
       (featuresService.get('resourceSidebar') && $state.includes('owm.resource.show')) ||
+      $state.includes('subscribe') ||
+      $state.includes('invite') ||
       $state.includes('member')
     );
     $rootScope.containerHome = (

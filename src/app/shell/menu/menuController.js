@@ -2,11 +2,15 @@
 
 angular.module('owm.shell')
 
-.controller('MenuController', function ($window, $log, $rootScope, $scope, $state, $translate, authService, featuresService, contractService) {
+.controller('MenuController', function ($window, $log, $rootScope, $scope, $state, $translate, authService, featuresService, contractService, $localStorage) {
 
   $rootScope.$watch(function isAuthenticated () {
     return authService.user.isAuthenticated;
   }); // end $watch
+
+  if($localStorage.invitedBySlug) {
+    $scope.invitedBySlug = $localStorage.invitedBySlug;
+  }
 
   $scope.navigate = function (toState, toParams) {
     $scope.closeMenu();

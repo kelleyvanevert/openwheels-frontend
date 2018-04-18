@@ -208,7 +208,7 @@
                         <md-icon class="infobox--title--icon">contact_phone</md-icon>
                         <h3 class="infobox--title--text">All­risk verzekerd</h3>
                     </div>
-                    <p class="infobox--content">Je bent via MyWheels altijd goed verzekerd bij Centraal Beheer Achmea. Wij regelen de verzekering voor de duur van de huur, waardoor je met een gerust hart op weg gaat. Ook heb je de mogelijkheid om je eigen risico helemaal af te kopen en
+                    <p class="infobox--content">Je bent via MyWheels altijd goed verzekerd bij Centraal Beheer. Wij regelen de verzekering voor de duur van de huur, waardoor je met een gerust hart op weg gaat. Ook heb je de mogelijkheid om je eigen risico helemaal af te kopen en
                         dat is wel zo fijn.</p>
                     <a href=" https://mywheels.nl/autodelen/hoe-huren-werkt/verzekering" class="infobox--link">Lees meer</a>
                 </div>
@@ -254,7 +254,8 @@
             <div class="hero-overlay"></div>
             <div class="imageblock--content">
                 <h3 class="imageblock--heading">Begin direct met huren</h3>
-                <button class="mywheels-btn mywheels-btn-error mywheels-btn-margin-top mywheels-btn-big" ui-sref="owm.auth.signup" md-ink-ripple="#9a3d26">{{ 'SIGNUP_SHORT' | translate }}</button>
+                <button class="mywheels-btn mywheels-btn-error mywheels-btn-margin-top mywheels-btn-big" ui-sref="owm.auth.signup" md-ink-ripple="#9a3d26" ng-show="!invitedBySlug">{{ 'SIGNUP_SHORT' | translate }}</button>
+                <button class="mywheels-btn mywheels-btn-error mywheels-btn-margin-top mywheels-btn-big" ui-sref="subscribe({ slug: invitedBySlug })" md-ink-ripple="#9a3d26" ng-show="invitedBySlug">{{ 'SIGNUP_SHORT' | translate }}</button>
             </div>
         </div>
     </div>

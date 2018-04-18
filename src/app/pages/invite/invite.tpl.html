@@ -1,0 +1,100 @@
+<div class="invite">
+
+    <div class="invite--heading large text-center">
+        <section style="z-index:2">
+            <img class="invite-image media-object img-user-large" ng-if="!refreshProfileImage" person-profile-image="{ person: me, size: 'large', noCache: true }" />
+            <div class="invite-image" ng-if="refreshProfileImage"><i class="fa fa-spin fa-2x fa-fw fa-spinner"></i></div>
+            <form class="mywheels-form" name="editProfileImage">
+                <label for="ProfileImage"><md-icon>mode_edit</md-icon> Wijzig profielfoto
+                    <input type="file" name="imageFile" for="ProfileImage" class="uploadfile-input" id="ProfileImage" accept="image/x-png, image/gif, image/jpeg, image/jpg, application/pdf">
+                </label>
+            </form>
+
+            <span><h1 class="fadeInDown animated">Deel MyWheels met je vrienden!</h1></span>
+            <span><p class="fadeInDown animated">Geef je vrienden 10 euro korting op hun eerste rit. Voor elke vriend die een rit maakt, ontvang jij 5 euro.</p></span>
+
+            <div class="copyLink">
+                <input class="personal-link" ng-model="personalLink" />
+                <button class="md-raised md-button md-ink-ripple"" href="#" ng-click="copyPersonalLink()">
+                    <md-icon>content_copy</md-icon> 
+                    <span ng-if="!personalLinkCopied">Kopiëren</span>
+                    <span ng-if="personalLinkCopied">Gekopieerd</span>
+                </button>
+            </div>
+
+            <div class="share-buttons">
+                <a class="md-button md-raised mail"><i class="fa fa-fw fa-2x fa-envelope"></i>E-mail</a>
+                <a class="md-button md-raised facebook"><i class="fa fa-fw fa-2x fa-facebook"></i>Facebook</a>
+                <a class="md-button md-raised twitter"><i class="fa fa-fw fa-2x fa-twitter"></i>Twitter</a>
+                <a href="#"
+                socialshare
+                socialshare-provider="whatsapp"
+                socialshare-text="Meld je via mij aan bij MyWheels en ontvang 10 euro korting op je eerst rit!"
+                socialshare-hashtags="mywheels"
+                socialshare-url="{{ personalLink }}"
+                class="md-button md-raised whatsapp" >
+                    <i class="fa fa-fw fa-2x fa-whatsapp"></i>WhatsApp
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <div class="triangle--bar triangle--bar-white"></div>
+
+    <!-- Hire a car in 3 steps -->
+    <div class="invite-three-steps text-center">
+        <div class="container-home">
+            <h2 class="invite-three-stepts--heading">{{'INVITE_HOW_IT_WORKS' | translate }}</h2>
+            <div layout="row" layout-wrap>
+                <div flex="33" flex-xs="100" class="invite-three-stepts--step">
+                    <md-icon>share</md-icon>
+                    <h3>{{ 'INVITE_FRIENDS' | translate}}</h3>
+                    <p>{{ 'INVITE_FRIENDS_TEXT' | translate }}</p>
+                </div>
+                <div flex="33" flex-xs="100" class="invite-three-stepts--step">
+                    <md-icon>directions_car</md-icon>
+                    <h3>{{ 'INVITE_FRIEND_DRIVES' | translate}}</h3>
+                    <p>{{ 'INVITE_FRIEND_DRIVES_TEXT' | translate }}</p>
+                </div>
+                <div flex="33" flex-xs="100" class="invite-three-stepts--step">
+                    <md-icon>euro_symbol</md-icon>
+                    <h3>{{ 'INVITE_EURO' | translate}}</h3>
+                    <p>{{ 'INVITE_EURO_TEXT' | translate }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Hire a car in 3 steps -->
+
+    <div class="resource-of-inviter text-center" ng-if="resources.length > 0">
+        <div class="container-home">
+            <h2 class="resource-of-inviter--heading" ng-if="resources.length > 1">Auto's van {{ inviter.firstName | toTitleCase }}</h2>
+            <h2 class="resource-of-inviter--heading" ng-if="resources.length === 1">De auto van {{ inviter.firstName | toTitleCase }}</h2>
+            <ul>
+                <li ng-repeat="resource in resources | limitTo: 2" ui-sref="owm.resource.show({ resourceId: resource.id, city: resource.city })">
+                    <ow-resource-picture resource="resource" size="large"></ow-resource-picture>
+                    <div class="information">
+                        <h2 class="no-margin" style="color:#fff;">{{ resource.alias | limitTo: 30}}{{resource.alias.length > 30 ? '...' : ''}}</h2>
+                        <h3 class="no-margin" style="color:#fff"">{{ resource.location }}, {{ resource.city }}</h3>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="invited-friends text-center" >
+        <div class="container-home">
+            <h2 class="invited-friends--heading">Uitgenodigde vrienden</h2>
+            <ul>
+                <li>
+                    <strong>
+                        Je hebt nog geen vrienden uitgenodigd.
+                        <br/>
+                        Deel jouw persoonlijke link om €5 te verdienen.
+                    </strong>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
