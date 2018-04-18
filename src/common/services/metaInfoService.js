@@ -54,7 +54,7 @@ angular.module('owm.metaInfoService', [])
         title: $translate.instant('META_DEFAULT_TITLE'),
         description: $translate.instant('META_DEFAULT_DESCRIPTION'),
         url: appConfig.appUrl,
-        image: appConfig.appUrl + '/branding/img/bg.jpg'
+        image: appConfig.appUrl + '/branding/img/huur_in_de_buurt.jpg'
       };
 
       // translate

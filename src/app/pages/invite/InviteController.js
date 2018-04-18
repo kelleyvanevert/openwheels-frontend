@@ -1,11 +1,16 @@
 'use strict';
 angular.module('owm.pages.invite', [])
 
-.controller('InviteController', function ($scope, $state, $stateParams, me, metaInfoService, personService, alertService, Analytics, $filter) {
+.controller('InviteController', function ($scope, $state, $stateParams, me, metaInfoService, personService, alertService, Analytics, $filter, appConfig) {
 	
+	metaInfoService.set({url: 'https://mywheels.nl/uitnodigen'});
+	metaInfoService.set({canonical: 'https://mywheels.nl/uitnodigen'});
+
 	$scope.me = me;
-	$scope.personalLink = 'www.mywheels.nl/uitnodigen/' + $filter('lowercase')($scope.me.slug);
+	$scope.appConfig = appConfig;
+	$scope.personalLink = 'https://mywheels.nl/uitnodigen/' + $filter('lowercase')($scope.me.slug);
 	$scope.personalLinkCopied = false;
+	$scope.shareText = 'Meld je via' + $scope.me.firstName + 'mij aan bij MyWheels en ontvang 10 euro korting op je eerst rit!';
 	$scope.openboxes = {};
 	$scope.refreshProfileImage = false;
 
