@@ -93,6 +93,13 @@
             </md-button>
           </md-menu-item>
 
+          <md-menu-item ng-if="user.identity.provider.id == 1">
+            <md-button id="toolbarPersonmenuInvite" ui-sref="invite">
+              <md-icon>share</md-icon>
+              <span>{{ 'INVITE_FRIENDS_MENU' | translate }}</span>
+            </md-button>
+          </md-menu-item>
+
           <md-menu-divider></md-menu-divider>
 
           <md-menu-item>
