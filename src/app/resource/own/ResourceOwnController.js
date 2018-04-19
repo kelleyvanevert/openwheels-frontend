@@ -2,7 +2,12 @@
 
 angular.module('owm.resource.own', [])
 
-.controller('ResourceOwnController', function ($scope, $filter, $state, me, $translate, resources, resourceService, authService, alertService, dialogService, boardcomputerService, $window) {
+.controller('ResourceOwnController', function ($scope, $filter, $state, me, $translate, resources, resourceService, authService,
+  alertService, dialogService, boardcomputerService, $window, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/mijn-auto'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/mijn-auto'});
+
   $scope.resources = resources;
   $scope.me = me;
 

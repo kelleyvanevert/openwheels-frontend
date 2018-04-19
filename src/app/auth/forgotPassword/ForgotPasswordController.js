@@ -2,7 +2,10 @@
 
 angular.module('owm.auth.forgotPassword', [])
 
-.controller('ForgotPasswordController', function ($state, $translate, personService, alertService, $scope) {
+.controller('ForgotPasswordController', function ($state, $translate, personService, alertService, $scope, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/forgot-password'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/forgot-password'});
 
   $scope.email = '';
 

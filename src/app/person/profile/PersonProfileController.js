@@ -2,7 +2,11 @@
 
 angular.module('owm.person.profile', [])
 
-.controller('PersonProfileController', function ($scope, $filter, $timeout, $translate, person, alertService, personService, authService, dutchZipcodeService) {
+.controller('PersonProfileController', function ($scope, $filter, $timeout, $translate, person, alertService,
+  personService, authService, dutchZipcodeService, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/dashboard/profile'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/dashboard/profile'});
 
   var masterPerson = null;
   $scope.person = null;

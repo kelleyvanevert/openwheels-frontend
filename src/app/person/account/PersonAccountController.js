@@ -3,7 +3,6 @@
 angular.module('owm.person.account', [])
 
 .controller('PersonAccountController', function ($scope, authService, accountService, alertService) {
-
   var person = authService.user.identity;
 
   $scope.account = null;

@@ -302,10 +302,8 @@ angular.module('owm.resource', [
             metaInfoService.set({
               title: $translate.instant('META_RESOURCE_TITLE', substitutions),
               description: $translate.instant('META_RESOURCE_DESCRIPTION', substitutions),
-              url: appConfig.appUrl + $state.href('owm.resource.show', {
-                resourceId: resource.id
-              }),
-              image: appConfig.serverUrl + '/' + $filter('resourceAvatar')(resource.pictures[0], 'normal')
+              url: appConfig.appUrl + $state.href('owm.resource.show', {resourceId: resource.id}),
+              image: $filter('resourceAvatar')(resource.pictures[0], 'normal')
             });
           });
         }
@@ -376,7 +374,7 @@ angular.module('owm.resource', [
               url: appConfig.appUrl + $state.href('owm.resource.show', {
                 resourceId: resource.id
               }),
-              image: appConfig.serverUrl + '/' + $filter('resourceAvatar')(resource.pictures[0], 'normal')
+              image: $filter('resourceAvatar')(resource.pictures[0], 'normal')
             });
           });
 

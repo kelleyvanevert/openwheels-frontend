@@ -15,7 +15,7 @@
 
             <div class="copyLink">
                 <input id="personalLink" class="personal-link" ng-model="personalLink" ng-click="selectLink()" />
-                <button class="md-raised md-button md-ink-ripple"" href="#" ng-click="copyPersonalLink()">
+                <button class="md-raised md-button md-ink-ripple"" href="#" ng-click="copyPersonalLink()" hide-xs>
                     <md-icon>content_copy</md-icon> 
                     <span ng-if="!personalLinkCopied">Kopiëren</span>
                     <span ng-if="personalLinkCopied">Gekopieerd</span>
@@ -23,7 +23,13 @@
             </div>
 
             <div class="share-buttons">
-                <a class="md-button md-raised mail" ng-click="openModal()"><i class="fa fa-fw fa-2x fa-envelope"></i>E-mail</a>
+                <a 
+                    class="md-button md-raised mail" 
+                    ng-click="openModal()"
+                    ga-track-event="['interaction', 'inviteEmail', 'invite']"
+                >
+                    <i class="fa fa-fw fa-2x fa-envelope"></i>E-mail
+                </a>
                 <a 
                     href="#"
                     socialshare
@@ -32,7 +38,8 @@
                     socialshare-text="Meld je via mij aan bij MyWheels en ontvang 10 euro korting op je eerst rit!"
                     socialshare-hashtags="autodelen"
                     socialshare-url="{{ personalLink }}"
-                    class="md-button md-raised facebook" 
+                    class="md-button md-raised facebook"
+                    ga-track-event="['interaction', 'inviteFacebook', 'invite']"
                 >
                     <i class="fa fa-fw fa-2x fa-facebook"></i>Facebook
                 </a>
@@ -43,7 +50,9 @@
                     socialshare-text="Meld je via mij aan bij MyWheels en ontvang 10 euro korting op je eerst rit!"
                     socialshare-hashtags="autodelen"
                     socialshare-url="{{ personalLink }}"
-                    class="md-button md-raised twitter" 
+                    class="md-button md-raised twitter"
+                    ga-track-event="['interaction', 'inviteTwitter', 'invite']"
+
                 >
                     <i class="fa fa-fw fa-2x fa-twitter"></i>Twitter
                 </a>
@@ -54,6 +63,7 @@
                     socialshare-text="Meld je via mij aan bij MyWheels en ontvang 10 euro korting op je eerst rit!"
                     socialshare-url="{{ personalLink }}"
                     class="md-button md-raised whatsapp"
+                    ga-track-event="['interaction', 'inviteWhatsApp', 'invite']"
                     hide-gt-xs
                 >
                     <i class="fa fa-fw fa-2x fa-whatsapp"></i>WhatsApp

@@ -2,7 +2,10 @@
 
 angular.module('owm.trips.index', [])
 
-.controller('TripsIndexController', function ($log, $timeout, $q, API_DATE_FORMAT, alertService, bookingService, me, $scope, linksService) {
+.controller('TripsIndexController', function ($log, $timeout, $q, API_DATE_FORMAT, alertService, bookingService, me, $scope, linksService, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/trips'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/trips'});
 
   $scope.me = me;
   $scope.showLoaderSpinner = false;

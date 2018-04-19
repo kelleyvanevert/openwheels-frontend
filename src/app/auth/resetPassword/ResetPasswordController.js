@@ -2,7 +2,10 @@
 
 angular.module('owm.auth.resetPassword', [])
 
-.controller('ResetPasswordController', function ($state, $stateParams, $translate, $scope, alertService, personService, code) {
+.controller('ResetPasswordController', function ($state, $stateParams, $translate, $scope, alertService, personService, code, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/reset-password/'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/reset-password/'});
 
   $scope.isBusy = false;
   $scope.password = '';

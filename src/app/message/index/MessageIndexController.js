@@ -2,7 +2,10 @@
 
 angular.module('owm.message.index', [])
 
-.controller('MessageIndexController', function ($filter, $scope, chatPopupService, me, conversations) {
+.controller('MessageIndexController', function ($filter, $scope, chatPopupService, me, conversations, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/messages'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/messages'});
 
   $scope.me = me;
   $scope.conversations = conversations;
