@@ -2,7 +2,7 @@
 
 angular.module('owm.shell')
 
-.controller('ToolbarController', function ($scope, $state, $rootScope, $localStorage) {
+.controller('ToolbarController', function ($scope, $state, $rootScope, $localStorage, $timeout) {
 
 	//if visitor is on the signup page, don't show the buttons in the toolbar because of distraction reasons
 	$scope.onSignUpPage = $rootScope.$state.current.name === 'owm.auth.signup' ? true : false;
@@ -13,8 +13,10 @@ angular.module('owm.shell')
 		$scope.onListYourCarPage = toState.name === 'list-your-car' ? true : false;
 	});
 
-	if($localStorage.invitedBySlug) {
-		$scope.invitedBySlug = $localStorage.invitedBySlug;
-	}
+	$timeout(function () {
+		if($localStorage.invitedBySlug) {
+		  $scope.invitedBySlug = $localStorage.invitedBySlug;
+		}
+	}, 1000);
 
 });

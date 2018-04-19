@@ -3,7 +3,7 @@
 angular.module('owm.home', ['owm.resource', 'slick'])
 
 //Module in app/pages/pagesModule.js
-.controller('HomeController', function ($scope, $translate, $location, resourceQueryService, $window, $state, resourceService, $localStorage, $http, metaInfoService, appConfig) {
+.controller('HomeController', function ($scope, $translate, $location, resourceQueryService, $window, $timeout, $state, resourceService, $localStorage, $http, metaInfoService, appConfig) {
 
   metaInfoService.set({url: appConfig.serverUrl});
   metaInfoService.set({canonical: 'https://mywheels.nl'});
@@ -16,9 +16,11 @@ angular.module('owm.home', ['owm.resource', 'slick'])
     }
   });
 
-  if($localStorage.invitedBySlug) {
-    $scope.invitedBySlug = $localStorage.invitedBySlug;
-  }
+  $timeout(function () {
+    if($localStorage.invitedBySlug) {
+      $scope.invitedBySlug = $localStorage.invitedBySlug;
+    }
+  }, 1000);
 
   $scope.goToMyWheelsOpen = function() {
     window.open('http://open.mywheels.nl','_blank');
