@@ -1,7 +1,7 @@
 'use strict';
 angular.module('owm.pages.invite.subscribe', [])
 
-.controller('InviteSubscribeController', function ($scope, $state, inviter, $stateParams, $mdDialog, $mdMedia, $timeout, $localStorage, resourceService, metaInfoService, appConfig) {
+.controller('InviteSubscribeController', function ($scope, $state, $rootScope, inviter, $stateParams, $mdDialog, $mdMedia, $timeout, $localStorage, resourceService, metaInfoService, appConfig) {
 
 	metaInfoService.set({robots: 'noindex'});
 	metaInfoService.set({url: appConfig.serverUrl + '/uitnodigen/' + inviter.slug});
@@ -15,7 +15,7 @@ angular.module('owm.pages.invite.subscribe', [])
 	$localStorage.invitedBySlug = $scope.inviter.slug;
 
 	if($stateParams.mail) {
-		$scope.prefilledMail = $stateParams.mail;
+		$rootScope.prefilledMail = $stateParams.mail;
 	}
 
 	$scope.toggleBox = function (box) {
@@ -52,22 +52,21 @@ angular.module('owm.pages.invite.subscribe', [])
 			preserveScope: true,
 			locals: {
 			  inviter: $scope.inviter,
-			  prefilledMail: $scope.prefilledMail
 			},
 			fullscreen: $mdMedia('xs'),
 			templateUrl: 'pages/inviteSubscribe/invite-subscribe-dialog.tpl.html',
-			controller: ['$scope', '$mdDialog', 'authService', 'inviter', '$filter', 'prefilledMail', function ($scope, $mdDialog, authService, inviter, $filter, prefilledMail) {
-			  $scope.inviter = inviter;
-			  $scope.prefilledMail = prefilledMail;
-			  $scope.hide = function () {
-			    $mdDialog.hide();
-			  };
-			  $scope.cancel = function () {
-			    $mdDialog.cancel();
-			  };
-			  $scope.answer = function (answer) {
-			    $mdDialog.hide(answer);
-			  };
+			controller: ['$scope', '$mdDialog', 'authService', 'inviter', '$filter', function ($scope, $mdDialog, authService, inviter, $filter) {
+				$scope.inviter = inviter;
+				$scope.url = 'owm.pages.invite.subscribe';
+				$scope.hide = function () {
+					$mdDialog.hide();
+				};
+				$scope.cancel = function () {
+					$mdDialog.cancel();
+				};
+				$scope.answer = function (answer) {
+					$mdDialog.hide(answer);
+				};
 			}]
 		});
 	};
