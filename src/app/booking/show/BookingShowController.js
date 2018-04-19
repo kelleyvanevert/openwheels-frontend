@@ -9,8 +9,8 @@ angular.module('owm.booking.show', [])
   booking, me, declarationService, $mdDialog, contract, Analytics, paymentService, voucherService,
   $window, $mdMedia, discountService, account2Service, $rootScope, chipcardService, metaInfoService) {
 
-  metaInfoService.set({url: appConfig.serverUrl + '/reset-password/'});
-  metaInfoService.set({canonical: 'https://mywheels.nl/reset-password/'});
+  metaInfoService.set({url: appConfig.serverUrl + '/booking/' + booking.id});
+  metaInfoService.set({canonical: 'https://mywheels.nl/booking/' + booking.id});
 
   $scope.appConfig = appConfig;
   $scope.contract = contract;
