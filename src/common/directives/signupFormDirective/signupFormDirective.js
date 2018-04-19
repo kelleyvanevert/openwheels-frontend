@@ -7,9 +7,6 @@ angular.module('signupFormDirective', [])
     restrict: 'AE',
     replace: true,
     transclude: true,
-    scope: {
-      mail: '@'
-    },
     templateUrl: 'directives/signupFormDirective/signupFormDirective.tpl.html',
     controller: function ($scope, $rootScope, $state, $stateParams, $translate, $q, authService, featuresService, alertService, personService, $mdDialog, Analytics, appConfig, $localStorage, $window) {
       $scope.auth = {};
@@ -17,8 +14,8 @@ angular.module('signupFormDirective', [])
       $scope.me = {};
       $scope.auth.terms = false;
       $scope.closeAlert = alertService.closeAlert;
-      if ($scope.mail) {
-        $scope.auth.email = $scope.mail;
+      if ($rootScope.prefilledMail) {
+        $scope.auth.email = $rootScope.prefilledMail;
       }
 
       $scope.facebookSignup = function() {
@@ -115,6 +112,10 @@ angular.module('signupFormDirective', [])
           $scope.user.preference = 'renter';
         } else if ($scope.url === 'owm.resource.create.carInfo') {
           $scope.user.preference = 'owner';
+        }
+
+        if($scope.inviter) {
+          $scope.user.invited_by = $scope.inviter.id;
         }
 
         var email = $scope.auth.email,
