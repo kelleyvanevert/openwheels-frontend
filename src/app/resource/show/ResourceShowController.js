@@ -2,10 +2,14 @@
 
 angular.module('owm.resource.show', [])
 
-.controller('ResourceShowController', function ($window, $log, $q, $timeout, $location, $mdDialog, $mdMedia, $scope, $state, $filter, authService, resourceService, bookingService, invoice2Service, boardcomputerService, alertService, chatPopupService, ratingService, API_DATE_FORMAT, resource, me, resourceQueryService, featuresService, $stateParams, linksService, Analytics, metaInfoService, $localStorage, $translate) {
+.controller('ResourceShowController', function ($window, $log, $q, $timeout, $location, $mdDialog, $mdMedia, $scope,
+  $state, $filter, authService, resourceService, bookingService, invoice2Service, boardcomputerService, alertService,
+  chatPopupService, ratingService, API_DATE_FORMAT, resource, me, resourceQueryService, featuresService, $stateParams,
+  linksService, Analytics, metaInfoService, $localStorage, $translate, appConfig) {
   Analytics.trackEvent('discovery', 'show_car', resource.id, undefined, true);
 
   metaInfoService.set({robots: resource.isActive && !resource.removed ? 'all' : 'noindex'});
+  metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/'+ $filter('toTitleCase')(resource.city) + '/' + resource.id});
   metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/'+ $filter('toTitleCase')(resource.city) + '/' + resource.id});
 
   if(resource.removed === undefined) { resource.removed = false; }

@@ -9,7 +9,10 @@ angular.module('owm.resource.edit', [
   'owm.resource.edit.pictures'
 ])
 
-.controller('ResourceEditController', function ($timeout, $state, $scope, me, resource, members) {
+.controller('ResourceEditController', function ($timeout, $state, $scope, me, resource, members, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/auto/' + resource.id + '/wijzigen'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/auto/' + resource.id + '/wijzigen'});
 
   // PERMISSION CHECK
   // Redirect if not owner or contactperson

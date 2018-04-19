@@ -2,8 +2,8 @@
 angular.module('owm.pages.invite', [])
 
 .controller('InviteController', function ($scope, $state, $stateParams, me, metaInfoService, personService, alertService, Analytics, $filter, appConfig, $mdDialog, $mdMedia) {
-	
-	metaInfoService.set({url: 'https://mywheels.nl/uitnodigen'});
+
+	metaInfoService.set({url: appConfig.serverUrl + '/uitnodigen'});
 	metaInfoService.set({canonical: 'https://mywheels.nl/uitnodigen'});
 
 	$scope.me = me;
@@ -25,6 +25,7 @@ angular.module('owm.pages.invite', [])
 	$scope.selectLink = function() {
 		var input = document.getElementById('personalLink');
 		input.select();
+		input.setSelectionRange(0,9999);
 	};
 
 	$scope.copyPersonalLink = function() {

@@ -4,7 +4,17 @@ angular.module('owm.resource.search', [
     'owm.resource.search.list',
     'owm.resource.search.map',
   ])
-  .controller('ResourceSearchController', function ($location, me, $scope, $state, $stateParams, $uibModal, $mdMedia, $mdDialog, $filter, $anchorScroll, appConfig, Geocoder, alertService, resourceService, resourceQueryService, user, place, Analytics, $cookieStore, preloader) {
+  .controller('ResourceSearchController', function ($location, me, $scope, $state, $stateParams, $uibModal, $mdMedia, $mdDialog,
+    $filter, $anchorScroll, appConfig, Geocoder, alertService, resourceService, resourceQueryService, user, place, Analytics,
+    $cookieStore, preloader, metaInfoService) {
+
+    if (place) {
+      metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/' + place.name});
+      metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/' + place.name});
+    } else {
+      metaInfoService.set({url: appConfig.serverUrl + '/auto-huren'});
+      metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren'});
+    }
 
     $scope.me = me;
 
