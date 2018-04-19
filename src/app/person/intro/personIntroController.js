@@ -2,7 +2,11 @@
 
 angular.module('owm.person.intro', [])
 
-.controller('PersonIntroController', function ($scope, me, $state) {
+.controller('PersonIntroController', function ($scope, me, $state, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/dashboard/intro'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/dashboard/intro'});
+
   activate();
 
   function activate() {

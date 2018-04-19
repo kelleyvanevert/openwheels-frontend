@@ -3,6 +3,7 @@
 angular.module('owm.booking.list-rental', [])
 
 .controller('BookingListRentalController', function ($scope, bookingRentalList, authService, bookingService, alertService, API_DATE_FORMAT) {
+
   $scope.bookings = bookingRentalList.bookings;
   $scope.timeFrame = bookingRentalList.timeFrame;
 

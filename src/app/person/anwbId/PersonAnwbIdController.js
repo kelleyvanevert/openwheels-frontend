@@ -2,7 +2,10 @@
 
 angular.module('owm.person.anwbId', [])
 
-.controller('PersonAnwbIdController', function ($translate, $state, alertService, anwbService, me, $scope) {
+.controller('PersonAnwbIdController', function ($translate, $state, alertService, anwbService, me, $scope, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/anwb-id'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/anwb-id'});
 
   $scope.anwbId = '';
   $scope.isBusy = false;

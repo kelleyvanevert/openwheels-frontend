@@ -7,7 +7,12 @@ angular.module('owm.resource.show.calendar', [
   'owm.models.calendar.blockingEvent'
 ])
 
-  .controller('ResourceShowCalendarController', function ($location, $scope, $state, $stateParams, $filter, $uibModal, $translate, me, calendarService, bookings, resource, blockings, BlockingEvent, BookingEvent, API_DATE_FORMAT, Analytics) {
+  .controller('ResourceShowCalendarController', function ($location, $scope, $state, $stateParams, $filter, $uibModal, $translate,
+    me, calendarService, bookings, resource, blockings, BlockingEvent, BookingEvent, API_DATE_FORMAT, Analytics, metaInfoService, appConfig) {
+    
+    metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/'+ $filter('toTitleCase')(resource.city) + '/' + resource.id + '/kalender'});
+    metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/'+ $filter('toTitleCase')(resource.city) + '/' + resource.id + '/kalender'});
+
     $scope.me = me;
     $scope.resource = resource;
     $scope.view = $stateParams.view || 'agendaWeek';

@@ -2,7 +2,11 @@
 
 angular.module('owm.person.license', [])
 
-.controller('PersonLicenseController', function ($log, $http, $state, authService, person, personService, alertService, me, $scope, Analytics, $filter, $translate) {
+.controller('PersonLicenseController', function ($log, $http, $state, authService, person, personService, alertService, me,
+  $scope, Analytics, $filter, $translate, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/dashboard/license'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/dashboard/license'});
 
   $scope.isBusy = false;
   $scope.person = person;

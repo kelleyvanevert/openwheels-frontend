@@ -3,7 +3,10 @@
 angular.module('owm.finance.vouchers', [])
 
 .controller('VouchersController', function ($window, $q, $state, $scope, account2Service, appConfig, alertService, voucherService,
-  paymentService, bookingService, me, Analytics) {
+  paymentService, bookingService, me, Analytics, metaInfoService) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/vouchers'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/vouchers'});
 
   $scope.me = me;
 

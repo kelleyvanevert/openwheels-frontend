@@ -19,14 +19,14 @@
     <!-- /TRIANGLE BAR -->
 
     <!-- MYWHEELS OPEN -->
-    <div class="mywheels--open--card" ng-if="features.homePage" hide-xs>
+    <div class="mywheels--open--card" ng-if="features.homePage" ng-click="goToMyWheelsOpen()" ga-track-event="['interaction', 'mywheelsOpen', 'home']" hide-xs>
        <img src="../branding/img/mywheels_open_desktop.png" class="banner" />
-           <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary" href="http://open.mywheels.nl" target="_blank">Meld je aan</a>
+           <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary">Meld je aan</a>
     </div>
    
-    <div class="mywheels--open--card" ng-if="features.homePage" hide-gt-xs>
+    <div class="mywheels--open--card" ng-if="features.homePage" ng-click="goToMyWheelsOpen()" ga-track-event="['interaction', 'mywheelsOpen', 'home']" hide-gt-xs>
        <img src="../branding/img/mywheels_open_mobiel.png" class="banner" />
-           <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary" href="http://open.mywheels.nl" target="_blank">Meld je aan</a>
+           <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary">Meld je aan</a>
     </div>
 
     <!-- BLOG ITEMS -->   

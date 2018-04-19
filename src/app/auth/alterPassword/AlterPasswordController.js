@@ -2,7 +2,10 @@
 
 angular.module('owm.auth.alterPassword', [])
 
-.controller('AlterPasswordController', function ($translate, $state, $scope, alertService, personService, me) {
+.controller('AlterPasswordController', function ($translate, $state, $scope, alertService, personService, me, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/change-password'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/change-password'});
 
   $scope.busy = false;
   $scope.oldPassword = '';

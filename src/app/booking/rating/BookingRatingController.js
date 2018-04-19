@@ -5,7 +5,10 @@ angular.module('owm.booking.rating', [])
 /*
  * @param {string} userPerspective - 'renter' | 'owner'
  */
-.controller('BookingRatingController', function ($log, $scope, $state, $translate, alertService, ratingService, booking, rating, userPerspective) {
+.controller('BookingRatingController', function ($log, $scope, $state, $translate, alertService, ratingService, booking, rating, userPerspective, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/booking/rating/renter'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/booking/rating/renter'});
 
   $scope.booking  = booking;
   $scope.resource = booking.resource;

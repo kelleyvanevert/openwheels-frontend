@@ -1,10 +1,10 @@
 'use strict';
 angular.module('owm.pages.invite.subscribe', [])
 
-.controller('InviteSubscribeController', function ($scope, $state, inviter, $stateParams, $mdDialog, $mdMedia, $timeout, $localStorage, resourceService, metaInfoService) {
+.controller('InviteSubscribeController', function ($scope, $state, inviter, $stateParams, $mdDialog, $mdMedia, $timeout, $localStorage, resourceService, metaInfoService, appConfig) {
 
 	metaInfoService.set({robots: 'noindex'});
-	metaInfoService.set({url: 'https://mywheels.nl/uitnodigen/' + inviter.slug});
+	metaInfoService.set({url: appConfig.serverUrl + '/uitnodigen/' + inviter.slug});
 	metaInfoService.set({canonical: 'https://mywheels.nl/uitnodigen/' + inviter.slug});
 
 	$scope.inviter = inviter;
