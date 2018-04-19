@@ -115,7 +115,9 @@ angular.module('signupFormDirective', [])
         }
 
         if($scope.inviter) {
-          $scope.user.invited_by = $scope.inviter.id;
+          $scope.invited_by = $scope.inviter.id;
+        } else {
+          $scope.invited_by = null;
         }
 
         var email = $scope.auth.email,
@@ -134,6 +136,7 @@ angular.module('signupFormDirective', [])
                   authService.oauthSubscribe({
                       email: email.trim().toLowerCase(),
                       password: password,
+                      invitedBy: $scope.invited_by,
                       other: user
                       // captcha: captcha
                     }).then(function (res) {
@@ -177,6 +180,7 @@ angular.module('signupFormDirective', [])
                           year: year
                         });
                       } else {
+                        $mdDialog.cancel();
                         $state.go($scope.url);
                       }
                     })
