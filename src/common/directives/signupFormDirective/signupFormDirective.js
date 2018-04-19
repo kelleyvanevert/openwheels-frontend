@@ -114,7 +114,7 @@ angular.module('signupFormDirective', [])
           $scope.user.preference = 'owner';
         }
 
-        if($scope.inviter.id) {
+        if($scope.inviter) {
           $scope.user.invited_by = $scope.inviter.id;
         }
 
