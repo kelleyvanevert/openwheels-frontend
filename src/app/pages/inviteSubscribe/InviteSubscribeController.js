@@ -57,7 +57,7 @@ angular.module('owm.pages.invite.subscribe', [])
 			templateUrl: 'pages/inviteSubscribe/invite-subscribe-dialog.tpl.html',
 			controller: ['$scope', '$mdDialog', 'authService', 'inviter', '$filter', function ($scope, $mdDialog, authService, inviter, $filter) {
 				$scope.inviter = inviter;
-				$scope.url = 'owm.pages.invite.subscribe';
+				$scope.url = 'owm.person.dashboard';
 				$scope.hide = function () {
 					$mdDialog.hide();
 				};
