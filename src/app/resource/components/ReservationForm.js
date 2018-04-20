@@ -32,6 +32,7 @@ angular.module('owm.resource.reservationForm', [])
 
   $scope.features = $rootScope.features;
   $scope.user = authService.user;
+  $scope.invitedDiscount = ($scope.person.invited.id && !$scope.person.invited.redemeed) ? true : false;
 
   $scope.dateConfig = {
     modelFormat: API_DATE_FORMAT,
