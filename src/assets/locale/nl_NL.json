@@ -136,6 +136,7 @@
     "AVAILABLE": "Beschikbaar",
     "NOT_AVAILABLE": "Niet beschikbaar",
     "COSTS": "Kosten",
+    "COSTS_WITHOUT_DISCOUNT": "Kosten zonder korting",
     "DATE": "Datum",
     "FROM": "Van",
     "UNTIL": "Tot",
