@@ -12,7 +12,8 @@ angular.module('vouchersDirective', [])
       onChanged: '&',
       discount: '='
     },
-    controller: function ($scope, voucherService, alertService, bookingService, $rootScope, paymentService, appConfig, $state, $window, contractService, $mdDialog) {
+    controller: function ($scope, voucherService, alertService, bookingService, $rootScope, paymentService, appConfig, $state,
+      $window, contractService, $mdDialog) {
       $scope.features = $rootScope.features;
 
       $scope.extraDrivers = {price: 1.25, check: false, drivers: [], new: ''};
@@ -80,6 +81,7 @@ angular.module('vouchersDirective', [])
           $scope.priceCalculated = true;
           alertService.loaded();
           $scope.isBusy = false;
+          $rootScope.isPaymentLoading = false;
         }).catch(function (err) {
           alertService.addError(err);
         });

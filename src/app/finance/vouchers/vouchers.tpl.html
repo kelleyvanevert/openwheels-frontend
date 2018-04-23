@@ -169,6 +169,14 @@
     </div>
 </div>
 
+<div class="card" ng-if="!busy && me.provider.id === 1">
+    <div class="card-heading">
+        <h3 class="card-title">
+      <a ui-sref="invite">{{ 'INVITE_EXTRA_VOUCHERS' | translate }}</a>
+      </h3>
+    </div>
+</div>
+
 <div class="card" ng-if="!busy && requiredValue && me.numberOfBookings > 3">
     <div class="card-heading">
         <h3 class="card-title">
