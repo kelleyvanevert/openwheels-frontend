@@ -269,7 +269,11 @@
     <h3 class="card-title">Reservering betalen</h3>
   </div>
 
-  <div class="card-body">
+  <div class="card-body text-center" ng-show="$root.isPaymentLoading">
+    <h4><i class="fa fa-spinner fa-spin"></i></h4>
+  </div>
+
+  <div class="card-body" ng-show="!$root.isPaymentLoading">
     <voucher me="me" booking="booking" discount="discount" on-changed="bookingChanged(booking)"></voucher>
 
     <div ng-if="(requested && requiredValue.value.total === 0) || ((requiredValue.value.total | number:2) == ((booking.details.booking_price.total + booking.details.km_price - booking.details.discount) | number:2))" class="text-center">
@@ -285,7 +289,7 @@
     </div>
   </div>
 
-  <div class="card-body" ng-if="(!requested || requiredValue.value.total > 0) && ((requiredValue.value.total | number:2) != ((booking.details.booking_price.total + booking.details.km_price - booking.details.discount) | number:2))">
+  <div class="card-body" ng-if="(!requested || requiredValue.value.total > 0) && ((requiredValue.value.total | number:2) != ((booking.details.booking_price.total + booking.details.km_price - booking.details.discount) | number:2))" ng-show="!$root.isPaymentLoading">
     <h3>Rijtegoed</h3>
     <div style="margin-bottom: 15px;">
       <table class="table">

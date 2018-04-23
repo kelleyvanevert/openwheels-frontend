@@ -9,8 +9,6 @@ angular.module('owm.person.intro', [])
 
   activate();
 
-  console.log(me.status);
-
   function activate() {
     $scope.openboxes = {};
     $scope.me = me;
