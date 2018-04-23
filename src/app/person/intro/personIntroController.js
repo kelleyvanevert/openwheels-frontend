@@ -9,9 +9,15 @@ angular.module('owm.person.intro', [])
 
   activate();
 
+  console.log(me.status);
+
   function activate() {
     $scope.openboxes = {};
     $scope.me = me;
+  }
+
+  if(me.status !== 'new') {
+    $state.go('owm.person.dashboard');
   }
 
   $scope.toggleBox = function (box) {
