@@ -14,6 +14,7 @@
             <span><p class="fadeInDown animated">Geef je vrienden 10 euro korting op hun eerste rit. Voor elke vriend die een rit maakt, ontvang jij 5 euro.</p></span>
 
             <div class="copyLink">
+                <span><p class="fadeInDown animated">Deel je link:</p></span>
                 <input id="personalLink" class="personal-link" ng-model="personalLink" ng-click="selectLink()" />
                 <button class="md-raised md-button md-ink-ripple"" href="#" ng-click="copyPersonalLink()" hide-xs>
                     <md-icon>content_copy</md-icon> 
@@ -124,8 +125,8 @@
             <div class="text-center" ng-if="invitedFriends.length > 0 && totalEarned > 0">
                 <h3 style="font-size: 22px;">Je hebt <span class="text-success">€{{ totalEarned }}</span> verdiend!</h3>
             </div>
-            <table class="friends-table text-center" ng-if="invitedFriends.length > 0">
-                <tr ng-if="invitedFriends.length > 0" ng-repeat="friend in invitedFriends">
+            <table class="friends-table text-center" ng-if="invitedFriends.length > 0" hide-xs>
+                <tr ng-repeat="friend in invitedFriends">
                     <td>
                         <img class="friends-image media-object img-user-normal" ng-if="friend.id" person-profile-image="{ person: friend, size: 'normal', noCache: true }" />
                         <img class="friends-image media-object img-user-normal" ng-if="!friend.id" src="assets/img/profile.png" />
@@ -136,6 +137,19 @@
                         <span ng-if="friend.status == 'invited'"><strong>{{ friend.email | lowercase }}</strong> is nog niet geregistreerd.</span>
                     </td>
                     <td>
+                        <span ng-if="friend.redeemed" class="text-success"><strong>€5</strong> verdiend!</span>
+                        <span ng-if="!friend.redeemed">€5 in afwachting</span>
+                    </td>
+                </tr>
+            </table>
+            <table class="friends-table text-center" ng-if="invitedFriends.length > 0" hide-gt-xs>
+                <tr ng-repeat="friend in invitedFriends" layout="row" layout-wrap>
+                    <td class="text-left" flex="65">
+                        <span ng-if="friend.status == 'created' && !friend.redeemed"><strong>{{ friend.firstName | toTitleCase }}</strong> is lid geworden, maar heeft nog geen rit gemaakt.</span>
+                        <span ng-if="friend.status == 'created' && friend.redeemed"><strong>{{ friend.firstName | toTitleCase }}</strong> is lid geworden en heeft een rit gemaakt.</span>
+                        <span ng-if="friend.status == 'invited'"><strong>{{ friend.email | lowercase }}</strong> is nog niet geregistreerd.</span>
+                    </td>
+                    <td flex="35">
                         <span ng-if="friend.redeemed" class="text-success"><strong>€5</strong> verdiend!</span>
                         <span ng-if="!friend.redeemed">€5 in afwachting</span>
                     </td>
