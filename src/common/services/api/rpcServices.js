@@ -276,4 +276,11 @@ angular.module('rpcServices', [])
     return api.createRpcMethod('discount_usage.' + name);
   };
   this.search = m('search');
+})
+
+.service('inviteService', function (api) {
+  var m = function (name) {
+    return api.createRpcMethod('invite.' + name);
+  };
+  this.getInvitedFriends = m('getInvitedFriends');
 });
