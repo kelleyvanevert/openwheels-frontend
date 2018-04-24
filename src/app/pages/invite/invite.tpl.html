@@ -122,7 +122,7 @@
                 <strong>Je hebt nog geen vrienden uitgenodigd.<br/>Deel jouw persoonlijke link om €5 te verdienen.</strong>
             </div>
             <div class="text-center" ng-if="invitedFriends.length > 0 && totalEarned > 0">
-                <h3 style="font-size: 22px;">Je hebt €{{ totalEarned }} verdiend!</h3>
+                <h3 style="font-size: 22px;">Je hebt <span class="text-success">€{{ totalEarned }}</span> verdiend!</h3>
             </div>
             <table class="friends-table text-center" ng-if="invitedFriends.length > 0">
                 <tr ng-if="invitedFriends.length > 0" ng-repeat="friend in invitedFriends">
@@ -136,7 +136,7 @@
                         <span ng-if="friend.status == 'invited'"><strong>{{ friend.email | lowercase }}</strong> is nog niet geregistreerd.</span>
                     </td>
                     <td>
-                        <span ng-if="friend.redeemed">€5 ontvangen!</span>
+                        <span ng-if="friend.redeemed" class="text-success"><strong>€5</strong> verdiend!</span>
                         <span ng-if="!friend.redeemed">€5 in afwachting</span>
                     </td>
                 </tr>
