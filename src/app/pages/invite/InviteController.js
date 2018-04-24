@@ -1,14 +1,15 @@
 'use strict';
 angular.module('owm.pages.invite', [])
 
-.controller('InviteController', function ($scope, $state, $stateParams, me, metaInfoService, personService, alertService, Analytics, $filter, appConfig, $mdDialog, $mdMedia) {
+.controller('InviteController', function ($scope, $state, $stateParams, me, metaInfoService, personService, alertService,
+	Analytics, $filter, appConfig, $mdDialog, $mdMedia, inviteService) {
 
 	metaInfoService.set({url: appConfig.serverUrl + '/uitnodigen'});
 	metaInfoService.set({canonical: 'https://mywheels.nl/uitnodigen'});
 
 	$scope.me = me;
 	$scope.appConfig = appConfig;
-	$scope.personalLink = 'https://test.openwheels.nl/uitnodigen/' + $filter('lowercase')($scope.me.slug);
+	$scope.personalLink = appConfig.serverUrl + '/uitnodigen/' + $filter('lowercase')($scope.me.slug);
 	$scope.personalLinkCopied = false;
 	$scope.shareText = 'Meld je via' + $scope.me.firstName + 'mij aan bij MyWheels en ontvang 10 euro korting op je eerst rit!';
 	$scope.openboxes = {};
@@ -27,6 +28,32 @@ angular.module('owm.pages.invite', [])
 		input.select();
 		input.setSelectionRange(0,9999);
 	};
+
+	$scope.getInvitedFriends = function() {
+		inviteService.getInvitedFriends({
+			person: $scope.me.id,
+		})
+		.then(function (invitedFriends) {
+			$scope.invitedFriends = invitedFriends;
+			var totalEarned = 0;
+
+			$scope.getTotalEarned = function(){
+				for(var i = 0; i < $scope.invitedFriends.length; i++){
+					if($scope.invitedFriends[i].redeemed) {
+						totalEarned += 5;
+					}
+				}
+			};
+
+			$scope.getTotalEarned();
+			$scope.totalEarned = totalEarned;
+		})
+		.catch(function (err) {
+			alertService.addError(err);
+		});
+	};
+
+	$scope.getInvitedFriends();
 
 	$scope.copyPersonalLink = function() {
 		var input = document.getElementById('personalLink');
