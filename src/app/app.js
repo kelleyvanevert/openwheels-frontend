@@ -154,6 +154,22 @@ angular.module('openwheels', [
     $state.go('home');
   });
 
+  /**
+  * Force server reload for these urls:
+  */
+  $stateProvider.state('autodelen', {
+    url: '/autodelen',
+    onEnter: ['$window', function ($window) {
+      $window.location.reload();
+    }]
+  });
+  $stateProvider.state('autodelen2', {
+    url: '/autodelen/*path',
+    onEnter: ['$window', function ($window) {
+      $window.location.reload();
+    }]
+  });
+
 })
 
 .config(function (uiGmapGoogleMapApiProvider) {

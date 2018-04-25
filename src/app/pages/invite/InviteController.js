@@ -104,17 +104,41 @@ angular.module('owm.pages.invite', [])
 			},
 			fullscreen: $mdMedia('xs'),
 			templateUrl: 'pages/invite/invite-email-dialog.tpl.html',
-			controller: ['$scope', '$mdDialog', 'me', '$filter', function ($scope, $mdDialog, me, $filter) {
-			  $scope.me = me;
-			  $scope.hide = function () {
-			    $mdDialog.hide();
-			  };
-			  $scope.cancel = function () {
-			    $mdDialog.cancel();
-			  };
-			  $scope.answer = function (answer) {
-			    $mdDialog.hide(answer);
-			  };
+			controller: ['$scope', '$mdDialog', 'me', '$filter', 'inviteService', function ($scope, $mdDialog, me, $filter, inviteService) {
+				$scope.me = me;
+
+				$scope.invitePerMail = function() {
+					$scope.inviteFriendFormSubmitted = true;
+					$scope.invitedFriendSuccess = false;
+					$scope.invitedFriendError = false;
+
+					if ($scope.invitedFriend.name && $scope.invitedFriend.email) {
+						inviteService.inviteFriend({
+							person: $scope.me.id,
+							name: $filter('toTitleCase')($scope.invitedFriend.name),
+							email:  $scope.invitedFriend.email
+						})
+						.then(function (response) {
+							$scope.inviteFriendFormSubmitted = false;
+							$scope.invitedFriendSuccess = true;
+							$scope.invitedFriendName = angular.copy($scope.invitedFriend.name);
+						})
+						.catch(function (err) {
+							$scope.invitedFriendError = true;
+							$scope.invitedFriendErrorText = err.message;
+						});
+					}
+				};
+
+				$scope.hide = function () {
+					$mdDialog.hide();
+				};
+				$scope.cancel = function () {
+					$mdDialog.cancel();
+				};
+				$scope.answer = function (answer) {
+					$mdDialog.hide(answer);
+				};
 			}]
 		});
 	};
