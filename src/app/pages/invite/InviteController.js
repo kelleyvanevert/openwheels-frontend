@@ -24,6 +24,7 @@ angular.module('owm.pages.invite', [])
 	};
 
 	$scope.selectLink = function() {
+		Analytics.trackEvent('referral', 'personal_link_selected', $scope.me.id, undefined, true);
 		var input = document.getElementById('personalLink');
 		input.select();
 		input.setSelectionRange(0,9999);
@@ -56,6 +57,7 @@ angular.module('owm.pages.invite', [])
 	$scope.getInvitedFriends();
 
 	$scope.copyPersonalLink = function() {
+		Analytics.trackEvent('referral', 'personal_link_copied', $scope.me.id, undefined, true);
 		var input = document.getElementById('personalLink');
 		input.select();
 		document.execCommand('copy');
@@ -119,6 +121,7 @@ angular.module('owm.pages.invite', [])
 							email:  $scope.invitedFriend.email
 						})
 						.then(function (response) {
+							Analytics.trackEvent('referral', 'invite_per_mail_sent', $scope.me.id, undefined, true);
 							$scope.inviteFriendFormSubmitted = false;
 							$scope.invitedFriendSuccess = true;
 							$scope.invitedFriendName = angular.copy($scope.invitedFriend.name);
