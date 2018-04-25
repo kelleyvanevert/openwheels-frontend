@@ -27,7 +27,7 @@
                 <a 
                     class="md-button md-raised mail" 
                     ng-click="openModal()"
-                    ga-track-event="['interaction', 'inviteEmail', 'invite']"
+                    ga-track-event="['referral', 'inviteEmail', 'invite']"
                 >
                     <i class="fa fa-fw fa-2x fa-envelope"></i>E-mail
                 </a>
@@ -40,7 +40,7 @@
                     socialshare-hashtags="autodelen"
                     socialshare-url="{{ personalLink }}"
                     class="md-button md-raised facebook"
-                    ga-track-event="['interaction', 'inviteFacebook', 'invite']"
+                    ga-track-event="['referral', 'inviteFacebook', 'invite']"
                 >
                     <i class="fa fa-fw fa-2x fa-facebook"></i>Facebook
                 </a>
@@ -48,11 +48,11 @@
                     href="#"
                     socialshare
                     socialshare-provider="twitter"
-                    socialshare-text="Meld je via mij aan bij MyWheels en ontvang 10 euro korting op je eerst rit!"
+                    socialshare-text="Meld je via mij aan bij @my_wheels en ontvang 10 euro korting op je eerst rit!"
                     socialshare-hashtags="autodelen"
                     socialshare-url="{{ personalLink }}"
                     class="md-button md-raised twitter"
-                    ga-track-event="['interaction', 'inviteTwitter', 'invite']"
+                    ga-track-event="['referral', 'inviteTwitter', 'invite']"
 
                 >
                     <i class="fa fa-fw fa-2x fa-twitter"></i>Twitter
@@ -64,7 +64,7 @@
                     socialshare-text="Meld je via mij aan bij MyWheels en ontvang 10 euro korting op je eerst rit!"
                     socialshare-url="{{ personalLink }}"
                     class="md-button md-raised whatsapp"
-                    ga-track-event="['interaction', 'inviteWhatsApp', 'invite']"
+                    ga-track-event="['referral', 'inviteWhatsApp', 'invite']"
                     hide-gt-xs
                 >
                     <i class="fa fa-fw fa-2x fa-whatsapp"></i>WhatsApp
@@ -75,7 +75,6 @@
 
     <div class="triangle--bar triangle--bar-white"></div>
 
-    <!-- Hire a car in 3 steps -->
     <div class="invite-three-steps text-center">
         <div class="container-home">
             <h2 class="invite-three-stepts--heading">{{'INVITE_HOW_IT_WORKS' | translate }}</h2>
@@ -97,11 +96,10 @@
                 </div>
             </div>
             <div class="read-more">
-                <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-nodig-vrienden-mywheels/" target="_blank">Lees meer over het uitnodigen van vrienden</a>
+                <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-nodig-vrienden-mywheels/" target="_blank" ga-track-event="['referral', 'readMore', 'invite']">Lees meer over het uitnodigen van vrienden</a>
             </div>
         </div>
     </div>
-    <!-- /Hire a car in 3 steps -->
 
     <div class="resource-of-inviter text-center" ng-if="resources.length > 0">
         <div class="container-home">
