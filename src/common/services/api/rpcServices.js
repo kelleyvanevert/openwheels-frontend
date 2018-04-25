@@ -283,4 +283,5 @@ angular.module('rpcServices', [])
     return api.createRpcMethod('invite.' + name);
   };
   this.getInvitedFriends = m('getInvitedFriends');
+  this.inviteFriend = m('inviteFriend');
 });
