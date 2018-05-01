@@ -17,7 +17,7 @@
     "META_SIGNUP_DESCRIPTION": "Meld je gratis aan en start met autodelen!",
     "META_INVITE_TITLE": "Nodig je vrienden uit en verdien €5!",
     "META_INVITE_DESCRIPTION": "Nodig je vrienden uit via mail, Twitter, Facebook of WhatsApp.",
-    "META_INVITE_SUBSCRIBE_TITLE": "Krijg €10 korting op je eerste rit van {{ firstName }}!",
+    "META_INVITE_SUBSCRIBE_TITLE": "Krijg van {{ firstName }} €10 korting op je eerste rit!",
     "META_INVITE_SUBSCRIBE_DESCRIPTION": "Acccepteer de uitnodiging van {{ firstName }} om lid te worden van MyWheels en ontvang €10 korting op je eerste rit.",
     "ALREADYSIGNUP": "Heb je al een account?",
     "TIME_OF_ORGIN": "Bouwjaar",
