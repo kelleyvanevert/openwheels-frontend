@@ -80,7 +80,7 @@
         <tr>
           <td>
             <b>Totale huurprijs</b>
-            <span style="padding-top:1em" ng-if="booking.cancelAfter && booking.approved !== 'OK' && booking.details.discount === 0">
+            <span style="padding-top:1em" ng-if="booking.cancelAfter && booking.approved !== 'OK' && booking.details.discount === 0 && booking.details.friend_invite_discount === 0">
                 <br><br>
                 Betaal voor {{booking.cancelAfter | amDateFormat:'D MMMM YYYY HH:mm'}} om automatische annulering te voorkomen.
             </span>
@@ -94,7 +94,13 @@
             <td style="padding-top:25px">Af: korting</td>
             <td class="text-right" style="padding-top:25px">{{ booking.details.discount | currency }}</td>
         </tr>
-        <tr ng-if="booking.details.discount > 0">
+
+        <tr ng-if="booking.details.friend_invite_discount > 0">
+            <td style="padding-top:25px">Af: korting van {{ me.invited.firstName | toTitleCase }}</td>
+            <td class="text-right" style="padding-top:25px">{{ booking.details.friend_invite_discount | currency }}</td>
+        </tr>
+
+        <tr ng-if="booking.details.discount > 0 || booking.details.friend_invite_discount > 0">
           <td>
             <b>Totaal</b>
             <span style="margin-top:1em" ng-if="booking.cancelAfter && booking.approved !== 'OK'">
@@ -102,7 +108,7 @@
                 Betaal voor {{booking.cancelAfter | amDateFormat:'D MMMM YYYY HH:mm'}} om automatische annulering te voorkomen.
             </span>
           </td>
-          <td class="text-right"><b>{{ (booking.details.booking_price.total + booking.details.km_price - booking.details.discount) | currency }}</b></td>
+          <td class="text-right"><b>{{ (booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount) | currency }}</b></td>
         </tr>
 
     </tbody>

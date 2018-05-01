@@ -67,6 +67,7 @@ angular.module('vouchersDirective', [])
             contract_type: booking.contract.type.id,
             drivers_count: booking.drivers.length,
             km_price: value.km_price,
+            friend_invite_discount: value.friend_invite_discount,
             discount: value.discount,
           };
           if(bookingObject.drivers_count) {
