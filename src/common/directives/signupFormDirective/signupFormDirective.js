@@ -19,7 +19,7 @@ angular.module('signupFormDirective', [])
         $scope.auth.email = $rootScope.prefilledMail;
       }
       if ($rootScope.prefilledName) {
-        $scope.auth.firstName = $rootScope.prefilledName;
+        $scope.user.firstName = $rootScope.prefilledName;
       }
 
       $scope.facebookSignup = function() {
