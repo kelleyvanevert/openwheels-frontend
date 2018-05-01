@@ -124,6 +124,8 @@ angular.module('owm.pages.invite', [])
 							Analytics.trackEvent('referral', 'invite_per_mail_sent', $scope.me.id, undefined, true);
 							$scope.inviteFriendFormSubmitted = false;
 							$scope.invitedFriendSuccess = true;
+							$scope.invitedFriend.name = '';
+							$scope.invitedFriend.email = '';
 							$scope.invitedFriendName = angular.copy($scope.invitedFriend.name);
 						})
 						.catch(function (err) {

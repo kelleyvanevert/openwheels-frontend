@@ -14,8 +14,12 @@ angular.module('signupFormDirective', [])
       $scope.me = {};
       $scope.auth.terms = false;
       $scope.closeAlert = alertService.closeAlert;
+      
       if ($rootScope.prefilledMail) {
         $scope.auth.email = $rootScope.prefilledMail;
+      }
+      if ($rootScope.prefilledName) {
+        $scope.auth.firstName = $rootScope.prefilledName;
       }
 
       $scope.facebookSignup = function() {
