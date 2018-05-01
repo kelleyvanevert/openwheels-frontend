@@ -112,7 +112,7 @@ angular.module('owm.pages', [
 
   .state('subscribe', {
     parent: 'invite',
-    url: '/:slug?mail',
+    url: '/:slug?mail&name',
     views: {
       'main-full@shell': {
         templateUrl: 'pages/inviteSubscribe/invite-subscribe.tpl.html',
