@@ -21,8 +21,8 @@
       <span class="pull-right" ng-if="booking.isOpen">
         <small hide-xs style="padding-left: 1em" ng-if="booking.cancelAfter && booking.approved !== 'OK'">Betaal voor {{booking.cancelAfter|amDateFormat:'D MMMM YYYY HH:mm'}} om annulering te voorkomen</small>
         <md-icon ng-show="booking.statusValue" ng-class="{'text-success': booking.statusValue}">check</md-icon>
-        <b ng-class="{'text-success': booking.statusValue}" ng-if="booking.details.discount">{{ booking.details.booking_price.total + booking.details.km_price - booking.details.discount | currency }}</b>
-        <b ng-class="{'text-success': booking.statusValue}" ng-if="!booking.details.discount">{{ booking.details.booking_price.total + booking.details.km_price | currency }}</b>
+        <b ng-class="{'text-success': booking.statusValue}" ng-if="booking.details.discount">{{ booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount | currency }}</b>
+        <b ng-class="{'text-success': booking.statusValue}" ng-if="!booking.details.discount">{{ booking.details.booking_price.total + booking.details.km_price - booking.details.friend_invite_discount | currency }}</b>
       </span>
       <h3 class="card-title">
         <a ng-click="toggleBookingCards($index)">
