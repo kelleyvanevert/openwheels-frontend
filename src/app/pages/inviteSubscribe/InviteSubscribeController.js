@@ -14,6 +14,9 @@ angular.module('owm.pages.invite.subscribe', [])
 	//set slug to localStorage
 	$localStorage.invitedBySlug = $scope.inviter.slug;
 
+	if($stateParams.name) {
+		$rootScope.prefilledName = $stateParams.name;
+	}
 	if($stateParams.mail) {
 		$rootScope.prefilledMail = $stateParams.mail;
 	}

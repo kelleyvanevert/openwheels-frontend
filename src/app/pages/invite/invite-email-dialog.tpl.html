@@ -16,7 +16,7 @@
 
         <div flex layout="row" layout-align="center">
 
-            <form role="form" class="mywheels-form" name="inviteFriendForm">
+            <form role="form" class="mywheels-form" name="inviteFriendForm" ng-submit="invitePerMail()">
                 <div id="name_group" class="icon user">
                     <input type="text" autocomplete="off" id="name" name="name" ng-model="invitedFriend.name" placeholder="{{ 'FIRST_NAME' | translate }}" required>
                     <div class="help-block" ng-if="inviteFriendFormSubmitted">
