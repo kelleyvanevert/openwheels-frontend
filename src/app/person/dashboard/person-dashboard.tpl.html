@@ -13,10 +13,10 @@
         <a ui-sref="owm.message">{{ 'MY_MESSAGES' | translate }}</a>
       </md-tab-label></md-tab>
       <md-tab><md-tab-label>
-        <a ui-sref="owm.person.aboutme">{{ 'MY_MEMBER_PAGE' | translate }}</a>
+        <a ui-sref="invite">{{ 'INVITE_FRIENDS_MENU' | translate }}</a>
       </md-tab-label></md-tab>
       <md-tab><md-tab-label>
-        <a href="{{ 'NAVBAR.HOW_IT_WORKS_URL' | translate }}">{{ 'NAVBAR.HOW_IT_WORKS' | translate }}</a>
+        <a ui-sref="owm.person.aboutme">{{ 'MY_MEMBER_PAGE' | translate }}</a>
       </md-tab-label></md-tab>
     </md-tabs>
 
@@ -34,6 +34,9 @@
         <a ui-sref="owm.resource.own">{{ 'MY_RESOURCES' | translate }}</a>
       </md-tab-label></md-tab>
       <md-tab><md-tab-label>
+        <a ui-sref="invite">{{ 'INVITE_FRIENDS_MENU' | translate }}</a>
+      </md-tab-label></md-tab>
+      <md-tab><md-tab-label>
         <a ui-sref="owm.finance.v4">{{ 'MY_FINANCE' | translate }}</a>
       </md-tab-label></md-tab>
     </md-tabs>
@@ -49,7 +52,7 @@
         <a ui-sref="owm.finance.v4">{{ 'MY_FINANCE' | translate }}</a>
       </md-tab-label></md-tab>
       <md-tab><md-tab-label>
-        <a href="{{ 'NAVBAR.HOW_IT_WORKS_URL' | translate }}">{{ 'NAVBAR.HOW_IT_WORKS' | translate }}</a>
+        <a ui-sref="invite">{{ 'INVITE_FRIENDS_MENU' | translate }}</a>
       </md-tab-label></md-tab>
     </md-tabs>
 
@@ -168,6 +171,75 @@
           ng-include="'booking/list/partial/booking-list-item--owner.tpl.html'">
       </li>
     </ul>
+  </div>
+</div>
+
+<!-- MyWheels Open banner for owners with resource-->
+<div ng-if="me.provider.id === 1 && resources.length > 0">
+  <div 
+    class="mywheels--open--card"
+    ng-click="goToMyWheelsOpen()"
+    ga-track-event="['interaction', 'mywheelsOpenUtrecht', 'dashboard']"
+    ng-if="MyWheelsOpenUtrecht"
+    hide-xs
+  >
+     <img src="../branding/img/mywheels_open_dashboard_utrecht.png" class="banner" />
+         <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary" style="right:0.5em; font-size:1.1em;padding:.5em 0.8em;">Meld je aan</a>
+  </div>
+
+  <div 
+    class="mywheels--open--card"
+    ng-click="goToMyWheelsOpen()"
+    ga-track-event="['interaction', 'mywheelsOpen', 'dashboard']"
+    ng-if="!MyWheelsOpenUtrecht"
+    hide-xs
+  >
+     <img src="../branding/img/mywheels_open_dashboard.png" class="banner" />
+         <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary">Meld je aan</a>
+  </div>
+
+  <div 
+    class="mywheels--open--card"
+    ng-click="goToMyWheelsOpen()"
+    ga-track-event="['interaction', 'mywheelsOpen', 'dashboard']"
+    ng-if="!MyWheelsOpenUtrecht"
+    hide-gt-xs
+  >
+     <img src="../branding/img/mywheels_open_mobiel.png" class="banner" />
+         <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary" style="font-size:1.1em;">Meld je aan</a>
+  </div>
+  <div 
+    class="mywheels--open--card"
+    ng-click="goToMyWheelsOpen()"
+    ga-track-event="['interaction', 'mywheelsOpen', 'dashboard']"
+    ng-if="MyWheelsOpenUtrecht"
+    hide-gt-xs
+  >
+     <img src="../branding/img/mywheels_open_dashboard_utrecht_mobiel.png" class="banner" />
+         <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary" style="font-size:1.1em;">Meld je aan</a>
+  </div>
+</div>
+
+<!-- Referral program-->
+<div ng-if="me.provider.id === 1 && (me.preference === 'renter' || resources.length === 0)">
+  <div 
+    class="mywheels--open--card"
+    ng-click="goToInviteFriends()"
+    ga-track-event="['interaction', 'inviteFriendsBanner', 'dashboard']"
+    hide-xs
+  >
+     <img src="../branding/img/vrienden_uitnodigen_dashboard.png" class="banner" />
+         <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary" style="right:0.5em; font-size:1.1em;">{{ 'INVITE_FRIENDS_MENU' | translate }}</a>
+  </div>
+
+  <div 
+    class="mywheels--open--card"
+    ng-click="goToInviteFriends()"
+    ga-track-event="['interaction', 'inviteFriendsBanner', 'dashboard']"
+    hide-gt-xs
+  >
+     <img src="../branding/img/vrienden_uitnodigen_dashboard_mobiel.png" class="banner" />
+         <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary" style="font-size: 1em; bottom: 14%; right: 1.5em;">{{ 'INVITE_FRIENDS_MENU' | translate }}</a>
   </div>
 </div>
 

@@ -2,13 +2,15 @@
 
 angular.module('owm.booking.show', [])
 
-
 .controller('BookingShowController', function (
   $q, $timeout, $log, $scope, $location, $filter, $translate, $state, $stateParams, appConfig, API_DATE_FORMAT,
   bookingService, resourceService, invoice2Service, alertService, dialogService,
   authService, boardcomputerService, discountUsageService, chatPopupService, linksService,
   booking, me, declarationService, $mdDialog, contract, Analytics, paymentService, voucherService,
-  $window, $mdMedia, discountService, account2Service, $rootScope, chipcardService) {
+  $window, $mdMedia, discountService, account2Service, $rootScope, chipcardService, metaInfoService) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/booking/' + booking.id});
+  metaInfoService.set({canonical: 'https://mywheels.nl/booking/' + booking.id});
 
   $scope.appConfig = appConfig;
   $scope.contract = contract;
@@ -874,7 +876,9 @@ angular.module('owm.booking.show', [])
   }
 
   function reload() {
+    $rootScope.isPaymentLoading = true;
     alertService.load();
+
     $q.all([ getVouchers(), getRequiredValue(), getCredit(), getDebt() ]).finally(function () {
       alertService.loaded();
     });

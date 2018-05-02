@@ -35,7 +35,7 @@
   </div>
 
   <div class="form-group"
-       ng-if="features.discounts"
+       ng-if="features.discounts && !invitedDiscount"
        ng-class="{'has-error': discountCodeValidation.submitted && discountCodeValidation.error}">
     <label >
       {{ 'DISCOUNT' | translate }} {{me}} </label>
@@ -63,22 +63,35 @@
   </div>
 
   <!-- availability & price -->
-  <div class="form-group" ng-if="price || isPriceLoading || availability || isAvailabilityLoading">
-    <div class="text-center">
+  <div class="form-group">
+    <div class="text-center" ng-if="price || isPriceLoading || availability || isAvailabilityLoading">
       <h4 ng-if="availability.available==='no'"><md-icon class="text-danger">close</md-icon> {{ 'NOT_AVAILABLE' | translate }}</h4>
       <h4 ng-if="availability.available==='yes'"><md-icon class="text-success">check</md-icon> {{ 'AVAILABLE' | translate }}</h4>
       <h4 ng-if="availability.available==='yes' && price">
-        {{ 'COSTS' | translate }}:
-        <span>{{ price.total | currency }}</span>
-        <info-icon tooltip-html="priceHtml(price)"></info-icon>
-        <span ng-if="booking.discountCode && !discountCodeValidation.error" style="display: block; font-size: 0.8em;">De kortingscode wordt later verrekend.</span>
-        <span ng-if="booking.discountCode && discountCodeValidation.error" class="text-danger" style="display: block; font-size: 0.8em;">De kortingscode is ongeldig.</span>
-        {{ 'RESOURCE_PRICE_DISCLAIMER' | translate }}
+        <div ng-if="!invitedDiscount">
+          {{ 'COSTS' | translate }}:
+          <span>{{ price.total | currency }}</span>
+          <info-icon tooltip-html="priceHtml(price)"></info-icon>
+          <span ng-if="booking.discountCode && !discountCodeValidation.error" style="display: block; font-size: 0.8em;">
+            De kortingscode wordt later verrekend.
+          </span>
+          <span ng-if="booking.discountCode && discountCodeValidation.error" class="text-danger" style="display: block; font-size: 0.8em;">
+            De kortingscode is ongeldig.
+          </span>
+        </div>
+        <div ng-if="invitedDiscount">
+          <div style="padding-bottom:5px;">{{ 'COSTS_WITHOUT_DISCOUNT' | translate }}:</div>
+          <span>{{ price.total | currency }}</span>
+          <info-icon tooltip-html="priceHtml(price)"></info-icon>
+        </div>
       </h4>
       <h4 ng-if="isPriceLoading || isAvailabilityLoading">
         <i class="fa fa-spinner fa-spin"></i>
       </h4>
     </div>
+    <h4 class="text-center"><span ng-if="invitedDiscount" class="text-success" style="display: block; font-size: 1em; padding: 0.5em">
+      Je ontvangt €10 korting van {{ person.invited.firstName }}!
+    </span></h4>
   </div>
 
   <div class="text-center" hide-xs>

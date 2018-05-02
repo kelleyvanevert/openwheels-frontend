@@ -2,7 +2,10 @@
 
 angular.module('owm.resource.search.map', [])
 
-  .controller('ResourceSearchMapController', function ($scope, uiGmapGoogleMapApi, uiGmapIsReady, $stateParams, appConfig) {
+  .controller('ResourceSearchMapController', function ($scope, uiGmapGoogleMapApi, uiGmapIsReady, $stateParams, appConfig, metaInfoService) {
+
+    metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/kaart'});
+    metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/kaart'});
 
     var DEFAULT_MAP_CENTER_LOCATION = {
       // Utrecht, The Netherlands

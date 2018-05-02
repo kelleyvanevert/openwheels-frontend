@@ -2,8 +2,12 @@
 
 angular.module('owm.resource.create.carInfo', [])
 
-.controller('carInfoControler', function ($scope, $filter, $state, $log, $q, $stateParams, $translate, resources, resourceService, authService, alertService, dialogService, me) {
+.controller('carInfoControler', function ($scope, $filter, $state, $log, $q, $stateParams, $translate, resources, resourceService,
+  authService, alertService, dialogService, me, metaInfoService, appConfig) {
 
+  metaInfoService.set({url: appConfig.serverUrl + '/mijn-auto/create'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/mijn-auto/create'});
+  
   var resource;
   var masterResource;
   var masterResourceProperties;

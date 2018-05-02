@@ -19,14 +19,14 @@
     <!-- /TRIANGLE BAR -->
 
     <!-- MYWHEELS OPEN -->
-    <div class="mywheels--open--card" ng-if="features.homePage" hide-xs>
+    <div class="mywheels--open--card" ng-if="features.homePage" ng-click="goToMyWheelsOpen()" ga-track-event="['interaction', 'mywheelsOpen', 'home']" hide-xs>
        <img src="../branding/img/mywheels_open_desktop.png" class="banner" />
-           <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary" href="http://open.mywheels.nl" target="_blank">Meld je aan</a>
+           <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary">Meld je aan</a>
     </div>
    
-    <div class="mywheels--open--card" ng-if="features.homePage" hide-gt-xs>
+    <div class="mywheels--open--card" ng-if="features.homePage" ng-click="goToMyWheelsOpen()" ga-track-event="['interaction', 'mywheelsOpen', 'home']" hide-gt-xs>
        <img src="../branding/img/mywheels_open_mobiel.png" class="banner" />
-           <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary" href="http://open.mywheels.nl" target="_blank">Meld je aan</a>
+           <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary">Meld je aan</a>
     </div>
 
     <!-- BLOG ITEMS -->   
@@ -192,7 +192,7 @@
                         <h3 class="infobox--title--text">Voordelig autodelen</h3>
                     </div>
                     <p class="infobox--content">MyWheels is het voordeligste autodeelplatform van Nederland. Onze tarieven zijn zo laag omdat we een not-­for-profit­organisatie zijn. Wij vinden leefbare buurten belangrijker dan winstmaximalisatie. Vanwege onze idealen heeft MyWheels al
-                        meer dan 45.000 autodelers. Sluit je aan!</p>
+                        meer dan 50.000 autodelers. Sluit je aan!</p>
                     <a href="https://mywheels.nl/autodelen/community/onze-idealen/" class="infobox--link">Lees meer</a>
                 </div>
                 <div class="infobox">
@@ -208,7 +208,7 @@
                         <md-icon class="infobox--title--icon">contact_phone</md-icon>
                         <h3 class="infobox--title--text">All­risk verzekerd</h3>
                     </div>
-                    <p class="infobox--content">Je bent via MyWheels altijd goed verzekerd bij Centraal Beheer Achmea. Wij regelen de verzekering voor de duur van de huur, waardoor je met een gerust hart op weg gaat. Ook heb je de mogelijkheid om je eigen risico helemaal af te kopen en
+                    <p class="infobox--content">Je bent via MyWheels altijd goed verzekerd bij Centraal Beheer. Wij regelen de verzekering voor de duur van de huur, waardoor je met een gerust hart op weg gaat. Ook heb je de mogelijkheid om je eigen risico helemaal af te kopen en
                         dat is wel zo fijn.</p>
                     <a href=" https://mywheels.nl/autodelen/hoe-huren-werkt/verzekering" class="infobox--link">Lees meer</a>
                 </div>
@@ -254,7 +254,8 @@
             <div class="hero-overlay"></div>
             <div class="imageblock--content">
                 <h3 class="imageblock--heading">Begin direct met huren</h3>
-                <button class="mywheels-btn mywheels-btn-error mywheels-btn-margin-top mywheels-btn-big" ui-sref="owm.auth.signup" md-ink-ripple="#9a3d26">{{ 'SIGNUP_SHORT' | translate }}</button>
+                <button class="mywheels-btn mywheels-btn-error mywheels-btn-margin-top mywheels-btn-big" ui-sref="owm.auth.signup" md-ink-ripple="#9a3d26" ng-show="!invitedBySlug">{{ 'SIGNUP_SHORT' | translate }}</button>
+                <button class="mywheels-btn mywheels-btn-error mywheels-btn-margin-top mywheels-btn-big" ui-sref="subscribe({ slug: invitedBySlug })" md-ink-ripple="#9a3d26" ng-show="invitedBySlug">{{ 'SIGNUP_SHORT' | translate }}</button>
             </div>
         </div>
     </div>

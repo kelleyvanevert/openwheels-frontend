@@ -1,7 +1,7 @@
 <footer class="page-footer footer-color center-on-small-only" >
   <div class="container" ng-class="{ 'container-transitional': containerTransitional, 'container-home': containerHome, 'intro__page': containerIntro  }">
 
-    <div ng-if="features.myWheelsFooter" class="row">
+    <div ng-if="features.myWheelsFooter" class="row" style="margin-left:0; margin-right:0;">
         <div class="col-md-3 col-sm-3 hidden-xs">
           <h4 class="no-margin">{{ 'CAR_SHARING_TITLE' | translate }}</h4>
           <a href="https://mywheels.nl/auto-huren">{{ 'RENT_A_CAR' | translate }}</a><br/>
@@ -25,6 +25,8 @@
           <a href="https://mywheels.nl/autodelen/hoe-huren-werkt/verzekering">{{ 'INSURANCE' | translate }}</a><br/>
           <a href="https://mywheels.nl/autodelen/hoe-huren-werkt/tarieven-huren/">{{ 'PRICING' | translate }}</a><br/>
           <a href="https://mywheels.nl/autodelen/hoe-autodelen-werkt/voorwaarden/">{{ 'TERMS' | translate }}</a><br/>
+          <a href="https://mywheels.nl/autodelen/privacybeleid/">{{ 'PRIVACY' | translate }}</a><br/>
+          <a ng-if="user.isAuthenticated && user.identity.provider.id === 1" ui-sref="invite">{{ 'INVITE_FRIENDS_MENU' | translate }}</a><br/>
         </div>
 
         <div class="col-md-3 col-sm-3 col-xs-6">

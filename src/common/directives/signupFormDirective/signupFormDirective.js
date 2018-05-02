@@ -4,7 +4,7 @@ angular.module('signupFormDirective', [])
 
 .directive('signupForm', function () {
   return {
-    restrict: 'A',
+    restrict: 'AE',
     replace: true,
     transclude: true,
     templateUrl: 'directives/signupFormDirective/signupFormDirective.tpl.html',
@@ -14,6 +14,13 @@ angular.module('signupFormDirective', [])
       $scope.me = {};
       $scope.auth.terms = false;
       $scope.closeAlert = alertService.closeAlert;
+      
+      if ($rootScope.prefilledMail) {
+        $scope.auth.email = $rootScope.prefilledMail;
+      }
+      if ($rootScope.prefilledName) {
+        $scope.user.firstName = $rootScope.prefilledName;
+      }
 
       $scope.facebookSignup = function() {
         var booking = $scope.booking;
@@ -111,6 +118,12 @@ angular.module('signupFormDirective', [])
           $scope.user.preference = 'owner';
         }
 
+        if($scope.inviter) {
+          $scope.invited_by = $scope.inviter.id;
+        } else {
+          $scope.invited_by = null;
+        }
+
         var email = $scope.auth.email,
           password = $scope.auth.password,
           user = $scope.user,
@@ -127,6 +140,7 @@ angular.module('signupFormDirective', [])
                   authService.oauthSubscribe({
                       email: email.trim().toLowerCase(),
                       password: password,
+                      invitedBy: $scope.invited_by,
                       other: user
                       // captcha: captcha
                     }).then(function (res) {
@@ -170,6 +184,7 @@ angular.module('signupFormDirective', [])
                           year: year
                         });
                       } else {
+                        $mdDialog.cancel();
                         $state.go($scope.url);
                       }
                     })

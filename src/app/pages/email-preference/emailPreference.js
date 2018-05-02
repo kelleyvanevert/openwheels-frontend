@@ -2,7 +2,10 @@
 
 angular.module('owm.pages.emailPreference', [])
 
-.controller('EmailPreferenceController', function ($state, $stateParams, $scope, personService, alertService) {
+.controller('EmailPreferenceController', function ($state, $stateParams, $scope, personService, alertService, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/email-uitschrijven'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/email-uitschrijven'});
 
   var personId = $stateParams.person;
   var hash = $stateParams.hash;
