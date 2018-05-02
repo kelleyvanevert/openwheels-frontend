@@ -11,7 +11,8 @@ angular.module('personalDataDirective', [])
       resource: '=resource'
     },
     templateUrl: 'directives/personalData/personalData.tpl.html',
-    controller: function ($scope, $rootScope, $log, $state, $location, $stateParams, $filter, personService, resourceService, $anchorScroll, $timeout, alertService, account2Service, accountService, dutchZipcodeService, Analytics, $translate, featuresService) {
+    controller: function ($scope, $rootScope, $log, $state, $location, $stateParams, $filter, personService, authService,resourceService,
+      $anchorScroll, $timeout, alertService, account2Service, accountService, dutchZipcodeService, Analytics, $translate, featuresService) {
       //person info
       var masterPerson = null;
       var that;
@@ -143,8 +144,8 @@ angular.module('personalDataDirective', [])
                     personService.alter({
                       person: $scope.person.id,
                       newProps: newProps
-                    }).then(function () {
-                      
+                    })
+                    .then(function () {
                       Analytics.trackEvent('person', 'edited', $scope.person.id, undefined, true);
                       that.initPerson($scope.person);
                       // if person is renter, send to next page
@@ -261,9 +262,10 @@ angular.module('personalDataDirective', [])
         },
         initPerson: function () {
           var _this = this;
-          personService.me({
-            version: 2
-          }).then(function (person) {
+          authService.me(
+            !!'forceReload'
+          )
+          .then(function (person) {
             masterPerson = person;
             $scope.person = angular.copy(person);
 

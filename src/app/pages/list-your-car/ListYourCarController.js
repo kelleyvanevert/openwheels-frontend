@@ -1,7 +1,10 @@
 'use strict';
 angular.module('owm.pages.list-your-car', [])
 
-.controller('listYourCarController', function ($scope, $state, $mdDialog, $log, $mdMedia, $filter) {
+.controller('listYourCarController', function ($scope, $state, $mdDialog, $log, $mdMedia, $filter, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/auto-verhuren'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/auto-verhuren'});
 
   $scope.openboxes = {};
 

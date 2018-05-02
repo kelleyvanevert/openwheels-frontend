@@ -2,8 +2,10 @@
 
 angular.module('owm.person.aboutme', [])
 
+.controller('aboutMeController', function ($scope, $translate, $filter, $window, alertService, personService, person, Analytics, metaInfoService, appConfig) {
 
-.controller('aboutMeController', function ($scope, $translate, $filter, $window, alertService, personService, person, Analytics) {
+  metaInfoService.set({url: appConfig.serverUrl + '/aboutme'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/aboutme'});
 
   var masterPerson = null;
   initPerson(person);

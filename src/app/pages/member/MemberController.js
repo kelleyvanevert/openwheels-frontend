@@ -2,7 +2,10 @@
 angular.module('owm.pages.member', [])
 
 .controller('MemberController', function ($window, $filter, $scope, alertService, authService, resourceService,
-  personService, chatPopupService, featuresService, ratingService, user, member) {
+  personService, chatPopupService, featuresService, ratingService, user, member, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/lid/' + member.id});
+  metaInfoService.set({canonical: 'https://mywheels.nl/lid/' + member.id});
 
   $scope.user = user;
   $scope.person = member;

@@ -2,7 +2,11 @@
 
 angular.module('owm.finance.deposit', [])
 
-.controller('DepositController', function ($scope, alertService, depositService, me, type) {
+.controller('DepositController', function ($scope, alertService, depositService, me, type, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/deposit'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/deposit'});
+
   $scope.month =  moment().month();
   $scope.data = { mandate: false };
   $scope.busy = false;

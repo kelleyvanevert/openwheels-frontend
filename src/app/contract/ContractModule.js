@@ -26,7 +26,10 @@ angular.module('owm.contract', [])
   });
 })
 
-.controller('ContractChoiceController', function ($scope, $state, alertService, depositService, person, contracts, $log, $mdMedia) {
+.controller('ContractChoiceController', function ($scope, $state, alertService, depositService, person, contracts, $log, $mdMedia, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/contractkeuze'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/contractkeuze'});
 
   $scope.hasMember = contracts.some(function (c) { return c.type.id ===  62; });
   $scope.hasGo     = contracts.some(function (c) { return c.type.id ===  60; });

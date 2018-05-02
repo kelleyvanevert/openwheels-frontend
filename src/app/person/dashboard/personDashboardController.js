@@ -3,7 +3,11 @@
 angular.module('owm.person.dashboard', [])
 
 .controller('PersonDashboardController', function ($q, $scope, $sce, $state, me, bookingList, rentalList, actions,
-  authService, bookingService, alertService, boardcomputerService, actionService, resourceService, resourceQueryService, blogItems, $localStorage, personService, dialogService, $translate, $timeout, Analytics) {
+  authService, bookingService, alertService, boardcomputerService, actionService, resourceService, resourceQueryService,
+  blogItems, $localStorage, personService, dialogService, $translate, $timeout, Analytics, metaInfoService, appConfig, $window) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/dashboard'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/dashboard'});
 
   // If booking_before_signup in local storage exists that means we have been redirected to this page after facebook signup
   // decide where to go next and try to guess user preference. If we do not know what flow to redirect
@@ -47,6 +51,14 @@ angular.module('owm.person.dashboard', [])
     }
   }
 
+  $scope.goToMyWheelsOpen = function() {
+    window.open('http://open.mywheels.nl','_blank');
+  };
+
+  $scope.goToInviteFriends = function() {
+    $state.go('invite');
+  };
+
   function setPreference(pref) {
     if(!me.preference) {
       return personService.alter({person: me.id, newProps: {preference: pref}})
@@ -59,7 +71,6 @@ angular.module('owm.person.dashboard', [])
       ;
     }
   }
-
 
   function showModal() {
     var initOptions = function () {
@@ -100,7 +111,7 @@ angular.module('owm.person.dashboard', [])
     loadMemberResources();
   }
 
-  if (me.preference === 'owner') {
+  if (me.preference !== 'renter') {
     loadResources();
   }
 
@@ -109,6 +120,13 @@ angular.module('owm.person.dashboard', [])
     saveRegisterSource('facebook_login');
   }
 
+  //Syntus Utrecht offer for MyWheels Open
+  if ($scope.zipde) {
+    $scope.zipcode = $scope.me.zipcode.substring(0, 4);
+    $scope.MyWheelsOpenUtrecht = ($scope.zipcode >= 3400 && $scope.zipcode <= 4133 && ['Culemborg', 'Den Haag', '\'s-Gravenhage'].indexOf($scope.me.city) < 0) ? true : false;
+  } else {
+    $scope.MyWheelsOpenUtrecht = false;
+  }
 
   $scope.renderHtml = function (html_code) {
     return $sce.trustAsHtml(html_code);

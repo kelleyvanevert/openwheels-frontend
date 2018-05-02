@@ -2,7 +2,10 @@
 angular.module('owm.person')
 
 .controller('PersonContractIndexController', function ($q, $filter, $uibModal, $translate, $scope,
-  authService, dialogService, alertService, personService, contractService, me, Analytics) {
+  authService, dialogService, alertService, personService, contractService, me, Analytics, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/dashboard/contracts'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/dashboard/contracts'});
 
   $scope.busy = false;
   $scope.isLoadingContracts = true;

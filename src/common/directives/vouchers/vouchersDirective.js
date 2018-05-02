@@ -12,7 +12,8 @@ angular.module('vouchersDirective', [])
       onChanged: '&',
       discount: '='
     },
-    controller: function ($scope, voucherService, alertService, bookingService, $rootScope, paymentService, appConfig, $state, $window, contractService, $mdDialog) {
+    controller: function ($scope, voucherService, alertService, bookingService, $rootScope, paymentService, appConfig, $state,
+      $window, contractService, $mdDialog) {
       $scope.features = $rootScope.features;
 
       $scope.extraDrivers = {price: 1.25, check: false, drivers: [], new: ''};
@@ -66,6 +67,7 @@ angular.module('vouchersDirective', [])
             contract_type: booking.contract.type.id,
             drivers_count: booking.drivers.length,
             km_price: value.km_price,
+            friend_invite_discount: value.friend_invite_discount,
             discount: value.discount,
           };
           if(bookingObject.drivers_count) {
@@ -80,6 +82,7 @@ angular.module('vouchersDirective', [])
           $scope.priceCalculated = true;
           alertService.loaded();
           $scope.isBusy = false;
+          $rootScope.isPaymentLoading = false;
         }).catch(function (err) {
           alertService.addError(err);
         });

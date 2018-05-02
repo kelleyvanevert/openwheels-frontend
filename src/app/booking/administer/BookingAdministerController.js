@@ -2,7 +2,11 @@
 
 angular.module('owm.booking.administer', [])
 
-.controller('BookingFinalizeController', function ($scope, booking, alertService, bookingService, $state) {
+.controller('BookingFinalizeController', function ($scope, booking, alertService, bookingService, $state, metaInfoService, appConfig) {
+
+  metaInfoService.set({url: appConfig.serverUrl + '/booking/finalize'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/booking/finalize'});
+
   alertService.load($scope);
   bookingService.finishTrip({booking: booking.id}).then(function (booking) {
     alertService.loaded($scope);
