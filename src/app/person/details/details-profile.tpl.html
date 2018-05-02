@@ -71,7 +71,7 @@
                                             <input id="year" name="year" inputmode="numeric" pattern="[0-9]*" ng-model="licenseDate.year" placeholder="JJJJ" maxlength="4" max="{{ validLicenseMax }}" min="{{ validLicenseMin }}" class="ng-pristine ng-untouched ng-valid ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength" aria-invalid="false" type="number" required="">
                                         </div>
 
-                                        <div class="err-block" ng-if="!isBusy && (!licenseDateValid || !licenseDataForm.day.$valid || !licenseDataForm.month.$valid || !licenseDataForm.year.$valid)" aria-hidden="true">
+                                        <div class="err-block" ng-if="!isBusy && (!licenseDateValid || !licenseDataForm.day.$valid || !licenseDataForm.month.$valid || (!licenseDataForm.year.$valid && licenseDataForm.year.$viewValue.length > 3))" aria-hidden="true">
                                             <span class="text-danger ng-binding" aria-hidden="true">{{ 'LICENSE_DATE_INVALID' | translate }}</span>
                                         </div>
                                     </div>
