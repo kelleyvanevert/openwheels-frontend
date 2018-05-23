@@ -121,7 +121,7 @@ angular.module('owm.person.dashboard', [])
   }
 
   //Syntus Utrecht offer for MyWheels Open
-  if ($scope.zipde) {
+  if ($scope.me.zipcode) {
     $scope.zipcode = $scope.me.zipcode.substring(0, 4);
     $scope.MyWheelsOpenUtrecht = ($scope.zipcode >= 3400 && $scope.zipcode <= 4133 && ['Culemborg', 'Den Haag', '\'s-Gravenhage'].indexOf($scope.me.city) < 0) ? true : false;
   } else {
