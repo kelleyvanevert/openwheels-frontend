@@ -18,6 +18,18 @@ angular.module('owm.resource.own', [])
     error: ''
   };
   
+  //Syntus Utrecht offer for MyWheels Open
+  if ($scope.me.zipcode) {
+    $scope.zipcode = $scope.me.zipcode.substring(0, 4);
+    $scope.MyWheelsOpenUtrecht = ($scope.zipcode >= 3400 && $scope.zipcode <= 4133 && ['Culemborg', 'Den Haag', '\'s-Gravenhage'].indexOf($scope.me.city) < 0) ? true : false;
+  } else {
+    $scope.MyWheelsOpenUtrecht = false;
+  }
+
+  $scope.goToMyWheelsOpen = function() {
+    window.open('http://open.mywheels.nl','_blank');
+  };
+
   $scope.saveOld = function (resource) {
     alertService.load();
     return authService.me()
