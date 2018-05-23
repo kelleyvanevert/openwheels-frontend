@@ -39,6 +39,9 @@
     <md-list-item id="menuMyCars" class="menu-item-resources" ng-click="navigate('owm.resource.own')" ng-if="user.isAuthenticated">
       <md-icon>directions_car</md-icon><p>{{ 'MY_RESOURCES' | translate }}</p>
     </md-list-item>
+    <md-list-item id="menuMyWheelsOpen" class="menu-item-mywheels-open" ng-click="goToMyWheelsOpen()" ng-if="user.isAuthenticated && user.identity.preference !== 'renter' && user.identity.provider.id === 1">
+      <md-icon>smartphone</md-icon><p>{{ 'MYWHEELS_OPEN_HEADLINE' | translate }}</p>
+    </md-list-item>
     <md-list-item id="menuListCar" class="menu-item-list-your-car" ng-click="navigate('list-your-car')" ng-if="!user.isAuthenticated">
       <md-icon>directions_car</md-icon><p>{{ 'LIST_YOUR_CAR' | translate }}</p>
     </md-list-item>
