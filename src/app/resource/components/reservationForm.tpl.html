@@ -56,9 +56,7 @@
     <label for="riskReduction">
         <input id="riskReduction" type="checkbox" ng-model="booking.riskReduction" />
         {{ 'DECREASE_OWN_RISK' | translate }}
-        <info-icon ng-if="!age || age === -1" tooltip-html="'DECREASE_OWN_RISK_INFO' | translate"></info-icon>
-        <info-icon ng-if="age >= 25" tooltip-html="'DECREASE_OWN_RISK_INFO_ABOVE25' | translate"></info-icon>
-        <info-icon ng-if="age > 0 && age < 25" tooltip-html="'DECREASE_OWN_RISK_INFO_UNDER25' | translate"></info-icon>
+        <info-icon tooltip-html="'DECREASE_OWN_RISK_INFO' | translate"></info-icon>
     </label>
   </div>
 
