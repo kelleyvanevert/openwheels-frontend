@@ -50,7 +50,7 @@ angular.module('owm.resource.edit.sharing_settings', [])
     var options = [
       { label: '', value: '' }
     ];
-    for (var i = 18; i <= 40; i++) {
+    for (var i = 21; i <= 40; i++) {
       options.push({ label: i + '', value: i });
     }
     return options;
