@@ -35,7 +35,7 @@
 
       <!-- add resource -->
       <md-button id="toolbarListyourcar" hide-xs hide-sm ng-if="!user.isAuthenticated && !onSignUpPage && !onListYourCarPage" ui-sref="list-your-car">
-        <md-icon>directions_car</md-icon>
+        <md-icon ng_bind="'directions_car'"></md-icon>
         <span>{{ 'LIST_YOUR_CAR' | translate }}</span>
       </md-button>
 
@@ -46,19 +46,19 @@
 
       <!-- signup -->
       <md-button id="toolbarSignup" ng-if="!user.isPending && !user.isAuthenticated && !onSignUpPage" class="btn-green app--toolbar--button--text" ui-sref="owm.auth.signup" ng-show="!invitedBySlug">
-        <md-icon hide-xs>person_outline</md-icon>
+        <md-icon ng_bind="'person_outline'" hide-xs></md-icon>
         <span>{{ 'SIGNUP' | translate }}</span>
       </md-button>
 
       <!-- signup -->
       <md-button id="toolbarSignup" ng-if="!user.isPending && !user.isAuthenticated && !onSignUpPage" class="btn-green app--toolbar--button--text" ui-sref="subscribe({ slug: invitedBySlug })" ng-show="invitedBySlug">
-        <md-icon hide-xs>person_outline</md-icon>
+        <md-icon ng_bind="'person_outline'" hide-xs></md-icon>
         <span>{{ 'SIGNUP' | translate }}</span>
       </md-button>
 
       <!-- login -->
       <md-button id="toolbarLogin" ng-if="isWindowSizeSM && !user.isPending && !user.isAuthenticated && !centralb" ng-click="login()">
-        <md-icon>person</md-icon>
+        <md-icon ng_bind="'person'"></md-icon>
         <span>{{ 'LOGIN' | translate }}</span>
       </md-button>
 
