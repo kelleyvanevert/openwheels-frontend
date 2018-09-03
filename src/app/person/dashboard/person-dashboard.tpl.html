@@ -264,7 +264,7 @@
 <!-- FAVORITES -->
 <div id="dashboard_buttons" class="card">
 
-  <div class="card-heading" ng-if="favoriteResources.length >= 1">
+  <div class="card-heading" ng-if="favoriteResources.length >= 1 && membersResources.length === 0">
     <h2 class="card-title">{{ 'FAVORITE_RESOURCES' | translate }}<info-icon tooltip-html="'INFO_FAVORITES' | translate"></info-icon></h2>
   </div>
 
