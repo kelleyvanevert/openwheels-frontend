@@ -198,7 +198,7 @@
           ui-sref="owm.booking.show({bookingId: booking.id})"
         >
           <td width="15%" class="media">
-            <img class="media-object img-user-small pull-left align-middle" person-profile-image="{ person: booking.person, size: 'small' }" />
+            <img class="media-object img-user-normal pull-left align-middle" person-profile-image="{ person: booking.person, size: 'normal' }" />
           </td>
           <td width="25%">
             <strong>{{ (booking.beginBooking | amDateFormat:'DD-MM-YYYY') || (booking.beginRequested | amDateFormat:'DD-MM-YYYY') }}</strong>
@@ -260,7 +260,7 @@
               </tr>
               <tr layout="row" class="align-middle">
                 <td flex="30" class="media">
-                  <img class="media-object img-user-small pull-left align-middle" person-profile-image="{ person: booking.person, size: 'small' }" />
+                  <img class="media-object img-user-normal pull-left align-middle" person-profile-image="{ person: booking.person, size: 'normal' }" />
                 </td>
                 <td flex="70">
                   {{ booking.resource.alias | limitTo: 20}}{{booking.resource.alias.length > 20 ? '...' : ''}}

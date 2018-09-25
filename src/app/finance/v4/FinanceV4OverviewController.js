@@ -2,7 +2,8 @@
 
 angular.module('owm.finance.v4', [])
 
-.controller('FinanceV4OverviewController', function ($scope, me, $stateParams, invoice2Service, paymentService, voucherService, linksService, invoiceService, alertService, $state, $mdDialog, $q, appConfig, $window, metaInfoService) {
+.controller('FinanceV4OverviewController', function ($scope, me, $stateParams, invoice2Service, paymentService, voucherService,
+  linksService, invoiceService, alertService, $state, $mdDialog, $q, appConfig, $window, metaInfoService, kmPointService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/finance'});
   metaInfoService.set({canonical: 'https://mywheels.nl/finance'});
@@ -53,27 +54,24 @@ angular.module('owm.finance.v4', [])
   // get grouped invoices (invoice2Module)
   var newInvoices = paymentService.getInvoiceGroups({person: me.id, max: 100})
   .then(addExtraInvoiceGroupInformation)
-  .then(function(results) { $scope.groupedInvoices = results; return results;})
-  ;
+  .then(function(results) { $scope.groupedInvoices = results; return results;});
 
   // get grouped invoices (old invoiceModule)
   var oldInvoices = invoiceService.allGroups({filter: {person: me.id}, limit: 100})
   .then(function (paged){ return paged.result; })
   .then(addExtraInformationOldInvoices)
-  .then(function(results) { $scope.groupedInvoicesOld = results; return results;})
-  ;
+  .then(function(results) { $scope.groupedInvoicesOld = results; return results;});
   
-
   // get credit
   var requiredCredit = voucherService.calculateRequiredCredit({person: me.id})
-  .then(function(results) { $scope.requiredCredit = results; return results;})
-  ;
+  .then(function(results) { $scope.requiredCredit = results; return results;});
 
   // get vouchers
   var vouchers = voucherService.search({person: me.id, minValue: 0.0})
-  .then(function(vouchers) { $scope.vouchers = vouchers; return vouchers;})
-  ;
+  .then(function(vouchers) { $scope.vouchers = vouchers; return vouchers;});
 
+  var kmPoints = kmPointService.forPerson({person: me.id})
+  .then(function(kmPoints) { $scope.kmPoints = kmPoints; return kmPoints;});
 
   $q.all({newInvoices: newInvoices, oldInvoices: oldInvoices, requiredCredit: requiredCredit, vouchers: vouchers})
   .then(function(results) {

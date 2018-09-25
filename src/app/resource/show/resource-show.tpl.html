@@ -77,22 +77,6 @@
                 </md-card>
             </div>
 
-            <!-- boardcomputer -->
-            <div class="card" ng-if="me && resource.locktypes.indexOf('smartphone') >= 0 && resource.owner.id === me.id">
-                <div class="card-body">
-                    <div class="text-center">
-                        <ul class="list-inline">
-                            <li>
-                                <button ng-click="openDoor(resource)" class="btn btn-lg btn-default btn-success"><i class="fa fa-unlock fa-fw fa-lg"></i></button>
-                            </li>
-                            <li>
-                                <button ng-click="closeDoor(resource)" class="btn btn-lg btn-default btn-danger"><i class="fa fa-lock fa-fw fa-lg"></i></button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
             <!-- resource sidebar smaller screens (not in sidebar) -->
             <div class="card" ng-if="!features.resourceSidebar || !isWindowSizeMD">
                 <div class="card-body">
@@ -134,7 +118,7 @@
                 <div class="card-heading">
                     <h3 class="card-title">{{ 'OWNER' | translate }}</h3>
                     <div class="media">
-                        <img class="media-object pull-left img-user-small" person-profile-image="{ person: resource.owner, size: 'small' }" />
+                        <img class="media-object pull-left img-user-normal" person-profile-image="{ person: resource.owner, size: 'normal' }" />
                         <div class="media-body">
                             <h4 class="media-heading"><a ui-sref="member({ personId: resource.owner.id })">{{ resource.owner | fullname }}</a></h4>
                             <div ng-if="resource.owner.created" class="text-muted">
@@ -317,7 +301,7 @@
                 <div class="card-heading">
                     <h3 class="card-title">{{ 'CONTACT_PERSON' | translate }}</h3>
                     <div class="media">
-                        <img class="media-object pull-left img-user-small" person-profile-image="{ person: resource.contactPerson, size: 'small' }" />
+                        <img class="media-object pull-left img-user-normal" person-profile-image="{ person: resource.contactPerson, size: 'normal' }" />
                         <div class="media-body">
                             <h4 class="media-heading"><a ui-sref="member({ personId: resource.contactPerson.id })">{{ resource.contactPerson | fullname }}</a></h4>
                             <div ng-if="resource.contactPerson.created" class="text-muted">

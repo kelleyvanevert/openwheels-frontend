@@ -1,24 +1,34 @@
-<div>
-  <ul class="list-row">
-    <li ng-repeat="rating in person.ratings">
+<div ng-repeat="rating in person.ratings">
+  <div class="personRating">
 
-      <div class="media">
-        <img class="media-object img-user-small pull-left" person-profile-image="{ person: rating.sender, size: 'small' }" />
-
-        <div class="media-body">
-          <span rating-thumb-binary="{ value : rating.satisfaction }"></span>&nbsp;
-          <span>{{ rating.review}}</span>
-          <div class="text-muted">
-            <small>
-              <a ui-sref="member({ personId: rating.sender.id })">{{ rating.sender.firstName | toTitleCase }}</a>&nbsp;
-              <i class="fa fa-circle"></i>&nbsp;
-              <span am-time-ago="rating.created"></span>
-            </small>
-          </div>
-        </div>
-
+    <div layout="row" layout-wrap>
+      
+      <div flex="15" flex-xs="30" class="img-user">
+        <a ui-sref="member({ personId: rating.sender.id })">
+          <img class="media-object img-user-normal pull-left" person-profile-image="{ person: rating.sender, size: 'normal' }" />
+        </a>
       </div>
 
-    </li>
-  </ul>
+      <div flex="85" flex-xs="70">
+        <div class="reviewer">
+
+          <div class="thumb">
+            <span rating-thumb-binary="{ value : rating.satisfaction }"></span>
+          </div>
+
+          <div>
+            <strong>{{ rating.sender.firstName | toTitleCase }}</a></strong>
+            <br>
+            <span class="text-muted" am-time-ago="rating.created"></span>
+          </div>
+
+          <div class="review">
+            <span>{{ rating.review}}</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
