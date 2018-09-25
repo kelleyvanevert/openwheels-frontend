@@ -285,4 +285,11 @@ angular.module('rpcServices', [])
   };
   this.getInvitedFriends = m('getInvitedFriends');
   this.inviteFriend = m('inviteFriend');
+})
+
+.service('kmPointService', function (api) {
+  var m = function (name) {
+    return api.createRpcMethod('kmpoint.' + name);
+  };
+  this.forPerson = m('forPerson');
 });
