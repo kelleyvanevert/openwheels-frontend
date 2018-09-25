@@ -213,6 +213,7 @@ angular.module('rpcServices', [])
   this.create = m('create');
   this.getResourceRatings = m('getResourceRatings');
   this.getDriverRatings = m('getDriverRatings');
+  this.commentOnRating = m('commentOnRating');
 })
 
 .service('anwbService', function (api) {

@@ -27,7 +27,7 @@
     <!-- OWNER? show renter -->
     <div class="media" ng-if="userPerspective==='owner'">
       <a class="pull-left">
-        <img class="media-object img-user-small" person-profile-image="{ person: booking.person, size: 'small' }">
+        <img class="media-object img-user-normal" person-profile-image="{ person: booking.person, size: 'normal' }">
       </a>
       <div class="media-body">
         <h4 class="media-heading">{{ booking.person | fullname }}</h4>
@@ -39,7 +39,7 @@
     <!-- RENTER? show owner -->
     <div class="media" ng-if="userPerspective==='renter'">
       <a class="pull-left">
-        <img class="media-object img-user-small" person-profile-image="{ person: resource.owner, size: 'small' }">
+        <img class="media-object img-user-normal" person-profile-image="{ person: resource.owner, size: 'normal' }">
       </a>
       <div class="media-body">
         <h4 class="media-heading">{{ resource.owner | fullname }}</h4>

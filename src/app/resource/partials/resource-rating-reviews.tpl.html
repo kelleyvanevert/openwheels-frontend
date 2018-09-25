@@ -1,24 +1,57 @@
-<div>
-  <ul class="list-row">
-    <li ng-repeat="rating in resource.ratings">
+<div ng-repeat="rating in resource.ratings">
+  <div class="resourceRating">
 
-      <div class="media">
-        <img class="media-object img-user-small pull-left" person-profile-image="{ person: rating.sender, size: 'small' }" />
+    <div layout="row" layout-wrap>
+      <div flex="15" flex-xs="30" class="img-user">
+        <a ui-sref="member({ personId: rating.sender.id })">
+          <img class="media-object img-user-normal pull-left" person-profile-image="{ person: rating.sender, size: 'normal' }" />
+        </a>
+      </div>
 
-        <div class="media-body">
-          <span rating-thumb-binary="{ value : rating.satisfaction }"></span>&nbsp;
-          <span>{{ rating.review}}</span>
-          <div class="text-muted">
-            <small>
-              <a ui-sref="member({ personId: rating.sender.id })">{{ rating.sender.firstName | toTitleCase }}</a>&nbsp;
-              <i class="fa fa-circle"></i>&nbsp;
-              <span am-time-ago="rating.created"></span>
-            </small>
+      <div flex="85" flex-xs="70">
+        <div class="reviewer">
+          <div class="thumb">
+            <span rating-thumb-binary="{ value : rating.satisfaction }"></span>
+          </div>
+          <div>
+            <strong>{{ rating.sender.firstName | toTitleCase }}</a></strong>
+            <br>
+            <span class="text-muted" am-time-ago="rating.created"></span>
           </div>
         </div>
 
+        <div>
+          <span class="review">{{ rating.review}}</span>
+          <br>
+          <button ng-if="me && (resource.owner.id === me.id || resource.contactPerson.id === me.id) && !rating.comment" type="button" class="btn btn-link addComment" ng-click="openCommentDialog(rating)">
+            <md-icon>edit</md-icon> Reageer op beoordeling
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div layout="row" layout-wrap ng-if="rating.comment" class="comment">
+      <div flex="15" flex-xs="10">
       </div>
 
-    </li>
-  </ul>
+      <div flex="15" flex-xs="25" class="img-user">
+        <a ui-sref="member({ personId: rating.commenter.id })">
+          <img class="media-object img-user-normal pull-left" person-profile-image="{ person: rating.commenter, size: 'normal' }" />
+        </a>
+      </div>
+
+      <div flex="70" flex-xs="65">
+        <div class="reviewer">
+          <strong>Reactie van {{ rating.commenter.firstName | toTitleCase }}:</a></strong>
+          <br>
+          <span class="text-muted" am-time-ago="rating.commenterDate"></span>
+        </div>
+
+        <div>
+          <span class="review">{{ rating.comment}}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
