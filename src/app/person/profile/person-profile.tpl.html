@@ -6,7 +6,7 @@
   <div class="card-body">
     <div class="media">
       <a class="pull-left" ui-sref="member({ personId: person.id })">
-        <img class="media-object img-user-normal" ng-if="!refreshProfileImage" person-profile-image="{ person: person, size: 'small', noCache: true }" />
+        <img class="media-object img-user-normal" ng-if="!refreshProfileImage" person-profile-image="{ person: person, size: 'normal', noCache: true }" />
         <div class="media-object img-user-normal" ng-if="refreshProfileImage" />
       </a>
       <div class="media-body">
@@ -323,8 +323,8 @@
           <label>{{ 'PROFILE_PICTURE' | translate }}</label>
           <div class="media" style="margin-top:0">
             <a class="pull-left">
-              <img class="media-object img-user-small" ng-if="!refreshProfileImage" person-profile-image="{ person: person, size: 'small', noCache: true }" />
-              <div class="media-object img-user-small" ng-if="refreshProfileImage" />
+              <img class="media-object img-user-normal" ng-if="!refreshProfileImage" person-profile-image="{ person: person, size: 'normal', noCache: true }" />
+              <div class="media-object img-user-normal" ng-if="refreshProfileImage" />
             </a>
             <div class="media-body" style="padding-top:0">
               <div class="form-group">
