@@ -14,7 +14,7 @@ angular.module('owm.resource.search.map', [])
       longitude: 5.117778000000044
     };
 
-    var zoom = 13;
+    var zoom = 15;
     var center = {
       latitude:  $stateParams.lat || DEFAULT_MAP_CENTER_LOCATION.latitude,
       longitude: $stateParams.lng || DEFAULT_MAP_CENTER_LOCATION.longitude
@@ -27,13 +27,17 @@ angular.module('owm.resource.search.map', [])
         draggable: false,
         center: center,
         zoom: zoom,
-        maxZoom: 7,
         markers: $scope.markers,
         windows: windows,
         fitMarkers: true,
         control: {},
         options: {
-          scrollwheel: false
+          scrollwheel: false,
+          minZoom: 13,
+          fullscreenControl: false,
+          mapTypeControl: false,
+          streetViewControl: false,
+          streetView: false
         }
       }
     });
@@ -55,10 +59,18 @@ angular.module('owm.resource.search.map', [])
           }
         });
 
+        map.addListener('zoom_changed', function() {
+          updateResources();
+        });
+
         map.addListener('idle', function() {
+          updateResources();
+        });
+
+        function updateResources() {
           resourceQueryService.setLocation({
-            latitude: this.getCenter().lat(),
-            longitude: this.getCenter().lng()
+            latitude: map.getCenter().lat(),
+            longitude: map.getCenter().lng()
           });
 
           $location.search(resourceQueryService.createStateParams());
@@ -66,7 +78,7 @@ angular.module('owm.resource.search.map', [])
           var params = {
             filters: resourceQueryService.data.filters || [],
             radius: resourceQueryService.data.radius,
-            sort: resourceQueryService.data.sort,
+            sort: map.getZoom() > 14 ? 'distance' : resourceQueryService.data.sort,
             location: resourceQueryService.data.location
           };
 
@@ -74,8 +86,7 @@ angular.module('owm.resource.search.map', [])
           .then(function (resources) {
             $scope.resources = resources.results;
           });
-
-        });
+        }
 
         $scope.$watch('resources', function(){
           if(!$scope.resources.length){
@@ -93,11 +104,9 @@ angular.module('owm.resource.search.map', [])
               coords: coords,
               title: resource.alias,
               animation: maps.Animation.DROP,
-              type: 'circle',
               resource: resource,
-              icon: 'https://mywheels.nl/branding/logoicon-32.png',
-              showWindow: false,
-              labelClass: 'label'
+              icon: 'assets/img/mywheels-marker-40.png',
+              showWindow: false
             };
 
             marker.onClick = function(){

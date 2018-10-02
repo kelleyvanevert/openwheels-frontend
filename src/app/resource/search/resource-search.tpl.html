@@ -127,7 +127,7 @@
                 </div>
 
                 <!-- pagination -->
-                <md-card layout="row" layout-align="center center">
+                <md-card layout="row" layout-align="center center" ng-if="!$state.includes('owm.resource.search.map') && !$state.includes('owm.resource.place.map')">
                   <md-button ng-style="{visibility: page === 1 ? 'hidden' : 'visible'}" class="md-button-xs" ng-click="showPage(page - 1)">
                     <md-icon>arrow_back</md-icon> <span hide-xs>{{ 'PREVIOUS' | translate }}</span>
                   </md-button>
@@ -139,7 +139,7 @@
                   </md-button>
                 </md-card>
 
-                <div ng-if="numberOfResults && resources.length > 0" class="card">
+                <div ng-if="numberOfResults && resources.length > 0 && !$state.includes('owm.resource.search.map') && !$state.includes('owm.resource.place.map')" class="card">
                   <p style="padding: .7em; text-align: center; color: #727377;">
                   <strong>{{numberOfResults}}</strong> auto's gevonden
                   </p>
