@@ -74,6 +74,12 @@
 
     <div>
         <div style="padding-left: 0px" ng-if="features.filtersSidebar && isWindowSizeMD" class="hidden-xs hidden-sm col-md-4 col-lg-3">
+            <div ng-if="numberOfResults && resources.length > 0" class="card">
+                <p style="padding: .7em; text-align: center; color: #727377;">
+                    <strong>{{numberOfResults}}</strong> auto's gevonden
+                </p>
+            </div>
+
             <div class="card">
                 <div class="card-heading">
                     <h3 class="no-margin"><md-icon>filter_list</md-icon><span> Filter</span></h3>
@@ -98,7 +104,7 @@
             </div>
 
             <div ng-if="resources.length >= 1">
-               <!-- <div class="card">
+                <div class="card">
                     <div class="card-heading text-center">
                         <button type="button" class="btn btn-link" ng-click="toggleMap()" ng-if="!($state.includes('owm.resource.search.map') || $state.includes('owm.resource.place.map'))">
                             <i class="fa fa-map-marker"></i> {{ 'SHOW_ON_MAP' | translate }}
@@ -107,7 +113,7 @@
                             <i class="fa fa-th-list"></i> {{ 'SHOW_AS_LIST' | translate }}
                         </button>
                     </div>
-               </div>-->
+               </div>
 
                <div style="position: relative">
                  <div ng-show="searching" style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: rgba(255, 255, 255, .5); z-index: 400"></div>

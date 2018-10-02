@@ -2,7 +2,8 @@
 
 angular.module('owm.resource.search.map', [])
 
-  .controller('ResourceSearchMapController', function ($scope, uiGmapGoogleMapApi, uiGmapIsReady, $stateParams, appConfig, metaInfoService) {
+  .controller('ResourceSearchMapController', function ($scope, uiGmapGoogleMapApi, uiGmapIsReady, $stateParams, appConfig,
+    metaInfoService, resourceService, resourceQueryService, $state, $location) {
 
     metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/kaart'});
     metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/kaart'});
@@ -13,22 +14,23 @@ angular.module('owm.resource.search.map', [])
       longitude: 5.117778000000044
     };
 
-    var zoom = 7;
+    var zoom = 13;
     var center = {
       latitude:  $stateParams.lat || DEFAULT_MAP_CENTER_LOCATION.latitude,
       longitude: $stateParams.lng || DEFAULT_MAP_CENTER_LOCATION.longitude
     };
-    var markers = [];
+    $scope.markers = [];
     var windows = [];
 
     angular.extend($scope, {
       map: {
-        draggable: true,
+        draggable: false,
         center: center,
         zoom: zoom,
-        markers: markers,
+        maxZoom: 7,
+        markers: $scope.markers,
         windows: windows,
-        fitMarkers: false,
+        fitMarkers: true,
         control: {},
         options: {
           scrollwheel: false
@@ -53,6 +55,28 @@ angular.module('owm.resource.search.map', [])
           }
         });
 
+        map.addListener('idle', function() {
+          resourceQueryService.setLocation({
+            latitude: this.getCenter().lat(),
+            longitude: this.getCenter().lng()
+          });
+
+          $location.search(resourceQueryService.createStateParams());
+
+          var params = {
+            filters: resourceQueryService.data.filters || [],
+            radius: resourceQueryService.data.radius,
+            sort: resourceQueryService.data.sort,
+            location: resourceQueryService.data.location
+          };
+
+          resourceService.searchV3(params)
+          .then(function (resources) {
+            $scope.resources = resources.results;
+          });
+
+        });
+
         $scope.$watch('resources', function(){
           if(!$scope.resources.length){
             return;
@@ -69,8 +93,11 @@ angular.module('owm.resource.search.map', [])
               coords: coords,
               title: resource.alias,
               animation: maps.Animation.DROP,
+              type: 'circle',
               resource: resource,
-              showWindow: false
+              icon: 'https://mywheels.nl/branding/logoicon-32.png',
+              showWindow: false,
+              labelClass: 'label'
             };
 
             marker.onClick = function(){
@@ -84,7 +111,7 @@ angular.module('owm.resource.search.map', [])
               });
             };
 
-            markers.push(marker);
+            $scope.markers.push(marker);
           });
 
           if(!boundsFromSearch){

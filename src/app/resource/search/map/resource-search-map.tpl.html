@@ -10,16 +10,14 @@
     <ui-gmap-markers
             models="map.markers"
             idKey="'id'"
+            icon="'icon'"
             coords="'coords'"
             click="'onClick'"
-            fit="map.fitMarkers"
             >
 
     </ui-gmap-markers>
-    <ui-gmap-window coords="selectedMarker.coords" show="selectedMarker.showWindow" closeClick="closeWindow()" templateUrl="'resource/search/map/resource-marker-window.tpl.html'"
-                    templateParameter="selectedMarker"
-            >
 
+    <ui-gmap-window coords="selectedMarker.coords" show="selectedMarker.showWindow" closeClick="closeWindow()" templateUrl="'resource/search/map/resource-marker-window.tpl.html'" templateParameter="selectedMarker">
     </ui-gmap-window>
 
 </ui-gmap-google-map>
