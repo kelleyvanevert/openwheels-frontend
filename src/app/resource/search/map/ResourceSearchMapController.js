@@ -67,7 +67,9 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
 
         $rootScope.$on('$locationChangeSuccess', function (event, oldUrl, newUrl, newState, oldState) {
           $scope.markers.length = 0;
-          $scope.updateResources();
+          if ($state.current.name === 'owm.resource.search.map') {
+            $scope.updateResources();
+          }
         });
 
         $rootScope.$watch('updateArea', function(){
