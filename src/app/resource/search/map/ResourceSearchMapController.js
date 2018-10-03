@@ -80,6 +80,8 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
             longitude: map.getCenter().lng()
           });
 
+          $location.search(resourceQueryService.createStateParams());
+
           var params = {
             filters: resourceQueryService.data.filters || [],
             radius: resourceQueryService.data.radius,
