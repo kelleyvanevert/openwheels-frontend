@@ -131,22 +131,12 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
 
       function doCall(res) {
         $scope.search.text = res.text;
-        if ($state.current.name ==='owm.resource.search.map') {
-          console.log(res.lat);
-          return $state.go('owm.resource.search.map', res, {reload: true, inherit: false, notify: true})
-          .then(function() {
-            if(_.isFunction($scope.onNewPlace)) {
-              $scope.onNewPlace(res);
-            }
-          });
-        } else {
-          return $state.go('owm.resource.search.list', res, {reload: true, inherit: false, notify: true})
-          .then(function() {
-            if(_.isFunction($scope.onNewPlace)) {
-              $scope.onNewPlace(res);
-            }
-          });
-        }
+        return $state.go('owm.resource.search.list', res, {reload: true, inherit: false, notify: true})
+        .then(function() {
+          if(_.isFunction($scope.onNewPlace)) {
+            $scope.onNewPlace(res);
+          }
+        });
       }
 
       function handleEvent(res) {
