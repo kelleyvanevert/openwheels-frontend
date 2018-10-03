@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('owm.resource.search.map', [])
+angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
 
   .controller('ResourceSearchMapController', function ($scope, uiGmapGoogleMapApi, uiGmapIsReady, $stateParams, appConfig,
-    metaInfoService, resourceService, resourceQueryService, $state, $location) {
+    metaInfoService, resourceService, resourceQueryService, $state, $location, $rootScope) {
 
     metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/kaart'});
     metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/kaart'});
@@ -32,12 +32,10 @@ angular.module('owm.resource.search.map', [])
         fitMarkers: true,
         control: {},
         options: {
-          scrollwheel: false,
           minZoom: 13,
           fullscreenControl: false,
           mapTypeControl: false,
-          streetViewControl: false,
-          streetView: false
+          streetViewControl: false
         }
       }
     });
@@ -60,20 +58,27 @@ angular.module('owm.resource.search.map', [])
         });
 
         map.addListener('zoom_changed', function() {
-          updateResources();
+          // $scope.AreaChanged = true;
         });
 
         map.addListener('idle', function() {
-          updateResources();
+          // $scope.AreaChanged = true;
         });
 
-        function updateResources() {
+        $rootScope.$on('$locationChangeSuccess', function (event, oldUrl, newUrl, newState, oldState) {
+          $scope.markers.length = 0;
+          $scope.updateResources();
+        });
+
+        $rootScope.$watch('updateArea', function(){
+          $scope.updateResources();
+        });
+
+        $scope.updateResources = function() {
           resourceQueryService.setLocation({
             latitude: map.getCenter().lat(),
             longitude: map.getCenter().lng()
           });
-
-          $location.search(resourceQueryService.createStateParams());
 
           var params = {
             filters: resourceQueryService.data.filters || [],
@@ -86,7 +91,7 @@ angular.module('owm.resource.search.map', [])
           .then(function (resources) {
             $scope.resources = resources.results;
           });
-        }
+        };
 
         $scope.$watch('resources', function(){
           if(!$scope.resources.length){
@@ -115,19 +120,18 @@ angular.module('owm.resource.search.map', [])
               });
               $scope.$apply(function(){
                 $scope.selectedMarker = marker;
-                $scope.selectedMarker.imgUrl = resource.pictures && resource.pictures.length > 0 ?  appConfig.serverUrl + '/' + (resource.pictures[0].small || resource.pictures[0].normal || resource.pictures[0].large) : null;
+                $scope.selectedMarker.imgUrl = resource.pictures && resource.pictures.length > 0 ?  appConfig.serverUrl + '/' + (resource.pictures[0].large || resource.pictures[0].normal || resource.pictures[0].small) : 'assets/img/resource-avatar-large.jpg';
                 $scope.selectedMarker.showWindow = true;
               });
             };
 
-            $scope.markers.push(marker);
+            $scope.markers.push(new google.maps.Marker(marker));
           });
 
           if(!boundsFromSearch){
             $scope.map.fitMarkers = true;
           }
         });
-
 
       });
 
@@ -158,5 +162,14 @@ angular.module('owm.resource.search.map', [])
         }
       });
     });
+
+  })
+
+  .controller('mapControlController',function($scope, $rootScope){
+    $rootScope.updateArea = 0;
+
+    $scope.updateArea = function() {
+      $rootScope.updateArea++;
+    };
 
   });
