@@ -3,24 +3,24 @@
 angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
 
   .controller('ResourceSearchMapController', function ($scope, uiGmapGoogleMapApi, uiGmapIsReady, $stateParams, appConfig,
-    metaInfoService, resourceService, resourceQueryService, $state, $location, $rootScope) {
+    metaInfoService, resourceService, resourceQueryService, $state, $location, $rootScope, $timeout, $filter) {
 
     metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/kaart'});
     metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/kaart'});
 
+    var timer;
     var DEFAULT_MAP_CENTER_LOCATION = {
       // Utrecht, The Netherlands
       latitude : 52.091667,
       longitude: 5.117778000000044
     };
-
-    var zoom = 15;
+    var zoom = 14;
     var center = {
       latitude:  $stateParams.lat || DEFAULT_MAP_CENTER_LOCATION.latitude,
       longitude: $stateParams.lng || DEFAULT_MAP_CENTER_LOCATION.longitude
     };
-    $scope.markers = [];
     var windows = [];
+    $scope.markers = [];
 
     angular.extend($scope, {
       map: {
@@ -33,7 +33,7 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
         control: {},
         options: {
           minZoom: 13,
-          fullscreenControl: false,
+          fullscreenControl: true,
           mapTypeControl: false,
           streetViewControl: false
         }
@@ -41,7 +41,6 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
     });
 
     uiGmapGoogleMapApi.then(function(maps) {
-
       var boundsFromSearch;
 
       $scope.$watch(function(){
@@ -51,30 +50,43 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
 
         return null;
       }, function(map){
+        $scope.sort = 'relevance';
+
         $scope.$watch('bounds', function(){
           if(map && $scope.bounds){
             map.fitBounds($scope.bounds);
           }
         });
 
-        map.addListener('zoom_changed', function() {
-          // $scope.AreaChanged = true;
-        });
-
         map.addListener('idle', function() {
-          // $scope.AreaChanged = true;
+          $scope.sort = 'distance';
+          $timeout.cancel(timer);
+
+          timer = $timeout(function () {
+            $scope.updateResources();
+          }, 800);
         });
 
-        $rootScope.$on('$locationChangeSuccess', function (event, oldUrl, newUrl, newState, oldState) {
-          $scope.markers.length = 0;
-          if ($state.current.name === 'owm.resource.search.map') {
+        $scope.$watch('filters', function (newValue, oldValue) {
+          if (newValue !== oldValue) {
+            $scope.markers.length = 0;
             $scope.updateResources();
           }
-        });
+        }, true);
 
-        $rootScope.$watch('updateArea', function(){
-          $scope.updateResources();
-        });
+        $scope.$watch('props', function (newValue, oldValue) {
+          if (newValue !== oldValue) {
+            $scope.markers.length = 0;
+            $scope.updateResources();
+          }
+        }, true);
+
+        $scope.$watch('options', function (newValue, oldValue) {
+          if (newValue !== oldValue) {
+            $scope.markers.length = 0;
+            $scope.updateResources();
+          }
+        }, true);
 
         $scope.updateResources = function() {
           resourceQueryService.setLocation({
@@ -86,8 +98,9 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
 
           var params = {
             filters: resourceQueryService.data.filters || [],
+            options: resourceQueryService.data.options || [],
             radius: resourceQueryService.data.radius,
-            sort: map.getZoom() > 13 ? 'distance' : resourceQueryService.data.sort,
+            sort: map.getZoom() >= 14 ? $scope.sort : resourceQueryService.data.sort,
             location: resourceQueryService.data.location,
             maxresults: 30
           };
@@ -161,20 +174,11 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
             $scope.bounds = angular.copy(boundsFromSearch);
           }else if($scope.placeDetails.geometry.location){
             $scope.map.center = {latitude: $scope.placeDetails.geometry.location.lat(), longitude:  $scope.placeDetails.geometry.location.lng()};
-            $scope.map.zoom = 14;
+            $scope.map.zoom = 13;
           }
 
         }
       });
     });
-
-  })
-
-  .controller('mapControlController',function($scope, $rootScope){
-    $rootScope.updateArea = 0;
-
-    $scope.updateArea = function() {
-      $rootScope.updateArea++;
-    };
 
   });
