@@ -1,13 +1,14 @@
-<div class="media hover-toggle">
-  <img ng-if="!isWindowSizeLG" class="media-object img-resource-small pull-left" ng-src="{{ resource.pictures[0] | resourceAvatar:'small' }}">
-  <img ng-if="isWindowSizeLG" class="media-object img-resource-normal pull-left" ng-src="{{ resource.pictures[0] | resourceAvatar:'normal' }}">
+<div class="media favorites">
+
+  <ow-resource-picture class="media-object img-resource pull-left align-middle" resource="resource" size="normal"></ow-resource-picture>
+
   <div class="media-body">
 
     <div ng-if="isWindowSizeXS" class="pull-right" style="margin: 20px 0 0 8px">
       <i class="fa fa-chevron-right"></i>
     </div>
 
-    <div class="pull-right text-right" style="margin-top: 9px">
+    <div class="pull-right text-right" style="margin-top: 20px">
       <div>{{ resource.price.dayRateTotal | currency }}</div>
       <div ng-if="resource.price.kmFree" class="text-success">
         <small ng-if="isWindowSizeXS">{{ 'FREE_KM_DAY' | translate }}</small>
@@ -17,51 +18,22 @@
 
     <div class="truncate">
       <a ui-sref="owm.resource.show({city: resource.city, resourceId: resource.id})" class="resource__alias">{{ resource.alias || ('RESOURCE_NO_NAME' | translate) }}</a>
-      <span ng-if="resource.brand || resource.model"> - {{ (resource.brand + ' ' + resource.model) | toTitleCase }}</span>
+      <span ng-if="resource.brand || resource.model" hide-xs> - {{ (resource.brand + ' ' + resource.model) | toTitleCase }}</span>
+      <resource-favorite-icon resource="resource" hide-xs></resource-favorite-icon>
     </div>
 
-    <div class="truncate">
-      <i class="fa fa-map-marker fa-fw"></i>
-      <span>{{ resource.location }}</span>
-      <span ng-if="isWindowSizeXS">{{ resource.city }}</span>
-      <span ng-if="resource.distance_to"> ({{ resource.distance_to | formatKilometers }})</span>
+    <div class="truncate" style="padding-top: 10px">
+      <i class="fa fa-map-marker fa-fw"></i> <span>{{ resource.location }}, {{ resource.city }}</span>
     </div>
 
-    <div class="truncate">
-      <i class="fa fa-user fa-fw"></i> {{ resource.owner.firstName }}</a>
-      <span ng-if="features.ratings && resource.rating" rating-thumb="{ value : resource.rating.satisfaction, senders : resource.rating.senders }"></span>
-      <resource-favorite-icon resource="resource"></resource-favorite-icon>
-      <div class="tag tag-warning" ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0">
+    <div class="truncate" style="padding-top: 10px">
+      <i class="fa fa-user fa-fw"></i> van {{ resource.owner.firstName }}</a>
+      <div class="tag tag-warning" ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0" hide-xs>
         {{ 'MYWHEELS_OPEN_TIP' | translate }}
         <md-tooltip>
           {{ 'MYWHEELS_OPEN_INFO' | translate }}
         </md-tooltip>
       </div>
-    </div>
-
-    <!-- visible on hover -->
-
-    <div ng-if="isWindowSizeLG" class="truncate hover-toggle-show text-muted" style="margin-top: 5px">
-
-      <!-- lock type -->
-      <span ng-if="resource.locktype">
-        <i class="text-success fa fa-fw fa-key"></i>
-        <span ng-if="resource.locktype">{{  ('LOCKTYPE.' + resource.locktype) | translateOrDefault : resource.locktype }}</span>
-      </span>
-
-      <!-- num seats -->
-      <i class="text-success fa fa-fw fa-users"></i> {{ resource.numberOfSeats }} {{ 'SEATS' | translate }}
-
-      <!-- fuel type -->
-      <span ng-if="resource.fuelType"><i class="text-success fa fa-fw fa-gear"></i>{{  resource.fuelType | translate }}</span>
-
-      <!-- % accepted -->
-      <span ng-if="resource.response_accept !== null">
-        <i class="text-success fa fa-fw fa-check"></i>
-        {{ resource.response_accept | percentage : 0 }}
-        {{ 'ACCEPTED_REQUESTS' | translate}}
-      </span>
-
     </div>
 
   </div>

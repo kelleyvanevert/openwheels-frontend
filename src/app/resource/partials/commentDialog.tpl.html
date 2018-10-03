@@ -1,0 +1,31 @@
+<md-dialog>
+
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>Reageer op de beoordeling van {{ rating.sender.firstName | toTitleCase }}</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="hide()">
+        <md-icon>close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-dialog-content layout-padding>
+    <form name="form">
+      <md-input-container class="md-block">
+        <label>Reactie</label>
+        <textarea ng-model="ratingComment" rows="5" md-maxlength="200" max-length="200" md-minlength="5" minlength="5" required></textarea>
+        <div ng-if="errorComment" class="text-danger">
+          <br><br>
+          {{ errorComment }}
+        </div>
+      </md-input-container>
+    </form>
+  </md-dialog-content>
+
+  <md-dialog-actions>
+    <md-button class="md-primary" ng-click="hide()">Annuleren</md-button>
+    <md-button class="md-raised md-primary" ng-disabled="form.$invalid" ng-click="save()">Opslaan</md-button>
+  </md-dialog-actions>
+ 
+</md-dialog> 

@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('owm.resource.search.map', [])
+angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
 
-  .controller('ResourceSearchMapController', function ($scope, uiGmapGoogleMapApi, uiGmapIsReady, $stateParams, appConfig, metaInfoService) {
+  .controller('ResourceSearchMapController', function ($scope, uiGmapGoogleMapApi, uiGmapIsReady, $stateParams, appConfig,
+    metaInfoService, resourceService, resourceQueryService, $state, $location, $rootScope) {
 
     metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/kaart'});
     metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/kaart'});
@@ -13,25 +14,28 @@ angular.module('owm.resource.search.map', [])
       longitude: 5.117778000000044
     };
 
-    var zoom = 7;
+    var zoom = 15;
     var center = {
       latitude:  $stateParams.lat || DEFAULT_MAP_CENTER_LOCATION.latitude,
       longitude: $stateParams.lng || DEFAULT_MAP_CENTER_LOCATION.longitude
     };
-    var markers = [];
+    $scope.markers = [];
     var windows = [];
 
     angular.extend($scope, {
       map: {
-        draggable: true,
+        draggable: false,
         center: center,
         zoom: zoom,
-        markers: markers,
+        markers: $scope.markers,
         windows: windows,
-        fitMarkers: false,
+        fitMarkers: true,
         control: {},
         options: {
-          scrollwheel: false
+          minZoom: 13,
+          fullscreenControl: false,
+          mapTypeControl: false,
+          streetViewControl: false
         }
       }
     });
@@ -53,6 +57,47 @@ angular.module('owm.resource.search.map', [])
           }
         });
 
+        map.addListener('zoom_changed', function() {
+          // $scope.AreaChanged = true;
+        });
+
+        map.addListener('idle', function() {
+          // $scope.AreaChanged = true;
+        });
+
+        $rootScope.$on('$locationChangeSuccess', function (event, oldUrl, newUrl, newState, oldState) {
+          $scope.markers.length = 0;
+          if ($state.current.name === 'owm.resource.search.map') {
+            $scope.updateResources();
+          }
+        });
+
+        $rootScope.$watch('updateArea', function(){
+          $scope.updateResources();
+        });
+
+        $scope.updateResources = function() {
+          resourceQueryService.setLocation({
+            latitude: map.getCenter().lat(),
+            longitude: map.getCenter().lng()
+          });
+
+          $location.search(resourceQueryService.createStateParams());
+
+          var params = {
+            filters: resourceQueryService.data.filters || [],
+            radius: resourceQueryService.data.radius,
+            sort: map.getZoom() > 13 ? 'distance' : resourceQueryService.data.sort,
+            location: resourceQueryService.data.location,
+            maxresults: 30
+          };
+
+          resourceService.searchV3(params)
+          .then(function (resources) {
+            $scope.resources = resources.results;
+          });
+        };
+
         $scope.$watch('resources', function(){
           if(!$scope.resources.length){
             return;
@@ -70,6 +115,7 @@ angular.module('owm.resource.search.map', [])
               title: resource.alias,
               animation: maps.Animation.DROP,
               resource: resource,
+              icon: 'assets/img/mywheels-marker-40.png',
               showWindow: false
             };
 
@@ -79,19 +125,18 @@ angular.module('owm.resource.search.map', [])
               });
               $scope.$apply(function(){
                 $scope.selectedMarker = marker;
-                $scope.selectedMarker.imgUrl = resource.pictures && resource.pictures.length > 0 ?  appConfig.serverUrl + '/' + (resource.pictures[0].small || resource.pictures[0].normal || resource.pictures[0].large) : null;
+                $scope.selectedMarker.imgUrl = resource.pictures && resource.pictures.length > 0 ?  appConfig.serverUrl + '/' + (resource.pictures[0].large || resource.pictures[0].normal || resource.pictures[0].small) : 'assets/img/resource-avatar-large.jpg';
                 $scope.selectedMarker.showWindow = true;
               });
             };
 
-            markers.push(marker);
+            $scope.markers.push(new google.maps.Marker(marker));
           });
 
           if(!boundsFromSearch){
             $scope.map.fitMarkers = true;
           }
         });
-
 
       });
 
@@ -122,5 +167,14 @@ angular.module('owm.resource.search.map', [])
         }
       });
     });
+
+  })
+
+  .controller('mapControlController',function($scope, $rootScope){
+    $rootScope.updateArea = 0;
+
+    $scope.updateArea = function() {
+      $rootScope.updateArea++;
+    };
 
   });

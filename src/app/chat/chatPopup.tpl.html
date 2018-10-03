@@ -22,7 +22,7 @@
       <div ng-repeat="message in messages" class="media"
         ng-class="{ 'chat-row-right': message.sender.id === me.id, 'chat-row-left': message.sender.id !== me.id }">
 
-        <img class="media-object chat-avatar" person-profile-image="{ person: message.sender, size: 'small' }" />
+        <img class="media-object chat-avatar" person-profile-image="{ person: message.sender, size: 'normal' }" />
         <div class="media-body chat-message">
           {{ message.text }}
           <div class="text-muted">
