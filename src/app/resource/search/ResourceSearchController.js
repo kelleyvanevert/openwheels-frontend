@@ -87,7 +87,7 @@ angular.module('owm.resource.search', [
         $scope.filters.filters = query.filters;
       }
 
-      if (place) {
+      if (place && !$stateParams.lng) {
         resourceQueryService.setLocation({
           latitude: place.latitude,
           longitude: place.longitude
@@ -342,9 +342,15 @@ angular.module('owm.resource.search', [
 
     $scope.toggleMap = function toggleMap() {
       if (!$state.includes('^.map')) {
-        $state.go('^.map').then(updateUrl);
+        $state.go('^.map', {
+          lat: resourceQueryService.createStateParams().lat,
+          lng: resourceQueryService.createStateParams().lng
+        });
       } else {
-        $state.go('^.list').then(updateUrl);
+        $state.go('^.list', {
+          lat: resourceQueryService.createStateParams().lat,
+          lng: resourceQueryService.createStateParams().lng
+        });
       }
     };
 
