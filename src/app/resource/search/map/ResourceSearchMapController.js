@@ -67,7 +67,9 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
 
         $rootScope.$on('$locationChangeSuccess', function (event, oldUrl, newUrl, newState, oldState) {
           $scope.markers.length = 0;
-          $scope.updateResources();
+          if ($state.current.name === 'owm.resource.search.map') {
+            $scope.updateResources();
+          }
         });
 
         $rootScope.$watch('updateArea', function(){
@@ -80,11 +82,14 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
             longitude: map.getCenter().lng()
           });
 
+          $location.search(resourceQueryService.createStateParams());
+
           var params = {
             filters: resourceQueryService.data.filters || [],
             radius: resourceQueryService.data.radius,
-            sort: map.getZoom() > 14 ? 'distance' : resourceQueryService.data.sort,
-            location: resourceQueryService.data.location
+            sort: map.getZoom() > 13 ? 'distance' : resourceQueryService.data.sort,
+            location: resourceQueryService.data.location,
+            maxresults: 30
           };
 
           resourceService.searchV3(params)
