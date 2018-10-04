@@ -82,7 +82,7 @@
             <b>Totale huurprijs</b>
             <span style="padding-top:1em" ng-if="booking.cancelAfter && booking.approved !== 'OK' && booking.details.discount === 0 && booking.details.friend_invite_discount === 0">
                 <br><br>
-                Betaal voor {{booking.cancelAfter | amDateFormat:'D MMMM YYYY HH:mm'}} om automatische annulering te voorkomen.
+                Betaal voor {{booking.cancelAfter | amDateFormat:'D MMMM YYYY HH:mm'}} om automatische annulering te voorkomen. <span ng-if="!holidaytrip">De auto is nog tot {{ booking.createdAt | amDateFormat:'HH:mm' }} voor je geblokkeerd, daarna kunnen anders huurders de auto ook reserveren.</span>
             </span>
             </td>
             <td class="text-right">
@@ -105,7 +105,7 @@
             <b>Totaal</b>
             <span style="margin-top:1em" ng-if="booking.cancelAfter && booking.approved !== 'OK'">
                 <br><br>
-                Betaal voor {{booking.cancelAfter | amDateFormat:'D MMMM YYYY HH:mm'}} om automatische annulering te voorkomen.
+                Betaal voor {{booking.cancelAfter | amDateFormat:'D MMMM YYYY HH:mm'}} om automatische annulering te voorkomen. <span ng-if="!holidaytrip">De auto is nog tot {{ booking.createdAt | amDateFormat:'HH:mm' }} voor je geblokkeerd, daarna kunnen anders huurders de auto ook reserveren.</span>
             </span>
           </td>
           <td class="text-right"><b>{{ (booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount) | currency }}</b></td>
