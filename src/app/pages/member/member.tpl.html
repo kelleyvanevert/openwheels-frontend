@@ -1,7 +1,6 @@
 <div class="container container-transitional">
 
   <!-- self profile -->
-
   <div class="card card-notice" ng-if="user.identity.id === person.id">
     <div class="card-body">
       <p>
@@ -16,11 +15,10 @@
     </div>
   </div>
 
-  <div class="row">
-    <div ng-class="{ 'col-md-8': showSidebar, 'col-xs-12': !showSidebar }">
+  <div>
+    <div class="no-padding col-xs-12 col-md-8 col-lg-8">
 
       <!-- suggest login -->
-
       <div ng-if="!user.isAuthenticated" class="card">
         <div class="card-body">
           <p><i class="fa fa-fw fa-info-circle text-info"></i>{{ 'MEMBER_SUGGEST_LOGIN' | translate }}</p>
@@ -30,7 +28,6 @@
       </div>
 
       <!-- about -->
-
       <div class="card">
         <div class="card-heading">
           <h2 class="card-title">{{ person | fullname }}</h2>
@@ -62,7 +59,6 @@
       </div>
 
       <!-- ratings -->
-
       <div class="card" ng-if="features.ratings && person.ratings.length >= 1">
         <div class="card-heading">
           <h3 class="card-title">{{ 'SATISFACTION' | translate }}
@@ -80,8 +76,7 @@
 
     </div>
 
-    <div ng-if="showSidebar" class="col-md-4">
-
+    <div ng-if="showSidebar" class="col-xs-12 col-md-4 col-lg-4 no-padding-sidebar">
       <div class="card" ng-if="showContactInfo">
         <div class="card-body">
           <h3>Contact</h3>
@@ -116,12 +111,12 @@
           <h3>Auto</h3>
 
           <!-- left-column version -->
-          <div ng-if="!isWindowSizeMD" ng-repeat="resource in activeResources" class="media">
+          <div ng-if="!isWindowSizeMD" ng-repeat="resource in activeResources" class="media" hide-gt-xs>
             <div ui-sref="owm.resource.show({ resourceId: resource.id, city: resource.city })" ng-include="'resource/partials/resource-header1.tpl.html'"></div>
           </div>
 
           <!-- side bar version -->
-          <ul ng-if="isWindowSizeMD" class="list-unstyled">
+          <ul class="list-unstyled" hide-xs>
             <li ng-repeat="resource in activeResources">
               <p>
                 <a ui-sref="owm.resource.show({ resourceId: resource.id, city: resource.city })">

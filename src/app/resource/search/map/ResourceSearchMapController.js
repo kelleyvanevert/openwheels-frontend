@@ -9,12 +9,13 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
     metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/kaart'});
 
     var timer;
+    $scope.filtersUpdated = false;
     var DEFAULT_MAP_CENTER_LOCATION = {
       // Utrecht, The Netherlands
       latitude : 52.091667,
       longitude: 5.117778000000044
     };
-    var zoom = 14;
+    var zoom = 13;
     var center = {
       latitude:  $stateParams.lat || DEFAULT_MAP_CENTER_LOCATION.latitude,
       longitude: $stateParams.lng || DEFAULT_MAP_CENTER_LOCATION.longitude
@@ -22,6 +23,7 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
     var windows = [];
     $scope.markers = [];
 
+    //Google Maps options
     angular.extend($scope, {
       map: {
         draggable: false,
@@ -32,7 +34,7 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
         fitMarkers: true,
         control: {},
         options: {
-          minZoom: 13,
+          minZoom: 12,
           fullscreenControl: true,
           mapTypeControl: false,
           streetViewControl: false
@@ -50,6 +52,7 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
 
         return null;
       }, function(map){
+        //default map on relevance
         $scope.sort = 'relevance';
 
         $scope.$watch('bounds', function(){
@@ -58,6 +61,7 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
           }
         });
 
+        //update markers on center change of map, with timeout of 0.8 seconds to prevent too max calls
         map.addListener('idle', function() {
           $scope.sort = 'distance';
           $timeout.cancel(timer);
@@ -67,27 +71,56 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
           }, 800);
         });
 
+        //update timeframe
+        $scope.$watch('booking', function (newValue, oldValue) {
+          if (newValue !== oldValue) {
+            $scope.markers.length = 0;
+
+            $scope.newTimeFrame = null;
+            $scope.newTimeFrame = {
+              startDate: newValue.beginRequested,
+              endDate: newValue.endRequested
+            };
+
+            $scope.filtersUpdated = true;
+            $scope.updateResources();
+          }
+        });
+
+        //update filters, options and radius on filter change
         $scope.$watch('filters', function (newValue, oldValue) {
           if (newValue !== oldValue) {
             $scope.markers.length = 0;
+
+            $scope.newFilters = null;
+            angular.forEach(newValue.filters, function (value, key) {
+              if (!value) { return; }
+              if (key === 'minSeats') {
+                try {
+                  $scope.newFilters = $scope.newFilters || {};
+                  $scope.newFilters[key] = parseInt(value);
+                } catch (e) {
+                }
+              } else {
+                $scope.newFilters = $scope.newFilters || {};
+                $scope.newFilters[key] = value;
+              }
+            });
+
+            $scope.newOptions = [];
+            angular.forEach(newValue.options, function (value, option) {
+              if (value === true) {
+                $scope.newOptions.push(option);
+              }
+            });
+
+            $scope.newRadius = newValue.props.radius;
+            $scope.filtersUpdated = true;
             $scope.updateResources();
           }
         }, true);
 
-        $scope.$watch('props', function (newValue, oldValue) {
-          if (newValue !== oldValue) {
-            $scope.markers.length = 0;
-            $scope.updateResources();
-          }
-        }, true);
-
-        $scope.$watch('options', function (newValue, oldValue) {
-          if (newValue !== oldValue) {
-            $scope.markers.length = 0;
-            $scope.updateResources();
-          }
-        }, true);
-
+        //update resources
         $scope.updateResources = function() {
           resourceQueryService.setLocation({
             latitude: map.getCenter().lat(),
@@ -96,21 +129,37 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
 
           $location.search(resourceQueryService.createStateParams());
 
-          var params = {
-            filters: resourceQueryService.data.filters || [],
-            options: resourceQueryService.data.options || [],
-            radius: resourceQueryService.data.radius,
-            sort: map.getZoom() >= 14 ? $scope.sort : resourceQueryService.data.sort,
-            location: resourceQueryService.data.location,
-            maxresults: 30
-          };
+          var params = [];
+          if($scope.filtersUpdated) {
+            params = {
+              filters: $scope.newFilters || [],
+              options: $scope.newOptions || [],
+              radius: $scope.newRadius,
+              sort: map.getZoom() >= 14 ? $scope.sort : resourceQueryService.data.sort,
+              location: resourceQueryService.data.location,
+              timeFrame: $scope.newTimeFrame || [],
+              maxresults: 30
+            };
+          } else {
+            params = {
+              filters: resourceQueryService.data.filters || [],
+              options: resourceQueryService.data.options || [],
+              radius: resourceQueryService.data.radius,
+              sort: map.getZoom() >= 14 ? $scope.sort : resourceQueryService.data.sort,
+              location: resourceQueryService.data.location,
+              timeFrame: resourceQueryService.data.timeFrame,
+              maxresults: 30
+            };
+          }
 
           resourceService.searchV3(params)
           .then(function (resources) {
             $scope.resources = resources.results;
+            $scope.filtersUpdated = false;
           });
         };
 
+        //update markers on change of resources
         $scope.$watch('resources', function(){
           if(!$scope.resources.length){
             return;
@@ -160,8 +209,7 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
         });
       };
 
-      $scope.$watch('placeDetails', function(){
-
+      $scope.$watch('placeDetails', function() {
         var viewport;
         if($scope.placeDetails && $scope.placeDetails.geometry){
           if( $scope.placeDetails.geometry.viewport){
@@ -176,9 +224,8 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
             $scope.map.center = {latitude: $scope.placeDetails.geometry.location.lat(), longitude:  $scope.placeDetails.geometry.location.lng()};
             $scope.map.zoom = 13;
           }
-
         }
       });
-    });
 
+    });
   });
