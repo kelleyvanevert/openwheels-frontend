@@ -249,7 +249,7 @@ angular.module('owm.resource.search', [
       resourceQueryService.setPage(page);
       updateUrl();
 
-      $anchorScroll('anchorToTop');
+      $anchorScroll('scroll-to-top-anchor');
 
       // page can be cached or not
       if ($scope.pagedResults[page] !== undefined) { // Hooray, page is already in cache
