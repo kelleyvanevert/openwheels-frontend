@@ -155,6 +155,7 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
           resourceService.searchV3(params)
           .then(function (resources) {
             $scope.resources = resources.results;
+            $scope.filtersUpdated = false;
           });
         };
 
