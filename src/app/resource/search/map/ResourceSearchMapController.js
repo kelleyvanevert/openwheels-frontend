@@ -68,7 +68,7 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
 
           timer = $timeout(function () {
             $scope.updateResources();
-          }, 800);
+          }, 1200);
         });
 
         //update timeframe
@@ -82,6 +82,17 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
               endDate: newValue.endRequested
             };
 
+            $scope.filtersUpdated = true;
+            $scope.updateResources();
+          }
+        });
+
+        //remove timeframe
+        $rootScope.$watch('timeFrameRemoved', function (newValue, oldValue) {
+          if (newValue !== oldValue) {
+            $rootScope.timeFrameRemoved = false;
+            $scope.markers.length = 0;
+            $scope.newTimeFrame = null;
             $scope.filtersUpdated = true;
             $scope.updateResources();
           }
@@ -138,7 +149,7 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
               sort: map.getZoom() >= 14 ? $scope.sort : resourceQueryService.data.sort,
               location: resourceQueryService.data.location,
               timeFrame: $scope.newTimeFrame || [],
-              maxresults: 30
+              maxresults: 20
             };
           } else {
             params = {
@@ -148,7 +159,7 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
               sort: map.getZoom() >= 14 ? $scope.sort : resourceQueryService.data.sort,
               location: resourceQueryService.data.location,
               timeFrame: resourceQueryService.data.timeFrame,
-              maxresults: 30
+              maxresults: 20
             };
           }
 
