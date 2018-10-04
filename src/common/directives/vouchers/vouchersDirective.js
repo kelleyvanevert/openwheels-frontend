@@ -75,6 +75,7 @@ angular.module('vouchersDirective', [])
           }
           booking.details = bookingObject;
           $scope.booking = booking;
+          $scope.holidaytrip = moment(booking.createdAt).add('days', 7).isBefore(moment(booking.cancelAfter));
           $scope.booking.details.extra_drivers_price = $scope.extraDrivers.check ? ($scope.extraDrivers.drivers.length + $scope.booking.details.drivers_count) * $scope.extraDrivers.price : 0;
 
           return bookingObject;
