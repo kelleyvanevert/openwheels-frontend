@@ -35,8 +35,6 @@ angular.module('owm.booking.show', [])
   $scope.bookingStartsWithinOneHour = moment().isAfter(moment(booking.beginBooking).add(-1, 'hour'));
   $scope.bookingEndedRealy = moment().isAfter(moment(booking.endBooking).add(1, 'hour'));
   $scope.bookingRequestEndedRealy = moment().isAfter(moment(booking.endRequested).add(1, 'hour'));
-  $scope.holidaytrip = moment(booking.createdAt).add('days', 7).isBefore(moment(booking.cancelAfter));
-  console.log($scope.holidaytrip);
   $scope.showBookingForm = !$scope.bookingEndedRealy;
   $scope.requested = $scope.booking.status === 'requested' ? true : false;
   $scope.accepted = $scope.booking.status === 'accepted' ? true : false;
