@@ -90,7 +90,6 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
         //update filters, options and radius on filter change
         $scope.$watch('filters', function (newValue, oldValue) {
           if (newValue !== oldValue) {
-            console.log('filters_changed');
             $scope.markers.length = 0;
 
             $scope.newFilters = null;
