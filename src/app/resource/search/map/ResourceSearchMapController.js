@@ -15,7 +15,7 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
       latitude : 52.091667,
       longitude: 5.117778000000044
     };
-    var zoom = 13;
+    var zoom = 15;
     var center = {
       latitude:  $stateParams.lat || DEFAULT_MAP_CENTER_LOCATION.latitude,
       longitude: $stateParams.lng || DEFAULT_MAP_CENTER_LOCATION.longitude
@@ -53,7 +53,7 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
         return null;
       }, function(map){
         //default map on relevance
-        $scope.sort = 'relevance';
+        $scope.sort = 'distance';
 
         $scope.$watch('bounds', function(){
           if(map && $scope.bounds){
@@ -61,14 +61,20 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
           }
         });
 
-        //update markers on center change of map, with timeout of 0.8 seconds to prevent too max calls
+        //on change map show button
         map.addListener('idle', function() {
-          $scope.sort = 'distance';
-          $timeout.cancel(timer);
-
-          timer = $timeout(function () {
-            $scope.updateResources();
-          }, 1200);
+          if($stateParams.lat) {
+            if($stateParams.lat !== map.getCenter().lat()) {
+              $rootScope.idleChange = true;
+            }
+          } else {
+            if(DEFAULT_MAP_CENTER_LOCATION.latitude !== map.getCenter().lat()) {
+              $rootScope.idleChange = true;
+            }
+          }
+          if(map.getZoom() !== zoom) {
+            $rootScope.idleChange = true;
+          }
         });
 
         //update timeframe
@@ -131,6 +137,13 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
           }
         }, true);
 
+        $rootScope.$watch('updateArea', function(){
+          if($rootScope.updateArea > 0) {
+            $scope.sort = 'distance';
+            $scope.updateResources();
+          }
+        });
+
         //update resources
         $scope.updateResources = function() {
           resourceQueryService.setLocation({
@@ -146,20 +159,20 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
               filters: $scope.newFilters || [],
               options: $scope.newOptions || [],
               radius: $scope.newRadius,
-              sort: map.getZoom() >= 14 ? $scope.sort : resourceQueryService.data.sort,
+              sort: $scope.sort,
               location: resourceQueryService.data.location,
               timeFrame: $scope.newTimeFrame || [],
-              maxresults: 20
+              maxresults: 30
             };
           } else {
             params = {
               filters: resourceQueryService.data.filters || [],
               options: resourceQueryService.data.options || [],
               radius: resourceQueryService.data.radius,
-              sort: map.getZoom() >= 14 ? $scope.sort : resourceQueryService.data.sort,
+              sort: $scope.sort,
               location: resourceQueryService.data.location,
               timeFrame: resourceQueryService.data.timeFrame,
-              maxresults: 20
+              maxresults: 30
             };
           }
 
@@ -167,8 +180,11 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
           .then(function (resources) {
             $scope.resources = resources.results;
             $scope.filtersUpdated = false;
+            $rootScope.idleChange = false;
           });
         };
+
+        $scope.updateResources();
 
         //update markers on change of resources
         $scope.$watch('resources', function(){
@@ -239,4 +255,21 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
       });
 
     });
+  })
+
+  .controller('mapControlController',function($scope, $rootScope){
+    $rootScope.updateArea = 0;
+    $scope.test = false;
+    $scope.updateArea = function() {
+      $rootScope.updateArea++;
+    };
+
+    $rootScope.$watch('idleChange', function (newValue, oldValue) {
+      if (newValue === true) {
+        $scope.test = true;
+      } else if (newValue === false) {
+        $scope.test = false;
+      }
+    });
+
   });

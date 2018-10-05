@@ -153,8 +153,10 @@
         </button>
     </div>
 
-    <div class="mobileList" ng-if="$state.includes('owm.resource.search.map') || $state.includes('owm.resource.place.map') && resources.length >= 1" ng-click="toggleMap()" hide-gt-xs>
-        <md-icon>close</md-icon>
+    <div class="mobileList" ng-if="$state.includes('owm.resource.search.map') || $state.includes('owm.resource.place.map') && resources.length >= 1" hide-gt-xs>
+        <button type="button" ng-click="toggleMap()">
+            <md-icon>close</md-icon>
+        </button>
     </div>
 
 </div>
