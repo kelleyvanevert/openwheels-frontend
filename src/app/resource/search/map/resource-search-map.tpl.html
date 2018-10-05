@@ -17,6 +17,9 @@
             >
     </ui-gmap-markers>
 
+    <ui-gmap-map-control template="resource/search/map/resource-map-control.tpl.html" position="TOP_CENTER" controller="mapControlController">
+    </ui-gmap-map-control>
+
     <ui-gmap-window coords="selectedMarker.coords" show="selectedMarker.showWindow" closeClick="closeWindow()" templateUrl="'resource/search/map/resource-marker-window.tpl.html'" templateParameter="selectedMarker">
     </ui-gmap-window>
 
