@@ -5,7 +5,7 @@ angular.module('owm.resource.show', [])
 .controller('ResourceShowController', function ($window, $log, $q, $timeout, $location, $mdDialog, $mdMedia, $scope,
   $state, $filter, authService, resourceService, bookingService, invoice2Service, alertService,
   chatPopupService, ratingService, API_DATE_FORMAT, resource, me, resourceQueryService, featuresService, $stateParams,
-  linksService, Analytics, metaInfoService, $localStorage, $translate, appConfig) {
+  linksService, Analytics, metaInfoService, $localStorage, $translate, appConfig, $anchorScroll) {
   Analytics.trackEvent('discovery', 'show_car', resource.id, undefined, true);
 
   metaInfoService.set({robots: resource.isActive && !resource.removed ? 'all' : 'noindex'});
@@ -159,6 +159,7 @@ angular.module('owm.resource.show', [])
       draggable: true,
       markers: [{
         idKey: 1,
+        icon: 'assets/img/mywheels-marker-40.png',
         latitude: resource.latitude,
         longitude: resource.longitude,
         title: resource.alias
@@ -229,6 +230,8 @@ angular.module('owm.resource.show', [])
   $scope.toggleBookingForm = function () {
     $scope.showBookingForm = !!!$scope.showBookingForm;
     $scope.showBookingFormToggle = !!!$scope.showBookingFormToggle;
+
+    $anchorScroll('priceBookingContainer');
 
     if (!$scope.showBookingForm) {
       $scope.showBookingFormToggle = false;
