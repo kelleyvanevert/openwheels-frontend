@@ -213,7 +213,8 @@ angular.module('owm.resource.edit.data', [])
       resourceMarker: {
         latitude: $scope.resource.latitude || null,
         longitude: $scope.resource.longitude || null,
-        title: $scope.resource.alias
+        title: $scope.resource.alias,
+        icon: 'assets/img/mywheels-marker-40.png'
       }
     }
   });
