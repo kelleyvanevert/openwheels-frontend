@@ -37,9 +37,9 @@
 }
 
 .mobileLocation {
-    bottom: 20px;
+    bottom: 30px;
     position: fixed !important;
-    z-index: 999 !important;
+    z-index: 80 !important;
     right: 0px !important;
     margin-right: 16px !important;
 
@@ -65,15 +65,30 @@
 }
 
 .mobileList {
-    top: 135px;
-    position: absolute !important;
+    bottom: 30px;
+    position: fixed !important;
     z-index: 80 !important;
     white-space: nowrap !important;
     left: 0px !important;
     margin-left: 16px !important;
 
+    button {
+        background-color: @mywheels-blue !important;
+        box-shadow: rgba(0, 0, 0, 0.14) 0px 1px 1px 1px !important;
+        text-align: center !important;
+        line-height: 1 !important;
+        position: relative !important;
+        cursor: pointer !important;
+        width: 52px !important;
+        height: 52px !important;
+        border-radius: 50% !important;
+        border-width: initial !important;
+        border-style: none !important;
+        border-color: initial !important;
+        border-image: initial !important;
+    }
+
     md-icon {
-        color: @mywheels-gray;
-        font-size: 32px !important;
+        color: #fff;
     }
 }
