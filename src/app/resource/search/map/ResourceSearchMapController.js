@@ -259,16 +259,16 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
 
   .controller('mapControlController',function($scope, $rootScope){
     $rootScope.updateArea = 0;
-    $scope.test = false;
+    $scope.idleMoved = false;
     $scope.updateArea = function() {
       $rootScope.updateArea++;
     };
 
     $rootScope.$watch('idleChange', function (newValue, oldValue) {
       if (newValue === true) {
-        $scope.test = true;
+        $scope.idleMoved = true;
       } else if (newValue === false) {
-        $scope.test = false;
+        $scope.idleMoved = false;
       }
     });
 
