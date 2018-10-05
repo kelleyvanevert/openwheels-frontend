@@ -337,9 +337,9 @@ angular.module('owm.resource.search', [
 
     $scope.toggleMap = function toggleMap() {
       if (!$state.includes('^.map')) {
-        $state.go('^.map');
+        $state.go('^.map', resourceQueryService.createStateParams());
       } else {
-        $state.go('^.list');
+        $state.go('^.list', resourceQueryService.createStateParams());
       }
     };
 
