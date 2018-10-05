@@ -242,6 +242,7 @@ angular.module('owm.booking.show', [])
         draggable: true,
         markers: [{
           idKey: 1,
+          icon: 'assets/img/mywheels-marker-40.png',
           latitude: latitude,
           longitude: longitude,
           title: $scope.resource.alias
