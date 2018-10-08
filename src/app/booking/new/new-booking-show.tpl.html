@@ -60,7 +60,7 @@
     <div class="card-heading">
         <h3 class="card-title">{{ 'OWNER' | translate }}</h3>
         <div class="media">
-            <img class="media-object pull-left img-user-small" person-profile-image="{ person: resource.owner, size: 'small' }" />
+            <img class="media-object pull-left img-user-normal" person-profile-image="{ person: resource.owner, size: 'normal' }" />
             <div class="media-body">
                 <h4 class="media-heading"><a ui-sref="member({ personId: resource.owner.id })">{{ resource.owner | fullname }}</a></h4>
                 <div ng-if="resource.owner.created" class="text-muted">

@@ -213,6 +213,7 @@ angular.module('rpcServices', [])
   this.create = m('create');
   this.getResourceRatings = m('getResourceRatings');
   this.getDriverRatings = m('getDriverRatings');
+  this.commentOnRating = m('commentOnRating');
 })
 
 .service('anwbService', function (api) {
@@ -284,4 +285,11 @@ angular.module('rpcServices', [])
   };
   this.getInvitedFriends = m('getInvitedFriends');
   this.inviteFriend = m('inviteFriend');
+})
+
+.service('kmPointService', function (api) {
+  var m = function (name) {
+    return api.createRpcMethod('kmpoint.' + name);
+  };
+  this.forPerson = m('forPerson');
 });

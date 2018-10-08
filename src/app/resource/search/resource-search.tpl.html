@@ -75,6 +75,17 @@
     <div>
         <div style="padding-left: 0px" ng-if="features.filtersSidebar && isWindowSizeMD" class="hidden-xs hidden-sm col-md-4 col-lg-3">
             <div class="card">
+                <div class="card-heading text-center">
+                    <button type="button" class="btn btn-link" ng-click="toggleMap()" ng-if="!($state.includes('owm.resource.search.map') || $state.includes('owm.resource.place.map'))">
+                        <i class="fa fa-map-marker"></i> {{ 'SHOW_ON_MAP' | translate }}
+                    </button>
+                    <button type="button" class="btn btn-link" ng-click="toggleMap()" ng-if="$state.includes('owm.resource.search.map') || $state.includes('owm.resource.place.map')">
+                        <i class="fa fa-th-list"></i> {{ 'SHOW_AS_LIST' | translate }}
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
                 <div class="card-heading">
                     <h3 class="no-margin"><md-icon>filter_list</md-icon><span> Filter</span></h3>
                 </div>
@@ -98,17 +109,6 @@
             </div>
 
             <div ng-if="resources.length >= 1">
-               <!-- <div class="card">
-                    <div class="card-heading text-center">
-                        <button type="button" class="btn btn-link" ng-click="toggleMap()" ng-if="!($state.includes('owm.resource.search.map') || $state.includes('owm.resource.place.map'))">
-                            <i class="fa fa-map-marker"></i> {{ 'SHOW_ON_MAP' | translate }}
-                        </button>
-                        <button type="button" class="btn btn-link" ng-click="toggleMap()" ng-if="$state.includes('owm.resource.search.map') || $state.includes('owm.resource.place.map')">
-                            <i class="fa fa-th-list"></i> {{ 'SHOW_AS_LIST' | translate }}
-                        </button>
-                    </div>
-               </div>-->
-
                <div style="position: relative">
                  <div ng-show="searching" style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: rgba(255, 255, 255, .5); z-index: 400"></div>
                  <ui-view />
@@ -121,7 +121,7 @@
                 </div>
 
                 <!-- pagination -->
-                <md-card layout="row" layout-align="center center">
+                <md-card layout="row" layout-align="center center" ng-if="!$state.includes('owm.resource.search.map') && !$state.includes('owm.resource.place.map')">
                   <md-button ng-style="{visibility: page === 1 ? 'hidden' : 'visible'}" class="md-button-xs" ng-click="showPage(page - 1)">
                     <md-icon>arrow_back</md-icon> <span hide-xs>{{ 'PREVIOUS' | translate }}</span>
                   </md-button>
@@ -133,7 +133,7 @@
                   </md-button>
                 </md-card>
 
-                <div ng-if="numberOfResults && resources.length > 0" class="card">
+                <div ng-if="numberOfResults && resources.length > 0 && !$state.includes('owm.resource.search.map') && !$state.includes('owm.resource.place.map')" class="card">
                   <p style="padding: .7em; text-align: center; color: #727377;">
                   <strong>{{numberOfResults}}</strong> auto's gevonden
                   </p>
@@ -146,5 +146,17 @@
         <!-- /col -->
     </div>
     <!-- /row -->
+
+    <div class="mobileLocation" ng-if="!($state.includes('owm.resource.search.map') || $state.includes('owm.resource.place.map')) && resources.length >= 1" hide-gt-xs>
+        <button type="button" ng-click="toggleMap()">
+            <md-icon>location_on</md-icon>
+        </button>
+    </div>
+
+    <div class="mobileList" ng-if="$state.includes('owm.resource.search.map') || $state.includes('owm.resource.place.map') && resources.length >= 1" hide-gt-xs>
+        <button type="button" ng-click="toggleMap()">
+            <md-icon>close</md-icon>
+        </button>
+    </div>
 
 </div>

@@ -3,9 +3,9 @@
 angular.module('owm.resource.show', [])
 
 .controller('ResourceShowController', function ($window, $log, $q, $timeout, $location, $mdDialog, $mdMedia, $scope,
-  $state, $filter, authService, resourceService, bookingService, invoice2Service, boardcomputerService, alertService,
+  $state, $filter, authService, resourceService, bookingService, invoice2Service, alertService,
   chatPopupService, ratingService, API_DATE_FORMAT, resource, me, resourceQueryService, featuresService, $stateParams,
-  linksService, Analytics, metaInfoService, $localStorage, $translate, appConfig) {
+  linksService, Analytics, metaInfoService, $localStorage, $translate, appConfig, $anchorScroll) {
   Analytics.trackEvent('discovery', 'show_car', resource.id, undefined, true);
 
   metaInfoService.set({robots: resource.isActive && !resource.removed ? 'all' : 'noindex'});
@@ -29,6 +29,7 @@ angular.module('owm.resource.show', [])
   $scope.openDialogSpinner = false;
 
   $scope.openChatWith = openChatWith;
+  $scope.openCommentDialog = openCommentDialog;
   $scope.isFavoriteResolved = false;
   $scope.toggleFavorite = toggleFavorite;
 
@@ -85,6 +86,45 @@ angular.module('owm.resource.show', [])
     chatPopupService.openPopup(otherPersonName, otherPerson.id, resource.id, null);
   }
 
+  function openCommentDialog (rating, $event) {
+    $scope.rating = rating;
+
+    $mdDialog.show({
+      fullscreen: $mdMedia('xs'),
+      preserveScope: true,
+      scope: $scope,
+      templateUrl: 'resource/partials/commentDialog.tpl.html',
+      parent: angular.element(document.body),
+      targetEvent: $event,
+      clickOutsideToClose:true,
+      controller: ['$scope', '$mdDialog', 'ratingService', function($scope, $mdDialog, ratingService) {
+        $scope.rating = rating;
+
+        $scope.hide = function() {
+          $mdDialog.hide();
+        };
+
+        $scope.save = function() {
+          ratingService.commentOnRating({
+            ratingId: $scope.rating.id,
+            comment: $scope.ratingComment
+          })
+          .then( function(response) {
+            alertService.add('success', 'Jouw reactie op de beoordeling van ' + $filter('toTitleCase')($scope.rating.sender.firstName) + ' is opgeslagen.', 3000);
+            loadRatings();
+            $mdDialog.hide();
+          }, function(error) {
+            $scope.errorComment = error.message;
+          })
+          .finally( function() {
+            alertService.loaded();
+          });
+        };
+
+      }],
+    });
+  }
+
   function loadSearchState () {
     var timeFrame = resourceQueryService.data.timeFrame;
     if (timeFrame) {
@@ -119,6 +159,7 @@ angular.module('owm.resource.show', [])
       draggable: true,
       markers: [{
         idKey: 1,
+        icon: 'assets/img/mywheels-marker-40.png',
         latitude: resource.latitude,
         longitude: resource.longitude,
         title: resource.alias
@@ -129,44 +170,6 @@ angular.module('owm.resource.show', [])
       }
     }
   });
-
-  $scope.openDoor = function(resource) {
-    alertService.load();
-    boardcomputerService.control({
-      action: 'OpenDoorStartEnable',
-      resource: resource.id
-    })
-    .then( function(response) {
-      if(response.result === 'ERROR') {
-        return alertService.add('danger', response.message, 5000);
-      }
-      alertService.add('success', 'De deuren van de auto worden geopend.', 3000);
-    }, function(error) {
-      alertService.add('danger', error.message, 5000);
-    })
-    .finally( function() {
-      alertService.loaded();
-    });
-  };
-
-  $scope.closeDoor = function(resource) {
-    alertService.load();
-    boardcomputerService.control({
-      action: 'CloseDoorStartDisable',
-      resource: resource.id
-    })
-    .then( function(response) {
-      if(response.result === 'ERROR') {
-        return alertService.add('danger', response.message, 5000);
-      }
-      alertService.add('success', 'De deuren van de auto worden gesloten.', 3000);
-    }, function(error) {
-      alertService.add('danger', error.message, 5000);
-    })
-    .finally( function() {
-      alertService.loaded();
-    });
-  };
 
   function loadFavorite () {
     $scope.isFavoriteResolved = false;
@@ -227,6 +230,8 @@ angular.module('owm.resource.show', [])
   $scope.toggleBookingForm = function () {
     $scope.showBookingForm = !!!$scope.showBookingForm;
     $scope.showBookingFormToggle = !!!$scope.showBookingFormToggle;
+
+    $anchorScroll('priceBookingContainer');
 
     if (!$scope.showBookingForm) {
       $scope.showBookingFormToggle = false;

@@ -45,12 +45,12 @@ angular.module('owm.resource.show.calendar.blocking', [])
 				fillTimeCache();
 
 				if(moment($scope.blocking.start).isSame($scope.blocking.until, 'day')){
-					$scope.blocking.until = moment($scope.blocking.start).add(1, 'days').format(API_DATE_FORMAT);
+					$scope.blocking.until = moment($scope.blocking.start).format(API_DATE_FORMAT);
 					dayModified = true;
 				}
 
 				$scope.blocking.start = moment($scope.blocking.start, API_DATE_FORMAT).hours(0).minutes(0).format(API_DATE_FORMAT);
-				$scope.blocking.until = moment($scope.blocking.until, API_DATE_FORMAT).hours(0).minutes(0).format(API_DATE_FORMAT);
+				$scope.blocking.until = moment($scope.blocking.until, API_DATE_FORMAT).hours(23).minutes(59).format(API_DATE_FORMAT);
 			}else{
 				if((dayModified || blocking._allDay) && moment($scope.blocking.start).add(1, 'days').isSame($scope.blocking.until, 'day')){
 					$scope.blocking.until = moment($scope.blocking.until).subtract(1, 'days').format(API_DATE_FORMAT);

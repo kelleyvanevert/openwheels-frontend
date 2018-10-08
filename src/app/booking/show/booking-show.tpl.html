@@ -170,6 +170,13 @@
   </div>
 </div>
 
+<!-- Cancel reason -->
+<div class="card" ng-if="userPerspective==='renter' && ['cancelled'].indexOf(booking.status) >= 0 && booking.cancelReason">
+  <div class="card-body card-inverse" style="background-color:#c85f5f; color:white;"> 
+    <span>Deze reservering is automatisch geannuleerd. Een andere huurder heeft de auto voor dezelfde huurperiode gereserveerd en betaald. Omdat jouw reservering nog niet betaald is, hebben we de reservering geannuleerd. Een reservering is pas definitief als je betaald hebt. Je kunt dit voorkomen door een reservering direct te betalen.</span>
+  </div>
+</div>
+
 <!-- Booking altered after buy voucher -->
 <div class="card" ng-if="alteredAfterBuyVoucher">
   <div class="card-body card-inverse" style="background-color:#3bab78; color: white;">
@@ -790,7 +797,7 @@
   </div>
   <div class="card-body">
     <div class="media">
-      <img class="media-object pull-left img-user-small" person-profile-image="{ person: resource.owner, size: 'small' }" hide-xs />
+      <img class="media-object pull-left img-user-normal" person-profile-image="{ person: resource.owner, size: 'normal' }" hide-xs />
       <div class="media-body">
         <ul class="list-unstyled list-block list-spaced">
           <li><md-icon>person_outline</md-icon>
@@ -837,7 +844,7 @@
   </div>
   <div class="card-body">
     <div class="media">
-      <img class="media-object pull-left img-user-small" person-profile-image="{ person: booking.person, size: 'small' }" hide-xs />
+      <img class="media-object pull-left img-user-normal" person-profile-image="{ person: booking.person, size: 'normal' }" hide-xs />
       <div class="media-body">
         <ul class="list-unstyled list-block list-spaced">
           <li><md-icon>person_outline</md-icon>
@@ -885,7 +892,7 @@
       Gegevens van de beheerder
     </h3>
     <div class="media">
-      <img class="media-object pull-left img-user-small" person-profile-image="{ person: resource.contactPerson, size: 'small' }" hide-xs />
+      <img class="media-object pull-left img-user-normal" person-profile-image="{ person: resource.contactPerson, size: 'normal' }" hide-xs />
       <div class="media-body">
         <ul class="list-unstyled list-block list-spaced">
           <li><md-icon>person_outline</md-icon>

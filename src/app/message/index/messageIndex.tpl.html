@@ -16,9 +16,9 @@
 
           <div class="media">
             <img ng-if="conversation.sender.id === me.id"
-              class="media-object img-user-small pull-left" person-profile-image="{ person: conversation.recipient, size: 'small' }" />
+              class="media-object img-user-normal pull-left" person-profile-image="{ person: conversation.recipient, size: 'normal' }" />
             <img ng-if="conversation.sender.id !== me.id"
-              class="media-object img-user-small pull-left" person-profile-image="{ person: conversation.sender, size: 'small' }" />
+              class="media-object img-user-normal pull-left" person-profile-image="{ person: conversation.sender, size: 'normal' }" />
 
             <div class="media-body">
               <span>

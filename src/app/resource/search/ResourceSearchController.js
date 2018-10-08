@@ -6,7 +6,7 @@ angular.module('owm.resource.search', [
   ])
   .controller('ResourceSearchController', function ($location, me, $scope, $state, $stateParams, $uibModal, $mdMedia, $mdDialog,
     $filter, $anchorScroll, appConfig, Geocoder, alertService, resourceService, resourceQueryService, user, place, Analytics,
-    $cookieStore, preloader, metaInfoService) {
+    $cookieStore, preloader, metaInfoService, $rootScope) {
 
     if (place) {
       metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/' + place.name});
@@ -87,7 +87,7 @@ angular.module('owm.resource.search', [
         $scope.filters.filters = query.filters;
       }
 
-      if (place) {
+      if (place && !$stateParams.lng) {
         resourceQueryService.setLocation({
           latitude: place.latitude,
           longitude: place.longitude
@@ -285,6 +285,7 @@ angular.module('owm.resource.search', [
     };
 
     $scope.removeTimeframe = function () {
+      $rootScope.timeFrameRemoved = true;
       $scope.booking.beginRequested = null;
       $scope.booking.endRequested = null;
       return doSearch();
@@ -330,21 +331,15 @@ angular.module('owm.resource.search', [
       doSearch();
     };
 
-    $scope.removeTimeframe = function () {
-      $scope.booking.beginRequested = null;
-      $scope.booking.endRequested = null;
-      return doSearch();
-    };
-
     function updateUrl() {
       $location.search(resourceQueryService.createStateParams());
     }
 
     $scope.toggleMap = function toggleMap() {
       if (!$state.includes('^.map')) {
-        $state.go('^.map').then(updateUrl);
+        $state.go('^.map', resourceQueryService.createStateParams());
       } else {
-        $state.go('^.list').then(updateUrl);
+        $state.go('^.list', resourceQueryService.createStateParams());
       }
     };
 
