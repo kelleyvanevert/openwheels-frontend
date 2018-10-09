@@ -214,7 +214,7 @@ angular.module('owm.resource.edit.data', [])
         latitude: $scope.resource.latitude || null,
         longitude: $scope.resource.longitude || null,
         title: $scope.resource.alias,
-        icon: 'assets/img/mywheels-marker-40.png'
+        icon: ($scope.resource.locktypes.indexOf('chipcard') >= 0 || $scope.resource.locktypes.indexOf('smartphone') >= 0) ? 'assets/img/mywheels-open-marker-40.png' : 'assets/img/mywheels-key-marker-40.png'
       }
     }
   });

@@ -23,6 +23,9 @@ angular.module('owm.person.dashboard', [])
     } else if(data.flow === 'booking') {
       setPreference('renter');
       $state.go('owm.person.details', data);
+    } else if(data.flow === 'subscribe_resource_show') {
+      setPreference('renter');
+      $state.go('owm.resource.show', data);
     } else if (!me.preference){
       showModal()
       .then(redirect);
