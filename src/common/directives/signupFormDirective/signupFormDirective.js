@@ -57,6 +57,15 @@ angular.module('signupFormDirective', [])
             personSubmitted: false
           };
           $localStorage.booking_before_signup = data;
+        } else if ($state.current.name === 'owm.resource.show') {
+          data = { // should fill in the details
+            preference: 'renter',
+            flow: 'subscribe_resource_show',
+            city: resource.city ? resource.city : 'utrecht',
+            resourceId: resource.id
+          };
+          $localStorage.booking_before_signup = data;
+          // do nothing
         } else {
           data = { // should fill in the details
             preference: undefined,
@@ -95,6 +104,8 @@ angular.module('signupFormDirective', [])
       } else {
         if ($state.previous.name === 'owm.resource.own') {
           $scope.user.preference = 'owner';
+        } else if ($state.current.name === 'owm.resource.show') {
+          $scope.user.preference = 'renter';
         } else {
           $scope.user.preference = false;
         }
@@ -116,6 +127,8 @@ angular.module('signupFormDirective', [])
           $scope.user.preference = 'renter';
         } else if ($scope.url === 'owm.resource.create.carInfo') {
           $scope.user.preference = 'owner';
+        } else if ($scope.url === 'owm.resource.show') {
+          $scope.user.preference = 'renter';
         }
 
         if($scope.inviter) {
@@ -183,7 +196,10 @@ angular.module('signupFormDirective', [])
                           type: type,
                           year: year
                         });
+                      } else if ($scope.url === 'owm.resource.show') {
+                        $mdDialog.cancel();
                       } else {
+                        alert($scope.url);
                         $mdDialog.cancel();
                         $state.go($scope.url);
                       }
