@@ -204,7 +204,7 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
               title: resource.alias,
               animation: maps.Animation.DROP,
               resource: resource,
-              icon: 'assets/img/mywheels-marker-40.png',
+              icon: (resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0) ? 'assets/img/mywheels-open-marker-40.png' : 'assets/img/mywheels-key-marker-40.png',
               showWindow: false
             };
 
