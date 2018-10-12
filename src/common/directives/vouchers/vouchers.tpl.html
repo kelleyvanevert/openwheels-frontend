@@ -73,17 +73,15 @@
         <tr>
             <td>
               Geschatte kilometers
-                <info-icon tooltip-placement="bottom" tooltip-html="'Dit is een schatting van de kilometerkosten, we schatten dat je 150 kilometer per dag zult rijden. Na afloop kun je teveel betaald rijtegoed terugvragen.'"></info-icon>
+                <info-icon tooltip-placement="bottom" tooltip-html="'Dit is een schatting van de kilometerkosten, we schatten dat je 150 kilometer per dag of 15 kilometer per uur zult rijden. Na afloop kun je teveel betaald rijtegoed terugvragen.'"></info-icon>
+                <br>
+                <span class="text-success" ng-if="booking.price.fuelPerKilometer > 0"><strong>inclusief brandstof!</strong></span>
             </td>
             <td class="text-right">{{ booking.details.km_price | currency }}</td>
         </tr>
         <tr>
           <td>
             <b>Totale huurprijs</b>
-            <span style="padding-top:1em" ng-if="booking.cancelAfter && booking.approved !== 'OK' && booking.details.discount === 0 && booking.details.friend_invite_discount === 0" class="text-danger">
-                <br><br>
-                Let op: betaal voor {{booking.cancelAfter | amDateFormat:'D MMMM YYYY HH:mm'}} om automatische annulering te voorkomen. <span ng-if="!holidaytrip">De auto is nog tot {{ blockedUntil | amDateFormat:'HH:mm' }} voor je geblokkeerd, daarna kunnen andere huurders de auto ook reserveren.</span>
-            </span>
             </td>
             <td class="text-right">
                 <b>{{ (booking.details.booking_price.total + booking.details.km_price) | currency }}</b>
@@ -103,13 +101,14 @@
         <tr ng-if="booking.details.discount > 0 || booking.details.friend_invite_discount > 0">
           <td>
             <b>Totaal</b>
-            <span style="margin-top:1em" class="text-danger" ng-if="booking.cancelAfter && booking.approved !== 'OK'">
-                <br><br>
-                Let op: betaal voor {{booking.cancelAfter | amDateFormat:'D MMMM YYYY HH:mm'}} om automatische annulering te voorkomen. <span ng-if="!holidaytrip">De auto is nog tot {{ blockedUntil | amDateFormat:'HH:mm' }} voor je geblokkeerd, daarna kunnen andere huurders de auto ook reserveren.</span>
-            </span>
           </td>
           <td class="text-right"><b>{{ (booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount) | currency }}</b></td>
         </tr>
 
     </tbody>
 </table>
+
+<span ng-if="booking.cancelAfter && booking.approved !== 'OK' && booking.details.discount === 0 && booking.details.friend_invite_discount === 0 && !holidaytrip" class="text-danger">
+    <span ng-if="blockedUntil > now">De auto is nog {{ minutesLeft }} minuten voor je geblokkeerd, daarna kunnen andere huurders de auto ook reserveren. Betaal direct om de reservering definitief te maken.</span>
+    <span ng-if="blockedUntil < now">De auto is niet meer voor je geblokkeerd, andere huurders kunnen de auto ook reserveren. Betaal voor {{booking.cancelAfter | amDateFormat:'D MMMM YYYY HH:mm'}} om de reservering definitief te maken.</span>
+</span>
