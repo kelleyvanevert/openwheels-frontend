@@ -199,7 +199,6 @@ angular.module('signupFormDirective', [])
                       } else if ($scope.url === 'owm.resource.show') {
                         $mdDialog.cancel();
                       } else {
-                        alert($scope.url);
                         $mdDialog.cancel();
                         $state.go($scope.url);
                       }
