@@ -15,7 +15,7 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
       latitude : 52.091667,
       longitude: 5.117778000000044
     };
-    var zoom = 15;
+    var zoom = 14;
     var center = {
       latitude:  $stateParams.lat || DEFAULT_MAP_CENTER_LOCATION.latitude,
       longitude: $stateParams.lng || DEFAULT_MAP_CENTER_LOCATION.longitude
