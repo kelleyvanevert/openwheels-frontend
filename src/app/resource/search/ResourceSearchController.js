@@ -329,6 +329,12 @@ angular.module('owm.resource.search', [
 
     $scope.update = function(stateParams) {
       doSearch();
+      //close keyboard on iOS
+      document.activeElement.blur();
+      var inputs = document.querySelectorAll('input');
+      for(var i=0; i < inputs.length; i++) {
+        inputs[i].blur();
+      }
     };
 
     function updateUrl() {
