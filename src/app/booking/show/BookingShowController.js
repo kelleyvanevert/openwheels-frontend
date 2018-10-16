@@ -949,4 +949,11 @@ angular.module('owm.booking.show', [])
     }
   }
 
+  /*
+  * Other
+  */
+  $scope.goToPrevious = function() {
+    $state.go($rootScope.previousState, $rootScope.previousStateParams, {reload: true, inherit: false, notify: true});
+  };
+
 });

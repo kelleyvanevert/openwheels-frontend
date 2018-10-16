@@ -9,7 +9,7 @@ angular.module('owm.trips', [
   $stateProvider
 
   .state('owm.trips', {
-    url: '/trips',
+    url: '/trips?start&end&cancelled',
     views: {
       'main@shell': {
         templateUrl: 'trips/index/tripsIndex.tpl.html',
