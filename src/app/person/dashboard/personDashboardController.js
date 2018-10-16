@@ -157,7 +157,7 @@ angular.module('owm.person.dashboard', [])
         if (result === 'error') {
           return alertService.add('danger', result, 5000);
         }
-        alertService.add('success', 'Boardcomputer opened door and enabled start', 3000);
+        alertService.add('success', 'De auto opent binnen 15 seconden.', 3000);
       }, function (error) {
         alertService.add('danger', error.message, 5000);
       })
@@ -177,7 +177,7 @@ angular.module('owm.person.dashboard', [])
         if (result === 'error') {
           return alertService.add('danger', result, 5000);
         }
-        alertService.add('success', 'Boardcomputer closed door and disabled start', 3000);
+        alertService.add('success', 'De auto sluit binnen 15 seconden.', 3000);
       }, function (error) {
         alertService.add('danger', error.message, 5000);
       })
@@ -195,7 +195,7 @@ angular.module('owm.person.dashboard', [])
         if (result.deleted === true) {
           $scope.actions.splice($scope.actions.indexOf(action), 1);
         } else {
-          return $q.reject(new Error('De actie kan niet worden verwijderd'));
+          return $q.reject(new Error('De actie kan niet worden verwijderd.'));
         }
       })
       .catch(function (err) {
