@@ -37,7 +37,8 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
           minZoom: 12,
           fullscreenControl: false,
           mapTypeControl: false,
-          streetViewControl: false
+          streetViewControl: false,
+          gestureHandling: 'greedy'
         }
       }
     });
