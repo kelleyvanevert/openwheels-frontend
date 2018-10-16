@@ -166,7 +166,7 @@ angular.module('owm.person', [
       rentalList: ['$stateParams', 'me', 'authService', 'bookingService', 'API_DATE_FORMAT', function ($stateParams, me, authService, bookingService, API_DATE_FORMAT) {
         var timeFrame = {
           startDate: moment().startOf('day').add(-1, 'weeks').format(API_DATE_FORMAT),
-          endDate: moment().startOf('day').add(1, 'years').format(API_DATE_FORMAT)
+          endDate: moment().endOf('day').add(1, 'years').format(API_DATE_FORMAT)
         };
 
         if (me.preference === 'renter') {

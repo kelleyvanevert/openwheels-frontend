@@ -2,14 +2,14 @@
 
 angular.module('owm.trips.index', [])
 
-.controller('TripsIndexController', function ($log, $timeout, $q, API_DATE_FORMAT, alertService, bookingService, me, $scope, linksService, metaInfoService, appConfig) {
+.controller('TripsIndexController', function ($log, $timeout, $q, API_DATE_FORMAT, alertService, bookingService, me, $scope, linksService,
+  metaInfoService, appConfig, $stateParams, $state) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/trips'});
   metaInfoService.set({canonical: 'https://mywheels.nl/trips'});
 
   $scope.me = me;
   $scope.showLoaderSpinner = false;
-  $scope.showCancelled = false;
   $scope.renew = false;
   $scope.now = moment().format('YYYY-MM-DD HH:mm');
 
@@ -20,6 +20,8 @@ angular.module('owm.trips.index', [])
     format: 'dd-mm-yyyy',
     selectMonths: true
   };
+
+  var URL_DATE_TIME_FORMAT = 'YYMMDDHHmm';
 
   // Define the booking variables
   $scope.bookings = {};
@@ -38,11 +40,17 @@ angular.module('owm.trips.index', [])
     $scope.offset[role] = 0;
   }
 
-  // Default first and last day of current month
+  // Default first and last day of current month or use stateParams if set
   $scope.currentTimeFrame = {
-    fromDate: moment().startOf('month').format('YYYY-MM-DD HH:mm'),
-    untilDate: moment().endOf('month').format('YYYY-MM-DD HH:mm')
+    fromDate:   $stateParams.start ? moment($stateParams.start, 'YYMMDDHHmm').format(API_DATE_FORMAT) : moment().startOf('day').add(-1, 'day').format(API_DATE_FORMAT),
+    untilDate:  $stateParams.end ? moment($stateParams.end, 'YYMMDDHHmm').format(API_DATE_FORMAT) : moment().endOf('day').add(1, 'years').format(API_DATE_FORMAT)
   };
+ 
+  if($stateParams.cancelled === 'true') {
+    $scope.showCancelled = true;
+  } else {
+    $scope.showCancelled = false;
+  }
 
   // Load all bookings for this person in the role of either a renter or an owner with pagination
   $scope.loadBookings = function (role) {
@@ -54,24 +62,18 @@ angular.module('owm.trips.index', [])
     var parameters = {
       person: me.id,
       timeFrame: {
-        startDate: moment($scope.startDate).format(API_DATE_FORMAT),
-        endDate: moment($scope.endDate).format(API_DATE_FORMAT)
+        startDate: moment($scope.startDate).startOf('day').format(API_DATE_FORMAT),
+        endDate: moment($scope.endDate).endOf('day').format(API_DATE_FORMAT)
       },
       offset: $scope.offset[role],
-      limit: $scope.perCall[role]
+      limit: $scope.perCall[role],
     };
 
     // Define which API call to use for which role
     var bookingsPromise = {};
 
     if(role === 'asRenter') {
-
-      if ($scope.showCancelled) {
-        parameters.cancelled = true;
-      } else {
-        parameters.cancelled = false;
-      }
-
+      parameters.cancelled = $scope.showCancelled;
       bookingsPromise = bookingService.getBookingList(parameters);
     }
 
@@ -120,6 +122,17 @@ angular.module('owm.trips.index', [])
   $scope.loadDate = function (role, renew) {
     $scope.startDate = moment($scope.currentTimeFrame.fromDate).format('YYYY-MM-DD HH:mm');
     $scope.endDate = moment($scope.currentTimeFrame.untilDate).format('YYYY-MM-DD HH:mm');
+
+    //Update stateParams for reload
+    $state.go('owm.trips', {
+      start: moment($scope.startDate).format(URL_DATE_TIME_FORMAT),
+      end: moment($scope.endDate).format(URL_DATE_TIME_FORMAT),
+      cancelled: $scope.showCancelled
+    }, {
+      reload: true,
+      inherit: false,
+      notify: false
+    });
 
     // Reset offset and bookings for specific role
     if (renew) {
