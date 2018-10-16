@@ -141,6 +141,13 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
 
       function handleEvent(res) {
         if(res) {
+          //close keyboard on iOS
+          document.activeElement.blur();
+          var inputs = document.querySelectorAll('input');
+          for(var i=0; i < inputs.length; i++) {
+            inputs[i].blur();
+          }
+          
           resourceQueryService.setText(res.formatted_address);
           resourceQueryService.setLocation({
             latitude: res.geometry.location.lat(),
