@@ -35,7 +35,7 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
         control: {},
         options: {
           minZoom: 12,
-          fullscreenControl: true,
+          fullscreenControl: false,
           mapTypeControl: false,
           streetViewControl: false
         }
