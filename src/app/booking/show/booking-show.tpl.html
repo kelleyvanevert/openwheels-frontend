@@ -184,18 +184,6 @@
   </div>
 </div>
 
-<!-- Agreement -->
-<div class="card" ng-if="booking.ok && !requested && !bookingEnded && !booking.resource.boardcomputer">
-  <div class="card-heading">
-    <h3 class="card-title">
-      <a href="{{ allowAgreementUrl }}" target="_blank" ng-href="{{ allowAgreementUrl }}">
-        <md-icon class="btn-link">file_download</md-icon>
-        Download huurovereenkomst
-      </a>
-    </h3>
-  </div>
-</div>
-
 <!-- Add kilometers -->
 <div class="card" ng-if="booking.ok && bookingStarted && (!booking.trip.odoBegin || !booking.trip.odoEnd) && !booking.resource.boardcomputer && !booking.trip.finalized" id="kilometerForm">
   <div class="card-body card-inverse" style="background-color:#5faac8; color:white;" layout="row" layout-xs="column">
@@ -507,53 +495,31 @@
   </div>
 </div>
 
-<!-- MyWheels Open information -->
-<div class="card" ng-if="userPerspective==='renter' && ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 && (booking.resource.locktypes.indexOf('chipcard') >= 0 || booking.resource.locktypes.indexOf('smartphone') >= 0) && !bookingEndedRealy" id="mywheelsOpenInfo">
+<!-- Agreement -->
+<div class="card" ng-if="booking.ok && !requested && !bookingEnded && !booking.resource.boardcomputer">
   <div class="card-heading">
-    <h3 class="card-title">MyWheels Open</h3>
-  </div>
-
-  <!-- Convadis boardcomputer, only chipcard -->
-  <div class="card-body" ng-if="booking.resource.locktypes.indexOf('smartphone') < 0 && booking.resource.locktypes.indexOf('chipcard') >= 0">
-    <strong>{{ 'LOCKTYPE.ophalen' | translate }}</strong>
-    <p ng-if="fish" translate="PAYMENT_APROVED_PAYED_FISH" translate-values="{pincode: fish.pincode, location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: booking.resource.city }"></p>
-    <p ng-if="!fish" translate="PAYMENT_APROVED_PAYED_NO_FISH" translate-values="{location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: booking.resource.city }"></p>
-
-    <strong ng-if="fuelCard">{{ 'DRIVE' | translate }}</strong>
-    <p ng-if="fuelCard" translate="PAYMENT_APROVED_PAYED_FUEL_CARD"></p>
-  </div>
-
-  <!-- Micpoint boardcomputer, chipcard and smartphone -->
-  <div class="card-body" ng-if="booking.resource.locktypes.indexOf('smartphone') >= 0 && booking.resource.locktypes.indexOf('chipcard') >= 0">
-    <strong>{{ 'LOCKTYPE.ophalen' | translate }}</strong>
-    <p translate="PAYMENT_APROVED_PAYED_CHIPCARD_SMARTPHONE" translate-values="{location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: booking.resource.city }"></p>
-
-    <strong ng-if="fuelCard">{{ 'DRIVE' | translate }}</strong>
-    <p ng-if="fuelCard" translate="PAYMENT_APROVED_PAYED_FUEL_CARD"></p>
-  </div>
-
-  <!-- Micpoint boardcomputer, only smartphone -->
-  <div class="card-body" ng-if="booking.resource.locktypes.indexOf('smartphone') >= 0 && booking.resource.locktypes.indexOf('chipcard') < 0">
-    <strong>{{ 'LOCKTYPE.ophalen' | translate }}</strong>
-    <p translate="PAYMENT_APROVED_PAYED_SMARTPHONE" translate-values="{location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: booking.resource.city }"></p>
-
-    <strong ng-if="fuelCard">{{ 'DRIVE' | translate }}</strong>
-    <p ng-if="fuelCard" translate="PAYMENT_APROVED_PAYED_FUEL_CARD"></p>
+    <h3 class="card-title">
+      <a href="{{ allowAgreementUrl }}" target="_blank" ng-href="{{ allowAgreementUrl }}">
+        <md-icon class="btn-link">file_download</md-icon>
+        Download huurovereenkomst
+      </a>
+    </h3>
   </div>
 </div>
 
-<!-- Meeting information, without boardcomputer -->
-<div class="card" ng-if="userPerspective==='renter' && ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 && booking.resource.locktypes.indexOf('meeting') >= 0 && !booking.resource.boardcomputer && !bookingEndedRealy" id="meetingInfo">
+<!-- Drive and fuel information -->
+<div class="card" ng-if="userPerspective==='renter' && ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 && !bookingEndedRealy" id="mywheelsOpenInfo">
   <div class="card-heading">
-    <h3 class="card-title">Sleuteloverdracht</h3>
+    <h3 class="card-title" ng-if="resource.boardcomputer">MyWheels Open</h3>
+    <h3 class="card-title" ng-if="!resource.boardcomputer">Sleuteloverdracht</h3>
   </div>
+
   <div class="card-body">
     <strong>{{ 'LOCKTYPE.ophalen' | translate }}</strong>
-    <p translate="PAYMENT_APROVED_PAYED_FUEL_KEY_NOT_APPROVED" translate-values="{location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: booking.resource.city }"></p>
+    <p style="white-space:pre-line">{{ booking.lockTypeManual }}</p>
 
     <strong>{{ 'DRIVE' | translate }}</strong>
-    <p ng-if="!booking.resource.refuelByRenter" translate="PAYMENT_APROVED_PAYED_FUEL_PRICE" translate-values="{price: booking.resource.price.fuelPerKilometer}"></p>
-    <p ng-if="booking.resource.refuelByRenter" translate="PAYMENT_APROVED_PAYED_FUEL_RENTER" translate-values="{renter: booking.resource.owner.firstName}"></p>
+    <p style="white-space:pre-line">{{ booking.fuelManual }}</p>
   </div>
 </div>
 
@@ -761,6 +727,43 @@
       </div>
       <div class="row" style="margin-top: 2em;" ng-if="allowDeclarationsAdd">
         <div class="col-sm-12"><a class="btn btn-default" ui-sref="^.administer">{{ 'DECL_ADD' | translate }}</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tips and rules for renter of MyWheels Open -->
+<div class="card"  ng-if="userPerspective === 'renter' && !bookingEndedRealy">
+  <div class="card-heading">
+    <h3 class="card-title">
+      Tips
+    </h3>
+  </div>
+  <div class="card-body">
+    <div class="media">
+      <div class="media-body">
+        <table class="table">
+          <tr>
+            <td style="width:55px; vertical-align:middle;"><img class="media-object pull-left" src="assets/img/icons/magnifyinglass.png" /></td>
+            <td style="line-height:40px;">Check de auto vóór de rit op schade</td>
+          </tr>
+          <tr>
+            <td style="width:55px; vertical-align:middle;"><img class="media-object pull-left" src="assets/img/icons/nosmoking.png" /></td>
+            <td style="line-height:40px;">Niet roken in de auto</td>
+          </tr>
+          <tr>
+            <td style="width:55px; vertical-align:middle;"><img class="media-object pull-left" src="assets/img/icons/watch.png" /></td>
+            <td style="line-height:40px;">Breng de auto op tijd terug of verleng de rit</td>
+          </tr>
+          <tr>
+            <td style="width:55px; vertical-align:middle;"><img class="media-object pull-left" src="assets/img/icons/sparkles.png" /></td>
+            <td style="line-height:40px;">Lever de auto weer schoon en netjes in</td>
+          </tr>
+          <tr>
+            <td style="width:55px; vertical-align:middle;"><img class="media-object pull-left" src="assets/img/icons/gas.png" /></td>
+            <td style="line-height:40px;">Minimaal 1/4 tank vol voor de volgende huurder</td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>
