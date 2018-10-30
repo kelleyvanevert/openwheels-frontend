@@ -761,7 +761,11 @@
           </tr>
           <tr>
             <td style="width:55px; vertical-align:middle;"><img class="media-object pull-left" src="assets/img/icons/gas.png" /></td>
-            <td style="line-height:40px;">Minimaal 1/4 tank vol voor de volgende huurder</td>
+            <td style="line-height:40px;">
+            <td>
+                <span ng-if="booking.resource.fuelType === 'elektrisch'">Zorg dat de auto na afloop weer opgeladen wordt</span>
+                <span ng-if="booking.resource.fuelType !== 'elektrisch'">Minimaal 1/4 tank vol voor de volgende huurder</span>
+            </td>
           </tr>
         </table>
       </div>
