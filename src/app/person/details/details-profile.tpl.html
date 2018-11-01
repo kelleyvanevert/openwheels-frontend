@@ -136,8 +136,22 @@
 
             <section resource-sidebar class="details--profile__sidebar" ng-if="!isBusy && isbooking && !isBlocked && showThird"></section>
 
+
+            <!-- if person is created and already paid -->
+            <section class="details--card--form" ng-if="!isBusy && isbooking && !isBlocked && !errorCreateBooking && booking.approved === 'OK'" ng-hide="!isAvailable">
+                <h2 class="card-title">{{ 'DETAILS_PROFILE_BOOKING_PAID' | translate }}</h2>
+                <p>De reservering is geaccepteerd en het bedrag is betaald. Alles is in orde voor je rit en je kan goed verzekerd op weg.</p>
+                <p>&nbsp;</p>
+                <center>
+                    <button rel="next" type="button" class="mywheels-btn mywheels-btn-big mywheels-btn-default btn--navigation__next" ui-sref="owm.booking.show({ bookingId: booking.id })">
+                        {{ 'BOOKING_INFO' | translate }}
+                        <md-icon class="text-white">navigate_next</md-icon>
+                    </button>
+                </center>
+            </section>
+
             <!-- if booking is created and person can pay -->
-            <section class="details--card--form" ng-if="!isBusy && isbooking && !isBlocked && !errorCreateBooking" ng-hide="!isAvailable">
+            <section class="details--card--form" ng-if="!isBusy && isbooking && !isBlocked && !errorCreateBooking && booking.approved !== 'OK'" ng-hide="!isAvailable">
                 <h2 class="card-title">{{ 'DETAILS_PROFILE_NEARLY' | translate }}</h2>
 
                 <p ng-if="booking.approved === 'BUY_VOUCHER'">
