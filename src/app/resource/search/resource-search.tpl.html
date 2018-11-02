@@ -87,7 +87,7 @@
 
             <div class="card">
                 <div class="card-heading">
-                    <h3 class="no-margin"><md-icon>filter_list</md-icon><span> Filter</span></h3>
+                    <h3 class="no-margin"><md-icon alt="Icoon" aria-label="Icoon">filter_list</md-icon><span> Filter</span></h3>
                 </div>
                 <div class="card-body">
                     <div resource-filter on-change="sidebarFiltersChanged" props="filters.props" filters="filters.filters" options="filters.options"></div>
@@ -123,13 +123,13 @@
                 <!-- pagination -->
                 <md-card layout="row" layout-align="center center" ng-if="!$state.includes('owm.resource.search.map') && !$state.includes('owm.resource.place.map')">
                   <md-button ng-style="{visibility: page === 1 ? 'hidden' : 'visible'}" class="md-button-xs" ng-click="showPage(page - 1)">
-                    <md-icon>arrow_back</md-icon> <span hide-xs>{{ 'PREVIOUS' | translate }}</span>
+                    <md-icon alt="Icoon" aria-label="Icoon">arrow_back</md-icon> <span hide-xs>{{ 'PREVIOUS' | translate }}</span>
                   </md-button>
                   <div flex class="text-center pagination">
                     <span ng-click="showPage($index+1)" class="pagination--item" ng-class="{'active': $index+1 === page}" ng-repeat="n in getPages(last_page) track by $index">{{$index+1}}</span> 
                   </div>
                   <md-button ng-disabled="page == last_page" class="btn btn-link md-button-xs" ng-click="showPage(page + 1)">
-                    <span hide-xs>{{ 'NEXT' | translate }}</span> <md-icon>arrow_forward</md-icon>
+                    <span hide-xs>{{ 'NEXT' | translate }}</span> <md-icon alt="Icoon" aria-label="Icoon">arrow_forward</md-icon>
                   </md-button>
                 </md-card>
 
@@ -149,13 +149,13 @@
 
     <div class="mobileLocation" ng-if="!($state.includes('owm.resource.search.map') || $state.includes('owm.resource.place.map')) && resources.length >= 1" hide-gt-xs>
         <button type="button" ng-click="toggleMap()">
-            <md-icon>location_on</md-icon>
+            <md-icon alt="Icoon" aria-label="Icoon">location_on</md-icon>
         </button>
     </div>
 
     <div class="mobileList" ng-if="$state.includes('owm.resource.search.map') || $state.includes('owm.resource.place.map') && resources.length >= 1" hide-gt-xs>
         <button type="button" ng-click="toggleMap()">
-            <md-icon>close</md-icon>
+            <md-icon alt="Icoon" aria-label="Icoon">close</md-icon>
         </button>
     </div>
 
