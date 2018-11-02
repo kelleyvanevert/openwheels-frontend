@@ -110,12 +110,13 @@ angular.module('owm.resource', [
             return;
           }
           return $translate('SITE_NAME').then(function () {
+            var city = $filter('replaceDashToSpace')(place.name || '');
             metaInfoService.set({
               title: $translate.instant('META_CITYPAGE_TITLE', {
-                city: $filter('toTitleCase')(place.name)
+                city: $filter('toTitleCase')(city)
               }),
               description: $translate.instant('META_CITYPAGE_DESCRIPTION', {
-                city: $filter('toTitleCase')(place.name)
+                city: $filter('toTitleCase')(city)
               })
             });
           });
