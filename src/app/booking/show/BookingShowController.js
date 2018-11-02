@@ -554,7 +554,7 @@ angular.module('owm.booking.show', [])
   $scope.selectResourceAlternative = function (resource) {
     $state.go('owm.resource.show', {
       resourceId: resource.id,
-      city: resource.city,
+      city: (resource.city).toLowerCase().replace(/ /g, '-'),
       start: $scope.startDate,
       end: $scope.endDate
     });
