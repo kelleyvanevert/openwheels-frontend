@@ -9,8 +9,8 @@ angular.module('owm.resource.show', [])
   Analytics.trackEvent('discovery', 'show_car', resource.id, undefined, true);
 
   metaInfoService.set({robots: resource.isActive && !resource.removed ? 'all' : 'noindex'});
-  metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/'+ $filter('toTitleCase')(resource.city) + '/' + resource.id});
-  metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/'+ $filter('toTitleCase')(resource.city) + '/' + resource.id});
+  metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/'+ (resource.city || '').toLowerCase().replace(/ /g, '-') + '/' + resource.id});
+  metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/'+ (resource.city || '').toLowerCase().replace(/ /g, '-') + '/' + resource.id});
 
   if(resource.removed === undefined) { resource.removed = false; }
   if(resource.removed) {
@@ -33,7 +33,7 @@ angular.module('owm.resource.show', [])
   $scope.isFavoriteResolved = false;
   $scope.toggleFavorite = toggleFavorite;
 
-  $scope.shareUrl = featuresService.get('serverSideShare') ? linksService.resourceUrl(resource.id, resource.city) : $window.location.href;
+  $scope.shareUrl = featuresService.get('serverSideShare') ? linksService.resourceUrl(resource.id, (resource.city || '').toLowerCase().replace(/ /g, '-')) : $window.location.href;
   $log.debug('Share url = ' + $scope.shareUrl);
 
   var ageInDays = moment().diff($scope.resource.created, 'days');
@@ -201,7 +201,10 @@ angular.module('owm.resource.show', [])
       }], // an array of markers,
       zoom: 14,
       options: {
-        scrollwheel: false
+        scrollwheel: false,
+        fullscreenControl: false,
+        mapTypeControl: false,
+        streetViewControl: false
       }
     }
   });

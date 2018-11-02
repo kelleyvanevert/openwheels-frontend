@@ -15,7 +15,7 @@
   <div style="position: relative">
       <md-card-title>
           <md-card-title-text>
-            <a ui-sref="owm.resource.show({city: resource.city, resourceId: resource.id})">
+            <a ui-sref="owm.resource.show({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
               <h3 class="no-margin" style="font-size: 2rem" >
                 <span>{{ resource.alias || ('RESOURCE_NO_NAME' | translate) }} </span>
               </h3>
@@ -26,7 +26,7 @@
           <md-list class="margin-right">
               <md-list-item>
                 <!-- location -->
-                <md-icon>directions_car</md-icon>
+                <md-icon alt="Icoon" aria-label="Icoon">directions_car</md-icon>
                 <div flex>
                     <span ng-if="resource.brand || resource.model" flex="none">{{ (resource.brand + ' ' + resource.model) | toTitleCase }}</span>
                     <span class="tag tag-warning" ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0" flex="none"> {{ 'MYWHEELS_OPEN_TIP' | translate }} 
@@ -38,7 +38,7 @@
               </md-list-item>
               <md-list-item>
                 <!-- location -->
-                <md-icon>location_on</md-icon>
+                <md-icon alt="Icoon" aria-label="Icoon">location_on</md-icon>
                 <div flex>
                     <span> {{ resource.location }}, {{ resource.city }}
                       <span ng-if="resource.distance_to"> ({{ resource.distance_to | formatKilometers }})</span>
@@ -47,7 +47,7 @@
               </md-list-item>
               <md-list-item>
                 <!-- person -->
-                <md-icon>person</md-icon>
+                <md-icon alt="Icoon" aria-label="Icoon">person</md-icon>
                 <div flex>
                     {{ resource.owner.firstName }}
                     <span rating-thumb="{ value : resource.rating.satisfaction, senders: resource.rating.senders }"></span>
@@ -55,7 +55,7 @@
               </md-list-item>
               <md-list-item hide-xs>
                 <!-- number of bookings -->
-                <md-icon>check</md-icon>
+                <md-icon alt="Icoon" aria-label="Icoon">check</md-icon>
                   <div flex>
                     <span>
                       {{ resource.numberOfBookings | wasBookedTimes }}
@@ -64,8 +64,8 @@
               </md-list-item>
           </md-list>
           <div class="next-icon">
-              <a ui-sref="owm.resource.show({city: resource.city, resourceId: resource.id, start: startDate, end: endDate})">
-                  <md-icon>navigate_next</md-icon>
+              <a ui-sref="owm.resource.show({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id, start: startDate, end: endDate})">
+                  <md-icon alt="Icoon" aria-label="Icoon">navigate_next</md-icon>
               </a>
           </div>
       </md-card-body>

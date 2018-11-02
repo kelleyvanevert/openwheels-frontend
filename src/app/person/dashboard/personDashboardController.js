@@ -266,7 +266,7 @@ angular.module('owm.person.dashboard', [])
   $scope.selectFavoriteResource = function (resource) {
     $state.go('owm.resource.show', {
       resourceId: resource.id,
-      city: resource.city
+      city: (resource.city || '').toLowerCase().replace(/ /g, '-')
     });
   };
 

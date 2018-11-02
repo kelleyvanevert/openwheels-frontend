@@ -106,7 +106,7 @@
             <h2 class="resource-of-inviter--heading" ng-if="resources.length > 1">Auto's van {{ inviter.firstName | toTitleCase }}</h2>
             <h2 class="resource-of-inviter--heading" ng-if="resources.length === 1">De auto van {{ inviter.firstName | toTitleCase }}</h2>
             <ul>
-                <li ng-repeat="resource in resources | limitTo: 2" ui-sref="owm.resource.show({ resourceId: resource.id, city: resource.city })">
+                <li ng-repeat="resource in resources | limitTo: 2" ui-sref="owm.resource.show({ resourceId: resource.id, city: (resource.city | replaceSpaceToDash | lowercase) })">
                     <ow-resource-picture resource="resource" size="large"></ow-resource-picture>
                     <div class="information">
                         <h2 class="no-margin" style="color:#fff;">{{ resource.alias | limitTo: 30}}{{resource.alias.length > 30 ? '...' : ''}}</h2>

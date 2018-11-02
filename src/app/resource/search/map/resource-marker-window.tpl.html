@@ -1,4 +1,4 @@
-<div class="map__window" ui-sref="owm.resource.show({ resourceId: parameter.resource.id, city: parameter.resource.city })">
+<div class="map__window" ui-sref="owm.resource.show({ resourceId: parameter.resource.id, city: (parameter.resource.city | replaceSpaceToDash | lowercase) })">
     <img ng-src="{{ parameter.imgUrl }}" />
     <h4>{{ parameter.resource.alias }}</h4>
     <h5>{{ parameter.resource.brand }} {{ parameter.resource.model }}</h5>

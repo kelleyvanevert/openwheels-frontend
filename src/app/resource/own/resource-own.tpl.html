@@ -56,11 +56,11 @@
             </div>
 
             <div class="truncate" ng-if="!resource.boardcomputer && resource.isActive && (resource.isAvailableOthers || resource.isAvailableFriends) && me.provider.id !== 5">
-              <md-icon>date_range</md-icon> <a ng-href="{{ $state.href('owm.resource.calendar', { city: resource.city, resourceId: resource.id }) }}" ga-track-event="['interaction', 'updateAvailability', 'resourceOwn']">{{ 'RESOURCE_EDIT_CALENDAR' | translate }}</a>
+              <md-icon>date_range</md-icon> <a ng-href="{{ $state.href('owm.resource.calendar', { city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id }) }}" ga-track-event="['interaction', 'updateAvailability', 'resourceOwn']">{{ 'RESOURCE_EDIT_CALENDAR' | translate }}</a>
             </div>
 
             <div class="truncate" ng-if="features.parkingpermit">
-              <md-icon>person</md-icon> <a ng-href="{{ $state.href('owm.resource.edit', { city: resource.city, resourceId: resource.id }) }}">{{ 'ADD_MEMBERS' | translate }}</a>
+              <md-icon>person</md-icon> <a ng-href="{{ $state.href('owm.resource.edit', { city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id }) }}">{{ 'ADD_MEMBERS' | translate }}</a>
             </div>
 
             <parkingpermit ng-if="features.parkingpermit" resource="resource" resource-list="resources"></parkingpermit>
@@ -112,11 +112,11 @@
           </div>
 
           <div class="truncate" ng-if="!resource.boardcomputer && resource.isActive && (resource.isAvailableOthers || resource.isAvailableFriends) && me.provider.id !== 5">
-            <md-icon>date_range</md-icon> <a ng-href="{{ $state.href('owm.resource.calendar', { city: resource.city, resourceId: resource.id }) }}" ga-track-event="['interaction', 'updateAvailability', 'resourceOwn']">{{ 'RESOURCE_EDIT_CALENDAR' | translate }}</a>
+            <md-icon>date_range</md-icon> <a ng-href="{{ $state.href('owm.resource.calendar', { city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id }) }}" ga-track-event="['interaction', 'updateAvailability', 'resourceOwn']">{{ 'RESOURCE_EDIT_CALENDAR' | translate }}</a>
           </div>
 
           <div class="truncate" ng-if="features.parkingpermit">
-            <md-icon>person</md-icon> <a ng-href="{{ $state.href('owm.resource.edit', { city: resource.city, resourceId: resource.id }) }}">{{ 'ADD_MEMBERS' | translate }}</a>
+            <md-icon>person</md-icon> <a ng-href="{{ $state.href('owm.resource.edit', { city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id }) }}">{{ 'ADD_MEMBERS' | translate }}</a>
           </div>
 
           <parkingpermit ng-if="features.parkingpermit" resource="resource" resource-list="resources"></parkingpermit>
