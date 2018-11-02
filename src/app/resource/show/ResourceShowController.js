@@ -12,8 +12,8 @@ angular.module('owm.resource.show', [])
   metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/'+ (resource.city || '').toLowerCase().replace(/ /g, '-') + '/' + resource.id});
   metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/'+ (resource.city || '').toLowerCase().replace(/ /g, '-') + '/' + resource.id});
 
-  if(resource.removed === undefined) { 
-    resource.removed = false; 
+  if(resource.removed === undefined) {
+    resource.removed = false;
   }
 
   $scope.removed = (resource.removed || !resource.isActive);
