@@ -2,15 +2,15 @@
 
   <md-list ng-if="!user.isAuthenticated">
     <md-list-item id= "menuSignup" class="menu-item-signup" ng-click="navigate('owm.auth.signup')" ng-show="!invitedBySlug">
-      <md-icon ng_bind="'person_outline'"></md-icon><p>{{ 'SIGNUP' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon" ng_bind="'person_outline'"></md-icon><p>{{ 'SIGNUP' | translate }}</p>
     </md-list-item>
 
     <md-list-item id= "menuSignup" class="menu-item-signup" ng-click="navigate('subscribe', {slug: invitedBySlug})" ng-show="invitedBySlug">
-      <md-icon ng_bind="'person_outline'"></md-icon><p>{{ 'SIGNUP' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon" ng_bind="'person_outline'"></md-icon><p>{{ 'SIGNUP' | translate }}</p>
     </md-list-item>
 
     <md-list-item id= "menuLogin" class="menu-item-login" ng-click="login()">
-      <md-icon ng_bind="'person'"></md-icon><p>{{ 'LOGIN' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon" ng_bind="'person'"></md-icon><p>{{ 'LOGIN' | translate }}</p>
     </md-list-item>
 
     <md-divider></md-divider>
@@ -18,15 +18,15 @@
 
   <md-list ng-if="user.isAuthenticated">
     <md-list-item id="menuDashboard" class="menu-item-dashboard" ng-click="navigate('owm.person.dashboard')">
-      <md-icon ng_bind="'home'"></md-icon><p>{{ 'MY_DASHBOARD' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon" ng_bind="'home'"></md-icon><p>{{ 'MY_DASHBOARD' | translate }}</p>
     </md-list-item>
 
     <md-list-item id="menuMessages" class="menu-item-messages" ng-click="navigate('owm.message')">
-      <md-icon ng_bind="'message'"></md-icon><p>{{ 'MY_MESSAGES' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon" ng_bind="'message'"></md-icon><p>{{ 'MY_MESSAGES' | translate }}</p>
     </md-list-item>
 
     <md-list-item id="menuMessages" class="menu-item-invite" ng-click="navigate('invite')" ng-if="user.identity.provider.id === 1">
-      <md-icon ng_bind="'share'"></md-icon><p>{{ 'INVITE_FRIENDS_MENU' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon" ng_bind="'share'"></md-icon><p>{{ 'INVITE_FRIENDS_MENU' | translate }}</p>
     </md-list-item>
 
     <md-divider></md-divider>
@@ -34,19 +34,19 @@
 
   <md-list>
     <md-list-item id="menuSearchCar" class="menu-item-rent-a-car" ng-click="navigate('owm.resource.search.list')">
-      <md-icon ng_bind="'search'"></md-icon><p>{{ 'RENT_A_CAR' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon" ng_bind="'search'"></md-icon><p>{{ 'RENT_A_CAR' | translate }}</p>
     </md-list-item>
     <md-list-item id="menuMyCars" class="menu-item-resources" ng-click="navigate('owm.resource.own')" ng-if="user.isAuthenticated">
-      <md-icon ng_bind="'directions_car'"></md-icon><p>{{ 'MY_RESOURCES' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon" ng_bind="'directions_car'"></md-icon><p>{{ 'MY_RESOURCES' | translate }}</p>
     </md-list-item>
     <md-list-item id="menuMyWheelsOpen" class="menu-item-mywheels-open" ng-click="goToMyWheelsOpen()" ng-if="user.isAuthenticated && user.identity.preference !== 'renter' && user.identity.provider.id === 1">
-      <md-icon ng_bind="'smartphone'"></md-icon><p>{{ 'MYWHEELS_OPEN_HEADLINE' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon" ng_bind="'smartphone'"></md-icon><p>{{ 'MYWHEELS_OPEN_HEADLINE' | translate }}</p>
     </md-list-item>
     <md-list-item id="menuListCar" class="menu-item-list-your-car" ng-click="navigate('list-your-car')" ng-if="!user.isAuthenticated">
-      <md-icon ng_bind="'directions_car'"></md-icon><p>{{ 'LIST_YOUR_CAR' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon" ng_bind="'directions_car'"></md-icon><p>{{ 'LIST_YOUR_CAR' | translate }}</p>
     </md-list-item>
     <md-list-item id="menuHelp" class="menu-item-how-it-works" ng-click="translateAndNavigate('NAVBAR.HOW_IT_WORKS_URL')">
-      <md-icon ng_bind="'help_outline'"></md-icon><p>{{ 'NAVBAR.HOW_IT_WORKS' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon" ng_bind="'help_outline'"></md-icon><p>{{ 'NAVBAR.HOW_IT_WORKS' | translate }}</p>
     </md-list-item>
   </md-list>
 
@@ -55,34 +55,34 @@
     <md-divider></md-divider>
 
     <md-list-item id="menuGegevens" class="menu-item-profile" ng-click="navigate('owm.person.profile')" ng-if="user.identity.preference === 'owner' || user.identity.status !== 'new' || user.identity.provider.id !== 1">
-      <md-icon>settings</md-icon><p>{{ 'MY_PROFILE' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon">settings</md-icon><p>{{ 'MY_PROFILE' | translate }}</p>
     </md-list-item>
 
     <md-list-item id="menuGegevens" class="menu-item-profile" ng-click="navigate('owm.person.details', {pageNumber: '1'})" ng-if="user.identity.preference !== 'owner' && user.identity.status === 'new' && user.identity.provider.id === 1">
-      <md-icon>settings</md-icon><p>{{ 'MY_PROFILE' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon">settings</md-icon><p>{{ 'MY_PROFILE' | translate }}</p>
     </md-list-item>
 
     <md-list-item id="menuContracts" class="menu-item-contracts" ng-click="navigate('owm.person.contract')">
-      <md-icon>content_paste</md-icon><p>{{ 'MY_CONTRACTS' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon">content_paste</md-icon><p>{{ 'MY_CONTRACTS' | translate }}</p>
     </md-list-item>
 
     <md-list-item id="menuRijtegoed" class="menu-item-vouchers" ng-click="navigate('owm.finance.vouchers')" ng-if="user.identity.preference !== 'owner'">
 
-      <md-icon>payment</md-icon><p>{{ 'MY_VOUCHERS' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon">payment</md-icon><p>{{ 'MY_VOUCHERS' | translate }}</p>
     </md-list-item>
 
     <md-list-item id="menuFinance" class="menu-item-finance" ng-click="navigate('owm.finance.v4')">
-      <md-icon>euro_symbol</md-icon><p>{{ 'MY_FINANCE' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon">euro_symbol</md-icon><p>{{ 'MY_FINANCE' | translate }}</p>
     </md-list-item>
 
     <md-list-item id="menuTrips" class="menu-item-trips" ng-click="navigate('owm.trips')">
-      <md-icon>history</md-icon><p>{{ 'MY_TRIPS' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon">history</md-icon><p>{{ 'MY_TRIPS' | translate }}</p>
     </md-list-item>
 
     <md-divider></md-divider>
 
     <md-list-item id="menuLogout" class="menu-item-logout" ng-click="logout()">
-      <md-icon>power_settings_new</md-icon><p>{{ 'LOGOUT' | translate }}</p>
+      <md-icon alt="Icoon" aria-label="Icoon">power_settings_new</md-icon><p>{{ 'LOGOUT' | translate }}</p>
     </md-list-item>
 
   </md-list>
