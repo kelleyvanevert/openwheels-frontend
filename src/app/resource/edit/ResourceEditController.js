@@ -20,7 +20,7 @@ angular.module('owm.resource.edit', [
   if (resource.owner.id !== me.id && resource.contactPerson.id !== me.id) {
     $state.go('owm.resource.show', {
       resourceId: resource.id,
-      city: resource.city
+      city: (resource.city || '').toLowerCase().replace(/ /g, '-')
     });
   } else {
     $scope.hasPermission = true;

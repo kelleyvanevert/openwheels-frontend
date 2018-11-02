@@ -63,8 +63,8 @@
   <!-- availability & price -->
   <div class="form-group">
     <div class="text-center" ng-if="price || isPriceLoading || availability || isAvailabilityLoading">
-      <h4 ng-if="availability.available==='no'"><md-icon class="text-danger">close</md-icon> {{ 'NOT_AVAILABLE' | translate }}</h4>
-      <h4 ng-if="availability.available==='yes'"><md-icon class="text-success">check</md-icon> {{ 'AVAILABLE' | translate }}</h4>
+      <h4 ng-if="availability.available==='no'"><md-icon alt="Icoon" aria-label="Icoon" class="text-danger">close</md-icon> {{ 'NOT_AVAILABLE' | translate }}</h4>
+      <h4 ng-if="availability.available==='yes'"><md-icon alt="Icoon" aria-label="Icoon" class="text-success">check</md-icon> {{ 'AVAILABLE' | translate }}</h4>
       <h4 ng-if="availability.available==='yes' && price">
         <div ng-if="!invitedDiscount">
           {{ 'COSTS' | translate }}:
@@ -100,7 +100,7 @@
       </button>
     </p>
     <p>
-      <a class="btn btn-link" ui-sref="owm.resource.calendar({ city: resource.city, resourceId: resource.id})">
+      <a class="btn btn-link" ui-sref="owm.resource.calendar({ city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
         <i class="fa fa-calendar"></i> {{ 'CALENDAR_BUTTON' | translate }}
       </a>
     </p>
@@ -108,9 +108,9 @@
 
   <div class="booking-benefits-mywheels">
     <ul style="padding-left: 0px;">
-      <li class="benefit-1"><md-icon>check</md-icon> <span>Uitgebreide verzekering</span></li>
-      <li class="benefit-2"><md-icon>check</md-icon> <span>Leden geven ons een 8.7</span></li>
-      <li class="benefit-3"><md-icon>check</md-icon> <span>24/7 klantenservice</span></li>
+      <li class="benefit-1"><md-icon alt="Icoon" aria-label="Icoon">check</md-icon> <span>Uitgebreide verzekering</span></li>
+      <li class="benefit-2"><md-icon alt="Icoon" aria-label="Icoon">check</md-icon> <span>Leden geven ons een 8.7</span></li>
+      <li class="benefit-3"><md-icon alt="Icoon" aria-label="Icoon">check</md-icon> <span>24/7 klantenservice</span></li>
     </ul>
   </div>
 

@@ -15,7 +15,7 @@
     <div style="position: relative">
         <md-card-title>
             <md-card-title-text>
-                <a ui-sref="owm.resource.show({ resourceId: resource.id, city: resource.city })">
+                <a ui-sref="owm.resource.show({ resourceId: resource.id, city: (resource.city | replaceSpaceToDash | lowercase) })">
                     <h3 class="no-margin" style="font-size: 2rem">
                         <span>{{ resource.alias || ('RESOURCE_NO_NAME' | translate) }} {{ resource.registrationPlate | surroundWith : '(' : ')' }}</span>
                     </h3>
