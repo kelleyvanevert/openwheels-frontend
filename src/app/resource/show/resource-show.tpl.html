@@ -1,4 +1,4 @@
-<div ng-if="resource.removed === false" class="container" ng-class="{ 'container-transitional': features.resourceSidebar }">
+<div ng-if="removed === false" class="container" ng-class="{ 'container-transitional': features.resourceSidebar }">
     <div>
         <div ng-class="{ 'col-md-8 col-xs-12' : features.resourceSidebar }" class="no-padding">
             <!-- edit -->
@@ -473,7 +473,7 @@
     <!-- /row -->
 </div>
 
-<md-toolbar class="md-hue-2 fixed-call-to-action" ng-if="resource.removed === false && !showBookingForm" hide-gt-xs>
+<md-toolbar class="md-hue-2 fixed-call-to-action" ng-if="removed === false && !showBookingForm" hide-gt-xs>
     <div class="md-toolbar-tools">
         <md-button class="md-raised md-primary" ng-click="toggleBookingForm()" ng-if="!openDialogSpinner" ga-track-event="['booking', 'created_pre', user.isAuthenticated, null, true]">{{ 'BOOK_A_CAR' | translate }}</md-button>
         <md-button class="md-raised md-primary" ng-if="openDialogSpinner"><i class="fa fa-fw fa-circle-o-notch fa-spin"></i></md-button>
@@ -482,18 +482,23 @@
     <div class="satisfaction" ng-if="resource.rating_totals.senders === 0">{{ resource.price.dayRateTotal | currency }} per dag <span ng-if="resource.price.kmFree">en 100 km gratis</span></div>
 </md-toolbar>
 
-<div class="col-md-8 col-md-offset-2">
-  <md-card ng-if="resource.removed === true">
-    <md-card-title>
-      <md-card-title-text>
-        <span class="md-headline">Deze auto is helaas niet meer beschikbaar</span>
-        <span class="md-subhead">Vind een andere auto bij jou in de buurt die wel beschikbaar is.</span>
-      </md-card-title-text>
-    </md-card-title>
-    <md-card-content>
-      <section>
-        <ow-geocoder-searchbar></ow-geocoder-searchbar>
-      </section>
-    </md-card-content>
-  </md-card>
+
+<div ng-if="removed === true" class="container" ng-class="{ 'container-transitional': features.resourceSidebar }">
+    <div class="col-xs-12 no-padding">
+
+        <md-card >
+            <md-card-title>
+              <md-card-title-text>
+                <span class="md-headline">Deze auto is helaas niet meer beschikbaar</span>
+                <span class="md-subhead">Vind een andere auto bij jou in de buurt die wel beschikbaar is.</span>
+              </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+              <section>
+                <ow-geocoder-searchbar></ow-geocoder-searchbar>
+              </section>
+            </md-card-content>
+        </md-card>
+
+    </div>
 </div>
