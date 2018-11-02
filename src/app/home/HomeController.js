@@ -60,7 +60,7 @@ angular.module('owm.home', ['owm.resource', 'slick'])
 
   $scope.gotoProfile = function (resource) {
     $state.go('owm.resource.show', {
-      city: (resource.city).toLowerCase().replace(/ /g, '-'),
+      city: (resource.city || '').toLowerCase().replace(/ /g, '-'),
       resourceId: resource.id
     });
   };
