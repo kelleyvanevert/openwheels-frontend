@@ -208,7 +208,10 @@ angular.module('owm.resource.edit.data', [])
       draggable: 'true',
       zoom: 14,
       options: {
-        scrollwheel: false
+        scrollwheel: false,
+        fullscreenControl: false,
+        mapTypeControl: false,
+        streetViewControl: false
       },
       resourceMarker: {
         latitude: $scope.resource.latitude || null,

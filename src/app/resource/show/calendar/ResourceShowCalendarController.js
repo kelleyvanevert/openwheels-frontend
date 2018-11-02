@@ -10,8 +10,8 @@ angular.module('owm.resource.show.calendar', [
   .controller('ResourceShowCalendarController', function ($location, $scope, $state, $stateParams, $filter, $uibModal, $translate,
     me, calendarService, bookings, resource, blockings, BlockingEvent, BookingEvent, API_DATE_FORMAT, Analytics, metaInfoService, appConfig) {
     
-    metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/'+ resource.city.toLowerCase().replace(/ /g, '-') + '/' + resource.id + '/kalender'});
-    metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/'+ resource.city.toLowerCase().replace(/ /g, '-') + '/' + resource.id + '/kalender'});
+    metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/'+ (resource.city || '').toLowerCase().replace(/ /g, '-') + '/' + resource.id + '/kalender'});
+    metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/'+ (resource.city || '').toLowerCase().replace(/ /g, '-') + '/' + resource.id + '/kalender'});
 
     $scope.me = me;
     $scope.resource = resource;

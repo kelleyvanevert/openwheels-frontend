@@ -19,10 +19,10 @@ angular.module('owm.linksService', [])
       return process(appConfig.serverUrl + '/dashboard/facturen-verzamel/' + invoiceGroupId + '.pdf', true);
     },
     resourceUrl: function (resourceId, city) {
-      return process(appConfig.serverUrl + '/auto-huren/' + (city || 'nederland').toLowerCase().replace(/ /g, '-') + '/' + resourceId);
+      return process(appConfig.serverUrl + '/auto-huren/' + (city || '').toLowerCase().replace(/ /g, '-') + '/' + resourceId);
     },
     flyerPdf: function (resourceId, city) {
-      return process(appConfig.serverUrl + '/auto-huren/' + (city || 'nederland').toLowerCase().replace(/ /g, '-') + '/' + resourceId + '/flyer.pdf', true);
+      return process(appConfig.serverUrl + '/auto-huren/' + (city || '').toLowerCase().replace(/ /g, '-') + '/' + resourceId + '/flyer.pdf', true);
     },
     tripDetailsUrl: function (bookingId) {
       return process(appConfig.serverUrl + '/dashboard/ritten/' + bookingId);
