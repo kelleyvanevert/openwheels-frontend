@@ -4,7 +4,7 @@ angular.module('filters.replace', [])
 
 .filter('replaceSpaceToDash', function () {
 	return function (input) {
-		if(input === undefined) {
+		if(input === undefined || input === null) {
 			return;
 		}
 		return input.replace(/ /g, '-');
@@ -13,7 +13,7 @@ angular.module('filters.replace', [])
 
 .filter('replaceDashToSpace', function () {
 	return function (input) {
-		if(input === undefined) {
+		if(input === undefined || input === null) {
 			return;
 		}
 		return input.replace('-', ' ');
