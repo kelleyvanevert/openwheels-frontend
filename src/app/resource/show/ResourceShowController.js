@@ -12,8 +12,13 @@ angular.module('owm.resource.show', [])
   metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/'+ (resource.city || '').toLowerCase().replace(/ /g, '-') + '/' + resource.id});
   metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/'+ (resource.city || '').toLowerCase().replace(/ /g, '-') + '/' + resource.id});
 
-  if(resource.removed === undefined) { resource.removed = false; }
-  if(resource.removed) {
+  if(resource.removed === undefined) { 
+    resource.removed = false; 
+  }
+
+  $scope.removed = (resource.removed || !resource.isActive);
+
+  if($scope.removed) {
     resourceQueryService.setText(resource.location);
     resourceQueryService.setLocation({latitude: resource.latitude, longitude: resource.longitude});
   }
@@ -25,7 +30,9 @@ angular.module('owm.resource.show', [])
   $scope.me = me;
   $scope.showBookingForm = false;
   $scope.showBookingFormToggle = true;
-  $scope.satisfaction = Math.round($scope.resource.rating_totals.satisfaction * 100) + '%';
+  if(!$scope.removed) {
+    $scope.satisfaction = Math.round($scope.resource.rating_totals.satisfaction * 100) + '%';
+  }
   $scope.openDialogSpinner = false;
 
   $scope.openChatWith = openChatWith;
@@ -58,15 +65,17 @@ angular.module('owm.resource.show', [])
   }
 
   //check resource properties
-  $scope.airconditioning = resource.properties.map(function(o) { return o.id;}).indexOf('airconditioning');
-  $scope.automaticGear = resource.properties.map(function(o) { return o.id;}).indexOf('automaat');
-  $scope.bikeCarrier = resource.properties.map(function(o) { return o.id;}).indexOf('fietsendrager');
-  $scope.childSeat = resource.properties.map(function(o) { return o.id;}).indexOf('kinderzitje');
-  $scope.mp3Connection = resource.properties.map(function(o) { return o.id;}).indexOf('mp3-aansluiting');
-  $scope.navigation = resource.properties.map(function(o) { return o.id;}).indexOf('navigatie');
-  $scope.wheelchairFriendly = resource.properties.map(function(o) { return o.id;}).indexOf('rolstoelvriendelijk');
-  $scope.towbar = resource.properties.map(function(o) { return o.id;}).indexOf('trekhaak');
-  $scope.winterTires = resource.properties.map(function(o) { return o.id;}).indexOf('winterbanden');
+  if(!$scope.removed) {
+    $scope.airconditioning = resource.properties.map(function(o) { return o.id;}).indexOf('airconditioning');
+    $scope.automaticGear = resource.properties.map(function(o) { return o.id;}).indexOf('automaat');
+    $scope.bikeCarrier = resource.properties.map(function(o) { return o.id;}).indexOf('fietsendrager');
+    $scope.childSeat = resource.properties.map(function(o) { return o.id;}).indexOf('kinderzitje');
+    $scope.mp3Connection = resource.properties.map(function(o) { return o.id;}).indexOf('mp3-aansluiting');
+    $scope.navigation = resource.properties.map(function(o) { return o.id;}).indexOf('navigatie');
+    $scope.wheelchairFriendly = resource.properties.map(function(o) { return o.id;}).indexOf('rolstoelvriendelijk');
+    $scope.towbar = resource.properties.map(function(o) { return o.id;}).indexOf('trekhaak');
+    $scope.winterTires = resource.properties.map(function(o) { return o.id;}).indexOf('winterbanden');
+  }
 
   //get age of resource on platform
   $scope.ageInDays = moment().diff($scope.resource.created, 'days');
@@ -185,29 +194,31 @@ angular.module('owm.resource.show', [])
     });
   }
 
-  angular.extend($scope, {
-    map: {
-      center: {
-        latitude: resource.latitude,
-        longitude: resource.longitude
-      },
-      draggable: true,
-      markers: [{
-        idKey: 1,
-        icon: (resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0) ? 'assets/img/mywheels-open-marker-40.png' : 'assets/img/mywheels-key-marker-40.png',
-        latitude: resource.latitude,
-        longitude: resource.longitude,
-        title: resource.alias
-      }], // an array of markers,
-      zoom: 14,
-      options: {
-        scrollwheel: false,
-        fullscreenControl: false,
-        mapTypeControl: false,
-        streetViewControl: false
+  if(!$scope.removed) {
+    angular.extend($scope, {
+      map: {
+        center: {
+          latitude: resource.latitude,
+          longitude: resource.longitude
+        },
+        draggable: true,
+        markers: [{
+          idKey: 1,
+          icon: (resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0) ? 'assets/img/mywheels-open-marker-40.png' : 'assets/img/mywheels-key-marker-40.png',
+          latitude: resource.latitude,
+          longitude: resource.longitude,
+          title: resource.alias
+        }], // an array of markers,
+        zoom: 14,
+        options: {
+          scrollwheel: false,
+          fullscreenControl: false,
+          mapTypeControl: false,
+          streetViewControl: false
+        }
       }
-    }
-  });
+    });
+  }
 
   function loadFavorite () {
     $scope.isFavoriteResolved = false;
