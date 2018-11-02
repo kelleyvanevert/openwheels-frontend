@@ -444,7 +444,7 @@ angular.module('owm.person.details', [])
     }, function () {
       $state.go('owm.resource.show', {
         resourceId: resourceId,
-        city: (city).toLowerCase().replace(/ /g, '-')
+        city: (city || '').toLowerCase().replace(/ /g, '-')
       });
       return false;
     });
