@@ -1,8 +1,13 @@
-#resource_roadAssistance {
-    display: none;
-}
-#person_slug_edit {
-    display: none;
+/*
+* Branding MyWheels
+*/
+#resource_roadAssistance,
+#resource_insurancePolicy,
+#create-resource,
+#person_slug_edit,
+#language-switch,
+.page-footer .footer-language-switch {
+    display:none;
 }
 .home .hero {
     background-position: 35% 80%;
