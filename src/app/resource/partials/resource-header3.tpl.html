@@ -1,7 +1,7 @@
 <!-- display to owner -->
 
 <div class="media">
-  <img class="media-object img-resource-small pull-left" ng-src="{{ resource.pictures[0] | resourceAvatar:'small' }}" ui-sref="owm.resource.show({ resourceId: resource.id, city: resource.city })">
+  <img class="media-object img-resource-small pull-left" ng-src="{{ resource.pictures[0] | resourceAvatar:'small' }}" ui-sref="owm.resource.show({ resourceId: resource.id, city: (resource.city | replaceSpaceToDash | lowercase) })">
 
   <div class="media-body">
 
@@ -10,7 +10,7 @@
       <insurance resource="resource"></insurance>
     </div>
 
-    <div class="resource__alias truncate" ui-sref="owm.resource.show({ resourceId: resource.id, city: resource.city })">
+    <div class="resource__alias truncate" ui-sref="owm.resource.show({ resourceId: resource.id, city: (resource.city | replaceSpaceToDash | lowercase) })">
       {{ resource.alias }} {{ resource.registrationPlate | surroundWith : '(' : ')' }}
     </div>
 

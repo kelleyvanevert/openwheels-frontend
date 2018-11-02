@@ -109,8 +109,8 @@
                                     <md-icon class="text-success">credit_card</md-icon><span class="md-tab-icon-black">{{ 'LOCKTYPE.ophalen' | translate }}</span>
                                 </md-tab-label>
                                 <md-tab-body>
-                                    <p ng-if="fish" translate="PAYMENT_APROVED_PAYED_FISH" translate-values="{pincode: fish.pincode, location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: booking.resource.city }"></p>
-                                    <p ng-if="!fish" translate="PAYMENT_APROVED_PAYED_NO_FISH" translate-values="{location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: booking.resource.city }"></p>
+                                    <p ng-if="fish" translate="PAYMENT_APROVED_PAYED_FISH" translate-values="{pincode: fish.pincode, location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: (booking.resource.city | replaceSpaceToDash | lowercase) }"></p>
+                                    <p ng-if="!fish" translate="PAYMENT_APROVED_PAYED_NO_FISH" translate-values="{location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: (booking.resource.city | replaceSpaceToDash | lowercase) }"></p>
                                 </md-tab-body>
                             </md-tab>
                             <!-- Micpoint boardcomputer, chipcard and smartphone -->
@@ -119,7 +119,7 @@
                                     <md-icon class="text-success">smartphone</md-icon><span class="md-tab-icon-black">{{ 'LOCKTYPE.ophalen' | translate }}</span>
                                 </md-tab-label>
                                 <md-tab-body>
-                                    <p translate="PAYMENT_APROVED_PAYED_CHIPCARD_SMARTPHONE" translate-values="{location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: booking.resource.city }"></p>
+                                    <p translate="PAYMENT_APROVED_PAYED_CHIPCARD_SMARTPHONE" translate-values="{location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: (booking.resource.city | replaceSpaceToDash | lowercase) }"></p>
                                 </md-tab-body>
                             </md-tab>
                             <!-- Micpoint boardcomputer, only smartphone -->
@@ -128,7 +128,7 @@
                                     <md-icon class="text-success">smartphone</md-icon><span class="md-tab-icon-black">{{ 'LOCKTYPE.ophalen' | translate }}</span>
                                 </md-tab-label>
                                 <md-tab-body>
-                                    <p translate="PAYMENT_APROVED_PAYED_SMARTPHONE" translate-values="{location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: booking.resource.city }"></p>
+                                    <p translate="PAYMENT_APROVED_PAYED_SMARTPHONE" translate-values="{location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: (booking.resource.city | replaceSpaceToDash | lowercase) }"></p>
                                 </md-tab-body>
                             </md-tab>
                             <!-- Meeting -->
@@ -138,8 +138,8 @@
                                 </md-tab-label>
                                 <md-tab-body>
                                     <p ng-if="booking.status === 'requested'">{{ 'PAYMENT_APROVED_PAYED_FUEL_KEY_WAIT' | translate }}</p>
-                                    <p translate="PAYMENT_APROVED_PAYED_FUEL_KEY" translate-values="{link: booking.link, location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: booking.resource.city }" ng-if="booking.status === 'accepted' && booking.approved === 'OK'"></p>
-                                    <p translate="PAYMENT_APROVED_PAYED_FUEL_KEY_NOT_APPROVED" translate-values="{link: booking.link, location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: booking.resource.city }" ng-if="booking.approved !== 'OK'"></p>
+                                    <p translate="PAYMENT_APROVED_PAYED_FUEL_KEY" translate-values="{link: booking.link, location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: (booking.resource.city | replaceSpaceToDash | lowercase) }" ng-if="booking.status === 'accepted' && booking.approved === 'OK'"></p>
+                                    <p translate="PAYMENT_APROVED_PAYED_FUEL_KEY_NOT_APPROVED" translate-values="{link: booking.link, location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: (booking.resource.city | replaceSpaceToDash | lowercase) }" ng-if="booking.approved !== 'OK'"></p>
                                     <a type="button" name="button" ng-if="booking.status === 'accepted' && booking.approved === 'OK'" class="mywheels-btn mywheels-btn-default" href="{{booking.link}}" target="_blank">{{'PAYMENT_APROVED_PAYED_FUEL_KEY_BUTTON' | translate }}</a>
                                 </md-tab-body>
                             </md-tab>

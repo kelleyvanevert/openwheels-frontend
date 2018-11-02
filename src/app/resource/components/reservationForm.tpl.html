@@ -100,7 +100,7 @@
       </button>
     </p>
     <p>
-      <a class="btn btn-link" ui-sref="owm.resource.calendar({ city: resource.city, resourceId: resource.id})">
+      <a class="btn btn-link" ui-sref="owm.resource.calendar({ city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
         <i class="fa fa-calendar"></i> {{ 'CALENDAR_BUTTON' | translate }}
       </a>
     </p>

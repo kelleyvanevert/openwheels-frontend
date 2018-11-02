@@ -11,7 +11,7 @@ angular.module('owm.resource.create.details', [])
 	var resource = $scope.resource;
 	$scope.personSubmitted = $stateParams.personSubmitted === 'true' ? true : false;
 
-	$scope.shareUrl = linksService.resourceUrl(resource.id, resource.city);
+	$scope.shareUrl = linksService.resourceUrl(resource.id, resource.city.toLowerCase().replace(/ /g, '-'));
 	$log.debug('Share url = ' + $scope.shareUrl);
 
 	$scope.goToInviteFriends = function() {

@@ -9,8 +9,8 @@ angular.module('owm.resource.search', [
     $cookieStore, preloader, metaInfoService, $rootScope) {
 
     if (place) {
-      metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/' + place.name});
-      metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/' + place.name});
+      metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/' + place.name.toLowerCase().replace(/ /g, '-')});
+      metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/' + place.name.toLowerCase().replace(/ /g, '-')});
     } else {
       metaInfoService.set({url: appConfig.serverUrl + '/auto-huren'});
       metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren'});
@@ -346,7 +346,7 @@ angular.module('owm.resource.search', [
     $scope.selectResource = function (resource) {
       var params = resourceQueryService.createStateParams();
       params.resourceId = resource.id;
-      params.city = resource.city;
+      params.city = (resource.city).toLowerCase().replace(/ /g, '-');
       $state.go('owm.resource.show', params);
     };
 
