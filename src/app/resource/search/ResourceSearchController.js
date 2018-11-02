@@ -9,8 +9,8 @@ angular.module('owm.resource.search', [
     $cookieStore, preloader, metaInfoService, $rootScope) {
 
     if (place) {
-      metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/' + place.name});
-      metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/' + place.name});
+      metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/' + place.name.toLowerCase().replace(/ /g, '-')});
+      metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/' + place.name.toLowerCase().replace(/ /g, '-')});
     } else {
       metaInfoService.set({url: appConfig.serverUrl + '/auto-huren'});
       metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren'});
