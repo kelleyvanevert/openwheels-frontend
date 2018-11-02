@@ -94,6 +94,7 @@ angular.module('openwheels', [
   'filters.getByPropertyFilter',
   'filters.fullname',
   'filters.avatar',
+  'filters.replace',
   'filters.ratingStars',
   'filters.dirty',
   'filters.reverse',

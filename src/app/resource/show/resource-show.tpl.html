@@ -94,7 +94,7 @@
                             </button>
                         </p>
                         <p>
-                            <a class="btn btn-link" ui-sref="owm.resource.calendar({city: resource.city, resourceId: resource.id})">
+                            <a class="btn btn-link" ui-sref="owm.resource.calendar({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
                                 <i class="fa fa-calendar"></i> {{ 'CALENDAR_BUTTON' | translate }}
                             </a>
                         </p>
@@ -414,7 +414,7 @@
                 </ui-gmap-google-map>
 
                 <div class="card-body">
-                    {{ 'RESOURCE_MORE_IN_CITY' | translate }} <a ui-sref="owm.resource.place.list({ city: resource.city })">{{ resource.city }}</a>
+                    {{ 'RESOURCE_MORE_IN_CITY' | translate }} <a ui-sref="owm.resource.place.list({ city: (resource.city | replaceSpaceToDash | lowercase) })">{{ resource.city }}</a>
                 </div>
             </div>
 
