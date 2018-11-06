@@ -16,12 +16,20 @@ angular.module('owm.resource.show', [])
     resource.removed = false;
   }
 
+  // The car is not visible to the world,
+  //  either because it is removed by owner (removed),
+  //  or because it is set inactive by MyWheels (!isActive).
   $scope.removed = (resource.removed || !resource.isActive);
+
+  // Still visible to the world, but not rentable,
+  //  because the car is (temporarily) marked as unavailable by the owner.
+  $scope.unavailable = (resource.isAvailableFriends === false);
 
   if($scope.removed) {
     resourceQueryService.setText(resource.location);
     resourceQueryService.setLocation({latitude: resource.latitude, longitude: resource.longitude});
   }
+
   /**
    * Warning: 'me' will be null for anonymous users
    */
@@ -241,6 +249,7 @@ angular.module('owm.resource.show', [])
     });
   }
 
+/* // Not used
   $scope.checkAvailabilityDialog = function () {
     $scope.openDialogSpinner = true;
     $mdDialog.show({
@@ -259,6 +268,7 @@ angular.module('owm.resource.show', [])
       escapeToClose: true
     });
   };
+*/
 
   function toggleFavorite (bool) {
     var params = { resource: resource.id };

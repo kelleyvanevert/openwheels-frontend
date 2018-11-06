@@ -100,7 +100,8 @@
                         </p>
                     </div>
                     <div id="createBookingContainer" uib-collapse="!showBookingForm">
-                        <reservation-form person="me" resource="resource" booking="booking" show-price="false"></reservation-form>
+                        <div ng-if="unavailable" ng-include="'resource/partials/resource-unavailable.tpl.html'"></div>
+                        <reservation-form ng-if="!unavailable" person="me" resource="resource" booking="booking"></reservation-form>
                     </div>
                     <!--/ booking form -->
 
@@ -428,7 +429,9 @@
                     <h3 class="card-title"><i class="fa fa-fw fa-pencil"></i> {{ 'BOOK_A_CAR' | translate }}</h3>
                 </div>
                 <div class="card-body">
-                    <reservation-form person="me" resource="resource" booking="booking" show-price="true"></reservation-form>
+                    <div ng-include="'resource/partials/resource-price.tpl.html'"></div>
+                    <div ng-if="unavailable" ng-include="'resource/partials/resource-unavailable.tpl.html'"></div>
+                    <reservation-form ng-if="!unavailable" person="me" resource="resource" booking="booking"></reservation-form>
                 </div>
             </div>
 
