@@ -83,35 +83,39 @@
                     <!-- price -->
                     <div ng-include="'resource/partials/resource-price.tpl.html'"></div>
 
+                    <!-- unavailability notice -->
+                    <div ng-if="unavailable" ng-include="'resource/partials/resource-unavailable.tpl.html'"></div>
+
                     <!-- booking form -->
-                    <div class="text-center" ng-if="showBookingFormToggle">
-                        <p>
-                            <button ng-if="!me"  class="btn btn-success mywheels-btn-big" ng-click="toggleBookingForm()">
-                                {{ 'BOOK_A_CAR' | translate }}
-                            </button>
-                            <button ng-if="me"  class="btn btn-success mywheels-btn-big" ng-click="toggleBookingForm()">
-                                {{ 'BOOK_A_CAR' | translate }}
-                            </button>
-                        </p>
-                        <p>
-                            <a class="btn btn-link" ui-sref="owm.resource.calendar({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
-                                <i class="fa fa-calendar"></i> {{ 'CALENDAR_BUTTON' | translate }}
-                            </a>
-                        </p>
-                    </div>
-                    <div id="createBookingContainer" uib-collapse="!showBookingForm">
-                        <reservation-form person="me" resource="resource" booking="booking" show-price="false"></reservation-form>
-                    </div>
-                    <!--/ booking form -->
+                    <div ng-if="!unavailable">
+                        <div class="text-center" ng-if="showBookingFormToggle">
+                            <p>
+                                <button ng-if="!me"  class="btn btn-success mywheels-btn-big" ng-click="toggleBookingForm()">
+                                    {{ 'BOOK_A_CAR' | translate }}
+                                </button>
+                                <button ng-if="me"  class="btn btn-success mywheels-btn-big" ng-click="toggleBookingForm()">
+                                    {{ 'BOOK_A_CAR' | translate }}
+                                </button>
+                            </p>
+                            <p>
+                                <a class="btn btn-link" ui-sref="owm.resource.calendar({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
+                                    <i class="fa fa-calendar"></i> {{ 'CALENDAR_BUTTON' | translate }}
+                                </a>
+                            </p>
+                        </div>
+                        <div id="createBookingContainer" uib-collapse="!showBookingForm">
+                            <reservation-form person="me" resource="resource" booking="booking"></reservation-form>
+                        </div>
+                        <!--/ booking form -->
 
-                    <div class="text-center">
-                        <p>
-                            <a class="btn btn-link btn-sm" ng-show="showBookingForm" ng-click="toggleBookingForm()">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                        </p>
+                        <div class="text-center">
+                            <p>
+                                <a class="btn btn-link btn-sm" ng-show="showBookingForm" ng-click="toggleBookingForm()">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </p>
+                        </div>
                     </div>
-
                 </div>
             </div>
 
@@ -428,7 +432,9 @@
                     <h3 class="card-title"><i class="fa fa-fw fa-pencil"></i> {{ 'BOOK_A_CAR' | translate }}</h3>
                 </div>
                 <div class="card-body">
-                    <reservation-form person="me" resource="resource" booking="booking" show-price="true"></reservation-form>
+                    <div ng-include="'resource/partials/resource-price.tpl.html'"></div>
+                    <div ng-if="unavailable" ng-include="'resource/partials/resource-unavailable.tpl.html'"></div>
+                    <reservation-form ng-if="!unavailable" person="me" resource="resource" booking="booking"></reservation-form>
                 </div>
             </div>
 
