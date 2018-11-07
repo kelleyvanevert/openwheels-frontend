@@ -9,7 +9,6 @@
     "angular-messages": "1.5.6",
     "angular-google-maps": "2.0.12",
     "angular-jsonrpc-q": "0.0.2",
-    "angular-moment": "0.5.2",
     "angular-sanitize": "1.4.8",
     "angular-translate": "2.6.1",
     "angular-translate-storage-cookie": "2.6.1",
