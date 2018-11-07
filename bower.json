@@ -29,7 +29,8 @@
     "bootstrap": "3.3.6",
     "angular-slick": "~0.2.1",
     "slick-carousel": "1.6.0",
-    "ui-cropper": "^1.0.4"
+    "ui-cropper": "^1.0.4",
+    "angular-moment": "^1.3.0"
   },
   "resolutions": {
     "jquery": "~2.x",
