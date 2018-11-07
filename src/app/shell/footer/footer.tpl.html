@@ -13,7 +13,8 @@
     <div ng-if="features.myWheelsFooter" class="row footer-menu">
       <div class="col-xs-12"><div class="hr"></div></div>
 
-      <div class="col-md-2 col-md-offset-1 col-sm-3 col-xs-6">
+      <div class="col-sm-3 col-xs-6"
+           ng-class="{ 'col-md-2': containerTransitional, 'col-md-offset-1': containerTransitional }">
         <div class="footerbox menubox">
           <h4 class="no-margin">{{ 'CAR_SHARING_TITLE' | translate }}</h4>
           <ul>
@@ -26,15 +27,8 @@
         </div>
       </div>
 
-      <!--
-      <div class="col-md-3 col-sm-3 hidden-xs" style="white-space: nowrap">
-        <h4 class="no-margin">{{ 'SPECIAL_CARS_TITLE' | translate }}</h4>
-        <a href="https://mywheels.nl/auto-huren?type=van">{{ 'VAN_RENT' | translate }}</a><br/>
-        <a href="https://mywheels.nl/auto-huren?type=cabrio">{{ 'CABRIO_RENT' | translate }}</a><br/>
-        <a href="https://mywheels.nl/auto-huren?fuel=elektrisch">{{ 'ELECTRIC_RENT' | translate }}</a><br/>
-      </div>
-      -->
-      <div class="col-md-2 col-sm-3 col-xs-6" style="white-space: nowrap">
+      <div class="col-sm-3 col-xs-6"
+           ng-class="{ 'col-md-2': containerTransitional }">
         <div class="footerbox menubox">
           <h4 class="no-margin">{{ 'DISCOVER_CAR_SHARING_TITLE' | translate }}</h4>
           <ul>
@@ -49,7 +43,8 @@
         </div>
       </div>
 
-      <div class="col-md-2 col-sm-3 col-xs-6">
+      <div class="col-sm-3 col-xs-6"
+           ng-class="{ 'col-md-2': containerTransitional }">
         <div class="footerbox menubox">
           <h4 class="no-margin">{{ 'ABOUT_MYWHEELS_TITLE' | translate }}</h4>
           <ul>
@@ -63,21 +58,23 @@
         </div>
       </div>
 
-      <div class="col-md-2 col-xs-6 visible-xs-block visible-md-block visible-lg-block">
+      <div class="col-xs-6 visible-xs-block"
+           ng-class="{ 'col-md-2': containerTransitional, 'visible-md-block': containerTransitional, 'visible-lg-block': containerTransitional }">
         <div class="footerbox menubox">
           <h4 class="no-margin">Steden</h4>
           <ul>
-            <li><a href="https://mywheels.nl/auto-huren/amsterdam?text=Amsterdam,%20Nederland"><span class="hidden">Huur een auto in</span> Amsterdam</a></li>
-            <li><a href="https://mywheels.nl/auto-huren/den-haag?text=Den%20Haag,%20Nederland"><span class="hidden">Huur een auto in</span> Den Haag</a></li>
-            <li><a href="https://mywheels.nl/auto-huren/utrecht?text=Utrecht,%20Nederland"><span class="hidden">Huur een auto in</span> Utrecht</a></li>
-            <li><a href="https://mywheels.nl/auto-huren/groningen?text=Groningen,%20Nederland"><span class="hidden">Huur een auto in</span> Groningen</a></li>
-            <li><a href="https://mywheels.nl/auto-huren/amersfoort?text=Amersfoort,%20Nederland"><span class="hidden">Huur een auto in</span> Amersfoort</a></li>
-            <li><a href="https://mywheels.nl/auto-huren/arnhem?text=Arnhem,%20Nederland"><span class="hidden">Huur een auto in</span> Arnhem</a></li>
+            <li><a ui-sref="owm.resource.place.list({ city: 'amsterdam' })"><span class="hidden">Huur een auto in</span> Amsterdam</a></li>
+            <li><a ui-sref="owm.resource.place.list({ city: 'den-haag' })"><span class="hidden">Huur een auto in</span> Den Haag</a></li>
+            <li><a ui-sref="owm.resource.place.list({ city: 'utrecht' })"><span class="hidden">Huur een auto in</span> Utrecht</a></li>
+            <li><a ui-sref="owm.resource.place.list({ city: 'groningen' })"><span class="hidden">Huur een auto in</span> Groningen</a></li>
+            <li><a ui-sref="owm.resource.place.list({ city: 'amersfoort' })"><span class="hidden">Huur een auto in</span> Amersfoort</a></li>
+            <li><a ui-sref="owm.resource.place.list({ city: 'arnhem' })"><span class="hidden">Huur een auto in</span> Arnhem</a></li>
           </ul>
         </div>
       </div>
 
-      <div class="col-md-2 col-sm-3 col-xs-12">
+      <div class="col-sm-3 col-xs-12"
+           ng-class="{ 'col-md-2': containerTransitional }">
         <div class="footerbox menubox kiyoh-rating">
           <p hide-gt-xs></p>
           <iframe scrolling="no" src="https://www.kiyoh.nl/widget.php?company=18891" width="158" height="145" border="0" frameborder="0"></iframe>
