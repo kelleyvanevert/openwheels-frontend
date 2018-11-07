@@ -254,6 +254,18 @@ angular.module('owm.resource.reservationForm', [])
     error: false
   };
 
+  $scope.removeLocalDiscountCode = function removeLocalDiscountCode () {
+    // Ideally, we'd just want to `$state.go('.', { discountCode: '' })`
+    //  and be done with it.
+    // But, because `app.js` doesn't treat `$stateChangeStart` and `$stateChangeSuccess`
+    //  lightly, we can't really do this. Hence still small 'workaround'
+    //  in which we `notify: false` and then change the discountCode ourselves.
+    //  (We know for sure this is the only change, so it doesn't hurt that much.)
+    $localStorage.discountCode = $scope.booking.discountCode = '';
+    $state.go('.', { discountCode: '' }, {
+      notify: false,
+    });
+  };
 
   $scope.validateDiscountCode = validateDiscountCode;
 
@@ -438,7 +450,7 @@ angular.module('owm.resource.reservationForm', [])
         //  */
         .then(function (response) {
           Analytics.trackEvent('booking', 'created_post', response.id, $scope.resource.owner.id === 282 ? 11 : (!$scope.resource.isConfirmationRequiredOthers ? 4 : undefined), true);
-          if (!booking.discountCode) {
+          if (!booking.discountCode) { // === undefined (?)
             return response;
           } else {
             return discountService.apply({
