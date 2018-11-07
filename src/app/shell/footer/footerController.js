@@ -2,7 +2,7 @@
 
 angular.module('owm.shell')
 
-.controller('FooterController', function ($scope, $window, $translate) {
+.controller('FooterController', function ($scope, $rootScope, $window, $translate) {
   $scope.currentLanguage = function() {
     return $translate.use();
   };
@@ -11,4 +11,6 @@ angular.module('owm.shell')
     $translate.use(langKey);
     $window.moment.lang(langKey);
   };
+
+  $scope.mdOk = ($rootScope.containerTransitional || $rootScope.containerHome);
 });
