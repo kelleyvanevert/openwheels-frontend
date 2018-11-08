@@ -24,6 +24,10 @@
 .mywheels-form h3 {
     margin: 1em 0 0;
 }
+.mywheels-form h4 {
+    color: black;
+    font-size: 1.1em;
+}
 .mywheels-form label, .mywheels-form__label {
     // color: ;
     display: inline-block;
@@ -376,6 +380,9 @@
 .mywheels-form .date.icon:before {
     content: "today";
 }
+.mywheels-form .time.icon:before {
+    content: "schedule";
+}
 .mywheels-form .place.icon:before {
     content: "place";
 }
@@ -529,4 +536,50 @@
 }
 .inputfile-error {
   color: #A7393A;
+}
+
+
+
+.mywheels-form .form-group {
+    position: relative;
+}
+.mywheels-form .form-group.mw-icon input {
+    position: relative;
+    background: transparent;
+    padding-left: 2.4em;
+}
+.mywheels-form .form-group.mw-icon md-icon {
+    position: absolute;
+    font-size: 22px;
+    color: #bdc5c7;
+    top: 8px;
+    left: 8px;
+}
+.mywheels-form .form-group.mw-button input {
+    position: relative;
+    background: transparent;
+    padding-right: 2.4em;
+}
+.mywheels-form .form-group.mw-button .md-icon-button {
+    position: absolute;
+    font-size: 22px;
+    top: -1px;
+    right: -1px;
+    margin: 0;
+}
+.mywheels-form .mw-push-up {
+    position: relative;
+    top: -1em;
+}
+
+
+.mywheels-form .form-group .mw-date-time-picker-for-mobile {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+
+    cursor: pointer;
 }
