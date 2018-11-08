@@ -38,33 +38,27 @@ angular.module('owm.resource.reservationForm', [])
     $scope.invitedDiscount = false;
   }
 
-  $scope.dateConfig = {
-    modelFormat: API_DATE_FORMAT,
-    formatSubmit: 'yyyy-mm-dd',
-    viewFormat: 'DD-MM-YYYY',
-    format: 'dd-mm-yyyy',
-    selectMonths: true
+  const dateTimeConfig = {
+    showClose: true,
+    focusOnShow: false, // (!) important for mobile
+    useCurrent: true,
   };
 
-  $scope.timeConfig = {
-    modelFormat: API_DATE_FORMAT,
-    formatSubmit: 'HH:i',
-    viewFormat: 'HH:mm',
-    format: 'HH:i',
-    interval: 15
-  };
+  const dateConfig = $scope.dateConfig = Object.assign({}, dateTimeConfig, {
+    format: 'DD-MM-YYYY',
+    minDate: moment().subtract(1, 'years'),
+    maxDate: moment().add(1, 'years'),
+  });
 
-  function getStartOfThisQuarter() {
-    var mom = moment();
-    var quarter = Math.floor((mom.minutes() | 0) / 15); // returns 0, 1, 2 or 3
-    var minutes = (quarter * 15) % 60;
-    mom.minutes(minutes);
-    return mom;
-  }
+  const timeConfig = $scope.timeConfig = Object.assign({}, dateTimeConfig, {
+    format: 'HH:mm',
+    stepping: 15, // minute step size
+  });
 
-  $scope.setTimeframe = function (addDays) {
-    var now = getStartOfThisQuarter();
-    $scope.booking.beginRequested = now.add('days', addDays).format(API_DATE_FORMAT);
+  $scope.setPickupNow = function setPickupNow () {
+    $scope.pickupDate = moment().format(dateConfig.format);
+    $scope.pickupTime = moment().format(timeConfig.format);
+    // set return?
   };
 
   function isToday(_moment) {

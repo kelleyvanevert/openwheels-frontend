@@ -4,25 +4,23 @@ angular.module('bootstrapDateTimePickerDirective', [])
 
 .run(function ($rootScope) {})
 
-.directive('bootstrapDateTimePicker', function ($rootScope, $log,
-  API_DATE_FORMAT, FRONT_DATE_FORMAT, DATE_TIME_PICKER_FORMAT) {
+.directive('bootstrapDateTimePicker', function ($rootScope, $log) {
 
   return {
     require: '',
     restrict: 'AE',
     scope: {
 //      ngModel: '=',
-      a: '@'
+      config: '=bootstrapDateTimePicker',
     },
     link: function ($scope, $element, attrs) {
       $log.log('hello from bootstrapDateTimePicker', '$scope', $scope, '$element', $element, 'attrs', attrs);
-      $element.find('input').datetimepicker({
-        format: DATE_TIME_PICKER_FORMAT,
+
+      const input = $element.find('input');
+
+      const r = input.datetimepicker(Object.assign({
+        format: $scope.config.viewFormat || 'DD-MM-YYYY HH:mm',
         locale: 'nl',
-        stepping: 15, // minute step size
-        minDate: moment().subtract(1, 'years'),
-        maxDate: moment().add(1, 'years'),
-        useCurrent: true,
         icons: {
           time: 'material-icons material-icon-hack time',
           date: 'material-icons material-icon-hack date',
@@ -34,9 +32,6 @@ angular.module('bootstrapDateTimePickerDirective', [])
           clear: 'material-icons material-icon-hack clear',
           close: 'material-icons material-icon-hack accept',
         },
-        //showTodayButton: true,
-        showClose: true,
-        focusOnShow: false, // (!) important for mobile
         tooltips: {
           selectTime: 'Selecteer tijd',
           today: 'Selecteer vandaag',
@@ -54,6 +49,20 @@ angular.module('bootstrapDateTimePickerDirective', [])
           prevCentury: 'Vorige eeuw',
           nextCentury: 'Volgende eeuw',
         },
+      }, $scope.config));
+
+      $log.log('r', r);
+
+      $element.on('click', function (e) {
+        const mobile = !$rootScope.isWindowSizeSM;
+        if (true || mobile) {
+          const c = input.data('DateTimePicker');
+          $log.log('dtp', c, c.show);
+          input.blur();
+          e.stopPropagation();
+          setTimeout(() => c.show(), 100);
+          return false;
+        }
       });
     }
   };
