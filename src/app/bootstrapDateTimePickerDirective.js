@@ -54,13 +54,15 @@ angular.module('bootstrapDateTimePickerDirective', [])
       $log.log('r', r);
 
       $element.on('click', function (e) {
-        const mobile = !$rootScope.isWindowSizeSM;
-        if (true || mobile) {
+        //const mobile = !$rootScope.isWindowSizeSM;
+        if (true) {
           const c = input.data('DateTimePicker');
           $log.log('dtp', c, c.show);
           input.blur();
           e.stopPropagation();
-          setTimeout(() => c.show(), 100);
+          setTimeout(function () {
+            c.show();
+          }, 100);
           return false;
         }
       });
