@@ -63,7 +63,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
           setTimeout(function () {
             c.show();
           }, 100);
-          return false;
+          //return false;
         }
       });
     }
