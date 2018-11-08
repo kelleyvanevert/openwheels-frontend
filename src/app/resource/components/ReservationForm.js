@@ -48,11 +48,19 @@ angular.module('owm.resource.reservationForm', [])
     format: 'DD-MM-YYYY',
     minDate: moment().subtract(1, 'years'),
     maxDate: moment().add(1, 'years'),
+    widgetPositioning: { // with knowledge of the html (!)
+      horizontal: 'left',
+      vertical: 'bottom',
+    },
   });
 
   const timeConfig = $scope.timeConfig = Object.assign({}, dateTimeConfig, {
     format: 'HH:mm',
     stepping: 15, // minute step size
+    widgetPositioning: { // with knowledge of the html (!)
+      horizontal: 'right',
+      vertical: 'bottom',
+    },
   });
 
   $scope.setPickupNow = function setPickupNow () {
