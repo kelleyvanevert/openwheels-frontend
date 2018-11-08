@@ -4,7 +4,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
 
 .run(function ($rootScope) {})
 
-.directive('bootstrapDateTimePicker', function ($rootScope, $log) {
+.directive('bootstrapDateTimePicker', function ($rootScope, $log, $window) {
 
   return {
     require: '',
@@ -15,10 +15,21 @@ angular.module('bootstrapDateTimePickerDirective', [])
     },
     link: function ($scope, $element, attrs) {
       $log.log('hello from bootstrapDateTimePicker', '$scope', $scope, '$element', $element, 'attrs', attrs);
+      $window.openDateTimePickers = $window.openDateTimePickers || [];
 
       const input = $element.find('input');
 
-      const r = input.datetimepicker(Object.assign({
+      input.on('dp.show', function () {
+        $window.openDateTimePickers.push(input[0]);
+      });
+      input.on('dp.hide', function () {
+        const i = $window.openDateTimePickers.indexOf(input[0]);
+        if (i >= 0) {
+          $window.openDateTimePickers.splice(i, 1);
+        }
+      });
+
+      input.datetimepicker(Object.assign({
         format: $scope.config.viewFormat || 'DD-MM-YYYY HH:mm',
         locale: 'nl',
         icons: {
@@ -51,18 +62,21 @@ angular.module('bootstrapDateTimePickerDirective', [])
         },
       }, $scope.config));
 
-      $log.log('r', r);
-
       $element.on('click', function (e) {
-        //const mobile = !$rootScope.isWindowSizeSM;
-        if (true) {
+        const mobile = !$rootScope.isWindowSizeSM;
+        if (mobile) {
           const c = input.data('DateTimePicker');
-          $log.log('dtp', c, c.show);
           input.blur();
           e.stopPropagation();
-          setTimeout(function () {
-            c.show();
-          }, 100);
+          c.show();
+          $window.openDateTimePickers.map(function (el) {
+            if (el !== input[0]) {
+              $(el).data('DateTimePicker').hide();
+            }
+          });
+          $('html, body').stop().animate({
+            scrollTop: Math.max(0, input.offset().top - 50),
+          }, 500, 'swing');
           //return false;
         }
       });
