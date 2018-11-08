@@ -18,37 +18,37 @@
 -->
   
   <p>
-    <label for="res_ophalen">Ophalen</label>
+    <label for="pickupDate">Ophalen</label>
     <button id="resource_now_button" type="button" class="btn btn-warning btn-xs" ng-click="setPickupNow()">{{ 'NOW' | translate }}</button>
   </p>
 
   <div style="display: flex;">
     <div class="form-group mw-icon" style="width: 55%;" bootstrap-date-time-picker="dateConfig">
       <md-icon aria-hidden="true">today</md-icon>
-      <input id="res_ophalen" type="text" autocomplete="off" name="startD" id="startD" ng-model="booking.startD" placeholder="Datum" required>
+      <input type="text" autocomplete="off" name="pickupDate" id="pickupDate" ng-model="pickupDate" placeholder="Datum" required>
     </div>
     <div class="form-group mw-icon" style="width: 45%; margin-left: 1em;" bootstrap-date-time-picker="timeConfig">
       <md-icon aria-hidden="true">schedule</md-icon>
-      <input type="text" autocomplete="off" name="startD2" id="startD2" ng-model="booking.strD2" placeholder="Tijd" required>
+      <input type="text" autocomplete="off" name="pickupTime" id="pickupTime" ng-model="pickupTime" placeholder="Tijd" required>
     </div>
   </div>
-  <div class="help-block mw-push-up" ng-show="false && (createBookingForm.$submitted || createBookingForm.startD.$touched)">
+  <div class="help-block mw-push-up" ng-show="false">
     <span class="text-danger" ng-show="true">De datum moet in het verleden liggen.</span>
   </div>
 
-  <p><label for="res_terug">Terugbrengen</label></p>
+  <p><label for="returnDate">Terugbrengen</label></p>
 
   <div style="display: flex;">
     <div class="form-group mw-icon" style="width: 55%;" bootstrap-date-time-picker="dateConfig">
       <md-icon aria-hidden="true">today</md-icon>
-      <input id="res_terug" type="text" autocomplete="off" name="startD" id="startD" ng-model="booking.statD" placeholder="Datum" required>
+      <input type="text" autocomplete="off" name="returnDate" id="returnDate" ng-model="returnDate" placeholder="Datum" required>
     </div>
     <div class="form-group mw-icon" style="width: 45%; margin-left: 1em;" bootstrap-date-time-picker="timeConfig">
       <md-icon aria-hidden="true">schedule</md-icon>
-      <input type="text" autocomplete="off" name="startD2" id="startD2" ng-model="booking.stD2" placeholder="Tijd" required>
+      <input type="text" autocomplete="off" name="returnTime" id="returnTime" ng-model="returnTime" placeholder="Tijd" required>
     </div>
   </div>
-  <div class="help-block mw-push-up" ng-show="false && (createBookingForm.$submitted || createBookingForm.statD.$touched)">
+  <div class="help-block mw-push-up" ng-show="false">
     <span class="text-danger" ng-show="true">De datum moet in het verleden liggen.</span>
   </div>
 

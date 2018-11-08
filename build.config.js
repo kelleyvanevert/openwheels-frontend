@@ -19,6 +19,8 @@ module.exports = {
 
   vendor_files: {
     js: [
+      'vendor_custom/customevent-polyfill.js',
+
       'vendor/jquery/dist/jquery.js',
       'vendor/angular/angular.js',
       'vendor/angular-aria/angular-aria.js',

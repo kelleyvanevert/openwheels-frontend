@@ -23,6 +23,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
         $window.openDateTimePickers.push(input[0]);
       });
       input.on('dp.hide', function () {
+        input[0].dispatchEvent(new CustomEvent('input'));
         const i = $window.openDateTimePickers.indexOf(input[0]);
         if (i >= 0) {
           $window.openDateTimePickers.splice(i, 1);
