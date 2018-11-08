@@ -1,5 +1,6 @@
 <form class="booking" name="createBookingForm" timeframe begin="booking.beginRequested" end="booking.endRequested">
 
+<!--
   <div class="form-group">
     <label>
       {{ 'PICKUP_DATE' | translate }}
@@ -14,24 +15,50 @@
       </div>
     </div>
   </div>
+-->
+  <div layout="row">
+    <md-button class="md-icon-button" style="margin: 14px 0;"><md-icon class="gree">event</md-icon></md-button>
+    <md-input-container class="md-block" bootstrap-date-time-picker flex-gt-xs>
+      <label>Wanneer wil je de auto ophalen?</label>
+      <input type="text" />
+    </md-input-container>
+  </div>
 
-  <div class="form-group">
-    <label for="endTrip">{{ 'RETURN_DATE' | translate }}</label>
-    <div class="row">
-      <div class="col-xs-7">
-        <input type="text" placeholder="{{ 'DATE' | translate }}" class="form-control pickadate-input" ng-model="booking.endRequested" ng-change="onEndDateChange()" pickadate="dateConfig">
-      </div>
-      <div class="col-xs-5">
-        <input type="text" placeholder="{{ 'TIME' | translate }}" class="form-control pickadate-input" ng-model="booking.endRequested" pickatime="timeConfig">
+  <md-input-container class="md-block md-icon-float" a="hello" bootstrap-date-time-picker>
+    <div style="display: flex;">
+      <md-button class="md-icon-button" style="margin: 0; position: relative; top: -4px;"><md-icon class="gree">event</md-icon></md-button>
+      <div style="position: relative;" flex-gt-xs>
+        <label>Wanneer wil je de auto ophalen?</label>
+        <input type="text"
+               ng-model="booking.beginRequested3" />
       </div>
     </div>
-  </div>
+  </md-input-container>
 
-  <div class="form-group">
+  <md-input-container class="md-block" bootstrap-date-time-picker>
+    <label>Wanneer wil je de auto terugbrengen?</label>
+    <md-icon class="gree">event</md-icon>
+    <input type="text"
+           ng-model="booking.beginRequested2" />
+  </md-input-container>
+
+  <md-input-container class="md-block">
     <label translate="BOOKING.REMARK_REQUESTER_LABEL" translate-values="{ owner: resource.owner.firstName || 'de eigenaar' }"></label>
-    <textarea rows="2" id="remarkRequester" name="remarkRequester" class="form-control" ng-model="booking.remarkRequester"></textarea>
-  </div>
+    <textarea ng-model="booking.remarkRequester" rows="2" md-select-on-focus></textarea>
+  </md-input-container>
 
+  <div layout="row" class="discount-input">
+    <md-input-container class="md-block" flex-gt-xs>
+      <label>{{ 'DISCOUNT' | translate }} {{me}}</label>
+      <input type="text" ng-model="booking.discountCode" ng-change="validateDiscountCode()" md-select-on-focus />
+    </md-input-container>
+    <div class="discount-input__clearbutton">
+      <md-button class="md-icon-button" style="margin: 14px 0;" ng-click="removeLocalDiscountCode()">
+        <md-icon aria-label="Verwijder kortingscode">close</md-icon>
+      </md-button>
+    </div>
+  </div>
+<!--
   <div class="form-group"
        ng-if="features.discounts && !invitedDiscount"
        ng-class="{'has-error': discountCodeValidation.submitted && discountCodeValidation.error}">
@@ -44,12 +71,13 @@
         <input class="form-control" type="text" ng-model="booking.discountCode" ng-change="validateDiscountCode()" />
         <span class="input-group-btn">
           <button class="btn btn-default" type="button" ng-click="removeLocalDiscountCode()"
-                  style="padding: 4px;"> <!-- padding workaround due to 16px glyphicons vs 24px md-icons -->
+                  style="padding: 4px;">
             <md-icon aria-label="verwijder">close</md-icon>
           </button>
         </span>
       </div>
   </div>
+-->
 
   <div class="form-group" ng-if="contractOptions && contractOptions.length > 1">
     <label for="contract">Contract</label>

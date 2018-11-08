@@ -87,6 +87,7 @@ angular.module('openwheels', [
   'sameHeightDirective',
   'autoblurDirective',
   'restrictToDirective',
+  'bootstrapDateTimePickerDirective',
 
   /* Filters */
   'filters.util',
@@ -127,6 +128,7 @@ angular.module('openwheels', [
 
 .constant('API_DATE_FORMAT', 'YYYY-MM-DD HH:mm')
 .constant('FRONT_DATE_FORMAT', 'dddd DD MMMM HH:mm')
+.constant('DATE_TIME_PICKER_FORMAT', 'DD-MM-YYYY HH:mm')
 
 .config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
 
