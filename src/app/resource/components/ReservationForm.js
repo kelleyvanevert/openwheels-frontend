@@ -6,6 +6,7 @@ angular.module('owm.resource.reservationForm', [])
   return {
     restrict: 'E',
     scope: {
+      mobile: '=',
       person: '=',
       resource: '=',
       booking: '=', // { beginRequested, endRequested, remarkRequester, contract }
@@ -20,6 +21,8 @@ angular.module('owm.resource.reservationForm', [])
   $log, $q, $timeout, $filter, $rootScope, $scope, $state,
   API_DATE_FORMAT, resourceService, invoice2Service, alertService, authService, bookingService, discountService,
   contractService, featuresService, $mdDialog, $mdMedia, $translate, $location, $localStorage, Analytics) {
+
+  $scope.id = 'reservationForm-' + Math.floor(Math.random() * 1000);
 
   // Check if this page is being called after login/singup in booking process
   handleAuthRedirect();
@@ -83,10 +86,6 @@ angular.module('owm.resource.reservationForm', [])
     $scope.pickupTime = getStartOfThisQuarter().format(timeConfig.format);
     checkTimeframe();
   }
-
-  $scope.$on('pickupDateAccepted', function (e) {
-    $log.log('caught a dp-accept!', e);
-  });
 
   function resetToPreTimeframe () {
     $scope.availability = null;

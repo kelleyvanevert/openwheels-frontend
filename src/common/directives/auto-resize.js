@@ -10,12 +10,12 @@ angular.module('autoResize' , [])
 
       element.css({ 'height': 'auto', 'overflow-y': 'hidden' });
       $timeout(function () {
-        element.css('height', element[0].scrollHeight + 'px');
+        element.css('height', Math.max(60, element[0].scrollHeight) + 'px');
       }, 100);
 
       element.on('input', function () {
         element.css({ 'height': 'auto', 'overflow-y': 'hidden' });
-        element.css('height', element[0].scrollHeight + 'px');
+        element.css('height', Math.max(60, element[0].scrollHeight) + 'px');
       });
     }
   };
