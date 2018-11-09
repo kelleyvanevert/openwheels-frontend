@@ -1020,7 +1020,7 @@
                     if (currentViewMode === minViewModeNumber) {
                         setValue(date.clone().year(viewDate.year()).month(viewDate.month()));
                         if (!options.inline) {
-                            hide();
+                            accept();
                         }
                     } else {
                         showMode(-1);
@@ -1035,7 +1035,7 @@
                     if (currentViewMode === minViewModeNumber) {
                         setValue(date.clone().year(viewDate.year()));
                         if (!options.inline) {
-                            hide();
+                            accept();
                         }
                     } else {
                         showMode(-1);
@@ -1050,7 +1050,7 @@
                     if (currentViewMode === minViewModeNumber) {
                         setValue(date.clone().year(viewDate.year()));
                         if (!options.inline) {
-                            hide();
+                            accept();
                         }
                     } else {
                         showMode(-1);
@@ -1069,7 +1069,7 @@
                     }
                     setValue(day.date(parseInt($(e.target).text(), 10)));
                     if (!hasTime() && !options.keepOpen && !options.inline) {
-                        hide();
+                        accept();
                     }
                 },
 
