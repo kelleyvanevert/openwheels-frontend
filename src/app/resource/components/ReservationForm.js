@@ -24,6 +24,7 @@ angular.module('owm.resource.reservationForm', [])
   // Check if this page is being called after login/singup in booking process
   handleAuthRedirect();
 
+  // This data does not change
   $scope.age = -1;
   if(authService.user.isAuthenticated && authService.user.identity.dateOfBirth) {
     var dob = moment(authService.user.identity.dateOfBirth);
@@ -37,6 +38,8 @@ angular.module('owm.resource.reservationForm', [])
   } else {
     $scope.invitedDiscount = false;
   }
+
+  // This data DOES change
 
   $scope.timeframeValid = false;
 
@@ -66,19 +69,33 @@ angular.module('owm.resource.reservationForm', [])
     },
   });
 
-  $scope.setPickupNow = function setPickupNow () {
-    $scope.pickupDate = moment().format(dateConfig.format);
-    $scope.pickupTime = moment().format(timeConfig.format);
-    // set return?
-  };
+  function getStartOfThisQuarter () {
+    var mom = moment();
+    var quarter = Math.floor((mom.minutes() | 0) / 15); // returns 0, 1, 2 or 3
+    var minutes = (quarter * 15) % 60;
+    mom.minutes(minutes);
+    return mom;
+  }
 
-  $scope.$on('dp-accept', function (e) {
+  $scope.setPickupNow = setPickupNow;
+  function setPickupNow () {
+    $scope.pickupDate = moment().format(dateConfig.format);
+    $scope.pickupTime = getStartOfThisQuarter().format(timeConfig.format);
+    checkTimeframe();
+  }
+
+  $scope.$on('pickupDateAccepted', function (e) {
     $log.log('caught a dp-accept!', e);
   });
 
-  $scope.checkTimeframe = function checkTimeframe (from) {
-    var booking = $scope.booking;
+  function resetToPreTimeframe () {
+    $scope.availability = null;
+    $scope.isAvailabilityLoading = false;
+  }
+  resetToPreTimeframe();
 
+  $scope.checkTimeframe = checkTimeframe;
+  function checkTimeframe (from, explicitAccept) {
     $log.log('checking timeframe ['+from+']...');
     const data = {
       pickupDate: moment($scope.pickupDate, dateConfig.format),
@@ -87,29 +104,59 @@ angular.module('owm.resource.reservationForm', [])
       returnTime: moment($scope.returnTime, timeConfig.format),
     };
 
-    if (!data.pickupDate.isValid() || !data.pickupTime.isValid()) {
-      $scope.timeframeValid = false;
+    var begin, end;
+
+    if (data.pickupDate.isValid() && data.pickupTime.isValid()) {
+      begin = moment($scope.pickupDate + ' ' + $scope.pickupTime, dateConfig.format + ' '+ timeConfig.format);
+    } else {
       $log.log('pickup data are invalid');
-      return;
-    }
-    booking.beginRequested = $scope.pickupDate + ' ' + $scope.pickupTime;
-    const begin = moment(booking.beginRequested, API_DATE_FORMAT);
-
-    if (!data.pickupDate.isValid() || !data.pickupTime.isValid() || !data.returnDate.isValid() || !data.returnTime.isValid()) {
-      $scope.timeframeValid = false;
-      $log.log('data are invalid');
-      return;
     }
 
-    $scope.booking.beginRequested = $scope.pickupDate + ' ' + $scope.pickupTime;
-    $scope.booking.endRequested   = $scope.returnDate + ' ' + $scope.returnTime;
-    $scope.timeframeValid = true;
-  };
+    if (data.returnDate.isValid() && data.returnTime.isValid()) {
+      end = moment($scope.returnDate + ' ' + $scope.returnTime, dateConfig.format + ' '+ timeConfig.format);
+    } else {
+      $log.log('return data are invalid');
+    }
 
+    if ((begin && !end) || (begin && end && begin > end)) {
+      end = begin.clone().add(6, 'hours');
+      $log.log('setting returnDate =', $scope.returnDate = end.format(dateConfig.format));
+      $log.log('setting returnTime =', $scope.returnTime = end.format(timeConfig.format));
+    }
+
+    $scope.timeframeValid = begin && end && (end > begin);
+    if (!$scope.timeframeValid) {
+      resetToPreTimeframe();
+      return;
+    }
+
+    const booking = $scope.booking;
+    booking.beginRequested = begin.format(API_DATE_FORMAT);
+    booking.endRequested = end.format(API_DATE_FORMAT);
+
+    $timeout(function () {
+      loadAvailability().then(function (availability) {
+        if (availability.available === 'yes') {
+          loadContractsOnce().then(function () {
+            validateDiscountCode();
+            if (featuresService.get('calculatePrice')) {
+              loadPrice();
+            }
+          });
+        } else {
+          validateDiscountCode();
+          if (featuresService.get('calculatePrice')) {
+            loadPrice();
+          }
+        }
+      });
+    }, 1);
+  }
+
+/*
   function isToday(_moment) {
     return _moment.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD');
   }
-
   $scope.onBeginDateChange = function () {
     var booking = $scope.booking;
     var begin = booking.beginRequested && moment(booking.beginRequested, API_DATE_FORMAT);
@@ -146,38 +193,13 @@ angular.module('owm.resource.reservationForm', [])
       }
     }
   };
+*/
 
   $scope.price = null;
   $scope.isPriceLoading = false;
-  $scope.$watch('booking.beginRequested', onTimeFrameChange);
-  $scope.$watch('booking.endRequested', onTimeFrameChange);
-  $scope.$watch('booking.riskReduction', loadPrice);
+  //$scope.$watch('booking.riskReduction', loadPrice);
 
-  var timer;
 
-  function onTimeFrameChange() {
-    $timeout.cancel(timer);
-    timer = $timeout(function () {
-      loadAvailability().then(function (availability) {
-        if (availability.available === 'yes') {
-          loadContractsOnce().then(function () {
-            validateDiscountCode();
-            if (featuresService.get('calculatePrice')) {
-              loadPrice();
-            }
-          });
-        } else {
-          validateDiscountCode();
-          if (featuresService.get('calculatePrice')) {
-            loadPrice();
-          }
-        }
-      });
-    }, 100);
-  }
-
-  $scope.availability = null;
-  $scope.isAvailabilityLoading = false;
 
   function loadAvailability() {
     var dfd = $q.defer();
@@ -284,15 +306,6 @@ angular.module('owm.resource.reservationForm', [])
     return s;
   };
 
-  $scope.discountCodeValidation = {
-    timer: null,
-    submitted: false,
-    busy: false,
-    showSpinner: false,
-    success: false,
-    error: false
-  };
-
   $scope.removeLocalDiscountCode = function removeLocalDiscountCode () {
     // Ideally, we'd just want to `$state.go('.', { discountCode: '' })`
     //  and be done with it.
@@ -306,8 +319,16 @@ angular.module('owm.resource.reservationForm', [])
     });
   };
 
-  $scope.validateDiscountCode = validateDiscountCode;
+  $scope.discountCodeValidation = {
+    timer: null,
+    submitted: false,
+    busy: false,
+    showSpinner: false,
+    success: false,
+    error: false
+  };
 
+  $scope.validateDiscountCode = validateDiscountCode;
   function validateDiscountCode() {
     var DEBOUNCE_TIMEOUT_MS = 500,
       validation = $scope.discountCodeValidation,
@@ -324,9 +345,9 @@ angular.module('owm.resource.reservationForm', [])
     }
 
     validation.busy = true;
+    validation.showSpinner = true;
     validation.timer = $timeout(function validateDebounced() {
       $log.debug('validating', code);
-      validation.showSpinner = true;
 
       discountService.isApplicable({
           resource: $scope.resource.id,
