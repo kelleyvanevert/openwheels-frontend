@@ -27,12 +27,15 @@
       <md-icon aria-hidden="true">today</md-icon>
       <input type="text" autocomplete="off" name="pickupDate" id="pickupDate" placeholder="Datum" required
              ng-model="pickupDate"
-             ng-change="pickupDateChange()"
-             ng-keydown="$event.keyCode == 13 ? pickupDateAccept() : null" />
+             ng-change="checkTimeframe('pickupDate')"
+             ng-keydown="$event.keyCode == 13 ? true : null" />
     </div>
     <div class="form-group mw-timepicker mw-icon" style="width: 45%; margin-left: 1em;" bootstrap-date-time-picker="timeConfig">
       <md-icon aria-hidden="true">schedule</md-icon>
-      <input type="text" autocomplete="off" name="pickupTime" id="pickupTime" ng-model="pickupTime" placeholder="Tijd" required>
+      <input type="text" autocomplete="off" name="pickupTime" id="pickupTime" placeholder="Tijd" required
+             ng-model="pickupTime"
+             ng-change="checkTimeframe('pickupTime')"
+             ng-keydown="$event.keyCode == 13 ? true : null" />
     </div>
   </div>
   <div class="help-block mw-push-up" ng-show="false">
@@ -46,12 +49,15 @@
       <md-icon aria-hidden="true">today</md-icon>
       <input type="text" autocomplete="off" name="returnDate" id="returnDate" placeholder="Datum" required
              ng-model="returnDate"
-             ng-change="returnDateChange()"
-             ng-keydown="$event.keyCode == 13 ? returnDateAccept() : null" />
+             ng-change="checkTimeframe('returnDate')"
+             ng-keydown="$event.keyCode == 13 ? true : null" />
     </div>
     <div class="form-group mw-timepicker mw-icon" style="width: 45%; margin-left: 1em;" bootstrap-date-time-picker="timeConfig">
       <md-icon aria-hidden="true">schedule</md-icon>
-      <input type="text" autocomplete="off" name="returnTime" id="returnTime" ng-model="returnTime" placeholder="Tijd" required>
+      <input type="text" autocomplete="off" name="returnTime" id="returnTime" placeholder="Tijd" required
+             ng-model="returnTime"
+             ng-change="checkTimeframe('returnTime')"
+             ng-keydown="$event.keyCode == 13 ? true : null" />
     </div>
   </div>
   <div class="help-block mw-push-up" ng-show="false">
