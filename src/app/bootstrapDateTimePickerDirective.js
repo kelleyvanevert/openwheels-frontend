@@ -14,10 +14,27 @@ angular.module('bootstrapDateTimePickerDirective', [])
       config: '=bootstrapDateTimePicker',
     },
     link: function ($scope, $element, attrs) {
-      $log.log('hello from bootstrapDateTimePicker', '$scope', $scope, '$element', $element, 'attrs', attrs);
+      //$log.log('hello from bootstrapDateTimePicker', '$scope', $scope, '$element', $element, 'attrs', attrs);
       $window.openDateTimePickers = $window.openDateTimePickers || [];
 
       const input = $element.find('input');
+
+      if (!$window._closeDateTimePickerHandlerInstalled) {
+        $($window).on('click', function (e) {
+          const mobile = !$rootScope.isWindowSizeSM;
+          if (mobile && e.target !== input[0]) {
+            $window.openDateTimePickers.map(function (el) {
+              const c = $(el).data('DateTimePicker');
+              if (!c) {
+                $log.log('problem finding dtc for', el);
+              }
+              $log.log('hiding MYSELF manually instead of blur');
+              c.hide();
+            });
+          }
+        });
+        $window._closeDateTimePickerHandlerInstalled = true;
+      }
 
       input.on('dp.show', function () {
         $window.openDateTimePickers.push(input[0]);
@@ -28,6 +45,9 @@ angular.module('bootstrapDateTimePickerDirective', [])
         if (i >= 0) {
           $window.openDateTimePickers.splice(i, 1);
         }
+      });
+      input.on('dp.accept', function () {
+        $scope.$emit('dp-accent');
       });
 
       input.datetimepicker(Object.assign({
@@ -42,13 +62,15 @@ angular.module('bootstrapDateTimePickerDirective', [])
           next: 'material-icons material-icon-hack next',
           today: 'material-icons material-icon-hack today',
           clear: 'material-icons material-icon-hack clear',
-          close: 'material-icons material-icon-hack accept',
+          close: 'material-icons material-icon-hack close',
+          accept: 'material-icons material-icon-hack accept',
         },
         tooltips: {
           selectTime: 'Selecteer tijd',
           today: 'Selecteer vandaag',
           clear: 'Verwijder datum',
           close: 'Sluiten',
+          accept: 'Accepteren',
           selectMonth: 'Selecteer maand',
           prevMonth: 'Vorige maand',
           nextMonth: 'Volgende maand',
@@ -72,6 +94,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
           c.show();
           $window.openDateTimePickers.map(function (el) {
             if (el !== input[0]) {
+              $log.log('hiding OTHER manually instead of blur');
               $(el).data('DateTimePicker').hide();
             }
           });

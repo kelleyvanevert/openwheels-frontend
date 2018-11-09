@@ -23,11 +23,14 @@
   </p>
 
   <div style="display: flex;">
-    <div class="form-group mw-icon" style="width: 55%;" bootstrap-date-time-picker="dateConfig">
+    <div class="form-group mw-datepicker mw-icon" style="width: 55%;" bootstrap-date-time-picker="dateConfig">
       <md-icon aria-hidden="true">today</md-icon>
-      <input type="text" autocomplete="off" name="pickupDate" id="pickupDate" ng-model="pickupDate" placeholder="Datum" required>
+      <input type="text" autocomplete="off" name="pickupDate" id="pickupDate" placeholder="Datum" required
+             ng-model="pickupDate"
+             ng-change="pickupDateChange()"
+             ng-keydown="$event.keyCode == 13 ? pickupDateAccept() : null" />
     </div>
-    <div class="form-group mw-icon" style="width: 45%; margin-left: 1em;" bootstrap-date-time-picker="timeConfig">
+    <div class="form-group mw-timepicker mw-icon" style="width: 45%; margin-left: 1em;" bootstrap-date-time-picker="timeConfig">
       <md-icon aria-hidden="true">schedule</md-icon>
       <input type="text" autocomplete="off" name="pickupTime" id="pickupTime" ng-model="pickupTime" placeholder="Tijd" required>
     </div>
@@ -39,11 +42,14 @@
   <p><label for="returnDate">Terugbrengen</label></p>
 
   <div style="display: flex;">
-    <div class="form-group mw-icon" style="width: 55%;" bootstrap-date-time-picker="dateConfig">
+    <div class="form-group mw-datepicker mw-icon" style="width: 55%;" bootstrap-date-time-picker="dateConfig">
       <md-icon aria-hidden="true">today</md-icon>
-      <input type="text" autocomplete="off" name="returnDate" id="returnDate" ng-model="returnDate" placeholder="Datum" required>
+      <input type="text" autocomplete="off" name="returnDate" id="returnDate" placeholder="Datum" required
+             ng-model="returnDate"
+             ng-change="returnDateChange()"
+             ng-keydown="$event.keyCode == 13 ? returnDateAccept() : null" />
     </div>
-    <div class="form-group mw-icon" style="width: 45%; margin-left: 1em;" bootstrap-date-time-picker="timeConfig">
+    <div class="form-group mw-timepicker mw-icon" style="width: 45%; margin-left: 1em;" bootstrap-date-time-picker="timeConfig">
       <md-icon aria-hidden="true">schedule</md-icon>
       <input type="text" autocomplete="off" name="returnTime" id="returnTime" ng-model="returnTime" placeholder="Tijd" required>
     </div>

@@ -543,24 +543,24 @@
 .mywheels-form .form-group {
     position: relative;
 }
-.mywheels-form .form-group.mw-icon input {
+.mywheels-form .form-group.mw-icon > input {
     position: relative;
     background: transparent;
     padding-left: 2.4em;
 }
-.mywheels-form .form-group.mw-icon md-icon {
+.mywheels-form .form-group.mw-icon > md-icon {
     position: absolute;
     font-size: 22px;
     color: #bdc5c7;
     top: 8px;
     left: 8px;
 }
-.mywheels-form .form-group.mw-button input {
+.mywheels-form .form-group.mw-button > input {
     position: relative;
     background: transparent;
     padding-right: 2.4em;
 }
-.mywheels-form .form-group.mw-button .md-icon-button {
+.mywheels-form .form-group.mw-button > .md-icon-button {
     position: absolute;
     font-size: 22px;
     top: -1px;
@@ -573,13 +573,17 @@
 }
 
 
-.mywheels-form .form-group .mw-date-time-picker-for-mobile {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: transparent;
-
-    cursor: pointer;
+.mw-timepicker .bootstrap-datetimepicker-widget.dropdown-menu {
+    width: 16em;
 }
+.mw-timepicker .bootstrap-datetimepicker-widget.dropdown-menu .timepicker-picker {
+    padding: 0 2em;
+}
+.mw-timepicker .bootstrap-datetimepicker-widget.dropdown-menu .timepicker-picker td {
+    padding: 0;
+}
+.mw-timepicker .bootstrap-datetimepicker-widget.dropdown-menu .separator {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
