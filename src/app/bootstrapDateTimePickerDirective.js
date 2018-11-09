@@ -12,7 +12,8 @@ angular.module('bootstrapDateTimePickerDirective', [])
     scope: {
 //      ngModel: '=',
       config: '=bootstrapDateTimePicker',
-      scrollTop: '=',
+      scrollTo: '=',
+      mobile: '=',
       dtpAutoshow: '@',
       dtpBroadcastAccept: '@',
     },
@@ -28,21 +29,21 @@ angular.module('bootstrapDateTimePickerDirective', [])
         });
       }
 
-      if (!$window._closeDateTimePickerHandlerInstalled) {
+      if (!$window._blurReplacementHandler) {
         $($window).on('click', function (e) {
-          const mobile = !$rootScope.isWindowSizeSM;
-          if (mobile && e.target !== input[0]) {
+          if ($scope.mobile && e.target !== input[0]) {
+            $log.log(' [blur replace] closing:', $window.openDateTimePickers.length);
             $window.openDateTimePickers.map(function (el) {
               const c = $(el).data('DateTimePicker');
               if (!c) {
                 $log.log('problem finding dtc for', el);
               }
-              $log.log('hiding MYSELF manually instead of blur');
+              $log.log('hiding '+el.id+' manually instead of blur');
               c.hide();
             });
           }
         });
-        $window._closeDateTimePickerHandlerInstalled = true;
+        $window._blurReplacementHandler = true;
       }
 
       input.on('dp.show', function () {
@@ -56,9 +57,8 @@ angular.module('bootstrapDateTimePickerDirective', [])
         }
       });
       if ($scope.dtpBroadcastAccept) {
-//        $log.log('dtp broadcast accept', $scope.dtpBroadcastAccept);
         input.on('dp.accept', function () {
-  //        $log.log('dtp ba broadcasted', $scope.dtpBroadcastAccept, '!!');
+          $log.log('I ('+$scope.config.format+') just broadcasted', $scope.dtpBroadcastAccept);
           $rootScope.$broadcast($scope.dtpBroadcastAccept);
         });
       }
@@ -99,21 +99,26 @@ angular.module('bootstrapDateTimePickerDirective', [])
       }, $scope.config));
 
       $element.on('click', function (e) {
-        const mobile = !$rootScope.isWindowSizeSM;
-        if (mobile) {
+        if ($scope.mobile) {
           const c = input.data('DateTimePicker');
           input.blur();
           e.stopPropagation();
           c.show();
           $window.openDateTimePickers.map(function (el) {
             if (el !== input[0]) {
-              $log.log('hiding OTHER manually instead of blur');
+              $log.log('hiding OTHER:'+el.id+' manually instead of blur');
               $(el).data('DateTimePicker').hide();
             }
           });
-          $('html, body').stop().animate({
-            scrollTop: Math.max(0, input.offset().top - ($scope.scrollTop ? $scope.scrollTop : 50)),
-          }, 500, 'swing');
+          var el = input;
+          if ($scope.scrollTo) {
+            el = $($scope.scrollTo);
+            if (!el.length) {
+              $log.log('cannot find', $scope.scrollTo);
+              el = input;
+            }
+          }
+          $('html, body').stop().animate({ scrollTop: el.offset().top }, 500, 'swing');
           //return false;
         }
       });
