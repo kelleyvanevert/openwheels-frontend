@@ -38,6 +38,8 @@ angular.module('owm.resource.reservationForm', [])
     $scope.invitedDiscount = false;
   }
 
+  $scope.timeframeValid = false;
+
   const dateTimeConfig = {
     showAccept: true,
     focusOnShow: false, // (!) important for mobile
@@ -74,20 +76,34 @@ angular.module('owm.resource.reservationForm', [])
     $log.log('caught a dp-accept!', e);
   });
 
-  $scope.pickupDateChange = function pickupDateChange () {
-    $log.log('pickup date change to:', $scope.pickupDate);
-  };
+  $scope.checkTimeframe = function checkTimeframe (from) {
+    var booking = $scope.booking;
 
-  $scope.pickupDateAccept = function pickupDateAccept () {
-    $log.log('pickup date accept:', $scope.pickupDate);
-  };
+    $log.log('checking timeframe ['+from+']...');
+    const data = {
+      pickupDate: moment($scope.pickupDate, dateConfig.format),
+      pickupTime: moment($scope.pickupTime, timeConfig.format),
+      returnDate: moment($scope.returnDate, dateConfig.format),
+      returnTime: moment($scope.returnTime, timeConfig.format),
+    };
 
-  $scope.returnDateChange = function returnDateChange () {
-    $log.log('return date change to:', $scope.returnDate);
-  };
+    if (!data.pickupDate.isValid() || !data.pickupTime.isValid()) {
+      $scope.timeframeValid = false;
+      $log.log('pickup data are invalid');
+      return;
+    }
+    booking.beginRequested = $scope.pickupDate + ' ' + $scope.pickupTime;
+    const begin = moment(booking.beginRequested, API_DATE_FORMAT);
 
-  $scope.returnDateAccept = function returnDateAccept () {
-    $log.log('return date accept:', $scope.returnDate);
+    if (!data.pickupDate.isValid() || !data.pickupTime.isValid() || !data.returnDate.isValid() || !data.returnTime.isValid()) {
+      $scope.timeframeValid = false;
+      $log.log('data are invalid');
+      return;
+    }
+
+    $scope.booking.beginRequested = $scope.pickupDate + ' ' + $scope.pickupTime;
+    $scope.booking.endRequested   = $scope.returnDate + ' ' + $scope.returnTime;
+    $scope.timeframeValid = true;
   };
 
   function isToday(_moment) {
