@@ -23,14 +23,17 @@
   </p>
 
   <div style="display: flex;">
-    <div class="form-group mw-datepicker mw-icon" style="width: 55%;" bootstrap-date-time-picker="dateConfig">
+    <div class="form-group mw-datepicker mw-icon" style="width: 55%;"
+        bootstrap-date-time-picker="dateConfig"
+        dtp-broadcast-accept="pickupDateAccepted">
       <md-icon aria-hidden="true">today</md-icon>
       <input type="text" autocomplete="off" name="pickupDate" id="pickupDate" placeholder="Datum" required
              ng-model="pickupDate"
              ng-change="checkTimeframe('pickupDate')"
-             ng-keydown="$event.keyCode == 13 ? true : null" />
+             ng-keydown="$event.keyCode == 13 ? $broadcast('pickupDateAccepted') : null" />
     </div>
-    <div class="form-group mw-timepicker mw-icon" style="width: 45%; margin-left: 1em;" bootstrap-date-time-picker="timeConfig">
+    <div class="form-group mw-timepicker mw-icon" style="width: 45%; margin-left: 1em;" bootstrap-date-time-picker="timeConfig"
+        dtp-autoshow="pickupDateAccepted">
       <md-icon aria-hidden="true">schedule</md-icon>
       <input type="text" autocomplete="off" name="pickupTime" id="pickupTime" placeholder="Tijd" required
              ng-model="pickupTime"
@@ -45,14 +48,18 @@
   <p><label for="returnDate">Terugbrengen</label></p>
 
   <div style="display: flex;">
-    <div class="form-group mw-datepicker mw-icon" style="width: 55%;" bootstrap-date-time-picker="dateConfig">
+    <div class="form-group mw-datepicker mw-icon" style="width: 55%;"
+        bootstrap-date-time-picker="dateConfig"
+        dtp-broadcast-accept="returnDateAccepted"
+        scroll-top="115">
       <md-icon aria-hidden="true">today</md-icon>
       <input type="text" autocomplete="off" name="returnDate" id="returnDate" placeholder="Datum" required
              ng-model="returnDate"
              ng-change="checkTimeframe('returnDate')"
-             ng-keydown="$event.keyCode == 13 ? true : null" />
+             ng-keydown="$event.keyCode == 13 ? $broadcast('returnDateAccepted') : null" />
     </div>
-    <div class="form-group mw-timepicker mw-icon" style="width: 45%; margin-left: 1em;" bootstrap-date-time-picker="timeConfig">
+    <div class="form-group mw-timepicker mw-icon" style="width: 45%; margin-left: 1em;" bootstrap-date-time-picker="timeConfig" scroll-top="115"
+        dtp-autoshow="returnDateAccepted">
       <md-icon aria-hidden="true">schedule</md-icon>
       <input type="text" autocomplete="off" name="returnTime" id="returnTime" placeholder="Tijd" required
              ng-model="returnTime"
@@ -74,10 +81,16 @@
 
   <p><label for="res_discountCode">Kortingscode</label></p>
   <div class="form-group mw-button" style="">
-    <input id="res_discountCode" type="text" ng-model="booking.discountCode" ng-change="validateDiscountCode()" md-select-on-focus />
-    <md-button ng-if="booking.discountCode" class="md-icon-button" ng-click="removeLocalDiscountCode()">
-      <md-icon aria-hidden="true" ng-if="false">close</md-icon>
-      <md-progress-circular md-diameter="24" ng-if="true"></md-progress-circular>
+    <input id="res_discountCode" type="text" ng-model="booking.discountCode" ng-change="validateDiscountCode()" md-select-on-focus
+           ng-class="{
+             'discount-code-success': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.success,
+             'discount-code-error': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.error,
+           }" />
+    <md-button ng-if="booking.discountCode && !discountCodeValidation.showSpinner" class="md-icon-button" ng-click="removeLocalDiscountCode()">
+      <md-icon aria-hidden="true">close</md-icon>
+    </md-button>
+    <md-button ng-if="booking.discountCode && discountCodeValidation.showSpinner" class="md-icon-button">
+      <md-progress-circular md-diameter="24"></md-progress-circular>
     </md-button>
   </div>
   <div class="help-block mw-push-up" ng-show="false">

@@ -12,12 +12,21 @@ angular.module('bootstrapDateTimePickerDirective', [])
     scope: {
 //      ngModel: '=',
       config: '=bootstrapDateTimePicker',
+      scrollTop: '=',
+      dtpAutoshow: '@',
+      dtpBroadcastAccept: '@',
     },
     link: function ($scope, $element, attrs) {
       //$log.log('hello from bootstrapDateTimePicker', '$scope', $scope, '$element', $element, 'attrs', attrs);
       $window.openDateTimePickers = $window.openDateTimePickers || [];
 
       const input = $element.find('input');
+
+      if ($scope.dtpAutoshow) {
+        $scope.$on($scope.dtpAutoshow, function () {
+          input.data('DateTimePicker').show();
+        });
+      }
 
       if (!$window._closeDateTimePickerHandlerInstalled) {
         $($window).on('click', function (e) {
@@ -46,9 +55,13 @@ angular.module('bootstrapDateTimePickerDirective', [])
           $window.openDateTimePickers.splice(i, 1);
         }
       });
-      input.on('dp.accept', function () {
-        $scope.$emit('dp-accent');
-      });
+      if ($scope.dtpBroadcastAccept) {
+//        $log.log('dtp broadcast accept', $scope.dtpBroadcastAccept);
+        input.on('dp.accept', function () {
+  //        $log.log('dtp ba broadcasted', $scope.dtpBroadcastAccept, '!!');
+          $rootScope.$broadcast($scope.dtpBroadcastAccept);
+        });
+      }
 
       input.datetimepicker(Object.assign({
         format: $scope.config.viewFormat || 'DD-MM-YYYY HH:mm',
@@ -99,7 +112,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
             }
           });
           $('html, body').stop().animate({
-            scrollTop: Math.max(0, input.offset().top - 50),
+            scrollTop: Math.max(0, input.offset().top - ($scope.scrollTop ? $scope.scrollTop : 50)),
           }, 500, 'swing');
           //return false;
         }

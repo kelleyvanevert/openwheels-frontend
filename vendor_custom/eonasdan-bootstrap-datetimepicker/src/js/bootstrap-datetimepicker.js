@@ -923,8 +923,6 @@
              * Hides the widget. Possibly will emit dp.hide
              */
             hide = function (explicitlyAccept) {
-                explicitlyAccept = (explicitlyAccept === undefined) ? false : explicitlyAccept;
-
                 var transitioning = false;
                 if (!widget) {
                     return picker;
