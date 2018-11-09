@@ -311,20 +311,28 @@
             },
 
             getToolbar = function () {
-                var row = [];
+                var rows = [ [] ];
                 if (options.showTodayButton) {
-                    row.push($('<td>').append($('<a>').attr({ 'data-action': 'today', 'title': options.tooltips.today }).append($('<span>').addClass(options.icons.today))));
+                    rows[0].push($('<td>').append($('<a>').attr({ 'data-action': 'today', 'title': options.tooltips.today }).append($('<span>').addClass(options.icons.today))));
                 }
                 if (!options.sideBySide && hasDate() && hasTime()) {
-                    row.push($('<td>').append($('<a>').attr({ 'data-action': 'togglePicker', 'title': options.tooltips.selectTime }).append($('<span>').addClass(options.icons.time))));
+                    rows[0].push($('<td>').append($('<a>').attr({ 'data-action': 'togglePicker', 'title': options.tooltips.selectTime }).append($('<span>').addClass(options.icons.time))));
                 }
                 if (options.showClear) {
-                    row.push($('<td>').append($('<a>').attr({ 'data-action': 'clear', 'title': options.tooltips.clear }).append($('<span>').addClass(options.icons.clear))));
+                    rows[0].push($('<td>').append($('<a>').attr({ 'data-action': 'clear', 'title': options.tooltips.clear }).append($('<span>').addClass(options.icons.clear))));
                 }
                 if (options.showClose) {
-                    row.push($('<td>').append($('<a>').attr({ 'data-action': 'close', 'title': options.tooltips.close }).append($('<span>').addClass(options.icons.close))));
+                    rows[0].push($('<td>').append($('<a>').attr({ 'data-action': 'close', 'title': options.tooltips.close }).append($('<span>').addClass(options.icons.close))));
                 }
-                return $('<table>').addClass('table-condensed').append($('<tbody>').append($('<tr>').append(row)));
+                if (options.showAccept) {
+                    rows.push([]);
+                    rows[1].push($('<td>').css({ padding: '8px' }).append($('<a>').attr({
+                        'data-action': 'accept',
+                        'title': options.tooltips.accept,
+                        class: 'btn btn-success btn-block mywheels-btn-big',
+                    }).html('<strong class="material-icons material-icon-hack accept"></strong>')));
+                }
+                return $('<table>').addClass('table-condensed').append($('<tbody>').append(rows.map(row => $('<tr>').append(row))));
             },
 
             getTemplate = function () {
@@ -912,7 +920,9 @@
             /**
              * Hides the widget. Possibly will emit dp.hide
              */
-            hide = function () {
+            hide = function (explicitlyAccept) {
+                explicitlyAccept = (explicitlyAccept === undefined) ? false : explicitlyAccept;
+
                 var transitioning = false;
                 if (!widget) {
                     return picker;
@@ -946,11 +956,22 @@
                     date: date.clone()
                 });
 
+                if (explicitlyAccept) {
+                    notifyEvent({
+                        type: 'dp.accept',
+                        date: date.clone()
+                    });
+                }
+
                 input.blur();
 
                 viewDate = date.clone();
 
                 return picker;
+            },
+
+            accept = function () {
+                hide(true);
             },
 
             clear = function () {
@@ -1187,7 +1208,9 @@
                     }
                 },
 
-                close: hide
+                close: hide,
+
+                accept: accept
             },
 
             doAction = function (e) {
@@ -1454,6 +1477,8 @@
         picker.show = show;
 
         picker.hide = hide;
+
+        picker.accept = accept;
 
         picker.disable = function () {
             ///<summary>Disables the input element, the component is attached to, by adding a disabled="true" attribute to it.
@@ -2162,6 +2187,19 @@
             return picker;
         };
 
+        picker.showAccept = function (showAccept) {
+            if (arguments.length === 0) {
+                return options.showAccept;
+            }
+
+            if (typeof showAccept !== 'boolean') {
+                throw new TypeError('showAccept() expects a boolean parameter');
+            }
+
+            options.showAccept = showAccept;
+            return picker;
+        };
+
         picker.keepInvalid = function (keepInvalid) {
             if (arguments.length === 0) {
                 return options.keepInvalid;
@@ -2475,6 +2513,7 @@
             today: 'Go to today',
             clear: 'Clear selection',
             close: 'Close the picker',
+            accept: 'Accept',
             selectMonth: 'Select Month',
             prevMonth: 'Previous Month',
             nextMonth: 'Next Month',
@@ -2507,6 +2546,7 @@
         showTodayButton: false,
         showClear: false,
         showClose: false,
+        showAccept: false,
         widgetPositioning: {
             horizontal: 'auto',
             vertical: 'auto'

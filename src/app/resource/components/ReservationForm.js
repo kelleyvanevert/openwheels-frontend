@@ -39,9 +39,10 @@ angular.module('owm.resource.reservationForm', [])
   }
 
   const dateTimeConfig = {
-    showClose: true,
+    showAccept: true,
     focusOnShow: false, // (!) important for mobile
     useCurrent: true,
+    toolbarPlacement: 'bottom',
   };
 
   const dateConfig = $scope.dateConfig = Object.assign({}, dateTimeConfig, {
@@ -67,6 +68,26 @@ angular.module('owm.resource.reservationForm', [])
     $scope.pickupDate = moment().format(dateConfig.format);
     $scope.pickupTime = moment().format(timeConfig.format);
     // set return?
+  };
+
+  $scope.$on('dp-accept', function (e) {
+    $log.log('caught a dp-accept!', e);
+  });
+
+  $scope.pickupDateChange = function pickupDateChange () {
+    $log.log('pickup date change to:', $scope.pickupDate);
+  };
+
+  $scope.pickupDateAccept = function pickupDateAccept () {
+    $log.log('pickup date accept:', $scope.pickupDate);
+  };
+
+  $scope.returnDateChange = function returnDateChange () {
+    $log.log('return date change to:', $scope.returnDate);
+  };
+
+  $scope.returnDateAccept = function returnDateAccept () {
+    $log.log('return date accept:', $scope.returnDate);
   };
 
   function isToday(_moment) {
