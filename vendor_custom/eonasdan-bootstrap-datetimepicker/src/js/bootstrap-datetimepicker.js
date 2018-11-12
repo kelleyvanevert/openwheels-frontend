@@ -334,7 +334,9 @@
                         class: 'btn btn-success btn-block mywheels-btn-big',
                     }).html('<strong class="material-icons material-icon-hack accept"></strong>')));
                 }
-                return $('<table>').addClass('table-condensed').append($('<tbody>').append(rows.map(row => $('<tr>').append(row))));
+                return $('<table>').addClass('table-condensed').append($('<tbody>').append(rows.map(function (row) {
+                    return $('<tr>').append(row);
+                })));
             },
 
             getTemplate = function () {
