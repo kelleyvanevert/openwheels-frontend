@@ -1,11 +1,16 @@
 'use strict';
 
-/*
-  Kelley van Evert, 12 nov 2018
-*/
+/**
+ * Kelley van Evert, 12 nov 2018
+ * API:
+ *   <timeframe-picker
+ *      ng-model        <-- value is an object like so: { pickup: moment, return: moment }
+ *      mobile          <-- boolean, mask inputs and behave as if mobile
+ *   />
+ */
 angular.module('timeframePickerDirective', [])
 
-.directive('timeframePicker', function timeframePicker () {
+.directive('timeframePicker', function timeframePicker ($log, API_DATE_FORMAT) {
 
   // Configuration, constants, helpers
   // =====
@@ -55,12 +60,14 @@ angular.module('timeframePickerDirective', [])
   return {
     restrict: 'E',
     templateUrl: 'directives/timeframePicker/timeframePicker.tpl.html',
+    //require: 'ngModel',
+    replace: true,
     scope: {
-      pickup: '=',
-      return: '=',
       mobile: '=',
     },
-    controller: function timeframePickerController ($scope, $log, API_DATE_FORMAT) {
+    controller: function timeframePickerController ($scope, $element, $log, API_DATE_FORMAT) {
+
+      const controller = $element.controller('ngModel');
 
       // In order to pass to child components
 
@@ -78,6 +85,39 @@ angular.module('timeframePickerDirective', [])
 
       // Methods
 
+      function adjustPickup (tf) {
+        if (!tf.return) {
+          tf.pickup = moment();
+        }
+        else if (!tf.return.isValid()) {
+          return;
+        }
+        else {
+          tf.pickup = tf.return.subtract('hours', 6);
+        }
+        
+        $scope.pickupDate = tf.pickup.format(dateConfig.format);
+        $scope.pickupTime = tf.pickup.format(timeConfig.format);
+      }
+
+      function adjustReturn (tf) {
+        if (!tf.pickup.isValid()) {
+          return;
+        }
+
+        /* #MW-1782: end time should not automagically jump to next day */
+        const midnight = tf.pickup.clone().startOf('day').add(1, 'days');
+        const sixHoursLater = tf.pickup.clone().add(6, 'hours');
+        if (tf.pickup.isBefore(midnight) && sixHoursLater.isAfter(midnight)) {
+          tf.return = tf.pickup.clone().add(30, 'minutes');
+        } else {
+          tf.return = sixHoursLater;
+        }
+
+        $scope.returnDate = tf.return.format(dateConfig.format);
+        $scope.returnTime = tf.return.format(timeConfig.format);
+      }
+
       $scope.setPickupNow = setPickupNow;
       function setPickupNow () {
         $scope.pickupDate = moment().format(dateConfig.format);
@@ -86,70 +126,74 @@ angular.module('timeframePickerDirective', [])
       }
 
       $scope.checkTimeframe = checkTimeframe;
-      function checkTimeframe (from, explicitAccept) {
-        const data = {
+      function checkTimeframe (pickup_or_return) {
+        const tf = {
           pickupDate: moment($scope.pickupDate, dateConfig.format), // only used for date part (!)
           pickupTime: moment($scope.pickupTime, timeConfig.format), // only used for time part (!)
           returnDate: moment($scope.returnDate, dateConfig.format), // only used for date part (!)
           returnTime: moment($scope.returnTime, timeConfig.format), // only used for time part (!)
         };
-
+ 
         // Step 1: possibly autofill date resp. time parts
 
         // If today, then the default timepicker behavior of opening with current time is logical.
         // If not today, then this is not logical and we preemptively set it to 9:00.
-        if (data.pickupDate.isValid() && !isToday(data.pickupDate) && $scope.timeframeForm.pickupTime.$untouched) {
+        if (tf.pickupDate.isValid() && !isToday(tf.pickupDate) && $scope.form.pickupTime.$untouched) {
           // set pickup time
           $scope.pickupTime = '9:00';
-          data.pickupTime = moment($scope.pickupTime, timeConfig.format);
+          tf.pickupTime = moment($scope.pickupTime, timeConfig.format);
         }
 
         // If today, then the default timepicker behavior of opening with current time is logical.
         // If not today, then this is not logical and we preemptively set it to 9:00.
-        if (data.returnDate.isValid() && !isToday(data.returnDate) && $scope.timeframeForm.returnTime.$untouched) {
+        if (tf.returnDate.isValid() && !isToday(tf.returnDate) && $scope.form.returnTime.$untouched) {
           // set return time
           $scope.returnTime = '18:00';
-          data.returnTime = moment($scope.returnTime, timeConfig.format);
+          tf.returnTime = moment($scope.returnTime, timeConfig.format);
         }
 
-        if (data.pickupTime.isValid() && $scope.timeframeForm.pickupDate.$untouched) {
-          data.pickupDate = moment();
-          $scope.pickupDate = data.pickupDate.format(dateConfig.format);
+        if (tf.pickupTime.isValid() && $scope.form.pickupDate.$untouched) {
+          tf.pickupDate = moment();
+          $scope.pickupDate = tf.pickupDate.format(dateConfig.format);
         }
 
 
         // Step 2: consolidate into datetimes, if possible
 
-        if (data.pickupDate.isValid() && data.pickupTime.isValid()) {
-          data.pickup = moment($scope.pickupDate + ' ' + $scope.pickupTime, dateConfig.format + ' '+ timeConfig.format);
+        if (tf.pickupDate.isValid() && tf.pickupTime.isValid()) {
+          tf.pickup = moment($scope.pickupDate + ' ' + $scope.pickupTime, dateConfig.format + ' '+ timeConfig.format);
         }
 
-        if (data.returnDate.isValid() && data.returnTime.isValid()) {
-          data.return = moment($scope.returnDate + ' ' + $scope.returnTime, dateConfig.format + ' '+ timeConfig.format);
+        if (tf.returnDate.isValid() && tf.returnTime.isValid()) {
+          tf.return = moment($scope.returnDate + ' ' + $scope.returnTime, dateConfig.format + ' '+ timeConfig.format);
         }
 
 
-        // Step 3: adjust window
+        // Step 3: adjust window when necessary
+        // (this logic used to reside in `src/common/directives/pickadate/TimeframeDirective.js`)
 
-/*
-        if ((begin && !end) || (begin && end && begin > end)) {
-          end = begin.clone().add(6, 'hours');
-          $log.log('setting returnDate =', $scope.returnDate = end.format(dateConfig.format));
-          $log.log('setting returnTime =', $scope.returnTime = end.format(timeConfig.format));
+        if (!tf.pickup && !tf.return) {
+          // just null
         }
-*/
-
-/*
-        $scope.timeframeValid = data.pickup && data.return && (data.return > data.pickup);
-        if (!$scope.timeframeValid) {
-          //resetToPreTimeframe();
-          return;
+        else if (tf.pickup && !tf.return) {
+          adjustReturn(tf);
         }
-*/
+        else if (!tf.pickup && tf.return) {
+          adjustPickup(tf);
+        }
+        else if (pickup_or_return === 'pickup' && tf.pickup > tf.return) {
+          adjustReturn(tf);
+        }
+        else if (pickup_or_return === 'return' && tf.pickup > tf.return) {
+          adjustPickup(tf);
+        }
 
-        // (!)
-        $scope.pickup = data.pickup ? data.pickup.format(API_DATE_FORMAT) : null;
-        $scope.return = data.return ? data.return.format(API_DATE_FORMAT) : null;
+        delete tf.pickupDate;
+        delete tf.pickupTime;
+        delete tf.returnDate;
+        delete tf.returnTime;
+        controller.$setViewValue(tf);
+        //controller.$setValidity('begin_before_end', $scope.timeframeValid);
       }
     },
   };

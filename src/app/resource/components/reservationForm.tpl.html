@@ -1,16 +1,16 @@
 <form role="form" class="booking mywheels-form" name="createBookingForm"
       ng-attr-id="{{ id }}">
 
-<pre>
-Pickup: {{ booking.beginRequested }}
-End: {{ booking.endRequested }}
-</pre>
+<div style="background: #eee; font-family: monospace;">
+Timeframe: {{ booking.timeframe }}
+</div>
 
   <!-- timeframe[begin,end] -->
-  <timeframe-picker pickup="booking.beginRequested"
-                    return="booking.endRequested"
+  <timeframe-picker name="timeframe"
+                    ng-model="booking.timeframe"
                     mobile="mobile">
   </timeframe-picker>
+  <span ng-show="createBookingForm.timeframe.$error.begin_before_end">Volgorder verkeerd!</span>
 
   <p><label for="res_comment">Opmerking voor {{ resource.owner.firstName || 'de eigenaar' }}</label></p>
   <div class="form-group" style="">
