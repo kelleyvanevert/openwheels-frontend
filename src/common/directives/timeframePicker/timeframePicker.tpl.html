@@ -1,0 +1,66 @@
+<ng-form name="timeframeForm">
+  <p>
+    <label for="pickupDate">Ophalen</label>
+    <button id="resource_now_button" type="button" class="btn btn-warning btn-xs" ng-click="setPickupNow()">{{ 'NOW' | translate }}</button>
+  </p>
+
+  <div style="display: flex;">
+    <div class="form-group mw-datepicker mw-icon" style="width: 55%;"
+        bootstrap-date-time-picker="dateConfig"
+        mobile="mobile"
+        dtp-broadcast-accept="pickupDateAccepted"
+        scroll-to="'#'+id">
+      <md-icon aria-hidden="true">today</md-icon>
+      <input type="text" autocomplete="off" name="pickupDate" id="pickupDate" placeholder="Datum" required
+             ng-model="pickupDate"
+             ng-change="checkTimeframe('pickupDate')"
+             ng-keydown="$event.keyCode == 13 ? $broadcast('pickupDateAccepted') : null" />
+      <div ng-if="mobile" class="mobile-mask"></div>
+    </div>
+    <div class="form-group mw-timepicker mw-icon" style="width: 45%; margin-left: 1em;"
+        mobile="mobile"
+        bootstrap-date-time-picker="timeConfig" scroll-to="'#'+id"
+        dtp-autoshow="pickupDateAccepted">
+      <md-icon aria-hidden="true">schedule</md-icon>
+      <input type="text" autocomplete="off" name="pickupTime" id="pickupTime" placeholder="Tijd" required
+             ng-model="pickupTime"
+             ng-change="checkTimeframe('pickupTime')"
+             ng-keydown="$event.keyCode == 13 ? true : null" />
+      <div ng-if="mobile" class="mobile-mask"></div>
+    </div>
+  </div>
+  <div class="help-block mw-push-up" ng-show="false">
+    <span class="text-danger" ng-show="true">De datum moet in het verleden liggen.</span>
+  </div>
+
+  <p><label for="returnDate">Terugbrengen</label></p>
+
+  <div style="display: flex;">
+    <div class="form-group mw-datepicker mw-icon" style="width: 55%;"
+        bootstrap-date-time-picker="dateConfig"
+        mobile="mobile"
+        dtp-broadcast-accept="returnDateAccepted"
+        scroll-to="'#'+id">
+      <md-icon aria-hidden="true">today</md-icon>
+      <input type="text" autocomplete="off" name="returnDate" id="returnDate" placeholder="Datum" required
+             ng-model="returnDate"
+             ng-change="checkTimeframe('returnDate')"
+             ng-keydown="$event.keyCode == 13 ? $broadcast('returnDateAccepted') : null" />
+      <div ng-if="mobile" class="mobile-mask"></div>
+    </div>
+    <div class="form-group mw-timepicker mw-icon" style="width: 45%; margin-left: 1em;"
+        mobile="mobile"
+        bootstrap-date-time-picker="timeConfig" scroll-to="'#'+id"
+        dtp-autoshow="returnDateAccepted">
+      <md-icon aria-hidden="true">schedule</md-icon>
+      <input type="text" autocomplete="off" name="returnTime" id="returnTime" placeholder="Tijd" required
+             ng-model="returnTime"
+             ng-change="checkTimeframe('returnTime')"
+             ng-keydown="$event.keyCode == 13 ? true : null" />
+      <div ng-if="mobile" class="mobile-mask"></div>
+    </div>
+  </div>
+  <div class="help-block mw-push-up" ng-show="false">
+    <span class="text-danger" ng-show="true">De datum moet in het verleden liggen.</span>
+  </div>
+</ng-form>
