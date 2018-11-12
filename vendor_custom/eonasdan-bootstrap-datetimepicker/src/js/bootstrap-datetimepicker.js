@@ -1208,9 +1208,13 @@
                     }
                 },
 
-                close: hide,
+                close: function (e) {
+                    hide();
+                },
 
-                accept: accept
+                accept: function (e) {
+                    accept();
+                },
             },
 
             doAction = function (e) {
@@ -1359,7 +1363,7 @@
             attachDatePickerElementEvents = function () {
                 input.on({
                     'change': change,
-                    'blur': options.debug ? '' : hide,
+                    'blur': options.debug ? '' : (function (e) { hide() }),
                     'keydown': keydown,
                     'keyup': keyup,
                     'focus': options.allowInputToggle ? show : ''
@@ -1381,7 +1385,7 @@
                     'blur': blur,
                     'keydown': keydown,
                     'keyup': keyup,
-                    'focus': options.allowInputToggle ? hide : ''
+                    'focus': options.allowInputToggle ? (function (e) { hide() }) : ''
                 });
 
                 if (element.is('input')) {
