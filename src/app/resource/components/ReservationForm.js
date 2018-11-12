@@ -97,13 +97,38 @@ angular.module('owm.resource.reservationForm', [])
   function checkTimeframe (from, explicitAccept) {
     $log.log('checking timeframe ['+from+']...');
     const data = {
-      pickupDate: moment($scope.pickupDate, dateConfig.format),
-      pickupTime: moment($scope.pickupTime, timeConfig.format),
-      returnDate: moment($scope.returnDate, dateConfig.format),
-      returnTime: moment($scope.returnTime, timeConfig.format),
+      pickupDate: moment($scope.pickupDate, dateConfig.format), // only used for date component (!)
+      pickupTime: moment($scope.pickupTime, timeConfig.format), // only used for time component (!)
+      returnDate: moment($scope.returnDate, dateConfig.format), // only used for date component (!)
+      returnTime: moment($scope.returnTime, timeConfig.format), // only used for time component (!)
     };
 
     var begin, end;
+
+    // If today, then the default timepicker behavior of opening with current time is logical.
+    // If not today, then this is not logical and we preemptively set it to 9:00.
+    if (data.pickupDate.isValid() && !isToday(data.pickupDate) && !$scope.pickupTime) {
+      // set pickup time
+      $scope.pickupTime = '9:00';
+      data.pickupTime = moment($scope.pickupTime, timeConfig.format);
+    }
+
+    // If today, then the default timepicker behavior of opening with current time is logical.
+    // If not today, then this is not logical and we preemptively set it to 9:00.
+    if (data.returnDate.isValid() && !isToday(data.returnDate) && !$scope.returnTime) {
+      // set return time
+      $scope.returnTime = '18:00';
+      data.returnTime = moment($scope.returnTime, timeConfig.format);
+    }
+
+    if (data.pickupTime.isValid() && !$scope.pickupDate) {
+      $log.log('C');
+      data.pickupDate = moment();
+      $scope.pickupDate = date.pickupDate.format(dateConfig.format);
+    }
+
+
+    // TODO
 
     if (data.pickupDate.isValid() && data.pickupTime.isValid()) {
       begin = moment($scope.pickupDate + ' ' + $scope.pickupTime, dateConfig.format + ' '+ timeConfig.format);
@@ -152,10 +177,11 @@ angular.module('owm.resource.reservationForm', [])
     }, 1);
   }
 
-/*
-  function isToday(_moment) {
+  function isToday (_moment) {
     return _moment.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD');
   }
+
+/*
   $scope.onBeginDateChange = function () {
     var booking = $scope.booking;
     var begin = booking.beginRequested && moment(booking.beginRequested, API_DATE_FORMAT);
