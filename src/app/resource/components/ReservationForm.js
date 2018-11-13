@@ -9,7 +9,7 @@ angular.module('owm.resource.reservationForm', [])
       mobile: '=',
       person: '=',
       resource: '=',
-      booking: '=', // { beginRequested, endRequested, remarkRequester, contract }
+      booking: '=', // { beginRequested, endRequested, remarkRequester, contract }     , timeframe (!)
       showPrice: '=',
     },
     templateUrl: 'resource/components/reservationForm.tpl.html',
@@ -41,6 +41,19 @@ angular.module('owm.resource.reservationForm', [])
   } else {
     $scope.invitedDiscount = false;
   }
+
+
+  // temporary
+  function bookingToRequestedFormat (bk) {
+    if (!bk.timeframe) {
+      bk.beginRequested = null;
+      bk.endRequested   = null;
+    } else {
+      bk.beginRequested = bk.timeframe.pickup ? bk.timeframe.pickup.format(API_DATE_FORMAT) : null;
+      bk.endRequested   = bk.timeframe.return ? bk.timeframe.return.format(API_DATE_FORMAT) : null;
+    }
+  }
+
 
   // This data DOES change
 
@@ -83,6 +96,8 @@ angular.module('owm.resource.reservationForm', [])
     var r = $scope.resource;
     $scope.availability = null;
     $scope.price = null;
+
+    bookingToRequestedFormat(b); // temporary
 
     if (b.beginRequested && b.endRequested) {
       $scope.isAvailabilityLoading = true;
@@ -140,6 +155,8 @@ angular.module('owm.resource.reservationForm', [])
     var b = $scope.booking;
     var params;
     $scope.price = null;
+
+    bookingToRequestedFormat(b); // temporary
 
     if ($scope.availability && ['yes', 'unknown'].indexOf($scope.availability.available) >= 0 &&
       (b.beginRequested && b.endRequested)) {
@@ -225,6 +242,8 @@ angular.module('owm.resource.reservationForm', [])
     validation.timer = $timeout(function validateDebounced() {
       $log.debug('validating', code);
 
+      bookingToRequestedFormat($scope.booking); // temporary
+
       discountService.isApplicable({
           resource: $scope.resource.id,
           person: $scope.person.id,
@@ -308,6 +327,8 @@ angular.module('owm.resource.reservationForm', [])
     if($scope.person) {
       $scope.initPhoneNumbers();
     }
+
+    bookingToRequestedFormat(booking); // temporary
 
     if (!booking.beginRequested || !booking.endRequested) {
       $scope.loading.createBooking = false;
