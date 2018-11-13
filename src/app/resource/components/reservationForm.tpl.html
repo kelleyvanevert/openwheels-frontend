@@ -1,37 +1,43 @@
-<form class="booking" name="createBookingForm" timeframe begin="booking.beginRequested" end="booking.endRequested">
+<form role="form" class="booking mywheels-form" name="createBookingForm"
+      ng-attr-id="{{ id }}">
 
-  <div class="form-group">
-    <label>
-      {{ 'PICKUP_DATE' | translate }}
-      <button id="resource_now_button" type="button" class="btn btn-warning btn-xs" ng-click="setTimeframe(0)">{{ 'NOW' | translate }}</button>
-    </label>
-    <div class="row">
-      <div class="col-xs-7">
-        <input id="beginRequested" type="text" placeholder="{{ 'DATE' | translate }}" class="form-control pickadate-input" ng-model="booking.beginRequested" ng-change="onBeginDateChange()" pickadate="dateConfig">
-      </div>
-      <div class="col-xs-5">
-        <input id="endBequested" type="text" placeholder="{{ 'TIME' | translate }}" class="form-control pickadate-input" ng-model="booking.beginRequested" pickatime="timeConfig">
-      </div>
-    </div>
+<div style="display: none; background: #eee; font-family: monospace;">
+Timeframe: {{ booking.timeframe }}
+</div>
+
+  <!-- timeframe[begin,end] -->
+  <timeframe-picker name="timeframe"
+                    ng-model="booking.timeframe"
+                    mobile="mobile">
+  </timeframe-picker>
+  <span ng-show="createBookingForm.timeframe.$error.begin_before_end">Volgorde verkeerd!</span>
+
+  <p><label for="res_comment">Opmerking voor {{ resource.owner.firstName || 'de eigenaar' }}</label></p>
+  <div class="form-group" style="">
+    <textarea id="res_comment" rows="2" auto-resize md-select-on-focus></textarea>
+  </div>
+  <div class="help-block mw-push-up" ng-show="false">
+    <span class="text-danger" ng-show="true">De datum moet in het verleden liggen.</span>
   </div>
 
-  <div class="form-group">
-    <label for="endTrip">{{ 'RETURN_DATE' | translate }}</label>
-    <div class="row">
-      <div class="col-xs-7">
-        <input type="text" placeholder="{{ 'DATE' | translate }}" class="form-control pickadate-input" ng-model="booking.endRequested" ng-change="onEndDateChange()" pickadate="dateConfig">
-      </div>
-      <div class="col-xs-5">
-        <input type="text" placeholder="{{ 'TIME' | translate }}" class="form-control pickadate-input" ng-model="booking.endRequested" pickatime="timeConfig">
-      </div>
-    </div>
+  <p><label for="res_discountCode">Kortingscode</label></p>
+  <div class="form-group mw-button" style="">
+    <input id="res_discountCode" type="text" ng-model="booking.discountCode" ng-change="validateDiscountCode()" md-select-on-focus
+           ng-class="{
+             'discount-code-success': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.success,
+             'discount-code-error': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.error,
+           }" />
+    <md-button ng-if="booking.discountCode && !discountCodeValidation.showSpinner" class="md-icon-button" ng-click="removeLocalDiscountCode()">
+      <ng-md-icon icon="close" aria-hidden="true"></ng-md-icon>
+    </md-button>
+    <md-button ng-if="booking.discountCode && discountCodeValidation.showSpinner" class="md-icon-button">
+      <md-progress-circular md-diameter="24"></md-progress-circular>
+    </md-button>
   </div>
-
-  <div class="form-group">
-    <label translate="BOOKING.REMARK_REQUESTER_LABEL" translate-values="{ owner: resource.owner.firstName || 'de eigenaar' }"></label>
-    <textarea rows="2" id="remarkRequester" name="remarkRequester" class="form-control" ng-model="booking.remarkRequester"></textarea>
+  <div class="help-block mw-push-up" ng-show="false">
+    <span class="text-danger" ng-show="true">De datum moet in het verleden liggen.</span>
   </div>
-
+<!--
   <div class="form-group"
        ng-if="features.discounts && !invitedDiscount"
        ng-class="{'has-error': discountCodeValidation.submitted && discountCodeValidation.error}">
@@ -44,12 +50,13 @@
         <input class="form-control" type="text" ng-model="booking.discountCode" ng-change="validateDiscountCode()" />
         <span class="input-group-btn">
           <button class="btn btn-default" type="button" ng-click="removeLocalDiscountCode()"
-                  style="padding: 4px;"> <!-- padding workaround due to 16px glyphicons vs 24px md-icons -->
-            <md-icon aria-label="verwijder">close</md-icon>
+                  style="padding: 4px;">
+            <ng-md-icon icon="close" aria-label="verwijder"></ng-md-icon>
           </button>
         </span>
       </div>
   </div>
+-->
 
   <div class="form-group" ng-if="contractOptions && contractOptions.length > 1">
     <label for="contract">Contract</label>
@@ -69,8 +76,8 @@
   <!-- availability & price -->
   <div class="form-group">
     <div class="text-center" ng-if="price || isPriceLoading || availability || isAvailabilityLoading">
-      <h4 ng-if="availability.available==='no'"><md-icon alt="Icoon" aria-label="Icoon" class="text-danger">close</md-icon> {{ 'NOT_AVAILABLE' | translate }}</h4>
-      <h4 ng-if="availability.available==='yes'"><md-icon alt="Icoon" aria-label="Icoon" class="text-success">check</md-icon> {{ 'AVAILABLE' | translate }}</h4>
+      <h4 ng-if="availability.available==='no'"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon> {{ 'NOT_AVAILABLE' | translate }}</h4>
+      <h4 ng-if="availability.available==='yes'"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon> {{ 'AVAILABLE' | translate }}</h4>
       <h4 ng-if="availability.available==='yes' && price">
         <div ng-if="!invitedDiscount">
           {{ 'COSTS' | translate }}:
@@ -114,9 +121,9 @@
 
   <div class="booking-benefits-mywheels">
     <ul style="padding-left: 0px;">
-      <li class="benefit-1"><md-icon alt="Icoon" aria-label="Icoon">check</md-icon> <span>Uitgebreide verzekering</span></li>
-      <li class="benefit-2"><md-icon alt="Icoon" aria-label="Icoon">check</md-icon> <span>Leden geven ons een 8.7</span></li>
-      <li class="benefit-3"><md-icon alt="Icoon" aria-label="Icoon">check</md-icon> <span>24/7 klantenservice</span></li>
+      <li class="benefit-1"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon"></ng-md-icon> <span>Uitgebreide verzekering</span></li>
+      <li class="benefit-2"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon"></ng-md-icon> <span>Leden geven ons een 8.7</span></li>
+      <li class="benefit-3"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon"></ng-md-icon> <span>24/7 klantenservice</span></li>
     </ul>
   </div>
 

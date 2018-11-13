@@ -13,7 +13,7 @@
   <div class="photo-grid clearfix" as-sortable="sortableOptions" ng-model="photos" style="position:relative">
 
     <div class="photo-container" ng-repeat="photo in photos" as-sortable-item>
-      <button class="btn btn-link remove-photo" ng-click="removePicture(photo, $index)"><md-icon style="color:#fff;">close</md-icon></button>
+      <button class="btn btn-link remove-photo" ng-click="removePicture(photo, $index)"><ng-md-icon icon="close" style="color:#fff;"></ng-md-icon></button>
       <div as-sortable-item-handle class="photo">
         <img class="image" ng-src="{{ photo.url }}" />
       </div>

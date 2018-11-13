@@ -6,9 +6,10 @@ angular.module('owm.resource.reservationForm', [])
   return {
     restrict: 'E',
     scope: {
+      mobile: '=',
       person: '=',
       resource: '=',
-      booking: '=', // { beginRequested, endRequested, remarkRequester, contract }
+      booking: '=', // { beginRequested, endRequested, remarkRequester, contract }     , timeframe (!)
       showPrice: '=',
     },
     templateUrl: 'resource/components/reservationForm.tpl.html',
@@ -21,9 +22,12 @@ angular.module('owm.resource.reservationForm', [])
   API_DATE_FORMAT, resourceService, invoice2Service, alertService, authService, bookingService, discountService,
   contractService, featuresService, $mdDialog, $mdMedia, $translate, $location, $localStorage, Analytics) {
 
+  $scope.id = 'reservationForm-' + Math.floor(Math.random() * 1000);
+
   // Check if this page is being called after login/singup in booking process
   handleAuthRedirect();
 
+  // This data does not change
   $scope.age = -1;
   if(authService.user.isAuthenticated && authService.user.identity.dateOfBirth) {
     var dob = moment(authService.user.identity.dateOfBirth);
@@ -38,107 +42,53 @@ angular.module('owm.resource.reservationForm', [])
     $scope.invitedDiscount = false;
   }
 
-  $scope.dateConfig = {
-    modelFormat: API_DATE_FORMAT,
-    formatSubmit: 'yyyy-mm-dd',
-    viewFormat: 'DD-MM-YYYY',
-    format: 'dd-mm-yyyy',
-    selectMonths: true
-  };
 
-  $scope.timeConfig = {
-    modelFormat: API_DATE_FORMAT,
-    formatSubmit: 'HH:i',
-    viewFormat: 'HH:mm',
-    format: 'HH:i',
-    interval: 15
-  };
-
-  function getStartOfThisQuarter() {
-    var mom = moment();
-    var quarter = Math.floor((mom.minutes() | 0) / 15); // returns 0, 1, 2 or 3
-    var minutes = (quarter * 15) % 60;
-    mom.minutes(minutes);
-    return mom;
+  // temporary
+  function bookingToRequestedFormat (bk) {
+    if (!bk.timeframe) {
+      bk.beginRequested = null;
+      bk.endRequested   = null;
+    } else {
+      bk.beginRequested = bk.timeframe.pickup ? bk.timeframe.pickup.format(API_DATE_FORMAT) : null;
+      bk.endRequested   = bk.timeframe.return ? bk.timeframe.return.format(API_DATE_FORMAT) : null;
+    }
   }
 
-  $scope.setTimeframe = function (addDays) {
-    var now = getStartOfThisQuarter();
-    $scope.booking.beginRequested = now.add('days', addDays).format(API_DATE_FORMAT);
-  };
 
-  function isToday(_moment) {
-    return _moment.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD');
+  // This data DOES change
+
+  function resetToPreTimeframe () {
+    $scope.availability = null;
+    $scope.isAvailabilityLoading = false;
   }
+  resetToPreTimeframe();
 
-  $scope.onBeginDateChange = function () {
-    var booking = $scope.booking;
-    var begin = booking.beginRequested && moment(booking.beginRequested, API_DATE_FORMAT);
-    var end = booking.endRequested && moment(booking.endRequested, API_DATE_FORMAT);
+/*
+        $timeout(function () {
+          loadAvailability().then(function (availability) {
+            if (availability.available === 'yes') {
+              loadContractsOnce().then(function () {
+                validateDiscountCode();
+                if (featuresService.get('calculatePrice')) {
+                  loadPrice();
+                }
+              });
+            } else {
+              validateDiscountCode();
+              if (featuresService.get('calculatePrice')) {
+                loadPrice();
+              }
+            }
+          });
+        }, 1);
+        */
 
-    if (begin && !isToday(begin)) {
-      begin = begin.startOf('day').add('hours', 9);
-      if (!end) {
-        end = begin.clone().startOf('day').add('hours', 18);
-      }
-      if (begin < end) {
-        booking.beginRequested = begin.format(API_DATE_FORMAT);
-        booking.endRequested = end.format(API_DATE_FORMAT);
-      }
-    }
-  };
-
-  $scope.onEndDateChange = function () {
-    var booking = $scope.booking;
-    var begin = booking.beginRequested && moment(booking.beginRequested, API_DATE_FORMAT);
-    var end = booking.endRequested && moment(booking.endRequested, API_DATE_FORMAT);
-
-    if (end && !isToday(end)) {
-      end = end.startOf('day').add('hours', 18);
-      if (!begin) {
-        begin = end.clone().startOf('day').add('hours', 9);
-      }
-      if (begin < end) {
-        booking.beginRequested = begin.format(API_DATE_FORMAT);
-        booking.endRequested = end.format(API_DATE_FORMAT);
-      } else {
-        booking.beginRequested = begin.format(API_DATE_FORMAT);
-        booking.endRequested = begin.format(API_DATE_FORMAT);
-      }
-    }
-  };
 
   $scope.price = null;
   $scope.isPriceLoading = false;
-  $scope.$watch('booking.beginRequested', onTimeFrameChange);
-  $scope.$watch('booking.endRequested', onTimeFrameChange);
-  $scope.$watch('booking.riskReduction', loadPrice);
+  //$scope.$watch('booking.riskReduction', loadPrice);
 
-  var timer;
 
-  function onTimeFrameChange() {
-    $timeout.cancel(timer);
-    timer = $timeout(function () {
-      loadAvailability().then(function (availability) {
-        if (availability.available === 'yes') {
-          loadContractsOnce().then(function () {
-            validateDiscountCode();
-            if (featuresService.get('calculatePrice')) {
-              loadPrice();
-            }
-          });
-        } else {
-          validateDiscountCode();
-          if (featuresService.get('calculatePrice')) {
-            loadPrice();
-          }
-        }
-      });
-    }, 100);
-  }
-
-  $scope.availability = null;
-  $scope.isAvailabilityLoading = false;
 
   function loadAvailability() {
     var dfd = $q.defer();
@@ -146,6 +96,8 @@ angular.module('owm.resource.reservationForm', [])
     var r = $scope.resource;
     $scope.availability = null;
     $scope.price = null;
+
+    bookingToRequestedFormat(b); // temporary
 
     if (b.beginRequested && b.endRequested) {
       $scope.isAvailabilityLoading = true;
@@ -204,6 +156,8 @@ angular.module('owm.resource.reservationForm', [])
     var params;
     $scope.price = null;
 
+    bookingToRequestedFormat(b); // temporary
+
     if ($scope.availability && ['yes', 'unknown'].indexOf($scope.availability.available) >= 0 &&
       (b.beginRequested && b.endRequested)) {
       $scope.isPriceLoading = true;
@@ -245,15 +199,6 @@ angular.module('owm.resource.reservationForm', [])
     return s;
   };
 
-  $scope.discountCodeValidation = {
-    timer: null,
-    submitted: false,
-    busy: false,
-    showSpinner: false,
-    success: false,
-    error: false
-  };
-
   $scope.removeLocalDiscountCode = function removeLocalDiscountCode () {
     // Ideally, we'd just want to `$state.go('.', { discountCode: '' })`
     //  and be done with it.
@@ -267,8 +212,16 @@ angular.module('owm.resource.reservationForm', [])
     });
   };
 
-  $scope.validateDiscountCode = validateDiscountCode;
+  $scope.discountCodeValidation = {
+    timer: null,
+    submitted: false,
+    busy: false,
+    showSpinner: false,
+    success: false,
+    error: false
+  };
 
+  $scope.validateDiscountCode = validateDiscountCode;
   function validateDiscountCode() {
     var DEBOUNCE_TIMEOUT_MS = 500,
       validation = $scope.discountCodeValidation,
@@ -285,9 +238,11 @@ angular.module('owm.resource.reservationForm', [])
     }
 
     validation.busy = true;
+    validation.showSpinner = true;
     validation.timer = $timeout(function validateDebounced() {
       $log.debug('validating', code);
-      validation.showSpinner = true;
+
+      bookingToRequestedFormat($scope.booking); // temporary
 
       discountService.isApplicable({
           resource: $scope.resource.id,
@@ -372,6 +327,8 @@ angular.module('owm.resource.reservationForm', [])
     if($scope.person) {
       $scope.initPhoneNumbers();
     }
+
+    bookingToRequestedFormat(booking); // temporary
 
     if (!booking.beginRequested || !booking.endRequested) {
       $scope.loading.createBooking = false;

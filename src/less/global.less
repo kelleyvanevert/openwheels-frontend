@@ -40,6 +40,91 @@ select,
 textarea {
     font-family: Arial;
 }
+
+
+
+/* TODO put this somewhere sensible */
+md-input-container label,
+md-input-container.md-default-theme .md-placeholder,
+md-input-container .md-placeholder {
+    font-family: Arial;
+    color: #888;
+/*    font-weight: bold;*/
+}
+md-input-container .hint {
+    font-size: .9em;
+    color: #888;
+    position: absolute;
+    left: 4px;
+    right: auto;
+    bottom: 6px;
+}
+md-input-container.md-icon-left > label:not(.md-no-float):not(.md-container-ignore),
+md-input-container.md-icon-left > label .md-placeholder,
+md-input-container.md-icon-right > label:not(.md-no-float):not(.md-container-ignore),
+md-input-container.md-icon-right > label .md-placeholder {
+    width: 100%;
+}
+
+md-input-container:not(.md-input-invalid) > md-icon.blue,
+md-input-container:not(.md-input-invalid) > ng-md-icon.blue {
+    color: @mywheels-blue;
+}
+md-input-container:not(.md-input-invalid) > md-icon.green,
+md-input-container:not(.md-input-invalid) > ng-md-icon.green {
+    color: @mywheels-green;
+}
+md-input-container:not(.md-input-invalid) > md-icon.orange,
+md-input-container:not(.md-input-invalid) > ng-md-icon.orange {
+    color: @mywheels-orange;
+}
+md-input-container:not(.md-input-invalid) > md-icon.red,
+md-input-container:not(.md-input-invalid) > ng-md-icon.red {
+    color: @mywheels-red;
+}
+md-input-container:not(.md-input-invalid) > md-icon.gray,
+md-input-container:not(.md-input-invalid) > ng-md-icon.gray {
+    color: @mywheels-gray;
+}
+
+.discount-input {
+    position: relative;
+}
+.discount-input__clearbutton {
+    
+}
+
+.material-icon-hack {
+    position:relative;
+    display:inline-block;
+    vertical-align: text-top;
+}
+
+.material-icon-hack:after { color: @mywheels-blue; }
+.material-icon-hack.time:after { content: "schedule"; }
+.material-icon-hack.date:after { content: "event"; }
+.material-icon-hack.up:after { content: "keyboard_arrow_up"; }
+.material-icon-hack.down:after { content: "keyboard_arrow_down"; }
+.material-icon-hack.previous { transform: rotate(180deg); }
+.material-icon-hack.previous:after { content: "arrow_forward_ios"; }
+.material-icon-hack.next:after { content: "arrow_forward_ios"; }
+.material-icon-hack.today:after { content: "home"; }
+.material-icon-hack.clear:after { content: "delete"; }
+.material-icon-hack.accept:after { content: "check"; }
+.bootstrap-datetimepicker-widget table td span { margin: 0 !important; }
+
+.mywheels-btn-big .material-icon-hack:after,
+.btn-success .material-icon-hack:after {
+    color: white;
+}
+
+
+md-icon {
+    user-select: none;
+}
+
+
+
 .min-height-cross-device {
   min-height: 75rem;
 }
@@ -158,6 +243,7 @@ hr {
     border: none;
 }
 .app-toolbar .app--toolbar--button--text.md-button md-icon,
+.app-toolbar .app--toolbar--button--text.md-button ng-md-icon,
 .app-toolbar .app--toolbar--button--text span {
     color: #fff;
 }

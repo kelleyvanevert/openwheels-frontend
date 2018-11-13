@@ -14,7 +14,7 @@
           <md-list-item ng-if="b.beginBooking" class="bookingDate">
             <div layout="row" layout-wrap class="bookingDateRow">
               <div flex="50" class="bookingBeginDate" ng-class="{ 'accepted': b.status === 'accepted', 'cancelled': (b.status === 'cancelled' || b.status === 'owner_cancelled'), 'rejected': b.status === 'rejected', 'requested': b.status === 'requested' }">
-                <md-icon>access_time</md-icon>
+                <ng-md-icon icon="access_time"></ng-md-icon>
                 <span>
                   <strong>{{ b.beginBooking | amDateFormat:'DD-MM-YYYY' }}</strong>
                   <br/>
@@ -34,7 +34,7 @@
           <md-list-item ng-if="b.beginRequested && !b.beginBooking" class="bookingDate">
             <div layout="row" layout-wrap class="bookingDateRow">
               <div flex="50" class="bookingBeginDate" ng-class="{ 'accepted': b.status === 'accepted', 'cancelled': (b.status === 'cancelled' || b.status === 'owner_cancelled'), 'rejected': b.status === 'rejected', 'requested': b.status === 'requested' }">
-                <md-icon>access_time</md-icon>
+                <ng-md-icon icon="access_time"></ng-md-icon>
                 <span>
                   <strong>{{ b.beginRequested | amDateFormat:'DD-MM-YYYY' }}</strong>
                   <br/>
@@ -55,17 +55,17 @@
             <div layout="row" style="width:100%; padding-top:20px;padding-bottom:10px;">
               <div flex="50">
                 <center style="width: 100%;" ng-if="b.approved !== 'BUY_VOUCHER' || b.status !== 'accepted'">
-                  <md-icon class="text-info">settings</md-icon>
+                  <ng-md-icon icon="settings" class="text-info"></ng-md-icon>
                   <a href="" ga-track-event="['interaction', 'editBooking', 'dashboard']" class="text-info">Wijzig</a>
                 </center>
                 <center style="width: 100%;" ng-if="b.approved === 'BUY_VOUCHER' && b.status === 'accepted'">
-                  <md-icon class="text-danger">payment</md-icon>
+                  <ng-md-icon icon="payment" class="text-danger"></ng-md-icon>
                   <a href="" ga-track-event="['interaction', 'payBooking', 'dashboard']" class="text-danger">Betaal rit</a>
                 </center>
               </div>
               <div flex="50">
                 <center style="width: 100%;">
-                  <md-icon class="text-info">search</md-icon>
+                  <ng-md-icon icon="search" class="text-info"></ng-md-icon>
                   <a href="" ga-track-event="['interaction', 'detailsBooking', 'dashboard']" class="text-info">Details</a>
                 </center>
               </div>

@@ -24,7 +24,7 @@
         <div class="infoboxes">
             <div class="infobox infobox__line">
                 <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                    <md-icon class="infobox--title--icon">search</md-icon>
+                    <ng-md-icon icon="search" class="infobox--title--icon"></ng-md-icon>
                     <h3 class="infobox--title--text">{{ 'DASHBOARD_INTRO_TREE_STEPS_ONE' | translate}}</h3>
                 </div>
                 <p class="infobox--content">{{ 'DASHBOARD_INTRO_TREE_STEPS_ONE_TEXT' | translate }}</p>
@@ -32,7 +32,7 @@
             </div>
             <div class="infobox infobox__line">
                 <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                    <md-icon class="infobox--title--icon" alt="Persoon icoon" aria-label="Persoon icoon">person_outline</md-icon>
+                    <ng-md-icon icon="person_outline" class="infobox--title--icon" alt="Persoon icoon" aria-label="Persoon icoon"></ng-md-icon>
                     <h3 class="infobox--title--text">{{'DASHBOARD_INTRO_TREE_STEPS_TWO'| translate }}</h3>
                 </div>
                 <p class="infobox--content">{{'DASHBOARD_INTRO_TREE_STEPS_TWO_TEXT'| translate }}</p>
@@ -40,7 +40,7 @@
             </div>
             <div class="infobox">
                 <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                    <md-icon class="infobox--title--icon">directions_car</md-icon>
+                    <ng-md-icon icon="directions_car" class="infobox--title--icon"></ng-md-icon>
                     <h3 class="infobox--title--text">{{'DASHBOARD_INTRO_TREE_STEPS_TREE'| translate }}</h3>
                 </div>
                 <p class="infobox--content">{{'DASHBOARD_INTRO_TREE_STEPS_TREE_TEXT'| translate }}</p>
@@ -71,7 +71,7 @@
                         <md-card>
                             <md-card-header ng-click="toggleBox(1)">
                                 <md-card-header-text>
-                                    <span class="md-title">{{ 'FAQ_ESCROW' | translate}}<md-icon class="pull-right">{{openboxes[1] ? 'expand_less' : 'expand_more'}}</md-icon></span>
+                                    <span class="md-title">{{ 'FAQ_ESCROW' | translate}}<ng-md-icon icon="{{openboxes[1] ? 'expand_less' : 'expand_more'}}" class="pull-right"></ng-md-icon></span>
                                 </md-card-header-text>
                             </md-card-header>
                             <md-divider></md-divider>
@@ -85,7 +85,7 @@
                         <md-card>
                             <md-card-header ng-click="toggleBox(2)">
                                 <md-card-header-text>
-                                    <span class="md-title">  {{ 'FAQ_CARS' | translate}}<md-icon class="pull-right">{{openboxes[2] ? 'expand_less' : 'expand_more'}}</md-icon></span>
+                                    <span class="md-title">  {{ 'FAQ_CARS' | translate}}<ng-md-icon icon="{{openboxes[2] ? 'expand_less' : 'expand_more'}}" class="pull-right"></ng-md-icon></span>
                                 </md-card-header-text>
                             </md-card-header>
                             <md-divider></md-divider>
@@ -99,7 +99,7 @@
                         <md-card>
                             <md-card-header ng-click="toggleBox(3)">
                                 <md-card-header-text>
-                                    <span class="md-title">  {{ 'FAQ_INSURANCE' | translate}}<md-icon class="pull-right">{{openboxes[3] ? 'expand_less' : 'expand_more'}}</md-icon></span>
+                                    <span class="md-title">  {{ 'FAQ_INSURANCE' | translate}}<ng-md-icon icon="{{openboxes[3] ? 'expand_less' : 'expand_more'}}" class="pull-right"></ng-md-icon></span>
                                 </md-card-header-text>
                             </md-card-header>
                             <md-divider></md-divider>
@@ -116,7 +116,7 @@
                         <md-card>
                             <md-card-header ng-click="toggleBox(4)">
                                 <md-card-header-text>
-                                    <span class="md-title">  {{ 'FAQ_MYWHEELS_OPEN' | translate}}<md-icon class="pull-right">{{openboxes[4] ? 'expand_less' : 'expand_more'}}</md-icon></span>
+                                    <span class="md-title">  {{ 'FAQ_MYWHEELS_OPEN' | translate}}<ng-md-icon icon="{{openboxes[4] ? 'expand_less' : 'expand_more'}}" class="pull-right"></ng-md-icon></span>
                                 </md-card-header-text>
                             </md-card-header>
                             <md-divider></md-divider>
@@ -130,7 +130,7 @@
                         <md-card>
                             <md-card-header ng-click="toggleBox(5)">
                                 <md-card-header-text>
-                                    <span class="md-title">  {{ 'FAQ_OV' | translate}}<md-icon class="pull-right">{{openboxes[5] ? 'expand_less' : 'expand_more'}}</md-icon></span>
+                                    <span class="md-title">  {{ 'FAQ_OV' | translate}}<ng-md-icon icon="{{openboxes[5] ? 'expand_less' : 'expand_more'}}" class="pull-right"></ng-md-icon></span>
                                 </md-card-header-text>
                             </md-card-header>
                             <md-divider></md-divider>
@@ -144,7 +144,7 @@
                         <md-card>
                             <md-card-header ng-click="toggleBox(6)">
                                 <md-card-header-text>
-                                    <span class="md-title">  {{ 'FAQ_COUNTRY' | translate}}<md-icon class="pull-right">{{openboxes[6] ? 'expand_less' : 'expand_more'}}</md-icon></span>
+                                    <span class="md-title">  {{ 'FAQ_COUNTRY' | translate}}<ng-md-icon icon="{{openboxes[6] ? 'expand_less' : 'expand_more'}}" class="pull-right"></ng-md-icon></span>
                                 </md-card-header-text>
                             </md-card-header>
                             <md-divider></md-divider>

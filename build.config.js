@@ -19,6 +19,9 @@ module.exports = {
 
   vendor_files: {
     js: [
+      'vendor_custom/polyfills/custom-event.js',
+      'vendor_custom/polyfills/object-assign.js',
+
       'vendor/jquery/dist/jquery.js',
       'vendor/angular/angular.js',
       'vendor/angular-aria/angular-aria.js',
@@ -29,8 +32,11 @@ module.exports = {
       'vendor/angular-sanitize/angular-sanitize.js',
       'vendor/angular-ui-router/release/angular-ui-router.js',
       'vendor/underscore/underscore.js',
-      'vendor/momentjs/moment.js',
+//      'vendor/momentjs/moment.js',
+//      'vendor/momentjs/moment/lang/nl.js',
       'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
+
+      'vendor_custom/moment-with-locales.js', // 2.9.0
 
       'vendor/angular-google-maps/dist/angular-google-maps.js',
       'vendor/lodash/dist/lodash.js', // required by angular-google-maps
@@ -39,9 +45,13 @@ module.exports = {
       'vendor/slick-carousel/slick/slick.js',
       'vendor/angular-slick/dist/slick.js',
 
+      'vendor/bootstrap/dist/js/bootstrap.js',
+      'vendor_custom/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js', // depends: jquery, momentjs
+
       'vendor/angular-uuid/uuid.js',
       'vendor/angular-jsonrpc-q/build/jsonrpc.js',
       'vendor/angular-moment/angular-moment.js',
+      'vendor/angular-material-icons/angular-material-icons.min.js',
       'vendor/angular-percentage-filter/percentage.js',
       'vendor/angular-translate/angular-translate.js',
       'vendor/angular-translate-loader-static-files/angular-translate-loader-static-files.js',

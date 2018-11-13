@@ -1,19 +1,19 @@
 <ul class="list-unstyled list-spaced">
     <li>
-        <md-icon class="text-success list-margin">people</md-icon>
+        <ng-md-icon icon="people" class="text-success list-margin"></ng-md-icon>
         <span>{{ resource.numberOfSeats }} {{ 'SEATS' | translate }}</span>
     </li>
     <li>
-        <md-icon class="text-success list-margin">vpn_key</md-icon>
+        <ng-md-icon icon="vpn_key" class="text-success list-margin"></ng-md-icon>
         <span ng-repeat="locktype in resource.locktypes | unique:'locktype'">{{  ('LOCKTYPE.' + locktype) | translateOrDefault : locktype | lowercase }}<span ng-if="!$last"> & </span></span>
         <span ng-if="!resource.locktypes">{{ 'UKNOWN_LOCKTYPE' | translate | lowercase }}</span>
     </li>
     <li>
-        <md-icon class="text-success list-margin">event_available</md-icon>
+        <ng-md-icon icon="event_available" class="text-success list-margin"></ng-md-icon>
         <span>{{ resource.numberOfBookings | wasBookedTimes }}</span>
     </li>
     <li ng-if="resource.numberOfBookings > 0">
-        <md-icon class="text-success list-margin">check</md-icon>
+        <ng-md-icon icon="check" class="text-success list-margin"></ng-md-icon>
         <span>{{ resource.response_accept | percentage : 0 }} {{ 'ACCEPTED_REQUESTS' | translate}}</span>
     </li>
 </ul>
