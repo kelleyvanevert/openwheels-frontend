@@ -51,6 +51,7 @@ module.exports = {
       'vendor/angular-uuid/uuid.js',
       'vendor/angular-jsonrpc-q/build/jsonrpc.js',
       'vendor/angular-moment/angular-moment.js',
+      'vendor/angular-material-icons/angular-material-icons.min.js',
       'vendor/angular-percentage-filter/percentage.js',
       'vendor/angular-translate/angular-translate.js',
       'vendor/angular-translate-loader-static-files/angular-translate-loader-static-files.js',

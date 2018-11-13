@@ -5,7 +5,7 @@
             <h2>Kortingscode toevoegen</h2>
             <span flex></span>
             <md-button class="md-icon-button" ng-click="hide()">
-                <md-icon>close</md-icon>
+                <ng-md-icon icon="close"></ng-md-icon>
             </md-button>
         </div>
     </md-toolbar>
@@ -15,7 +15,7 @@
             <div layout="row">
                 <md-input-container flex>
                     <label class="disable-ng-animate">Kortingscode</label>
-                    <md-icon>card_giftcard</md-icon>
+                    <ng-md-icon icon="card_giftcard"></ng-md-icon>
                     <input type="text" name="discountCode" ng-model="discountCode" />
                     <div ng-messages="form.discountCode.$error">
                         <div ng-message="wrongdiscountCode">Voer een geldig kortingscode in</div>

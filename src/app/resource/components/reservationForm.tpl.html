@@ -29,7 +29,7 @@
         mobile="mobile"
         dtp-broadcast-accept="pickupDateAccepted"
         scroll-to="'#'+id">
-      <md-icon aria-hidden="true">today</md-icon>
+      <ng-md-icon icon="today" aria-hidden="true"></ng-md-icon>
       <input type="text" autocomplete="off" name="pickupDate" id="pickupDate" placeholder="Datum" required
              ng-model="pickupDate"
              ng-change="checkTimeframe('pickupDate')"
@@ -40,7 +40,7 @@
         mobile="mobile"
         bootstrap-date-time-picker="timeConfig" scroll-to="'#'+id"
         dtp-autoshow="pickupDateAccepted">
-      <md-icon aria-hidden="true">schedule</md-icon>
+      <ng-md-icon icon="schedule" aria-hidden="true"></ng-md-icon>
       <input type="text" autocomplete="off" name="pickupTime" id="pickupTime" placeholder="Tijd" required
              ng-model="pickupTime"
              ng-change="checkTimeframe('pickupTime')"
@@ -60,7 +60,7 @@
         mobile="mobile"
         dtp-broadcast-accept="returnDateAccepted"
         scroll-to="'#'+id">
-      <md-icon aria-hidden="true">today</md-icon>
+      <ng-md-icon icon="today" aria-hidden="true"></ng-md-icon>
       <input type="text" autocomplete="off" name="returnDate" id="returnDate" placeholder="Datum" required
              ng-model="returnDate"
              ng-change="checkTimeframe('returnDate')"
@@ -71,7 +71,7 @@
         mobile="mobile"
         bootstrap-date-time-picker="timeConfig" scroll-to="'#'+id"
         dtp-autoshow="returnDateAccepted">
-      <md-icon aria-hidden="true">schedule</md-icon>
+      <ng-md-icon icon="schedule" aria-hidden="true"></ng-md-icon>
       <input type="text" autocomplete="off" name="returnTime" id="returnTime" placeholder="Tijd" required
              ng-model="returnTime"
              ng-change="checkTimeframe('returnTime')"
@@ -99,7 +99,7 @@
              'discount-code-error': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.error,
            }" />
     <md-button ng-if="booking.discountCode && !discountCodeValidation.showSpinner" class="md-icon-button" ng-click="removeLocalDiscountCode()">
-      <md-icon aria-hidden="true">close</md-icon>
+      <ng-md-icon icon="close" aria-hidden="true"></ng-md-icon>
     </md-button>
     <md-button ng-if="booking.discountCode && discountCodeValidation.showSpinner" class="md-icon-button">
       <md-progress-circular md-diameter="24"></md-progress-circular>
@@ -122,7 +122,7 @@
         <span class="input-group-btn">
           <button class="btn btn-default" type="button" ng-click="removeLocalDiscountCode()"
                   style="padding: 4px;">
-            <md-icon aria-label="verwijder">close</md-icon>
+            <ng-md-icon icon="close" aria-label="verwijder"></ng-md-icon>
           </button>
         </span>
       </div>
@@ -147,8 +147,8 @@
   <!-- availability & price -->
   <div class="form-group">
     <div class="text-center" ng-if="price || isPriceLoading || availability || isAvailabilityLoading">
-      <h4 ng-if="availability.available==='no'"><md-icon alt="Icoon" aria-label="Icoon" class="text-danger">close</md-icon> {{ 'NOT_AVAILABLE' | translate }}</h4>
-      <h4 ng-if="availability.available==='yes'"><md-icon alt="Icoon" aria-label="Icoon" class="text-success">check</md-icon> {{ 'AVAILABLE' | translate }}</h4>
+      <h4 ng-if="availability.available==='no'"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon> {{ 'NOT_AVAILABLE' | translate }}</h4>
+      <h4 ng-if="availability.available==='yes'"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon> {{ 'AVAILABLE' | translate }}</h4>
       <h4 ng-if="availability.available==='yes' && price">
         <div ng-if="!invitedDiscount">
           {{ 'COSTS' | translate }}:
@@ -192,9 +192,9 @@
 
   <div class="booking-benefits-mywheels">
     <ul style="padding-left: 0px;">
-      <li class="benefit-1"><md-icon alt="Icoon" aria-label="Icoon">check</md-icon> <span>Uitgebreide verzekering</span></li>
-      <li class="benefit-2"><md-icon alt="Icoon" aria-label="Icoon">check</md-icon> <span>Leden geven ons een 8.7</span></li>
-      <li class="benefit-3"><md-icon alt="Icoon" aria-label="Icoon">check</md-icon> <span>24/7 klantenservice</span></li>
+      <li class="benefit-1"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon"></ng-md-icon> <span>Uitgebreide verzekering</span></li>
+      <li class="benefit-2"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon"></ng-md-icon> <span>Leden geven ons een 8.7</span></li>
+      <li class="benefit-3"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon"></ng-md-icon> <span>24/7 klantenservice</span></li>
     </ul>
   </div>
 

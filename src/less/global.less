@@ -66,19 +66,24 @@ md-input-container.md-icon-right > label .md-placeholder {
     width: 100%;
 }
 
-md-input-container:not(.md-input-invalid) > md-icon.blue {
+md-input-container:not(.md-input-invalid) > md-icon.blue,
+md-input-container:not(.md-input-invalid) > ng-md-icon.blue {
     color: @mywheels-blue;
 }
-md-input-container:not(.md-input-invalid) > md-icon.green {
+md-input-container:not(.md-input-invalid) > md-icon.green,
+md-input-container:not(.md-input-invalid) > ng-md-icon.green {
     color: @mywheels-green;
 }
-md-input-container:not(.md-input-invalid) > md-icon.orange {
+md-input-container:not(.md-input-invalid) > md-icon.orange,
+md-input-container:not(.md-input-invalid) > ng-md-icon.orange {
     color: @mywheels-orange;
 }
-md-input-container:not(.md-input-invalid) > md-icon.red {
+md-input-container:not(.md-input-invalid) > md-icon.red,
+md-input-container:not(.md-input-invalid) > ng-md-icon.red {
     color: @mywheels-red;
 }
-md-input-container:not(.md-input-invalid) > md-icon.gray {
+md-input-container:not(.md-input-invalid) > md-icon.gray,
+md-input-container:not(.md-input-invalid) > ng-md-icon.gray {
     color: @mywheels-gray;
 }
 
@@ -238,6 +243,7 @@ hr {
     border: none;
 }
 .app-toolbar .app--toolbar--button--text.md-button md-icon,
+.app-toolbar .app--toolbar--button--text.md-button ng-md-icon,
 .app-toolbar .app--toolbar--button--text span {
     color: #fff;
 }
