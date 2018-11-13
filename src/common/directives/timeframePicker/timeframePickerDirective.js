@@ -98,6 +98,9 @@ angular.module('timeframePickerDirective', [])
         
         $scope.pickupDate = tf.pickup.format(dateConfig.format);
         $scope.pickupTime = tf.pickup.format(timeConfig.format);
+        
+        $scope.form.pickupDate.$setTouched(true); // ??
+        $scope.form.pickupTime.$setTouched(true); // ??
       }
 
       function adjustReturn (tf) {
@@ -116,12 +119,19 @@ angular.module('timeframePickerDirective', [])
 
         $scope.returnDate = tf.return.format(dateConfig.format);
         $scope.returnTime = tf.return.format(timeConfig.format);
+        
+        $scope.form.returnDate.$setTouched(true); // ??
+        $scope.form.returnTime.$setTouched(true); // ??
       }
 
       $scope.setPickupNow = setPickupNow;
       function setPickupNow () {
         $scope.pickupDate = moment().format(dateConfig.format);
         $scope.pickupTime = getStartOfThisQuarter().format(timeConfig.format);
+        
+        $scope.form.pickupDate.$setTouched(true); // ??
+        $scope.form.pickupTime.$setTouched(true); // ??
+
         checkTimeframe();
       }
 
@@ -142,6 +152,8 @@ angular.module('timeframePickerDirective', [])
           // set pickup time
           $scope.pickupTime = '9:00';
           tf.pickupTime = moment($scope.pickupTime, timeConfig.format);
+
+          $scope.form.pickupTime.$setTouched(true); // ??
         }
 
         // If today, then the default timepicker behavior of opening with current time is logical.
@@ -150,11 +162,15 @@ angular.module('timeframePickerDirective', [])
           // set return time
           $scope.returnTime = '18:00';
           tf.returnTime = moment($scope.returnTime, timeConfig.format);
+
+          $scope.form.returnTime.$setTouched(true); // ??
         }
 
         if (tf.pickupTime.isValid() && $scope.form.pickupDate.$untouched) {
           tf.pickupDate = moment();
           $scope.pickupDate = tf.pickupDate.format(dateConfig.format);
+
+          $scope.form.pickupDate.$setTouched(true); // ??
         }
 
 
