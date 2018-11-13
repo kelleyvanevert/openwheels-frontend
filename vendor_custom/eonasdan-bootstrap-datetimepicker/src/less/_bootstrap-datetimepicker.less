@@ -9,7 +9,7 @@
 @bs-datetimepicker-active-color: @btn-primary-color;
 @bs-datetimepicker-border-radius: @border-radius-base;
 @bs-datetimepicker-btn-hover-bg: @gray-lighter;
-@bs-datetimepicker-disabled-color: @gray-light;
+@bs-datetimepicker-disabled-color: #d4d4d4;
 @bs-datetimepicker-alternate-color: @gray-light;
 @bs-datetimepicker-secondary-border-color: #ccc;
 @bs-datetimepicker-secondary-border-color-rgba: rgba(0, 0, 0, 0.2);
@@ -210,8 +210,10 @@
 
             &.disabled,
             &.disabled:hover {
+                display: table-cell !important;
                 background: none;
                 color: @bs-datetimepicker-disabled-color;
+                text-decoration: line-through;
                 cursor: not-allowed;
             }
 
@@ -294,8 +296,10 @@
 
             &.disabled,
             &.disabled:hover {
+                display: table-cell !important;
                 background: none;
                 color: @bs-datetimepicker-disabled-color;
+                text-decoration: line-through;
                 cursor: not-allowed;
             }
 
@@ -325,8 +329,10 @@
 
                 &.disabled,
                 &.disabled:hover {
+                    display: inline-block !important;
                     background: none;
                     color: @bs-datetimepicker-disabled-color;
+                    text-decoration: line-through;
                     cursor: not-allowed;
                 }
             }
