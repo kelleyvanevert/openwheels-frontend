@@ -63,31 +63,30 @@ angular.module('owm.resource.reservationForm', [])
   }
   resetToPreTimeframe();
 
-/*
-        $timeout(function () {
-          loadAvailability().then(function (availability) {
-            if (availability.available === 'yes') {
-              loadContractsOnce().then(function () {
-                validateDiscountCode();
-                if (featuresService.get('calculatePrice')) {
-                  loadPrice();
-                }
-              });
-            } else {
-              validateDiscountCode();
-              if (featuresService.get('calculatePrice')) {
-                loadPrice();
-              }
-            }
-          });
-        }, 1);
-        */
-
 
   $scope.price = null;
   $scope.isPriceLoading = false;
-  //$scope.$watch('booking.riskReduction', loadPrice);
+  $scope.$watch('booking.riskReduction', loadPrice);
 
+  $scope.$watch('booking.timeframe', function () {
+    $timeout(function () {
+      loadAvailability().then(function (availability) {
+        if (availability.available === 'yes') {
+          loadContractsOnce().then(function () {
+            validateDiscountCode();
+            if (featuresService.get('calculatePrice')) {
+              loadPrice();
+            }
+          });
+        } else {
+          validateDiscountCode();
+          if (featuresService.get('calculatePrice')) {
+            loadPrice();
+          }
+        }
+      });
+    }, 1);
+  });
 
 
   function loadAvailability() {
