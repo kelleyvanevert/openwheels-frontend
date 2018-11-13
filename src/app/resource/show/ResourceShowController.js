@@ -103,40 +103,40 @@ angular.module('owm.resource.show', [])
     chatPopupService.openPopup(otherPersonName, otherPerson.id, resource.id, null);
   }
 
-  function openSignupDialog () {
-    $scope.resource = resource;
-
-    $mdDialog.show({
-      fullscreen: $mdMedia('xs'),
-      preserveScope: true,
-      locals: {
-        resource: $scope.resource
-      },
-      templateUrl: 'resource/components/ReservationFormDialog.tpl.html',
-      parent: angular.element(document.body),
-      clickOutsideToClose:true,
-      controller: ['$scope', '$mdDialog', 'authService', 'resource', function($scope, $mdDialog, authService, resource) {
-        $scope.resource = resource;
-        $scope.url = 'owm.resource.show';
-
-        $scope.hide = function () {
-          $mdDialog.hide();
-        };
-        $scope.cancel = function () {
-          $mdDialog.cancel();
-        };
-
-      }],
-    });
-  }
-
-  if(!authService.user.isAuthenticated && !$localStorage.signupAlert) {
-    $localStorage.signupAlert = true;
-
-    $timeout(function () {
-      openSignupDialog($scope.resource);
-    }, 2500);
-  }
+//  function openSignupDialog () {
+//    $scope.resource = resource;
+//
+//    $mdDialog.show({
+//      fullscreen: $mdMedia('xs'),
+//      preserveScope: true,
+//      locals: {
+//        resource: $scope.resource
+//      },
+//      templateUrl: 'resource/components/ReservationFormDialog.tpl.html',
+//      parent: angular.element(document.body),
+//      clickOutsideToClose:true,
+//      controller: ['$scope', '$mdDialog', 'authService', 'resource', function($scope, $mdDialog, authService, resource) {
+//        $scope.resource = resource;
+//        $scope.url = 'owm.resource.show';
+//
+//        $scope.hide = function () {
+//          $mdDialog.hide();
+//        };
+//        $scope.cancel = function () {
+//          $mdDialog.cancel();
+//        };
+//
+//      }],
+//    });
+//  }
+//
+//  if(!authService.user.isAuthenticated && !$localStorage.signupAlert) {
+//    $localStorage.signupAlert = true;
+//
+//    $timeout(function () {
+//      openSignupDialog($scope.resource);
+//    }, 2500);
+//  }
 
   function openCommentDialog (rating, $event) {
     $scope.rating = rating;

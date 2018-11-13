@@ -15,7 +15,7 @@ angular.module('ratingThumbBinaryDirective', [])
   return {
     restrict: 'A',
     scope: {},
-    template: '<md-icon class="{{ colorClass }} material-icons small" style="font-size:26px;">{{ iconClass }}</md-icon>',
+    template: '<ng-md-icon icon="{{ iconClass }}" class="{{ colorClass }} material-icons small" style="font-size:26px;"></ng-md-icon>',
     link: function (scope, elm, attrs) {
       var options = scope.$parent.$eval(attrs.ratingThumbBinary);
       var value   = options.value;
