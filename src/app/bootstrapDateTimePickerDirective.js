@@ -36,13 +36,13 @@ angular.module('bootstrapDateTimePickerDirective', [])
       if (!$window._blurReplacementHandler) {
         $($window).on('click', function (e) {
           if ($scope.mobile && e.target !== input[0]) {
-            $log.log(' [blur replace] closing:', $window.openDateTimePickers.length);
+            //$log.log(' [blur replace] closing:', $window.openDateTimePickers.length);
             $window.openDateTimePickers.map(function (el) {
               const c = $(el).data('DateTimePicker');
               if (!c) {
-                $log.log('problem finding dtc for', el);
+                //$log.log('problem finding dtc for', el);
               }
-              $log.log('hiding '+el.id+' manually instead of blur');
+              //$log.log('hiding '+el.id+' manually instead of blur');
               c.hide();
             });
           }
@@ -62,7 +62,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
       });
       if ($scope.dtpBroadcastAccept) {
         input.on('dp.accept', function () {
-          $log.log('I ('+$scope.config.format+') just broadcasted', $scope.dtpBroadcastAccept);
+          //$log.log('I ('+$scope.config.format+') just broadcasted', $scope.dtpBroadcastAccept);
           $rootScope.$broadcast($scope.dtpBroadcastAccept);
         });
       }
@@ -110,7 +110,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
           c.show();
           $window.openDateTimePickers.map(function (el) {
             if (el !== input[0]) {
-              $log.log('hiding OTHER:'+el.id+' manually instead of blur');
+              //$log.log('hiding OTHER:'+el.id+' manually instead of blur');
               $(el).data('DateTimePicker').hide();
             }
           });
@@ -118,7 +118,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
           if ($scope.scrollTo) {
             el = $($scope.scrollTo);
             if (!el.length) {
-              $log.log('cannot find', $scope.scrollTo);
+              //$log.log('cannot find', $scope.scrollTo);
               el = input;
             }
           }
