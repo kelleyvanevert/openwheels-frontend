@@ -24,8 +24,7 @@ angular.module('timeframePickerDirective', [])
 
   const dateConfig = Object.assign({}, dateTimeConfig, {
     format: 'DD-MM-YYYY',
-    minDate: moment().subtract(1, 'years'),
-    maxDate: moment().add(1, 'years'),
+    minDate: moment(),
     widgetPositioning: { // with knowledge of the html (!)
       horizontal: 'left',
       vertical: 'bottom',
