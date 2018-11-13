@@ -172,13 +172,16 @@ angular.module('timeframePickerDirective', [])
         // Step 3: adjust window when necessary
         // (this logic used to reside in `src/common/directives/pickadate/TimeframeDirective.js`)
 
-        if (!tf.pickup && !tf.return) {
+        const pickup_untouched = $scope.form.pickupTime.$untouched && $scope.form.pickupDate.$untouched;
+        const return_untouched = $scope.form.returnTime.$untouched && $scope.form.returnDate.$untouched;
+
+        if (pickup_untouched && return_untouched) {
           // just null
         }
-        else if (tf.pickup && !tf.return) {
+        else if (tf.pickup && return_untouched) {
           adjustReturn(tf);
         }
-        else if (!tf.pickup && tf.return) {
+        else if (pickup_untouched && tf.return) {
           adjustPickup(tf);
         }
         else if (pickup_or_return === 'pickup' && tf.pickup > tf.return) {
