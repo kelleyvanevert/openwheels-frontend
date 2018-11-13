@@ -132,11 +132,11 @@ angular.module('timeframePickerDirective', [])
         $scope.form.pickupDate.$setTouched(true); // ??
         $scope.form.pickupTime.$setTouched(true); // ??
 
-        checkTimeframe();
+        checkTimeframe('pickup_now');
       }
 
       $scope.checkTimeframe = checkTimeframe;
-      function checkTimeframe (pickup_or_return) {
+      function checkTimeframe (caller) {
         const tf = {
           pickupDate: moment($scope.pickupDate, dateConfig.format), // only used for date part (!)
           pickupTime: moment($scope.pickupTime, timeConfig.format), // only used for time part (!)
@@ -188,22 +188,22 @@ angular.module('timeframePickerDirective', [])
         // Step 3: adjust window when necessary
         // (this logic used to reside in `src/common/directives/pickadate/TimeframeDirective.js`)
 
-        const pickup_untouched = $scope.form.pickupTime.$untouched && $scope.form.pickupDate.$untouched;
-        const return_untouched = $scope.form.returnTime.$untouched && $scope.form.returnDate.$untouched;
-
-        if (pickup_untouched && return_untouched) {
+        const pickupAdjustable = (caller === 'pickup_now' && !$scope.pickupTime && !$scope.pickupDate) || ($scope.form.pickupTime.$untouched && $scope.form.pickupDate.$untouched);
+        const returnAdjustable = (caller === 'pickup_now' && !$scope.returnTime && !$scope.returnDate) || ($scope.form.returnTime.$untouched && $scope.form.returnDate.$untouched);
+        
+        if (pickupAdjustable && returnAdjustable) {
           // just null
         }
-        else if (tf.pickup && return_untouched) {
+        else if (tf.pickup && returnAdjustable) {
           adjustReturn(tf);
         }
-        else if (pickup_untouched && tf.return) {
+        else if (pickupAdjustable && tf.return) {
           adjustPickup(tf);
         }
-        else if (pickup_or_return === 'pickup' && tf.pickup > tf.return) {
+        else if (caller === 'pickup' && tf.pickup > tf.return) {
           adjustReturn(tf);
         }
-        else if (pickup_or_return === 'return' && tf.pickup > tf.return) {
+        else if (caller === 'return' && tf.pickup > tf.return) {
           adjustPickup(tf);
         }
 
