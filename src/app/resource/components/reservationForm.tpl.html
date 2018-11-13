@@ -1,87 +1,16 @@
-<form role="form" class="booking mywheels-form" name="createBookingForm" timeframe begin="booking.beginRequested" end="booking.endRequested"
+<form role="form" class="booking mywheels-form" name="createBookingForm"
       ng-attr-id="{{ id }}">
 
-<!--
-  <div class="form-group">
-    <label>
-      {{ 'PICKUP_DATE' | translate }}
-      <button id="resource_now_button" type="button" class="btn btn-warning btn-xs" ng-click="setTimeframe(0)">{{ 'NOW' | translate }}</button>
-    </label>
-    <div class="row">
-      <div class="col-xs-7">
-        <input id="beginRequested" type="text" placeholder="{{ 'DATE' | translate }}" class="form-control pickadate-input" ng-model="booking.beginRequested" ng-change="onBeginDateChange()" pickadate="dateConfig">
-      </div>
-      <div class="col-xs-5">
-        <input id="endBequested" type="text" placeholder="{{ 'TIME' | translate }}" class="form-control pickadate-input" ng-model="booking.beginRequested" pickatime="timeConfig">
-      </div>
-    </div>
-  </div>
--->
-  
-  <p>
-    <label for="pickupDate">Ophalen</label>
-    <button id="resource_now_button" type="button" class="btn btn-warning btn-xs" ng-click="setPickupNow()">{{ 'NOW' | translate }}</button>
-  </p>
+<div style="display: none; background: #eee; font-family: monospace;">
+Timeframe: {{ booking.timeframe }}
+</div>
 
-  <div style="display: flex;">
-    <div class="form-group mw-datepicker mw-icon" style="width: 55%;"
-        bootstrap-date-time-picker="dateConfig"
-        mobile="mobile"
-        dtp-broadcast-accept="pickupDateAccepted"
-        scroll-to="'#'+id">
-      <ng-md-icon icon="today" aria-hidden="true"></ng-md-icon>
-      <input type="text" autocomplete="off" name="pickupDate" id="pickupDate" placeholder="Datum" required
-             ng-model="pickupDate"
-             ng-change="checkTimeframe('pickupDate')"
-             ng-keydown="$event.keyCode == 13 ? $broadcast('pickupDateAccepted') : null" />
-      <div ng-if="mobile" class="mobile-mask"></div>
-    </div>
-    <div class="form-group mw-timepicker mw-icon" style="width: 45%; margin-left: 1em;"
-        mobile="mobile"
-        bootstrap-date-time-picker="timeConfig" scroll-to="'#'+id"
-        dtp-autoshow="pickupDateAccepted">
-      <ng-md-icon icon="schedule" aria-hidden="true"></ng-md-icon>
-      <input type="text" autocomplete="off" name="pickupTime" id="pickupTime" placeholder="Tijd" required
-             ng-model="pickupTime"
-             ng-change="checkTimeframe('pickupTime')"
-             ng-keydown="$event.keyCode == 13 ? true : null" />
-      <div ng-if="mobile" class="mobile-mask"></div>
-    </div>
-  </div>
-  <div class="help-block mw-push-up" ng-show="false">
-    <span class="text-danger" ng-show="true">De datum moet in het verleden liggen.</span>
-  </div>
-
-  <p><label for="returnDate">Terugbrengen</label></p>
-
-  <div style="display: flex;">
-    <div class="form-group mw-datepicker mw-icon" style="width: 55%;"
-        bootstrap-date-time-picker="dateConfig"
-        mobile="mobile"
-        dtp-broadcast-accept="returnDateAccepted"
-        scroll-to="'#'+id">
-      <ng-md-icon icon="today" aria-hidden="true"></ng-md-icon>
-      <input type="text" autocomplete="off" name="returnDate" id="returnDate" placeholder="Datum" required
-             ng-model="returnDate"
-             ng-change="checkTimeframe('returnDate')"
-             ng-keydown="$event.keyCode == 13 ? $broadcast('returnDateAccepted') : null" />
-      <div ng-if="mobile" class="mobile-mask"></div>
-    </div>
-    <div class="form-group mw-timepicker mw-icon" style="width: 45%; margin-left: 1em;"
-        mobile="mobile"
-        bootstrap-date-time-picker="timeConfig" scroll-to="'#'+id"
-        dtp-autoshow="returnDateAccepted">
-      <ng-md-icon icon="schedule" aria-hidden="true"></ng-md-icon>
-      <input type="text" autocomplete="off" name="returnTime" id="returnTime" placeholder="Tijd" required
-             ng-model="returnTime"
-             ng-change="checkTimeframe('returnTime')"
-             ng-keydown="$event.keyCode == 13 ? true : null" />
-      <div ng-if="mobile" class="mobile-mask"></div>
-    </div>
-  </div>
-  <div class="help-block mw-push-up" ng-show="false">
-    <span class="text-danger" ng-show="true">De datum moet in het verleden liggen.</span>
-  </div>
+  <!-- timeframe[begin,end] -->
+  <timeframe-picker name="timeframe"
+                    ng-model="booking.timeframe"
+                    mobile="mobile">
+  </timeframe-picker>
+  <span ng-show="createBookingForm.timeframe.$error.begin_before_end">Volgorde verkeerd!</span>
 
   <p><label for="res_comment">Opmerking voor {{ resource.owner.firstName || 'de eigenaar' }}</label></p>
   <div class="form-group" style="">

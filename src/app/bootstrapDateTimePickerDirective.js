@@ -25,7 +25,11 @@ angular.module('bootstrapDateTimePickerDirective', [])
 
       if ($scope.dtpAutoshow) {
         $scope.$on($scope.dtpAutoshow, function () {
-          input.data('DateTimePicker').show();
+          if ($scope.mobile) {
+            input.data('DateTimePicker').show();
+          } else {
+            input.focus();
+          }
         });
       }
 
@@ -118,7 +122,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
               el = input;
             }
           }
-          $('html, body').stop().animate({ scrollTop: el.offset().top }, 500, 'swing');
+          $('html, body').stop().animate({ scrollTop: el.offset().top - 10 }, 500, 'swing');
           //return false;
         }
       });

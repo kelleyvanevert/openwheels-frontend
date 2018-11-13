@@ -88,8 +88,10 @@ angular.module('openwheels', [
   'sameHeightDirective',
   'autoblurDirective',
   'restrictToDirective',
-  'bootstrapDateTimePickerDirective',
   'autoResize',
+  
+  'bootstrapDateTimePickerDirective',
+  'timeframePickerDirective',
 
   /* Filters */
   'filters.util',
