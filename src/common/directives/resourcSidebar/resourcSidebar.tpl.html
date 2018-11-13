@@ -20,12 +20,12 @@
         <h3>Kenmerken:</h3>
         <ul class="list-unstyled list-spaced list-responsive">
             <li>
-                <md-icon class="text-success list-margin">event_available</md-icon>
+                <ng-md-icon icon="event_available" class="text-success list-margin"></ng-md-icon>
               <span>  {{ resource.numberOfBookings | wasBookedTimes }}</span>
             </li>
             <!-- lock type -->
             <li>
-                <md-icon class="text-success list-margin">vpn_key</md-icon>
+                <ng-md-icon icon="vpn_key" class="text-success list-margin"></ng-md-icon>
                 <span ng-if="resource.locktype">{{  ('LOCKTYPE.' + resource.locktype) | translateOrDefault : resource.locktype }}</span>
                 <span ng-if="!resource.locktype">{{ 'UKNOWN_LOCKTYPE' | translate }}</span>
             </li>

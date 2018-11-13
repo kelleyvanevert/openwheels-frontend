@@ -110,7 +110,7 @@
     <md-card-body class="ow-list-compact">
       <md-list class="margin-right" role="list">
         <md-list-item role="listitem" class="md-no-proxy">
-          <md-icon class="text-success material-icons">directions_car</md-icon>
+          <ng-md-icon icon="directions_car" class="text-success material-icons"></ng-md-icon>
           <div flex="" class="flex">
             {{ (resource.brand | toTitleCase) || ('UNKNOWN_BRAND' | translate) }} {{ resource.model | toTitleCase }}
             <span ng-if="hasAcceptedTimeframe(booking)" class="tag tag-{{ booking.status }} pull-right">{{ booking.status | bookingStatus }}</span>
@@ -120,7 +120,7 @@
           </div>
         </md-list-item>
         <md-list-item role="listitem" class="md-no-proxy">
-          <md-icon class="text-success material-icons">place</md-icon>
+          <ng-md-icon icon="place" class="text-success material-icons"></ng-md-icon>
           <div flex="" class="flex">
             {{ resource.location }} {{ resource.streetNumber }} <small>{{ resource.city  | toTitleCase }}</small>
           </div>
@@ -128,14 +128,14 @@
 
         <div id="started" ng-if="hasAcceptedTimeframe(booking)">
           <md-list-item role="listitem" class="md-no-proxy">
-            <md-icon class="text-success material-icons">arrow_forward</md-icon>
+            <ng-md-icon icon="arrow_forward" class="text-success material-icons"></ng-md-icon>
             <div flex="" class="flex">
               <datetime datetime="{{ booking.beginBooking }}"></datetime>
             </div>
           </md-list-item>
 
           <md-list-item role="listitem" class="md-no-proxy">
-            <md-icon class="text-success material-icons">arrow_back</md-icon>
+            <ng-md-icon icon="arrow_back" class="text-success material-icons"></ng-md-icon>
             <div flex="" class="flex">
               <datetime datetime="{{ booking.endBooking }}"></datetime>
             </div>
@@ -144,14 +144,14 @@
 
         <div id="requested" ng-if="!hasAcceptedTimeframe(booking)">
           <md-list-item role="listitem" class="md-no-proxy">
-            <md-icon class="text-warning material-icons">arrow_forward</md-icon>
+            <ng-md-icon icon="arrow_forward" class="text-warning material-icons"></ng-md-icon>
             <div flex="" class="flex">
               <datetime datetime="{{ bookingRequest.beginRequested }}"></datetime>
             </div>
           </md-list-item>
 
           <md-list-item role="listitem" class="md-no-proxy">
-            <md-icon class="text-warning material-icons">arrow_back</md-icon>
+            <ng-md-icon icon="arrow_back" class="text-warning material-icons"></ng-md-icon>
             <div flex="" class="flex">
               <datetime datetime="{{ bookingRequest.endRequested }}"></datetime>
             </div>
@@ -500,7 +500,7 @@
   <div class="card-heading">
     <h3 class="card-title">
       <a href="{{ allowAgreementUrl }}" target="_blank" ng-href="{{ allowAgreementUrl }}">
-        <md-icon class="btn-link">file_download</md-icon>
+        <ng-md-icon icon="file_download" class="btn-link"></ng-md-icon>
         Download huurovereenkomst
       </a>
     </h3>
@@ -554,26 +554,26 @@
     <div class="row" ng-if="userPerspective==='owner' && hasAcceptedTimeframe(booking) && hasRequestedTimeframe(booking)" style="text-align:center; margin-bottom:15px;">
       <div class="col-md-4">
         <div style="min-height: 40px;">
-          <md-icon class="text-warning material-icons">arrow_forward</md-icon>
+          <ng-md-icon icon="arrow_forward" class="text-warning material-icons"></ng-md-icon>
           <datetime style="display: inline;" datetime="{{ booking.beginRequested }}"></datetime>
         </div>
         <div style="min-height: 40px;">
-          <md-icon class="text-warning material-icons">arrow_back</md-icon>
+          <ng-md-icon icon="arrow_back" class="text-warning material-icons"></ng-md-icon>
           <datetime style="display: inline;" datetime="{{ booking.endRequested }}"></datetime>
         </div>
         <span ng-if="!hasAcceptedTimeframe(booking)" class="tag tag-{{ booking.status }}">{{ booking.status | bookingStatus }}</span>
         <span ng-if="hasAcceptedTimeframe(booking)" class="tag tag-requested">{{ 'requested' | bookingStatus }}</span>
       </div>
       <div class="col-md-4" style="padding-bottom: 25px;">
-        <md-icon class="material-icons" style="margin-top: 23px;">compare_arrows</md-icon>
+        <ng-md-icon icon="compare_arrows" class="material-icons" style="margin-top: 23px;"></ng-md-icon>
       </div>
       <div class="col-md-4">
         <div style="min-height: 40px;">
-          <md-icon class="text-success material-icons">arrow_forward</md-icon>
+          <ng-md-icon icon="arrow_forward" class="text-success material-icons"></ng-md-icon>
           <datetime style="display: inline;" datetime="{{ booking.beginBooking }}"></datetime>
         </div>
         <div style="min-height: 40px;">
-          <md-icon class="text-success material-icons">arrow_back</md-icon>
+          <ng-md-icon icon="arrow_back" class="text-success material-icons"></ng-md-icon>
           <datetime style="display: inline;" datetime="{{ booking.endBooking }}"></datetime>
         </div>
         <span ng-if="!hasAcceptedTimeframe(booking)" class="tag tag-{{ booking.status }}">{{ booking.status | bookingStatus }}</span>
@@ -806,32 +806,32 @@
       <img class="media-object pull-left img-user-normal" person-profile-image="{ person: resource.owner, size: 'normal' }" hide-xs />
       <div class="media-body">
         <ul class="list-unstyled list-block list-spaced">
-          <li><md-icon alt="Persoon icoon" aria-label="Persoon icoon">person_outline</md-icon>
+          <li><ng-md-icon icon="person_outline" alt="Persoon icoon" aria-label="Persoon icoon"></ng-md-icon>
             {{ resource.owner | fullname }}
           </li>
-          <li ng-if="resource.owner.created"><md-icon>perm_contact_calendar</md-icon> 
+          <li ng-if="resource.owner.created"><ng-md-icon icon="perm_contact_calendar"></ng-md-icon> 
             {{ resource.owner.created | memberSince }}
           </li>
-          <li ng-if="resource.owner.streetName"><md-icon>place</md-icon>
+          <li ng-if="resource.owner.streetName"><ng-md-icon icon="place"></ng-md-icon>
             {{ resource.owner.streetName }} {{ resource.owner.streetNumber }}, {{ resource.owner.city }}
           </li>
-          <li ng-if="resource.owner.phoneNumbers[0].number"><md-icon>phone</md-icon>
+          <li ng-if="resource.owner.phoneNumbers[0].number"><ng-md-icon icon="phone"></ng-md-icon>
             <a href="tel:{{ resource.owner.phoneNumbers[0].number }}">{{ resource.owner.phoneNumbers[0].number }}</a>
             <small ng-if="resource.owner.phoneNumbers[0].verified" class="text-success">(geverifieerd)</small>
           </li>
-          <li><md-icon>check</md-icon>
+          <li><ng-md-icon icon="check"></ng-md-icon>
             {{ resource.numberOfBookings | wasBookedTimes }}
           </li>
-          <li ng-if="resource.owner.facebookUid"><md-icon>share</md-icon>
+          <li ng-if="resource.owner.facebookUid"><ng-md-icon icon="share"></ng-md-icon>
             <a target="_blank" ng-href="https://facebook.com/{{ resource.owner.facebookUid }}">Facebook</a>
           </li>
-          <li ng-if="resource.owner.twitterUid"><md-icon>share</md-icon>
+          <li ng-if="resource.owner.twitterUid"><ng-md-icon icon="share"></ng-md-icon>
             <a target="_blank" ng-href="https://twitter.com/{{ resource.owner.twitterUid }}">Twitter</a>
           </li>
-          <li ng-if="resource.owner.linkedinUid"><md-icon>share</md-icon>
+          <li ng-if="resource.owner.linkedinUid"><ng-md-icon icon="share"></ng-md-icon>
             <a target="_blank" ng-href="https://www.linkedin.com/profile/view?id={{ resource.ownerbooking.person.linkedinUid }}">LinkedIn</a>
           </li>
-          <li><md-icon>comment</md-icon>
+          <li><ng-md-icon icon="comment"></ng-md-icon>
             <a ng-click="openChatWith(resource.owner)">{{ 'SEND_MESSAGE' | translate }}</a>
           </li>
         </ul>
@@ -853,32 +853,32 @@
       <img class="media-object pull-left img-user-normal" person-profile-image="{ person: booking.person, size: 'normal' }" hide-xs />
       <div class="media-body">
         <ul class="list-unstyled list-block list-spaced">
-          <li><md-icon>person_outline</md-icon>
+          <li><ng-md-icon icon="person_outline"></ng-md-icon>
             {{ booking.person | fullname }}
           </li>
-          <li ng-if="booking.person.created"><md-icon>perm_contact_calendar</md-icon> 
+          <li ng-if="booking.person.created"><ng-md-icon icon="perm_contact_calendar"></ng-md-icon> 
             {{ booking.person.created | memberSince }}
           </li>
-          <li ng-if="booking.person.streetName"><md-icon>place</md-icon>
+          <li ng-if="booking.person.streetName"><ng-md-icon icon="place"></ng-md-icon>
             {{ booking.person.streetName }} {{ booking.person.streetNumber }}, {{ booking.person.city }}
           </li>
-          <li ng-if="booking.person.phoneNumbers[0].number"><md-icon>phone</md-icon>
+          <li ng-if="booking.person.phoneNumbers[0].number"><ng-md-icon icon="phone"></ng-md-icon>
             {{ booking.person.phoneNumbers[0].number }}
             <small ng-if="booking.person.phoneNumbers[0].verified" class="text-success">(geverifieerd)</small>
           </li>
-          <li><md-icon>check</md-icon>
+          <li><ng-md-icon icon="check"></ng-md-icon>
             {{ person.numberOfBookings | hasBookedTimes }}
           </li>
-          <li ng-if="booking.person.facebookUid"><md-icon>share</md-icon>
+          <li ng-if="booking.person.facebookUid"><ng-md-icon icon="share"></ng-md-icon>
             <a target="_blank" ng-href="https://facebook.com/{{ booking.person.facebookUid }}">Facebook</a>
           </li>
           <li ng-if="booking.person.twitterUid"><md-ico>share</md-icon>
             <a target="_blank" ng-href="https://twitter.com/{{ booking.person.twitterUid }}">Twitter</a>
           </li>
-          <li ng-if="booking.person.linkedinUid"><md-icon>share</md-icon>
+          <li ng-if="booking.person.linkedinUid"><ng-md-icon icon="share"></ng-md-icon>
             <a target="_blank" ng-href="https://www.linkedin.com/profile/view?id={{ booking.person.linkedinUid }}">LinkedIn</a>
           </li>
-          <li><md-icon>comment</md-icon>
+          <li><ng-md-icon icon="comment"></ng-md-icon>
             <a ng-click="openChatWith(booking.person)">{{ 'SEND_MESSAGE' | translate }}</a>
           </li>
         </ul>
@@ -901,20 +901,20 @@
       <img class="media-object pull-left img-user-normal" person-profile-image="{ person: resource.contactPerson, size: 'normal' }" hide-xs />
       <div class="media-body">
         <ul class="list-unstyled list-block list-spaced">
-          <li><md-icon>person_outline</md-icon>
+          <li><ng-md-icon icon="person_outline"></ng-md-icon>
             {{ resource.contactPerson | fullname }}
           </li>
-          <li ng-if="resource.contactPerson.created"><md-icon>perm_contact_calendar</md-icon> 
+          <li ng-if="resource.contactPerson.created"><ng-md-icon icon="perm_contact_calendar"></ng-md-icon> 
             {{ resource.contactPerson.created | memberSince }}
           </li>
-          <li ng-if="resource.contactPerson.streetName"><md-icon>place</md-icon>
+          <li ng-if="resource.contactPerson.streetName"><ng-md-icon icon="place"></ng-md-icon>
             {{ resource.contactPerson.streetName }} {{ resource.contactPerson.streetNumber }}, {{ resource.contactPerson.city }}
           </li>
-          <li ng-if="resource.contactPerson.phoneNumbers[0].number"><md-icon>phone</md-icon>
+          <li ng-if="resource.contactPerson.phoneNumbers[0].number"><ng-md-icon icon="phone"></ng-md-icon>
             {{ resource.contactPerson.phoneNumbers[0].number }}
             <small ng-if="resource.contactPerson.phoneNumbers[0].verified" class="text-success">(geverifieerd)</small>
           </li>
-          <li><md-icon>comment</md-icon>
+          <li><ng-md-icon icon="comment"></ng-md-icon>
             <a ng-click="openChatWith(resource.contactPerson)">{{ 'SEND_MESSAGE' | translate }}</a>
           </li>
         </ul>

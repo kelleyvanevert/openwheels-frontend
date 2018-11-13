@@ -7,7 +7,7 @@
                 <img ng-src="branding/img/logo.png" />
             </a>
             <md-button id="shellHidemenu" class="md-icon-button" ng-click="closeMenu()">
-                <md-icon>keyboard_arrow_left</md-icon>
+                <ng-md-icon icon="keyboard_arrow_left"></ng-md-icon>
             </md-button>
         </div>
     </md-toolbar>
@@ -22,7 +22,7 @@
         <div class="cookiebar--content">
             <span translate="COOKIES_TERMS"></span>
             <md-button class="md-raised md-primary" ng-click="acceptCookie()">{{'COOKIES_ACCEPT' | translate}}</md-button>
-            <md-icon ng-click="acceptCookie()">close<md-icon>
+            <ng-md-icon icon="close" ng-click="acceptCookie()"><ng-md-icon>
 
         </div>
     </div>

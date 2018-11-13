@@ -39,9 +39,9 @@
                     <div class="checklist">
                         <p class="ng-scope">{{ 'LICENSE_DATA' | translate }}</p>
                         <p><ul>
-                            <li><md-icon>check</md-icon><span>{{ 'LICENSE_NOT_FOREIGN' | translate }}</span></li>
-                            <li><md-icon>check</md-icon><span>{{ 'LICENSE_VALID' | translate }}</span></li>
-                            <li><md-icon>check</md-icon><span>{{ 'LICENSE_OWN' | translate }}</span></li>
+                            <li><ng-md-icon icon="check"></ng-md-icon><span>{{ 'LICENSE_NOT_FOREIGN' | translate }}</span></li>
+                            <li><ng-md-icon icon="check"></ng-md-icon><span>{{ 'LICENSE_VALID' | translate }}</span></li>
+                            <li><ng-md-icon icon="check"></ng-md-icon><span>{{ 'LICENSE_OWN' | translate }}</span></li>
                         </ul></p>
                     </div>
 
@@ -83,21 +83,21 @@
 
                 <div class="details--card--form__navigation-buttons">
                     <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(0, 1)">
-                        <md-icon>navigate_before</md-icon>
+                        <ng-md-icon icon="navigate_before"></ng-md-icon>
                         {{ 'PREVIOUS' | translate}}
                     </button>
                     <div>
                         <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="skipFlow()" ng-show="$root.isWindowSizeSM && isbooking && !licenseUploaded">
                             {{ 'LATER' | translate}}
-                            <md-icon>navigate_next</md-icon>
+                            <ng-md-icon icon="navigate_next"></ng-md-icon>
                         </button>
                         <button rel="next" type="button" class="mywheels-btn mywheels-btn-default btn--navigation__next" ng-click="submitDriverLicense()" ng-if="!licenseUploaded">
                             {{ 'NEXT' | translate}}
-                            <md-icon class="text-white">navigate_next</md-icon>
+                            <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
                         </button>
                         <button rel="next" type="button" class="mywheels-btn mywheels-btn-default btn--navigation__next" ng-click="nextSection()" ng-if="licenseUploaded">
                             {{ 'NEXT' | translate}}
-                            <md-icon class="text-white">navigate_next</md-icon>
+                            <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
                         </button>
                     </div>
                 </div>
@@ -105,7 +105,7 @@
                 <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="skipFlow()" ng-show="!$root.isWindowSizeSM && isbooking && !licenseUploaded"
                         style="float: right; margin: 1em 0 0 0;">
                     {{ 'LATER' | translate}}
-                    <md-icon>navigate_next</md-icon>
+                    <ng-md-icon icon="navigate_next"></ng-md-icon>
                 </button>
             </section>
 
@@ -115,7 +115,7 @@
 
                 <div class="details--card--form__navigation-buttons">
                     <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(0, 1)">
-                        <md-icon>navigate_before</md-icon>
+                        <ng-md-icon icon="navigate_before"></ng-md-icon>
                         {{ 'PREVIOUS' | translate}}
                     </button>
                 </div>
@@ -145,7 +145,7 @@
                 <center>
                     <button rel="next" type="button" class="mywheels-btn mywheels-btn-big mywheels-btn-default btn--navigation__next" ui-sref="owm.booking.show({ bookingId: booking.id })">
                         {{ 'BOOKING_INFO' | translate }}
-                        <md-icon class="text-white">navigate_next</md-icon>
+                        <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
                     </button>
                 </center>
             </section>
@@ -169,17 +169,17 @@
                 </p>
                 <div class="details--card--form__navigation-buttons">
                     <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(1, 2)">
-                        <md-icon>navigate_before</md-icon>
+                        <ng-md-icon icon="navigate_before"></ng-md-icon>
                         {{ 'PREVIOUS' | translate}}
                     </button>
                     <div>
                         <button type="button" name="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__next" ng-if="booking.approved !== 'BUY_VOUCHER' " ui-sref="owm.person.aboutme">
                             {{ 'FILL_PERSON_INFO' | translate }}
-                            <md-icon>navigate_next</md-icon>
+                            <ng-md-icon icon="navigate_next"></ng-md-icon>
                         </button>
                         <button rel="next" type="button" class="mywheels-btn mywheels-btn-default btn--navigation__next" ng-click="buyVoucher()">
                             {{ 'PAY' | translate}}
-                            <md-icon class="text-white">navigate_next</md-icon>
+                            <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
                         </button>
                     </div>
                 </div>
@@ -193,12 +193,12 @@
                 <!-- call to action buttons -->
                 <div class="details--card--form__navigation-buttons">
                     <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(1, 2)">
-                        <md-icon>navigate_before</md-icon>
+                        <ng-md-icon icon="navigate_before"></ng-md-icon>
                         {{ 'PREVIOUS' | translate}}
                     </button>
                     <button type="button" name="button" ui-sref="owm.resource.search.list({ start: bookingStart ,end: bookingEnd})" class="mywheels-btn mywheels-btn-default btn--navigation__next">
                         {{ 'SEARCH_CAR' | translate }}
-                        <md-icon class="text-white">navigate_next</md-icon>
+                        <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
                     </button>
                 </div>
                 <!-- /call to action buttons -->
@@ -215,7 +215,7 @@
                 <!-- call to action buttons -->
                 <div class="details--card--form__navigation-buttons">
                     <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(1, 2)">
-                        <md-icon>navigate_before</md-icon>
+                        <ng-md-icon icon="navigate_before"></ng-md-icon>
                         {{ 'PREVIOUS' | translate}}
                     </button>
                 </div>
@@ -236,12 +236,12 @@
                 <!-- call to action buttons -->
                 <div class="details--card--form__navigation-buttons">
                     <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(1, 2)">
-                        <md-icon>navigate_before</md-icon>
+                        <ng-md-icon icon="navigate_before"></ng-md-icon>
                         {{ 'PREVIOUS' | translate}}
                     </button>
                     <button type="button" name="button" ui-sref="owm.resource.search.list" class="mywheels-btn mywheels-btn-default btn--navigation__next">
                         {{ 'SEARCH_CAR' | translate }}
-                        <md-icon class="text-white">navigate_next</md-icon>
+                        <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
                     </button>
                 </div>
                 <!-- /call to action buttons -->

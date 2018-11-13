@@ -5,7 +5,7 @@
             <img class="invite-image media-object img-user-large" ng-if="!refreshProfileImage" person-profile-image="{ person: me, size: 'large', noCache: true }" />
             <div class="invite-image" ng-if="refreshProfileImage"><i class="fa fa-spin fa-2x fa-fw fa-spinner"></i></div>
             <form class="mywheels-form" name="editProfileImage">
-                <label for="ProfileImage"><md-icon>mode_edit</md-icon> Wijzig profielfoto
+                <label for="ProfileImage"><ng-md-icon icon="mode_edit"></ng-md-icon> Wijzig profielfoto
                     <input type="file" name="imageFile" for="ProfileImage" class="uploadfile-input" id="ProfileImage" accept="image/x-png, image/gif, image/jpeg, image/jpg, application/pdf">
                 </label>
             </form>
@@ -17,7 +17,7 @@
                 <span><p class="fadeInDown animated">Deel je link:</p></span>
                 <input id="personalLink" class="personal-link" ng-model="personalLink" ng-click="selectLink()" />
                 <button class="md-raised md-button md-ink-ripple"" href="#" ng-click="copyPersonalLink()" hide-xs>
-                    <md-icon>content_copy</md-icon> 
+                    <ng-md-icon icon="content_copy"></ng-md-icon> 
                     <span ng-if="!personalLinkCopied">Kopiëren</span>
                     <span ng-if="personalLinkCopied">Gekopieerd</span>
                 </button>
@@ -80,17 +80,17 @@
             <h2 class="invite-three-stepts--heading">{{'INVITE_HOW_IT_WORKS' | translate }}</h2>
             <div layout="row" layout-wrap>
                 <div flex="33" flex-xs="100" class="invite-three-stepts--step">
-                    <md-icon>share</md-icon>
+                    <ng-md-icon icon="share"></ng-md-icon>
                     <h3>{{ 'INVITE_FRIENDS' | translate}}</h3>
                     <p>{{ 'INVITE_FRIENDS_TEXT' | translate }}</p>
                 </div>
                 <div flex="33" flex-xs="100" class="invite-three-stepts--step">
-                    <md-icon>directions_car</md-icon>
+                    <ng-md-icon icon="directions_car"></ng-md-icon>
                     <h3>{{ 'INVITE_FRIEND_DRIVES' | translate}}</h3>
                     <p>{{ 'INVITE_FRIEND_DRIVES_TEXT' | translate }}</p>
                 </div>
                 <div flex="33" flex-xs="100" class="invite-three-stepts--step">
-                    <md-icon>euro_symbol</md-icon>
+                    <ng-md-icon icon="euro_symbol"></ng-md-icon>
                     <h3>{{ 'INVITE_EURO' | translate}}</h3>
                     <p>{{ 'INVITE_EURO_TEXT' | translate }}</p>
                 </div>

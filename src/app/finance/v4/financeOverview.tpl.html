@@ -50,8 +50,8 @@
                 <td>{{'Rit op ' + (openInvoice.booking.beginBooking | amDateFormat:'DD-MM-YYYY')  + ' in ' + openInvoice.booking.resource.alias }}</td>
                 <td style="padding-right: 0;" class="table-finance-col-2 text-right">{{openInvoice.hasToPay ? openInvoice.totalToPay : -1 * openInvoice.totalToReceive | currency}}</td>
                 <td class="table-finance-col-3 text-right">
-                  <md-icon ng-if="!open">arrow_drop_down</md-icon>
-                  <md-icon ng-if="open">arrow_drop_up</md-icon>
+                  <ng-md-icon icon="arrow_drop_down" ng-if="!open"></ng-md-icon>
+                  <ng-md-icon icon="arrow_drop_up" ng-if="open"></ng-md-icon>
                 </td>
               </tr>
               <tr ng-repeat="invoiceLine in openInvoice.invoiceLines" class="nohover" ng-show="open">
@@ -87,8 +87,8 @@
                 <td>{{'Rit op ' + (openInvoice.booking.beginBooking | amDateFormat:'DD-MM-YYYY')  + ' door ' + openInvoice.booking.person.firstName }}</td>
                 <td class="table-finance-col-2 text-right">{{openInvoice.hasToReceive ? openInvoice.totalToReceive : -1 * openInvoice.totalToPay | currency}}</td>
                 <td class="table-finance-col-3 text-right">
-                  <md-icon ng-if="!open">arrow_drop_down</md-icon>
-                  <md-icon ng-if="open">arrow_drop_up</md-icon>
+                  <ng-md-icon icon="arrow_drop_down" ng-if="!open"></ng-md-icon>
+                  <ng-md-icon icon="arrow_drop_up" ng-if="open"></ng-md-icon>
                 </td>
               </tr>
               <tr ng-repeat="invoiceLine in openInvoice.invoiceLines" class="nohover" ng-show="open">

@@ -8,7 +8,7 @@
         	<div class="input-group">
 		        <span class="input-group-btn" ng-if="person.phoneNumbers.length > 1">
 		          <button type="button" class="btn btn-default" ng-click="removePhone(p, $index)">
-		          	<md-icon ng-style="{'font-size': '16px', height: '18px'}">delete</md-icon>
+		          	<ng-md-icon icon="delete" ng-style="{'font-size': '16px', height: '18px'}"></ng-md-icon>
 		          </button>
 		        </span>
 	            <input type="tel" name="phone_number" class="form-control" id="number-{{ $index }}" ng-model="p.number" ng-disabled="p.verified" placeholder="Telefoonnummer">
@@ -35,7 +35,7 @@
         	<div class="input-group">
 		        <span class="input-group-btn" ng-if="person.phoneNumbers.length > 1">
 		          <button type="button" class="btn btn-default" ng-click="removePhone(p, $index)">
-		          	<md-icon ng-style="{'font-size': '16px', height: '18px'}">delete</md-icon>
+		          	<ng-md-icon icon="delete" ng-style="{'font-size': '16px', height: '18px'}"></ng-md-icon>
   				  </button>
 		        </span>
 	            <input type="tel" name="phone_number" class="form-control" id="number-{{ $index }}" ng-model="p.number" ng-disabled="p.verified">
@@ -57,7 +57,7 @@
 
     <div class="form-group" style="margin-top:10px;">
       <a href="" ng-click="addPhone()" ng-if="person.phoneNumbers.length && person.phoneNumbers[person.phoneNumbers.length-1].number">
-        <md-icon ng-style="{color: '#5faac8', 'font-size': '20px', height: '22px'}">add</md-icon>{{ 'PHONENUMBER_ADD' | translate }}
+        <ng-md-icon icon="add" ng-style="{color: '#5faac8', 'font-size': '20px', height: '22px'}"></ng-md-icon>{{ 'PHONENUMBER_ADD' | translate }}
       </a>
     </div>
 
