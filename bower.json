@@ -32,7 +32,8 @@
     "ui-cropper": "^1.0.4",
     "angular-moment": "^1.3.0",
     "angular-elastic": "^2.5.1",
-    "angular-material-icons": "^0.7.1"
+    "angular-material-icons": "^0.7.1",
+    "mobile-detect": "hgoebl/mobile-detect.js#^1.4.3"
   },
   "resolutions": {
     "jquery": "~2.x",

@@ -50,6 +50,14 @@ angular.module('bootstrapDateTimePickerDirective', [])
         $window._blurReplacementHandler = true;
       }
 
+      input.on('dp.change', function (e) {
+        if (e.oldDate) {
+          const c = angular.element(input).controller('ngModel');//.$setTouched(true);
+          const viewVal = (e.date ? e.date.format($scope.config.format) : '');
+          c.$setTouched(true);      // ??
+          c.$setViewValue(viewVal); // ??
+        }
+      });
       input.on('dp.show', function () {
         $window.openDateTimePickers.push(input[0]);
       });
@@ -60,12 +68,12 @@ angular.module('bootstrapDateTimePickerDirective', [])
           $window.openDateTimePickers.splice(i, 1);
         }
       });
-      if ($scope.dtpBroadcastAccept) {
-        input.on('dp.accept', function () {
+      input.on('dp.accept', function () {
+        if ($scope.dtpBroadcastAccept) {
           //$log.log('I ('+$scope.config.format+') just broadcasted', $scope.dtpBroadcastAccept);
           $rootScope.$broadcast($scope.dtpBroadcastAccept);
-        });
-      }
+        }
+      });
 
       input.datetimepicker(Object.assign({
         format: $scope.config.viewFormat || 'DD-MM-YYYY HH:mm',
