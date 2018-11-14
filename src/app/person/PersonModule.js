@@ -79,7 +79,7 @@ angular.module('owm.person', [
   $stateProvider.state('owm.person.details', {
     url: '/details/:pageNumber?city&resourceId&bookingId&startDate&endDate&discountCode&remarkRequester&riskReduction',
     views: {
-      'main@shell': {
+      'main-full@shell': {
         templateUrl: 'person/details/details-profile.tpl.html',
         controller: 'DetailsProfileController'
       }

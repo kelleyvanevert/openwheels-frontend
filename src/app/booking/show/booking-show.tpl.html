@@ -18,39 +18,48 @@
   </div>
 </div>
 
-<div class="card" ng-if="userPerspective ==='renter' && !errorExtraCredit && !paymentError && ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 && !bookingEnded" id="thankYouText">
+<div ng-if="userPerspective ==='renter' && !errorExtraCredit && !paymentError && ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 && !bookingEnded">
   <!-- If booking is ok -->
-  <div class="card-body card-inverse" ng-if="booking.ok && !requested && booking.approved !== 'BUY_VOUCHER'">
-    <h2 class="text-white">De auto is gereserveerd</h2>
-    <p class="text-white">
-      Onderstaande reservering is geaccepteerd en het bedrag is betaald. Alles is in orde voor je rit en je kan goed verzekerd op weg.
-    </p>
+  <div class="card" id="thankYouText">
+    <div class="card-body card-inverse" ng-if="booking.ok && !requested && booking.approved !== 'BUY_VOUCHER'">
+      <h2 class="text-white">De auto is gereserveerd</h2>
+      <p class="text-white">
+        Onderstaande reservering is geaccepteerd en het bedrag is betaald. Alles is in orde voor je rit en je kan goed verzekerd op weg.
+      </p>
+    </div>
   </div>
   <!-- If renter needs to pay -->
-  <div class="card-body card-inverse" ng-if="booking.approved === 'BUY_VOUCHER' && booking.status === 'accepted'">
-    <h2 class="text-white">Bijna klaar! Alleen nog rijtegoed kopen</h2>
-    <p class="text-white" ng-if="booking.person.id === contract.contractor.id">
-      Je reservering is gemaakt. Je hoeft alleen de reservering nog te betalen.
-    </p>
-    <p class="text-white" ng-if="booking.person.id !== contract.contractor.id">
-      Je reservering is gemaakt. Vraag aan {{ contract.contractor.firstName }} om de reservering te betalen.
-    </p>
+  <div class="card" id="thankYouText">
+    <div class="card-body card-inverse" ng-if="booking.approved === 'BUY_VOUCHER' && booking.status === 'accepted'">
+      <h2 class="text-white">Bijna klaar! Alleen nog rijtegoed kopen</h2>
+      <p class="text-white" ng-if="booking.person.id === contract.contractor.id">
+        Je reservering is gemaakt. Je hoeft alleen de reservering nog te betalen.
+      </p>
+      <p class="text-white" ng-if="booking.person.id !== contract.contractor.id">
+        Je reservering is gemaakt. Vraag aan {{ contract.contractor.firstName }} om de reservering te betalen.
+      </p>
+    </div>
   </div>
   <!-- If booking is requested -->
-  <div class="card-body card-inverse" ng-if="requested">
-    <h2 class="text-white">Je reservering is verzonden</h2>
-    <p class="text-white">
-      We hebben de reservering naar verhuurder {{booking.resource.owner | fullname}} gestuurd. 
-      <span ng-if="paymentInit && credit.value === 0 && debt.value === 0">Je kunt hieronder alvast betalen. De reservering is dan direct definitief na acceptatie door {{booking.resource.owner.firstName}}.</span>
-      <span ng-if="!paymentInit || credit.value > 0 || debt.value > 0">Je ontvangt een mail als {{booking.resource.owner.firstName}} op je verzoek gereageerd heeft.</span>
-    </p>
+  <div class="card" id="thankYouText">
+    <div class="card-body card-inverse" ng-if="requested">
+      <h2 class="text-white">Je reservering is verzonden</h2>
+      <p class="text-white">
+        We hebben de reservering naar verhuurder {{booking.resource.owner | fullname}} gestuurd. 
+        <span ng-if="paymentInit && credit.value === 0 && debt.value === 0">Je kunt hieronder alvast betalen. De reservering is dan direct definitief na acceptatie door {{booking.resource.owner.firstName}}.</span>
+        <span ng-if="!paymentInit || credit.value > 0 || debt.value > 0">Je ontvangt een mail als {{booking.resource.owner.firstName}} op je verzoek gereageerd heeft.</span>
+      </p>
+    </div>
   </div>
   <!-- If license need to be checked -->
-  <div class="card-body card-inverse" ng-if="!requested && booking.approved !== 'BUY_VOUCHER' && !booking.ok && booking.person.status === 'book-only'">
-    <h2 class="text-white">Je account is nog niet actief</h2>
-    <p class="text-white">
-      Je account is op dit moment nog niet actief, je kunt de auto dus ook nog niet ophalen. Een aantal van onze controles konden niet automatisch uitgevoerd worden voor jouw account. Zodra wij deze controles hebben uitgevoerd ontvang je per mail bericht over het activeren van je account.
-    </p>
+  <!-- (note: not mutually exclusive with the above any more, hence in a separate `.card` element) -->
+  <div class="card">
+    <div class="card-body card-inverse mw-warning" ng-if="(true || !requested) && booking.approved !== 'BUY_VOUCHER' && !booking.ok && booking.person.status === 'book-only'">
+      <h2 class="text-white">Je account is nog niet actief</h2>
+      <p class="text-white">
+        Je account is op dit moment nog niet actief, je kunt de auto dus ook nog niet ophalen. Een aantal van onze controles konden niet automatisch uitgevoerd worden voor jouw account. Zodra wij deze controles hebben uitgevoerd ontvang je per mail bericht over het activeren van je account.
+      </p>
+    </div>
   </div>
 </div>
 

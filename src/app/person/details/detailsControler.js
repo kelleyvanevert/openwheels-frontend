@@ -113,12 +113,12 @@ angular.module('owm.person.details', [])
 
       initLicensePage();
 
-      angular.element('.details--card__section')[number].classList.add('prevSection');
-      angular.element('.details--card__section')[numberTwo].classList.add('prevSection');
-      $timeout(function () {
-        angular.element('.details--card__section')[number].classList.remove('prevSection');
-        angular.element('.details--card__section')[numberTwo].classList.remove('prevSection');
-      }, 2000);
+      //angular.element('.details--card__section')[number].classList.add('prevSection');
+      //angular.element('.details--card__section')[numberTwo].classList.add('prevSection');
+      //$timeout(function () {
+      //  angular.element('.details--card__section')[number].classList.remove('prevSection');
+      //  angular.element('.details--card__section')[numberTwo].classList.remove('prevSection');
+      //}, 2000);
       $scope.pageNumber--;
       goToNextState($scope.pageNumber);
       $anchorScroll('scroll-to-top-anchor');

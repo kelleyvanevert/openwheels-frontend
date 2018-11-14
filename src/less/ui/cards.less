@@ -204,6 +204,22 @@ md-card {
         box-shadow: none !important;
         border: 1px solid #eee;
     }
+
+    .card-body.card-inverse.mw-warning {
+      background: @mywheels-orange;
+    }
+
+    &.inverted-heading .card-heading {
+        background: @mywheels-blue;
+
+        color: white;
+        h1, h2, h3, h4, h5, h6 { color: white; }
+    }
+
+    &.inverted-heading .card-body {
+        padding-top: 2em;
+        padding-bottom: 2em;
+    }
 }
 .card-navigation {
     padding: 10px 1em;

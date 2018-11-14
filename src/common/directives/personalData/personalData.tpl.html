@@ -1,5 +1,8 @@
 <div ng-show="!$root.personSubmitted && !personSubmitted">
-    <form class="mywheels-form details--profile--form" name="personalDataForm">
+    <form class="mywheels-form" name="personalDataForm">
+
+        <!-- TODO: check on the personal page whether this is OK -->
+        <h3>{{ 'MY_PROFILE_PERSONAL' | translate }}</h3>
 
         <!-- firstName -->
         <div id="firstName_group" class="icon user">
