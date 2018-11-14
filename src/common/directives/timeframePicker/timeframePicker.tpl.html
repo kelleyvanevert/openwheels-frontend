@@ -1,5 +1,5 @@
 <div>
-  <ng-form name="form">
+  <ng-form name="form" class="mw-timeframe-picker">
     <p>
       <label for="pickupDate">Ophalen</label>
       <button id="resource_now_button" type="button" class="btn btn-warning btn-xs" ng-click="setPickupNow()">{{ 'NOW' | translate }}</button>
@@ -10,7 +10,7 @@
           bootstrap-date-time-picker="dateConfig"
           mobile="mobile"
           dtp-broadcast-accept="pickupDateAccepted"
-          scroll-to="'#'+id">
+          scroll-to-closest=".mw-timeframe-picker">
         <md-icon aria-hidden="true">today</md-icon>
         <input type="text" autocomplete="off" name="pickupDate" id="pickupDate" placeholder="Datum" required
                ng-model="pickupDate"
@@ -20,7 +20,7 @@
       </div>
       <div class="form-group mw-timepicker mw-icon" style="width: 45%; margin-left: 1em;"
           mobile="mobile"
-          bootstrap-date-time-picker="timeConfig" scroll-to="'#'+id"
+          bootstrap-date-time-picker="timeConfig" scroll-to-closest=".mw-timeframe-picker"
           dtp-autoshow="pickupDateAccepted">
         <md-icon aria-hidden="true">schedule</md-icon>
         <input type="text" autocomplete="off" name="pickupTime" id="pickupTime" placeholder="Tijd" required
@@ -41,7 +41,7 @@
           bootstrap-date-time-picker="dateConfig"
           mobile="mobile"
           dtp-broadcast-accept="returnDateAccepted"
-          scroll-to="'#'+id">
+          scroll-to-closest=".mw-timeframe-picker">
         <md-icon aria-hidden="true">today</md-icon>
         <input type="text" autocomplete="off" name="returnDate" id="returnDate" placeholder="Datum" required
                ng-model="returnDate"
@@ -51,7 +51,7 @@
       </div>
       <div class="form-group mw-timepicker mw-icon" style="width: 45%; margin-left: 1em;"
           mobile="mobile"
-          bootstrap-date-time-picker="timeConfig" scroll-to="'#'+id"
+          bootstrap-date-time-picker="timeConfig" scroll-to-closest=".mw-timeframe-picker"
           dtp-autoshow="returnDateAccepted">
         <md-icon aria-hidden="true">schedule</md-icon>
         <input type="text" autocomplete="off" name="returnTime" id="returnTime" placeholder="Tijd" required

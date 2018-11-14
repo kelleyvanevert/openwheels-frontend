@@ -22,8 +22,6 @@ angular.module('owm.resource.reservationForm', [])
   API_DATE_FORMAT, resourceService, invoice2Service, alertService, authService, bookingService, discountService,
   contractService, featuresService, $mdDialog, $mdMedia, $translate, $location, $localStorage, Analytics) {
 
-  $scope.id = 'reservationForm-' + Math.floor(Math.random() * 1000);
-
   // Check if this page is being called after login/singup in booking process
   handleAuthRedirect();
 
