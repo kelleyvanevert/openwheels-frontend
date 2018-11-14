@@ -12,7 +12,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
     scope: {
 //      ngModel: '=',
       config: '=bootstrapDateTimePicker',
-      scrollTo: '=',
+      scrollToClosest: '@',
       mobile: '=',
       dtpAutoshow: '@',
       dtpBroadcastAccept: '@',
@@ -115,10 +115,11 @@ angular.module('bootstrapDateTimePickerDirective', [])
             }
           });
           var el = input;
-          if ($scope.scrollTo) {
-            el = $($scope.scrollTo);
+          if ($scope.scrollToClosest) {
+            el = input.closest($scope.scrollToClosest);
+            //$log.log('found closest', el);
             if (!el.length) {
-              //$log.log('cannot find', $scope.scrollTo);
+              //$log.log('cannot find', $scope.scrollToClosest);
               el = input;
             }
           }
