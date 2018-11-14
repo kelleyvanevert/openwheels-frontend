@@ -69,6 +69,8 @@ angular.module('owm.resource.reservationForm', [])
   var availabilityCheckTimer;
   $scope.$watch('booking.timeframe', function () {
     $timeout.cancel(availabilityCheckTimer);
+    resetToPreTimeframe();
+
     availabilityCheckTimer = $timeout(function () {
       loadAvailability().then(function (availability) {
         if (availability.available === 'yes') {
@@ -85,7 +87,7 @@ angular.module('owm.resource.reservationForm', [])
           }
         }
       });
-    }, 100);
+    }, 800);
   });
 
 
