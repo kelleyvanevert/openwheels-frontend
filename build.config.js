@@ -23,6 +23,9 @@ module.exports = {
       'vendor_custom/polyfills/object-assign.js',
 
       'vendor/jquery/dist/jquery.js',
+
+      'vendor/mobile-detect/mobile-detect.min.js',
+
       'vendor/angular/angular.js',
       'vendor/angular-aria/angular-aria.js',
       'vendor/angular-material/angular-material.js',
