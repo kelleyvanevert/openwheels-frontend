@@ -5,15 +5,16 @@
  * API:
  *   <timeframe-picker
  *      ng-model        <-- value is an object like so: { pickup: moment, return: moment }
- *      mobile          <-- boolean, mask inputs and behave as if mobile
  *   />
  */
 angular.module('timeframePickerDirective', [])
 
-.directive('timeframePicker', function timeframePicker ($log, API_DATE_FORMAT) {
+.directive('timeframePicker', function timeframePicker ($log, API_DATE_FORMAT, mobileDetectService) {
 
   // Configuration, constants, helpers
   // =====
+
+  const mobile = (mobileDetectService.phone() || mobileDetectService.mobile() || mobileDetectService.tablet());
 
   const dateTimeConfig = {
     showAccept: true,
@@ -24,7 +25,7 @@ angular.module('timeframePickerDirective', [])
 
   const dateConfig = Object.assign({}, dateTimeConfig, {
     format: 'DD-MM-YYYY',
-    minDate: moment(),
+    minDate: moment().startOf('day'),
     widgetPositioning: { // with knowledge of the html (!)
       horizontal: 'left',
       vertical: 'bottom',
@@ -61,10 +62,9 @@ angular.module('timeframePickerDirective', [])
     templateUrl: 'directives/timeframePicker/timeframePicker.tpl.html',
     //require: 'ngModel',
     replace: true,
-    scope: {
-      mobile: '=',
-    },
     controller: function timeframePickerController ($scope, $element, $log, API_DATE_FORMAT) {
+
+      $scope.mobile = mobile; // see above
 
       const controller = $element.controller('ngModel');
 

@@ -1071,7 +1071,7 @@
                     }
                     setValue(day.date(parseInt($(e.target).text(), 10)));
                     if (!hasTime() && !options.keepOpen && !options.inline) {
-                        //accept();
+                        accept();
                     }
                 },
 
