@@ -66,8 +66,10 @@ angular.module('owm.resource.reservationForm', [])
   $scope.isPriceLoading = false;
   $scope.$watch('booking.riskReduction', loadPrice);
 
+  var availabilityCheckTimer;
   $scope.$watch('booking.timeframe', function () {
-    $timeout(function () {
+    $timeout.cancel(availabilityCheckTimer);
+    availabilityCheckTimer = $timeout(function () {
       loadAvailability().then(function (availability) {
         if (availability.available === 'yes') {
           loadContractsOnce().then(function () {
@@ -83,7 +85,7 @@ angular.module('owm.resource.reservationForm', [])
           }
         }
       });
-    }, 1);
+    }, 100);
   });
 
 
