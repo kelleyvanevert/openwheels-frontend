@@ -56,6 +56,7 @@ angular.module('openwheels', [
   'owm.metaInfoService',
   'owm.meHelperService',
   'angular-google-analytics',
+  'mobileDetectService',
 
   /* Directives */
   'form.validation',

@@ -22,8 +22,6 @@ angular.module('owm.resource.reservationForm', [])
   API_DATE_FORMAT, resourceService, invoice2Service, alertService, authService, bookingService, discountService,
   contractService, featuresService, $mdDialog, $mdMedia, $translate, $location, $localStorage, Analytics) {
 
-  $scope.id = 'reservationForm-' + Math.floor(Math.random() * 1000);
-
   // Check if this page is being called after login/singup in booking process
   handleAuthRedirect();
 
@@ -68,8 +66,10 @@ angular.module('owm.resource.reservationForm', [])
   $scope.isPriceLoading = false;
   $scope.$watch('booking.riskReduction', loadPrice);
 
+  var availabilityCheckTimer;
   $scope.$watch('booking.timeframe', function () {
-    $timeout(function () {
+    $timeout.cancel(availabilityCheckTimer);
+    availabilityCheckTimer = $timeout(function () {
       loadAvailability().then(function (availability) {
         if (availability.available === 'yes') {
           loadContractsOnce().then(function () {
@@ -85,7 +85,7 @@ angular.module('owm.resource.reservationForm', [])
           }
         }
       });
-    }, 1);
+    }, 100);
   });
 
 

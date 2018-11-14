@@ -12,7 +12,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
     scope: {
 //      ngModel: '=',
       config: '=bootstrapDateTimePicker',
-      scrollTo: '=',
+      scrollToClosest: '@',
       mobile: '=',
       dtpAutoshow: '@',
       dtpBroadcastAccept: '@',
@@ -50,6 +50,14 @@ angular.module('bootstrapDateTimePickerDirective', [])
         $window._blurReplacementHandler = true;
       }
 
+      input.on('dp.change', function (e) {
+        if (e.oldDate) {
+          const c = angular.element(input).controller('ngModel');//.$setTouched(true);
+          const viewVal = (e.date ? e.date.format($scope.config.format) : '');
+          c.$setTouched(true);      // ??
+          c.$setViewValue(viewVal); // ??
+        }
+      });
       input.on('dp.show', function () {
         $window.openDateTimePickers.push(input[0]);
       });
@@ -60,12 +68,12 @@ angular.module('bootstrapDateTimePickerDirective', [])
           $window.openDateTimePickers.splice(i, 1);
         }
       });
-      if ($scope.dtpBroadcastAccept) {
-        input.on('dp.accept', function () {
+      input.on('dp.accept', function () {
+        if ($scope.dtpBroadcastAccept) {
           //$log.log('I ('+$scope.config.format+') just broadcasted', $scope.dtpBroadcastAccept);
           $rootScope.$broadcast($scope.dtpBroadcastAccept);
-        });
-      }
+        }
+      });
 
       input.datetimepicker(Object.assign({
         format: $scope.config.viewFormat || 'DD-MM-YYYY HH:mm',
@@ -115,10 +123,11 @@ angular.module('bootstrapDateTimePickerDirective', [])
             }
           });
           var el = input;
-          if ($scope.scrollTo) {
-            el = $($scope.scrollTo);
+          if ($scope.scrollToClosest) {
+            el = input.closest($scope.scrollToClosest);
+            //$log.log('found closest', el);
             if (!el.length) {
-              //$log.log('cannot find', $scope.scrollTo);
+              //$log.log('cannot find', $scope.scrollToClosest);
               el = input;
             }
           }
