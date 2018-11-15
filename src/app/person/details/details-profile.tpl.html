@@ -10,7 +10,7 @@
              }"
              ui-sref="owm.person.details({pageNumber: '1'})">
             <div class="n">1</div>
-            <div class="label">Basisgegevens</div>
+            <div class="step-label">Basisgegevens</div>
         </div>
         <div class="line" ng-class="{ done: (pageNumber > 1) }"></div>
         <div class="step"
@@ -22,7 +22,7 @@
              }"
              ui-sref="owm.person.details({pageNumber: '2'})">
             <div class="n">2</div>
-            <div class="label">Rijbewijs uploaden</div>
+            <div class="step-label">Rijbewijs uploaden</div>
         </div>
         <div class="line" ng-class="{ done: (pageNumber > 2) }"></div>
         <div class="step last-step"
@@ -34,7 +34,7 @@
              }"
              ng-click="nextSection()">
             <div class="n">3</div>
-            <div class="label">{{isbooking !== true ? 'Auto zoeken' : 'Betalen'}}</div>
+            <div class="step-label">{{isbooking !== true ? 'Auto zoeken' : 'Betalen'}}</div>
         </div>
     </div>
 
