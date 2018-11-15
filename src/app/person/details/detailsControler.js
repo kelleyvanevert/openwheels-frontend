@@ -25,7 +25,7 @@ angular.module('owm.person.details', [])
   $scope.allowLicenseRelated = false;
   $scope.alerts = null;
   $scope.accountApproved = false;
-  $scope.isBlocked = person.status === 'blocked' ? true : false;
+  $scope.isBlocked = (person.status === 'blocked');
 
   var resourceId = $stateParams.resourceId,
     bookingId = $stateParams.bookingId,
@@ -66,7 +66,7 @@ angular.module('owm.person.details', [])
   $scope.errorCreateBooking = false;
   $scope.errorRentalCheck = false;
   $scope.errorRentalCheckMessage = null;
-  $scope.isbooking = $stateParams.resourceId !== undefined ? true : false;
+  $scope.isbooking = ($stateParams.resourceId !== undefined);
   $scope.bookingStart = moment($stateParams.startDate).format(URL_DATE_TIME_FORMAT);
   $scope.bookingEnd = moment($stateParams.endDate).format(URL_DATE_TIME_FORMAT);
   $scope.licenseNumberValid = true;
@@ -82,18 +82,18 @@ angular.module('owm.person.details', [])
 
   function initLicensePage() {
     if($scope.showSecond) {
-      return authService.me(!!'forceReload')
-      .then(function (me) {
-        initPerson(me);
-        $scope.licenseUploaded = me.status === 'book-only' || me.status === 'active' ? true : false;
-        $scope.loadLicenseState = false;
-      })
-      .catch(function (err) {
-        $scope.loadLicenseState = false;
-      })
-      .finally(function () {
-        $scope.loadLicenseState = false;
-      });
+      authService.me(!!'forceReload')
+        .then(function (me) {
+          initPerson(me);
+          $scope.licenseUploaded = (me.status === 'book-only') || (me.status === 'active');
+          $scope.loadLicenseState = false;
+        })
+        .catch(function (err) {
+          $scope.loadLicenseState = false;
+        })
+        .finally(function () {
+          $scope.loadLicenseState = false;
+        });
     }
   }
 
@@ -113,12 +113,12 @@ angular.module('owm.person.details', [])
 
       initLicensePage();
 
-      angular.element('.details--card__section')[number].classList.add('prevSection');
-      angular.element('.details--card__section')[numberTwo].classList.add('prevSection');
-      $timeout(function () {
-        angular.element('.details--card__section')[number].classList.remove('prevSection');
-        angular.element('.details--card__section')[numberTwo].classList.remove('prevSection');
-      }, 2000);
+      //angular.element('.details--card__section')[number].classList.add('prevSection');
+      //angular.element('.details--card__section')[numberTwo].classList.add('prevSection');
+      //$timeout(function () {
+      //  angular.element('.details--card__section')[number].classList.remove('prevSection');
+      //  angular.element('.details--card__section')[numberTwo].classList.remove('prevSection');
+      //}, 2000);
       $scope.pageNumber--;
       goToNextState($scope.pageNumber);
       $anchorScroll('scroll-to-top-anchor');

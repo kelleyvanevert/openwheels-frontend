@@ -1,46 +1,52 @@
-<section role="presentation">
-    <h3 class="details--profile__sidebar__heading" ng-if="$root.isWindowSizeSM">Jouw boeking</h3>
-      <div class="details--profile__image" >
-        <img ng-src="{{ resource.pictures[0] | resourceAvatar:'normal' }}">
-      </div>
-    <section class="">
-        <h3 class="text-success">{{resource.alias}}</h3>
-        <span>{{(resource.brand | toTitleCase) || ('UNKNOWN_BRAND' | translate)}} {{resource.model}}</span>
-        <ul class="list-unstyled list-spaced list-responsive" ng-if="!$root.isWindowSizeSM">
-            <li>
-                <span style="max-width:100%;padding-top:5px;">{{startDate}}</span>
-            </li>
-            <li>
-                <span style="max-width:100%;">{{endDate}}</span>
-            </li>
-        </ul>
-    </section>
-    <md-divider></md-divider>
-    <section ng-if="$root.isWindowSizeSM">
-        <h3>Kenmerken:</h3>
-        <ul class="list-unstyled list-spaced list-responsive">
-            <li>
-                <ng-md-icon icon="event_available" class="text-success list-margin"></ng-md-icon>
-              <span>  {{ resource.numberOfBookings | wasBookedTimes }}</span>
-            </li>
-            <!-- lock type -->
-            <li>
-                <ng-md-icon icon="vpn_key" class="text-success list-margin"></ng-md-icon>
-                <span ng-if="resource.locktype">{{  ('LOCKTYPE.' + resource.locktype) | translateOrDefault : resource.locktype }}</span>
-                <span ng-if="!resource.locktype">{{ 'UKNOWN_LOCKTYPE' | translate }}</span>
-            </li>
-        </ul>
-    </section>
-    <md-divider></md-divider>
-    <section ng-if="$root.isWindowSizeSM">
-        <h3>Tijden:</h3>
-        <ul class="list-unstyled list-spaced list-responsive">
-            <li>
-                <span>{{startDate}}</span>
-            </li>
-            <li>
-                <span>{{endDate}}</span>
-            </li>
-        </ul>
-    </section>
-</section>
+<div class="card resource-sidebar">
+    <div class="card-heading">
+        <h2 class="card-title">Jouw boeking</h2>
+    </div>
+    <div class="card-body">
+        <h3>{{resource.alias}}</h3>
+        <p>
+            <img class="img-responsive"
+                 style="width: 100%; max-width: 350px;"
+                 ng-src="{{ resource.pictures[0] | resourceAvatar:'normal' }}" />
+        </p>
+
+                            <!-- from `resource/show` -- TODO: componentize -->
+                            <md-card-body class="ow-list-compact">
+                                <div class="card-body-margin">
+                                    <h3 style="margin-bottom: 5px;">{{ (resource.brand | toTitleCase) || ('UNKNOWN_BRAND' | translate) }}
+                                      <span ng-if="resource.model"> {{ resource.model }}</span>
+                                    </h3>
+                                        <span 
+                                            ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0" 
+                                            class="tag tag-warning" 
+                                            style="margin-top: 8px; margin-bottom: 8px; margin-left: 0px;"
+                                            id="mywheels-open-tip-label"
+                                        >
+                                            {{ 'MYWHEELS_OPEN_TIP' | translate }}
+                                            <md-tooltip md-direction="bottom" class="multiline">{{ 'MYWHEELS_OPEN_INFO' | translate }}</md-tooltip>
+                                        </span>
+                                        <span 
+                                            ng-if="resource.isNew && ['smartphone', 'chipcard'].indexOf(resource.locktype) < 0"
+                                            class="tag tag-success"
+                                            style="margin-top: 8px; margin-bottom: 8px; margin-left: 0px;"
+                                        >
+                                            {{ 'NEW_TIP' | translate }}
+                                        </span>
+                                        <span 
+                                            ng-if="resource.isNew && ['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0"
+                                            class="tag tag-success"
+                                            style="margin-left: 0px;"
+                                        >
+                                            {{ 'NEW_TIP' | translate }}
+                                        </span>
+                                    <div ng-include="'resource/partials/resource-features.tpl.html'"></div>
+                                </div>
+                            </md-card-body>
+
+        <div class="mw-booking-timeframe">
+            <div class="pickup">{{startDate}}</div>
+            <div class="t"></div>
+            <div class="return">{{endDate}}</div>
+        </div>
+    </div>
+</div>
