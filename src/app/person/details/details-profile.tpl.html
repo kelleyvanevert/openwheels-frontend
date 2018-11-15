@@ -384,7 +384,7 @@
                 <!--/ card -->
             </div>
             <div class="col-md-4 col-xs-12">
-                <div class="card " ng-if="!booking.ok && booking.person.status === 'book-only'">
+                <div class="card" ng-if="me.status === 'book-only' || (!booking.ok && booking.person.status === 'book-only')">
                     <div class="card-body card-inverse mw-warning">
                         <h2 class="text-white">Je account is nog niet actief</h2>
                         <div class="text-white">
