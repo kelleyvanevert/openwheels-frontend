@@ -25,7 +25,9 @@
         </div>
     </div>
 
-    <div ng-if="!isBlocked">
+    <!-- Using `ng-show` instead of `ng-if`, because else the licenseDataForm is not registered to the $scope as expected.
+         See [https://stackoverflow.com/questions/40648638/angularjs-form-inside-ng-if-not-accessible-from-controller] -->
+    <div ng-show="!isBlocked">
         <div class="progress-steps">
             <div class="step"
                  data-section="1"
