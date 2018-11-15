@@ -54,8 +54,12 @@ angular.module('owm.booking', [
 
   .state('owm.booking.show', {
     url: '',
-    templateUrl: 'booking/show/booking-show.tpl.html',
-    controller: 'BookingShowController',
+    views: {
+      'main@shell': {
+        templateUrl: 'booking/show/booking-show.tpl.html',
+        controller: 'BookingShowController',
+      }
+    },
     resolve: {
       me: ['authService', function (authService) {
         return authService.me();
