@@ -8,7 +8,10 @@
                selected: (pageNumber === 1),
                done: (pageNumber > 1),
              }"
-             ui-sref="owm.person.details({pageNumber: '1'})">1</div>
+             ui-sref="owm.person.details({pageNumber: '1'})">
+            <div class="n">1</div>
+            <div class="label">Basisgegevens</div>
+        </div>
         <div class="line" ng-class="{ done: (pageNumber > 1) }"></div>
         <div class="step"
              data-section="2"
@@ -17,7 +20,10 @@
                selected: (pageNumber === 2),
                done: (pageNumber > 2),
              }"
-             ui-sref="owm.person.details({pageNumber: '2'})">2</div>
+             ui-sref="owm.person.details({pageNumber: '2'})">
+            <div class="n">2</div>
+            <div class="label">Rijbewijs uploaden</div>
+        </div>
         <div class="line" ng-class="{ done: (pageNumber > 2) }"></div>
         <div class="step last-step"
              data-section="3"
@@ -26,7 +32,10 @@
                selected: (pageNumber === 3),
                done: (pageNumber > 3),
              }"
-             ng-click="nextSection()">3</div>
+             ng-click="nextSection()">
+            <div class="n">3</div>
+            <div class="label">{{isbooking !== true ? 'Auto zoeken' : 'Betalen'}}</div>
+        </div>
     </div>
 
     <div class="container container-transitional">

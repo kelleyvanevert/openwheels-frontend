@@ -9,12 +9,8 @@
 
 
 .progress-steps {
-    padding: 2em 0 1em 0;
+    padding: 2.4em 1.4em 2.2em 1.4em;
     text-align: center;
-
-    font-size: 1.4em;
-    font-weight: bold;
-    color: #999;
 
     display: flex;
     flex-direction: row;
@@ -29,7 +25,7 @@
         z-index: 1;
         margin: 0 -.2rem;
 
-        width: 5rem;
+        width: 9rem;
         border-top: 4px dotted #ccc;
 
         &.done {
@@ -53,6 +49,21 @@
         border: .4rem solid transparent;
         border-radius: 999px;
 
+        .n {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #999;
+        }
+        .label {
+            color: #868788;
+            font-size: 12px;
+            position: absolute;
+            left: -50px;
+            right: -50px;
+            text-align: center;
+            bottom: -25px;
+        }
+
         &.done {
             margin: -0.2rem;
 
@@ -61,7 +72,12 @@
             line-height: 4rem;
 
             background: @mywheels-blue;
-            color: white;
+            .n {
+                color: white;
+            }
+            .label {
+                color: darken(@mywheels-blue, 6%);
+            }
         }
 
         &.selected {
@@ -73,7 +89,53 @@
 
             background: white;
             border-color: @mywheels-blue;
-            color: @mywheels-blue;
+            .n {
+                color: @mywheels-blue;
+            }
+            .label {
+                color: darken(@mywheels-blue, 6%);
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .progress-steps {
+        flex-direction: column;
+        align-items: flex-start;
+
+        .line {
+            margin: -.2rem 0 -.2rem 2rem;
+
+            width: 0;
+            height: 4rem;
+            border-top: none;
+            border-right: 4px dotted #ccc;
+
+            &.done {
+                border-top: none;
+                border-right: 8px solid @mywheels-blue;
+            }
+        }
+
+        .step {
+            .label {
+                font-size: 14px;
+                position: absolute;
+                right: -200px;
+                width: 200px;
+                top: 50%;
+                left: auto;
+                text-align: left;
+                margin-top: -1rem;
+                padding-left: 1.5rem;
+            }
+
+            &.done {
+            }
+
+            &.selected {
+            }
         }
     }
 }
