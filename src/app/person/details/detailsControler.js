@@ -82,18 +82,18 @@ angular.module('owm.person.details', [])
 
   function initLicensePage() {
     if($scope.showSecond) {
-      return authService.me(!!'forceReload')
-      .then(function (me) {
-        initPerson(me);
-        $scope.licenseUploaded = me.status === 'book-only' || me.status === 'active' ? true : false;
-        $scope.loadLicenseState = false;
-      })
-      .catch(function (err) {
-        $scope.loadLicenseState = false;
-      })
-      .finally(function () {
-        $scope.loadLicenseState = false;
-      });
+      authService.me(!!'forceReload')
+        .then(function (me) {
+          initPerson(me);
+          $scope.licenseUploaded = (me.status === 'book-only') || (me.status === 'active');
+          $scope.loadLicenseState = false;
+        })
+        .catch(function (err) {
+          $scope.loadLicenseState = false;
+        })
+        .finally(function () {
+          $scope.loadLicenseState = false;
+        });
     }
   }
 

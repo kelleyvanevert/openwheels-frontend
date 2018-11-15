@@ -28,8 +28,8 @@
       </p>
     </div>
   </div>
-  <!-- If renter needs to pay -->
-  <div class="card" id="thankYouText" ng-if="booking.approved === 'BUY_VOUCHER' && booking.status === 'accepted'">
+  <!-- If renter needs to pay (and license OK) -->
+  <div class="card" id="thankYouText" ng-if="booking.approved === 'BUY_VOUCHER' && accepted && !showBookOnlyNotice">
     <div class="card-body card-inverse">
       <h2 class="text-white">Bijna klaar! Alleen nog rijtegoed kopen</h2>
       <p class="text-white" ng-if="booking.person.id === contract.contractor.id">
@@ -38,6 +38,25 @@
       <p class="text-white" ng-if="booking.person.id !== contract.contractor.id">
         Je reservering is gemaakt. Vraag aan {{ contract.contractor.firstName }} om de reservering te betalen.
       </p>
+    </div>
+  </div>
+  <!-- If renter needs to pay AND license needs to be checked -->
+  <div class="card" id="thankYouText" ng-if="booking.approved === 'BUY_VOUCHER' && accepted && showBookOnlyNotice">
+    <div class="card-body card-inverse mw-warning">
+      <h2 class="text-white">Bijna klaar!</h2>
+      <p class="text-white" ng-if="booking.person.id === contract.contractor.id">
+        Je reservering is gemaakt. Je hoeft alleen de reservering nog te betalen.
+      </p>
+      <p class="text-white" ng-if="booking.person.id !== contract.contractor.id">
+        Je reservering is gemaakt. Vraag aan {{ contract.contractor.firstName }} om de reservering te betalen.
+      </p>
+      <div class="text-white">
+        <div style="float: left; width: 42px; height: 42px; margin: 5px 10px 5px 0;">
+          <ng-md-icon icon="warning" size="42"></ng-md-icon>
+        </div>
+        <p><strong>Let op:</strong> Je account is op dit moment nog niet actief, je kunt de auto dus ook nog niet ophalen.</p>
+        <p>Een aantal van onze controles konden niet automatisch uitgevoerd worden voor jouw account. Zodra wij deze controles hebben uitgevoerd ontvang je per mail bericht over het activeren van je account.</p>
+      </div>
     </div>
   </div>
   <!-- If booking is requested (and license OK) -->
@@ -52,7 +71,7 @@
     </div>
   </div>
   <!-- If license needs to be checked (BUT booking accepted, a bit weird but can happen) -->
-  <div class="card" id="thankYouText" ng-if="!requested && showBookOnlyNotice">
+  <div class="card" id="thankYouText" ng-if="booking.approved !== 'BUY_VOUCHER' && !requested && showBookOnlyNotice">
     <div class="card-body card-inverse mw-warning">
       <h2 class="text-white">Je account is nog niet actief</h2>
       <p class="text-white">
@@ -73,7 +92,8 @@
         <div style="float: left; width: 42px; height: 42px; margin: 5px 10px 5px 0;">
           <ng-md-icon icon="warning" size="42"></ng-md-icon>
         </div>
-        <p><strong>Let op:</strong> Je account is op dit moment nog niet actief, je kunt de auto dus ook nog niet ophalen. Een aantal van onze controles konden niet automatisch uitgevoerd worden voor jouw account. Zodra wij deze controles hebben uitgevoerd ontvang je per mail bericht over het activeren van je account.</p>
+        <p><strong>Let op:</strong> Je account is op dit moment nog niet actief, je kunt de auto dus ook nog niet ophalen.</p>
+        <p>Een aantal van onze controles konden niet automatisch uitgevoerd worden voor jouw account. Zodra wij deze controles hebben uitgevoerd ontvang je per mail bericht over het activeren van je account.</p>
       </div>
     </div>
   </div>

@@ -53,8 +53,7 @@
                 <!--/ card -->
 
                 <!-- SECOND PAGE / LICENSE INFORMATION -->
-
-                <div class="card inverted-heading" ng-show="showSecond && checkedLater">
+                <div class="card inverted-heading" id="license-upload" ng-show="showSecond && checkedLater">
                     <div class="card-heading main-heading">
                         <div class="row">
                             <div class="col-sm-10 col-sm-offset-1">
@@ -74,7 +73,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="card inverted-heading" id="license-upload" ng-show="showSecond && !checkedLater">
                     <div class="card-heading main-heading">
                         <div class="row">
@@ -87,7 +85,7 @@
                         <div class="row">
                             <div class="col-sm-10 col-sm-offset-1">
                                 <div ng-show="licenseUploaded">
-                                    {{ 'LICENSE_ALREADY_UPLOADED' | translate }}
+                                    <ng-md-icon icon="check"></ng-md-icon> {{ 'LICENSE_ALREADY_UPLOADED' | translate }}
                                 </div>
 
                                 <div ng-show="!licenseUploaded && !loadLicenseState">
@@ -377,12 +375,16 @@
                 <!--/ card -->
             </div>
             <div class="col-md-4 col-xs-12">
-                <div class="card " ng-if="booking.approved !== 'BUY_VOUCHER' && !booking.ok && booking.person.status === 'book-only'">
+                <div class="card " ng-if="!booking.ok && booking.person.status === 'book-only'">
                     <div class="card-body card-inverse mw-warning">
                         <h2 class="text-white">Je account is nog niet actief</h2>
-                        <p class="text-white">
-                            Je account is op dit moment nog niet actief, je kunt de auto dus ook nog niet ophalen. Een aantal van onze controles konden niet automatisch uitgevoerd worden voor jouw account. Zodra wij deze controles hebben uitgevoerd ontvang je per mail bericht over het activeren van je account.
-                          </p>
+                        <div class="text-white">
+                            <div style="float: left; width: 42px; height: 42px; margin: 5px 10px 5px 0;">
+                              <ng-md-icon icon="warning" size="42"></ng-md-icon>
+                            </div>
+                            <p><strong>Let op:</strong> Je account is op dit moment nog niet actief, je kunt de auto dus ook nog niet ophalen.</p>
+                            <p>Een aantal van onze controles konden niet automatisch uitgevoerd worden voor jouw account. Zodra wij deze controles hebben uitgevoerd ontvang je per mail bericht over het activeren van je account.</p>
+                        </div>
                     </div>
                 </div>
 

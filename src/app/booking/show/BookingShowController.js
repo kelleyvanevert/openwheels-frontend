@@ -39,7 +39,7 @@ angular.module('owm.booking.show', [])
   $scope.requested = ($scope.booking.status === 'requested');
   $scope.accepted = ($scope.booking.status === 'accepted');
 
-  $scope.showBookOnlyNotice = (booking.approved !== 'BUY_VOUCHER') && !booking.ok && (booking.person.status === 'book-only');
+  $scope.showBookOnlyNotice = !booking.ok && (booking.person.status === 'book-only');
 
   $scope.userInput = {
     acceptRejectRemark: ''
