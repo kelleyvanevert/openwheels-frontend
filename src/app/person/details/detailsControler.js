@@ -192,20 +192,22 @@ angular.module('owm.person.details', [])
     },
     autoDate: function () { //date input field
       var autoDateInput = angular.element('.autoDateInput')[0];
-      autoDateInput.onkeyup = function (e) {
-        var target = e.srcElement;
-        var maxLength = parseInt(target.attributes.maxlength.value, 10);
-        var myLength = target.value.length;
-        if (myLength >= maxLength) {
-          var next = target;
-          next = next.nextElementSibling;
-          if (next !== null) {
-            if (next.tagName.toLowerCase() === 'input') {
-              next.focus();
+      if (autoDateInput) {
+        autoDateInput.onkeyup = function (e) {
+          var target = e.srcElement;
+          var maxLength = parseInt(target.attributes.maxlength.value, 10);
+          var myLength = target.value.length;
+          if (myLength >= maxLength) {
+            var next = target;
+            next = next.nextElementSibling;
+            if (next !== null) {
+              if (next.tagName.toLowerCase() === 'input') {
+                next.focus();
+              }
             }
           }
-        }
-      };
+        };
+      }
     }
   };
   inputs.init();
