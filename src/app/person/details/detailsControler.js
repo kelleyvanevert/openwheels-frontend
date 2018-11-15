@@ -25,7 +25,7 @@ angular.module('owm.person.details', [])
   $scope.allowLicenseRelated = false;
   $scope.alerts = null;
   $scope.accountApproved = false;
-  $scope.isBlocked = person.status === 'blocked' ? true : false;
+  $scope.isBlocked = (person.status === 'blocked');
 
   var resourceId = $stateParams.resourceId,
     bookingId = $stateParams.bookingId,
@@ -66,7 +66,7 @@ angular.module('owm.person.details', [])
   $scope.errorCreateBooking = false;
   $scope.errorRentalCheck = false;
   $scope.errorRentalCheckMessage = null;
-  $scope.isbooking = $stateParams.resourceId !== undefined ? true : false;
+  $scope.isbooking = ($stateParams.resourceId !== undefined);
   $scope.bookingStart = moment($stateParams.startDate).format(URL_DATE_TIME_FORMAT);
   $scope.bookingEnd = moment($stateParams.endDate).format(URL_DATE_TIME_FORMAT);
   $scope.licenseNumberValid = true;
