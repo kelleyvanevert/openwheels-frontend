@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <div ng-if="!isBlocked">
+    <div ng-show="!isBlocked">
         <div class="progress-steps">
             <div class="step"
                  data-section="1"
@@ -66,7 +66,10 @@
 
         <div class="container container-transitional">
             <div class="row">
-                <div class="col-md-8 col-xs-12">
+                <div :ng-class="{
+                    'col-sm-8 col-xs-12': withSidebar,
+                    'col-sm-8 col-sm-offset-2 col-xs-12': !withSidebar,
+                }">
                     <!-- FIRST PAGE / PERSONAL DATA  -->
                     <div class="card inverted-heading" id="personal-data" ng-show="showFirst">
                         <div class="card-heading main-heading">
@@ -100,7 +103,7 @@
                             <div class="row">
                                 <div class="col-sm-10 col-sm-offset-1">
                                     <p>{{ 'DETAILS_PROFILE_LATER_TEXT' | translate }}</p>
-                                    <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(0, 1)">
+                                    <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#555" ng-click="prevSection(0, 1)">
                                         <ng-md-icon icon="navigate_before"></ng-md-icon>
                                         {{ 'PREVIOUS' | translate}}
                                     </button>
@@ -174,28 +177,28 @@
                                         </div>
                                     </div>
 
-                                    <div class="details--card--form__navigation-buttons">
-                                        <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(0, 1)">
+                                    <div class="nav-buttons">
+                                        <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#555" ng-click="prevSection(0, 1)">
                                             <ng-md-icon icon="navigate_before"></ng-md-icon>
                                             {{ 'PREVIOUS' | translate}}
                                         </button>
                                         <div>
-                                            <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="skipFlow()" ng-show="$root.isWindowSizeSM && isbooking && !licenseUploaded">
+                                            <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#555" ng-click="skipFlow()" ng-show="$root.isWindowSizeSM && isbooking && !licenseUploaded">
                                                 {{ 'LATER' | translate}}
                                                 <ng-md-icon icon="navigate_next"></ng-md-icon>
                                             </button>
-                                            <button rel="next" type="button" class="mywheels-btn mywheels-btn-default btn--navigation__next" ng-click="submitDriverLicense()" ng-if="!licenseUploaded">
+                                            <button rel="next" type="button" class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" md-ink-ripple="#8f6700" ng-click="submitDriverLicense()" ng-if="!licenseUploaded">
                                                 {{ 'NEXT' | translate}}
                                                 <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
                                             </button>
-                                            <button rel="next" type="button" class="mywheels-btn mywheels-btn-default btn--navigation__next" ng-click="nextSection()" ng-if="licenseUploaded">
+                                            <button rel="next" type="button" class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" md-ink-ripple="#8f6700" ng-click="nextSection()" ng-if="licenseUploaded">
                                                 {{ 'NEXT' | translate}}
                                                 <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
                                             </button>
                                         </div>
                                     </div>
 
-                                    <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="skipFlow()" ng-show="!$root.isWindowSizeSM && isbooking && !licenseUploaded"
+                                    <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#555" ng-click="skipFlow()" ng-show="!$root.isWindowSizeSM && isbooking && !licenseUploaded"
                                             style="float: right; margin: 1em 0 0 0;">
                                         {{ 'LATER' | translate}}
                                         <ng-md-icon icon="navigate_next"></ng-md-icon>
@@ -221,14 +224,14 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-10 col-sm-offset-1">
-                                        <p>{{ 'DETAILS_PROFILE_SEARCH' | translate }} </p>
+                                        <p class="lead">{{ 'DETAILS_PROFILE_SEARCH' | translate }} </p>
                                         <!-- call to action buttons -->
-                                        <div class="details--card--form__navigation-buttons">
-                                            <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(1, 2)">
+                                        <div class="nav-buttons">
+                                            <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#555" ng-click="prevSection(1, 2)">
                                                 <ng-md-icon icon="navigate_before"></ng-md-icon>
                                                 {{ 'PREVIOUS' | translate}}
                                             </button>
-                                            <button type="button" name="button" ui-sref="owm.resource.search.list" class="mywheels-btn mywheels-btn-default btn--navigation__next">
+                                            <button type="button" name="button" ui-sref="owm.resource.search.list" class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" md-ink-ripple="#8f6700">
                                                 {{ 'SEARCH_CAR' | translate }}
                                                 <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
                                             </button>
@@ -278,8 +281,8 @@
                                         <p ng-if="!errorRentalCheck && !errorMessage">Vanwege een overwachte fout kon de boeking helaas niet gemaakt worden. Neem contact met ons op via het <a href="https://mywheels.nl/autodelen/community/contact/" target="_blank">contactformulier</a>.</p>
 
                                         <!-- call to action buttons -->
-                                        <div class="details--card--form__navigation-buttons">
-                                            <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(1, 2)">
+                                        <div class="nav-buttons">
+                                            <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#555" ng-click="prevSection(1, 2)">
                                                 <ng-md-icon icon="navigate_before"></ng-md-icon>
                                                 {{ 'PREVIOUS' | translate}}
                                             </button>
@@ -304,12 +307,12 @@
                                     <div class="col-sm-10 col-sm-offset-1">
                                         <p>{{ 'DETAILS_PROFILE_NOT_AVAILABLE_text' | translate }} </p>
                                         <!-- call to action buttons -->
-                                        <div class="details--card--form__navigation-buttons">
-                                            <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(1, 2)">
+                                        <div class="nav-buttons">
+                                            <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#555" ng-click="prevSection(1, 2)">
                                                 <ng-md-icon icon="navigate_before"></ng-md-icon>
                                                 {{ 'PREVIOUS' | translate}}
                                             </button>
-                                            <button type="button" name="button" ui-sref="owm.resource.search.list({ start: bookingStart ,end: bookingEnd})" class="mywheels-btn mywheels-btn-default btn--navigation__next">
+                                            <button type="button" name="button" ui-sref="owm.resource.search.list({ start: bookingStart ,end: bookingEnd})" class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" md-ink-ripple="#8f6700">
                                                 {{ 'SEARCH_CAR' | translate }}
                                                 <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
                                             </button>
@@ -335,7 +338,7 @@
                                         <p>De reservering is geaccepteerd en het bedrag is betaald. Alles is in orde voor je rit en je kan goed verzekerd op weg.</p>
                                         <p>&nbsp;</p>
                                         <center>
-                                            <button rel="next" type="button" class="mywheels-btn mywheels-btn-big mywheels-btn-default btn--navigation__next" ui-sref="owm.booking.show({ bookingId: booking.id })">
+                                            <button rel="next" type="button" class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" md-ink-ripple="#8f6700" ui-sref="owm.booking.show({ bookingId: booking.id })">
                                                 {{ 'BOOKING_INFO' | translate }}
                                                 <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
                                             </button>
@@ -370,17 +373,17 @@
                                         <p ng-if="booking.approved !== 'BUY_VOUCHER' ">
                                             {{ 'DETAILS_PROFILE_PAY_NOT_APPROVED_OTHER' | translate }}
                                         </p>
-                                        <div class="details--card--form__navigation-buttons">
-                                            <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(1, 2)">
+                                        <div class="nav-buttons">
+                                            <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#555" ng-click="prevSection(1, 2)">
                                                 <ng-md-icon icon="navigate_before"></ng-md-icon>
                                                 {{ 'PREVIOUS' | translate}}
                                             </button>
                                             <div>
-                                                <button type="button" name="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__next" ng-if="booking.approved !== 'BUY_VOUCHER' " ui-sref="owm.person.aboutme">
+                                                <button type="button" name="button" class="mywheels-btn mywheels-btn-default btn--navigation__next" ng-if="booking.approved !== 'BUY_VOUCHER' " ui-sref="owm.person.aboutme">
                                                     {{ 'FILL_PERSON_INFO' | translate }}
                                                     <ng-md-icon icon="navigate_next"></ng-md-icon>
                                                 </button>
-                                                <button rel="next" type="button" class="mywheels-btn mywheels-btn-default btn--navigation__next" ng-click="buyVoucher()">
+                                                <button rel="next" type="button" class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" md-ink-ripple="#8f6700" ng-click="buyVoucher()">
                                                     {{ 'PAY' | translate}}
                                                     <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
                                                 </button>
@@ -394,7 +397,7 @@
                     </div>
                     <!--/ card -->
                 </div>
-                <div class="col-md-4 col-xs-12">
+                <div class="col-md-4 col-xs-12" ng-show="withSidebar">
                     <div class="card" ng-if="!booking.ok && booking.person.status === 'book-only'">
                         <div class="card-body card-inverse mw-warning">
                             <h2 class="text-white">Je account is nog niet actief</h2>
@@ -408,7 +411,7 @@
                         </div>
                     </div>
 
-                    <section resource-sidebar ng-if="!showThird || (showThird && !isBusy)"></section>
+                    <section resource-sidebar ng-if="isbooking && (!showThird || (showThird && !isBusy))"></section>
                 </div>
             </div>
         </div>
