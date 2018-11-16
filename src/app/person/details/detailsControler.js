@@ -77,6 +77,11 @@ angular.module('owm.person.details', [])
   $scope.validLicenseMax = moment().add('years', 30).format('YYYY');
   $scope.onlyNumbers = /^\d+$/;
 
+
+  // view logic
+  $scope.withSidebar = !$scope.isBlocked && $scope.isbooking;
+
+
   //reload
   initLicensePage();
 

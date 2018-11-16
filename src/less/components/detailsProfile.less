@@ -5,6 +5,20 @@
     .main-heading h2 {
         margin-top: 1em;
     }
+
+    .nav-buttons {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-content: flex-start;
+        align-items: center;
+        margin: 1em 0 0;
+
+        button {
+            margin: 0;
+        }
+    }
 }
 
 
@@ -162,25 +176,49 @@ ul.checklist {
 
 
 .mw-booking-timeframe {
-    margin: 2em 0 1em 0;
-
+    margin: 2em 0 0 0;
     display: flex;
-    flex-direction: column;
-
     justify-content: center;
     align-content: center;
     align-items: center;
 
+    position: relative;
+    
+    background: #ddd;
+
     .pickup, .return {
-        border: 2px solid #bbb;
-        padding: 5px 10px;
-        border-radius: 10px;
-        font-weight: bold;
+        text-align: center;
+        box-sizing: border-box;
+        padding: 16px;
+
+        .date {
+            color: #222;
+        }
+
+        .time {
+            font-weight: bold;
+            font-size: 1.6em;
+        }
     }
+
+    .pickup {
+        width: 48%;
+        background: #eee;
+    }
+    .t path {
+        fill: #eee;
+        stroke: black;
+    }
+    .return {
+        width: 52%;
+        //.date, .time { color: white; }
+    }
+
     .t {
-        margin: 2px;
-        height: 40px;
-        border-left: 4px dotted #888;
+        position: absolute;
+        top: 0;
+        left: 48%;
+        bottom: 0;
     }
 }
 
@@ -266,23 +304,13 @@ ul.checklist {
 }
 
 
-.details--card--form__navigation-buttons {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-content: flex-start;
-    align-items: flex-start;
-    margin: 1em 0 0;
-}
-.btn--navigation__next,
-.btn--navigation__previous {
-    margin: 0;
-}
+
+
 .form-extra-drivers__first {
   margin-top: 1em;
   margin-bottom: 1em;
 }
+
 .label-bigger {
   font-size: 1em;
 }
