@@ -20,6 +20,36 @@
     list-style: none;
     font-size: @bs-datetimepicker-base-font-size;
 
+    .timepicker-hours,
+    .timepicker-minutes {
+        font-size: 1.2em;
+    }
+
+    .timepicker-hours {
+        max-height: 12em;
+        overflow-y: scroll;
+        
+        background: /* Shadow covers */ linear-gradient(white 30%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%, /* Shadows */ radial-gradient(50% 0, farthest-side, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)), radial-gradient(50% 100%, farthest-side, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)) 0 100%;
+        background: /* Shadow covers */ linear-gradient(white 30%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%, /* Shadows */ radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)), radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)) 0 100%;
+        background-repeat: no-repeat;
+        background-color: white;
+        background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+        background-attachment: local, local, scroll, scroll;
+    }
+
+    .tp-pickable {
+        font-weight: bold;
+    }
+
+    .tp-affix {
+        color: #888;
+    }
+
+    .active .tp-affix {
+        color: @bs-datetimepicker-active-color;
+        text-shadow: @bs-datetimepicker-text-shadow;
+    }
+
     &.dropdown-menu {
         display: block;
         margin: 2px 0;
@@ -180,7 +210,7 @@
             width: auto;
             line-height: inherit;
 
-            span {
+            span.tp-button {
                 line-height: 2.5;
                 height: 2.5em;
                 width: 100%;
@@ -303,7 +333,7 @@
                 cursor: not-allowed;
             }
 
-            span {
+            span.tp-button {
                 display: inline-block;
                 width: 52px;
                 height: 52px;
@@ -340,15 +370,12 @@
     }
 
     &.usetwentyfour {
-        td.hour {
+        td.hour,
+        td.minute {
             height: 27px;
             line-height: 27px;
         }
     }
-	
-	&.wider {
-		width: 21em;
-	}
 
 	& .datepicker-decades .decade {
         line-height: 1.8em !important;
