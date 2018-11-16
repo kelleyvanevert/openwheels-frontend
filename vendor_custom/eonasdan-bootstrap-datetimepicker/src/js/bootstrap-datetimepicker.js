@@ -196,11 +196,11 @@
                 var headTemplate = $('<thead>')
                         .append($('<tr>')
                             .append($('<th>').addClass('prev').attr('data-action', 'previous')
-                                .append($('<span>').addClass(options.icons.previous))
+                                .append($('<span class="tp-button">').addClass(options.icons.previous))
                                 )
                             .append($('<th>').addClass('picker-switch').attr('data-action', 'pickerSwitch').attr('colspan', (options.calendarWeeks ? '6' : '5')))
                             .append($('<th>').addClass('next').attr('data-action', 'next')
-                                .append($('<span>').addClass(options.icons.next))
+                                .append($('<span class="tp-button">').addClass(options.icons.next))
                                 )
                             ),
                     contTemplate = $('<tbody>')
@@ -240,12 +240,12 @@
                 if (isEnabled('h')) {
                     topRow.append($('<td>')
                         .append($('<a>').attr({ href: '#', tabindex: '-1', 'title': options.tooltips.decrementHour }).addClass('btn btp-time-adjust').attr('data-action', 'decrementHours')
-                            .append($('<span>-1</span>'))));
+                            .append($('<span class="tp-button">-1</span>'))));
                     middleRow.append($('<td>')
-                        .append($('<span>').addClass('timepicker-hour').attr({ 'data-time-component': 'hours', 'title': options.tooltips.pickHour }).attr('data-action', 'showHours')));
+                        .append($('<span class="tp-button">').addClass('timepicker-hour').attr({ 'data-time-component': 'hours', 'title': options.tooltips.pickHour }).attr('data-action', 'showHours')));
                     bottomRow.append($('<td>')
                         .append($('<a>').attr({ href: '#', tabindex: '-1', 'title': options.tooltips.incrementHour }).addClass('btn btp-time-adjust').attr('data-action', 'incrementHours')
-                            .append($('<span>+1</span>'))));
+                            .append($('<span class="tp-button">+1</span>'))));
                 }
                 if (isEnabled('m')) {
                     if (isEnabled('h')) {
@@ -255,12 +255,12 @@
                     }
                     topRow.append($('<td>')
                         .append($('<a>').attr({ href: '#', tabindex: '-1', 'title': options.tooltips.decrementMinute }).addClass('btn btp-time-adjust').attr('data-action', 'decrementMinutes')
-                            .append($('<span>-15</span>'))));
+                            .append($('<span class="tp-button">-15</span>'))));
                     middleRow.append($('<td>')
-                        .append($('<span>').addClass('timepicker-minute').attr({ 'data-time-component': 'minutes', 'title': options.tooltips.pickMinute }).attr('data-action', 'showMinutes')));
+                        .append($('<span class="tp-button">').addClass('timepicker-minute').attr({ 'data-time-component': 'minutes', 'title': options.tooltips.pickMinute }).attr('data-action', 'showMinutes')));
                     bottomRow.append($('<td>')
                         .append($('<a>').attr({ href: '#', tabindex: '-1', 'title': options.tooltips.incrementMinute }).addClass('btn btp-time-adjust').attr('data-action', 'incrementMinutes')
-                            .append($('<span>+15</span>'))));
+                            .append($('<span class="tp-button">+15</span>'))));
                 }
                 if (isEnabled('s')) {
                     if (isEnabled('m')) {
@@ -270,12 +270,12 @@
                     }
                     topRow.append($('<td>')
                         .append($('<a>').attr({ href: '#', tabindex: '-1', 'title': options.tooltips.decrementSecond }).addClass('btn btp-time-adjust').attr('data-action', 'decrementSeconds')
-                            .append($('<span>-1</span>'))));
+                            .append($('<span class="tp-button">-1</span>'))));
                     middleRow.append($('<td>')
-                        .append($('<span>').addClass('timepicker-second').attr({ 'data-time-component': 'seconds', 'title': options.tooltips.pickSecond }).attr('data-action', 'showSeconds')));
+                        .append($('<span class="tp-button">').addClass('timepicker-second').attr({ 'data-time-component': 'seconds', 'title': options.tooltips.pickSecond }).attr('data-action', 'showSeconds')));
                     bottomRow.append($('<td>')
                         .append($('<a>').attr({ href: '#', tabindex: '-1', 'title': options.tooltips.incrementSecond }).addClass('btn btp-time-adjust').attr('data-action', 'incrementSeconds')
-                            .append($('<span>+1</span>'))));
+                            .append($('<span class="tp-button">+1</span>'))));
                 }
 
                 if (!use24Hours) {
@@ -315,16 +315,16 @@
             getToolbar = function () {
                 var rows = [ [] ];
                 if (options.showTodayButton) {
-                    rows[0].push($('<td>').append($('<a>').attr({ 'data-action': 'today', 'title': options.tooltips.today }).append($('<span>').addClass(options.icons.today))));
+                    rows[0].push($('<td>').append($('<a>').attr({ 'data-action': 'today', 'title': options.tooltips.today }).append($('<span class="tp-button">').addClass(options.icons.today))));
                 }
                 if (!options.sideBySide && hasDate() && hasTime()) {
-                    rows[0].push($('<td>').append($('<a>').attr({ 'data-action': 'togglePicker', 'title': options.tooltips.selectTime }).append($('<span>').addClass(options.icons.time))));
+                    rows[0].push($('<td>').append($('<a>').attr({ 'data-action': 'togglePicker', 'title': options.tooltips.selectTime }).append($('<span class="tp-button">').addClass(options.icons.time))));
                 }
                 if (options.showClear) {
-                    rows[0].push($('<td>').append($('<a>').attr({ 'data-action': 'clear', 'title': options.tooltips.clear }).append($('<span>').addClass(options.icons.clear))));
+                    rows[0].push($('<td>').append($('<a>').attr({ 'data-action': 'clear', 'title': options.tooltips.clear }).append($('<span class="tp-button">').addClass(options.icons.clear))));
                 }
                 if (options.showClose) {
-                    rows[0].push($('<td>').append($('<a>').attr({ 'data-action': 'close', 'title': options.tooltips.close }).append($('<span>').addClass(options.icons.close))));
+                    rows[0].push($('<td>').append($('<a>').attr({ 'data-action': 'close', 'title': options.tooltips.close }).append($('<span class="tp-button">').addClass(options.icons.close))));
                 }
                 if (options.showAccept) {
                     rows.push([]);
@@ -588,7 +588,7 @@
                 var spans = [],
                     monthsShort = viewDate.clone().startOf('y').startOf('d');
                 while (monthsShort.isSame(viewDate, 'y')) {
-                    spans.push($('<span>').attr('data-action', 'selectMonth').addClass('month').text(monthsShort.format('MMM')));
+                    spans.push($('<span class="tp-button">').attr('data-action', 'selectMonth').addClass('month').text(monthsShort.format('MMM')));
                     monthsShort.add(1, 'M');
                 }
                 widget.find('.datepicker-months td').empty().append(spans);
@@ -651,7 +651,7 @@
                 }
 
                 while (!startYear.isAfter(endYear, 'y')) {
-                    html += '<span data-action="selectYear" class="year' + (startYear.isSame(date, 'y') && !unset ? ' active' : '') + (!isValid(startYear, 'y') ? ' disabled' : '') + '">' + startYear.year() + '</span>';
+                    html += '<span data-action="selectYear" class="tp-button year' + (startYear.isSame(date, 'y') && !unset ? ' active' : '') + (!isValid(startYear, 'y') ? ' disabled' : '') + '">' + startYear.year() + '</span>';
                     startYear.add(1, 'y');
                 }
 
@@ -688,11 +688,11 @@
                     endDecadeYear = startDecade.year() + 12;
                     minDateDecade = options.minDate && options.minDate.isAfter(startDecade, 'y') && options.minDate.year() <= endDecadeYear;
                     maxDateDecade = options.maxDate && options.maxDate.isAfter(startDecade, 'y') && options.maxDate.year() <= endDecadeYear;
-                    html += '<span data-action="selectDecade" class="decade' + (date.isAfter(startDecade) && date.year() <= endDecadeYear ? ' active' : '') +
+                    html += '<span data-action="selectDecade" class="tp-button decade' + (date.isAfter(startDecade) && date.year() <= endDecadeYear ? ' active' : '') +
                         (!isValid(startDecade, 'y') && !minDateDecade && !maxDateDecade ? ' disabled' : '') + '" data-selection="' + (startDecade.year() + 6) + '">' + (startDecade.year() + 1) + ' - ' + (startDecade.year() + 12) + '</span>';
                     startDecade.add(12, 'y');
                 }
-                html += '<span></span><span></span><span></span>'; //push the dangling block over, at least this way it's even
+                html += '<span class="tp-button"></span><span class="tp-button"></span><span class="tp-button"></span>'; //push the dangling block over, at least this way it's even
 
                 decadesView.find('td').html(html);
                 decadesViewHeader.eq(1).text((startedAt.year() + 1) + '-' + (startDecade.year()));
@@ -782,11 +782,11 @@
                     currentHour.hour(12);
                 }
                 while (currentHour.isSame(viewDate, 'd') && (use24Hours || (viewDate.hour() < 12 && currentHour.hour() < 12) || viewDate.hour() > 11)) {
-                    if (currentHour.hour() % 4 === 0) {
+                    if (currentHour.hour() % 1 === 0) {
                         row = $('<tr>');
                         html.push(row);
                     }
-                    row.append('<td data-action="selectHour" class="hour' + (!isValid(currentHour, 'h') ? ' disabled' : '') + '">' + currentHour.format(use24Hours ? 'HH' : 'hh') + '</td>');
+                    row.append('<td data-action="selectHour" data-hour="'+currentHour.format('HH')+'" class="hour' + (!isValid(currentHour, 'h') ? ' disabled' : '') + '"><span class="tp-pickable tp-pickable-hour">' + currentHour.format(use24Hours ? 'HH' : 'hh') + '</span>:<span class="tp-affix tp-affix-minute"></span></td>');
                     currentHour.add(1, 'h');
                 }
                 table.empty().append(html);
@@ -800,11 +800,11 @@
                     step = options.stepping === 1 ? 5 : options.stepping;
 
                 while (viewDate.isSame(currentMinute, 'h')) {
-                    if (currentMinute.minute() % (step * 4) === 0) {
+                    if (currentMinute.minute() % (step * 1) === 0) {
                         row = $('<tr>');
                         html.push(row);
                     }
-                    row.append('<td data-action="selectMinute" class="minute' + (!isValid(currentMinute, 'm') ? ' disabled' : '') + '">' + currentMinute.format('mm') + '</td>');
+                    row.append('<td data-action="selectMinute" data-minute="'+currentMinute.format('mm')+'" class="minute' + (!isValid(currentMinute, 'm') ? ' disabled' : '') + '"><span class="tp-affix tp-affix-hour"></span>:<span class="tp-pickable tp-pickable-minute">' + currentMinute.format('mm') + '</span></td>');
                     currentMinute.add(step, 'm');
                 }
                 table.empty().append(html);
@@ -1161,11 +1161,33 @@
                 showHours: function () {
                     widget.find('.timepicker .timepicker-picker').hide();
                     widget.find('.timepicker .timepicker-hours').show();
+
+                    if (date) {
+                        var HH = date.format('HH');
+                        var mm = date.format('mm');
+                        widget.find('.timepicker .tp-affix-minute').text(mm);
+
+                        var container = widget.find('.timepicker .timepicker-hours');
+                        container.find('td').removeClass('active');
+                        var el = container.find('td[data-hour=' + HH + ']').addClass('active');
+                        var o = el.position().top + container.scrollTop();
+                        container.scrollTop(Math.max(o - 80, 0));
+                    }
                 },
 
                 showMinutes: function () {
                     widget.find('.timepicker .timepicker-picker').hide();
                     widget.find('.timepicker .timepicker-minutes').show();
+
+                    if (date) {
+                        var HH = date.format('HH');
+                        var mm = date.format('mm');
+                        widget.find('.timepicker .tp-affix-hour').text(HH);
+
+                        var container = widget.find('.timepicker .timepicker-minutes');
+                        container.find('td').removeClass('active');
+                        var el = container.find('td.mm-' + mm).addClass('active');
+                    }
                 },
 
                 showSeconds: function () {
@@ -1174,7 +1196,8 @@
                 },
 
                 selectHour: function (e) {
-                    var hour = parseInt($(e.target).text(), 10);
+                    var a = $(e.target).attr('data-hour');
+                    var hour = parseInt(a, 10);
 
                     if (!use24Hours) {
                         if (date.hours() >= 12) {
@@ -1192,7 +1215,8 @@
                 },
 
                 selectMinute: function (e) {
-                    setValue(date.clone().minutes(parseInt($(e.target).text(), 10)));
+                    var a = $(e.target).attr('data-minute');
+                    setValue(date.clone().minutes(parseInt(a, 10)));
                     actions.showPicker.call(picker);
                 },
 
