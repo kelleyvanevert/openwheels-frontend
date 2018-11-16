@@ -69,8 +69,8 @@
         <div class="container container-transitional">
             <div class="row">
                 <div :ng-class="{
-                    'col-sm-8 col-xs-12': withSidebar,
-                    'col-sm-8 col-sm-offset-2 col-xs-12': !withSidebar,
+                    'col-md-8 col-xs-12': withSidebar,
+                    'col-md-8 col-md-offset-2 col-xs-12': !withSidebar,
                 }">
                     <!-- FIRST PAGE / PERSONAL DATA  -->
                     <div class="card inverted-heading" id="personal-data" ng-show="showFirst">
@@ -381,7 +381,7 @@
                                                 {{ 'PREVIOUS' | translate}}
                                             </button>
                                             <div>
-                                                <button type="button" name="button" class="mywheels-btn mywheels-btn-default btn--navigation__next" ng-if="booking.approved !== 'BUY_VOUCHER' " ui-sref="owm.person.aboutme">
+                                                <button type="button" name="button" class="mywheels-btn mywheels-btn-border" ng-if="booking.approved !== 'BUY_VOUCHER' " ui-sref="owm.person.aboutme">
                                                     {{ 'FILL_PERSON_INFO' | translate }}
                                                     <ng-md-icon icon="navigate_next"></ng-md-icon>
                                                 </button>
