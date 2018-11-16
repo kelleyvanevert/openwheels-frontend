@@ -1,5 +1,8 @@
 <div ng-show="!$root.personSubmitted && !personSubmitted">
-    <form class="mywheels-form details--profile--form" name="personalDataForm">
+    <form class="mywheels-form" name="personalDataForm">
+
+        <!-- TODO: check on the personal page whether this is OK -->
+        <h3>{{ 'MY_PROFILE_PERSONAL' | translate }}</h3>
 
         <!-- firstName -->
         <div id="firstName_group" class="icon user">
@@ -145,10 +148,10 @@
         </div>
         <!-- /iban -->
 
-        <div class="details--card--form__navigation-buttons" ng-if="!ownerflow" >
+        <div class="nav-buttons" ng-if="!ownerflow" >
             <div></div>
             <!-- submit button -->
-            <button type="submit" class="mywheels-btn mywheels-btn-default btn--navigation__next" ng-click="submitPersonalDataForm()" ng-disabled="personalDataForm.firstName.$error.required || personalDataForm.surname.$error.required || signupform.dateOfBirth.$error.required">
+            <button type="submit" class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" md-ink-ripple="#8f6700" ng-click="submitPersonalDataForm()" ng-disabled="personalDataForm.firstName.$error.required || personalDataForm.surname.$error.required || signupform.dateOfBirth.$error.required">
                 {{ 'NEXT' | translate }}
                 <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
             </button>

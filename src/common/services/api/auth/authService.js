@@ -95,7 +95,7 @@ angular.module('authService', [])
       } else {
         $log.debug('token has invalid expiry date, assume not expired');
       }
-      loadIdentity();
+      loadIdentity(asyncUser);
       isFirstAuthenticate = false;
     }
   };
@@ -110,13 +110,12 @@ angular.module('authService', [])
   // ! Use only in direct response to user interaction, may trigger login popup
   function authenticatedUser(forceReload) {
     if (forceReload) {
-      // reject pending
-      if (asyncUser) {
-        asyncUser.reject('forced reload');
-      }
+//      // reject pending
+//      if (asyncUser) {
+//        asyncUser.reject('forced reload');
+//      }
       // create new
-      asyncUser = $q.defer();
-      loadIdentity();
+      asyncUser = loadIdentity($q.defer());
     }
     if (!user.isAuthenticated && !user.isPending) {
       return loginPopup().catch(function (err) {
@@ -164,7 +163,7 @@ angular.module('authService', [])
     $window.location.href = url;
   }
 
-  function loadIdentity() {
+  function loadIdentity(asyncUser) {
     $log.debug('--> ' + (user.identity ? 're-' : '') + 'load identity');
     user.isPending = true;
     api.invokeRpcMethod('person.me', {
@@ -188,6 +187,8 @@ angular.module('authService', [])
           asyncUser.reject(err);
         }
       });
+
+    return asyncUser;
   }
 
   // server side / platform logout
