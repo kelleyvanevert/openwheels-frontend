@@ -1,0 +1,25 @@
+
+<md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="30" flex-xl="25" class="mw-red">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>Fout </h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content class="md-dialog-content">
+    <div class="lead">
+      <p>
+        Het spijt ons heel erg, maar er lijkt een probleem te zijn met
+         het openen van de auto. De foutmelding is:
+      </p>
+      <p><code>{{ errorCode }}</code></p>
+      <p>
+        Je kunt ons bereiken op <code>(+31) 85-7734222</code>. Bel je buiten
+         werktijden? Druk dan 3 om doorgeschakeld te worden.
+      </p>
+    </div>
+  </md-dialog-content>
+</md-dialog>

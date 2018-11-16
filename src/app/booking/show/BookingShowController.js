@@ -186,10 +186,67 @@ angular.module('owm.booking.show', [])
     container: 'body'
   };
 
+  $scope.openDoorDialog = openDoorDialog;
+  function openDoorDialog ($event, resource) {
+    $mdDialog.show({
+      controller: ['$scope', '$mdDialog', function ($scope, $mdDialog) {
+        $scope.resource = resource;
+        $scope.schade = false;
+        $scope.hide = function () {
+          $mdDialog.hide();
+        };
+        $scope.geenSchade = $scope.open = function () {
+          $mdDialog.hide();
+          openDoor(resource);
+        };
+        $scope.welSchade = function () {
+          $scope.schade = true;
+          // $scope.$apply(); // apparently already run
+        };
+      }],
+      templateUrl: 'booking/show/dialog-opendoor.tpl.html',
+      parent: angular.element(document.body),
+      targetEvent: $event,
+      clickOutsideToClose: true,
+    });
+  }
+
+  $scope.openErrorDialog = openErrorDialog;
+  function openErrorDialog (errorCode) {
+    // TODO: display customized messages
+    // depending on an actual code
+    $mdDialog.show({
+      controller: ['$scope', '$mdDialog', function ($scope, $mdDialog) {
+        $scope.errorCode = errorCode;
+        $scope.hide = function () {
+          $mdDialog.hide();
+        };
+      }],
+      templateUrl: 'booking/show/dialog-opendoorError.tpl.html',
+      parent: angular.element(document.body),
+      clickOutsideToClose: true,
+    });
+  }
+
+  $scope.openDoorSuccessDialog = openDoorSuccessDialog;
+  function openDoorSuccessDialog () {
+    $mdDialog.show({
+      controller: ['$scope', '$mdDialog', function ($scope, $mdDialog) {
+        $scope.hide = function () {
+          $mdDialog.hide();
+        };
+      }],
+      templateUrl: 'booking/show/dialog-opendoorOpen.tpl.html',
+      parent: angular.element(document.body),
+      clickOutsideToClose: true,
+    });
+  }
+
   /*
   * Boardcomputers functions
   */
-  $scope.openDoor = function(resource) {
+  $scope.openDoor = openDoor;
+  function openDoor (resource) {
     alertService.load();
     boardcomputerService.control({
       action: 'OpenDoorStartEnable',
@@ -198,16 +255,16 @@ angular.module('owm.booking.show', [])
     })
     .then( function(result) {
       if(result === 'error') {
-        return alertService.add('danger', result, 5000);
+        return openErrorDialog(result);
       }
-      alertService.add('success', 'De auto opent binnen 15 seconden.', 3000);
-    }, function(error) {
-      alertService.add('danger', error.message, 5000);
+      openDoorSuccessDialog();
+    }, function (error) {
+      openErrorDialog(error.message);
     })
     .finally( function() {
       alertService.loaded();
     });
-  };
+  }
 
   $scope.closeDoor = function(resource) {
     alertService.load();
@@ -218,11 +275,11 @@ angular.module('owm.booking.show', [])
     })
     .then( function(result) {
       if(result === 'error') {
-        return alertService.add('danger', result, 5000);
+        return openErrorDialog(result);
       }
-      alertService.add('success', 'De auto sluit binnen 15 seconden.', 3000);
-    }, function(error) {
-      alertService.add('danger', error.message, 5000);
+      openDoorSuccessDialog();
+    }, function (error) {
+      openErrorDialog(error.message);
     })
     .finally( function() {
       alertService.loaded();
