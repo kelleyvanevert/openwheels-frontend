@@ -786,7 +786,7 @@
                         row = $('<tr>');
                         html.push(row);
                     }
-                    row.append('<td data-action="selectHour" class="HH-'+currentHour.format('HH')+' hour' + (!isValid(currentHour, 'h') ? ' disabled' : '') + '"><span class="tp-pickable tp-pickable-hour">' + currentHour.format(use24Hours ? 'HH' : 'hh') + '</span>:<span class="tp-affix tp-affix-minute"></span></td>');
+                    row.append('<td data-action="selectHour" data-HH="'+currentHour.format('HH')+'" class="hour' + (!isValid(currentHour, 'h') ? ' disabled' : '') + '"><span class="tp-pickable tp-pickable-hour">' + currentHour.format(use24Hours ? 'HH' : 'hh') + '</span>:<span class="tp-affix tp-affix-minute"></span></td>');
                     currentHour.add(1, 'h');
                 }
                 table.empty().append(html);
@@ -804,7 +804,7 @@
                         row = $('<tr>');
                         html.push(row);
                     }
-                    row.append('<td data-action="selectMinute" class="mm-'+currentMinute.format('mm')+' minute' + (!isValid(currentMinute, 'm') ? ' disabled' : '') + '"><span class="tp-affix tp-affix-hour"></span>:<span class="tp-pickable tp-pickable-minute">' + currentMinute.format('mm') + '</span></td>');
+                    row.append('<td data-action="selectMinute" data-mm="'+currentMinute.format('mm')+'" class="minute' + (!isValid(currentMinute, 'm') ? ' disabled' : '') + '"><span class="tp-affix tp-affix-hour"></span>:<span class="tp-pickable tp-pickable-minute">' + currentMinute.format('mm') + '</span></td>');
                     currentMinute.add(step, 'm');
                 }
                 table.empty().append(html);
@@ -1169,7 +1169,7 @@
 
                         var container = widget.find('.timepicker .timepicker-hours');
                         container.find('td').removeClass('active');
-                        var el = container.find('td.HH-' + HH).addClass('active');
+                        var el = container.find('td[data-HH=' + HH + ']').addClass('active');
                         var o = el.position().top + container.scrollTop();
                         container.scrollTop(Math.max(o - 80, 0));
                     }
@@ -1196,7 +1196,8 @@
                 },
 
                 selectHour: function (e) {
-                    var hour = parseInt($(e.target).text(), 10);
+                    var a = $(e.target).attr('data-HH');
+                    var hour = parseInt(a, 10);
 
                     if (!use24Hours) {
                         if (date.hours() >= 12) {
@@ -1214,7 +1215,8 @@
                 },
 
                 selectMinute: function (e) {
-                    setValue(date.clone().minutes(parseInt($(e.target).text(), 10)));
+                    var a = $(e.target).attr('data-mm');
+                    setValue(date.clone().minutes(parseInt(a, 10)));
                     actions.showPicker.call(picker);
                 },
 
