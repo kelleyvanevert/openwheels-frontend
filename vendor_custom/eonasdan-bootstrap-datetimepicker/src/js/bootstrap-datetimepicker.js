@@ -1196,7 +1196,7 @@
                 },
 
                 selectHour: function (e) {
-                    var a = $(e.target).attr('data-hour');
+                    var a = $(e.target).closest('td').attr('data-hour');
                     var hour = parseInt(a, 10);
 
                     if (!use24Hours) {
@@ -1215,7 +1215,7 @@
                 },
 
                 selectMinute: function (e) {
-                    var a = $(e.target).attr('data-minute');
+                    var a = $(e.target).closest('td').attr('data-minute');
                     setValue(date.clone().minutes(parseInt(a, 10)));
                     actions.showPicker.call(picker);
                 },
