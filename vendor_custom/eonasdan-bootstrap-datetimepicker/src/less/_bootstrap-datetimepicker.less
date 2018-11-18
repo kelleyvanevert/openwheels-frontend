@@ -20,11 +20,27 @@
     list-style: none;
     font-size: @bs-datetimepicker-base-font-size;
 
+    .timepicker {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .timepicker-picker {
+        display: none;
+    }
+
+    .timepicker-quarters,
     .timepicker-hours,
     .timepicker-minutes {
         font-size: 1.2em;
+        flex-grow: 1;
+
+//        &::-webkit-scrollbar { 
+//            display: none; 
+//        }
     }
 
+    .timepicker-quarters,
     .timepicker-hours {
         max-height: 12em;
         overflow-y: scroll;
@@ -37,7 +53,7 @@
         background-attachment: local, local, scroll, scroll;
     }
 
-    .tp-pickable {
+    .tp-pickable-hour {
         font-weight: bold;
     }
 
@@ -45,7 +61,7 @@
         color: #888;
     }
 
-    .active .tp-affix {
+    .active .tp-pickable-minute {
         color: @bs-datetimepicker-active-color;
         text-shadow: @bs-datetimepicker-text-shadow;
     }
@@ -286,6 +302,7 @@
 
             &.day:hover,
             &.hour:hover,
+            &.quarter:hover,
             &.minute:hover,
             &.second:hover {
                 background: @bs-datetimepicker-btn-hover-bg;
@@ -370,6 +387,7 @@
     }
 
     &.usetwentyfour {
+        td.quarter,
         td.hour,
         td.minute {
             height: 27px;
