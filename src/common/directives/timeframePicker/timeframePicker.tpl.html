@@ -32,7 +32,14 @@
       </div>
     </div>
 
-    <p><label for="returnDate">Terugbrengen</label></p>
+    <p>
+      <label for="returnDate">Terugbrengen</label>
+      <span v-if="showExtendButtons">
+        <button type="button" class="btn btn-default btn-xs" ng-click="extendReturnBy(1)">{{ 'PLUS_1_HOUR' | translate }}</button>
+        <button type="button" class="btn btn-default btn-xs" ng-click="extendReturnBy(2)">{{ 'PLUS_2_HOUR' | translate }}</button>
+        <button type="button" class="btn btn-default btn-xs" ng-click="extendReturnBy(4)">{{ 'PLUS_4_HOUR' | translate }}</button>
+      </span>
+    </p>
 
     <div style="display: flex;">
       <div class="form-group mw-datepicker mw-icon" style="width: 55%;"

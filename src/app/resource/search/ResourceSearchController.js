@@ -274,21 +274,15 @@ angular.module('owm.resource.search', [
 
       $mdDialog.show({
         controller: function ($scope) {
-          $scope.timeframe = {};
-          if (booking.beginRequested) {
-            $scope.timeframe.pickup = moment(booking.beginRequested, API_DATE_FORMAT);
-          }
-          if (booking.endRequested) {
-            $scope.timeframe.return = moment(booking.endRequested, API_DATE_FORMAT);
-          }
+          $scope.beginRequested = booking.beginRequested;
+          $scope.endRequested   = booking.endRequested;
 
           $scope.hide = function() {
             $mdDialog.hide();
           };
           $scope.accept = function () {
-            var t = $scope.timeframe;
-            booking.beginRequested = t.pickup ? t.pickup.format(API_DATE_FORMAT) : null;
-            booking.endRequested   = t.return ? t.return.format(API_DATE_FORMAT) : null;
+            booking.beginRequested = $scope.beginRequested;
+            booking.endRequested   = $scope.endRequested;
             doSearch();
 
             $mdDialog.hide();
@@ -297,9 +291,7 @@ angular.module('owm.resource.search', [
         templateUrl: 'booking/timeframe/booking-timeframe-modal.tpl.html',
         parent: angular.element(document.body),
         //targetEvent: $event,
-        clickOutsideToClose:true,
-      })
-      .then(function(res) {
+        clickOutsideToClose: true,
       });
     };
 

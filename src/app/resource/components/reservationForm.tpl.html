@@ -1,11 +1,8 @@
 <form role="form" class="booking mywheels-form" name="createBookingForm">
 
-<div style="display: none; background: #eee; font-family: monospace;">
-Timeframe: {{ booking.timeframe }}
-</div>
-
   <timeframe-picker name="timeframe"
-                    ng-model="booking.timeframe"
+                    pickup-date-time="booking.beginRequested"
+                    return-date-time="booking.endRequested"
                     mobile-autoscroll="true">
   </timeframe-picker>
 
