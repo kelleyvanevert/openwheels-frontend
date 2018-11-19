@@ -26,7 +26,7 @@ angular.module('owm.booking.show', [])
   function initBookingRequestScope(booking) {
     $scope.bookingRequest = angular.copy(booking);
     $scope.bookingRequest.beginRequested = booking.beginRequested ? booking.beginRequested : booking.beginBooking;
-    $scope.bookingRequest.endRequested = booking.endRequested ? booking.endRequested : booking.endBooking;
+    $scope.bookingRequest.endRequested   = booking.endRequested   ? booking.endRequested   : booking.endBooking;
   }
 
   $scope.bookingStarted = moment().isAfter(moment(booking.beginBooking));

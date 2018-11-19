@@ -233,6 +233,7 @@
             },
 
             getTimePickerMainTemplate = function () {
+
                 var topRow = $('<tr>'),
                     middleRow = $('<tr>'),
                     bottomRow = $('<tr>');
@@ -291,23 +292,11 @@
             },
 
             getTimePickerTemplate = function () {
-                var hoursView = $('<div>').addClass('timepicker-hours')
-                        .append($('<table>').addClass('table-condensed')),
-                    minutesView = $('<div>').addClass('timepicker-minutes')
-                        .append($('<table>').addClass('table-condensed')),
-                    secondsView = $('<div>').addClass('timepicker-seconds')
+                var quartersView = $('<div>').addClass('timepicker-quarters')
                         .append($('<table>').addClass('table-condensed')),
                     ret = [getTimePickerMainTemplate()];
 
-                if (isEnabled('h')) {
-                    ret.push(hoursView);
-                }
-                if (isEnabled('m')) {
-                    ret.push(minutesView);
-                }
-                if (isEnabled('s')) {
-                    ret.push(secondsView);
-                }
+                ret.push(quartersView);
 
                 return ret;
             },
@@ -340,7 +329,7 @@
             },
 
             getTemplate = function () {
-                var template = $('<div>').addClass('bootstrap-datetimepicker-widget dropdown-menu'),
+                var template = $('<div>').addClass('bootstrap-datetimepicker-widget dropdown-menu').css({ width: options.width }),
                     dateView = $('<div>').addClass('datepicker').append(getDatePickerTemplate()),
                     timeView = $('<div>').addClass('timepicker').append(getTimePickerTemplate()),
                     content = $('<ul>').addClass('list-unstyled'),
@@ -772,6 +761,22 @@
                 updateDecades();
             },
 
+            fillQuarters = function () {
+                var table = widget.find('.timepicker-quarters table'),
+                    currentQuarter = viewDate.clone().startOf('d'),
+                    html = [],
+                    row = $('<tr>');
+
+                while (currentQuarter.isSame(viewDate, 'd')) {
+                    row = $('<tr>');
+                    html.push(row);
+
+                    row.append('<td data-action="selectQuarter" data-quarter="'+currentQuarter.format('HH:mm')+'" class="quarter"><span class="tp-pickable tp-pickable-hour">' + currentQuarter.format('HH') + '</span>:<span class="tp-pickable tp-pickable-minute">' + currentQuarter.format('mm') + '</span></td>');
+                    currentQuarter.add(15, 'minutes');
+                }
+                table.empty().append(html);
+            },
+
             fillHours = function () {
                 var table = widget.find('.timepicker-hours table'),
                     currentHour = viewDate.clone().startOf('d'),
@@ -786,7 +791,7 @@
                         row = $('<tr>');
                         html.push(row);
                     }
-                    row.append('<td data-action="selectHour" data-hour="'+currentHour.format('HH')+'" class="hour' + (!isValid(currentHour, 'h') ? ' disabled' : '') + '"><span class="tp-pickable tp-pickable-hour">' + currentHour.format(use24Hours ? 'HH' : 'hh') + '</span>:<span class="tp-affix tp-affix-minute"></span></td>');
+                    row.append('<td data-action="selectHour" data-hour="'+currentHour.format('HH')+'" class="hour' + (!isValid(currentHour, 'h') ? ' disabled' : '') + '"><span class="tp-pickable tp-pickable-hour">' + currentHour.format(use24Hours ? 'HH' : 'hh') + '</span></td>');
                     currentHour.add(1, 'h');
                 }
                 table.empty().append(html);
@@ -804,7 +809,7 @@
                         row = $('<tr>');
                         html.push(row);
                     }
-                    row.append('<td data-action="selectMinute" data-minute="'+currentMinute.format('mm')+'" class="minute' + (!isValid(currentMinute, 'm') ? ' disabled' : '') + '"><span class="tp-affix tp-affix-hour"></span>:<span class="tp-pickable tp-pickable-minute">' + currentMinute.format('mm') + '</span></td>');
+                    row.append('<td data-action="selectMinute" data-minute="'+currentMinute.format('mm')+'" class="minute' + (!isValid(currentMinute, 'm') ? ' disabled' : '') + '"><span class="tp-pickable tp-pickable-minute">' + currentMinute.format('mm') + '</span></td>');
                     currentMinute.add(step, 'm');
                 }
                 table.empty().append(html);
@@ -847,9 +852,10 @@
                 timeComponents.filter('[data-time-component=minutes]').text(date.format('mm'));
                 timeComponents.filter('[data-time-component=seconds]').text(date.format('ss'));
 
-                fillHours();
-                fillMinutes();
-                fillSeconds();
+                fillQuarters();
+                //fillHours();
+                //fillMinutes();
+                //fillSeconds();
             },
 
             update = function () {
@@ -1153,9 +1159,44 @@
                     }
                 },
 
-                showPicker: function () {
-                    widget.find('.timepicker > div:not(.timepicker-picker)').hide();
-                    widget.find('.timepicker .timepicker-picker').show();
+                showPicker: function (first_time) {
+                    //widget.find('.timepicker > div:not(.timepicker-picker)').hide();
+                    //widget.find('.timepicker .timepicker-picker').show();
+
+                    if (date) {
+                        var hour   = date.format('HH');
+                        var minute = date.format('mm');
+
+                        var hours_container   = widget.find('.timepicker .timepicker-hours');
+                        var minutes_container = widget.find('.timepicker .timepicker-minutes');
+
+                        hours_container.find('td').removeClass('active');
+                        minutes_container.find('td').removeClass('active');
+
+                        var hour_el = hours_container.find('td[data-hour=' + hour + ']').addClass('active');
+                        if (first_time) {
+                            var hour_o = hour_el.position().top + hours_container.scrollTop();
+                            hours_container.scrollTop(Math.max(hour_o - 80, 0));
+                        }
+
+                        var minute_el = minutes_container.find('td[data-minute=' + minute + ']').addClass('active');
+                        if (first_time) {
+                            var minute_o = minute_el.position().top + minutes_container.scrollTop();
+                            minutes_container.scrollTop(Math.max(minute_o - 80, 0));
+                        }
+                    }
+                },
+
+                showQuarters: function () {
+                    if (date) {
+                        var q = date.format('HH:mm');
+
+                        var container = widget.find('.timepicker .timepicker-quarters');
+                        container.find('td').removeClass('active');
+                        var el = container.find('td[data-quarter="' + q + '"]').addClass('active');
+                        var o = el.position().top + container.scrollTop();
+                        container.scrollTop(Math.max(o - 80, 0));
+                    }
                 },
 
                 showHours: function () {
@@ -1165,7 +1206,7 @@
                     if (date) {
                         var HH = date.format('HH');
                         var mm = date.format('mm');
-                        widget.find('.timepicker .tp-affix-minute').text(mm);
+//                        widget.find('.timepicker .tp-affix-minute').text(mm);
 
                         var container = widget.find('.timepicker .timepicker-hours');
                         container.find('td').removeClass('active');
@@ -1182,7 +1223,7 @@
                     if (date) {
                         var HH = date.format('HH');
                         var mm = date.format('mm');
-                        widget.find('.timepicker .tp-affix-hour').text(HH);
+//                        widget.find('.timepicker .tp-affix-hour').text(HH);
 
                         var container = widget.find('.timepicker .timepicker-minutes');
                         container.find('td').removeClass('active');
@@ -1193,6 +1234,23 @@
                 showSeconds: function () {
                     widget.find('.timepicker .timepicker-picker').hide();
                     widget.find('.timepicker .timepicker-seconds').show();
+                },
+
+                selectQuarter: function (e) {
+                    var td = $(e.target).closest('td');
+                    var q = td.attr('data-quarter');
+                    var dt = moment(q, 'HH:mm');
+
+                    setValue(date.clone().hours(dt.hours()).minutes(dt.minutes()));
+                    if (!options.keepOpen && !options.inline) {
+                        accept();
+                    }
+
+                    /*
+                    var container = widget.find('.timepicker .timepicker-quarters');
+                    container.find('td').removeClass('active');
+                    var el = container.find('td[data-quarter="' + q + '"]').addClass('active');
+                    */
                 },
 
                 selectHour: function (e) {
@@ -1211,18 +1269,18 @@
                         }
                     }
                     setValue(date.clone().hours(hour));
-                    actions.showPicker.call(picker);
+                    actions.showPicker.call(picker, !'first_time');
                 },
 
                 selectMinute: function (e) {
                     var a = $(e.target).closest('td').attr('data-minute');
                     setValue(date.clone().minutes(parseInt(a, 10)));
-                    actions.showPicker.call(picker);
+                    actions.showPicker.call(picker, !'first_time');
                 },
 
                 selectSecond: function (e) {
                     setValue(date.clone().seconds(parseInt($(e.target).text(), 10)));
-                    actions.showPicker.call(picker);
+                    actions.showPicker.call(picker, !'first_time');
                 },
 
                 clear: clear,
@@ -1291,9 +1349,9 @@
                 fillDow();
                 fillMonths();
 
-                widget.find('.timepicker-hours').hide();
-                widget.find('.timepicker-minutes').hide();
-                widget.find('.timepicker-seconds').hide();
+//                widget.find('.timepicker-hours').hide();
+//                widget.find('.timepicker-minutes').hide();
+//                widget.find('.timepicker-seconds').hide();
 
                 update();
                 showMode();
@@ -1307,6 +1365,11 @@
                 }
                 place();
                 widget.show();
+
+                if (options.format.match(/HH/)) {
+                    actions.showQuarters.call(picker);
+                }
+
                 if (options.focusOnShow && !input.is(':focus')) {
                     input.focus();
                 }
@@ -1968,6 +2031,15 @@
             return picker;
         };
 
+        picker.width = function (width) {
+            if (arguments.length === 0) {
+                return options.width;
+            }
+
+            options.width = width;
+            return picker;
+        };
+
         picker.sideBySide = function (sideBySide) {
             if (arguments.length === 0) {
                 return options.sideBySide;
@@ -2515,6 +2587,8 @@
     };
 
     $.fn.datetimepicker.defaults = {
+        width: '20em',
+
         timeZone: '',
         format: false,
         dayViewHeaderFormat: 'MMMM YYYY',
