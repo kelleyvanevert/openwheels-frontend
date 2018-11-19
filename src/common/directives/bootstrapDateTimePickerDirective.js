@@ -118,7 +118,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
           c.show();
           $window.openDateTimePickers.map(function (el) {
             if (el !== input[0]) {
-              //$log.log('hiding OTHER:'+el.id+' manually instead of blur');
+              $log.log('hiding OTHER:'+el.id+' manually instead of blur');
               $(el).data('DateTimePicker').hide();
             }
           });

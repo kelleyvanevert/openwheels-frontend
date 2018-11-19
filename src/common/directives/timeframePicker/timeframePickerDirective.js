@@ -17,7 +17,7 @@ angular.module('timeframePickerDirective', [])
   const mobile = (mobileDetectService.phone() || mobileDetectService.mobile() || mobileDetectService.tablet());
 
   const dateTimeConfig = {
-    showAccept: true,
+    // showAccept: true,
     focusOnShow: false, // (!) important for mobile
     useCurrent: true,
     toolbarPlacement: 'bottom',
@@ -30,15 +30,17 @@ angular.module('timeframePickerDirective', [])
       horizontal: 'left',
       vertical: 'bottom',
     },
+    width: '20em',
   });
 
-  const timeConfig =Object.assign({}, dateTimeConfig, {
+  const timeConfig = Object.assign({}, dateTimeConfig, {
     format: 'HH:mm',
     stepping: 15, // minute step size
     widgetPositioning: { // with knowledge of the html (!)
       horizontal: 'right',
       vertical: 'bottom',
     },
+    width: '12em',
   });
 
   function getStartOfThisQuarter () {

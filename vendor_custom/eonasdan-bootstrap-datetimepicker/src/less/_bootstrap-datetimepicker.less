@@ -20,24 +20,31 @@
     list-style: none;
     font-size: @bs-datetimepicker-base-font-size;
 
-    .timepicker-hours,
-    .timepicker-minutes {
-        font-size: 1.2em;
+    .timepicker {
+        margin: -7px 0;
     }
 
-    .timepicker-hours {
-        max-height: 12em;
+    .timepicker-picker {
+        display: none;
+    }
+
+    .timepicker-quarters {
+        font-size: 1.3em;
+    }
+
+    .timepicker-quarters {
+        max-height: 16em;
         overflow-y: scroll;
         
-        background: /* Shadow covers */ linear-gradient(white 30%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%, /* Shadows */ radial-gradient(50% 0, farthest-side, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)), radial-gradient(50% 100%, farthest-side, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)) 0 100%;
-        background: /* Shadow covers */ linear-gradient(white 30%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%, /* Shadows */ radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)), radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)) 0 100%;
+/*        background: linear-gradient(white 30%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%, radial-gradient(50% 0, farthest-side, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)), radial-gradient(50% 100%, farthest-side, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)) 0 100%;
+        background: linear-gradient(white 30%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%, radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)), radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)) 0 100%;
         background-repeat: no-repeat;
         background-color: white;
         background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
-        background-attachment: local, local, scroll, scroll;
+        background-attachment: local, local, scroll, scroll;*/
     }
 
-    .tp-pickable {
+    .tp-pickable-hour {
         font-weight: bold;
     }
 
@@ -45,7 +52,7 @@
         color: #888;
     }
 
-    .active .tp-affix {
+    .active .tp-pickable-minute {
         color: @bs-datetimepicker-active-color;
         text-shadow: @bs-datetimepicker-text-shadow;
     }
@@ -53,8 +60,9 @@
     &.dropdown-menu {
         display: block;
         margin: 2px 0;
-        padding: 4px;
-        width: 19em;
+        padding: 7px;
+        width: 20em;
+        box-shadow: 3px 3px 25px rgba(0,0,0,0.3);
 
         &.timepicker-sbs {
             @media (min-width: @screen-sm-min) {
@@ -286,6 +294,7 @@
 
             &.day:hover,
             &.hour:hover,
+            &.quarter:hover,
             &.minute:hover,
             &.second:hover {
                 background: @bs-datetimepicker-btn-hover-bg;
@@ -370,6 +379,7 @@
     }
 
     &.usetwentyfour {
+        td.quarter,
         td.hour,
         td.minute {
             height: 27px;
