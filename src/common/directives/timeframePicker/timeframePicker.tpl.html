@@ -34,7 +34,7 @@
 
     <p>
       <label for="returnDate">Terugbrengen</label>
-      <span v-if="showExtendButtons">
+      <span ng-if="showExtendButtons">
         <button type="button" class="btn btn-default btn-xs" ng-click="extendReturnBy(1)">{{ 'PLUS_1_HOUR' | translate }}</button>
         <button type="button" class="btn btn-default btn-xs" ng-click="extendReturnBy(2)">{{ 'PLUS_2_HOUR' | translate }}</button>
         <button type="button" class="btn btn-default btn-xs" ng-click="extendReturnBy(4)">{{ 'PLUS_4_HOUR' | translate }}</button>
