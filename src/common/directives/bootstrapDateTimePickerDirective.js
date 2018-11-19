@@ -12,7 +12,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
     scope: {
 //      ngModel: '=',
       config: '=bootstrapDateTimePicker',
-      scrollToClosest: '@',
+      scrollToClosest: '=',
       mobile: '=',
       dtpAutoshow: '@',
       dtpBroadcastAccept: '@',
@@ -118,7 +118,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
           c.show();
           $window.openDateTimePickers.map(function (el) {
             if (el !== input[0]) {
-              //$log.log('hiding OTHER:'+el.id+' manually instead of blur');
+              $log.log('hiding OTHER:'+el.id+' manually instead of blur');
               $(el).data('DateTimePicker').hide();
             }
           });
@@ -130,8 +130,8 @@ angular.module('bootstrapDateTimePickerDirective', [])
               //$log.log('cannot find', $scope.scrollToClosest);
               el = input;
             }
+            $('html, body').stop().animate({ scrollTop: el.offset().top - 10 }, 500, 'swing');
           }
-          $('html, body').stop().animate({ scrollTop: el.offset().top - 10 }, 500, 'swing');
           //return false;
         }
       });

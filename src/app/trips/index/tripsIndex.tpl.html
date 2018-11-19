@@ -6,24 +6,32 @@
     </h2>
   </div>
 
-  <div class="card-body">
+  <div class="card-body mywheels-form">
     <div class="row">
-
-      <div class="col-xs-6">
-        <div class="mywheels-form">
-          <div class="icon date">
-            <input id="fromDate" type="text" placeholder="{{ 'FROM' | translate }}" class="pickadate-input" ng-model="currentTimeFrame.fromDate" pickadate="dateConfig" ng-change="loadDate('both', true)">
-          </div>
+      <div class="col-sm-6">
+        <div class="form-group mw-datepicker mw-icon"
+            bootstrap-date-time-picker="dateConfig"
+            mobile="mobile">
+          <md-icon aria-hidden="true">today</md-icon>
+          <input type="text" autocomplete="off" placeholder="{{ 'FROM' | translate }}"
+                 required
+                 ng-model="currentTimeFrame.fromDate"
+                 ng-change="loadDate('both', true)" />
+          <div ng-if="mobile" class="mobile-mask"></div>
         </div>
       </div>
-      <div class="col-xs-6">
-        <div class="mywheels-form">
-          <div class="icon date">
-            <input id="untilDate" type="text" placeholder="{{ 'UNTIL' | translate }}" class="pickadate-input" ng-model="currentTimeFrame.untilDate" pickadate="dateConfig" ng-change="loadDate('both', true)">
-          </div>
+      <div class="col-sm-6">
+        <div class="form-group mw-datepicker mw-icon"
+            bootstrap-date-time-picker="dateConfig"
+            mobile="mobile">
+          <md-icon aria-hidden="true">today</md-icon>
+          <input type="text" autocomplete="off" placeholder="{{ 'UNTIL' | translate }}"
+                 required
+                 ng-model="currentTimeFrame.untilDate"
+                 ng-change="loadDate('both', true)" />
+          <div ng-if="mobile" class="mobile-mask"></div>
         </div>
       </div>
-
       <div class="col-xs-12" ng-show="me.preference !== 'owner'">
         <div class="mywheels-form">
           <div class="checkbox">
@@ -32,7 +40,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 
