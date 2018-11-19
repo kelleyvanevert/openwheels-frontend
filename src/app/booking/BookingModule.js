@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('owm.booking', [
-  'owm.booking.timeframe',
   'owm.booking.list',
   'owm.booking.list-rental',
   'owm.booking.show',
