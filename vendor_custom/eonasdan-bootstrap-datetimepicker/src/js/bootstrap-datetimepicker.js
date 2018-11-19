@@ -329,7 +329,7 @@
             },
 
             getTemplate = function () {
-                var template = $('<div>').addClass('bootstrap-datetimepicker-widget dropdown-menu'),
+                var template = $('<div>').addClass('bootstrap-datetimepicker-widget dropdown-menu').css({ width: options.width }),
                     dateView = $('<div>').addClass('datepicker').append(getDatePickerTemplate()),
                     timeView = $('<div>').addClass('timepicker').append(getTimePickerTemplate()),
                     content = $('<ul>').addClass('list-unstyled'),
@@ -1242,11 +1242,15 @@
                     var dt = moment(q, 'HH:mm');
 
                     setValue(date.clone().hours(dt.hours()).minutes(dt.minutes()));
+                    if (!options.keepOpen && !options.inline) {
+                        accept();
+                    }
 
+                    /*
                     var container = widget.find('.timepicker .timepicker-quarters');
                     container.find('td').removeClass('active');
                     var el = container.find('td[data-quarter="' + q + '"]').addClass('active');
-                    //actions.showPicker.call(picker, !'first_time');
+                    */
                 },
 
                 selectHour: function (e) {
@@ -1362,7 +1366,9 @@
                 place();
                 widget.show();
 
-                actions.showQuarters.call(picker);
+                if (options.format.match(/HH/)) {
+                    actions.showQuarters.call(picker);
+                }
 
                 if (options.focusOnShow && !input.is(':focus')) {
                     input.focus();
@@ -2025,6 +2031,15 @@
             return picker;
         };
 
+        picker.width = function (width) {
+            if (arguments.length === 0) {
+                return options.width;
+            }
+
+            options.width = width;
+            return picker;
+        };
+
         picker.sideBySide = function (sideBySide) {
             if (arguments.length === 0) {
                 return options.sideBySide;
@@ -2572,6 +2587,8 @@
     };
 
     $.fn.datetimepicker.defaults = {
+        width: '20em',
+
         timeZone: '',
         format: false,
         dayViewHeaderFormat: 'MMMM YYYY',
