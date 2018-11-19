@@ -54,6 +54,16 @@
     }
 }
 /* input */
+.mywheels-form input[type="date"]:read-only,
+.mywheels-form input[type="email"]:read-only,
+.mywheels-form input[type="number"]:read-only,
+.mywheels-form input[type="password"]:read-only,
+.mywheels-form input[type="tel"]:read-only,
+.mywheels-form input[type="text"]:read-only,
+.mywheels-form textarea:read-only {
+    border: 1px solid rgb(209, 217, 219);
+    color: #585656;
+}
 .mywheels-form input[type="date"],
 .mywheels-form input[type="email"],
 .mywheels-form input[type="number"],
@@ -118,18 +128,6 @@
 .mywheels-form textarea.error {
     border: 1px solid @mywheels-red;
     color: @mywheels-red;
-}
-.mywheels-form input[type="date"]:read-only,
-.mywheels-form input[type="email"]:read-only,
-.mywheels-form input[type="number"]:read-only,
-.mywheels-form input[type="password"]:read-only,
-.mywheels-form input[type="tel"]:read-only,
-.mywheels-form input[type="text"]:read-only,
-.mywheels-form legend:read-only,
-.mywheels-form select:read-only,
-.mywheels-form textarea:read-only {
-    border: 1px solid rgb(209, 217, 219);
-    color: #585656;
 }
 .mywheels-form .icon {
     position: relative;
@@ -556,7 +554,8 @@
     cursor: pointer;
 }
 
-.mywheels-form .form-group.mw-icon > input {
+.mywheels-form .form-group.mw-icon > input,
+.mywheels-form .form-group.mw-icon > select {
     position: relative;
     background: transparent;
     padding-left: 2.4em;
@@ -569,7 +568,8 @@
     top: 8px;
     left: 8px;
 }
-.mywheels-form .form-group.mw-button > input {
+.mywheels-form .form-group.mw-button > input,
+.mywheels-form .form-group.mw-button > select {
     position: relative;
     background: transparent;
     padding-right: 2.4em;
