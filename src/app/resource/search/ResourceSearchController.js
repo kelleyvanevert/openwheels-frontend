@@ -273,7 +273,7 @@ angular.module('owm.resource.search', [
       var booking = $scope.booking;
 
       $mdDialog.show({
-        controller: function ($scope) {
+        controller: ['$scope', function ($scope) {
           $scope.beginRequested = booking.beginRequested;
           $scope.endRequested   = booking.endRequested;
 
@@ -287,7 +287,7 @@ angular.module('owm.resource.search', [
 
             $mdDialog.hide();
           };
-        },
+        }],
         templateUrl: 'booking/timeframe/booking-timeframe-modal.tpl.html',
         parent: angular.element(document.body),
         //targetEvent: $event,

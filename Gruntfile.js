@@ -593,7 +593,7 @@ module.exports = function (grunt) {
 
   // manually test a "dist" build locally, with dev configuration
   grunt.registerTask('test-dist', [
-    'configure:./bin/branding/',
+    'configure:compile_dir',
     'connect:bin'
   ]);
 
