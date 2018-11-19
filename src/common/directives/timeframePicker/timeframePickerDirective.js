@@ -61,8 +61,12 @@ angular.module('timeframePickerDirective', [])
 
   return {
     restrict: 'E',
+    scope: {
+      mobileAutoscroll: '=',
+      ngModel: '=',
+    },
     templateUrl: 'directives/timeframePicker/timeframePicker.tpl.html',
-    //require: 'ngModel',
+    require: 'ngModel',
     replace: true,
     controller: function timeframePickerController ($scope, $element, $log, API_DATE_FORMAT) {
 
@@ -77,10 +81,10 @@ angular.module('timeframePickerDirective', [])
 
       // Local (private) state
 
-      $scope.pickupDate = null;
-      $scope.pickupTime = null;
-      $scope.returnDate = null;
-      $scope.returnTime = null;
+      $scope.pickupDate = ($scope.ngModel && $scope.ngModel.pickup) ? $scope.ngModel.pickup.format(dateConfig.format) : null;
+      $scope.pickupTime = ($scope.ngModel && $scope.ngModel.pickup) ? $scope.ngModel.pickup.format(timeConfig.format) : null;
+      $scope.returnDate = ($scope.ngModel && $scope.ngModel.return) ? $scope.ngModel.return.format(dateConfig.format) : null;
+      $scope.returnTime = ($scope.ngModel && $scope.ngModel.return) ? $scope.ngModel.return.format(timeConfig.format) : null;
 
       $scope.timeframeValid = false;
 

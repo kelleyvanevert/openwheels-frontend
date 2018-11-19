@@ -1,58 +1,28 @@
-<div class="modal-content">
+<md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="30" flex-xl="25"
+           style="overflow: visible; position: absolute; top: 10px;">
 
-  <div class="modal-body">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2><ng-md-icon icon="access_time"></ng-md-icon> Datum</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
 
-    <form timeframe begin="booking.beginRequested" end="booking.endRequested">
-      <div class="row">
-        <div class="col-xs-7">
-          <div class="form-group">
-            <label>
-              {{ 'DATE_START' | translate }}
-              <button id="timepopup_now_button" type="button" class="btn btn-warning btn-xs" ng-click="setTimeframe(0)">{{ 'NOW' | translate }}</button>
-            </label>
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-              <input type="text" placeholder="{{ 'DATE_START' | translate }}" class="form-control pickadate-input"
-                ng-model="booking.beginRequested" ng-change="onBeginDateChange()" pickadate="dateConfig">
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-5">
-          <div class="form-group">
-            <label>{{ 'TIME_START' | translate }}</label>
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-              <input type="text" placeholder="{{ 'TIME_START' | translate }}" class="form-control pickadate-input" ng-model="booking.beginRequested" pickatime="timeConfig">
-            </div>
-          </div>
-        </div>
-      </div>
+  <md-dialog-content class="md-dialog-content"
+                     style="overflow: visible; padding: 14px;">
+    <timeframe-picker name="timeframe"
+                      ng-model="timeframe"
+                      mobile-autoscroll="false">
+    </timeframe-picker>
 
+  </md-dialog-content>
+  
+  <md-dialog-actions layout="row">
+    <md-button ng-click="hide()">Annuleren</md-button>
+    <md-button ng-click="accept()" class="md-raised md-primary mw-green">OK</md-button>
+  </md-dialog-actions>
 
-      <div class="row">
-        <div class="col-xs-7">
-          <div class="form-group">
-            <label>{{ 'DATE_END' | translate }}</label>
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-              <input type="text" placeholder="{{ 'DATE_END' | translate }}" class="form-control pickadate-input"
-                ng-model="booking.endRequested" ng-change="onEndDateChange()" pickadate="dateConfig">
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-5">
-          <div class="form-group">
-            <label>{{ 'TIME_END' | translate }}</label>
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-              <input type="text" placeholder="{{ 'TIME_END' | translate }}" class="form-control pickadate-input" ng-model="booking.endRequested" pickatime="timeConfig">
-            </div>
-          </div>
-        </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="ok()">OK</button>
-    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-  </div>
-</div>
+</md-dialog>

@@ -6,7 +6,7 @@ angular.module('owm.resource.search', [
   ])
   .controller('ResourceSearchController', function ($location, me, $scope, $state, $stateParams, $uibModal, $mdMedia, $mdDialog,
     $filter, $anchorScroll, appConfig, Geocoder, alertService, resourceService, resourceQueryService, user, place, Analytics,
-    $cookieStore, preloader, metaInfoService, $rootScope) {
+    $cookieStore, preloader, metaInfoService, $rootScope, API_DATE_FORMAT) {
 
     if (place) {
       metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/' + (place.name || '').toLowerCase().replace(/ /g, '-')});
@@ -270,17 +270,36 @@ angular.module('owm.resource.search', [
 
     //select timeframe modal
     $scope.selectTimeframe = function () {
-      $uibModal.open({
-        templateUrl: 'booking/timeframe/booking-timeframe-modal.tpl.html',
-        controller: 'BookingTimeframeController',
-        resolve: {
-          booking: function () {
-            return angular.copy($scope.booking);
+      var booking = $scope.booking;
+
+      $mdDialog.show({
+        controller: function ($scope) {
+          $scope.timeframe = {};
+          if (booking.beginRequested) {
+            $scope.timeframe.pickup = moment(booking.beginRequested, API_DATE_FORMAT);
           }
-        }
-      }).result.then(function (booking) {
-        $scope.booking = booking;
-        return doSearch();
+          if (booking.endRequested) {
+            $scope.timeframe.return = moment(booking.endRequested, API_DATE_FORMAT);
+          }
+
+          $scope.hide = function() {
+            $mdDialog.hide();
+          };
+          $scope.accept = function () {
+            var t = $scope.timeframe;
+            booking.beginRequested = t.pickup ? t.pickup.format(API_DATE_FORMAT) : null;
+            booking.endRequested   = t.return ? t.return.format(API_DATE_FORMAT) : null;
+            doSearch();
+
+            $mdDialog.hide();
+          };
+        },
+        templateUrl: 'booking/timeframe/booking-timeframe-modal.tpl.html',
+        parent: angular.element(document.body),
+        //targetEvent: $event,
+        clickOutsideToClose:true,
+      })
+      .then(function(res) {
       });
     };
 

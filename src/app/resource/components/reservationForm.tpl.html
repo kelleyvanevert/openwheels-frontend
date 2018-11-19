@@ -4,12 +4,10 @@
 Timeframe: {{ booking.timeframe }}
 </div>
 
-  <!-- timeframe[begin,end] -->
   <timeframe-picker name="timeframe"
                     ng-model="booking.timeframe"
-                    mobile="mobile">
+                    mobile-autoscroll="true">
   </timeframe-picker>
-  <span ng-show="createBookingForm.timeframe.$error.begin_before_end">Volgorde verkeerd!</span>
 
   <p><label for="res_comment">Opmerking voor {{ resource.owner.firstName || 'de eigenaar' }}</label></p>
   <div class="form-group" style="">

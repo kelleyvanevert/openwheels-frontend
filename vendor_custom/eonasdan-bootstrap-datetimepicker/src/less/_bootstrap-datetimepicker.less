@@ -33,7 +33,7 @@
     }
 
     .timepicker-quarters {
-        max-height: 16em;
+        max-height: 14em;
         overflow-y: scroll;
         
 /*        background: linear-gradient(white 30%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%, radial-gradient(50% 0, farthest-side, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)), radial-gradient(50% 100%, farthest-side, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)) 0 100%;
@@ -62,6 +62,8 @@
         margin: 2px 0;
         padding: 7px;
         width: 20em;
+        max-width: ~"calc(100vw - 30px - 1em)";
+
         box-shadow: 3px 3px 25px rgba(0,0,0,0.3);
 
         &.timepicker-sbs {

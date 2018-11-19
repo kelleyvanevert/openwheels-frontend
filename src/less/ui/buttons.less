@@ -6,7 +6,7 @@
     position: relative;
     flex-grow: 0;
     max-width: 30em;
-    height: 2.4em;
+    height: 2.6em;
     margin: auto;
     padding: 0.5em 1em;
     border: none;
@@ -39,6 +39,13 @@
     background: #699b40;
     color: #fff;
 }
+
+
+button.mw-green,
+md-button.mw-green {
+    background: @mywheels-green !important;
+}
+
 .mywheels-btn-default {
     //md-ink-ripple="#3a6d81"
     color: #fff;
@@ -49,6 +56,11 @@
     color: #fff;
 }
 .mywheels-btn-warning {
+    //md-ink-ripple is #8f6700
+    color: #fff;
+    background: @mywheels-orange;
+}
+.mywheels-btn-call-to-action {
     //md-ink-ripple is #8f6700
     color: #fff;
     background: @mywheels-orange;
@@ -81,6 +93,15 @@
     background: rgba(255, 255, 255, 0);
 }
 .mywheels-btn-transparant:hover {
+    background: #e0e0e0;
+    color: #000;
+}
+.mywheels-btn-border {
+    color: #222;
+    background: #eee;
+    border: 1px solid #bbb;
+}
+.mywheels-btn-border:hover {
     background: #e0e0e0;
     color: #000;
 }
