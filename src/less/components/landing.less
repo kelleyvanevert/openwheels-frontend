@@ -1,0 +1,197 @@
+/*
+.home.landing .hero {
+    background-image: url('../branding/img/bg.jpg');
+}
+*/
+
+@media (max-width: 40em) {
+  .home.landing {
+    .mywheels-open-meedoen {
+      font-size: 80%;
+    }
+  }
+}
+
+.home.landing {
+  .infobox ng-md-icon {
+    padding: 0;
+    margin: auto .5em auto 0;
+    color: @mywheels-green;
+    height: 32px;
+    width: 32px;
+  }
+
+  .wat-is-mywheels-open {
+    text-align: center;
+    margin-bottom: 1em;
+
+    h2 {
+      color: @mywheels-blue;
+
+      img {
+        height: 1.7em;
+        position: relative;
+        vertical-align: text-bottom;
+        bottom: -.29em;
+        margin: 0 -.3em 0 -.5em;
+        user-select: none;
+
+        user-select: none;
+      }
+    }
+
+    .subtitle {
+      font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+      font-size: 1.6em;
+      color: #555;
+
+      max-width: 35em;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 2em;
+      }
+      .subtitle {
+        font-size: 1.2em;
+      }
+    }
+  }
+
+  .mywheels-open-meedoen {
+    text-align: center;
+
+    .open-steps {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+
+      margin: 4em 0;
+
+      .step {
+        width: 24rem;
+        z-index: 200;
+
+        text-align: center;
+
+        .circle {
+          display: inline-block;
+
+          background: @mywheels-green;
+          width: 10rem;
+          height: 10rem;
+          line-height: 10rem;
+          border-radius: 99rem;
+
+          ng-md-icon {
+            color: #fff;
+            width: 50px;
+            height: 50px;
+          }
+        }
+
+        .step-label {
+          font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+          font-size: 1.8em;
+          color: @mywheels-blue;
+          margin: 2rem 0px;
+        }
+
+        p {
+          font-size: 1.2em;
+        }
+      }
+
+      .line {
+        border-top: 2px solid #999;
+        margin: 5rem -4%;
+        z-index: 100;
+
+        width: 22%;
+      }
+
+      @media (max-width: 40em) {
+        .step {
+          width: 20rem;
+          .circle {
+            width: 7rem;
+            height: 7rem;
+            line-height: 7rem;
+            ng-md-icon {
+              transform: scale(.7);
+            }
+          }
+        }
+        .line {
+          margin: 3.5rem -4%;
+        }
+      }
+    }
+
+    @media (max-width: 480px) {
+      .open-steps {
+        flex-direction: column;
+        align-items: center;
+        .step {
+          margin: 1rem 0;
+          .step-label {
+            margin: 1rem 0;
+          }
+        }
+        .line {
+          display: none;
+        }
+      }
+    }
+
+    h2 {
+      color: @mywheels-green;
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 2em;
+      }
+    }
+  }
+
+  @media (max-width: 40em) {
+    .mywheels-open-meedoen {
+      margin: 2em 0;
+    }
+  }
+
+  .renter--actions,
+  .owner--actions {
+
+    h2 {
+      color: @mywheels-blue;
+      font-size: 2em;
+      margin: 0 0 1em;
+    }
+
+    ul {
+      margin: 0 0 1em 0;
+      padding: 0;
+
+      li {
+        list-style: none;
+        min-height: 32px;
+
+        .n {
+          margin: 0 .5em;
+          font-weight: bold;
+        }
+      }
+    }
+
+    ng-md-icon {
+      color: @mywheels-green;
+      height: 32px;
+      width: 32px;
+
+      margin-right: .5em;
+    }
+  }
+}
