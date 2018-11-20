@@ -4,10 +4,11 @@
  * Kelley van Evert, 12 nov 2018
  * API:
  *   <timeframe-picker
- *      mobile-autoscroll   (=)  :: boolean (whether to autoscroll on mobile)
- *      show-extend-buttons (=)  :: boolean (whether to show +1/+2/+4 extension buttons)
- *      pickup-date-time    (=)  :: string in format `API_DATE_FORMAT`
- *      return-date-time    (=)  :: string in format `API_DATE_FORMAT`
+ *      mobile-autoscroll    (=)  :: boolean (whether to autoscroll on mobile)
+ *      show-extend-buttons  (=)  :: boolean (whether to show +1/+2/+4 extension buttons)
+ *      disable-logic        (=)  :: boolean
+ *      pickup-date-time     (=)  :: string in format `API_DATE_FORMAT`
+ *      return-date-time     (=)  :: string in format `API_DATE_FORMAT`
  *   />
  */
 angular.module('timeframePickerDirective', [])
@@ -67,6 +68,7 @@ angular.module('timeframePickerDirective', [])
     scope: {
       mobileAutoscroll: '=',
       showExtendButtons: '=',
+      disableLogic: '=',
       pickupDateTime: '=', // a string in format `API_DATE_FORMAT` (for the data model, not the user)
       returnDateTime: '=', // a string in format `API_DATE_FORMAT` (for the data model, not the user)
     },
@@ -118,7 +120,7 @@ angular.module('timeframePickerDirective', [])
         /* #MW-1782: end time should not automagically jump to next day */
         var midnight = tf.pickup.clone().startOf('day').add(1, 'days');
         var sixHoursLater = tf.pickup.clone().add(6, 'hours');
-        if (tf.pickup.isBefore(midnight) && sixHoursLater.isAfter(midnight)) {
+        if (tf.pickup.isBefore(midnight) && !sixHoursLater.isBefore(midnight)) {
           tf.return = tf.pickup.clone().add(30, 'minutes');
         } else {
           tf.return = sixHoursLater;
@@ -163,7 +165,7 @@ angular.module('timeframePickerDirective', [])
       }
 
       $scope.checkTimeframe = checkTimeframe;
-      function checkTimeframe (caller) {
+      function checkTimeframe (caller, $event) {
         var tf = {
           pickupDate: moment($scope.pickupDate, dateConfig.format), // only used for date part (!)
           pickupTime: moment($scope.pickupTime, timeConfig.format), // only used for time part (!)
@@ -173,33 +175,35 @@ angular.module('timeframePickerDirective', [])
  
         // Step 1: possibly autofill date resp. time parts
 
-        // If today, then the default timepicker behavior of opening with current time is logical.
-        // If not today, then this is not logical and we preemptively set it to 9:00.
-        if (tf.pickupDate.isValid() && !isToday(tf.pickupDate) && $scope.form.pickupTime.$untouched) {
-          // set pickup time
-          $scope.pickupTime = '9:00';
-          tf.pickupTime = moment($scope.pickupTime, timeConfig.format);
+        if (!$scope.disableLogic) {
+        
+          // If today, then the default timepicker behavior of opening with current time is logical.
+          // If not today, then this is not logical and we preemptively set it to 9:00.
+          if (tf.pickupDate.isValid() && !isToday(tf.pickupDate) && $scope.form.pickupTime.$untouched) {
+            // set pickup time
+            $scope.pickupTime = '9:00';
+            tf.pickupTime = moment($scope.pickupTime, timeConfig.format);
 
-          $scope.form.pickupTime.$setTouched(true); // ??
+            $scope.form.pickupTime.$setTouched(true); // ??
+          }
+
+          // If today, then the default timepicker behavior of opening with current time is logical.
+          // If not today, then this is not logical and we preemptively set it to 9:00.
+          if (tf.returnDate.isValid() && !isToday(tf.returnDate) && $scope.form.returnTime.$untouched) {
+            // set return time
+            $scope.returnTime = '18:00';
+            tf.returnTime = moment($scope.returnTime, timeConfig.format);
+
+            $scope.form.returnTime.$setTouched(true); // ??
+          }
+
+          if (tf.pickupTime.isValid() && $scope.form.pickupDate.$untouched) {
+            tf.pickupDate = moment();
+            $scope.pickupDate = tf.pickupDate.format(dateConfig.format);
+
+            $scope.form.pickupDate.$setTouched(true); // ??
+          }
         }
-
-        // If today, then the default timepicker behavior of opening with current time is logical.
-        // If not today, then this is not logical and we preemptively set it to 9:00.
-        if (tf.returnDate.isValid() && !isToday(tf.returnDate) && $scope.form.returnTime.$untouched) {
-          // set return time
-          $scope.returnTime = '18:00';
-          tf.returnTime = moment($scope.returnTime, timeConfig.format);
-
-          $scope.form.returnTime.$setTouched(true); // ??
-        }
-
-        if (tf.pickupTime.isValid() && $scope.form.pickupDate.$untouched) {
-          tf.pickupDate = moment();
-          $scope.pickupDate = tf.pickupDate.format(dateConfig.format);
-
-          $scope.form.pickupDate.$setTouched(true); // ??
-        }
-
 
         // Step 2: consolidate into datetimes, if possible
 
@@ -215,23 +219,26 @@ angular.module('timeframePickerDirective', [])
         // Step 3: adjust window when necessary
         // (this logic used to reside in `src/common/directives/pickadate/TimeframeDirective.js`)
 
-        var pickupAdjustable = (caller === 'pickup_now' && !$scope.pickupTime && !$scope.pickupDate) || ($scope.form.pickupTime.$untouched && $scope.form.pickupDate.$untouched);
-        var returnAdjustable = (caller === 'pickup_now' && !$scope.returnTime && !$scope.returnDate) || ($scope.form.returnTime.$untouched && $scope.form.returnDate.$untouched);
-        
-        if (pickupAdjustable && returnAdjustable) {
-          // just null
-        }
-        else if (tf.pickup && returnAdjustable) {
-          adjustReturn(tf);
-        }
-        else if (pickupAdjustable && tf.return) {
-          adjustPickup(tf);
-        }
-        else if (caller === 'pickup' && tf.pickup > tf.return) {
-          adjustReturn(tf);
-        }
-        else if (caller === 'return' && tf.pickup > tf.return) {
-          adjustPickup(tf);
+        if (!$scope.disableLogic) {
+
+          var pickupAdjustable = (caller === 'pickup_now' && !$scope.pickupTime && !$scope.pickupDate) || ($scope.form.pickupTime.$untouched && $scope.form.pickupDate.$untouched);
+          var returnAdjustable = (caller === 'pickup_now' && !$scope.returnTime && !$scope.returnDate) || ($scope.form.returnTime.$untouched && $scope.form.returnDate.$untouched);
+          
+          if (pickupAdjustable && returnAdjustable) {
+            // just null
+          }
+          else if (tf.pickup && returnAdjustable) {
+            adjustReturn(tf);
+          }
+          else if (pickupAdjustable && tf.return) {
+            adjustPickup(tf);
+          }
+          else if (caller === 'pickup' && tf.pickup > tf.return) {
+            adjustReturn(tf);
+          }
+          else if (caller === 'return' && tf.pickup > tf.return) {
+            adjustPickup(tf);
+          }
         }
 
         // <- outwards action
