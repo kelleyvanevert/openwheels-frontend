@@ -295,15 +295,12 @@ angular.module('owm.booking.show', [])
       booking: booking ? booking.id : undefined
     })
     .then( function(result) {
-      return openDoorSuccessDialog();
-      /*
       if(result === 'error') {
         return openErrorDialog(result);
       }
-      openDoorSuccessDialog();*/
+      openDoorSuccessDialog();
     }, function (error) {
-      return openDoorSuccessDialog();
-      /*openErrorDialog(error.message);*/
+      openErrorDialog(error.message);
     })
     .finally( function() {
       alertService.loaded();
