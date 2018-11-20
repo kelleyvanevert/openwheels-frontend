@@ -231,7 +231,8 @@ angular.module('timeframePickerDirective', [])
           adjustReturn(tf);
         }
         else if (caller === 'return' && tf.pickup > tf.return) {
-          adjustPickup(tf);
+          // adjustPickup(tf);
+          adjustReturn(tf, tf.pickup.clone().add(30, 'minutes'));
         }
 
         // <- outwards action

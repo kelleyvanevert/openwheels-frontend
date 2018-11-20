@@ -11,7 +11,7 @@
           mobile="mobile"
           dtp-broadcast-accept="pickupDateAccepted"
           scroll-to-closest="(mobileAutoscroll ? '.mw-timeframe-picker' : false)">
-        <md-icon aria-hidden="true">today</md-icon>
+        <ng-md-icon aria-hidden="true" icon="today"></ng-md-icon>
         <input type="text" autocomplete="off" name="pickupDate" id="pickupDate" placeholder="Datum" required
                ng-model="pickupDate"
                ng-change="checkTimeframe('pickup', $event)"
@@ -23,7 +23,7 @@
           bootstrap-date-time-picker="timeConfig"
           scroll-to-closest="(mobileAutoscroll ? '.mw-timeframe-picker' : false)"
           dtp-autoshow="pickupDateAccepted">
-        <md-icon aria-hidden="true">schedule</md-icon>
+        <ng-md-icon aria-hidden="true" icon="schedule"></ng-md-icon>
         <input type="text" autocomplete="off" name="pickupTime" id="pickupTime" placeholder="Tijd" required
                ng-model="pickupTime"
                ng-change="checkTimeframe('pickup', $event)"
@@ -47,7 +47,7 @@
           mobile="mobile"
           dtp-broadcast-accept="returnDateAccepted"
           scroll-to-closest="(mobileAutoscroll ? '.mw-timeframe-picker' : false)">
-        <md-icon aria-hidden="true">today</md-icon>
+        <ng-md-icon aria-hidden="true" icon="today"></ng-md-icon>
         <input type="text" autocomplete="off" name="returnDate" id="returnDate" placeholder="Datum" required
                ng-model="returnDate"
                ng-change="checkTimeframe('return', $event)"
@@ -59,7 +59,7 @@
           bootstrap-date-time-picker="timeConfig"
           scroll-to-closest="(mobileAutoscroll ? '.mw-timeframe-picker' : false)"
           dtp-autoshow="returnDateAccepted">
-        <md-icon aria-hidden="true">schedule</md-icon>
+        <ng-md-icon aria-hidden="true" icon="schedule"></ng-md-icon>
         <input type="text" autocomplete="off" name="returnTime" id="returnTime" placeholder="Tijd" required
                ng-model="returnTime"
                ng-change="checkTimeframe('return', $event)"
