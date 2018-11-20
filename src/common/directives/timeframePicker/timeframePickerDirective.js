@@ -118,7 +118,7 @@ angular.module('timeframePickerDirective', [])
         /* #MW-1782: end time should not automagically jump to next day */
         var midnight = tf.pickup.clone().startOf('day').add(1, 'days');
         var sixHoursLater = tf.pickup.clone().add(6, 'hours');
-        if (tf.pickup.isBefore(midnight) && sixHoursLater.isAfter(midnight)) {
+        if (tf.pickup.isBefore(midnight) && !sixHoursLater.isBefore(midnight)) {
           tf.return = tf.pickup.clone().add(30, 'minutes');
         } else {
           tf.return = sixHoursLater;
