@@ -163,7 +163,7 @@ angular.module('timeframePickerDirective', [])
       }
 
       $scope.checkTimeframe = checkTimeframe;
-      function checkTimeframe (caller) {
+      function checkTimeframe (caller, $event) {
         var tf = {
           pickupDate: moment($scope.pickupDate, dateConfig.format), // only used for date part (!)
           pickupTime: moment($scope.pickupTime, timeConfig.format), // only used for time part (!)
