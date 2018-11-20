@@ -11,10 +11,10 @@
           mobile="mobile"
           dtp-broadcast-accept="pickupDateAccepted"
           scroll-to-closest="(mobileAutoscroll ? '.mw-timeframe-picker' : false)">
-        <md-icon aria-hidden="true">today</md-icon>
+        <ng-md-icon aria-hidden="true" icon="today"></ng-md-icon>
         <input type="text" autocomplete="off" name="pickupDate" id="pickupDate" placeholder="Datum" required
                ng-model="pickupDate"
-               ng-change="checkTimeframe('pickup')"
+               ng-change="checkTimeframe('pickup', $event)"
                ng-keydown="$event.keyCode == 13 ? $broadcast('pickupDateAccepted') : null" />
         <div ng-if="mobile" class="mobile-mask"></div>
       </div>
@@ -23,10 +23,10 @@
           bootstrap-date-time-picker="timeConfig"
           scroll-to-closest="(mobileAutoscroll ? '.mw-timeframe-picker' : false)"
           dtp-autoshow="pickupDateAccepted">
-        <md-icon aria-hidden="true">schedule</md-icon>
+        <ng-md-icon aria-hidden="true" icon="schedule"></ng-md-icon>
         <input type="text" autocomplete="off" name="pickupTime" id="pickupTime" placeholder="Tijd" required
                ng-model="pickupTime"
-               ng-change="checkTimeframe('pickup')"
+               ng-change="checkTimeframe('pickup', $event)"
                ng-keydown="$event.keyCode == 13 ? true : null" />
         <div ng-if="mobile" class="mobile-mask"></div>
       </div>
@@ -47,10 +47,10 @@
           mobile="mobile"
           dtp-broadcast-accept="returnDateAccepted"
           scroll-to-closest="(mobileAutoscroll ? '.mw-timeframe-picker' : false)">
-        <md-icon aria-hidden="true">today</md-icon>
+        <ng-md-icon aria-hidden="true" icon="today"></ng-md-icon>
         <input type="text" autocomplete="off" name="returnDate" id="returnDate" placeholder="Datum" required
                ng-model="returnDate"
-               ng-change="checkTimeframe('return')"
+               ng-change="checkTimeframe('return', $event)"
                ng-keydown="$event.keyCode == 13 ? $broadcast('returnDateAccepted') : null" />
         <div ng-if="mobile" class="mobile-mask"></div>
       </div>
@@ -59,10 +59,10 @@
           bootstrap-date-time-picker="timeConfig"
           scroll-to-closest="(mobileAutoscroll ? '.mw-timeframe-picker' : false)"
           dtp-autoshow="returnDateAccepted">
-        <md-icon aria-hidden="true">schedule</md-icon>
+        <ng-md-icon aria-hidden="true" icon="schedule"></ng-md-icon>
         <input type="text" autocomplete="off" name="returnTime" id="returnTime" placeholder="Tijd" required
                ng-model="returnTime"
-               ng-change="checkTimeframe('return')"
+               ng-change="checkTimeframe('return', $event)"
                ng-keydown="$event.keyCode == 13 ? true : null" />
         <div ng-if="mobile" class="mobile-mask"></div>
       </div>

@@ -24,8 +24,11 @@ html {
 .footer {
     max-width: 100vw;
 }
-.row{
+.row {
   max-width: 100vw;
+}
+.container .row {
+  max-width: ~"calc(100vw + 18px)";
 }
 .push {
     z-index: -1;
@@ -382,3 +385,10 @@ hr {
 
 
 
+// For debugging
+/*
+input.ng-touched {
+    color: @mywheels-blue;
+    font-weight: bold;
+}
+*/
