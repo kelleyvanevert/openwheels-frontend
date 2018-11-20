@@ -379,10 +379,10 @@
     <div class="card-body text-center" id="resource__boardcomputer">
       <ul class="list-inline">
         <li>
-          <button ng-click="openDoor(resource)" class="btn btn-lg btn-default btn-success"><i class="fa fa-unlock fa-fw fa-lg"></i></button>
+          <button title="Open de auto" ng-click="openDoorDialog($event, resource)" class="btn btn-lg btn-default btn-success"><i class="fa fa-unlock fa-fw fa-lg"></i></button>
         </li>
         <li>
-          <button ng-click="closeDoor(resource)" class="btn btn-lg btn-default btn-danger"><i class="fa fa-lock fa-fw fa-lg"></i></button>
+          <button title="Sluit de auto" ng-click="closeDoor(resource)" class="btn btn-lg btn-default btn-danger"><i class="fa fa-lock fa-fw fa-lg"></i></button>
         </li>
       </ul>
     </div>
