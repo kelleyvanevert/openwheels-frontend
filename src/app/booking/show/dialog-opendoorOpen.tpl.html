@@ -2,18 +2,61 @@
 <md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="30" flex-xl="25" class="mw-green">
   <md-toolbar>
     <div class="md-toolbar-tools">
-      <h2>Auto opent</h2>
+      <h2>Auto wordt geopend</h2>
+      <!--
       <span flex></span>
       <md-button class="md-icon-button" ng-click="hide()">
         <ng-md-icon icon="close"></ng-md-icon>
       </md-button>
+    -->
     </div>
   </md-toolbar>
   <md-dialog-content class="md-dialog-content">
     <div class="lead">
-      <p>
-        De auto ontgrendelt zich binnen 15 seconden. Fijne rit gewenst!
-      </p>
+      <div ng-if="!mess">
+        <p class="text-success" style="font-weight: bold;">
+          De auto ontgrendelt zich binnen 15 seconden.
+        </p>
+        <p>
+          Is de auto schoon van binnen?
+        </p>
+        <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between;">
+          <button class="mywheels-btn mywheels-btn-big mywheels-btn-error"
+                  md-ink-ripple="#9a3d26"
+                  ng-click="isMess()"
+                  style="white-space: nowrap; margin-top: 10px;">
+            Nee
+            <!--<ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>-->
+          </button>
+          <button class="mywheels-btn mywheels-btn-big mywheels-btn-normal"
+                  md-ink-ripple="#4b702c"
+                  ng-click="noMess()"
+                  style="white-space: nowrap; margin-top: 10px;">
+            Ja
+            <!--<ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>-->
+          </button>
+        </div>
+      </div>
+      <div ng-show="mess">
+        <p class="lead">
+          Kun je dit even toelichten?
+        </p>
+        <div class="form-group">
+          <textarea style="width: 100%;"
+                    rows="2"
+                    auto-resize
+                    md-select-on-focus
+                    ng-model="messDescription"></textarea>
+        </div>
+        <p style="text-align: right;">
+          <button class="mywheels-btn mywheels-btn-big mywheels-btn-normal"
+                  md-ink-ripple="#4b702c"
+                  ng-click="reportMessDescription()"
+                  style="white-space: nowrap; margin-top: 10px;">
+            Verstuur
+          </button>
+        </p>
+      </div>
     </div>
   </md-dialog-content>
 </md-dialog>

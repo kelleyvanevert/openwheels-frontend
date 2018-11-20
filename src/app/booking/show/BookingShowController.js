@@ -7,7 +7,8 @@ angular.module('owm.booking.show', [])
   bookingService, resourceService, invoice2Service, alertService, dialogService,
   authService, boardcomputerService, discountUsageService, chatPopupService, linksService,
   booking, me, declarationService, $mdDialog, contract, Analytics, paymentService, voucherService,
-  $window, $mdMedia, discountService, account2Service, $rootScope, chipcardService, metaInfoService) {
+  $window, $mdMedia, discountService, account2Service, $rootScope, chipcardService, metaInfoService,
+  damageService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/booking/' + booking.id});
   metaInfoService.set({canonical: 'https://mywheels.nl/booking/' + booking.id});
@@ -186,22 +187,50 @@ angular.module('owm.booking.show', [])
     container: 'body'
   };
 
+  // These API calls are not tracked: failure
+  //  does not impact UX, and hence should not
+  //  form any obstruction
+  function reportDamage (has_damage, description) {
+    setTimeout(function () {
+      damageService.addUserDamage({
+        booking: booking.id,
+        answer:      has_damage ? 'yes'       : 'no',
+        description: has_damage ? description : undefined,
+      });
+    }, 10);
+  }
+  function reportMess (has_mess, description) {
+    setTimeout(function () {
+      damageService.dirty({
+        booking: booking.id,
+        answer:      has_mess ? 'yes'       : 'no',
+        description: has_mess ? description : undefined,
+      });
+    }, 10);
+  }
+
   $scope.openDoorDialog = openDoorDialog;
   function openDoorDialog ($event, resource) {
     $mdDialog.show({
       controller: ['$scope', '$mdDialog', function ($scope, $mdDialog) {
-        $scope.resource = resource;
         $scope.schade = false;
+        $scope.damageDescription = '';
         $scope.hide = function () {
           $mdDialog.hide();
         };
-        $scope.geenSchade = $scope.open = function () {
+        $scope.geenSchade = function () {
           $mdDialog.hide();
           openDoor(resource);
+          reportDamage(false);
         };
         $scope.welSchade = function () {
           $scope.schade = true;
           // $scope.$apply(); // apparently already run
+        };
+        $scope.reportDamageDescription = function () {
+          $mdDialog.hide();
+          openDoor(resource);
+          reportDamage(true, $scope.damageDescription);
         };
       }],
       templateUrl: 'booking/show/dialog-opendoor.tpl.html',
@@ -232,13 +261,25 @@ angular.module('owm.booking.show', [])
   function openDoorSuccessDialog () {
     $mdDialog.show({
       controller: ['$scope', '$mdDialog', function ($scope, $mdDialog) {
-        $scope.hide = function () {
+        $scope.messDescription = '';
+        $scope.mess = false;
+        $scope.noMess = function () {
           $mdDialog.hide();
+          reportMess(false);
+        };
+        $scope.isMess = function () {
+          $scope.mess = true;
+          // $scope.$apply(); // apparently already run
+        };
+        $scope.reportMessDescription = function () {
+          $mdDialog.hide();
+          reportMess(true, $scope.messDescription);
         };
       }],
       templateUrl: 'booking/show/dialog-opendoorOpen.tpl.html',
       parent: angular.element(document.body),
-      clickOutsideToClose: true,
+      clickOutsideToClose: false, // (!)
+      escapeToClose: false, // (!)
     });
   }
 
@@ -254,12 +295,15 @@ angular.module('owm.booking.show', [])
       booking: booking ? booking.id : undefined
     })
     .then( function(result) {
+      return openDoorSuccessDialog();
+      /*
       if(result === 'error') {
         return openErrorDialog(result);
       }
-      openDoorSuccessDialog();
+      openDoorSuccessDialog();*/
     }, function (error) {
-      openErrorDialog(error.message);
+      return openDoorSuccessDialog();
+      /*openErrorDialog(error.message);*/
     })
     .finally( function() {
       alertService.loaded();

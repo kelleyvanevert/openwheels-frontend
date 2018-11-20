@@ -292,4 +292,12 @@ angular.module('rpcServices', [])
     return api.createRpcMethod('kmpoint.' + name);
   };
   this.forPerson = m('forPerson');
+})
+
+.service('damageService', function (api) {
+  var m = function (name) {
+    return api.createRpcMethod('damage.' + name);
+  };
+  this.addUserDamage = m('addUserDamage');
+  this.dirty = m('dirty');
 });
