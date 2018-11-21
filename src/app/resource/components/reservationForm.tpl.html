@@ -6,13 +6,29 @@
                     mobile-autoscroll="true">
   </timeframe-picker>
 
-  <p><label for="res_comment">Opmerking voor {{ resource.owner.firstName || 'de eigenaar' }}</label></p>
-  <div class="form-group" style="">
+  <p>
+    <label for="res_comment">
+      <span ng-show="!showCommentBox" class="input-toggle" ng-click="showCommentBox = true">
+        <ng-md-icon icon="navigate_next"></ng-md-icon>
+        Voeg opmerking toe
+      </span>
+      <span ng-show="showCommentBox">Opmerking voor {{ resource.owner.firstName || 'de eigenaar' }}</span>
+    </label>
+  </p>
+  <div class="form-group" ng-show="showCommentBox">
     <textarea id="res_comment" rows="2" auto-resize md-select-on-focus></textarea>
   </div>
 
-  <p><label for="res_discountCode">Kortingscode</label></p>
-  <div class="form-group mw-button" style="">
+  <p>
+    <label for="res_discountCode">
+      <span ng-show="!(showDiscountCodeBox || booking.discountCode)" class="input-toggle" ng-click="showDiscountCodeBox = true">
+        <ng-md-icon icon="navigate_next"></ng-md-icon>
+        Voeg kortingscode toe
+      </span>
+      <span ng-show="(showDiscountCodeBox || booking.discountCode)">Kortingscode</span>
+    </label>
+  </p>
+  <div class="form-group mw-button" ng-show="(showDiscountCodeBox || booking.discountCode)">
     <input id="res_discountCode" type="text" ng-model="booking.discountCode" ng-change="validateDiscountCode()" md-select-on-focus
            ng-class="{
              'discount-code-success': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.success,
