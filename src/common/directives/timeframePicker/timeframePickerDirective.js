@@ -248,12 +248,8 @@ angular.module('timeframePickerDirective', [])
         }
 
         // <- outwards action
-        if (tf.pickup) {
-          $scope.pickupDateTime = tf.pickup.format(API_DATE_FORMAT);
-        }
-        if (tf.return) {
-          $scope.returnDateTime = tf.return.format(API_DATE_FORMAT);
-        }
+        $scope.pickupDateTime = tf.pickup ? tf.pickup.format(API_DATE_FORMAT) : '';
+        $scope.returnDateTime = tf.return ? tf.return.format(API_DATE_FORMAT) : '';
 
         //delete tf.pickupDate;
         //delete tf.pickupTime;
