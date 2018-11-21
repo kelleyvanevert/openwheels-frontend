@@ -153,14 +153,20 @@ angular.module('timeframePickerDirective', [])
           returnTime: moment($scope.returnTime, timeConfig.format), // only used for time part (!)
         };
 
-        if (tf.returnTime.isValid()) {
-          $scope.returnTime = tf.returnTime.add(numHours, 'hours').format(timeConfig.format);
+        if (tf.returnDate.isValid() && tf.returnTime.isValid()) {
+          // consolidate
+          tf.return = moment($scope.returnDate + ' ' + $scope.returnTime, dateConfig.format + ' '+ timeConfig.format);
+
+          // add hour extension
+          tf.return = tf.return.add(numHours, 'hours');
+
+          // write back
+          $scope.returnDate = tf.return.format(dateConfig.format);
+          $scope.returnTime = tf.return.format(timeConfig.format);
+          $scope.form.returnDate.$setTouched(true); // ??
           $scope.form.returnTime.$setTouched(true); // ??
 
-          if (tf.returnDate.isValid()) {
-            tf.return = moment($scope.returnDate + ' ' + $scope.returnTime, dateConfig.format + ' '+ timeConfig.format);
-            $scope.returnDateTime = tf.return.format(API_DATE_FORMAT);
-          }
+          $scope.returnDateTime = tf.return.format(API_DATE_FORMAT);
         }
       }
 
