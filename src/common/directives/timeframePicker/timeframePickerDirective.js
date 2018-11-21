@@ -90,6 +90,21 @@ angular.module('timeframePickerDirective', [])
       $scope.returnDate = $scope.returnDateTime ? moment($scope.returnDateTime, API_DATE_FORMAT).format(dateConfig.format) : '';
       $scope.returnTime = $scope.returnDateTime ? moment($scope.returnDateTime, API_DATE_FORMAT).format(timeConfig.format) : '';
 
+      setTimeout(function () {
+        if ($scope.pickupDate) {
+          $scope.form.pickupDate.$setTouched(true); // ??
+        }
+        if ($scope.pickupTime) {
+          $scope.form.pickupTime.$setTouched(true); // ??
+        }
+        if ($scope.returnDate) {
+          $scope.form.returnDate.$setTouched(true); // ??
+        }
+        if ($scope.returnTime) {
+          $scope.form.returnTime.$setTouched(true); // ??
+        }
+      }, 1);
+
       $scope.timeframeValid = false;
 
       // Methods
