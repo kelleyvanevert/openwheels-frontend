@@ -338,7 +338,13 @@ module.exports = function (grunt) {
           middleware: function (connect) {
             return [
               require('connect-modrewrite')(['!(\\..+)$ / [L]']),
-              connect.static('build')
+              function (req, res, next) {
+                if (req.url === '/assets/img/resource-avatar-large.jpg') {
+                  req.url = '/assets/scaffold/' + Math.floor(Math.random() * 14) + '.png';
+                }
+                next();
+              },
+              connect.static('build'),
             ];
           }
         }
