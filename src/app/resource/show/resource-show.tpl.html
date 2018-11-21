@@ -81,7 +81,10 @@
             <div class="card" ng-if="!features.resourceSidebar || !isWindowSizeMD" id ="priceBookingContainer">
                 <div class="card-body">
                     <!-- price -->
-                    <div ng-include="'resource/partials/resource-price.tpl.html'"></div>
+                    <!--<div ng-include="'resource/partials/resource-price.tpl.html'"></div>-->
+                    <div class="escape-card-padding">
+                        <resource-pricing resource="resource"></resource-pricing>
+                    </div>
 
                     <!-- unavailability notice -->
                     <div ng-if="unavailable" ng-include="'resource/partials/resource-unavailable.tpl.html'"></div>
@@ -90,10 +93,7 @@
                     <div ng-if="!unavailable">
                         <div class="text-center" ng-if="showBookingFormToggle">
                             <p>
-                                <button ng-if="!me"  class="btn btn-success mywheels-btn-big" ng-click="toggleBookingForm()">
-                                    {{ 'BOOK_A_CAR' | translate }}
-                                </button>
-                                <button ng-if="me"  class="btn btn-success mywheels-btn-big" ng-click="toggleBookingForm()">
+                                <button class="btn btn-success mywheels-btn-big" ng-click="toggleBookingForm()">
                                     {{ 'BOOK_A_CAR' | translate }}
                                 </button>
                             </p>
@@ -428,11 +428,11 @@
         <!-- resource sidebar -->
         <div ng-if="features.resourceSidebar && isWindowSizeMD" class="col-md-4 hidden-xs hidden-sm">
             <div class="card">
-                <div class="card-heading">
-                    <h3 class="card-title"><i class="fa fa-fw fa-pencil"></i> {{ 'BOOK_A_CAR' | translate }}</h3>
-                </div>
                 <div class="card-body">
-                    <div ng-include="'resource/partials/resource-price.tpl.html'"></div>
+                    <!--<div ng-include="'resource/partials/resource-price.tpl.html'"></div>-->
+                    <div class="escape-card-padding">
+                        <resource-pricing resource="resource"></resource-pricing>
+                    </div>
                     <div ng-if="unavailable" ng-include="'resource/partials/resource-unavailable.tpl.html'"></div>
                     <reservation-form ng-if="!unavailable" person="me" resource="resource" booking="booking"></reservation-form>
                 </div>

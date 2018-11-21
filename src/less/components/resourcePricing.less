@@ -1,0 +1,88 @@
+
+.resource-pricing {
+  margin-bottom: 2em;
+
+  .featured-price {
+    background: @mywheels-green;
+    
+    .pad {
+      padding: 1em 1.1em .6em 1.1em;
+    }
+
+    .price {
+      font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+      font-size: 2.4em;
+      color: white;
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    }
+    .annotation {
+      font-size: 1.4em;
+      color: #f5f5f5;
+      margin-left: .3em;
+    }
+
+    a.show-price-per-hour {
+      display: block;
+      color: #eee;
+      background: rgba(0, 0, 0, 0.12);
+      border-top: 1px solid rgba(56, 53, 53, 0.1);
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 0.8em;
+      text-align: center;
+      padding: .2em;
+    }
+  }
+
+  .secondary {
+    padding: .8em 1em;
+    padding-bottom: .6em;
+    color: #777;
+    line-height: 1.8em;
+
+    .lines {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-items: flex-start;
+    }
+
+    .secondary-line {
+      margin: .3em;
+      text-align: center;
+    }
+
+    .price {
+      color: #666;
+      font-size: 1.2em;
+    }
+
+    ng-md-icon {
+      color: #444;
+      vertical-align: bottom;
+    }
+  }
+
+  .km-rate + span {
+    margin-left: .5em;
+  }
+
+  .free-km {
+    color: darken(@mywheels-orange, 3%);
+    font-weight: bold;
+
+    padding: 3px 4px;
+    background: rgb(243, 234, 212);
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  .fuel-info {
+    color: darken(@mywheels-blue, 3%);
+    font-weight: bold;
+    text-decoration: underline;
+  }
+}
