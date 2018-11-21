@@ -93,6 +93,7 @@ angular.module('openwheels', [
   
   'bootstrapDateTimePickerDirective',
   'timeframePickerDirective',
+  'resourcePricingDirective',
 
   /* Filters */
   'filters.util',
