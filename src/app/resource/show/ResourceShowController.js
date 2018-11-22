@@ -33,7 +33,9 @@ angular.module('owm.resource.show', [])
   /**
    * Warning: 'me' will be null for anonymous users
    */
-  $scope.booking = {};
+  $scope.booking = {
+    resource: resource,
+  };
   $scope.resource = resource;
   $scope.me = me;
   $scope.showBookingForm = false;

@@ -30,10 +30,6 @@ angular.module('resourcePricingDirective', [])
     controller: function resourcePricingController ($scope, $element, $log) {
 
       $scope.showPricePerHour = false;
-
-      if (!$scope.resource.price.kmFree) {
-        $scope.kmPrice = parseFloat($scope.resource.price.kilometerRate) + parseFloat($scope.resource.price.fuelPerKilometer);
-      }
     },
   };
 

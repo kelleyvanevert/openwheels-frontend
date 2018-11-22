@@ -1,0 +1,92 @@
+
+<div class="invoice-estimate">
+  <div class="pricing-details-loading" ng-if="!price">
+    <p>Prijs wordt berekend...</p>
+    <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+  </div>
+  <div ng-if="price">
+    <div class="pricing-feature-container" ng-if="!showPriceDetails" ng-click="setShowPriceDetails(true)">
+      <div class="pricing-feature">
+        <div class="feature">Kosten: {{ price.total | currency }}</div>
+        <div class="more">Toon opbouw</div>
+      </div>
+    </div>
+    <div class="pricing-details" ng-if="showPriceDetails">
+      <table>
+        <tbody>
+          <tr>
+            <td class="opt"></td>
+            <td class="description">
+              <div class="name">Huurkosten</div>
+              <div class="calculation">
+                <span ng-if="price.time_days">
+                  {{ booking.resource.price.dayRateTotal | currency }}
+                  x {{ price.time_days }} dag{{ price.time_days === 1 ? '' : 'en' }}
+                </span>
+                <span ng-if="price.time_days && price.time_hours">+</span>
+                <span ng-if="price.time_hours">
+                  {{ booking.resource.price.hourRate | currency }}
+                  x {{ price.time_hours }} uur
+                </span>
+              </div>
+            </td>
+            <td class="price">{{ price.rent | currency }}</td>
+          </tr>
+          <tr>
+            <td class="opt">
+              <md-checkbox ng-model="booking.riskReduction" style="margin-top: 3px;"></md-checkbox>
+            </td>
+            <td class="description">
+              <div class="name">Eigen risico verlagen <info-icon tooltip-html="'Bij een MyWheels Go contract moet je verplicht je eigen risico verlagen, van 500 euro naar 250 euro.'"></info-icon></div>
+              <div class="calculation" ng-if="booking.riskReduction">{{ price.default_price_decrease_own_risk | currency }} per dag</div>
+            </td>
+            <td class="price">{{ price.riskReductionTotal | currency }}</td>
+          </tr>
+          <tr>
+            <td class="opt">
+              <number-tool ng-model="booking.numAdditionalDrivers" min="0" max="4" style="margin-left: -2px;"></number-tool>
+            </td>
+            <td class="description">
+              <div class="name">
+                {{ booking.numAdditionalDrivers ? booking.numAdditionalDrivers : 'Geen' }} medebestuurder{{ booking.numAdditionalDrivers === 1 ? '' : 's' }}
+              </div>
+              <div class="calculation" ng-if="booking.numAdditionalDrivers > 0">{{ price.default_price_additional_driver | currency }} x {{ booking.numAdditionalDrivers }}</div>
+            </td>
+            <td class="price">{{ price.additionalDriversTotal | currency }}</td>
+          </tr>
+          <tr>
+            <td class="opt"></td>
+            <td class="description">
+              <div class="name">Boekingskosten</div>
+            </td>
+            <td class="price">{{ price.booking_fee | currency }}</td>
+          </tr>
+          <tr>
+            <td class="opt"></td>
+            <td class="description">
+              <div class="name">Brandstofkosten</div>
+            </td>
+            <td class="price">{{ '25.60' | currency }}</td>
+          </tr>
+          <tr>
+            <td class="opt"></td>
+            <td class="description" colspan="2">
+              <div class="calculation">Op basis van een schatting van 160 km. Rijd je minder? Dan kun je het resterende bedrag terugvragen.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="opt"></td>
+            <td colspan="2"><div class="line"></div></td>
+          </tr>
+          <tr>
+            <td class="opt"></td>
+            <td class="description">
+              <div class="name">Totaal</div>
+            </td>
+            <td class="price">{{ price.total | currency }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

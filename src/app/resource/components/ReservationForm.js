@@ -52,10 +52,9 @@ angular.module('owm.resource.reservationForm', [])
   $scope.showCommentBox = false;
   $scope.showDiscountCodeBox = false;
 
-
-  $scope.price = null;
-  $scope.isPriceLoading = false;
-  $scope.$watch('booking.riskReduction', loadPrice);
+  // $scope.price = null;
+  // $scope.isPriceLoading = false;
+  // $scope.$watch('booking.riskReduction', loadPrice);
 
   var availabilityCheckTimer;
   $scope.$watch('[booking.beginRequested, booking.endRequested]', function () {

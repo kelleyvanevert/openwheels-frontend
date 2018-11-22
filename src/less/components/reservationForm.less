@@ -1,0 +1,44 @@
+
+.availability-and-pricing-details {
+  padding: 1em 0;
+
+  .pad {
+    padding: .6em 1em;
+  }
+
+  .availability-loading {
+    background: #eee;
+    text-align: center;
+    color: #777;
+    font-weight: bold;
+
+    md-progress-circular {
+      margin: 0 auto;
+    }
+  }
+
+  .availability-notice {
+    text-align: center;
+    color: #444;
+
+    p.notice {
+      font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+      font-size: 1.4em;
+    }
+
+    &.is-available {
+      color: darken(@mywheels-green, 5%);
+
+      ng-md-icon {
+        color: darken(@mywheels-green, 5%);
+      }
+    }
+    &.is-unavailable {
+      color: #555;
+
+      ng-md-icon {
+        color: #555;
+      }
+    }
+  }
+}

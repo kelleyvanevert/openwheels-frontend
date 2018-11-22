@@ -94,6 +94,8 @@ angular.module('openwheels', [
   'bootstrapDateTimePickerDirective',
   'timeframePickerDirective',
   'resourcePricingDirective',
+  'invoiceEstimateDirective',
+  'numberToolDirective',
 
   /* Filters */
   'filters.util',
@@ -210,6 +212,18 @@ angular.module('openwheels', [
       $logProvider.debugEnabled(false);
     }
   })
+
+.config(function ($mdThemingProvider) {
+  $mdThemingProvider.theme('default');
+   // .primaryPalette('pink', {
+   //   'hue-3': 'A100' // use shade A100 for the <code>md-hue-3</code> class
+   // })
+   // // If you specify less than all of the keys, it will inherit from the
+   // // default shades
+   // .accentPalette('purple', {
+   //   'default': '200' // use shade 200 for default, and keep all other shades the same
+   // });
+})
 
 .run(function (windowSizeService, oAuth2MessageListener, stateAuthorizer, authService, featuresService) {
   /* Intentionally left blank */
