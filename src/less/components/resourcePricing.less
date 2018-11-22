@@ -6,7 +6,7 @@
     background: @mywheels-green;
     
     .pad {
-      padding: 1em 1.1em .6em 1.1em;
+      padding: 1em 1.1em .7em 1.1em;
     }
 
     .price {
@@ -17,7 +17,7 @@
     }
     .annotation {
       font-size: 1.4em;
-      color: #f5f5f5;
+      color: white;
       margin-left: .3em;
     }
 
@@ -31,6 +31,37 @@
       font-size: 0.8em;
       text-align: center;
       padding: .2em;
+    }
+
+    .price-per {
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 0.8em;
+
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      
+      background: rgba(0, 0, 0, 0.12);
+      border-top: 1px solid darken(@mywheels-green, 10%);
+      padding: 0 5px 1px;
+
+      a {
+        flex-grow: 1;
+        color: white;
+        text-align: center;
+        padding: .2em;
+
+        &.active {
+          background: @mywheels-green;
+          position: relative;
+          top: -1px;
+          color: white;
+          border-left: 1px solid darken(@mywheels-green, 10%);
+          border-right: 1px solid darken(@mywheels-green, 10%);
+          border-bottom: 1px solid darken(@mywheels-green, 10%);
+        }
+      }
     }
   }
 
@@ -64,16 +95,16 @@
     }
   }
 
-  .km-rate + span {
+  .secondary-line > span + span {
     margin-left: .5em;
   }
 
   .free-km {
-    color: darken(@mywheels-orange, 3%);
+    color: darken(@mywheels-green, 3%);
     font-weight: bold;
 
     padding: 3px 4px;
-    background: rgb(243, 234, 212);
+    background: #e3f1d8;
   }
 
   .nowrap {
