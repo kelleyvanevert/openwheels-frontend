@@ -5,15 +5,18 @@
       <span class="price">{{ (showPricePerHour ? resource.price.hourRate : resource.price.dayRateTotal) | currency }}</span>
       <span class="annotation">{{ showPricePerHour ? 'per uur' : 'per dag' }}</span>
     </div>
-    <a class="show-price-per-hour" href="#" ng-click="showPricePerHour = !showPricePerHour;">toon huurprijs per {{ showPricePerHour ? 'dag' : 'uur' }}</a>
+    <div class="price-per">
+      <a href="#" ng-click="showPricePerHour = false;" ng-class="{ active: !showPricePerHour }">dagprijs</a>
+      <a href="#" ng-click="showPricePerHour =  true;" ng-class="{ active:  showPricePerHour }">uurprijs</a>
+    </div>
   </div>
   <div class="secondary">
 
     <!-- gratis kilometers, zelf tanken -->
     <div class="lines" ng-if="resource.refuelByRenter && resource.price.kmFree">
       <div class="secondary-line">
-        <span class="km-rate nowrap">+ <span class="price">{{ resource.price.kilometerRate | currency }}</span> per km</span>
         <span class="free-km nowrap">{{ (showPricePerHour ? 'FREE_KM_HOUR' : 'FREE_KM_DAY') | translate }}</span>
+        <span class="km-rate nowrap">+ <span class="price">{{ resource.price.kilometerRate | currency }}</span> per extra km</span>
       </div>
       <div class="secondary-line">
         <ng-md-icon icon="local_gas_station"></ng-md-icon>
@@ -35,14 +38,16 @@
     <!-- gratis kilometers, MAAR brandstofprijs per km -->
     <div class="lines" ng-if="!resource.refuelByRenter && resource.price.kmFree">
       <div class="secondary-line">
-        <span class="km-rate nowrap"> + <span class="price">{{ resource.price.kilometerRate | currency }}</span> per km</span>
         <span class="free-km nowrap">{{ (showPricePerHour ? 'FREE_KM_HOUR' : 'FREE_KM_DAY') | translate }}</span>
+        <span class="km-rate nowrap"> + <span class="price">{{ resource.price.kilometerRate | currency }}</span> per extra km</span>
       </div>
       <div class="secondary-line">
-        <span class="km-rate nowrap"> + <span class="price">{{ resource.price.fuelPerKilometer | currency }}</span> per km</span>
-        <span class="nowrap">
-          <ng-md-icon icon="local_gas_station"></ng-md-icon>
-          <span class="fuel-info incl-fuel">brandstofkosten</span>
+        <span>
+          <span class="nowrap">
+            <ng-md-icon icon="local_gas_station"></ng-md-icon>
+            <span class="fuel-info incl-fuel">vaste brandstofprijs</span>
+          </span>
+          <span class="km-rate nowrap">van <span class="price">{{ resource.price.fuelPerKilometer | currency }}</span> per km</span>
         </span>
       </div>
     </div>
@@ -50,11 +55,16 @@
     <!-- geen gratis kilometers, brandstofprijs per km -->
     <div class="lines" ng-if="!resource.refuelByRenter && !resource.price.kmFree">
       <div class="secondary-line">
-        <span class="nowrap"> + <span class="price">{{ kmPrice | currency }}</span> per km</span>
+        <span class="nowrap"> + <span class="price">{{ resource.price.kilometerRate | currency }}</span> per km</span>
       </div>
       <div class="secondary-line">
-        <ng-md-icon icon="local_gas_station"></ng-md-icon>
-        <span class="fuel-info incl-fuel nowrap">inclusief brandstofkosten</span>
+        <span>
+          <span class="nowrap">
+            <ng-md-icon icon="local_gas_station"></ng-md-icon>
+            <span class="fuel-info incl-fuel">vaste brandstofprijs</span>
+          </span>
+          <span class="km-rate nowrap">van <span class="price">{{ resource.price.fuelPerKilometer | currency }}</span> per km</span>
+        </span>
       </div>
     </div>
   </div>
