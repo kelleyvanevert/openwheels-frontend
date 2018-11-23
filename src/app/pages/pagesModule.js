@@ -40,15 +40,21 @@ angular.module('owm.pages', [
         templateUrl: 'pages/mywheels-open/mywheels-open.tpl.html',
         controller: 'MyWheelsOpenController'
       }
-    },
+    },/*
     data: {
-      a: 'b',
+      access: {
+        deny: {
+          anonymous: false,
+        }
+      }
     },
     resolve: {
-      kelley: ['$log', function ($log) {
-        $log.log('hello Kelley!');
+      me: ['personService', function (personService) {
+        return personService.me_opt({
+          version: 2,
+        });
       }],
-    },
+    },*/
   })
 
   .state('owm.pages', {
