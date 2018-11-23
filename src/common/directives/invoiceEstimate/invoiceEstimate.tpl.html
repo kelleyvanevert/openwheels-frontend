@@ -7,7 +7,7 @@
   <div ng-if="price">
     <div class="pricing-feature-container" ng-if="!showPriceDetails" ng-click="setShowPriceDetails(true)">
       <div class="pricing-feature">
-        <div class="feature">Kosten: {{ price.total | currency }}</div>
+        <div class="feature">Kosten: {{ calculation.total | currency }}</div>
         <div class="more">Toon opbouw</div>
       </div>
     </div>
@@ -19,18 +19,18 @@
             <td class="description">
               <div class="name">Huurkosten</div>
               <div class="calculation">
-                <span ng-if="price.time_days">
-                  {{ booking.resource.price.dayRateTotal | currency }}
-                  x {{ price.time_days }} dag{{ price.time_days === 1 ? '' : 'en' }}
+                <span ng-if="calculation.num_dayRate > 0">
+                  {{ calculation.num_dayRate }} x dagprijs
                 </span>
-                <span ng-if="price.time_days && price.time_hours">+</span>
-                <span ng-if="price.time_hours">
-                  {{ booking.resource.price.hourRate | currency }}
-                  x {{ price.time_hours }} uur
+                <span ng-if="(calculation.num_dayRate > 0) && (calculation.num_hourRate > 0)">+</span>
+                <span ng-if="calculation.num_hourRate > 0">
+                  {{ calculation.num_hourRate }} uurprijs
                 </span>
+                <info-icon ng-if="calculation.remainingHoursExceedDayRate"
+                           tooltip-html="'Omdat resterende ' + calculation.numRemainingHours + ' uren over de dagprijs zouden gaan, wordt hiervoor in de plaats slechts 1 keer de dagprijs berekend voor deze uren.'"></info-icon>
               </div>
             </td>
-            <td class="price">{{ price.rent | currency }}</td>
+            <td class="price">{{ calculation.rent | currency }}</td>
           </tr>
           <tr>
             <td class="opt">
@@ -38,9 +38,13 @@
             </td>
             <td class="description">
               <div class="name">Eigen risico verlagen <info-icon tooltip-html="'Bij een MyWheels Go contract moet je verplicht je eigen risico verlagen, van 500 euro naar 250 euro.'"></info-icon></div>
-              <div class="calculation" ng-if="booking.riskReduction">{{ price.default_price_decrease_own_risk | currency }} per dag</div>
+              <div class="calculation" ng-if="calculation.applyRiskReduction">
+                {{ calculation.riskReductionPrice | currency }}
+                x
+                {{ calculation.num_riskReductionPrice }} dag{{ calculation.num_riskReductionPrice === 1 ? '' : 'en' }}
+              </div>
             </td>
-            <td class="price">{{ price.riskReductionTotal | currency }}</td>
+            <td class="price">{{ calculation.riskReductionTotal | currency }}</td>
           </tr>
           <tr>
             <td class="opt">
@@ -48,31 +52,18 @@
             </td>
             <td class="description">
               <div class="name">
-                {{ booking.numAdditionalDrivers ? booking.numAdditionalDrivers : 'Geen' }} medebestuurder{{ booking.numAdditionalDrivers === 1 ? '' : 's' }}
+                {{ calculation.numAdditionalDrivers ? calculation.numAdditionalDrivers : 'Geen' }} medebestuurder{{ calculation.numAdditionalDrivers === 1 ? '' : 's' }}
               </div>
-              <div class="calculation" ng-if="booking.numAdditionalDrivers > 0">{{ price.default_price_additional_driver | currency }} x {{ booking.numAdditionalDrivers }}</div>
+              <div class="calculation" ng-if="calculation.numAdditionalDrivers > 0">{{ calculation.pricePerAdditionalDriver | currency }} x {{ calculation.numAdditionalDrivers }}</div>
             </td>
-            <td class="price">{{ price.additionalDriversTotal | currency }}</td>
+            <td class="price">{{ calculation.additionalDriversTotal | currency }}</td>
           </tr>
           <tr>
             <td class="opt"></td>
             <td class="description">
               <div class="name">Boekingskosten</div>
             </td>
-            <td class="price">{{ price.booking_fee | currency }}</td>
-          </tr>
-          <tr>
-            <td class="opt"></td>
-            <td class="description">
-              <div class="name">Brandstofkosten</div>
-            </td>
-            <td class="price">{{ '25.60' | currency }}</td>
-          </tr>
-          <tr>
-            <td class="opt"></td>
-            <td class="description" colspan="2">
-              <div class="calculation">Op basis van een schatting van 160 km. Rijd je minder? Dan kun je het resterende bedrag terugvragen.</div>
-            </td>
+            <td class="price">{{ calculation.bookingFee | currency }}</td>
           </tr>
           <tr>
             <td class="opt"></td>
@@ -81,9 +72,51 @@
           <tr>
             <td class="opt"></td>
             <td class="description">
-              <div class="name">Totaal</div>
+              <div class="name">Subtotaal</div>
             </td>
-            <td class="price">{{ price.total | currency }}</td>
+            <td class="price">{{ calculation.total | currency }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top: 1.2em; color: #444; font-size: 1.1em;">Wat gaat mijn rit kosten?</div>
+      <div>
+        <!--<md-slider flex class="md-primary" md-discrete ng-model="calculation.kilometerEstimate" step="1" min="0" max="300" aria-label="km" ng-change="updateKmEstimate()"></md-slider>-->
+        <strong>{{ calculation.kilometerEstimate }}</strong> km<br />
+        <input type="range" min="0" max="300" step="1" style="width: 100%;" ng-model="calculation.kilometerEstimate" ng-change="updateKmEstimate()" />
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td class="opt"></td>
+            <td class="description">
+              <div class="name">Brandstofkosten</div>
+            </td>
+            <td class="price">{{ calculation.fuelCosts | currency }}</td>
+          </tr>
+          <tr>
+            <td class="opt"></td>
+            <td class="description">
+              <div class="name">Kilometerkosten</div>
+            </td>
+            <td class="price">{{ calculation.kmCosts | currency }}</td>
+          </tr>
+          <!--
+          <tr>
+            <td class="opt"></td>
+            <td class="description" colspan="2">
+              <div class="calculation">Op basis van een schatting van 160 km. Rijd je minder? Dan kun je het resterende bedrag terugvragen.</div>
+            </td>
+          </tr>-->
+          <tr>
+            <td class="opt"></td>
+            <td colspan="2"><div class="line"></div></td>
+          </tr>
+          <tr>
+            <td class="opt"></td>
+            <td class="description">
+              <div class="name">Totaal ritkosten</div>
+            </td>
+            <td class="price">{{ calculation.total2 | currency }}</td>
           </tr>
         </tbody>
       </table>

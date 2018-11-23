@@ -31,6 +31,11 @@ angular.module('invoiceEstimateDirective', [])
         $scope.showPriceDetails = b;
       };
 
+      $scope.calculation = {
+        maxKmEstimate: 300,
+        kilometerEstimate: 150,
+      };
+
       $scope.booking.numAdditionalDrivers = 0;
 
       invoice2Service.calculatePrice({
@@ -44,31 +49,86 @@ angular.module('invoiceEstimateDirective', [])
       }).then(function (price) {
         $scope.price = price;
         update();
+        updateKmEstimate();
       });
 
       function update () {
         var d = moment.duration(moment($scope.booking.endRequested).diff(moment($scope.booking.beginRequested)));
         if ($scope.price) {
-          $scope.price.time_days = Math.floor(d.asDays());
-          $scope.price.time_hours = Math.round(d.asHours() % 24);
 
-          // TODO include other parameters in calculation as well
-          $scope.price.rent = ($scope.price.time_days * $scope.booking.resource.price.dayRateTotal + $scope.price.time_hours * $scope.booking.resource.price.hourRate);
+          var calculation = $scope.calculation;
 
-          var sub_total = $scope.price.rent;
+          // CALCULATE
 
-          $scope.price.riskReductionTotal = ($scope.booking.riskReduction ? ($scope.price.default_price_decrease_own_risk * ($scope.price.time_days + 1)) : 0);
-          sub_total += $scope.price.riskReductionTotal;
+          // parameters
+          calculation.dayRate = $scope.booking.resource.price.dayRateTotal;
+          calculation.hourRate = $scope.booking.resource.price.hourRate;
+          calculation.riskReductionPrice = $scope.price.default_price_decrease_own_risk;
 
-          $scope.price.additionalDriversTotal = ($scope.price.default_price_additional_driver * $scope.booking.numAdditionalDrivers);
-          sub_total += $scope.price.additionalDriversTotal;
-          
-          $scope.price.sub_total = sub_total;
-          $scope.price.total = $scope.price.sub_total + $scope.price.booking_fee;
+          // how many days, and remaining hours in the timeframe
+          calculation.numDays = d.asDays();
+          calculation.numRemainingHours = d.asHours() % 24;
+
+          // how many times does the hour rate fit into the day rate?
+          calculation.hourRate_in_dayRate = calculation.dayRate / calculation.hourRate;
+
+          // how many times we apply the day and hour rate, resp.
+          // taking into account that remaining hours may not exceed the day rate
+          calculation.num_dayRate = Math.floor(calculation.numDays); // === time_days @ invoice2.calculatePrice
+          calculation.num_hourRate = calculation.numRemainingHours; // === time_hours @ invoice2.calculatePrice
+          calculation.remainingHoursExceedDayRate = false;
+          if (calculation.num_hourRate * calculation.hourRate > calculation.dayRate) {
+            calculation.num_dayRate += 1;
+            calculation.num_hourRate = 0;
+            calculation.remainingHoursExceedDayRate = true;
+          }
+
+          calculation.rent = (calculation.num_dayRate * calculation.dayRate) + (calculation.num_hourRate * calculation.hourRate);
+
+          calculation.subTotal = calculation.rent;
+
+          // risk reduction (optionally applied)
+          calculation.applyRiskReduction = $scope.booking.riskReduction;
+          if (calculation.applyRiskReduction) {
+            calculation.num_riskReductionPrice = Math.ceil(calculation.numDays);
+            calculation.riskReductionTotal = calculation.num_riskReductionPrice * calculation.riskReductionPrice;
+          } else {
+            calculation.num_riskReductionPrice = 0;
+            calculation.riskReductionTotal = 0;
+          }
+          calculation.subTotal += calculation.riskReductionTotal;
+
+          // additional drivers
+          calculation.numAdditionalDrivers = $scope.booking.numAdditionalDrivers;
+          calculation.pricePerAdditionalDriver = $scope.price.default_price_additional_driver;
+          calculation.additionalDriversTotal = (calculation.pricePerAdditionalDriver * calculation.numAdditionalDrivers);
+          calculation.subTotal += calculation.additionalDriversTotal;
+
+          // SET new price object
+
+          calculation.bookingFee = $scope.price.booking_fee;
+          calculation.total = calculation.subTotal + calculation.bookingFee;
+
+          calculation.automaticKilometerEstimate = calculation.numDays * 150 + calculation.numRemainingHours * 15;
+          //calculation.maxKmEstimate = Math.min(300, calculation.automaticKilometerEstimate + 50);
+          calculation.kilometerEstimate = calculation.automaticKilometerEstimate;
         }
       }
 
       $scope.$watch('[booking.numAdditionalDrivers, booking.beginRequested, booking.endRequested, booking.riskReduction]', update);
+
+      function updateKmEstimate () {
+
+        var calculation = $scope.calculation;
+        
+        calculation.fuelCosts = $scope.price.fuel_per_kilometer * calculation.kilometerEstimate;
+
+        calculation.freeKms = calculation.numDays * 100 + calculation.numRemainingHours * 10;
+        calculation.kmCosts = parseFloat($scope.booking.resource.price.kilometerRate) * Math.max(0, calculation.kilometerEstimate - calculation.freeKms);
+
+        calculation.total2 = calculation.total + calculation.fuelCosts + calculation.kmCosts;
+      }
+      $scope.updateKmEstimate = updateKmEstimate;
 
     }],
   };
