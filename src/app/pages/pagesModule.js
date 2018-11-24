@@ -6,13 +6,15 @@ angular.module('owm.pages', [
   'owm.pages.emailPreference',
   'owm.pages.invite',
   'owm.pages.invite.subscribe',
+
+  'owm-landing.mywheels-open',
 ])
 
 .config(function ($stateProvider) {
 
   $stateProvider
 
-    .state('home', {
+  .state('home', {
     url: '/',
     parent: 'owm',
     views: {
@@ -28,6 +30,31 @@ angular.module('owm.pages', [
         }
       }
     }
+  })
+
+  .state('owm-landing.mywheels-open', {
+    parent: 'owm-landing',
+    url: '/mywheels-open',
+    views: {
+      'main-full@shell': {
+        templateUrl: 'pages/mywheels-open/mywheels-open.tpl.html',
+        controller: 'MyWheelsOpenController'
+      }
+    },/*
+    data: {
+      access: {
+        deny: {
+          anonymous: false,
+        }
+      }
+    },
+    resolve: {
+      me: ['personService', function (personService) {
+        return personService.me_opt({
+          version: 2,
+        });
+      }],
+    },*/
   })
 
   .state('owm.pages', {
