@@ -6,62 +6,7 @@
                     mobile-autoscroll="true">
   </timeframe-picker>
 
-  <p>
-    <label for="res_comment">
-      <span ng-show="!showCommentBox" class="input-toggle" ng-click="showCommentBox = true">
-        <ng-md-icon icon="navigate_next"></ng-md-icon>
-        Voeg opmerking toe
-      </span>
-      <span ng-show="showCommentBox">Opmerking voor {{ resource.owner.firstName || 'de eigenaar' }}</span>
-    </label>
-  </p>
-  <div class="form-group" ng-show="showCommentBox">
-    <textarea id="res_comment" rows="2" auto-resize md-select-on-focus></textarea>
-  </div>
-
-  <p>
-    <label for="res_discountCode">
-      <span ng-show="!(showDiscountCodeBox || booking.discountCode)" class="input-toggle" ng-click="showDiscountCodeBox = true">
-        <ng-md-icon icon="navigate_next"></ng-md-icon>
-        Voeg kortingscode toe
-      </span>
-      <span ng-show="(showDiscountCodeBox || booking.discountCode)">Kortingscode</span>
-    </label>
-  </p>
-  <div class="form-group mw-button" ng-show="(showDiscountCodeBox || booking.discountCode)">
-    <input id="res_discountCode" type="text" ng-model="booking.discountCode" ng-change="validateDiscountCode()" md-select-on-focus
-           ng-class="{
-             'discount-code-success': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.success,
-             'discount-code-error': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.error,
-           }" />
-    <md-button ng-if="booking.discountCode && !discountCodeValidation.showSpinner" class="md-icon-button" ng-click="removeLocalDiscountCode()">
-      <ng-md-icon icon="close" aria-hidden="true"></ng-md-icon>
-    </md-button>
-    <md-button ng-if="booking.discountCode && discountCodeValidation.showSpinner" class="md-icon-button">
-      <md-progress-circular md-diameter="24"></md-progress-circular>
-    </md-button>
-  </div>
 <!--
-  <div class="form-group"
-       ng-if="features.discounts && !invitedDiscount"
-       ng-class="{'has-error': discountCodeValidation.submitted && discountCodeValidation.error}">
-    <label class="control-label">
-      {{ 'DISCOUNT' | translate }} {{me}} </label>
-      <i class="fa fa-check text-success" ng-if="booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.success"></i>
-      <i class="fa fa-spin fa-spinner" ng-if="discountCodeValidation.showSpinner"></i>
-
-      <div class="input-group">
-        <input class="form-control" type="text" ng-model="booking.discountCode" ng-change="validateDiscountCode()" />
-        <span class="input-group-btn">
-          <button class="btn btn-default" type="button" ng-click="removeLocalDiscountCode()"
-                  style="padding: 4px;">
-            <ng-md-icon icon="close" aria-label="verwijder"></ng-md-icon>
-          </button>
-        </span>
-      </div>
-  </div>
--->
-
   <div ng-if="contractOptions && contractOptions.length > 1">
     <p><label for="res_contract">Contract</label></p>
     <div class="form-group mw-button">
@@ -81,9 +26,10 @@
         <info-icon tooltip-html="'DECREASE_OWN_RISK_INFO' | translate"></info-icon>
     </label>
   </div>
+-->
 
   <!-- availability & price -->
-  <div class="escape-h-card-padding">
+  <div class="escape-h-card-padding" ng-show="booking.beginRequested && booking.endRequested">
     <div class="availability-and-pricing-details">
       <div class="availability-loading pad" ng-if="isAvailabilityLoading">
         <p>Beschikbaarheid wordt gecontroleerd...</p>
@@ -118,6 +64,7 @@
     </div>
   </div>
 
+  <!-- legacy
   <div class="form-group">
     <div class="text-center" ng-if="price || isPriceLoading || availability || isAvailabilityLoading">
       <h4 ng-if="availability.available==='no'"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon> {{ 'NOT_AVAILABLE' | translate }}</h4>
@@ -148,9 +95,46 @@
       Je ontvangt €10 korting van {{ person.invited.firstName }}!
     </span></h4>
   </div>
+  /legacy -->
 
-  <div class="text-center">
-    <p class="text-center">
+  <p>
+    <label for="res_discountCode">
+      <span ng-show="!(showDiscountCodeBox || booking.discountCode)" class="input-toggle" ng-click="showDiscountCodeBox = true">
+        <ng-md-icon icon="navigate_next"></ng-md-icon>
+        Voeg kortingscode toe
+      </span>
+      <span ng-show="(showDiscountCodeBox || booking.discountCode)">Kortingscode</span>
+    </label>
+  </p>
+  <div class="form-group mw-button" ng-show="(showDiscountCodeBox || booking.discountCode)">
+    <input id="res_discountCode" type="text" ng-model="booking.discountCode" ng-change="validateDiscountCode()" md-select-on-focus
+           ng-class="{
+             'discount-code-success': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.success,
+             'discount-code-error': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.error,
+           }" />
+    <md-button ng-if="booking.discountCode && !discountCodeValidation.showSpinner" class="md-icon-button" ng-click="removeLocalDiscountCode()">
+      <ng-md-icon icon="close" aria-hidden="true"></ng-md-icon>
+    </md-button>
+    <md-button ng-if="booking.discountCode && discountCodeValidation.showSpinner" class="md-icon-button">
+      <md-progress-circular md-diameter="24"></md-progress-circular>
+    </md-button>
+  </div>
+
+  <p>
+    <label for="res_comment">
+      <span ng-show="!showCommentBox" class="input-toggle" ng-click="showCommentBox = true">
+        <ng-md-icon icon="navigate_next"></ng-md-icon>
+        Voeg opmerking toe
+      </span>
+      <span ng-show="showCommentBox">Opmerking voor {{ resource.owner.firstName || 'de eigenaar' }}</span>
+    </label>
+  </p>
+  <div class="form-group" ng-show="showCommentBox">
+    <textarea id="res_comment" rows="2" auto-resize md-select-on-focus></textarea>
+  </div>
+
+  <div class="text-center" style="margin-top: 1.3em;">
+    <p>
       <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action"
               md-ink-ripple="#8f6700"
               ga-track-event="['booking', 'created_pre', user.isAuthenticated, null, true]"

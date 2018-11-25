@@ -21,7 +21,7 @@ angular.module('invoiceEstimateDirective', [])
     },
     templateUrl: 'directives/invoiceEstimate/invoiceEstimate.tpl.html',
     replace: true,
-    controller: ['$scope', 'invoice2Service', function ($scope, invoice2Service) {
+    controller: ['$scope', '$element', 'invoice2Service', function ($scope, $element, invoice2Service) {
 
       // loading iff !price
       $scope.price = null;
@@ -32,8 +32,7 @@ angular.module('invoiceEstimateDirective', [])
       };
 
       $scope.calculation = {
-        maxKmEstimate: 300,
-        kilometerEstimate: 150,
+        done: false,
       };
 
       $scope.booking.numAdditionalDrivers = 0;
@@ -109,9 +108,17 @@ angular.module('invoiceEstimateDirective', [])
           calculation.bookingFee = $scope.price.booking_fee;
           calculation.total = calculation.subTotal + calculation.bookingFee;
 
-          calculation.automaticKilometerEstimate = calculation.numDays * 150 + calculation.numRemainingHours * 15;
-          //calculation.maxKmEstimate = Math.min(300, calculation.automaticKilometerEstimate + 50);
-          calculation.kilometerEstimate = calculation.automaticKilometerEstimate;
+          calculation.done = true;
+
+          if (calculation.automaticKilometerEstimate === undefined) {
+            calculation.automaticKilometerEstimate = Math.ceil(calculation.numDays * 150 + calculation.numRemainingHours * 15);
+            calculation.kilometerEstimate = calculation.automaticKilometerEstimate;
+            calculation.maxKmEstimate = Math.ceil(Math.max(300, calculation.automaticKilometerEstimate + 50));
+            //setTimeout(function () {
+            //  $element.find('#kilometerEstimate').attr('max', calculation.maxKmEstimate);
+            //  $log.log(calculation.maxKmEstimate, $element, $element.find('#kilometerEstimate')[0]);
+            //}, 100);
+          }
         }
       }
 
@@ -123,8 +130,9 @@ angular.module('invoiceEstimateDirective', [])
         
         calculation.fuelCosts = $scope.price.fuel_per_kilometer * calculation.kilometerEstimate;
 
-        calculation.freeKms = calculation.numDays * 100 + calculation.numRemainingHours * 10;
-        calculation.kmCosts = parseFloat($scope.booking.resource.price.kilometerRate) * Math.max(0, calculation.kilometerEstimate - calculation.freeKms);
+        calculation.freeKms = Math.floor(calculation.numDays * 100 + calculation.numRemainingHours * 10);
+        calculation.paidKms = Math.max(0, calculation.kilometerEstimate - calculation.freeKms);
+        calculation.kmCosts = parseFloat($scope.booking.resource.price.kilometerRate) * calculation.paidKms;
 
         calculation.total2 = calculation.total + calculation.fuelCosts + calculation.kmCosts;
       }

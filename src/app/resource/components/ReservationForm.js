@@ -118,17 +118,17 @@ angular.module('owm.resource.reservationForm', [])
 
   function loadContractsOnce() {
     var dfd = $q.defer();
-    if ($scope.contractOptions) {
-      dfd.resolve($scope.contractOptions);
+    if ($scope.booking.contractOptions) {
+      dfd.resolve($scope.booking.contractOptions);
     } else if (!$scope.person) {
-      $scope.contractOptions = [];
+      $scope.booking.contractOptions = [];
       $scope.booking.contract = null;
       dfd.resolve([]);
     } else {
       contractService.forDriver({
         person: $scope.person.id
       }).then(function (contracts) {
-        $scope.contractOptions = contracts || [];
+        $scope.booking.contractOptions = contracts || [];
         $scope.booking.contract = contracts.length ? contracts[0] : null;
         if (featuresService.get('calculatePrice')) {
           $scope.$watch('booking.contract.id', loadPrice);

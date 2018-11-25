@@ -225,6 +225,20 @@ angular.module('openwheels', [
    // });
 })
 
+.directive('convertToNumber', function() {
+  return {
+    require: 'ngModel',
+    link: function (scope, element, attrs, ngModel) {
+      ngModel.$parsers.push(function(val) {
+        return val !== null ? parseInt(val, 10) : null;
+      });
+      ngModel.$formatters.push(function(val) {
+        return val !== null ? '' + val : null;
+      });
+    }
+  };
+})
+
 .run(function (windowSizeService, oAuth2MessageListener, stateAuthorizer, authService, featuresService) {
   /* Intentionally left blank */
 })

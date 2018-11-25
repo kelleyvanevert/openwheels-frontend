@@ -4,18 +4,33 @@
     <p>Prijs wordt berekend...</p>
     <md-progress-linear md-mode="indeterminate"></md-progress-linear>
   </div>
-  <div ng-if="price">
+  <div ng-if="calculation.done">
+
+    <div ng-if="booking.contractOptions && booking.contractOptions.length > 1"
+         style="text-align: center;">
+      <div class="form-group mw-button" style="margin-bottom: 0;">
+        <md-button class="md-icon-button" ng-click="">
+          <ng-md-icon icon="keyboard_arrow_down" aria-hidden="true"></ng-md-icon>
+        </md-button>
+        <select id="res_contract" name="contract" ng-model="booking.contract" ng-options="c as (c.type.name + ' - ' + c.contractor.firstName) for c in contractOptions">
+          <option value="">-- {{ 'PICK_A_CONTRACT' | translate }} --</option>
+        </select>
+      </div>
+    </div>
+
     <div class="pricing-feature-container" ng-if="!showPriceDetails" ng-click="setShowPriceDetails(true)">
-      <div class="pricing-feature">
-        <div class="feature">Kosten: {{ calculation.total | currency }}</div>
-        <div class="more">Toon opbouw</div>
+      <div class="pricing-feature" href="#">
+        <div class="feature">Kosten: {{ calculation.total | currency }}*</div>
+        <div class="more">
+          *exclusief kilometerkosten<br />
+          <a href="#" ng-clock="setShowPriceDetails(true)">toon opbouw en opties</a>
+        </div>
       </div>
     </div>
     <div class="pricing-details" ng-if="showPriceDetails">
       <table>
         <tbody>
           <tr>
-            <td class="opt"></td>
             <td class="description">
               <div class="name">Huurkosten</div>
               <div class="calculation">
@@ -24,7 +39,7 @@
                 </span>
                 <span ng-if="(calculation.num_dayRate > 0) && (calculation.num_hourRate > 0)">+</span>
                 <span ng-if="calculation.num_hourRate > 0">
-                  {{ calculation.num_hourRate }} uurprijs
+                  {{ calculation.num_hourRate }} x uurprijs
                 </span>
                 <info-icon ng-if="calculation.remainingHoursExceedDayRate"
                            tooltip-html="'Omdat resterende ' + calculation.numRemainingHours + ' uren over de dagprijs zouden gaan, wordt hiervoor in de plaats slechts 1 keer de dagprijs berekend voor deze uren.'"></info-icon>
@@ -33,11 +48,11 @@
             <td class="price">{{ calculation.rent | currency }}</td>
           </tr>
           <tr>
-            <td class="opt">
-              <md-checkbox ng-model="booking.riskReduction" style="margin-top: 3px;"></md-checkbox>
-            </td>
             <td class="description">
-              <div class="name">Eigen risico verlagen <info-icon tooltip-html="'Bij een MyWheels Go contract moet je verplicht je eigen risico verlagen, van 500 euro naar 250 euro.'"></info-icon></div>
+              <div class="name">
+                <md-checkbox ng-model="booking.riskReduction"></md-checkbox>
+                Eigen risico verlagen <info-icon tooltip-html="'Bij een MyWheels Go contract moet je verplicht je eigen risico verlagen, van 500 euro naar 250 euro.'"></info-icon>
+              </div>
               <div class="calculation" ng-if="calculation.applyRiskReduction">
                 {{ calculation.riskReductionPrice | currency }}
                 x
@@ -47,30 +62,30 @@
             <td class="price">{{ calculation.riskReductionTotal | currency }}</td>
           </tr>
           <tr>
-            <td class="opt">
-              <number-tool ng-model="booking.numAdditionalDrivers" min="0" max="4" style="margin-left: -2px;"></number-tool>
-            </td>
             <td class="description">
               <div class="name">
-                {{ calculation.numAdditionalDrivers ? calculation.numAdditionalDrivers : 'Geen' }} medebestuurder{{ calculation.numAdditionalDrivers === 1 ? '' : 's' }}
+                <ng-md-icon icon="arrow_drop_down" aria-hidden="true"></ng-md-icon>
+                <select ng-model="booking.numAdditionalDrivers" convert-to-number>
+                  <option value="0" selected>Geen medebestuurders</option>
+                  <option value="1">1 medebestuurder</option>
+                  <option value="2">2 medebestuurders</option>
+                  <option value="3">3 medebestuurders</option>
+                </select>
               </div>
               <div class="calculation" ng-if="calculation.numAdditionalDrivers > 0">{{ calculation.pricePerAdditionalDriver | currency }} x {{ calculation.numAdditionalDrivers }}</div>
             </td>
             <td class="price">{{ calculation.additionalDriversTotal | currency }}</td>
           </tr>
           <tr>
-            <td class="opt"></td>
             <td class="description">
               <div class="name">Boekingskosten</div>
             </td>
             <td class="price">{{ calculation.bookingFee | currency }}</td>
           </tr>
           <tr>
-            <td class="opt"></td>
             <td colspan="2"><div class="line"></div></td>
           </tr>
-          <tr>
-            <td class="opt"></td>
+          <tr class="total">
             <td class="description">
               <div class="name">Subtotaal</div>
             </td>
@@ -78,43 +93,49 @@
           </tr>
         </tbody>
       </table>
-      <div style="margin-top: 1.2em; color: #444; font-size: 1.1em;">Wat gaat mijn rit kosten?</div>
-      <div>
+      <div class="estimate-title">
+        <h3>Wat gaat mijn rit kosten?</h3>
+        <p>Maak een schatting van de totale ritkosten, aan de hand van de kilometers die je denkt te gaan rijden.</p>
+      </div>
+      <div ng-if="calculation.maxKmEstimate && calculation.kilometerEstimate">
         <!--<md-slider flex class="md-primary" md-discrete ng-model="calculation.kilometerEstimate" step="1" min="0" max="300" aria-label="km" ng-change="updateKmEstimate()"></md-slider>-->
         <strong>{{ calculation.kilometerEstimate }}</strong> km<br />
-        <input type="range" min="0" max="300" step="1" style="width: 100%;" ng-model="calculation.kilometerEstimate" ng-change="updateKmEstimate()" />
+        <input type="range" min="10" max="{{ calculation.maxKmEstimate }}" step="1" style="width: 100%;" ng-model="calculation.kilometerEstimate" ng-change="updateKmEstimate()" convert-to-number />
       </div>
       <table>
         <tbody>
-          <tr>
-            <td class="opt"></td>
+          <tr ng-if="!booking.resource.refuelByRenter">
             <td class="description">
               <div class="name">Brandstofkosten</div>
+              <div class="calculation">Je hoeft bij deze auto niet zelf te tanken.</div>
             </td>
             <td class="price">{{ calculation.fuelCosts | currency }}</td>
           </tr>
           <tr>
-            <td class="opt"></td>
             <td class="description">
               <div class="name">Kilometerkosten</div>
+              <div class="calculation">
+                {{ calculation.freeKms }} km vrij
+                <span ng-if="calculation.paidKms > 0">
+                  <br />
+                  {{ booking.resource.price.kilometerRate | currency }} x {{ calculation.paidKms }} km
+                </span>
+              </div>
             </td>
             <td class="price">{{ calculation.kmCosts | currency }}</td>
           </tr>
           <!--
           <tr>
-            <td class="opt"></td>
             <td class="description" colspan="2">
               <div class="calculation">Op basis van een schatting van 160 km. Rijd je minder? Dan kun je het resterende bedrag terugvragen.</div>
             </td>
           </tr>-->
           <tr>
-            <td class="opt"></td>
             <td colspan="2"><div class="line"></div></td>
           </tr>
-          <tr>
-            <td class="opt"></td>
+          <tr class="total">
             <td class="description">
-              <div class="name">Totaal ritkosten</div>
+              <div class="name">Totale ritkosten</div>
             </td>
             <td class="price">{{ calculation.total2 | currency }}</td>
           </tr>
