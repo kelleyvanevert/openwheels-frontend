@@ -51,6 +51,9 @@ module.exports = {
       'vendor/bootstrap/dist/js/bootstrap.js',
       'vendor_custom/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js', // depends: jquery, momentjs
 
+      'vendor_custom/nouislider/wNumb.js',
+      'vendor_custom/nouislider/nouislider.min.js',
+
       'vendor/angular-uuid/uuid.js',
       'vendor/angular-jsonrpc-q/build/jsonrpc.js',
       'vendor/angular-moment/angular-moment.js',

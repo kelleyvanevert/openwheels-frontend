@@ -99,8 +99,11 @@
       </div>
       <div ng-if="calculation.maxKmEstimate && calculation.kilometerEstimate">
         <!--<md-slider flex class="md-primary" md-discrete ng-model="calculation.kilometerEstimate" step="1" min="0" max="300" aria-label="km" ng-change="updateKmEstimate()"></md-slider>-->
-        <strong>{{ calculation.kilometerEstimate }}</strong> km<br />
-        <input type="range" min="10" max="{{ calculation.maxKmEstimate }}" step="1" style="width: 100%;" ng-model="calculation.kilometerEstimate" ng-change="updateKmEstimate()" convert-to-number />
+        
+        <!--<strong>{{ calculation.kilometerEstimate }}</strong> km<br />
+        <input type="range" min="10" max="{{ calculation.maxKmEstimate }}" step="1" style="width: 100%;" ng-model="calculation.kilometerEstimate" ng-change="updateKmEstimate()" convert-to-number />-->
+        
+        <no-ui-slider min="20" max="calculation.maxKmEstimate" step="1" ng-model="calculation.kilometerEstimate" ng-change="updateKmEstimate()"></no-ui-slider>
       </div>
       <table>
         <tbody>

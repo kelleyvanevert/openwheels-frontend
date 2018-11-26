@@ -95,7 +95,7 @@ angular.module('openwheels', [
   'timeframePickerDirective',
   'resourcePricingDirective',
   'invoiceEstimateDirective',
-  'numberToolDirective',
+  'noUiSliderDirective',
 
   /* Filters */
   'filters.util',
