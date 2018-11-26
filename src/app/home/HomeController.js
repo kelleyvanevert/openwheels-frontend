@@ -23,7 +23,7 @@ angular.module('owm.home', ['owm.resource', 'slick'])
   }, 1000);
 
   $scope.goToMyWheelsOpen = function() {
-    window.open('http://open.mywheels.nl','_blank');
+    window.open('/open','_blank');
   };
 
   loadBlogItems();
