@@ -87,6 +87,7 @@ angular.module('openwheels', [
   'sameHeightDirective',
   'autoblurDirective',
   'restrictToDirective',
+  'validPhoneNumberDirective',
 
   /* Filters */
   'filters.util',
