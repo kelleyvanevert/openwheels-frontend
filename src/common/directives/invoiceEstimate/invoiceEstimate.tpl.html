@@ -103,29 +103,34 @@
         <!--<strong>{{ calculation.kilometerEstimate }}</strong> km<br />
         <input type="range" min="10" max="{{ calculation.maxKmEstimate }}" step="1" style="width: 100%;" ng-model="calculation.kilometerEstimate" ng-change="updateKmEstimate()" convert-to-number />-->
         
-        <no-ui-slider min="20" max="calculation.maxKmEstimate" step="1" ng-model="calculation.kilometerEstimate" ng-change="updateKmEstimate()"></no-ui-slider>
+        <no-ui-slider style="margin: 50px 20px 10px;"
+                      min="20"
+                      max="calculation.maxKmEstimate"
+                      step="1"
+                      ng-model="calculation.kilometerEstimate"
+                      ng-change="updateKmEstimate()"></no-ui-slider>
       </div>
-      <table>
+      <table ng-if="calculation.uponUserEstimate">
         <tbody>
           <tr ng-if="!booking.resource.refuelByRenter">
             <td class="description">
               <div class="name">Brandstofkosten</div>
               <div class="calculation">Je hoeft bij deze auto niet zelf te tanken.</div>
             </td>
-            <td class="price">{{ calculation.fuelCosts | currency }}</td>
+            <td class="price">{{ calculation.uponUserEstimate.fuelCosts | currency }}</td>
           </tr>
           <tr>
             <td class="description">
               <div class="name">Kilometerkosten</div>
               <div class="calculation">
-                {{ calculation.freeKms }} km vrij
+                {{ calculation.uponUserEstimate.freeKms }} km vrij
                 <span ng-if="calculation.paidKms > 0">
                   <br />
-                  {{ booking.resource.price.kilometerRate | currency }} x {{ calculation.paidKms }} km
+                  {{ booking.resource.price.kilometerRate | currency }} x {{ calculation.uponUserEstimate.paidKms }} km
                 </span>
               </div>
             </td>
-            <td class="price">{{ calculation.kmCosts | currency }}</td>
+            <td class="price">{{ calculation.uponUserEstimate.kmCosts | currency }}</td>
           </tr>
           <!--
           <tr>
@@ -140,7 +145,20 @@
             <td class="description">
               <div class="name">Totale ritkosten</div>
             </td>
-            <td class="price">{{ calculation.total2 | currency }}</td>
+            <td class="price">{{ calculation.uponUserEstimate.total | currency }}</td>
+          </tr>
+          <tr class="total deposit" ng-if="calculation.uponMyWheelsEstimate">
+            <td class="description">
+              <div class="name">Vooraf betalen</div>
+            </td>
+            <td class="price">{{ calculation.uponMyWheelsEstimate.total | currency }}</td>
+          </tr>
+          <tr class="total deposit" ng-if="calculation.uponMyWheelsEstimate">
+            <td class="description" colspan="2">
+              <div class="calculation">
+                Je betaalt een voorschot gebaseerd op een schatting van MyWheels van {{ calculation.automaticKilometerEstimate }} km. Rijd je minder? Dan kun je het teveel betaalde bedrag terugvragen.
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

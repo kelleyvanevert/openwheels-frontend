@@ -124,17 +124,26 @@ angular.module('invoiceEstimateDirective', [])
 
       $scope.$watch('[booking.numAdditionalDrivers, booking.beginRequested, booking.endRequested, booking.riskReduction]', update);
 
+      function totalForKmEstimate (estimatedKms) {
+
+        var subcalculation = {};
+        subcalculation.fuelCosts = $scope.price.fuel_per_kilometer * estimatedKms;
+
+        subcalculation.freeKms = Math.floor($scope.calculation.numDays * 100 + $scope.calculation.numRemainingHours * 10);
+        subcalculation.paidKms = Math.max(0, estimatedKms - subcalculation.freeKms);
+        subcalculation.kmCosts = parseFloat($scope.booking.resource.price.kilometerRate) * subcalculation.paidKms;
+
+        subcalculation.total = $scope.calculation.total + subcalculation.fuelCosts + subcalculation.kmCosts;
+
+        return subcalculation;
+      }
+
       function updateKmEstimate () {
 
         var calculation = $scope.calculation;
         
-        calculation.fuelCosts = $scope.price.fuel_per_kilometer * calculation.kilometerEstimate;
-
-        calculation.freeKms = Math.floor(calculation.numDays * 100 + calculation.numRemainingHours * 10);
-        calculation.paidKms = Math.max(0, calculation.kilometerEstimate - calculation.freeKms);
-        calculation.kmCosts = parseFloat($scope.booking.resource.price.kilometerRate) * calculation.paidKms;
-
-        calculation.total2 = calculation.total + calculation.fuelCosts + calculation.kmCosts;
+        calculation.uponUserEstimate = totalForKmEstimate(calculation.kilometerEstimate);
+        calculation.uponMyWheelsEstimate = totalForKmEstimate(calculation.automaticKilometerEstimate);
       }
       $scope.updateKmEstimate = updateKmEstimate;
 
