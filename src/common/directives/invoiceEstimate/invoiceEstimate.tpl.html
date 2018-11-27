@@ -124,7 +124,7 @@
               <div class="name">Kilometerkosten</div>
               <div class="calculation">
                 {{ calculation.uponUserEstimate.freeKms }} km vrij
-                <span ng-if="calculation.paidKms > 0">
+                <span ng-if="calculation.uponUserEstimate.paidKms > 0">
                   <br />
                   {{ booking.resource.price.kilometerRate | currency }} x {{ calculation.uponUserEstimate.paidKms }} km
                 </span>
