@@ -10,31 +10,34 @@ angular.module('tokenSilentRefreshService', [])
    be introducing circularity, where the `api` module needs the `authService`..
 */
 
-.service('tokenSilentRefreshService', function ($window, appConfig, tokenService) {
+.service('tokenSilentRefreshService', function ($window, $q, appConfig, tokenService) {
 
   this.silentRefresh = silentRefresh;
 
   function silentRefresh () {
-    // we actually only need one iframe and message handler,
-    //  but, for now, this is easier coding :)
-    
-    var iframe = $window.document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.url = authUrl('postMessage', 'postMessage');
+    return $q(function (resolve, reject) {
+      // we actually only need one iframe and message handler,
+      //  but, for now, this is easier coding :)
+      
+      var iframe = $window.document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = authUrl('postMessage', 'postMessage');
 
-    $window.addEventListener('message', function (e) {
-      try {
-        var message = JSON.parse(e.data);
-        if (message.name === 'oAuthToken') {
-          tokenService.createToken(message.data).save();
-        }
-      } catch (e) {
-        // noop
-      }
+      $window.addEventListener('message', function (e) {
+        try {
+          var message = JSON.parse(e.data);
+          if (message.name === 'oAuthToken') {
+            var token = tokenService.createToken(message.data).save();
+            resolve(token);
+          } else if (message.name === 'oAuthError') {
+            reject();
+          }
+        } catch (e) {}
+      });
+
+      // kick-off
+      $window.document.body.appendChild(iframe);
     });
-
-    // kick-off
-    $window.document.body.appendChild(iframe);
   }
 
   function authUrl(errorPath, successPath) {
