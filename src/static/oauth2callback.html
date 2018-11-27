@@ -21,8 +21,8 @@ var DEFAULT_ERROR_PATH   = '/';
 var successPath = findGetParameter('successPath') || DEFAULT_SUCCESS_PATH;
 var errorPath   = findGetParameter('errorPath')   || DEFAULT_ERROR_PATH;
 
-if (successPath === 'postMessage' && !window.opener) { successPath = DEFAULT_SUCCESS_PATH; }
-if (errorPath   === 'postMessage' && !window.opener) { errorPath   = DEFAULT_ERROR_PATH; }
+if (successPath === 'postMessage' && !window.parent) { successPath = DEFAULT_SUCCESS_PATH; }
+if (errorPath   === 'postMessage' && !window.parent) { errorPath   = DEFAULT_ERROR_PATH; }
 
 var req = hashToObject(window.location.hash);
 if (req.access_token) {
@@ -32,7 +32,10 @@ if (req.access_token) {
 }
 
 function handleSuccessResponse (req) {
-  $log.debug('<-- received a token at oauth2callback');
+  $log.log('<-- received a token at oauth2callback');
+  $log.log('success path =', successPath, successPath === 'postMessage');
+  $log.log('window.opener', window.opener, 'window.parent', window.parent);
+
   var token;
   var tokenData = {
     accessToken : req.access_token,
@@ -43,7 +46,7 @@ function handleSuccessResponse (req) {
 
   if (successPath === 'postMessage') {
     // post access token to parent window
-    window.postMessage({
+    post({
       name: 'oAuthToken',
       data: tokenData,
     });
@@ -57,19 +60,21 @@ function handleSuccessResponse (req) {
 }
 
 function handleErrorResponse () {
-  $log.debug('<-! error response at oauth2callback');
+  $log.log('<-! error response at oauth2callback');
+  $log.log('error path =', errorPath, errorPath === 'postMessage');
+
   if (errorPath === 'postMessage') {
-    window.postMessage({
+    post({
       name: 'oAuthError',
       data: 'auth callback did not return a token',
     });
   }
 }
 
-function postMessage (msgObj) {
-  $log.debug('post token message to window.opener');
+function post (msgObj) {
+  $log.log('post token message to window.opener');
   var targetOrigin = window.location.protocol + '//' + window.location.host;
-  window.opener.window.postMessage(JSON.stringify(msgObj), targetOrigin);
+  window.parent.postMessage(JSON.stringify(msgObj), targetOrigin);
 }
 
 function hashToObject (hash) {
