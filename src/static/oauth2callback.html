@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+
+Een moment a.u.b., je wordt doorverwezen...
+
+<script type="text/javascript" src="/js/moment-with-locales.js"></script>
+<script type="text/javascript" src="/js/tokenServiceFactory.js"></script>
+<script type="text/javascript">
+
+var noop = function () {};
+var $log = window.console || { debug: noop, log: noop };
+var tokenService = mw.tokenServiceFactory(window, window.console);
+
+var DEFAULT_SUCCESS_PATH = '/';
+var DEFAULT_ERROR_PATH   = '/';
+
+var successPath = findGetParameter('successPath') || DEFAULT_SUCCESS_PATH;
+var errorPath   = findGetParameter('errorPath')   || DEFAULT_ERROR_PATH;
+
+if (successPath === 'postMessage' && !window.opener) { successPath = DEFAULT_SUCCESS_PATH; }
+if (errorPath   === 'postMessage' && !window.opener) { errorPath   = DEFAULT_ERROR_PATH; }
+
+var req = hashToObject(window.location.hash);
+if (req.access_token) {
+  handleSuccessResponse(req);
+} else {
+  handleErrorResponse();
+}
+
+function handleSuccessResponse (req) {
+  $log.debug('<-- received a token at oauth2callback');
+  var token;
+  var tokenData = {
+    accessToken : req.access_token,
+    expiresIn   : req.expires_in,
+    tokenType   : req.token_type,
+    refreshToken: req.refresh_token,
+  };
+
+  if (successPath === 'postMessage') {
+    // post access token to parent window
+    window.postMessage({
+      name: 'oAuthToken',
+      data: tokenData,
+    });
+
+  } else {
+    // authenticate & redirect
+    token = tokenService.createToken(tokenData).save();
+
+    window.location = successPath;
+  }
+}
+
+function handleErrorResponse () {
+  $log.debug('<-! error response at oauth2callback');
+  if (errorPath === 'postMessage') {
+    window.postMessage({
+      name: 'oAuthError',
+      data: 'auth callback did not return a token',
+    });
+  }
+}
+
+function postMessage (msgObj) {
+  $log.debug('post token message to window.opener');
+  var targetOrigin = window.location.protocol + '//' + window.location.host;
+  window.opener.window.postMessage(JSON.stringify(msgObj), targetOrigin);
+}
+
+function hashToObject (hash) {
+  if (hash[0] == '#') hash = hash.slice(1);
+  if (hash[0] == '?') hash = hash.slice(1);
+  var result = {};
+  hash.split('&').forEach(function (pair) {
+    var items = pair.split('=');
+    result[items[0]] = items[1];
+  });
+  return result;
+}
+
+function findGetParameter (parameterName) {
+  var result = null,
+      tmp = [];
+  var items = location.search.substr(1).split("&");
+  for (var index = 0; index < items.length; index++) {
+    tmp = items[index].split("=");
+    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+  }
+  return result;
+}
+
+</script>
+</body>
+</html>

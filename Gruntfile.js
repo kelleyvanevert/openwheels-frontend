@@ -75,6 +75,16 @@ module.exports = function (grunt) {
      * `build_dir`, and then to copy the assets to `compile_dir`.
      */
     copy: {
+      buildStatic: {
+        files: [
+          {
+            src: [ '**' ],
+            dest: '<%= build_dir %>/',
+            cwd: 'src/static',
+            expand: true
+          }
+        ]
+      },
       buildAppAssets: {
         files: [
           {
@@ -441,6 +451,13 @@ module.exports = function (grunt) {
         tasks: [ 'configure' ]
       },
 
+      static: {
+        files: [
+          'src/static/**/*'
+        ],
+        tasks: [ 'copy:buildStatic' ]
+      },
+
       assets: {
         files: [
           'src/assets/**/*'
@@ -612,7 +629,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build-common', [
     'clean', 'html2js', 'jshint:src',
     'replace:angularMaterialCss', // TODO: remove temp fix
-    'copy:buildAppAssets', 'copy:buildAppBranding', 'copy:buildApp', 'copy:buildVendorFonts',
+    'copy:buildStatic', 'copy:buildAppAssets', 'copy:buildAppBranding', 'copy:buildApp', 'copy:buildVendorFonts',
     'copy:buildAppjs', 'copy:buildVendorjs'
   ]);
 
