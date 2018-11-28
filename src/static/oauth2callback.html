@@ -32,9 +32,9 @@ if (req.access_token) {
 }
 
 function handleSuccessResponse (req) {
-  $log.log('<-- received a token at oauth2callback');
-  $log.log('success path =', successPath, successPath === 'postMessage');
-  $log.log('window.opener', window.opener, 'window.parent', window.parent);
+  $log.debug('<-- received a token at oauth2callback');
+  $log.debug('success path =', successPath, successPath === 'postMessage');
+  $log.debug('window.opener', window.opener, 'window.parent', window.parent);
 
   var token;
   var tokenData = {
@@ -60,8 +60,8 @@ function handleSuccessResponse (req) {
 }
 
 function handleErrorResponse () {
-  $log.log('<-! error response at oauth2callback');
-  $log.log('error path =', errorPath, errorPath === 'postMessage');
+  $log.debug('<-! error response at oauth2callback');
+  $log.debug('error path =', errorPath, errorPath === 'postMessage');
 
   if (errorPath === 'postMessage') {
     post({
@@ -72,7 +72,7 @@ function handleErrorResponse () {
 }
 
 function post (msgObj) {
-  $log.log('post token message to window.opener');
+  $log.debug('post token message to window.opener');
   var targetOrigin = window.location.protocol + '//' + window.location.host;
   window.parent.postMessage(JSON.stringify(msgObj), targetOrigin);
 }
