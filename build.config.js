@@ -19,8 +19,11 @@ module.exports = {
 
   vendor_files: {
     js: [
-      'vendor_custom/polyfills/custom-event.js',
-      'vendor_custom/polyfills/object-assign.js',
+      'src/polyfills/custom-event.js',
+      'src/polyfills/object-assign.js',
+
+      'src/static/js/tokenServiceFactory.js',
+      'src/static/js/moment-with-locales.js', // 2.9.0
 
       'vendor/jquery/dist/jquery.js',
 
@@ -38,8 +41,6 @@ module.exports = {
 //      'vendor/momentjs/moment.js',
 //      'vendor/momentjs/moment/lang/nl.js',
       'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
-
-      'vendor_custom/moment-with-locales.js', // 2.9.0
 
       'vendor/angular-google-maps/dist/angular-google-maps.js',
       'vendor/lodash/dist/lodash.js', // required by angular-google-maps

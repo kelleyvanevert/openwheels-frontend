@@ -93,6 +93,7 @@ angular.module('openwheels', [
   
   'bootstrapDateTimePickerDirective',
   'timeframePickerDirective',
+  'validPhoneNumberDirective',
 
   /* Filters */
   'filters.util',
@@ -291,7 +292,8 @@ angular.module('openwheels', [
       $state.includes('subscribe') ||
       $state.includes('invite') ||
       $state.includes('member') ||
-      $state.includes('owm.person.details')
+      $state.includes('owm.person.details') ||
+      $state.includes('owm-landing')
     );
     $rootScope.containerHome = (
       ($state.includes('home')) || ($state.$current.self.url === '/auto-verhuren')

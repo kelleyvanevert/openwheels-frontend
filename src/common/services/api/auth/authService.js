@@ -80,8 +80,10 @@ angular.module('authService', [])
     isFirstAuthenticate = false;
   };
 
-  this.notifyFreshToken = function (freshToken) {
+  this.notifyFreshToken = function (freshToken, isFirstAuthenticateOverride) {
     var remaining;
+    isFirstAuthenticate = (isFirstAuthenticate || isFirstAuthenticateOverride) || false;
+
     if (asyncToken) {
       asyncToken.resolve(freshToken);
       asyncToken = null;
@@ -260,7 +262,8 @@ angular.module('authService', [])
     var oAuth2CallbackUrl =
       $window.location.protocol + '//' +
       $window.location.host +
-      $state.href('oauth2callback') +
+      //$state.href('oauth2callback') +
+      '/oauth2callback.html' +
       '?' +
       (!successPath ? '' : '&successPath=' + encodeURIComponent(successPath)) +
       (!errorPath ? '' : '&errorPath=' + encodeURIComponent(errorPath));
