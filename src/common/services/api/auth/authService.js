@@ -263,7 +263,7 @@ angular.module('authService', [])
       $window.location.protocol + '//' +
       $window.location.host +
       //$state.href('oauth2callback') +
-      '/oauth2callback.html' +
+      '/assets/oauth2callback.html' +
       '?' +
       (!successPath ? '' : '&successPath=' + encodeURIComponent(successPath)) +
       (!errorPath ? '' : '&errorPath=' + encodeURIComponent(errorPath));

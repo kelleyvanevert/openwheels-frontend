@@ -22,8 +22,8 @@ module.exports = {
       'src/polyfills/custom-event.js',
       'src/polyfills/object-assign.js',
 
-      'src/static/js/tokenServiceFactory.js',
-      'src/static/js/moment-with-locales.js', // 2.9.0
+      'src/assets/js/tokenServiceFactory.js',
+      'src/assets/js/moment-with-locales.js', // 2.9.0
 
       'vendor/jquery/dist/jquery.js',
 
