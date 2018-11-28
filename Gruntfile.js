@@ -3,6 +3,7 @@
 module.exports = function (grunt) {
   var _ = require('lodash');
   var uuid = require('uuid');
+  var fs = require('fs');
 
   grunt.file.defaultEncoding = 'utf-8';
   require('load-grunt-tasks')(grunt);
@@ -350,9 +351,20 @@ module.exports = function (grunt) {
               require('connect-modrewrite')(['!(\\..+)$ / [L]']),
               function (req, res, next) {
                 if (req.url === '/assets/img/resource-avatar-large.jpg') {
-                  req.url = '/assets/scaffold/' + Math.floor(Math.random() * 14) + '.png';
+                  fs.readdir(__dirname + '/src/assets/scaffold', function (err, files) {
+                    if (!err) {
+                      var acceptable = files.filter(function (filename) {
+                        return filename.match(/\.(png|jpg)$/);
+                      });
+                      if (acceptable.length > 0) {
+                        req.url = '/assets/scaffold/' + acceptable[Math.floor(Math.random() * acceptable.length)];
+                      }
+                    }
+                    next();
+                  });
+                } else {
+                  next();
                 }
-                next();
               },
               connect.static('build'),
             ];
