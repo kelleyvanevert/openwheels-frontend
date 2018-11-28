@@ -66,32 +66,45 @@
   }
 
   .secondary {
-    padding: .8em 1em;
+    padding: 1em .1em;
     padding-bottom: .6em;
     color: #777;
     line-height: 1.8em;
 
-    .lines {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: space-around;
-      align-items: flex-start;
-    }
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    justify-content: space-evenly;
+    align-items: flex-start;
 
-    .secondary-line {
-      margin: .3em;
+    .secondary-item {
+      margin: 0 .2em;
+      padding: .2em .4em;
+      position: relative;
       text-align: center;
+      border: 1px solid transparent;
+      border-radius: .3em;
+
+      ng-md-icon {
+        color: #444;
+        vertical-align: bottom;
+        margin: .2em;
+      }
+
+      .lines {
+//        text-align: left;
+      }
+
+      &:hover {
+        border-color: #ddd;
+        box-shadow: .1em .1em .3em rgba(0,0,0,.1);
+      }
     }
 
     .price {
       color: #666;
       font-size: 1.2em;
-    }
-
-    ng-md-icon {
-      color: #444;
-      vertical-align: bottom;
     }
   }
 
