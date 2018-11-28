@@ -38,6 +38,9 @@ angular.module('resourcePricingDirective', [])
             $scope.tankpas = false; // TODO [from new api field]
             $scope.kmFree = resource.kmFree;
             $scope.price = resource.price;
+            $scope.hide = function () {
+              $mdDialog.hide();
+            };
           }],
         });
       };
