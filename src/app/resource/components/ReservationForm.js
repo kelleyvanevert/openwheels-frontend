@@ -49,6 +49,9 @@ angular.module('owm.resource.reservationForm', [])
   }
   resetToPreTimeframe();
 
+  $scope.showCommentBox = false;
+  $scope.showDiscountCodeBox = false;
+
 
   $scope.price = null;
   $scope.isPriceLoading = false;
