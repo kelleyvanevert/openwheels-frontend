@@ -130,4 +130,4 @@ mw.tokenServiceFactory = function tokenServiceFactory ($window, $log, $q) {
   }
 
   return tokenService;
-}
+};
