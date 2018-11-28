@@ -80,12 +80,17 @@
         right: 5%;
       }
     }
-  
-    @media (max-width: 480px) {
+  }
+
+  @media (max-width: 480px) {
+    .discount-action-badges {
+      overflow: hidden;
+      padding: 1em 0;
+      
       .discount-action-badge {
         position: relative;
-        top: 0;
-        left: 50%;
+        top: -1em;
+        left: 45%;
         margin: 0 0 1em -5em;
       }
     }
@@ -245,6 +250,8 @@
       .open-steps {
         flex-direction: column;
         align-items: center;
+        margin: 1em 0;
+
         .step {
           margin: 1rem 0;
           .step-label {
@@ -308,8 +315,8 @@
   }
 
   .renter--action--image {
-    background-image: url('../assets/img/photo/uitje.jpg');
-    background-position-x: 32% !important;
+    background-image: url('../assets/img/photo/buurman.jpg');
+    background-position-x: 55% !important;
   }
 
   .owner--action--image {
