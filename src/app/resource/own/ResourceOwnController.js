@@ -27,7 +27,7 @@ angular.module('owm.resource.own', [])
   }
 
   $scope.goToMyWheelsOpen = function() {
-    window.open('http://open.mywheels.nl','_blank');
+    window.open('/open','_blank');
   };
 
   $scope.saveOld = function (resource) {

@@ -23,7 +23,7 @@ $stateProvider.state(name, {
 
 angular.module('stateAuthorizer', [])
 
-.service('stateAuthorizer', function ($log, $timeout, $rootScope, $state, $urlRouter, authService, tokenService, alertService, featuresService) {
+.service('stateAuthorizer', function ($log, $timeout, $rootScope, $state, $urlRouter, authService, tokenService, tokenSilentRefreshService, alertService, featuresService) {
 
   $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
     $log.debug('state change: ' + fromState.name + ' > ' + toState.name);
@@ -38,7 +38,7 @@ angular.module('stateAuthorizer', [])
     if (savedToken) {
       if (savedToken.isExpired()) {
         $log.debug('saved token is expired');
-        savedToken.refresh().then(function (freshToken) {
+        tokenSilentRefreshService.silentRefresh().then(function (freshToken) {
           $log.debug('authenticate using refreshed token');
           authService.notifyFreshToken(freshToken);
         })

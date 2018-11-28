@@ -45,4 +45,25 @@ angular.module('owm.shell', [])
     }
   });
 
+  /**
+   * Application with populated menu, toolbar & footer
+   */
+  $stateProvider.state('owm-landing', {
+    parent: 'shell',
+    views: {
+      'toolbar@shell': {
+        templateUrl: 'shell/landing/toolbar/toolbar.tpl.html',
+        controller: 'LandingToolbarController'
+      },
+      'menu@shell': {
+        templateUrl: 'shell/landing/menu/menu.tpl.html',
+        controller: 'LandingMenuController'
+      },
+      'footer@shell': {
+        templateUrl: 'shell/footer/footer.tpl.html',
+        controller: 'FooterController'
+      },
+    },
+  });
+
 });

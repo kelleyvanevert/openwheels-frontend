@@ -55,7 +55,7 @@ angular.module('owm.person.dashboard', [])
   }
 
   $scope.goToMyWheelsOpen = function() {
-    window.open('http://open.mywheels.nl','_blank');
+    window.open('/open','_blank');
   };
 
   $scope.goToInviteFriends = function() {

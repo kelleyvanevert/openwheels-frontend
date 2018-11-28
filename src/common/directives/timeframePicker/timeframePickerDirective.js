@@ -90,6 +90,21 @@ angular.module('timeframePickerDirective', [])
       $scope.returnDate = $scope.returnDateTime ? moment($scope.returnDateTime, API_DATE_FORMAT).format(dateConfig.format) : '';
       $scope.returnTime = $scope.returnDateTime ? moment($scope.returnDateTime, API_DATE_FORMAT).format(timeConfig.format) : '';
 
+      setTimeout(function () {
+        if ($scope.pickupDate) {
+          $scope.form.pickupDate.$setTouched(true); // ??
+        }
+        if ($scope.pickupTime) {
+          $scope.form.pickupTime.$setTouched(true); // ??
+        }
+        if ($scope.returnDate) {
+          $scope.form.returnDate.$setTouched(true); // ??
+        }
+        if ($scope.returnTime) {
+          $scope.form.returnTime.$setTouched(true); // ??
+        }
+      }, 1);
+
       $scope.timeframeValid = false;
 
       // Methods
@@ -153,14 +168,20 @@ angular.module('timeframePickerDirective', [])
           returnTime: moment($scope.returnTime, timeConfig.format), // only used for time part (!)
         };
 
-        if (tf.returnTime.isValid()) {
-          $scope.returnTime = tf.returnTime.add(numHours, 'hours').format(timeConfig.format);
+        if (tf.returnDate.isValid() && tf.returnTime.isValid()) {
+          // consolidate
+          tf.return = moment($scope.returnDate + ' ' + $scope.returnTime, dateConfig.format + ' '+ timeConfig.format);
+
+          // add hour extension
+          tf.return = tf.return.add(numHours, 'hours');
+
+          // write back
+          $scope.returnDate = tf.return.format(dateConfig.format);
+          $scope.returnTime = tf.return.format(timeConfig.format);
+          $scope.form.returnDate.$setTouched(true); // ??
           $scope.form.returnTime.$setTouched(true); // ??
 
-          if (tf.returnDate.isValid()) {
-            tf.return = moment($scope.returnDate + ' ' + $scope.returnTime, dateConfig.format + ' '+ timeConfig.format);
-            $scope.returnDateTime = tf.return.format(API_DATE_FORMAT);
-          }
+          $scope.returnDateTime = tf.return.format(API_DATE_FORMAT);
         }
       }
 
@@ -242,12 +263,8 @@ angular.module('timeframePickerDirective', [])
         }
 
         // <- outwards action
-        if (tf.pickup) {
-          $scope.pickupDateTime = tf.pickup.format(API_DATE_FORMAT);
-        }
-        if (tf.return) {
-          $scope.returnDateTime = tf.return.format(API_DATE_FORMAT);
-        }
+        $scope.pickupDateTime = tf.pickup ? tf.pickup.format(API_DATE_FORMAT) : '';
+        $scope.returnDateTime = tf.return ? tf.return.format(API_DATE_FORMAT) : '';
 
         //delete tf.pickupDate;
         //delete tf.pickupTime;

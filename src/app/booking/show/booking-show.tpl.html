@@ -379,10 +379,10 @@
     <div class="card-body text-center" id="resource__boardcomputer">
       <ul class="list-inline">
         <li>
-          <button ng-click="openDoor(resource)" class="btn btn-lg btn-default btn-success"><i class="fa fa-unlock fa-fw fa-lg"></i></button>
+          <button title="Open de auto" ng-click="openDoorDialog($event, resource)" class="btn btn-lg btn-default btn-success"><i class="fa fa-unlock fa-fw fa-lg"></i></button>
         </li>
         <li>
-          <button ng-click="closeDoor(resource)" class="btn btn-lg btn-default btn-danger"><i class="fa fa-lock fa-fw fa-lg"></i></button>
+          <button title="Sluit de auto" ng-click="closeDoor(resource)" class="btn btn-lg btn-default btn-danger"><i class="fa fa-lock fa-fw fa-lg"></i></button>
         </li>
       </ul>
     </div>
@@ -645,7 +645,7 @@
     <p hide-gt-xs></p>
 
     <div flex="25" flex-xs="100" class="text-center">
-      <md-button class="md-raised" href="http://open.mywheels.nl" target="_blank">Lees meer</md-button>
+      <md-button class="md-raised" href="/open" ui-sref="owm-landing.mywheels-open" target="_blank">Lees meer</md-button>
     </div>
   </div>
 </div>

@@ -3,8 +3,8 @@
 angular.module('rpcServices', [])
 
 .service('personService', function (api) {
-  var m = function (name) {
-    return api.createRpcMethod('person.' + name);
+  var m = function (name, isAnonymous) {
+    return api.createRpcMethod('person.' + name, isAnonymous);
   };
 
   /* REQUIRES parameter version=2 (version 1 deprecated on 13-5-2015) */
@@ -12,6 +12,9 @@ angular.module('rpcServices', [])
 
   /* REQUIRES parameter version=2 (version 1 deprecated on 19-5-2015) */
   this.me = m('me');
+
+  /* REQUIRES parameter version=2 (version 1 deprecated on 19-5-2015) */
+  this.meAnonymous = m('me', true);
 
   this.validateEmail = m('validateEmail');
   this.alter = m('alter');
@@ -292,4 +295,24 @@ angular.module('rpcServices', [])
     return api.createRpcMethod('kmpoint.' + name);
   };
   this.forPerson = m('forPerson');
+})
+
+.service('damageService', function (api) {
+  var m = function (name) {
+    return api.createRpcMethod('damage.' + name);
+  };
+  this.addUserDamage = m('addUserDamage');
+  this.dirty = m('dirty');
+})
+
+.service('formSubmissionService', function (api) {
+  var m = function (name) {
+    return api.createRpcMethod('form_submission.' + name);
+  };
+  var _send = m('send');
+  this.send = function (params) {
+    return _send({
+      other: params,
+    });
+  };
 });

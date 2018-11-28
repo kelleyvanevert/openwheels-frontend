@@ -21,7 +21,7 @@ angular.module('api', [])
   };
 })
 
-.factory('api', function ($log, $q, $http, $rootScope, appConfig, tokenService) {
+.factory('api', function ($log, $q, $http, $rootScope, appConfig, tokenService, tokenSilentRefreshService) {
 
   var AUTH_HEADER = 'X-Simple-Auth-Digest';
   var apiUrl = appConfig.serverUrl + '/api/';
@@ -89,7 +89,7 @@ angular.module('api', [])
       return $q.reject('no token');
     }
 
-    return token.refresh().then(function (freshToken) {
+    return tokenSilentRefreshService.silentRefresh().then(function (freshToken) {
       var replayConfig = angular.copy(config);
       replayConfig.isReplay = true;
       replayConfig.headers[AUTH_HEADER] = createAuthHeader(freshToken);

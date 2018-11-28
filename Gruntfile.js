@@ -3,6 +3,7 @@
 module.exports = function (grunt) {
   var _ = require('lodash');
   var uuid = require('uuid');
+  var fs = require('fs');
 
   grunt.file.defaultEncoding = 'utf-8';
   require('load-grunt-tasks')(grunt);
@@ -75,6 +76,16 @@ module.exports = function (grunt) {
      * `build_dir`, and then to copy the assets to `compile_dir`.
      */
     copy: {
+      buildStatic: {
+        files: [
+          {
+            src: [ '**' ],
+            dest: '<%= build_dir %>/',
+            cwd: 'src/static',
+            expand: true
+          }
+        ]
+      },
       buildAppAssets: {
         files: [
           {
@@ -338,7 +349,24 @@ module.exports = function (grunt) {
           middleware: function (connect) {
             return [
               require('connect-modrewrite')(['!(\\..+)$ / [L]']),
-              connect.static('build')
+              function (req, res, next) {
+                if (req.url === '/assets/img/resource-avatar-large.jpg') {
+                  fs.readdir(__dirname + '/src/assets/scaffold', function (err, files) {
+                    if (!err) {
+                      var acceptable = files.filter(function (filename) {
+                        return filename.match(/\.(png|jpg)$/);
+                      });
+                      if (acceptable.length > 0) {
+                        req.url = '/assets/scaffold/' + acceptable[Math.floor(Math.random() * acceptable.length)];
+                      }
+                    }
+                    next();
+                  });
+                } else {
+                  next();
+                }
+              },
+              connect.static('build'),
             ];
           }
         }
@@ -433,6 +461,13 @@ module.exports = function (grunt) {
           'config/**',
         ],
         tasks: [ 'configure' ]
+      },
+
+      static: {
+        files: [
+          'src/static/**/*'
+        ],
+        tasks: [ 'copy:buildStatic' ]
       },
 
       assets: {
@@ -606,7 +641,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build-common', [
     'clean', 'html2js', 'jshint:src',
     'replace:angularMaterialCss', // TODO: remove temp fix
-    'copy:buildAppAssets', 'copy:buildAppBranding', 'copy:buildApp', 'copy:buildVendorFonts',
+    'copy:buildStatic', 'copy:buildAppAssets', 'copy:buildAppBranding', 'copy:buildApp', 'copy:buildVendorFonts',
     'copy:buildAppjs', 'copy:buildVendorjs'
   ]);
 
