@@ -94,6 +94,7 @@ angular.module('openwheels', [
   'bootstrapDateTimePickerDirective',
   'timeframePickerDirective',
   'validPhoneNumberDirective',
+  'resourcePricingDirective',
 
   /* Filters */
   'filters.util',

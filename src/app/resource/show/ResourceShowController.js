@@ -249,27 +249,6 @@ angular.module('owm.resource.show', [])
     });
   }
 
-/* // Not used
-  $scope.checkAvailabilityDialog = function () {
-    $scope.openDialogSpinner = true;
-    $mdDialog.show({
-      autoWrap: false,
-      templateUrl: 'resource/show/checkAvailabilityDialog.tpl.html',
-      controller: ['$scope', '$mdDialog', function($scope, $mdDialog) {
-        $scope.openDialogSpinner = false;
-        $scope.hide = function() {
-          $mdDialog.hide();
-        };
-      }],
-      scope: $scope,
-      preserveScope: true,
-      fullscreen: $mdMedia('xs'),
-      clickOutsideToClose: true,
-      escapeToClose: true
-    });
-  };
-*/
-
   function toggleFavorite (bool) {
     var params = { resource: resource.id };
     var method = bool ? resourceService.addFavorite : resourceService.removeFavorite;
