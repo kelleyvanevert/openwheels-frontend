@@ -80,8 +80,10 @@ angular.module('authService', [])
     isFirstAuthenticate = false;
   };
 
-  this.notifyFreshToken = function (freshToken) {
+  this.notifyFreshToken = function (freshToken, isFirstAuthenticateOverride) {
     var remaining;
+    isFirstAuthenticate = (isFirstAuthenticate || isFirstAuthenticateOverride) || false;
+
     if (asyncToken) {
       asyncToken.resolve(freshToken);
       asyncToken = null;

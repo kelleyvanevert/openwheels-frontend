@@ -83,12 +83,14 @@ angular.module('owm.home', ['owm.resource', 'slick'])
   };
 
   // Automatically log in, if possible
-  tokenSilentRefreshService.silentRefresh().then(function (token) {
-    // we can do this, but there is currently no reason
-    // authService.notifyFreshToken(token);
-    $state.go('owm.person.dashboard');
-  });
-//  $window.as = authService;
-//  $window.tsr = tokenSilentRefreshService;
+  if (!authService.user.isAuthenticated) {
+    tokenSilentRefreshService.silentRefresh().then(function (token) {
+      // this does the rest of the magic
+      // (state is automatically reloaded, I believe, and at least
+      //  the root scope's user variable is changed,
+      //  triggering a re-render of the toolbar and menu)
+      authService.notifyFreshToken(token, true);
+    });
+  }
 
 });
