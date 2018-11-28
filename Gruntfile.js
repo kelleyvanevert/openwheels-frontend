@@ -76,26 +76,6 @@ module.exports = function (grunt) {
      * `build_dir`, and then to copy the assets to `compile_dir`.
      */
     copy: {
-      compileStatic: {
-        files: [
-          {
-            src: [ '**' ],
-            dest: '<%= compile_dir %>/',
-            cwd: 'src/static',
-            expand: true
-          }
-        ]
-      },
-      buildStatic: {
-        files: [
-          {
-            src: [ '**' ],
-            dest: '<%= build_dir %>/',
-            cwd: 'src/static',
-            expand: true
-          }
-        ]
-      },
       buildAppAssets: {
         files: [
           {
@@ -473,13 +453,6 @@ module.exports = function (grunt) {
         tasks: [ 'configure' ]
       },
 
-      static: {
-        files: [
-          'src/static/**/*'
-        ],
-        tasks: [ 'copy:buildStatic' ]
-      },
-
       assets: {
         files: [
           'src/assets/**/*'
@@ -651,12 +624,12 @@ module.exports = function (grunt) {
   grunt.registerTask('build-common', [
     'clean', 'html2js', 'jshint:src',
     'replace:angularMaterialCss', // TODO: remove temp fix
-    'copy:buildStatic', 'copy:buildAppAssets', 'copy:buildAppBranding', 'copy:buildApp', 'copy:buildVendorFonts',
+    'copy:buildAppAssets', 'copy:buildAppBranding', 'copy:buildApp', 'copy:buildVendorFonts',
     'copy:buildAppjs', 'copy:buildVendorjs'
   ]);
 
   grunt.registerTask('compile', [
-    'less:compile', 'copy:compileStatic', 'copy:compileAssets', 'copy:compileBranding', 'copy:compileApp', 'ngmin', 'concat:compileJs', /*'uglify',*/ 'index:compile'
+    'less:compile', 'copy:compileAssets', 'copy:compileBranding', 'copy:compileApp', 'ngmin', 'concat:compileJs', 'uglify', 'index:compile'
   ]);
 
   grunt.registerMultiTask('index', 'Process index.html template', function () {
