@@ -87,6 +87,7 @@ angular.module('openwheels', [
   'sameHeightDirective',
   'autoblurDirective',
   'restrictToDirective',
+  'validPhoneNumberDirective',
 
   /* Filters */
   'filters.util',
@@ -292,7 +293,8 @@ angular.module('openwheels', [
       (featuresService.get('resourceSidebar') && $state.includes('owm.resource.show')) ||
       $state.includes('subscribe') ||
       $state.includes('invite') ||
-      $state.includes('member')
+      $state.includes('member') ||
+      $state.includes('owm-landing')
     );
     $rootScope.containerHome = (
       ($state.includes('home')) || ($state.$current.self.url === '/auto-verhuren')
