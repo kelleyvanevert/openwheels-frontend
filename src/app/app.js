@@ -93,6 +93,7 @@ angular.module('openwheels', [
   
   'bootstrapDateTimePickerDirective',
   'timeframePickerDirective',
+  'validPhoneNumberDirective',
 
   /* Filters */
   'filters.util',

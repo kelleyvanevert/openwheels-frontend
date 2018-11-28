@@ -218,9 +218,11 @@
                                        ng-model="formEntry.phoneNumber"
                                        md-select-on-focus
                                        required="true"
+                                       valid-phone-number
                                        placeholder="Telefoonnummer" />
                                 <div ng-show="form.$submitted || form.phone_number.$touched">
                                   <div class="text-danger" ng-show="form.phone_number.$error.required">Vul ajb een telefoonnummer in. Zo kunnen we je bereiken.</div>
+                                  <div class="text-danger" ng-show="form.phone_number.$error.validPhoneNumber">Dit lijkt niet een valide telefoonnummer te zijn. Graag een telefoonnummer invoeren met enkel nummers, spaties en streepjes en haakjes, dat tussen de 5 en 20 tekens lang is.</div>
                                 </div>
                             </div>
 
