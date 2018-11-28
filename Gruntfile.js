@@ -75,6 +75,16 @@ module.exports = function (grunt) {
      * `build_dir`, and then to copy the assets to `compile_dir`.
      */
     copy: {
+      compileStatic: {
+        files: [
+          {
+            src: [ '**' ],
+            dest: '<%= compile_dir %>/',
+            cwd: 'src/static',
+            expand: true
+          }
+        ]
+      },
       buildStatic: {
         files: [
           {
@@ -337,7 +347,7 @@ module.exports = function (grunt) {
     connect: {
       options: {
         port: 9000,
-        hostname: '0.0.0.0',
+        hostname: 'localhost',
         livereload: 35730
       },
       livereload: {
@@ -634,7 +644,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('compile', [
-    'less:compile', 'copy:compileAssets', 'copy:compileBranding', 'copy:compileApp', 'ngmin', 'concat:compileJs', 'uglify', 'index:compile'
+    'less:compile', 'copy:compileStatic', 'copy:compileAssets', 'copy:compileBranding', 'copy:compileApp', 'ngmin', 'concat:compileJs', /*'uglify',*/ 'index:compile'
   ]);
 
   grunt.registerMultiTask('index', 'Process index.html template', function () {
