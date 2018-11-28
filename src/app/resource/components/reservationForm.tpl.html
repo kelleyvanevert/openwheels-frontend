@@ -6,13 +6,29 @@
                     mobile-autoscroll="true">
   </timeframe-picker>
 
-  <p><label for="res_comment">Opmerking voor {{ resource.owner.firstName || 'de eigenaar' }}</label></p>
-  <div class="form-group" style="">
+  <p>
+    <label for="res_comment">
+      <span ng-show="!showCommentBox" class="input-toggle" ng-click="showCommentBox = true">
+        <ng-md-icon icon="navigate_next"></ng-md-icon>
+        Voeg opmerking toe
+      </span>
+      <span ng-show="showCommentBox">Opmerking voor {{ resource.owner.firstName || 'de eigenaar' }}</span>
+    </label>
+  </p>
+  <div class="form-group" ng-show="showCommentBox">
     <textarea id="res_comment" rows="2" auto-resize md-select-on-focus></textarea>
   </div>
 
-  <p><label for="res_discountCode">Kortingscode</label></p>
-  <div class="form-group mw-button" style="">
+  <p>
+    <label for="res_discountCode">
+      <span ng-show="!(showDiscountCodeBox || booking.discountCode)" class="input-toggle" ng-click="showDiscountCodeBox = true">
+        <ng-md-icon icon="navigate_next"></ng-md-icon>
+        Voeg kortingscode toe
+      </span>
+      <span ng-show="(showDiscountCodeBox || booking.discountCode)">Kortingscode</span>
+    </label>
+  </p>
+  <div class="form-group mw-button" ng-show="(showDiscountCodeBox || booking.discountCode)">
     <input id="res_discountCode" type="text" ng-model="booking.discountCode" ng-change="validateDiscountCode()" md-select-on-focus
            ng-class="{
              'discount-code-success': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.success,
@@ -67,7 +83,7 @@
   </div>
 
   <!-- availability & price -->
-  <div class="form-group">
+  <div class="form-group" style="margin: 1.5em 0;">
     <div class="text-center" ng-if="price || isPriceLoading || availability || isAvailabilityLoading">
       <h4 ng-if="availability.available==='no'"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon> {{ 'NOT_AVAILABLE' | translate }}</h4>
       <h4 ng-if="availability.available==='yes'"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon> {{ 'AVAILABLE' | translate }}</h4>
@@ -100,8 +116,11 @@
 
   <div class="text-center">
     <p class="text-center">
-      <button class="btn btn-success mywheels-btn-big" ga-track-event="['booking', 'created_pre', user.isAuthenticated, null, true]" ng-disabled="discountCodeValidation.busy || discountCodeValidation.error || availability.available=='no' || loading.createBooking"
-        ng-click="createBooking(booking)">
+      <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action"
+              md-ink-ripple="#8f6700"
+              ga-track-event="['booking', 'created_pre', user.isAuthenticated, null, true]"
+              ng-disabled="discountCodeValidation.busy || discountCodeValidation.error || availability.available=='no' || loading.createBooking"
+              ng-click="createBooking(booking)">
         {{ 'CREATE_BOOKING' | translate }}
       </button>
     </p>
