@@ -14,11 +14,11 @@
 
     <!-- gratis kilometers, zelf tanken -->
     <div class="lines" ng-if="resource.refuelByRenter && resource.price.kmFree">
-      <div class="secondary-line">
+      <div class="secondary-line" ng-click="infoDialog('kilometerkosten')">
         <span class="free-km nowrap">{{ (showPricePerHour ? 'FREE_KM_HOUR' : 'FREE_KM_DAY') | translate }}</span>
         <span class="km-rate nowrap">+ <span class="price">{{ resource.price.kilometerRate | currency }}</span> per extra km</span>
       </div>
-      <div class="secondary-line">
+      <div class="secondary-line" ng-click="infoDialog('zelfTanken')">
         <ng-md-icon icon="local_gas_station"></ng-md-icon>
         <span class="fuel-info refuel-by-renter nowrap">zelf tanken</span>
       </div>
@@ -26,10 +26,10 @@
 
     <!-- geen gratis kilometers, zelf tanken -->
     <div class="lines" ng-if="resource.refuelByRenter && !resource.price.kmFree">
-      <div class="secondary-line">
+      <div class="secondary-line" ng-click="infoDialog('kilometerkosten')">
         <span class="nowrap"> + <span class="price">{{ resource.price.kilometerRate | currency }}</span> per km</span>
       </div>
-      <div class="secondary-line">
+      <div class="secondary-line" ng-click="infoDialog('zelfTanken')">
         <ng-md-icon icon="local_gas_station"></ng-md-icon>
         <span class="fuel-info refuel-by-renter nowrap">zelf tanken</span>
       </div>
@@ -37,11 +37,11 @@
 
     <!-- gratis kilometers, MAAR brandstofprijs per km -->
     <div class="lines" ng-if="!resource.refuelByRenter && resource.price.kmFree">
-      <div class="secondary-line">
+      <div class="secondary-line" ng-click="infoDialog('kilometerkosten')">
         <span class="free-km nowrap">{{ (showPricePerHour ? 'FREE_KM_HOUR' : 'FREE_KM_DAY') | translate }}</span>
         <span class="km-rate nowrap"> + <span class="price">{{ resource.price.kilometerRate | currency }}</span> per extra km</span>
       </div>
-      <div class="secondary-line">
+      <div class="secondary-line" ng-click="infoDialog('vasteBrandstofprijs')">
         <span>
           <span class="nowrap">
             <ng-md-icon icon="local_gas_station"></ng-md-icon>
@@ -54,10 +54,10 @@
 
     <!-- geen gratis kilometers, brandstofprijs per km -->
     <div class="lines" ng-if="!resource.refuelByRenter && !resource.price.kmFree">
-      <div class="secondary-line">
+      <div class="secondary-line" ng-click="infoDialog('kilometerkosten')">
         <span class="nowrap"> + <span class="price">{{ resource.price.kilometerRate | currency }}</span> per km</span>
       </div>
-      <div class="secondary-line">
+      <div class="secondary-line" ng-click="infoDialog('vasteBrandstofprijs')">
         <span>
           <span class="nowrap">
             <ng-md-icon icon="local_gas_station"></ng-md-icon>
