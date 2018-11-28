@@ -4,7 +4,7 @@ angular.module('oAuth2Callback', [])
 
 /*
   This route can be deprecated:
-   the static file at `/oauth2callback.html?successPath&errorPath`
+   the static file at `/assets/oauth2callback.html?successPath&errorPath`
    performs the same logic, without having to load up the entire app.
 */
 
