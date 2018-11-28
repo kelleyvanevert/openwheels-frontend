@@ -83,7 +83,7 @@
   </div>
 
   <!-- availability & price -->
-  <div class="form-group">
+  <div class="form-group" style="margin: 1.5em 0;">
     <div class="text-center" ng-if="price || isPriceLoading || availability || isAvailabilityLoading">
       <h4 ng-if="availability.available==='no'"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon> {{ 'NOT_AVAILABLE' | translate }}</h4>
       <h4 ng-if="availability.available==='yes'"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon> {{ 'AVAILABLE' | translate }}</h4>
