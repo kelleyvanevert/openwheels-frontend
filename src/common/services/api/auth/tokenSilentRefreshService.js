@@ -15,6 +15,8 @@ angular.module('tokenSilentRefreshService', [])
   this.silentRefresh = silentRefresh;
 
   function silentRefresh () {
+    return $q(function () {});
+    /*
     return $q(function (resolve, reject) {
       // we actually only need one iframe and message handler,
       //  but, for now, this is easier coding :)
@@ -38,6 +40,7 @@ angular.module('tokenSilentRefreshService', [])
       // kick-off
       $window.document.body.appendChild(iframe);
     });
+    */
   }
 
 });
