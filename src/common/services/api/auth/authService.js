@@ -4,7 +4,7 @@ angular.module('authService', [])
 
 .service('authService', function (
   $log, $q, $interval, $window, $state, $location, $rootScope,
-  appConfig, api, tokenService, alertService) {
+  appConfig, api, tokenService, alertService, authUrl) {
 
   var popupElm;
   var asyncToken;
@@ -80,8 +80,10 @@ angular.module('authService', [])
     isFirstAuthenticate = false;
   };
 
-  this.notifyFreshToken = function (freshToken) {
+  this.notifyFreshToken = function (freshToken, isFirstAuthenticateOverride) {
     var remaining;
+    isFirstAuthenticate = (isFirstAuthenticate || isFirstAuthenticateOverride) || false;
+
     if (asyncToken) {
       asyncToken.resolve(freshToken);
       asyncToken = null;
@@ -128,6 +130,9 @@ angular.module('authService', [])
   }
 
   function loginPopup(forceRedirect, successUrl) {
+    if (successUrl === undefined) {
+      successUrl = $state.href('owm.person.dashboard');
+    }
     if (forceRedirect === undefined) {
       forceRedirect = false;
     }
@@ -255,21 +260,6 @@ angular.module('authService', [])
   };
 
   // HELPERS
-
-  function authUrl(errorPath, successPath) {
-    var oAuth2CallbackUrl =
-      $window.location.protocol + '//' +
-      $window.location.host +
-      $state.href('oauth2callback') +
-      '?' +
-      (!successPath ? '' : '&successPath=' + encodeURIComponent(successPath)) +
-      (!errorPath ? '' : '&errorPath=' + encodeURIComponent(errorPath));
-
-    return appConfig.authEndpoint +
-      '?client_id=' + appConfig.appId +
-      '&response_type=' + 'token' +
-      '&redirect_uri=' + encodeURIComponent(oAuth2CallbackUrl);
-  }
 
   var closeTimer;
 

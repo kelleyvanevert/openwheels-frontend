@@ -23,18 +23,23 @@ angular.module('owm.pages', [
         controller: 'HomeController'
       }
     },
-    data: {
-      access: {
-        deny: {
-          authenticated: true
-        }
-      }
-    }
+    resolve: {
+      user: ['authService', function (authService) {
+        return authService.userPromise();
+      }],
+    },
+//    data: {
+//      access: {
+//        deny: {
+//          authenticated: true
+//        }
+//      }
+//    }
   })
 
   .state('owm-landing.mywheels-open', {
     parent: 'owm-landing',
-    url: '/mywheels-open',
+    url: '/open',
     views: {
       'main-full@shell': {
         templateUrl: 'pages/mywheels-open/mywheels-open.tpl.html',

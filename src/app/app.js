@@ -96,6 +96,7 @@ angular.module('openwheels', [
   'resourcePricingDirective',
   'invoiceEstimateDirective',
   'noUiSliderDirective',
+  'validPhoneNumberDirective',
 
   /* Filters */
   'filters.util',
@@ -136,6 +137,26 @@ angular.module('openwheels', [
 
 .constant('API_DATE_FORMAT', 'YYYY-MM-DD HH:mm')
 .constant('FRONT_DATE_FORMAT', 'dddd DD MMMM HH:mm')
+
+.provider('authUrl', function () {
+  this.$get = ['$window', 'appConfig', function ($window, appConfig) {
+    return function authUrl (errorPath, successPath) {
+      var oAuth2CallbackUrl =
+        $window.location.protocol + '//' +
+        $window.location.host +
+        //$state.href('oauth2callback') +
+        '/assets/oauth2callback.html' +
+        '?' +
+        (!successPath ? '' : '&successPath=' + encodeURIComponent(successPath)) +
+        (!errorPath ? '' : '&errorPath=' + encodeURIComponent(errorPath));
+
+      return appConfig.authEndpoint +
+        '?client_id=' + appConfig.appId +
+        '&response_type=' + 'token' +
+        '&redirect_uri=' + encodeURIComponent(oAuth2CallbackUrl);
+    };
+  }];
+})
 
 .config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
 

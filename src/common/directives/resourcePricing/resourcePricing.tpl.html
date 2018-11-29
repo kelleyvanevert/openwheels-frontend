@@ -12,60 +12,45 @@
   </div>
   <div class="secondary">
 
-    <!-- gratis kilometers, zelf tanken -->
-    <div class="lines" ng-if="resource.refuelByRenter && resource.price.kmFree">
-      <div class="secondary-line">
-        <span class="free-km nowrap">{{ (showPricePerHour ? 'FREE_KM_HOUR' : 'FREE_KM_DAY') | translate }}</span>
-        <span class="km-rate nowrap">+ <span class="price">{{ resource.price.kilometerRate | currency }}</span> per extra km</span>
-      </div>
-      <div class="secondary-line">
-        <ng-md-icon icon="local_gas_station"></ng-md-icon>
-        <span class="fuel-info refuel-by-renter nowrap">zelf tanken</span>
+    <!-- KILOMETERPRIJS -->
+
+    <!-- geen gratis kilometers -->
+    <div class="secondary-item" ng-click="infoDialog('kilometerkosten')" ng-if="!resource.price.kmFree">
+      <ng-md-icon icon="directions_car"></ng-md-icon>
+      <div class="lines">
+        <div class="line underline"><span class="price">{{ resource.price.kilometerRate | currency }}</span> per km</div>
       </div>
     </div>
 
-    <!-- geen gratis kilometers, zelf tanken -->
-    <div class="lines" ng-if="resource.refuelByRenter && !resource.price.kmFree">
-      <div class="secondary-line">
-        <span class="nowrap"> + <span class="price">{{ resource.price.kilometerRate | currency }}</span> per km</span>
-      </div>
-      <div class="secondary-line">
-        <ng-md-icon icon="local_gas_station"></ng-md-icon>
-        <span class="fuel-info refuel-by-renter nowrap">zelf tanken</span>
+    <!-- wel gratis kilometers -->
+    <div class="secondary-item" ng-click="infoDialog('kilometerkosten')" ng-if="resource.price.kmFree">
+      <ng-md-icon icon="directions_car"></ng-md-icon>
+      <div class="lines">
+        <div class="line"><span class="free-km">{{ (showPricePerHour ? 'FREE_KM_HOUR' : 'FREE_KM_DAY') | translate }}</span></div>
+        <div class="line"><span class="price">{{ resource.price.kilometerRate | currency }}</span> per extra km</div>
       </div>
     </div>
 
-    <!-- gratis kilometers, MAAR brandstofprijs per km -->
-    <div class="lines" ng-if="!resource.refuelByRenter && resource.price.kmFree">
-      <div class="secondary-line">
-        <span class="free-km nowrap">{{ (showPricePerHour ? 'FREE_KM_HOUR' : 'FREE_KM_DAY') | translate }}</span>
-        <span class="km-rate nowrap"> + <span class="price">{{ resource.price.kilometerRate | currency }}</span> per extra km</span>
-      </div>
-      <div class="secondary-line">
-        <span>
-          <span class="nowrap">
-            <ng-md-icon icon="local_gas_station"></ng-md-icon>
-            <span class="fuel-info incl-fuel">vaste brandstofprijs</span>
-          </span>
-          <span class="km-rate nowrap">van <span class="price">{{ resource.price.fuelPerKilometer | currency }}</span> per km</span>
-        </span>
+
+
+    <!-- BRANDSTOFBELEID -->
+
+    <!-- zelf tanken -->
+    <div class="secondary-item" ng-click="infoDialog('zelfTanken')" ng-if="resource.refuelByRenter">
+      <ng-md-icon icon="local_gas_station"></ng-md-icon>
+      <div class="lines">
+        <div class="line fuel-info refuel-by-renter">zelf tanken</div>
       </div>
     </div>
 
-    <!-- geen gratis kilometers, brandstofprijs per km -->
-    <div class="lines" ng-if="!resource.refuelByRenter && !resource.price.kmFree">
-      <div class="secondary-line">
-        <span class="nowrap"> + <span class="price">{{ resource.price.kilometerRate | currency }}</span> per km</span>
-      </div>
-      <div class="secondary-line">
-        <span>
-          <span class="nowrap">
-            <ng-md-icon icon="local_gas_station"></ng-md-icon>
-            <span class="fuel-info incl-fuel">vaste brandstofprijs</span>
-          </span>
-          <span class="km-rate nowrap">van <span class="price">{{ resource.price.fuelPerKilometer | currency }}</span> per km</span>
-        </span>
+    <!-- vaste prijs per km -->
+    <div class="secondary-item" ng-click="infoDialog('vasteBrandstofprijs')" ng-if="!resource.refuelByRenter">
+      <ng-md-icon icon="local_gas_station"></ng-md-icon>
+      <div class="lines">
+        <div class="line fuel-info incl-fuel">vaste brandstofprijs</div>
+        <div class="line km-rate">van <span class="price">{{ resource.price.fuelPerKilometer | currency }}</span> per km</div>
       </div>
     </div>
+
   </div>
 </div>

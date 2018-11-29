@@ -22,7 +22,7 @@
             <li ng-if="!user.isAuthenticated"><a href="https://mywheels.nl/auto-verhuren">{{ 'LIST_YOUR_CAR' | translate }}</a></li>
             <li ng-if="user.isAuthenticated"><a href="http://mywheels.nl/mijn-auto">{{ 'LIST_YOUR_CAR' | translate }}</a></li>
             <li><a href="https://mywheels.nl/autodelen/zakelijk-autodelen/">{{ 'BUSINESS' | translate }}</a></li>
-            <li><a href="http://open.mywheels.nl/">{{ 'MYWHEELS_OPEN_HEADLINE' | translate }}</a></li>
+            <li><a href="/open" ui-sref="owm-landing.mywheels-open">{{ 'MYWHEELS_OPEN_HEADLINE' | translate }}</a></li>
           </ul>
         </div>
       </div>
