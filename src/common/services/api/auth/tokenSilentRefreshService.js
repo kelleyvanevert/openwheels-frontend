@@ -19,7 +19,7 @@ angular.module('tokenSilentRefreshService', [])
       // we actually only need one iframe and message handler,
       //  but, for now, this is easier coding :)
 
-      var alreadyResolved = false;
+      var alreadyFinalized = false;
       
       var iframe = $window.document.createElement('iframe');
       iframe.style.display = 'none';
@@ -29,10 +29,11 @@ angular.module('tokenSilentRefreshService', [])
         try {
           var message = JSON.parse(e.data);
           if (message.name === 'oAuthToken') {
-            alreadyResolved = true;
+            alreadyFinalized = true;
             var token = tokenService.createToken(message.data).save();
             resolve(token);
           } else if (message.name === 'oAuthError') {
+            alreadyFinalized = true;
             reject();
           }
         } catch (e) {}
@@ -40,7 +41,7 @@ angular.module('tokenSilentRefreshService', [])
 
       if (rejectTimeout) {
         setTimeout(function () {
-          if (!alreadyResolved) {
+          if (!alreadyFinalized) {
             reject('timeout');
           }
         }, rejectTimeout);

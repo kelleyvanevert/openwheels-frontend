@@ -607,7 +607,7 @@ module.exports = function (grunt) {
 
   // deploy
   grunt.registerTask('dist-dev', ['initWithCacheBuster', 'build-common', 'ngconstant:development' , 'compile']);
-  grunt.registerTask('dist'    , ['initWithCacheBuster', 'build-common', 'ngconstant:development'  , 'compile']);
+  grunt.registerTask('dist'    , ['initWithCacheBuster', 'build-common', 'ngconstant:production'  , 'compile']);
 
   // manually test a "dist" build locally, with dev configuration
   grunt.registerTask('test-dist', [
@@ -629,7 +629,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('compile', [
-    'less:compile', 'copy:compileAssets', 'copy:compileBranding', 'copy:compileApp', 'ngmin', 'concat:compileJs', /*'uglify',*/ 'index:compile'
+    'less:compile', 'copy:compileAssets', 'copy:compileBranding', 'copy:compileApp', 'ngmin', 'concat:compileJs', 'uglify', 'index:compile'
   ]);
 
   grunt.registerMultiTask('index', 'Process index.html template', function () {
