@@ -39,6 +39,22 @@ angular.module('tokenSilentRefreshService', [])
         } catch (e) {}
       });
 
+      iframe.onload = function () {
+        try {
+          // This may trigger a security exception, at which point we
+          //  know that the iframe didn't redirect to our OAuth callback.
+          // (Probably it's the prompt)
+          var loc = this.contentWindow.location.href;
+
+          if (loc.indexOf('oauth2callback') < 0) {
+            throw 'did not reach our oauth2 callback';
+          }
+        } catch (e) {
+          alreadyFinalized = true;
+          reject();
+        }
+      };
+
       if (rejectTimeout) {
         setTimeout(function () {
           if (!alreadyFinalized) {
