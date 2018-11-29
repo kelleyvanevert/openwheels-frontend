@@ -46,6 +46,14 @@ angular.module('owm.resource.reservationForm', [])
   function resetToPreTimeframe () {
     $scope.availability = null;
     $scope.isAvailabilityLoading = false;
+    $scope.discountCodeValidation = {
+      timer: null,
+      submitted: false,
+      busy: false,
+      showSpinner: false,
+      success: false,
+      error: false
+    };
   }
   resetToPreTimeframe();
 
@@ -195,18 +203,10 @@ angular.module('owm.resource.reservationForm', [])
     //  in which we `notify: false` and then change the discountCode ourselves.
     //  (We know for sure this is the only change, so it doesn't hurt that much.)
     $localStorage.discountCode = $scope.booking.discountCode = '';
+    resetToPreTimeframe();
     $state.go('.', { discountCode: '' }, {
       notify: false,
     });
-  };
-
-  $scope.discountCodeValidation = {
-    timer: null,
-    submitted: false,
-    busy: false,
-    showSpinner: false,
-    success: false,
-    error: false
   };
 
   $scope.validateDiscountCode = validateDiscountCode;
@@ -221,7 +221,7 @@ angular.module('owm.resource.reservationForm', [])
     validation.success = false;
     validation.error = false;
 
-    if (!code || !$scope.person || !$scope.booking.contract.id) {
+    if (!code || !$scope.person || !$scope.booking.contract || !$scope.booking.contract.id) {
       return;
     }
 
