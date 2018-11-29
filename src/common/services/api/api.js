@@ -89,7 +89,7 @@ angular.module('api', [])
       return $q.reject('no token');
     }
 
-    return tokenSilentRefreshService.silentRefresh().then(function (freshToken) {
+    return tokenSilentRefreshService.silentRefresh(1000).then(function (freshToken) {
       var replayConfig = angular.copy(config);
       replayConfig.isReplay = true;
       replayConfig.headers[AUTH_HEADER] = createAuthHeader(freshToken);
