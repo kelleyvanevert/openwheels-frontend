@@ -14,18 +14,12 @@ angular.module('tokenSilentRefreshService', [])
 
   this.silentRefresh = silentRefresh;
 
-  function silentRefresh () {
-    return $q(function (resolve, reject) {
-      $log.log('rejecting silent refresh in 5s ...');
-      setTimeout(function () {
-        $log.log('rejecting silent refresh NOW');
-        reject();
-      }, 5000);
-    });
-    /*
+  function silentRefresh (rejectTimeout) {
     return $q(function (resolve, reject) {
       // we actually only need one iframe and message handler,
       //  but, for now, this is easier coding :)
+
+      var alreadyResolved = false;
       
       var iframe = $window.document.createElement('iframe');
       iframe.style.display = 'none';
@@ -35,6 +29,7 @@ angular.module('tokenSilentRefreshService', [])
         try {
           var message = JSON.parse(e.data);
           if (message.name === 'oAuthToken') {
+            alreadyResolved = true;
             var token = tokenService.createToken(message.data).save();
             resolve(token);
           } else if (message.name === 'oAuthError') {
@@ -43,10 +38,17 @@ angular.module('tokenSilentRefreshService', [])
         } catch (e) {}
       });
 
+      if (rejectTimeout) {
+        setTimeout(function () {
+          if (!alreadyResolved) {
+            reject('timeout');
+          }
+        }, rejectTimeout);
+      }
+
       // kick-off
       $window.document.body.appendChild(iframe);
     });
-    */
   }
 
 });

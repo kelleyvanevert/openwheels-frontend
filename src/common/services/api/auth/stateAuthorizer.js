@@ -38,7 +38,7 @@ angular.module('stateAuthorizer', [])
     if (savedToken) {
       if (savedToken.isExpired()) {
         $log.debug('saved token is expired');
-        tokenSilentRefreshService.silentRefresh().then(function (freshToken) {
+        tokenSilentRefreshService.silentRefresh(1000).then(function (freshToken) {
           $log.debug('authenticate using refreshed token');
           authService.notifyFreshToken(freshToken);
         })
