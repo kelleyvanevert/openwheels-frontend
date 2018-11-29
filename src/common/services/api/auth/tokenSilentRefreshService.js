@@ -10,14 +10,16 @@ angular.module('tokenSilentRefreshService', [])
    be introducing circularity, where the `api` module needs the `authService`..
 */
 
-.service('tokenSilentRefreshService', function ($window, $q, $state, appConfig, tokenService) {
+.service('tokenSilentRefreshService', function ($window, $q, $log, $state, appConfig, tokenService, authUrl) {
 
   this.silentRefresh = silentRefresh;
 
-  function silentRefresh () {
+  function silentRefresh (rejectTimeout) {
     return $q(function (resolve, reject) {
       // we actually only need one iframe and message handler,
       //  but, for now, this is easier coding :)
+
+      var alreadyFinalized = false;
       
       var iframe = $window.document.createElement('iframe');
       iframe.style.display = 'none';
@@ -27,33 +29,27 @@ angular.module('tokenSilentRefreshService', [])
         try {
           var message = JSON.parse(e.data);
           if (message.name === 'oAuthToken') {
+            alreadyFinalized = true;
             var token = tokenService.createToken(message.data).save();
             resolve(token);
           } else if (message.name === 'oAuthError') {
+            alreadyFinalized = true;
             reject();
           }
         } catch (e) {}
       });
 
+      if (rejectTimeout) {
+        setTimeout(function () {
+          if (!alreadyFinalized) {
+            reject('timeout');
+          }
+        }, rejectTimeout);
+      }
+
       // kick-off
       $window.document.body.appendChild(iframe);
     });
-  }
-
-  function authUrl(errorPath, successPath) {
-    var oAuth2CallbackUrl =
-      $window.location.protocol + '//' +
-      $window.location.host +
-      //$state.href('oauth2callback') +
-      '/assets/oauth2callback.html' +
-      '?' +
-      (!successPath ? '' : '&successPath=' + encodeURIComponent(successPath)) +
-      (!errorPath ? '' : '&errorPath=' + encodeURIComponent(errorPath));
-
-    return appConfig.authEndpoint +
-      '?client_id=' + appConfig.appId +
-      '&response_type=' + 'token' +
-      '&redirect_uri=' + encodeURIComponent(oAuth2CallbackUrl);
   }
 
 });
