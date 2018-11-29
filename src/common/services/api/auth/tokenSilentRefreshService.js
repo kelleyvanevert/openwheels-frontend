@@ -10,7 +10,7 @@ angular.module('tokenSilentRefreshService', [])
    be introducing circularity, where the `api` module needs the `authService`..
 */
 
-.service('tokenSilentRefreshService', function ($window, $q, $state, appConfig, tokenService) {
+.service('tokenSilentRefreshService', function ($window, $q, $state, appConfig, tokenService, authUrl) {
 
   this.silentRefresh = silentRefresh;
 
@@ -38,22 +38,6 @@ angular.module('tokenSilentRefreshService', [])
       // kick-off
       $window.document.body.appendChild(iframe);
     });
-  }
-
-  function authUrl(errorPath, successPath) {
-    var oAuth2CallbackUrl =
-      $window.location.protocol + '//' +
-      $window.location.host +
-      //$state.href('oauth2callback') +
-      '/assets/oauth2callback.html' +
-      '?' +
-      (!successPath ? '' : '&successPath=' + encodeURIComponent(successPath)) +
-      (!errorPath ? '' : '&errorPath=' + encodeURIComponent(errorPath));
-
-    return appConfig.authEndpoint +
-      '?client_id=' + appConfig.appId +
-      '&response_type=' + 'token' +
-      '&redirect_uri=' + encodeURIComponent(oAuth2CallbackUrl);
   }
 
 });
