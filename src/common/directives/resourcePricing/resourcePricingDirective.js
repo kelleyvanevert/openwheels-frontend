@@ -35,7 +35,7 @@ angular.module('resourcePricingDirective', [])
           clickOutsideToClose: true,
           hasBackdrop: true,
           controller: ['$scope', function ($scope) {
-            $scope.tankpas = false; // TODO [from new api field]
+            $scope.tankpas = resource.fuelCardCar;
             $scope.kmFree = resource.kmFree;
             $scope.price = resource.price;
             $scope.hide = function () {
