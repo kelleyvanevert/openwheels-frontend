@@ -130,6 +130,9 @@ angular.module('authService', [])
   }
 
   function loginPopup(forceRedirect, successUrl) {
+    if (successUrl === undefined) {
+      successUrl = $state.href('owm.person.dashboard');
+    }
     if (forceRedirect === undefined) {
       forceRedirect = false;
     }
