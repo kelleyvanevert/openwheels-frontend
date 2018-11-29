@@ -10,12 +10,18 @@ angular.module('tokenSilentRefreshService', [])
    be introducing circularity, where the `api` module needs the `authService`..
 */
 
-.service('tokenSilentRefreshService', function ($window, $q, $state, appConfig, tokenService, authUrl) {
+.service('tokenSilentRefreshService', function ($window, $q, $log, $state, appConfig, tokenService, authUrl) {
 
   this.silentRefresh = silentRefresh;
 
   function silentRefresh () {
-    return $q(function () {});
+    return $q(function (resolve, reject) {
+      $log.log('rejecting silent refresh in 5s ...');
+      setTimeout(function () {
+        $log.log('rejecting silent refresh NOW');
+        reject();
+      }, 5000);
+    });
     /*
     return $q(function (resolve, reject) {
       // we actually only need one iframe and message handler,
