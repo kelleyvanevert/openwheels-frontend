@@ -1,7 +1,8 @@
 <section class="homepage-searchbar"> 
 
   <form class="mywheels-form searchbar searchbar--no-opacity">
-    <div class="icon location searchbar searchbar--no-opacity">
+    <div class="form-group mw-icon searchbar searchbar--no-opacity">
+      <ng-md-icon icon="location_on" aria-hidden="true"></ng-md-icon>
       <input type="text" g-places-autocomplete options="options" force-selection="true" ng-model="search.text" class="form-control" placeholder="Waar wil je huren?" style="font-weight: normal;" />
       <div class="clearbutton__flex" ng-show="search.text">
         <md-button class="md-icon-button geo-button" style="width:24px !important;" ng-click="search.text = ''" ga-track-event="['interaction', 'removeLocation', 'searchbar']">
