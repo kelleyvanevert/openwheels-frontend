@@ -1,0 +1,15 @@
+
+<md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="30" flex-xl="25"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3>
+      <ng-md-icon icon="directions_car" size="28"></ng-md-icon>
+      Kilometerprijs
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+    <p>Je betaalt per gereden kilometer {{ price.kilometerRate | currency }}. Hiermee worden de gebruikskosten van de auto gedekt, denk aan slijtage en onderhoud.</p>
+    <p ng-if="kmFree">Bij deze auto krijg je voor elk uur de eerste 10 kilometer gratis, tot een maximum van 100 kilometer per etmaal.</p>
+  </md-dialog-content>
+</md-dialog>

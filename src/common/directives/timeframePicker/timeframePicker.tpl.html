@@ -1,0 +1,71 @@
+<div>
+  <ng-form name="form" class="mywheels-form mw-timeframe-picker">
+    <p>
+      <label for="pickupDate">Ophalen</label>
+      <button id="resource_now_button" type="button" class="btn btn-success btn-xs" ng-click="setPickupNow()">{{ 'NOW' | translate }}</button>
+    </p>
+
+    <div style="display: flex;">
+      <div class="form-group mw-datepicker mw-icon" style="width: 55%;"
+          bootstrap-date-time-picker="dateConfig"
+          mobile="mobile"
+          dtp-broadcast-accept="pickupDateAccepted"
+          scroll-to-closest="(mobileAutoscroll ? '.mw-timeframe-picker' : false)">
+        <ng-md-icon aria-hidden="true" icon="today"></ng-md-icon>
+        <input type="text" autocomplete="off" name="pickupDate" id="pickupDate" placeholder="Datum" required
+               ng-model="pickupDate"
+               ng-change="checkTimeframe('pickup', $event)"
+               ng-keydown="$event.keyCode == 13 ? $broadcast('pickupDateAccepted') : null" />
+        <div ng-if="mobile" class="mobile-mask"></div>
+      </div>
+      <div class="form-group mw-timepicker mw-icon" style="width: 45%; margin-left: 1em;"
+          mobile="mobile"
+          bootstrap-date-time-picker="timeConfig"
+          scroll-to-closest="(mobileAutoscroll ? '.mw-timeframe-picker' : false)"
+          dtp-autoshow="pickupDateAccepted">
+        <ng-md-icon aria-hidden="true" icon="schedule"></ng-md-icon>
+        <input type="text" autocomplete="off" name="pickupTime" id="pickupTime" placeholder="Tijd" required
+               ng-model="pickupTime"
+               ng-change="checkTimeframe('pickup', $event)"
+               ng-keydown="$event.keyCode == 13 ? true : null" />
+        <div ng-if="mobile" class="mobile-mask"></div>
+      </div>
+    </div>
+
+    <p>
+      <label for="returnDate">Terugbrengen</label>
+      <span ng-if="showExtendButtons">
+        <button type="button" class="btn btn-default btn-xs" ng-click="extendReturnBy(1)">{{ 'PLUS_1_HOUR' | translate }}</button>
+        <button type="button" class="btn btn-default btn-xs" ng-click="extendReturnBy(2)">{{ 'PLUS_2_HOUR' | translate }}</button>
+        <button type="button" class="btn btn-default btn-xs" ng-click="extendReturnBy(4)">{{ 'PLUS_4_HOUR' | translate }}</button>
+      </span>
+    </p>
+
+    <div style="display: flex;">
+      <div class="form-group mw-datepicker mw-icon" style="width: 55%;"
+          bootstrap-date-time-picker="dateConfig"
+          mobile="mobile"
+          dtp-broadcast-accept="returnDateAccepted"
+          scroll-to-closest="(mobileAutoscroll ? '.mw-timeframe-picker' : false)">
+        <ng-md-icon aria-hidden="true" icon="today"></ng-md-icon>
+        <input type="text" autocomplete="off" name="returnDate" id="returnDate" placeholder="Datum" required
+               ng-model="returnDate"
+               ng-change="checkTimeframe('return', $event)"
+               ng-keydown="$event.keyCode == 13 ? $broadcast('returnDateAccepted') : null" />
+        <div ng-if="mobile" class="mobile-mask"></div>
+      </div>
+      <div class="form-group mw-timepicker mw-icon" style="width: 45%; margin-left: 1em;"
+          mobile="mobile"
+          bootstrap-date-time-picker="timeConfig"
+          scroll-to-closest="(mobileAutoscroll ? '.mw-timeframe-picker' : false)"
+          dtp-autoshow="returnDateAccepted">
+        <ng-md-icon aria-hidden="true" icon="schedule"></ng-md-icon>
+        <input type="text" autocomplete="off" name="returnTime" id="returnTime" placeholder="Tijd" required
+               ng-model="returnTime"
+               ng-change="checkTimeframe('return', $event)"
+               ng-keydown="$event.keyCode == 13 ? true : null" />
+        <div ng-if="mobile" class="mobile-mask"></div>
+      </div>
+    </div>
+  </ng-form>
+</div>

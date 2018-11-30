@@ -60,14 +60,14 @@
       </div>
 
         <!-- call to action buttons -->
-        <div class="details--card--form__navigation-buttons" ng-if="ownerflow">
-            <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ui-sref="owm.resource.create.carInfo">
-                <md-icon>navigate_before</md-icon>
+        <div class="nav-buttons" ng-if="ownerflow">
+            <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#ded8d8" ui-sref="owm.resource.create.carInfo">
+                <ng-md-icon icon="navigate_before"></ng-md-icon>
                 {{ 'PREVIOUS' | translate}}
             </button>
-            <button type="submit" name="button" ng-click="submit()" class="mywheels-btn mywheels-btn-default btn--navigation__next">
+            <button type="submit" name="button" ng-click="submit()" class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action">
                 {{ 'NEXT' | translate }}
-                <md-icon class="text-white">navigate_next</md-icon>
+                <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
             </button>
         </div>
         <!-- /call to action buttons -->

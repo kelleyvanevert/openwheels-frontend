@@ -16,12 +16,20 @@ angular.module('owm.resource.show', [])
     resource.removed = false;
   }
 
+  // The car is not visible to the world,
+  //  either because it is removed by owner (removed),
+  //  or because it is set inactive by MyWheels (!isActive).
   $scope.removed = (resource.removed || !resource.isActive);
+
+  // Still visible to the world, but not rentable,
+  //  because the car is (temporarily) marked as unavailable by the owner.
+  $scope.unavailable = (resource.isAvailableFriends === false);
 
   if($scope.removed) {
     resourceQueryService.setText(resource.location);
     resourceQueryService.setLocation({latitude: resource.latitude, longitude: resource.longitude});
   }
+
   /**
    * Warning: 'me' will be null for anonymous users
    */
@@ -95,40 +103,40 @@ angular.module('owm.resource.show', [])
     chatPopupService.openPopup(otherPersonName, otherPerson.id, resource.id, null);
   }
 
-  function openSignupDialog () {
-    $scope.resource = resource;
-
-    $mdDialog.show({
-      fullscreen: $mdMedia('xs'),
-      preserveScope: true,
-      locals: {
-        resource: $scope.resource
-      },
-      templateUrl: 'resource/components/ReservationFormDialog.tpl.html',
-      parent: angular.element(document.body),
-      clickOutsideToClose:true,
-      controller: ['$scope', '$mdDialog', 'authService', 'resource', function($scope, $mdDialog, authService, resource) {
-        $scope.resource = resource;
-        $scope.url = 'owm.resource.show';
-
-        $scope.hide = function () {
-          $mdDialog.hide();
-        };
-        $scope.cancel = function () {
-          $mdDialog.cancel();
-        };
-
-      }],
-    });
-  }
-
-  if(!authService.user.isAuthenticated && !$localStorage.signupAlert) {
-    $localStorage.signupAlert = true;
-
-    $timeout(function () {
-      openSignupDialog($scope.resource);
-    }, 2500);
-  }
+//  function openSignupDialog () {
+//    $scope.resource = resource;
+//
+//    $mdDialog.show({
+//      fullscreen: $mdMedia('xs'),
+//      preserveScope: true,
+//      locals: {
+//        resource: $scope.resource
+//      },
+//      templateUrl: 'resource/components/ReservationFormDialog.tpl.html',
+//      parent: angular.element(document.body),
+//      clickOutsideToClose:true,
+//      controller: ['$scope', '$mdDialog', 'authService', 'resource', function($scope, $mdDialog, authService, resource) {
+//        $scope.resource = resource;
+//        $scope.url = 'owm.resource.show';
+//
+//        $scope.hide = function () {
+//          $mdDialog.hide();
+//        };
+//        $scope.cancel = function () {
+//          $mdDialog.cancel();
+//        };
+//
+//      }],
+//    });
+//  }
+//
+//  if(!authService.user.isAuthenticated && !$localStorage.signupAlert) {
+//    $localStorage.signupAlert = true;
+//
+//    $timeout(function () {
+//      openSignupDialog($scope.resource);
+//    }, 2500);
+//  }
 
   function openCommentDialog (rating, $event) {
     $scope.rating = rating;
@@ -240,25 +248,6 @@ angular.module('owm.resource.show', [])
       dfd.resolve(false);
     });
   }
-
-  $scope.checkAvailabilityDialog = function () {
-    $scope.openDialogSpinner = true;
-    $mdDialog.show({
-      autoWrap: false,
-      templateUrl: 'resource/show/checkAvailabilityDialog.tpl.html',
-      controller: ['$scope', '$mdDialog', function($scope, $mdDialog) {
-        $scope.openDialogSpinner = false;
-        $scope.hide = function() {
-          $mdDialog.hide();
-        };
-      }],
-      scope: $scope,
-      preserveScope: true,
-      fullscreen: $mdMedia('xs'),
-      clickOutsideToClose: true,
-      escapeToClose: true
-    });
-  };
 
   function toggleFavorite (bool) {
     var params = { resource: resource.id };

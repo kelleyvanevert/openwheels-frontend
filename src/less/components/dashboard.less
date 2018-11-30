@@ -77,9 +77,9 @@ span.action-button:last-child a.btn {
     right: 0;
 
     & form {
-      max-width: 100%;
-      padding-left: 16px;
-        padding-right: 16px;
+        max-width: ~"calc(100% - 32px)";
+        margin-left: 16px;
+        margin-right: 16px;
     }
 }
 
@@ -161,7 +161,8 @@ span.action-button:last-child a.btn {
         width: 100%;
         padding:0px;
     }
-    md-icon {
+    md-icon,
+    ng-md-icon {
         margin-left: 6px;
         float: left;
         margin-right: 16px;
@@ -226,7 +227,8 @@ span.action-button:last-child a.btn {
 }
 @media only screen and (max-width: 374px) {
     .bookingDate {
-        md-icon {
+        md-icon,
+        ng-md-icon {
             display: none;
         }
     }

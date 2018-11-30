@@ -15,16 +15,18 @@ angular.module('resourceSidebarDirective', [])
         resourceId = $stateParams.resourceId,
         discountCode = $stateParams.discountCode;
 
-      $scope.startDate = moment($stateParams.startDate).format(FRONT_DATE_FORMAT);
-      $scope.endDate = moment($stateParams.endDate).format(FRONT_DATE_FORMAT);
+      $scope.timeframe = {
+        pickup: moment($stateParams.startDate),
+        return: moment($stateParams.endDate),
+      };
 
       $scope.resource = {};
       resourceService.get({
-          'resource': resourceId
-        })
-        .then(function (res) {
-          $scope.resource = res;
-        });
+        'resource': resourceId
+      })
+      .then(function (res) {
+        $scope.resource = res;
+      });
     }
   };
 });

@@ -81,37 +81,41 @@
             <div class="card" ng-if="!features.resourceSidebar || !isWindowSizeMD" id ="priceBookingContainer">
                 <div class="card-body">
                     <!-- price -->
-                    <div ng-include="'resource/partials/resource-price.tpl.html'"></div>
+                    <!--<div ng-include="'resource/partials/resource-price.tpl.html'"></div>-->
+                    <div class="escape-card-padding">
+                        <resource-pricing resource="resource"></resource-pricing>
+                    </div>
+
+                    <!-- unavailability notice -->
+                    <div ng-if="unavailable" ng-include="'resource/partials/resource-unavailable.tpl.html'"></div>
 
                     <!-- booking form -->
-                    <div class="text-center" ng-if="showBookingFormToggle">
-                        <p>
-                            <button ng-if="!me"  class="btn btn-success mywheels-btn-big" ng-click="toggleBookingForm()">
-                                {{ 'BOOK_A_CAR' | translate }}
-                            </button>
-                            <button ng-if="me"  class="btn btn-success mywheels-btn-big" ng-click="toggleBookingForm()">
-                                {{ 'BOOK_A_CAR' | translate }}
-                            </button>
-                        </p>
-                        <p>
-                            <a class="btn btn-link" ui-sref="owm.resource.calendar({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
-                                <i class="fa fa-calendar"></i> {{ 'CALENDAR_BUTTON' | translate }}
-                            </a>
-                        </p>
-                    </div>
-                    <div id="createBookingContainer" uib-collapse="!showBookingForm">
-                        <reservation-form person="me" resource="resource" booking="booking" show-price="false"></reservation-form>
-                    </div>
-                    <!--/ booking form -->
+                    <div ng-if="!unavailable">
+                        <div class="text-center" ng-if="showBookingFormToggle">
+                            <p>
+                                <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" ng-click="toggleBookingForm()">
+                                    {{ 'BOOK_A_CAR' | translate }}
+                                </button>
+                            </p>
+                            <p>
+                                <a class="btn btn-link" ui-sref="owm.resource.calendar({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
+                                    <i class="fa fa-calendar"></i> {{ 'CALENDAR_BUTTON' | translate }}
+                                </a>
+                            </p>
+                        </div>
+                        <div id="createBookingContainer" uib-collapse="!showBookingForm">
+                            <reservation-form person="me" resource="resource" booking="booking"></reservation-form>
+                        </div>
+                        <!--/ booking form -->
 
-                    <div class="text-center">
-                        <p>
-                            <a class="btn btn-link btn-sm" ng-show="showBookingForm" ng-click="toggleBookingForm()">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                        </p>
+                        <div class="text-center">
+                            <p>
+                                <a class="btn btn-link btn-sm" ng-show="showBookingForm" ng-click="toggleBookingForm()">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </p>
+                        </div>
                     </div>
-
                 </div>
             </div>
 
@@ -156,19 +160,19 @@
                         <div flex="50" flex-xs="100">
                             <md-list style="padding: 0px;">
                               <md-list-item ng-if="resource.locktypes.indexOf('chipcard') >= 0 && resource.locktypes.indexOf('smartphone') < 0">
-                                <md-icon alt="Icoon" aria-label="Icoon" class="text-success list-margin">vpn_key</md-icon>
+                                <ng-md-icon icon="vpn_key" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
                                 <span>Openen met je <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-ik-een-auto-met-mijn-chipkaart/">chipkaart</a></span>
                               </md-list-item>
                               <md-list-item ng-if="resource.locktypes.indexOf('chipcard') < 0 && resource.locktypes.indexOf('smartphone') >= 0">
-                                <md-icon alt="Icoon" aria-label="Icoon" class="text-success list-margin">vpn_key</md-icon>
+                                <ng-md-icon icon="vpn_key" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
                                 <span>Openen met je <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-auto-smartphone/">smartphone</a></span>
                               </md-list-item>
                               <md-list-item ng-if="resource.locktypes.indexOf('chipcard') >= 0 && resource.locktypes.indexOf('smartphone') >= 0">
-                                <md-icon alt="Icoon" aria-label="Icoon" class="text-success list-margin">vpn_key</md-icon>
+                                <ng-md-icon icon="vpn_key" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
                                 <span>Openen met je <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-auto-smartphone/">smartphone</a> & <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-ik-een-auto-met-mijn-chipkaart/">chipkaart</a></span>
                               </md-list-item>
                               <md-list-item>
-                                <md-icon alt="Icoon" aria-label="Icoon" class="text-success list-margin">date_range</md-icon>
+                                <ng-md-icon icon="date_range" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
                                 <span>24 uur per dag te huur</span>
                               </md-list-item>
                             </md-list>
@@ -176,11 +180,11 @@
                         <div flex="50" flex-xs="100">
                             <md-list style="padding: 0px;">
                               <md-list-item>
-                                <md-icon alt="Icoon" aria-label="Icoon" class="text-success list-margin">access_time</md-icon>
+                                <ng-md-icon icon="access_time" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
                                 <span>Direct geaccepteerd</span>
                               </md-list-item>
                               <md-list-item>
-                                <md-icon alt="Icoon" aria-label="Icoon" class="text-success list-margin">mode_edit</md-icon>
+                                <ng-md-icon icon="mode_edit" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
                                 <span>Automatische kilometerregistratie</span>
                               </md-list-item>
                             </md-list>
@@ -242,11 +246,11 @@
                         <div flex="100" layout-gt-xs="row" class="specificRow">
                             <div flex-xs="100" flex="50" layout="row" class="item smoking">
                                 <div flex="50" class="title">{{ 'SMOKING' | translate }}</div>
-                                <div flex="50" class="info"><md-icon alt="Icoon" aria-label="Icoon" class="text-danger">close</md-icon></div>
+                                <div flex="50" class="info"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
                             </div>
                             <div flex-xs="100" flex="50" layout="row" class="item pets">
                                 <div flex="50" class="title">{{ 'PETS' | translate }}</div>
-                                <div flex="50" class="info"><md-icon alt="Icoon" aria-label="Icoon" class="text-danger">close</md-icon></div>
+                                <div flex="50" class="info"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
                             </div>
                         </div>
                     </div>
@@ -258,49 +262,49 @@
                         <div flex="100" layout-gt-xs="row" class="specificRow">
                             <div flex-xs="100" flex="50" layout="row" class="item airconditioning">
                                 <div flex="50" class="title">{{ 'ACCESSORIES.AIRCONDITIONING' | translate }}</div>
-                                <div flex="50" class="info" ng-if="airconditioning >= 0"><md-icon alt="Icoon" aria-label="Icoon" class="text-success">check</md-icon></div>
-                                <div flex="50" class="info" ng-if="airconditioning < 0"><md-icon alt="Icoon" aria-label="Icoon" class="text-danger">close</md-icon></div>
+                                <div flex="50" class="info" ng-if="airconditioning >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
+                                <div flex="50" class="info" ng-if="airconditioning < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
                             </div>
                             <div flex-xs="100" flex="50" layout="row" class="item bike_carrier">
                                 <div flex="50" class="title">{{ 'ACCESSORIES.BIKE_CARRIER' | translate }}</div>
-                                <div flex="50" class="info" ng-if="bikeCarrier >= 0"><md-icon alt="Icoon" aria-label="Icoon" class="text-success">check</md-icon></div>
-                                <div flex="50" class="info" ng-if="bikeCarrier < 0"><md-icon alt="Icoon" aria-label="Icoon" class="text-danger">close</md-icon></div>
+                                <div flex="50" class="info" ng-if="bikeCarrier >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
+                                <div flex="50" class="info" ng-if="bikeCarrier < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
                             </div>
                         </div>
                         <div flex="100" layout-gt-xs="row" class="specificRow">
                             <div flex-xs="100" flex="50" layout="row" class="item child_seat">
                                 <div flex="50" class="title">{{ 'ACCESSORIES.CHILD_SEAT' | translate }}</div>
-                                <div flex="50" class="info" ng-if="childSeat >= 0"><md-icon alt="Icoon" aria-label="Icoon" class="text-success">check</md-icon></div>
-                                <div flex="50" class="info" ng-if="childSeat < 0"><md-icon alt="Icoon" aria-label="Icoon" class="text-danger">close</md-icon></div>
+                                <div flex="50" class="info" ng-if="childSeat >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
+                                <div flex="50" class="info" ng-if="childSeat < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
                             </div>
                             <div flex-xs="100" flex="50" layout="row" class="item mp3_connection">
                                 <div flex="50" class="title">{{ 'ACCESSORIES.MP3_CONNECTION' | translate }}</div>
-                                <div flex="50" class="info" ng-if="mp3Connection >= 0"><md-icon alt="Icoon" aria-label="Icoon" class="text-success">check</md-icon></div>
-                                <div flex="50" class="info" ng-if="mp3Connection < 0"><md-icon alt="Icoon" aria-label="Icoon" class="text-danger">close</md-icon></div>
+                                <div flex="50" class="info" ng-if="mp3Connection >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
+                                <div flex="50" class="info" ng-if="mp3Connection < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
                             </div>
                         </div>
                         <div flex="100" layout-gt-xs="row" class="specificRow">
                             <div flex-xs="100" flex="50" layout="row" class="item navigation">
                                 <div flex="50" class="title">{{ 'ACCESSORIES.NAVIGATION' | translate }}</div>
-                                <div flex="50" class="info" ng-if="navigation >= 0"><md-icon alt="Icoon" aria-label="Icoon" class="text-success">check</md-icon></div>
-                                <div flex="50" class="info" ng-if="navigation < 0"><md-icon alt="Icoon" aria-label="Icoon" class="text-danger">close</md-icon></div>
+                                <div flex="50" class="info" ng-if="navigation >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
+                                <div flex="50" class="info" ng-if="navigation < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
                             </div>
                             <div flex-xs="100" flex="50" layout="row" class="item wheelchair_friendly">
                                 <div flex="50" class="title">{{ 'ACCESSORIES.WHEELCHAIR_FRIENDLY' | translate }}</div>
-                                <div flex="50" class="info" ng-if="wheelchairFriendly >= 0"><md-icon alt="Icoon" aria-label="Icoon" class="text-success">check</md-icon></div>
-                                <div flex="50" class="info" ng-if="wheelchairFriendly < 0"><md-icon alt="Icoon" aria-label="Icoon" class="text-danger">close</md-icon></div>
+                                <div flex="50" class="info" ng-if="wheelchairFriendly >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
+                                <div flex="50" class="info" ng-if="wheelchairFriendly < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
                             </div>
                         </div>
                         <div flex="100" layout-gt-xs="row" class="specificRow">
                             <div flex-xs="100" flex="50" layout="row" class="item towbar">
                                 <div flex="50" class="title">{{ 'ACCESSORIES.TOW_BAR' | translate }}</div>
-                                <div flex="50" class="info" ng-if="towbar >= 0"><md-icon alt="Icoon" aria-label="Icoon" class="text-success">check</md-icon></div>
-                                <div flex="50" class="info" ng-if="towbar < 0"><md-icon alt="Icoon" aria-label="Icoon" class="text-danger">close</md-icon></div>
+                                <div flex="50" class="info" ng-if="towbar >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
+                                <div flex="50" class="info" ng-if="towbar < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
                             </div>
                             <div flex-xs="100" flex="50" layout="row" class="item winter_tires">
                                 <div flex="50" class="title">{{ 'ACCESSORIES.WINTER_TIRES' | translate }}</div>
-                                <div flex="50" class="info" ng-if="winterTires >= 0"><md-icon alt="Icoon" aria-label="Icoon" class="text-success">check</md-icon></div>
-                                <div flex="50" class="info" ng-if="winterTires < 0"><md-icon alt="Icoon" aria-label="Icoon" class="text-danger">close</md-icon></div>
+                                <div flex="50" class="info" ng-if="winterTires >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
+                                <div flex="50" class="info" ng-if="winterTires < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
                             </div>
                         </div>
                     </div>
@@ -424,11 +428,13 @@
         <!-- resource sidebar -->
         <div ng-if="features.resourceSidebar && isWindowSizeMD" class="col-md-4 hidden-xs hidden-sm">
             <div class="card">
-                <div class="card-heading">
-                    <h3 class="card-title"><i class="fa fa-fw fa-pencil"></i> {{ 'BOOK_A_CAR' | translate }}</h3>
-                </div>
                 <div class="card-body">
-                    <reservation-form person="me" resource="resource" booking="booking" show-price="true"></reservation-form>
+                    <!--<div ng-include="'resource/partials/resource-price.tpl.html'"></div>-->
+                    <div class="escape-card-padding">
+                        <resource-pricing resource="resource"></resource-pricing>
+                    </div>
+                    <div ng-if="unavailable" ng-include="'resource/partials/resource-unavailable.tpl.html'"></div>
+                    <reservation-form ng-if="!unavailable" person="me" resource="resource" booking="booking"></reservation-form>
                 </div>
             </div>
 

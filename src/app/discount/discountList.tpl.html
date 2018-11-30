@@ -13,7 +13,7 @@
 <div layout="row" style="padding-top: 1px; padding-bottom: 14px" ng-if="ctrl.selectedRange === ctrl.ranges.custom">
   <md-datepicker ng-model="ctrl.ranges.custom.start" md-placeholder="Geldig vanaf" ng-change="loadDiscounts()"></md-datepicker>
   <md-datepicker ng-model="ctrl.ranges.custom.end" md-placeholder="t/m" ng-change="loadDiscounts()"></md-datepicker>
-  <md-button class="md-icon-button" ng-click="ctrl.selectedRange = ctrl.ranges.now; loadDiscounts()"><md-icon>close</md-icon></md-button>
+  <md-button class="md-icon-button" ng-click="ctrl.selectedRange = ctrl.ranges.now; loadDiscounts()"><ng-md-icon icon="close"></ng-md-icon></md-button>
 </div>
 
 <table class="table">
@@ -35,8 +35,8 @@
     </td>
     <td hide-xs>{{ discount.validFrom | amDateFormat:'DD-MM-YY' }}</td>
     <td hide-xs>{{ discount.validUntil | amDateFormat:'DD-MM-YY' }}</td>
-    <td class="text-right"><a href="" ng-click="discountDetails(discount)"><md-icon>info outline</md-icon></a></td>
-    <td class="text-right"><a href="" ng-click="disableDiscount(discount)"><md-icon>delete</md-icon></a></td>
+    <td class="text-right"><a href="" ng-click="discountDetails(discount)"><ng-md-icon icon="info_outline"></ng-md-icon></a></td>
+    <td class="text-right"><a href="" ng-click="disableDiscount(discount)"><ng-md-icon icon="delete"></ng-md-icon></a></td>
   </tr>
 </table>
 

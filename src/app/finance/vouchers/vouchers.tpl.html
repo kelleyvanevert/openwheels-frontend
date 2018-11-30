@@ -20,7 +20,7 @@
     <div class="card-heading">
       <span class="pull-right" ng-if="booking.isOpen">
         <small hide-xs style="padding-left: 1em" ng-if="booking.cancelAfter && booking.approved !== 'OK'">Betaal voor {{booking.cancelAfter|amDateFormat:'D MMMM YYYY HH:mm'}} om annulering te voorkomen</small>
-        <md-icon ng-show="booking.statusValue" ng-class="{'text-success': booking.statusValue}">check</md-icon>
+        <ng-md-icon icon="check" ng-show="booking.statusValue" ng-class="{'text-success': booking.statusValue}"></ng-md-icon>
         <b ng-class="{'text-success': booking.statusValue}" ng-if="booking.details.discount">{{ booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount | currency }}</b>
         <b ng-class="{'text-success': booking.statusValue}" ng-if="!booking.details.discount">{{ booking.details.booking_price.total + booking.details.km_price - booking.details.friend_invite_discount | currency }}</b>
       </span>
@@ -148,7 +148,7 @@
 <div class="card" ng-if="!busy && requiredValue && (accountDisapproved && !accountApproved && accounts.length === 1)">
     <div class="card-body">
         <h2 class="card-title">
-        <md-icon class="text-danger">error</md-icon>
+        <ng-md-icon icon="error" class="text-danger"></ng-md-icon>
         {{ 'PAYMENT_NOT_APROVED_TITLE' | translate }}
       </h2>
         <p translate="PAYMENT_NOT_APROVED_BODY" translate-values="{name: name, surname: person.surname}"></p>
@@ -164,7 +164,7 @@
 <div class="card" ng-if="!busy && requiredValue && (accountDisapproved && !accountApproved && accounts.length > 1)">
     <div class="card-body">
         <h2 class="card-title">
-        <md-icon class="text-danger">error</md-icon>
+        <ng-md-icon icon="error" class="text-danger"></ng-md-icon>
         {{ 'PAYMENT_NOT_APROVED_TITLE' | translate }}
       </h2>
         <p translate="PAYMENT_NOT_APROVED_SECOND_BODY" translate-values="{name: name, surname: person.surname}"></p>

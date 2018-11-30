@@ -24,7 +24,7 @@
           <span class="review">{{ rating.review}}</span>
           <br>
           <button ng-if="me && (resource.owner.id === me.id || resource.contactPerson.id === me.id) && !rating.comment" type="button" class="btn btn-link addComment" ng-click="openCommentDialog(rating)">
-            <md-icon>edit</md-icon> Reageer op beoordeling
+            <ng-md-icon icon="edit"></ng-md-icon> Reageer op beoordeling
           </button>
         </div>
       </div>

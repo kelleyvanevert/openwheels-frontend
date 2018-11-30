@@ -4,7 +4,7 @@ angular.module('authService', [])
 
 .service('authService', function (
   $log, $q, $interval, $window, $state, $location, $rootScope,
-  appConfig, api, tokenService, alertService) {
+  appConfig, api, tokenService, alertService, authUrl) {
 
   var popupElm;
   var asyncToken;
@@ -80,8 +80,10 @@ angular.module('authService', [])
     isFirstAuthenticate = false;
   };
 
-  this.notifyFreshToken = function (freshToken) {
+  this.notifyFreshToken = function (freshToken, isFirstAuthenticateOverride) {
     var remaining;
+    isFirstAuthenticate = (isFirstAuthenticate || isFirstAuthenticateOverride) || false;
+
     if (asyncToken) {
       asyncToken.resolve(freshToken);
       asyncToken = null;
@@ -95,7 +97,7 @@ angular.module('authService', [])
       } else {
         $log.debug('token has invalid expiry date, assume not expired');
       }
-      loadIdentity();
+      loadIdentity(asyncUser);
       isFirstAuthenticate = false;
     }
   };
@@ -110,13 +112,12 @@ angular.module('authService', [])
   // ! Use only in direct response to user interaction, may trigger login popup
   function authenticatedUser(forceReload) {
     if (forceReload) {
-      // reject pending
-      if (asyncUser) {
-        asyncUser.reject('forced reload');
-      }
+//      // reject pending
+//      if (asyncUser) {
+//        asyncUser.reject('forced reload');
+//      }
       // create new
-      asyncUser = $q.defer();
-      loadIdentity();
+      asyncUser = loadIdentity($q.defer());
     }
     if (!user.isAuthenticated && !user.isPending) {
       return loginPopup().catch(function (err) {
@@ -129,6 +130,9 @@ angular.module('authService', [])
   }
 
   function loginPopup(forceRedirect, successUrl) {
+    if (successUrl === undefined) {
+      successUrl = $state.href('owm.person.dashboard');
+    }
     if (forceRedirect === undefined) {
       forceRedirect = false;
     }
@@ -164,7 +168,7 @@ angular.module('authService', [])
     $window.location.href = url;
   }
 
-  function loadIdentity() {
+  function loadIdentity(asyncUser) {
     $log.debug('--> ' + (user.identity ? 're-' : '') + 'load identity');
     user.isPending = true;
     api.invokeRpcMethod('person.me', {
@@ -188,6 +192,8 @@ angular.module('authService', [])
           asyncUser.reject(err);
         }
       });
+
+    return asyncUser;
   }
 
   // server side / platform logout
@@ -254,21 +260,6 @@ angular.module('authService', [])
   };
 
   // HELPERS
-
-  function authUrl(errorPath, successPath) {
-    var oAuth2CallbackUrl =
-      $window.location.protocol + '//' +
-      $window.location.host +
-      $state.href('oauth2callback') +
-      '?' +
-      (!successPath ? '' : '&successPath=' + encodeURIComponent(successPath)) +
-      (!errorPath ? '' : '&errorPath=' + encodeURIComponent(errorPath));
-
-    return appConfig.authEndpoint +
-      '?client_id=' + appConfig.appId +
-      '&response_type=' + 'token' +
-      '&redirect_uri=' + encodeURIComponent(oAuth2CallbackUrl);
-  }
 
   var closeTimer;
 

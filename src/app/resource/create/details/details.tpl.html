@@ -5,7 +5,7 @@
                 <span>Persoonsgegevens</span>
             </h3>
             <h2 class="no-margin" flex="100" ng-show="$root.personSubmitted || personSubmitted">
-                <md-icon class="text-success">check</md-icon>
+                <ng-md-icon icon="check" class="text-success"></ng-md-icon>
                 <span ng-show="$root.personSubmitted || personSubmitted" class="text-success">Jouw auto staat online!</span>
             </h2>
         </md-card-title-text>
@@ -16,7 +16,7 @@
             <p ng-show="!$root.personSubmitted && !personSubmitted">{{ ('LIST_YOUR_CAR_PERSON' | translate).split('&nbsp;').join(' ') }}</p>
             
             <section ng-show="$root.personSubmitted || personSubmitted">
-                <p>Jouw {{ resource.brand | toTitleCase }} is nu beschikbaar voor meer dan 50.000 leden van MyWheels. Klik hieronder om te bekijken hoe zij jouw auto zien.</p>
+                <p>Jouw {{ resource.brand | toTitleCase }} is nu beschikbaar voor meer dan 60.000 leden van MyWheels. Klik hieronder om te bekijken hoe zij jouw auto zien.</p>
 
                 <center><button type="button" name="button" class="mywheels-btn mywheels-btn-default mywheels-btn-big" ui-sref="owm.resource.show({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">Bekijk voorbeeld</button></center>
 

@@ -1,0 +1,22 @@
+
+<md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="30" flex-xl="25"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3>
+      <ng-md-icon icon="local_gas_station" size="28"></ng-md-icon>
+      Vaste brandstofprijs
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+    <p>Je betaalt voor elke gereden kilometer een vaste brandstofprijs.</p>
+    <div ng-if="tankpas">
+      <p>Mocht je toch moeten tanken tijdens de rit, dan kan dit met de tankpas van de auto.</p>
+      <p>De viercijferige pincode van de tankkaart kunt je vinden in de bevestigingsmail en in de MyWheels app. (<em>Ga je naar het buitenland? Bewaar dan de bon van je tankbeurt, dan verrekenen wij dit achteraf.</em>)</p>
+      <p>Je kunt met de tankkaart alleen goedkope Euro 95 betalen.</p>
+    </div>
+    <div ng-if="!tankpas">
+      <p>Mocht je toch moeten tanken tijdens de rit, dan kun je de tankbon met de verhuurder verrekenen of een kopie mailen naar <a href="mailto:support@mywheels.nl">support@mywheels.nl</a>. We trekken dan de tankkosten van je ritkosten af.</p>
+    </div>
+  </md-dialog-content>
+</md-dialog>

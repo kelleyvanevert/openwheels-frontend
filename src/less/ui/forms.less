@@ -54,6 +54,16 @@
     }
 }
 /* input */
+.mywheels-form input[type="date"]:read-only,
+.mywheels-form input[type="email"]:read-only,
+.mywheels-form input[type="number"]:read-only,
+.mywheels-form input[type="password"]:read-only,
+.mywheels-form input[type="tel"]:read-only,
+.mywheels-form input[type="text"]:read-only,
+.mywheels-form textarea:read-only {
+    border: 1px solid rgb(209, 217, 219);
+    color: #585656;
+}
 .mywheels-form input[type="date"],
 .mywheels-form input[type="email"],
 .mywheels-form input[type="number"],
@@ -118,18 +128,6 @@
 .mywheels-form textarea.error {
     border: 1px solid @mywheels-red;
     color: @mywheels-red;
-}
-.mywheels-form input[type="date"]:read-only,
-.mywheels-form input[type="email"]:read-only,
-.mywheels-form input[type="number"]:read-only,
-.mywheels-form input[type="password"]:read-only,
-.mywheels-form input[type="tel"]:read-only,
-.mywheels-form input[type="text"]:read-only,
-.mywheels-form legend:read-only,
-.mywheels-form select:read-only,
-.mywheels-form textarea:read-only {
-    border: 1px solid rgb(209, 217, 219);
-    color: #585656;
 }
 .mywheels-form .icon {
     position: relative;
@@ -376,6 +374,9 @@
 .mywheels-form .date.icon:before {
     content: "today";
 }
+.mywheels-form .time.icon:before {
+    content: "schedule";
+}
 .mywheels-form .place.icon:before {
     content: "place";
 }
@@ -470,6 +471,21 @@
         margin-right: 1em;
     }
 }
+@media (min-width: 380px) {
+    .mywheels-form .responsive-xxs {
+        display: flex;
+    }
+    .mywheels-form .responsive-xxs div {
+        flex-grow: 1;
+    }
+    .mywheels-form .responsive-xxs div.smallfrom {
+        flex-basis: 35%;
+        flex-grow: 0;
+    }
+    .mywheels-form .responsive-xxs div:first-child {
+        margin-right: 1em;
+    }
+}
 
 // ie fixes
 @ie8: \0screen;
@@ -529,4 +545,106 @@
 }
 .inputfile-error {
   color: #A7393A;
+}
+
+
+
+@media (max-width: 480px) {
+    .mywheels-form label {
+        margin: 0;
+    }
+    .mywheels-form .select.icon:before {
+        margin-top: 1.2em;
+    }
+}
+
+.mywheels-form .form-group {
+    position: relative;
+}
+.mywheels-form .form-group .mobile-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+
+    cursor: pointer;
+}
+
+.mywheels-form .form-group.mw-icon > input,
+.mywheels-form .form-group.mw-icon > select {
+    position: relative;
+    background: transparent;
+    padding-left: 2.4em;
+}
+.mywheels-form .form-group.mw-icon > md-icon,
+.mywheels-form .form-group.mw-icon > ng-md-icon {
+    position: absolute;
+    font-size: 22px;
+    color: #bdc5c7;
+    top: 8px;
+    left: 8px;
+}
+.mywheels-form .searchbar.form-group.mw-icon > input {
+    padding-left: 2.6em;
+}
+.mywheels-form .searchbar.form-group.mw-icon > md-icon,
+.mywheels-form .searchbar.form-group.mw-icon > ng-md-icon {
+    top: 12px;
+    left: 12px;
+}
+.mywheels-form .form-group.mw-button > input {
+    position: relative;
+    background: transparent;
+    padding-right: 2.4em;
+}
+.mywheels-form .form-group.mw-button > .md-icon-button {
+    position: absolute;
+    font-size: 22px;
+    top: -1px;
+    right: -1px;
+    margin: 0;
+}
+.mywheels-form .mw-push-up {
+    position: relative;
+    top: -1em;
+}
+
+.mywheels-form input.discount-code-success {
+    background: #c5dab3 !important;
+    border: 1px solid @mywheels-green;
+}
+.mywheels-form input.discount-code-error {
+    background: #ffac98 !important;
+    border: 1px solid @mywheels-red;
+}
+
+
+.mw-timepicker .bootstrap-datetimepicker-widget.dropdown-menu {
+    width: 16em;
+}
+.mw-timepicker .bootstrap-datetimepicker-widget.dropdown-menu .timepicker-picker {
+    padding: 0 2em;
+}
+.mw-timepicker .bootstrap-datetimepicker-widget.dropdown-menu .timepicker-picker td {
+    padding: 0;
+}
+.mw-timepicker .bootstrap-datetimepicker-widget.dropdown-menu .separator {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+.mw-timepicker .timepicker-hour,
+.mw-timepicker .timepicker-minute {
+    border: 1px solid #bdc5c7 !important;
+    border-radius: 0.1875em !important;
+    background: #fff;
+    box-shadow: inset 0 0.0625em 0.0625em rgba(0, 0, 0, 0.08) !important;
+    
+    cursor: text;
+}
+
+.mywheels-form .input-toggle,
+.mywheels-form .input-toggle ng-md-icon {
+    color: #555;
 }

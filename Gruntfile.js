@@ -3,6 +3,7 @@
 module.exports = function (grunt) {
   var _ = require('lodash');
   var uuid = require('uuid');
+  var fs = require('fs');
 
   grunt.file.defaultEncoding = 'utf-8';
   require('load-grunt-tasks')(grunt);
@@ -327,7 +328,7 @@ module.exports = function (grunt) {
     connect: {
       options: {
         port: 9000,
-        hostname: '0.0.0.0',
+        hostname: 'localhost',
         livereload: 35730
       },
       livereload: {
@@ -338,7 +339,24 @@ module.exports = function (grunt) {
           middleware: function (connect) {
             return [
               require('connect-modrewrite')(['!(\\..+)$ / [L]']),
-              connect.static('build')
+              function (req, res, next) {
+                if (req.url === '/assets/img/resource-avatar-large.jpg') {
+                  fs.readdir(__dirname + '/src/assets/scaffold', function (err, files) {
+                    if (!err) {
+                      var acceptable = files.filter(function (filename) {
+                        return filename.match(/\.(png|jpg)$/);
+                      });
+                      if (acceptable.length > 0) {
+                        req.url = '/assets/scaffold/' + acceptable[Math.floor(Math.random() * acceptable.length)];
+                      }
+                    }
+                    next();
+                  });
+                } else {
+                  next();
+                }
+              },
+              connect.static('build'),
             ];
           }
         }
@@ -593,7 +611,7 @@ module.exports = function (grunt) {
 
   // manually test a "dist" build locally, with dev configuration
   grunt.registerTask('test-dist', [
-    'configure:./bin/branding/',
+    'configure:compile_dir',
     'connect:bin'
   ]);
 

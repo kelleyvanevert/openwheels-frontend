@@ -21,7 +21,7 @@ angular.module('api', [])
   };
 })
 
-.factory('api', function ($log, $q, $http, $rootScope, appConfig, tokenService) {
+.factory('api', function ($log, $q, $http, $rootScope, appConfig, tokenService, tokenSilentRefreshService) {
 
   var AUTH_HEADER = 'X-Simple-Auth-Digest';
   var apiUrl = appConfig.serverUrl + '/api/';
@@ -46,6 +46,15 @@ angular.module('api', [])
   };
 
   api.invokeRpcMethod = function (rpcMethod, rpcParams, multiPartParams, isAnonymousMethod) {
+    /*// for debugging purposes
+    if (rpcMethod === 'boardcomputer.control') {
+      return $q(function (resolve, reject) {
+        setTimeout(function () {
+          resolve(true);
+        }, 500);
+      });
+    }*/
+
     var http;
     var token;
     var config = angular.copy(defaultConfig);
@@ -89,7 +98,7 @@ angular.module('api', [])
       return $q.reject('no token');
     }
 
-    return token.refresh().then(function (freshToken) {
+    return tokenSilentRefreshService.silentRefresh(1000).then(function (freshToken) {
       var replayConfig = angular.copy(config);
       replayConfig.isReplay = true;
       replayConfig.headers[AUTH_HEADER] = createAuthHeader(freshToken);

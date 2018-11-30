@@ -6,7 +6,7 @@ angular.module('owm.resource.search', [
   ])
   .controller('ResourceSearchController', function ($location, me, $scope, $state, $stateParams, $uibModal, $mdMedia, $mdDialog,
     $filter, $anchorScroll, appConfig, Geocoder, alertService, resourceService, resourceQueryService, user, place, Analytics,
-    $cookieStore, preloader, metaInfoService, $rootScope) {
+    $cookieStore, preloader, metaInfoService, $rootScope, API_DATE_FORMAT) {
 
     if (place) {
       metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/' + (place.name || '').toLowerCase().replace(/ /g, '-')});
@@ -270,17 +270,28 @@ angular.module('owm.resource.search', [
 
     //select timeframe modal
     $scope.selectTimeframe = function () {
-      $uibModal.open({
+      var booking = $scope.booking;
+
+      $mdDialog.show({
+        controller: ['$scope', function ($scope) {
+          $scope.beginRequested = booking.beginRequested;
+          $scope.endRequested   = booking.endRequested;
+
+          $scope.hide = function() {
+            $mdDialog.hide();
+          };
+          $scope.accept = function () {
+            booking.beginRequested = $scope.beginRequested;
+            booking.endRequested   = $scope.endRequested;
+            doSearch();
+
+            $mdDialog.hide();
+          };
+        }],
         templateUrl: 'booking/timeframe/booking-timeframe-modal.tpl.html',
-        controller: 'BookingTimeframeController',
-        resolve: {
-          booking: function () {
-            return angular.copy($scope.booking);
-          }
-        }
-      }).result.then(function (booking) {
-        $scope.booking = booking;
-        return doSearch();
+        parent: angular.element(document.body),
+        //targetEvent: $event,
+        clickOutsideToClose: true,
       });
     };
 

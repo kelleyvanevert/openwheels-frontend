@@ -3,16 +3,18 @@ html {
   min-height: 100%;
   height: auto;
 }
+
 .disabled {
     display: none !important;
 }
+
 .min-content-height {
     min-height: 100%;
     height: auto;
     position: relative;
     margin-bottom: -309px;
 }
-.footer,
+/*.page-footer-main,*/
 .push {
     position: relative;
     margin: 0;
@@ -22,8 +24,11 @@ html {
 .footer {
     max-width: 100vw;
 }
-.row{
+.row {
   max-width: 100vw;
+}
+.container .row {
+  max-width: ~"calc(100vw + 18px)";
 }
 .push {
     z-index: -1;
@@ -40,12 +45,103 @@ select,
 textarea {
     font-family: Arial;
 }
+
+
+
+/* TODO put this somewhere sensible */
+md-input-container label,
+md-input-container.md-default-theme .md-placeholder,
+md-input-container .md-placeholder {
+    font-family: Arial;
+    color: #888;
+/*    font-weight: bold;*/
+}
+md-input-container .hint {
+    font-size: .9em;
+    color: #888;
+    position: absolute;
+    left: 4px;
+    right: auto;
+    bottom: 6px;
+}
+md-input-container.md-icon-left > label:not(.md-no-float):not(.md-container-ignore),
+md-input-container.md-icon-left > label .md-placeholder,
+md-input-container.md-icon-right > label:not(.md-no-float):not(.md-container-ignore),
+md-input-container.md-icon-right > label .md-placeholder {
+    width: 100%;
+}
+
+md-input-container:not(.md-input-invalid) > md-icon.blue,
+md-input-container:not(.md-input-invalid) > ng-md-icon.blue {
+    color: @mywheels-blue;
+}
+md-input-container:not(.md-input-invalid) > md-icon.green,
+md-input-container:not(.md-input-invalid) > ng-md-icon.green {
+    color: @mywheels-green;
+}
+md-input-container:not(.md-input-invalid) > md-icon.orange,
+md-input-container:not(.md-input-invalid) > ng-md-icon.orange {
+    color: @mywheels-orange;
+}
+md-input-container:not(.md-input-invalid) > md-icon.red,
+md-input-container:not(.md-input-invalid) > ng-md-icon.red {
+    color: @mywheels-red;
+}
+md-input-container:not(.md-input-invalid) > md-icon.gray,
+md-input-container:not(.md-input-invalid) > ng-md-icon.gray {
+    color: @mywheels-gray;
+}
+
+.discount-input {
+    position: relative;
+}
+.discount-input__clearbutton {
+    
+}
+
+.material-icon-hack {
+    position:relative;
+    display:inline-block;
+    vertical-align: text-top;
+}
+
+.material-icon-hack:after { color: @mywheels-blue; }
+.material-icon-hack.time:after { content: "schedule"; }
+.material-icon-hack.date:after { content: "event"; }
+.material-icon-hack.up:after { content: "keyboard_arrow_up"; }
+.material-icon-hack.down:after { content: "keyboard_arrow_down"; }
+.material-icon-hack.previous { transform: rotate(180deg); }
+.material-icon-hack.previous:after { content: "arrow_forward_ios"; }
+.material-icon-hack.next:after { content: "arrow_forward_ios"; }
+.material-icon-hack.today:after { content: "home"; }
+.material-icon-hack.clear:after { content: "delete"; }
+.material-icon-hack.accept:after { content: "check"; }
+.bootstrap-datetimepicker-widget table td span { margin: 0 !important; }
+
+.mywheels-btn-big .material-icon-hack:after,
+.btn-success .material-icon-hack:after {
+    color: white;
+}
+
+
+md-icon {
+    user-select: none;
+}
+
+
+.lead {
+    font-size: 1.2em;
+    color: #333;
+    line-height: 1.5;
+}
+
+
 .min-height-cross-device {
   min-height: 75rem;
 }
 @media (min-width: 768px) {
   .min-height-cross-device {
-    min-height: 99rem;
+    min-height: 85rem;
   }
 }
 @media (min-width: 2000px) {
@@ -158,6 +254,7 @@ hr {
     border: none;
 }
 .app-toolbar .app--toolbar--button--text.md-button md-icon,
+.app-toolbar .app--toolbar--button--text.md-button ng-md-icon,
 .app-toolbar .app--toolbar--button--text span {
     color: #fff;
 }
@@ -285,3 +382,22 @@ hr {
 .md-calendar-scroll-container, .md-datepicker-input-mask {
     width: 308px;
 }
+
+
+md-dialog.mw-green md-toolbar {
+    background: @mywheels-green;
+}
+
+md-dialog.mw-red md-toolbar {
+    background: @mywheels-red;
+}
+
+
+
+// For debugging
+/*
+input.ng-touched {
+    color: @mywheels-blue;
+    font-weight: bold;
+}
+*/

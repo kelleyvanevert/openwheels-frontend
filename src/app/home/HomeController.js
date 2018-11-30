@@ -3,7 +3,9 @@
 angular.module('owm.home', ['owm.resource', 'slick'])
 
 //Module in app/pages/pagesModule.js
-.controller('HomeController', function ($scope, $translate, $location, resourceQueryService, $window, $timeout, $state, resourceService, $localStorage, $http, metaInfoService, appConfig) {
+.controller('HomeController', function ($scope, $translate, $location, resourceQueryService,
+  $window, $timeout, $state, resourceService, $localStorage, $http, metaInfoService, appConfig,
+  authService, tokenSilentRefreshService) {
 
   metaInfoService.set({url: appConfig.serverUrl});
   metaInfoService.set({canonical: 'https://mywheels.nl'});
@@ -79,5 +81,16 @@ angular.module('owm.home', ['owm.resource', 'slick'])
     }
     $state.go('owm.resource.search.list', resourceQueryService.createStateParams());
   };
+
+  // Automatically log in, if possible
+  if (!authService.user.isAuthenticated) {
+    tokenSilentRefreshService.silentRefresh().then(function (token) {
+      // this does the rest of the magic
+      // (state is automatically reloaded, I believe, and at least
+      //  the root scope's user variable is changed,
+      //  triggering a re-render of the toolbar and menu)
+      authService.notifyFreshToken(token, true);
+    });
+  }
 
 });

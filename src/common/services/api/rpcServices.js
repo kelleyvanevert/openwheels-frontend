@@ -297,6 +297,14 @@ angular.module('rpcServices', [])
   this.forPerson = m('forPerson');
 })
 
+.service('damageService', function (api) {
+  var m = function (name) {
+    return api.createRpcMethod('damage.' + name);
+  };
+  this.addUserDamage = m('addUserDamage');
+  this.dirty = m('dirty');
+})
+
 .service('formSubmissionService', function (api) {
   var m = function (name) {
     return api.createRpcMethod('form_submission.' + name);

@@ -37,7 +37,7 @@ angular.module('fileInputDirective', [])
 
   return {
     restrict: 'EA',
-    template: '<span><input id="{{id}}" type="file" class="inputfile" /><label for="{{id}}" ng-show="!fileProps.sizeOk && !uploaded.sizeOk"><md-icon class="text-white">file_upload</md-icon> Selecteer een foto</label><span ng-show="uploaded.hasUploaded && uploaded.isImage && fileProps.sizeOk"><i class="fa fa-spin fa-2x fa-fw fa-spinner"></i></span></span>',
+    template: '<span><input id="{{id}}" type="file" class="inputfile" /><label for="{{id}}" ng-show="!fileProps.sizeOk && !uploaded.sizeOk"><ng-md-icon icon="file_upload" class="text-white"></ng-md-icon> Selecteer een foto</label><span ng-show="uploaded.hasUploaded && uploaded.isImage && fileProps.sizeOk"><i class="fa fa-spin fa-2x fa-fw fa-spinner"></i></span></span>',
     replace: true,
     scope: {
       onChange: '=',

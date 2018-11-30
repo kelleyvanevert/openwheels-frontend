@@ -4,7 +4,7 @@
     <section ng-if="!isApproved && accounts.length <= 1" class="card" ng-cloak>
         <div class="card-body">
             <h2 class="card-title">
-            <md-icon class="text-danger">error</md-icon>
+            <ng-md-icon icon="error" class="text-danger"></ng-md-icon>
             {{ 'PAYMENT_NOT_APROVED_TITLE' | translate }}
           </h2>
             <p translate="PAYMENT_NOT_APROVED_BODY" translate-values="{name: name, surname: person.surname}"></p>
@@ -22,7 +22,7 @@
     <section ng-if="!isApproved && accounts.length >= 2" class="card" ng-cloak>
         <div class="card-body">
             <h2 class="card-title">
-            <md-icon class="text-danger">error</md-icon>
+            <ng-md-icon icon="error" class="text-danger"></ng-md-icon>
             {{ 'PAYMENT_NOT_APROVED_TITLE' | translate }}
           </h2>
             <p translate="PAYMENT_NOT_APROVED_SECOND_BODY" translate-values="{name: name, surname: person.surname}"></p>
@@ -37,7 +37,7 @@
         <section class="card">
             <div class="card-body">
                 <h2 class="card-title" ng-if="isApproved">
-                <md-icon class="text-success">check</md-icon>
+                <ng-md-icon icon="check" class="text-success"></ng-md-icon>
                 {{ 'PAYMENT_APROVED_TITLE' | translate }}
                 </h2>
                 <p> <span>{{ 'PAYMENT_APROVED_BODY' | translate }}</span>
@@ -65,7 +65,7 @@
                         <md-list-item ng-if="hasAcceptedTimeframe(booking)" class="bookingDate" style="padding-bottom: 0px !important;">
                         <div layout="row" layout-wrap class="bookingDateRow">
                           <div flex="50" class="bookingBeginDate" ng-class="{ 'accepted': booking.status === 'accepted', 'cancelled': (booking.status === 'cancelled' || booking.status === 'owner_cancelled'), 'rejected': booking.status === 'rejected', 'requested': booking.status === 'requested' }">
-                            <md-icon>access_time</md-icon>
+                            <ng-md-icon icon="access_time"></ng-md-icon>
                             <span>
                               <strong>{{ booking.beginBooking | amDateFormat:'DD-MM-YYYY' }}</strong>
                               <br/>
@@ -85,7 +85,7 @@
                         <md-list-item ng-if="!hasAcceptedTimeframe(b)" class="bookingDate" style="padding-bottom: 0px !important;">
                         <div layout="row" layout-wrap class="bookingDateRow">
                           <div flex="50" class="bookingBeginDate" ng-class="{ 'accepted': booking.status === 'accepted', 'cancelled': (booking.status === 'cancelled' || booking.status === 'owner_cancelled'), 'rejected': booking.status === 'rejected', 'requested': booking.status === 'requested' }">
-                            <md-icon>access_time</md-icon>
+                            <ng-md-icon icon="access_time"></ng-md-icon>
                             <span>
                               <strong>{{ booking.beginRequested | amDateFormat:'DD-MM-YYYY' }}</strong>
                               <br/>
@@ -106,7 +106,7 @@
                             <!-- Convadis boardcomputer, only chipcard -->
                             <md-tab id="tab1" ng-if="booking.resource.locktypes.indexOf('smartphone') < 0 && booking.resource.locktypes.indexOf('chipcard') >= 0">
                                 <md-tab-label title="Eerste keer OV-chipkaart" class="text-success">
-                                    <md-icon class="text-success">credit_card</md-icon><span class="md-tab-icon-black">{{ 'LOCKTYPE.ophalen' | translate }}</span>
+                                    <ng-md-icon icon="credit_card" class="text-success"></ng-md-icon><span class="md-tab-icon-black">{{ 'LOCKTYPE.ophalen' | translate }}</span>
                                 </md-tab-label>
                                 <md-tab-body>
                                     <p ng-if="fish" translate="PAYMENT_APROVED_PAYED_FISH" translate-values="{pincode: fish.pincode, location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: (booking.resource.city | replaceSpaceToDash | lowercase) }"></p>
@@ -116,7 +116,7 @@
                             <!-- Micpoint boardcomputer, chipcard and smartphone -->
                             <md-tab id="tab2" ng-if="booking.resource.locktypes.indexOf('smartphone') >= 0 && booking.resource.locktypes.indexOf('chipcard') >= 0">
                                 <md-tab-label title="Openen met OV-chipkaart of smartphone" class="text-succes">
-                                    <md-icon class="text-success">smartphone</md-icon><span class="md-tab-icon-black">{{ 'LOCKTYPE.ophalen' | translate }}</span>
+                                    <ng-md-icon icon="smartphone" class="text-success"></ng-md-icon><span class="md-tab-icon-black">{{ 'LOCKTYPE.ophalen' | translate }}</span>
                                 </md-tab-label>
                                 <md-tab-body>
                                     <p translate="PAYMENT_APROVED_PAYED_CHIPCARD_SMARTPHONE" translate-values="{location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: (booking.resource.city | replaceSpaceToDash | lowercase) }"></p>
@@ -125,7 +125,7 @@
                             <!-- Micpoint boardcomputer, only smartphone -->
                             <md-tab id="tab2" ng-if="booking.resource.locktypes.indexOf('smartphone') >= 0 && booking.resource.locktypes.indexOf('chipcard') < 0">
                                 <md-tab-label title="Openen met OV-chipkaart of smartphone" class="text-succes">
-                                    <md-icon class="text-success">smartphone</md-icon><span class="md-tab-icon-black">{{ 'LOCKTYPE.ophalen' | translate }}</span>
+                                    <ng-md-icon icon="smartphone" class="text-success"></ng-md-icon><span class="md-tab-icon-black">{{ 'LOCKTYPE.ophalen' | translate }}</span>
                                 </md-tab-label>
                                 <md-tab-body>
                                     <p translate="PAYMENT_APROVED_PAYED_SMARTPHONE" translate-values="{location: booking.resource.location, streetNumber: booking.resource.streetNumber, city: (booking.resource.city | replaceSpaceToDash | lowercase) }"></p>
@@ -134,7 +134,7 @@
                             <!-- Meeting -->
                             <md-tab id="tab3" ng-if="booking.resource.locktypes.indexOf('meeting') >= 0">
                                 <md-tab-label title="Afspraak" class="text-success">
-                                    <md-icon class="text-success">vpn_key</md-icon> <span class="md-tab-icon-black">{{ 'LOCKTYPE.ophalen' | translate }}</span>
+                                    <ng-md-icon icon="vpn_key" class="text-success"></ng-md-icon> <span class="md-tab-icon-black">{{ 'LOCKTYPE.ophalen' | translate }}</span>
                                 </md-tab-label>
                                 <md-tab-body>
                                     <p ng-if="booking.status === 'requested'">{{ 'PAYMENT_APROVED_PAYED_FUEL_KEY_WAIT' | translate }}</p>
@@ -145,7 +145,7 @@
                             </md-tab>
                             <md-tab id="tab4">
                                 <md-tab-label title="Brandstof" class="text-success">
-                                    <md-icon class="text-success">local_gas_station</md-icon> <span class="md-tab-icon-black">{{ 'DRIVE' | translate }}</span>
+                                    <ng-md-icon icon="local_gas_station" class="text-success"></ng-md-icon> <span class="md-tab-icon-black">{{ 'DRIVE' | translate }}</span>
                                 </md-tab-label>
                                 <md-tab-body>
                                     <p ng-if="booking.fuelCard" translate="PAYMENT_APROVED_PAYED_FUEL_CARD"></p>
@@ -166,7 +166,7 @@
 <section ng-if="!result.success" class="card" ng-cloak>
     <div class="card-body">
         <h2 class="card-title">
-          <md-icon class="text-warning">warning</md-icon> {{ 'PAYMENT_FAILURE_TITLE' | translate }} </h2>
+          <ng-md-icon icon="warning" class="text-warning"></ng-md-icon> {{ 'PAYMENT_FAILURE_TITLE' | translate }} </h2>
         <p>{{ 'PAYMENT_FAILURE_BODY' | translate }}</p>
 
         <button ng-if="afterPayment && me.provider.id !== 5" ng-click="goAfterPayment()" type="button" class="mywheels-btn mywheels-btn-default" md-ink-ripple="#3a6d81">

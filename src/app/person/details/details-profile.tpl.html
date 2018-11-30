@@ -1,253 +1,421 @@
-<div class="progress--steps" ng-if="!isBlocked">
-    <section class="step" data-section="1" title="Basisgegevens" ng-class="{'selected': pageNumber === 1 ? true : false, 'done': pageNumber > 1 ? true : false }" ui-sref="owm.person.details({pageNumber: '1'})"></section>
-    <section class="step" data-section="2" title="Rijbewijs uploaden" ng-class="{'selected': pageNumber === 2 ? true : false, 'done': pageNumber > 2 ? true : false}" ui-sref="owm.person.details({pageNumber: '2'})"></section>
-    <section class="step last-step" data-section="3" title="{{isbooking !== true ? 'Auto zoeken' : 'Betalen'}}" ng-class="{'selected': pageNumber === 3 ? true : false, 'done': pageNumber > 3 ? true : false }" ng-click="nextSection()"></section>
-</div>
 
-<section class="details--profile__overview">
-    <!-- FIRST PAGE / PERSONAL DATA  -->
-    <div class="card details--card__section" id="personal-data" ng-show="showFirst">
-        <div class="card-body details--card">
-
-            <section resource-sidebar class="details--profile__sidebar" ng-if="isbooking && showFirst"></section>
-
-            <section class="details--card--form">
-                <h2 class="card-title">{{ 'DETAILS_PROFILE_BASIC' | translate }}</h2>
-                <p ng-if="isbooking" translate="DETAILS_PROFILE_BASIC_TEXT" translate-values="{firstName: person.firstName}"> </p>
-                <h3>{{ 'MY_PROFILE_PERSONAL' | translate }}</h3>
-                <personal-data next="nextSection()"></personal-data>
-            </section>
-
-        </div>
-    </div>
-    <!--/ card -->
-
-    <!-- SECOND PAGE / LICENSE INFORMATION -->
-    <div class="card details--card__section" id="license-upload" ng-show="showSecond">
-        <div class="card-body details--license-upload details--card">
-
-            <section resource-sidebar class="details--profile__sidebar" ng-if="isbooking && showSecond"></section>
-
-            <section class="details--card--form" ng-show="!checkedLater">
-                <h2 class="card-title">{{ 'DETAILS_PROFILE_LICENSE' | translate }}</h2>
-
-                <div ng-show="licenseUploaded">
-                    {{ 'LICENSE_ALREADY_UPLOADED' | translate }}
-                </div>
-
-                <div ng-show="!licenseUploaded && !loadLicenseState">
-                    <div class="checklist">
-                        <p class="ng-scope">{{ 'LICENSE_DATA' | translate }}</p>
-                        <p><ul>
-                            <li><md-icon>check</md-icon><span>{{ 'LICENSE_NOT_FOREIGN' | translate }}</span></li>
-                            <li><md-icon>check</md-icon><span>{{ 'LICENSE_VALID' | translate }}</span></li>
-                            <li><md-icon>check</md-icon><span>{{ 'LICENSE_OWN' | translate }}</span></li>
-                        </ul></p>
-                    </div>
-
-                    <div>
-                        <section class="details--card--form">
-                            <div class="ng-isolate-scope" aria-hidden="true">
-                                <form class="mywheels-form details--profile--form ng-pristine ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength ng-valid" name="licenseDataForm">
-                                    <div class="licenseNumberGroup">
-                                        <h3 class="ng-binding">{{ 'LICENSE_NUMBER' | translate }}</h3>
-                                        <div id="licenseNumber_group" class="icon payment">
-                                            <input name="driverLicenseNumber" id="driverLicenseNumber" ng-model="driverLicenseNumber" placeholder="Rijbewijsnummer" class="ng-pristine ng-untouched ng-valid" aria-invalid="false" type="text" pattern="[0-9]*" maxlength="10" ng-change="licenseNumberValid = true" required>
-                                        </div>
-                                        <div id="licenseNumberRepeat_group" class="icon replay" ng-show="driverLicenseNumber.length === 10">
-                                            <input ng-paste="$event.preventDefault();" name="driverLicenseNumberRepeat" id="driverLicenseNumberRepeat" ng-model="driverLicenseNumberRepeat" placeholder="Voer opnieuw je rijbewijsnummer in" class="ng-pristine ng-untouched ng-valid" aria-invalid="false" type="text" pattern="[0-9]*" maxlength="10" required>
-                                        </div>
-                                        <div class="err-block" ng-if="!isBusy && (!licenseNumberValid || !licenseNumberRepeatValid || !licenseNumberMatch)" aria-hidden="true">
-                                            <span class="text-danger ng-binding" aria-hidden="true" ng-show="!licenseNumberValid">{{ 'INCORRECT_LICENSE' | translate }}</span>
-                                            <span class="text-danger ng-binding" aria-hidden="true" ng-show="(!licenseNumberRepeatValid || !licenseNumberMatch) && licenseNumberValid && driverLicenseNumber !== driverLicenseNumberRepeat">{{ 'LICENSE_NUMBERS_NO_MATCH' | translate }}</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="autoDateInput">
-                                        <h3 class="ng-binding">{{ 'LICENSE_DATE' | translate }}</h3>
-                                        <div id="date" class="icon date">
-                                            <input id="day" name="day" inputmode="numeric" pattern="[0-9]*" ng-model="licenseDate.day" placeholder="DD" maxlength="2" max="31" min="0" class="ng-pristine ng-untouched ng-valid ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength" aria-invalid="false" type="number" required="">
-                                            <input id="month" name="month" inputmode="numeric" pattern="[0-9]*" ng-model="licenseDate.month" placeholder="MM" maxlength="2" max="12" min="0" class="ng-pristine ng-untouched ng-valid ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength" aria-invalid="false" type="number" required="">
-                                            <input id="year" name="year" inputmode="numeric" pattern="[0-9]*" ng-model="licenseDate.year" placeholder="JJJJ" maxlength="4" max="{{ validLicenseMax }}" min="{{ validLicenseMin }}" class="ng-pristine ng-untouched ng-valid ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength" aria-invalid="false" type="number" required="">
-                                        </div>
-
-                                        <div class="err-block" ng-if="!isBusy && (!licenseDateValid || !licenseDataForm.day.$valid || !licenseDataForm.month.$valid || (!licenseDataForm.year.$valid && licenseDataForm.year.$viewValue.length > 3))" aria-hidden="true">
-                                            <span class="text-danger ng-binding" aria-hidden="true">{{ 'LICENSE_DATE_INVALID' | translate }}</span>
-                                        </div>
-                                    </div>
-                                </form>
+<div class="mw-profile-details-steps">
+    <div ng-if="isBlocked">
+        <div class="container container-transitional">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2 col-xs-12">
+                    <div class="card inverted-heading mw-error" style="margin-top: 4rem; ">
+                        <div class="card-heading main-heading">
+                            <div class="row">
+                                <div class="col-sm-10 col-sm-offset-1">
+                                    <h2 class="card-title">Deze boeking is helaas niet mogelijk</h2>
+                                </div>
                             </div>
-                        </section>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-10 col-sm-offset-1">
+                                    <p>Om een betrouwbare community te kunnen garanderen, controleren we alle leden van MyWheels. Op basis van deze controle is een verhoogd risico geconstateerd. Daarom is je account gedeactiveerd. Je heb hierover een mail ontvangen met meer informatie.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="details--card--form__navigation-buttons">
-                    <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(0, 1)">
-                        <md-icon>navigate_before</md-icon>
-                        {{ 'PREVIOUS' | translate}}
-                    </button>
-                    <div>
-                        <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="skipFlow()" ng-show="$root.isWindowSizeSM && isbooking && !licenseUploaded">
-                            {{ 'LATER' | translate}}
-                            <md-icon>navigate_next</md-icon>
-                        </button>
-                        <button rel="next" type="button" class="mywheels-btn mywheels-btn-default btn--navigation__next" ng-click="submitDriverLicense()" ng-if="!licenseUploaded">
-                            {{ 'NEXT' | translate}}
-                            <md-icon class="text-white">navigate_next</md-icon>
-                        </button>
-                        <button rel="next" type="button" class="mywheels-btn mywheels-btn-default btn--navigation__next" ng-click="nextSection()" ng-if="licenseUploaded">
-                            {{ 'NEXT' | translate}}
-                            <md-icon class="text-white">navigate_next</md-icon>
-                        </button>
-                    </div>
-                </div>
-
-                <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="skipFlow()" ng-show="!$root.isWindowSizeSM && isbooking && !licenseUploaded"
-                        style="float: right; margin: 1em 0 0 0;">
-                    {{ 'LATER' | translate}}
-                    <md-icon>navigate_next</md-icon>
-                </button>
-            </section>
-
-            <section class="details--card--form" ng-show="checkedLater">
-                <h2 class="card-title">{{ 'DETAILS_PROFILE_LATER' | translate }}</h2>
-                <p>{{ 'DETAILS_PROFILE_LATER_TEXT' | translate }}</p>
-
-                <div class="details--card--form__navigation-buttons">
-                    <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(0, 1)">
-                        <md-icon>navigate_before</md-icon>
-                        {{ 'PREVIOUS' | translate}}
-                    </button>
-                </div>
-            </section>
-
+            </div>
         </div>
     </div>
-    <!--/ card -->
 
-    <!-- THIRD PAGE / PAYMENT OR MAKE BOOKING -->
-    <div class="card details--card__section" ng-show="showThird">
-        <div class="card-body details--card">
+    <!-- Using `ng-show` instead of `ng-if`, because else the licenseDataForm is not registered to the $scope as expected.
+         See [https://stackoverflow.com/questions/40648638/angularjs-form-inside-ng-if-not-accessible-from-controller] -->
+    <div ng-show="!isBlocked">
+        <div class="progress-steps">
+            <div class="step"
+                 data-section="1"
+                 title="Basisgegevens"
+                 ng-class="{
+                   selected: (pageNumber === 1),
+                   done: (pageNumber > 1),
+                 }"
+                 ui-sref="owm.person.details({pageNumber: '1'})">
+                <div class="n">1</div>
+                <div class="step-label">Basisgegevens</div>
+            </div>
+            <div class="line" ng-class="{ done: (pageNumber > 1) }"></div>
+            <div class="step"
+                 data-section="2"
+                 title="Rijbewijs"
+                 ng-class="{
+                   selected: (pageNumber === 2),
+                   done: (pageNumber > 2),
+                 }"
+                 ui-sref="owm.person.details({pageNumber: '2'})">
+                <div class="n">2</div>
+                <div class="step-label">Rijbewijs</div>
+            </div>
+            <div class="line" ng-class="{ done: (pageNumber > 2) }"></div>
+            <div class="step last-step"
+                 data-section="3"
+                 title="{{isbooking !== true ? 'Auto zoeken' : 'Betalen'}}"
+                 ng-class="{
+                   selected: (pageNumber === 3),
+                   done: (pageNumber > 3),
+                 }"
+                 ng-click="nextSection()">
+                <div class="n">3</div>
+                <div class="step-label">{{isbooking !== true ? 'Auto zoeken' : 'Betalen'}}</div>
+            </div>
+        </div>
 
-            <section ng-if="isBusy && isbooking">
-                <h2 class="card-title">Je boeking wordt gemaakt..</h2>
-                <p>Nog heel even wachten.</p>
-            </section>
-
-            <section resource-sidebar class="details--profile__sidebar" ng-if="!isBusy && isbooking && !isBlocked && showThird"></section>
-
-
-            <!-- if person is created and already paid -->
-            <section class="details--card--form" ng-if="!isBusy && isbooking && !isBlocked && !errorCreateBooking && booking.approved === 'OK'" ng-hide="!isAvailable">
-                <h2 class="card-title">{{ 'DETAILS_PROFILE_BOOKING_PAID' | translate }}</h2>
-                <p>De reservering is geaccepteerd en het bedrag is betaald. Alles is in orde voor je rit en je kan goed verzekerd op weg.</p>
-                <p>&nbsp;</p>
-                <center>
-                    <button rel="next" type="button" class="mywheels-btn mywheels-btn-big mywheels-btn-default btn--navigation__next" ui-sref="owm.booking.show({ bookingId: booking.id })">
-                        {{ 'BOOKING_INFO' | translate }}
-                        <md-icon class="text-white">navigate_next</md-icon>
-                    </button>
-                </center>
-            </section>
-
-            <!-- if booking is created and person can pay -->
-            <section class="details--card--form" ng-if="!isBusy && isbooking && !isBlocked && !errorCreateBooking && booking.approved !== 'OK'" ng-hide="!isAvailable">
-                <h2 class="card-title">{{ 'DETAILS_PROFILE_NEARLY' | translate }}</h2>
-
-                <p ng-if="booking.approved === 'BUY_VOUCHER'">
-                    {{ 'DETAILS_PROFILE_PAY_APPROVED' | translate }}
-                </p>
-                <p ng-if="booking.approved !== 'BUY_VOUCHER'" translate="DETAILS_PROFILE_PAY_NOT_APPROVED" translate-values="{firstName: booking.resource.owner.firstName }"></p>
-                <voucher booking="booking" me="me" ng-if="bookingFound && isbooking"></voucher>
-                <div ng-if="!accountApproved">
-                    <p class="mywheels-btn-margin-top">
-                        <b>Let op:</b> om de betaling te kunnen verwerken, moet de tenaamstelling van de rekening overeenkomen met je accountnaam.
-                    </p>
-                </div>
-                <p ng-if="booking.approved !== 'BUY_VOUCHER' ">
-                    {{ 'DETAILS_PROFILE_PAY_NOT_APPROVED_OTHER' | translate }}
-                </p>
-                <div class="details--card--form__navigation-buttons">
-                    <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(1, 2)">
-                        <md-icon>navigate_before</md-icon>
-                        {{ 'PREVIOUS' | translate}}
-                    </button>
-                    <div>
-                        <button type="button" name="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__next" ng-if="booking.approved !== 'BUY_VOUCHER' " ui-sref="owm.person.aboutme">
-                            {{ 'FILL_PERSON_INFO' | translate }}
-                            <md-icon>navigate_next</md-icon>
-                        </button>
-                        <button rel="next" type="button" class="mywheels-btn mywheels-btn-default btn--navigation__next" ng-click="buyVoucher()">
-                            {{ 'PAY' | translate}}
-                            <md-icon class="text-white">navigate_next</md-icon>
-                        </button>
+        <div class="container container-transitional">
+            <div class="row">
+                <div :ng-class="{
+                    'col-md-8 col-xs-12': withSidebar,
+                    'col-md-8 col-md-offset-2 col-xs-12': !withSidebar,
+                }">
+                    <!-- FIRST PAGE / PERSONAL DATA  -->
+                    <div class="card inverted-heading" id="personal-data" ng-show="showFirst">
+                        <div class="card-heading main-heading">
+                            <div class="row">
+                                <div class="col-sm-10 col-sm-offset-1">
+                                    <h2 class="card-title">{{ 'DETAILS_PROFILE_BASIC' | translate }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-10 col-sm-offset-1">
+                                    <p ng-if="isbooking" translate="DETAILS_PROFILE_BASIC_TEXT" translate-values="{firstName: person.firstName}"> </p>
+                                    <personal-data next="nextSection()"></personal-data>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <!--/ card -->
+
+                    <!-- SECOND PAGE / LICENSE INFORMATION -->
+                    <div class="card inverted-heading" id="license-upload" ng-show="showSecond && checkedLater">
+                        <div class="card-heading main-heading">
+                            <div class="row">
+                                <div class="col-sm-10 col-sm-offset-1">
+                                    <h2 class="card-title">{{ 'DETAILS_PROFILE_LATER' | translate }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-10 col-sm-offset-1">
+                                    <p>{{ 'DETAILS_PROFILE_LATER_TEXT' | translate }}</p>
+                                    <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#555" ng-click="prevSection(0, 1)">
+                                        <ng-md-icon icon="navigate_before"></ng-md-icon>
+                                        {{ 'PREVIOUS' | translate}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card inverted-heading" id="license-upload" ng-show="showSecond && !checkedLater">
+                        <div class="card-heading main-heading">
+                            <div class="row">
+                                <div class="col-sm-10 col-sm-offset-1">
+                                    <h2 class="card-title">{{ 'DETAILS_PROFILE_LICENSE' | translate }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-10 col-sm-offset-1">
+                                    <div ng-show="licenseUploaded">
+                                        <ng-md-icon icon="check"></ng-md-icon> {{ 'LICENSE_ALREADY_UPLOADED' | translate }}
+                                    </div>
+
+                                    <div ng-show="!licenseUploaded && !loadLicenseState">
+                                        <div>
+                                            <p class="ng-scope">{{ 'LICENSE_DATA' | translate }}</p>
+                                            <ul class="checklist">
+                                                <li>
+                                                    <ng-md-icon icon="check"></ng-md-icon>
+                                                    <span>{{ 'LICENSE_NOT_FOREIGN' | translate }}</span>
+                                                </li>
+                                                <li>
+                                                    <ng-md-icon icon="check"></ng-md-icon>
+                                                    <span>{{ 'LICENSE_VALID' | translate }}</span>
+                                                </li>
+                                                <li>
+                                                    <ng-md-icon icon="check"></ng-md-icon>
+                                                    <span>{{ 'LICENSE_OWN' | translate }}</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="ng-isolate-scope" aria-hidden="true">
+                                            <form class="mywheels-form ng-pristine ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength ng-valid" name="licenseDataForm">
+                                                <div class="licenseNumberGroup">
+                                                    <h3 class="ng-binding">{{ 'LICENSE_NUMBER' | translate }}</h3>
+                                                    <div id="licenseNumber_group" class="icon payment">
+                                                        <input name="driverLicenseNumber" id="driverLicenseNumber" ng-model="driverLicenseNumber" placeholder="Rijbewijsnummer" class="ng-pristine ng-untouched ng-valid" aria-invalid="false" type="text" pattern="[0-9]*" maxlength="10" ng-change="licenseNumberValid = true" required>
+                                                    </div>
+                                                    <div id="licenseNumberRepeat_group" class="icon replay" ng-show="driverLicenseNumber.length === 10">
+                                                        <input ng-paste="$event.preventDefault();" name="driverLicenseNumberRepeat" id="driverLicenseNumberRepeat" ng-model="driverLicenseNumberRepeat" placeholder="Voer opnieuw je rijbewijsnummer in" class="ng-pristine ng-untouched ng-valid" aria-invalid="false" type="text" pattern="[0-9]*" maxlength="10" required>
+                                                    </div>
+                                                    <div class="err-block" ng-if="!isBusy && (!licenseNumberValid || !licenseNumberRepeatValid || !licenseNumberMatch)" aria-hidden="true">
+                                                        <span class="text-danger ng-binding" aria-hidden="true" ng-show="!licenseNumberValid">{{ 'INCORRECT_LICENSE' | translate }}</span>
+                                                        <span class="text-danger ng-binding" aria-hidden="true" ng-show="(!licenseNumberRepeatValid || !licenseNumberMatch) && licenseNumberValid && driverLicenseNumber !== driverLicenseNumberRepeat">{{ 'LICENSE_NUMBERS_NO_MATCH' | translate }}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="autoDateInput">
+                                                    <h3 class="ng-binding">{{ 'LICENSE_DATE' | translate }}</h3>
+                                                    <div id="date" class="icon date">
+                                                        <input id="day" name="day" inputmode="numeric" pattern="[0-9]*" ng-model="licenseDate.day" placeholder="DD" maxlength="2" max="31" min="0" class="ng-pristine ng-untouched ng-valid ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength" aria-invalid="false" type="number" required="">
+                                                        <input id="month" name="month" inputmode="numeric" pattern="[0-9]*" ng-model="licenseDate.month" placeholder="MM" maxlength="2" max="12" min="0" class="ng-pristine ng-untouched ng-valid ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength" aria-invalid="false" type="number" required="">
+                                                        <input id="year" name="year" inputmode="numeric" pattern="[0-9]*" ng-model="licenseDate.year" placeholder="JJJJ" maxlength="4" max="{{ validLicenseMax }}" min="{{ validLicenseMin }}" class="ng-pristine ng-untouched ng-valid ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength" aria-invalid="false" type="number" required="">
+                                                    </div>
+
+                                                    <div class="err-block" ng-if="!isBusy && (!licenseDateValid || !licenseDataForm.day.$valid || !licenseDataForm.month.$valid || (!licenseDataForm.year.$valid && licenseDataForm.year.$viewValue.length > 3))" aria-hidden="true">
+                                                        <span class="text-danger ng-binding" aria-hidden="true">{{ 'LICENSE_DATE_INVALID' | translate }}</span>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="nav-buttons">
+                                        <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#555" ng-click="prevSection(0, 1)">
+                                            <ng-md-icon icon="navigate_before"></ng-md-icon>
+                                            {{ 'PREVIOUS' | translate}}
+                                        </button>
+                                        <div>
+                                            <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#555" ng-click="skipFlow()" ng-show="$root.isWindowSizeSM && isbooking && !licenseUploaded">
+                                                {{ 'LATER' | translate}}
+                                                <ng-md-icon icon="navigate_next"></ng-md-icon>
+                                            </button>
+                                            <button rel="next" type="button" class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" md-ink-ripple="#8f6700" ng-click="submitDriverLicense()" ng-if="!licenseUploaded">
+                                                {{ 'NEXT' | translate}}
+                                                <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
+                                            </button>
+                                            <button rel="next" type="button" class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" md-ink-ripple="#8f6700" ng-click="nextSection()" ng-if="licenseUploaded">
+                                                {{ 'NEXT' | translate}}
+                                                <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#555" ng-click="skipFlow()" ng-show="!$root.isWindowSizeSM && isbooking && !licenseUploaded"
+                                            style="float: right;">
+                                        {{ 'LATER' | translate}}
+                                        <ng-md-icon icon="navigate_next"></ng-md-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/ card -->
+
+                    <!-- THIRD PAGE / PAYMENT OR MAKE BOOKING -->
+                    <div class="card inverted-heading" ng-show="showThird">
+                        
+                        <!-- (3.1) if person didn't create a booking but filled in personal information -->
+                        <div ng-if="!isBusy && !isbooking">
+                            <div class="card-heading main-heading">
+                                <div class="row">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <h2 class="card-title">{{ 'DETAILS_PROFILE_PHOTO' | translate }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <p class="lead">{{ 'DETAILS_PROFILE_SEARCH' | translate }} </p>
+                                        <!-- call to action buttons -->
+                                        <div class="nav-buttons">
+                                            <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#555" ng-click="prevSection(1, 2)">
+                                                <ng-md-icon icon="navigate_before"></ng-md-icon>
+                                                {{ 'PREVIOUS' | translate}}
+                                            </button>
+                                            <button type="button" name="button" ui-sref="owm.resource.search.list" class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" md-ink-ripple="#8f6700">
+                                                {{ 'SEARCH_CAR' | translate }}
+                                                <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
+                                            </button>
+                                        </div>
+                                        <!-- /call to action buttons -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- (3.2) -->
+                        <div ng-if="isBusy && isbooking">
+                            <div class="card-heading main-heading">
+                                <div class="row">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <h2 class="card-title">
+                                            Je boeking wordt gemaakt...
+                                        </h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <md-progress-circular style="float: left;" md-mode="indeterminate"></md-progress-circular>
+                                        <p style="font-weight: bold; margin: 10px 0;">Nog heel even wachten...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- (3.3) if RentalCheck error -->
+                        <div ng-if="!isBusy && errorCreateBooking">
+                            <div class="card-heading main-heading">
+                                <div class="row">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <h2 class="card-title">Foutmelding</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <p ng-if="errorRentalCheck || errorMessage">Vanwege onderstaande fout kon de boeking helaas niet gemaakt worden:</p>
+                                        <p ng-if="errorRentalCheck"><strong>{{ errorRentalCheckMessage }}</strong></p>
+                                        <p ng-if="errorMessage"><strong>{{ errorMessage }}</strong></p>
+                                        <p ng-if="!errorRentalCheck && !errorMessage">Vanwege een overwachte fout kon de boeking helaas niet gemaakt worden. Neem contact met ons op via het <a href="https://mywheels.nl/autodelen/community/contact/" target="_blank">contactformulier</a>.</p>
+
+                                        <!-- call to action buttons -->
+                                        <div class="nav-buttons">
+                                            <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#555" ng-click="prevSection(1, 2)">
+                                                <ng-md-icon icon="navigate_before"></ng-md-icon>
+                                                {{ 'PREVIOUS' | translate}}
+                                            </button>
+                                        </div>
+                                        <!-- /call to action buttons -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- (3.4) if resource is not available for person -->
+                        <div ng-if="!isBusy && !isAvailable">
+                            <div class="card-heading main-heading">
+                                <div class="row">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <h2 class="card-title">{{ 'DETAILS_PROFILE_NOT_AVAILABLE' | translate }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <p>{{ 'DETAILS_PROFILE_NOT_AVAILABLE_text' | translate }} </p>
+                                        <!-- call to action buttons -->
+                                        <div class="nav-buttons">
+                                            <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#555" ng-click="prevSection(1, 2)">
+                                                <ng-md-icon icon="navigate_before"></ng-md-icon>
+                                                {{ 'PREVIOUS' | translate}}
+                                            </button>
+                                            <button type="button" name="button" ui-sref="owm.resource.search.list({ start: bookingStart ,end: bookingEnd})" class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" md-ink-ripple="#8f6700">
+                                                {{ 'SEARCH_CAR' | translate }}
+                                                <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
+                                            </button>
+                                        </div>
+                                        <!-- /call to action buttons -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- (3.5) if person is created and already paid -->
+                        <div ng-if="!isBusy && isbooking && !errorCreateBooking && booking.approved === 'OK'" ng-hide="!isAvailable">
+                            <div class="card-heading main-heading">
+                                <div class="row">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <h2 class="card-title">{{ 'DETAILS_PROFILE_BOOKING_PAID' | translate }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <p>De reservering is geaccepteerd en het bedrag is betaald. Alles is in orde voor je rit en je kan goed verzekerd op weg.</p>
+                                        <p>&nbsp;</p>
+                                        <center>
+                                            <button rel="next" type="button" class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" md-ink-ripple="#8f6700" ui-sref="owm.booking.show({ bookingId: booking.id })">
+                                                {{ 'BOOKING_INFO' | translate }}
+                                                <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
+                                            </button>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- (3.6) if booking is created and person can pay -->
+                        <div ng-if="!isBusy && isbooking && !errorCreateBooking && booking.approved !== 'OK'" ng-hide="!isAvailable">
+                            <div class="card-heading main-heading">
+                                <div class="row">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <h2 class="card-title">{{ 'DETAILS_PROFILE_NEARLY' | translate }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <p ng-if="booking.approved === 'BUY_VOUCHER'">
+                                            {{ 'DETAILS_PROFILE_PAY_APPROVED' | translate }}
+                                        </p>
+                                        <p ng-if="booking.approved !== 'BUY_VOUCHER'" translate="DETAILS_PROFILE_PAY_NOT_APPROVED" translate-values="{firstName: booking.resource.owner.firstName }"></p>
+                                        <voucher booking="booking" me="me" ng-if="bookingFound && isbooking"></voucher>
+                                        <div ng-if="!accountApproved">
+                                            <p class="mywheels-btn-margin-top">
+                                                <b>Let op:</b> om de betaling te kunnen verwerken, moet de tenaamstelling van de rekening overeenkomen met je accountnaam.
+                                            </p>
+                                        </div>
+                                        <p ng-if="booking.approved !== 'BUY_VOUCHER' ">
+                                            {{ 'DETAILS_PROFILE_PAY_NOT_APPROVED_OTHER' | translate }}
+                                        </p>
+                                        <div class="nav-buttons">
+                                            <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#555" ng-click="prevSection(1, 2)">
+                                                <ng-md-icon icon="navigate_before"></ng-md-icon>
+                                                {{ 'PREVIOUS' | translate}}
+                                            </button>
+                                            <div>
+                                                <button type="button" name="button" class="mywheels-btn mywheels-btn-border" ng-if="booking.approved !== 'BUY_VOUCHER' " ui-sref="owm.person.aboutme">
+                                                    {{ 'FILL_PERSON_INFO' | translate }}
+                                                    <ng-md-icon icon="navigate_next"></ng-md-icon>
+                                                </button>
+                                                <button rel="next" type="button" class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" md-ink-ripple="#8f6700" ng-click="buyVoucher()">
+                                                    {{ 'PAY' | translate}}
+                                                    <ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <!--/ card -->
                 </div>
-            </section>
+                <div class="col-md-4 col-xs-12" ng-show="withSidebar">
+                    <div class="card" ng-if="!booking.ok && booking.person.status === 'book-only'">
+                        <div class="card-body card-inverse mw-warning">
+                            <h2 class="text-white">Je account is nog niet actief</h2>
+                            <div class="text-white">
+                                <div style="float: left; width: 42px; height: 42px; margin: 5px 10px 5px 0;">
+                                  <ng-md-icon icon="warning" size="42"></ng-md-icon>
+                                </div>
+                                <p><strong>Let op:</strong> Je account is op dit moment nog niet actief, je kunt de auto dus ook nog niet ophalen.</p>
+                                <p>Een aantal van onze controles konden niet automatisch uitgevoerd worden voor jouw account. Zodra wij deze controles hebben uitgevoerd ontvang je per mail bericht over het activeren van je account.</p>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- if resource is not available for person -->
-            <section ng-if="!isBusy && !isAvailable && !isBlocked" class="details--card--form">
-                <h2 class="card-title">{{ 'DETAILS_PROFILE_NOT_AVAILABLE' | translate }}</h2>
-                <p>{{ 'DETAILS_PROFILE_NOT_AVAILABLE_text' | translate }} </p>
-
-                <!-- call to action buttons -->
-                <div class="details--card--form__navigation-buttons">
-                    <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(1, 2)">
-                        <md-icon>navigate_before</md-icon>
-                        {{ 'PREVIOUS' | translate}}
-                    </button>
-                    <button type="button" name="button" ui-sref="owm.resource.search.list({ start: bookingStart ,end: bookingEnd})" class="mywheels-btn mywheels-btn-default btn--navigation__next">
-                        {{ 'SEARCH_CAR' | translate }}
-                        <md-icon class="text-white">navigate_next</md-icon>
-                    </button>
+                    <section resource-sidebar ng-if="isbooking && (!showThird || (showThird && !isBusy))"></section>
                 </div>
-                <!-- /call to action buttons -->
-            </section>
-
-            <!-- if RentalCheck error -->
-            <section ng-if="!isBusy && errorCreateBooking && !isBlocked" class="details--card--form">
-                <h2 class="card-title">Foutmelding</h2>
-                <p ng-if="errorRentalCheck || errorMessage">Vanwege onderstaande fout kon de boeking helaas niet gemaakt worden:</p>
-                <p ng-if="errorRentalCheck"><strong>{{ errorRentalCheckMessage }}</strong></p>
-                <p ng-if="errorMessage"><strong>{{ errorMessage }}</strong></p>
-                <p ng-if="!errorRentalCheck && !errorMessage">Vanwege een overwachte fout kon de boeking helaas niet gemaakt worden. Neem contact met ons op via het <a href="https://mywheels.nl/autodelen/community/contact/" target="_blank">contactformulier</a>.</p>
-
-                <!-- call to action buttons -->
-                <div class="details--card--form__navigation-buttons">
-                    <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(1, 2)">
-                        <md-icon>navigate_before</md-icon>
-                        {{ 'PREVIOUS' | translate}}
-                    </button>
-                </div>
-                <!-- /call to action buttons -->
-            </section>
-
-            <!-- if person is blocked after driver license check -->
-            <section ng-if="!isBusy && isBlocked" class="details--card--form">
-                <h2 class="card-title">Deze boeking is helaas niet mogelijk</h2>
-                <p>Om een betrouwbare community te kunnen garanderen, controleren we alle leden van MyWheels. Op basis van deze controle is een verhoogd risico geconstateerd. Daarom is je account gedeactiveerd. Je heb hierover een mail ontvangen met meer informatie. </p>
-            </section>
-
-            <!-- if person didn't create a booking but filled in personal information -->
-            <section ng-if="!isBusy && !isbooking && !isBlocked" class="details--card--form">
-                <h2 class="card-title">{{ 'DETAILS_PROFILE_PHOTO' | translate }}</h2>
-                <p>{{ 'DETAILS_PROFILE_SEARCH' | translate }} </p>
-
-                <!-- call to action buttons -->
-                <div class="details--card--form__navigation-buttons">
-                    <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="prevSection(1, 2)">
-                        <md-icon>navigate_before</md-icon>
-                        {{ 'PREVIOUS' | translate}}
-                    </button>
-                    <button type="button" name="button" ui-sref="owm.resource.search.list" class="mywheels-btn mywheels-btn-default btn--navigation__next">
-                        {{ 'SEARCH_CAR' | translate }}
-                        <md-icon class="text-white">navigate_next</md-icon>
-                    </button>
-                </div>
-                <!-- /call to action buttons -->
-            </section>
-
+            </div>
         </div>
     </div>
-    <!--/ card -->
-</section>
+</div>

@@ -9,12 +9,6 @@
 
 .home.landing {
 
-  color: #444;
-
-  .lead {
-    font-size: 1.2em;
-  }
-
   .discount-action-badges {
     position: relative;
 
@@ -87,12 +81,12 @@
       }
     }
   }
-  
+
   @media (max-width: 480px) {
     .discount-action-badges {
       overflow: hidden;
       padding: 1em 0;
-
+      
       .discount-action-badge {
         position: relative;
         top: -1em;
@@ -118,7 +112,7 @@
   }
 
   .hero {
-    background-image: url('//mywheels.nl/branding/img/bg.jpg');
+    background-image: url('../assets/img/bg/ijsjes.jpg');
     position: relative;
 
     .landing-title {
@@ -136,7 +130,7 @@
     }
   }
 
-  .infobox md-icon {
+  .infobox ng-md-icon {
     padding: 0;
     margin: auto .5em auto 0;
     color: @mywheels-green;
@@ -202,33 +196,17 @@
           display: inline-block;
 
           background: @mywheels-green;
-          background-repeat: no-repeat;
-          background-position: center center;
-          background-size: auto auto;
-          -webkit-background-size: auto auto;
-
+          
           width: 10rem;
           height: 10rem;
           line-height: 10rem;
           border-radius: 99rem;
 
-          md-icon {
+          ng-md-icon {
             color: #fff;
             width: 50px;
             height: 50px;
           }
-        }
-
-        &.one .circle {
-          background-image: url(//v.fastcdn.co/u/37edc5f4/16499236-0-ic-mode-edit-white-2.png);
-        }
-
-        &.two .circle {
-          background-image: url(//v.fastcdn.co/u/37edc5f4/16499271-0-ic-directions-car-wh.png);
-        }
-
-        &.three .circle {
-          background-image: url(//v.fastcdn.co/u/37edc5f4/16499301-0-ic-euro-symbol-white.png);
         }
 
         .step-label {
@@ -258,7 +236,7 @@
             width: 7rem;
             height: 7rem;
             line-height: 7rem;
-            md-icon {
+            ng-md-icon {
               transform: scale(.7);
             }
           }
@@ -319,19 +297,29 @@
 
       li {
         list-style: none;
-        min-height: 32px;
+        margin: 0 0 .2em 2.5em;
 
         .n {
+          float:left;
+          display: block;
           margin: 0 .5em;
           font-weight: bold;
+          width: 2em;
+          margin-right: .5em;
+          margin-left: -2.5em;
+          text-align: center;
+        }
+
+        ng-md-icon {
+          float:left;
+          display: block;
+          color: @mywheels-green;
+          height: 32px;
+          width: 2em;
+          margin-right: .5em;
+          margin-left: -2.5em;
         }
       }
-    }
-
-    md-icon {
-      color: @mywheels-green;
-      height: 32px;
-      width: 32px;
     }
   }
 
@@ -435,7 +423,7 @@
         font-size: 1.2em;
         background: rgba(255, 255, 255, .95);
         .lead p,
-        md-icon {
+        ng-md-icon {
           color: darken(@mywheels-blue, 4%);
         }
       }
@@ -443,7 +431,7 @@
         font-size: 1.2em;
         background: rgba(255, 255, 255, .95);
         .lead p,
-        md-icon {
+        ng-md-icon {
           color: darken(@mywheels-red, 2%);
         }
       }
