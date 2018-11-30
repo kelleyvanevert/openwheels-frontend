@@ -322,6 +322,7 @@ angular.module('openwheels', [
     $rootScope.containerIntro = (
       ($state.includes('owm.person.intro'))
     );
+    $rootScope.mdOk = ($rootScope.containerTransitional || $rootScope.containerHome);
   });
 
   // show an error on state change error

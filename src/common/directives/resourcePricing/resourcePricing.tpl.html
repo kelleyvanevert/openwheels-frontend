@@ -44,6 +44,9 @@
     </div>
 
     <!-- vaste prijs per km -->
+    <!-- (the `hidden-md` is an ugly fix, dependent on the specific current layout) -->
+    <div class="plus hidden-md" ng-if="!resource.refuelByRenter">+</div>
+
     <div class="secondary-item" ng-click="infoDialog('vasteBrandstofprijs')" ng-if="!resource.refuelByRenter">
       <ng-md-icon icon="local_gas_station"></ng-md-icon>
       <div class="lines">
