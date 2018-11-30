@@ -314,7 +314,7 @@ angular.module('openwheels', [
       $state.includes('invite') ||
       $state.includes('member') ||
       $state.includes('owm.person.details') ||
-      $state.includes('owm-landing')
+      $state.includes('owmlanding')
     );
     $rootScope.containerHome = (
       ($state.includes('home')) || ($state.$current.self.url === '/auto-verhuren')
