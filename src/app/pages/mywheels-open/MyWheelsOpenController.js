@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('owm-landing.mywheels-open', ['slick'])
+angular.module('owmlanding.mywheels-open', ['slick'])
 
 .controller('MyWheelsOpenController', function ($scope, $log, metaInfoService, appConfig, $anchorScroll, formSubmissionService, personService) {
 
