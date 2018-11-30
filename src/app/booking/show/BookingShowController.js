@@ -118,7 +118,7 @@ angular.module('owm.booking.show', [])
         return true;
       }());
 
-      $scope.showBoardComputerButtons = (booking.resource.locktypes.indexOf('smartphone') >= 0);
+      $scope.showBoardComputerButtons = (booking.resource.locktypes.indexOf('smartphone') >= 0) && !$scope.bookingEndedRealy;
       if ($scope.showBoardComputerButtons) {
         $scope.enableBoardComputerButtons = true &&
           (booking.status === 'accepted') && booking.ok && // booking is definitely accepted and OK
