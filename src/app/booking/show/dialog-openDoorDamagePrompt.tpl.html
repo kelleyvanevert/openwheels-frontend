@@ -3,6 +3,7 @@
   <md-toolbar>
     <div class="md-toolbar-tools">
       <h2>Auto openen</h2>
+
       <span flex></span>
       <md-button class="md-icon-button" ng-click="hide()">
         <ng-md-icon icon="close"></ng-md-icon>
@@ -35,21 +36,27 @@
       <p class="lead">
         Kun je deze schade even toelichten?
       </p>
-      <div class="form-group">
+      <div class="form-group lead">
         <textarea style="width: 100%;"
                   rows="2"
                   auto-resize
                   md-select-on-focus
                   ng-model="damageDescription"></textarea>
       </div>
-      <p style="text-align: right;">
+      <div class="dialog-buttons-right">
+        <button class="mywheels-btn mywheels-btn-border"
+                md-ink-ripple="#4b702c"
+                ng-click="schade = false;"
+                style="white-space: nowrap; margin: 10px 10px 0 0;">
+          Terug
+        </button>
         <button class="mywheels-btn mywheels-btn-big mywheels-btn-normal"
                 md-ink-ripple="#4b702c"
                 ng-click="reportDamageDescription()"
-                style="white-space: nowrap; margin-top: 10px;">
+                style="white-space: nowrap; margin: 10px 0 0 0;">
           Verstuur en open <!--<ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>-->
         </button>
-      </p>
+      </div>
     </div>
   </md-dialog-content>
 </md-dialog>

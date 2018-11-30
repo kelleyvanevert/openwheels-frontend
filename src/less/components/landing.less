@@ -296,21 +296,29 @@
 
       li {
         list-style: none;
-        min-height: 32px;
+        margin: 0 0 .2em 2.5em;
 
         .n {
+          float:left;
+          display: block;
           margin: 0 .5em;
           font-weight: bold;
+          width: 2em;
+          margin-right: .5em;
+          margin-left: -2.5em;
+          text-align: center;
+        }
+
+        ng-md-icon {
+          float:left;
+          display: block;
+          color: @mywheels-green;
+          height: 32px;
+          width: 2em;
+          margin-right: .5em;
+          margin-left: -2.5em;
         }
       }
-    }
-
-    ng-md-icon {
-      color: @mywheels-green;
-      height: 32px;
-      width: 32px;
-
-      margin-right: .5em;
     }
   }
 

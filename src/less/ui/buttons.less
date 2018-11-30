@@ -22,22 +22,22 @@
     z-index: 1;
     overflow: hidden;
 }
-.mywheels-btn[disabled] {
+.mywheels-btn[disabled],
+.mywheels-btn.mw-disabled {
     background: #b1adad;
     cursor: not-allowed;
 }
-.mywheels-btn[disabled]:hover {
+.mywheels-btn[disabled]:hover,
+.mywheels-btn.mw-disabled:hover {
     background: #b1adad;
     cursor: not-allowed;
 }
 .mywheels-btn-normal {
     //md-ink-ripple="#4b702c"
-    color: #fff;
     background: @mywheels-green;
 }
 .mywheels-btn-normal:hover {
     background: #699b40;
-    color: #fff;
 }
 
 
@@ -46,64 +46,85 @@ md-button.mw-green {
     background: @mywheels-green !important;
 }
 
+.mywheels-btn-default,
+.mywheels-btn-default:hover,
+.mywheels-btn-normal,
+.mywheels-btn-normal:hover,
+.mywheels-btn-warning,
+.mywheels-btn-warning:hover,
+.mywheels-btn-error,
+.mywheels-btn-error:hover,
+.mywheels-btn-call-to-action,
+.mywheels-btn-call-to-action:hover {
+    color: #fff;
+    ng-md-icon {
+        color: #fff;
+    }
+}
+
+.mywheels-btn-light,
+.mywheels-btn-light:hover,
+.mywheels-btn-transparent,
+.mywheels-btn-transparent:hover {
+    color: #000;
+    ng-md-icon {
+        color: #000;
+    }
+}
+
+.mywheels-btn-border,
+.mywheels-btn-border:hover {
+    color: #222;
+    ng-md-icon {
+        color: #222;
+    }
+}
+
 .mywheels-btn-default {
     //md-ink-ripple="#3a6d81"
-    color: #fff;
     background: @mywheels-blue;
 }
 .mywheels-btn-default:hover {
     background: #4a879f;
-    color: #fff;
 }
 .mywheels-btn-warning {
     //md-ink-ripple="#8f6700"
-    color: #fff;
     background: @mywheels-orange;
 }
 .mywheels-btn-call-to-action {
     //md-ink-ripple="#8f6700"
-    color: #fff;
     background: @mywheels-orange;
 }
 .mywheels-btn-warning:hover {
     background: #cd9300;
-    color: #fff;
 }
 .mywheels-btn-error {
     //md-ink-ripple="#9a3d26"
-    color: #fff;
     background: @mywheels-red;
 }
 .mywheels-btn-error:hover {
     background: #be4c2f;
-    color: #fff;
 }
 .mywheels-btn-light {
     //md-ink-ripple="#ded8d8"
-    color: #000;
     background: #fff;
 }
 .mywheels-btn-light:hover {
     background: #e0e0e0;
-    color: #000;
 }
 .mywheels-btn-transparant {
     //md-ink-ripple="#ded8d8"
-    color: #000;
     background: rgba(255, 255, 255, 0);
 }
 .mywheels-btn-transparant:hover {
     background: #e0e0e0;
-    color: #000;
 }
 .mywheels-btn-border {
-    color: #222;
     background: #eee;
     border: 1px solid #bbb;
 }
 .mywheels-btn-border:hover {
     background: #e0e0e0;
-    color: #000;
 }
 .mywheels-btn-span {
     background: none;
@@ -137,4 +158,12 @@ md-button.mw-green {
 .mywheels-btn-number::-webkit-inner-spin-button,
 .mywheels-btn-number::-webkit-outer-spin-button {
     -webkit-appearance: none;
+}
+
+.dialog-buttons-right {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap-reverse;
+    justify-content: flex-end;
+    align-items: center;
 }
