@@ -371,18 +371,39 @@
 </div>
 
 <!-- Open and close buttons -->
-<div class="card" ng-if="userPerspective === 'renter' && allowBoardComputer">
+<div class="board-computer-control card"
+     ng-show="showBoardComputerButtons">
   <div class="card">
     <div class="card-heading">
       <h3 class="card-title">Openen en sluiten</h3>
     </div>
     <div class="card-body text-center" id="resource__boardcomputer">
+      <!--
+      <p ng-if="!enableBoardComputerButtons">
+        Hier zou een soort tekstje kunnen staan zoals 'zodra de boeking betaald en geaccepteerd is, ...'
+        Maar dit moet dan wel in lijn worden gebracht met de notificatieschermen bovenaan de pagina,
+         anders krijgt de gebruiker misschien een verkeerd beeld van wat er allemaal al wel en niet is gedaan,
+         en wat de verwachtingen nog zijn. Voorlopig laat ik dit tekstje dus gewoon weg.
+      </p>
+      -->
       <ul class="list-inline">
         <li>
-          <button title="Open de auto" ng-click="openDoorDialog($event, resource)" class="btn btn-lg btn-default btn-success"><i class="fa fa-unlock fa-fw fa-lg"></i></button>
+          <button title="Open de auto"
+                  ng-click="boardComputerControl('openDoor', $event)"
+                  class="mywheels-btn mywheels-btn-big mywheels-btn-normal"
+                  ng-class="{ 'mw-disabled': !enableBoardComputerButtons }"
+                  md-ink-ripple="#4b702c">
+            <ng-md-icon icon="lock_open" size="36" style="width: 36px; height: 36px;"></ng-md-icon>
+          </button>
         </li>
         <li>
-          <button title="Sluit de auto" ng-click="closeDoor(resource)" class="btn btn-lg btn-default btn-danger"><i class="fa fa-lock fa-fw fa-lg"></i></button>
+          <button title="Sluit de auto"
+                  ng-click="boardComputerControl('closeDoor', $event)"
+                  class="mywheels-btn mywheels-btn-big mywheels-btn-error"
+                  ng-class="{ 'mw-disabled': !enableBoardComputerButtons }"
+                  md-ink-ripple="#9a3d26">
+            <ng-md-icon icon="lock" size="36" style="width: 36px; height: 36px;"></ng-md-icon>
+          </button>
         </li>
       </ul>
     </div>
