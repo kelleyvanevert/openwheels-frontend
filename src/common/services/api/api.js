@@ -46,6 +46,15 @@ angular.module('api', [])
   };
 
   api.invokeRpcMethod = function (rpcMethod, rpcParams, multiPartParams, isAnonymousMethod) {
+    // for debugging purposes
+    if (rpcMethod === 'boardcomputer.control') {
+      return $q(function (resolve, reject) {
+        setTimeout(function () {
+          resolve(true);
+        }, 500);
+      });
+    }
+
     var http;
     var token;
     var config = angular.copy(defaultConfig);
