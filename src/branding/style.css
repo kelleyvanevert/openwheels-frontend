@@ -5,23 +5,44 @@
 #resource_insurancePolicy,
 #create-resource,
 #person_slug_edit,
-#language-switch,
-.page-footer .footer-language-switch {
+#language-switch {
     display:none;
 }
 .home .hero {
-    background-position: 35% 80%;
+    background-position: 50% 50%;
+}
+.hero-overlay {
+    background: rgba(0, 0, 0, .05);
+}
+@media (max-width: 450px) {
+    .homepage-baseline {
+        height: 31rem;
+    }
+    .homepage-baseline-header h1 {
+        margin-bottom: 5px !important;
+    }
+    .imageblock {
+        background-position: 50% 40%;
+    }
 }
 @media (max-width: 768px) {
     .home .intro h1 {
         font-size: 32px;
     }
     .home .hero {
-        background-position: 60% 50% !important;
+        background-position: 50% 50%;
+    }
+    .imageblock {
+        background-position: 50% 40%;
     }
 }
 @media (max-width:992px) and (min-width:768px) {
     .home .intro .cta {
         padding-top: 105px;
+    }
+}
+@media (min-width:2000px) {
+    .home .hero {
+        background-position: 50% 45%;
     }
 }
