@@ -118,13 +118,27 @@
     .landing-title {
       text-shadow: 0.07rem 0.14rem 0.21rem rgba(0, 0, 0, .5);
       position: absolute;
-      top: 20%;
+      top: 25%;
       left: 0;
       right: 0;
 
+      a {
+        margin-top: 3.5em;
+        padding: .4em;
+        font-size: 1.7em;
+      }
+
+      @media (max-width: 480px) {
+        a {
+          margin-top: 1em;
+          padding: .4em;
+          font-size: 1.7em;
+        }
+      }
+
       .highlight {
         display: inline-block;
-        background: rgba(230, 165, 0, 0.65);
+        background: rgba(0,0,0,.5);
         padding: .2em .3em;
       }
     }
