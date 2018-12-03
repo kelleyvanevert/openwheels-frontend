@@ -12,9 +12,9 @@
       <div class="checklist">
           <p class="ng-scope">{{ 'LICENSE_DATA' | translate }}</p>
           <p><ul>
-              <li><md-icon>check</md-icon><span>{{ 'LICENSE_NOT_FOREIGN' | translate }}</span></li>
-              <li><md-icon>check</md-icon><span>{{ 'LICENSE_VALID' | translate }}</span></li>
-              <li><md-icon>check</md-icon><span>{{ 'LICENSE_OWN' | translate }}</span></li>
+              <li><ng-md-icon icon="check"></ng-md-icon><span>{{ 'LICENSE_NOT_FOREIGN' | translate }}</span></li>
+              <li><ng-md-icon icon="check"></ng-md-icon><span>{{ 'LICENSE_VALID' | translate }}</span></li>
+              <li><ng-md-icon icon="check"></ng-md-icon><span>{{ 'LICENSE_OWN' | translate }}</span></li>
           </ul></p>
       </div>
 
@@ -53,8 +53,8 @@
           </div>
       </section>
 
-      <div class="details--card--form__navigation-buttons">
-        <button type="button" class="mywheels-btn mywheels-btn-default btn--navigation__next" ng-click="submitDriverLicense()">
+      <div class="nav-buttons">
+        <button type="button" class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" ng-click="submitDriverLicense()">
           {{ 'SUBMIT' | translate}}
         </button>
       </div>

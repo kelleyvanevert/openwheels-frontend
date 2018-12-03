@@ -35,6 +35,7 @@
     "expect": false,
     "spyOn": false,
     "EventSource": false,
-    "google": false
+    "google": false,
+    "mw": false
   }
 }

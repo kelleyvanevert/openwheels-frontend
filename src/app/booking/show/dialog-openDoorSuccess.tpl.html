@@ -1,0 +1,86 @@
+
+<md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="30" flex-xl="25" class="mw-green">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>Auto wordt geopend</h2>
+
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content class="md-dialog-content">
+    <div>
+      <p class="lead text-success">
+        <span ng-if="damageStateReported && !thanks">Bedankt voor het doorgeven!<br /></span>
+        <strong>De auto opent binnen 15 seconden.</strong>
+      </p>
+
+      <!-- Optionally show a mess prompt -->
+      <div ng-show="reportMessDescription">
+        <div ng-show="!thanks">
+          <div ng-show="!mess">
+            <p class="lead">
+              Is de auto schoon van binnen?
+            </p>
+            <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between;">
+              <button class="mywheels-btn mywheels-btn-big mywheels-btn-error"
+                      md-ink-ripple="#9a3d26"
+                      ng-click="isMess()"
+                      style="white-space: nowrap; margin-top: 10px;">
+                Vies
+                <!--<ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>-->
+              </button>
+              <button class="mywheels-btn mywheels-btn-big mywheels-btn-normal"
+                      md-ink-ripple="#4b702c"
+                      ng-click="noMess()"
+                      style="white-space: nowrap; margin-top: 10px;">
+                Schoon
+                <!--<ng-md-icon icon="navigate_next" class="text-white"></ng-md-icon>-->
+              </button>
+            </div>
+          </div>
+          <div ng-show="mess">
+            <p class="lead">
+              Kun je dit even toelichten?
+            </p>
+            <div class="form-group lead">
+              <textarea style="width: 100%;"
+                        rows="2"
+                        auto-resize
+                        md-select-on-focus
+                        ng-model="messDescription"></textarea>
+            </div>
+            <div class="dialog-buttons-right">
+              <button class="mywheels-btn mywheels-btn-border"
+                      md-ink-ripple="#4b702c"
+                      ng-click="mess = false;"
+                      style="white-space: nowrap; margin: 10px 10px 0 0;">
+                Terug
+              </button>
+              <button class="mywheels-btn mywheels-btn-big mywheels-btn-normal"
+                      md-ink-ripple="#4b702c"
+                      ng-click="reportMessDescription()"
+                      style="white-space: nowrap; margin: 10px 0 0 0;">
+                Verstuur
+              </button>
+            </div>
+          </div>
+        </div>
+        <div ng-show="thanks">
+          <p class="lead">
+            Bedankt voor het doorgeven, en een fijne rit gewenst!
+          </p>
+          <div class="dialog-buttons-right">
+            <button class="mywheels-btn mywheels-btn-big mywheels-btn-border"
+                    ng-click="hide()"
+                    style="white-space: nowrap; margin: 10px 0 0 0;">
+              Sluiten
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </md-dialog-content>
+</md-dialog>

@@ -59,15 +59,15 @@
                 <div class="lead">
                     <ul>
                         <li>
-                            <md-icon size="32" aria-hidden="true">check</md-icon>
+                            <ng-md-icon size="32" icon="check" aria-hidden="true"></ng-md-icon>
                             Je verdient de vaste kosten van de auto terug.
                         </li>
                         <li>
-                            <md-icon size="32" aria-hidden="true">check</md-icon>
+                            <ng-md-icon size="32" icon="check" aria-hidden="true"></ng-md-icon>
                             Je verhuurt je auto vaker, omdat je niet thuis hoeft te zijn.
                         </li>
                         <li>
-                            <md-icon size="32" aria-hidden="true">check</md-icon>
+                            <ng-md-icon size="32" icon="check" aria-hidden="true"></ng-md-icon>
                             Je helpt zowel je buren, als je vrienden, als het milieu.
                         </li>
                     </ul>
@@ -119,20 +119,20 @@
             <h2>Wil jij ook meedoen? Zo meld je je aan</h2>
 
             <div class="open-steps">
-                <div class="step one">
-                    <div class="circle"></div>
+                <div class="step">
+                    <div class="circle"><ng-md-icon size="50" icon="create"></ng-md-icon></div>
                     <div class="step-label">Aanmelden</div>
                     <p>Is je auto jonger dan 10 jaar? Meld je dan aan via deze website.</p>
                 </div>
                 <div class="line"></div>
-                <div class="step two">
-                    <div class="circle"></div>
+                <div class="step">
+                    <div class="circle"><ng-md-icon size="50" icon="directions_car"></ng-md-icon></div>
                     <div class="step-label">Installeren</div>
                     <p>We kijken of je auto geschikt is. Vervolgens maken we een afspraak om MyWheels Open te installeren.</p>
                 </div>
                 <div class="line"></div>
-                <div class="step three">
-                    <div class="circle"></div>
+                <div class="step">
+                    <div class="circle"><ng-md-icon size="50" icon="euro_symbol"></ng-md-icon></div>
                     <div class="step-label">Verdienen</div>
                     <p>Begin met verhuren en krijg je opbrengsten uitbetaald.</p>
                 </div>
@@ -244,14 +244,14 @@
                         </div>
                         <div class="form-overlay form-submitted" ng-if="formSendStatus === 'success'">
                             <div class="lead" style="font-weight: bold;">
-                                <p><md-icon size="40">check</md-icon></p>
+                                <p><ng-md-icon icon="check" size="40" style="width: 20px; height: 40px;"></ng-md-icon></p>
                                 <p>Bedankt voor de interesse!</p>
                                 <p>We nemen spoedig contact met je op.</p>
                             </div>
                         </div>
                         <div class="form-overlay form-error" ng-if="formSendStatus === 'error'">
                             <div class="lead">
-                                <p><md-icon size="40">error</md-icon></p>
+                                <p><ng-md-icon icon="error" size="40" style="width: 20px; height: 40px;"></ng-md-icon></p>
                                 <p>
                                     Het spijt ons heel erg, maar er is iets misgegaan bij het versturen van het formulier.
                                     Je kunt in plaats hiervan een mailtje sturen naar <a href="support@mywheels.nl">support@mywheels.nl</a>.
@@ -285,7 +285,7 @@
         <div class="infoboxes">
             <div class="infobox">
                 <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                    <md-icon size="28" aria-hidden="true" style="font-size: 28px;">directions_car</md-icon>
+                    <ng-md-icon size="32" icon="directions_car" aria-hidden="true"></ng-md-icon>
                     <h3 class="infobox--title--text">Zo kan je veilig verhuren</h3>
                 </div>
                 <div class="lead">
@@ -295,7 +295,7 @@
             </div>
             <div class="infobox">
                 <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                    <md-icon size="28" aria-hidden="true" style="font-size: 28px;">security</md-icon>
+                    <ng-md-icon size="32" icon="security" aria-hidden="true"></ng-md-icon>
                     <h3 class="infobox--title--text">Wat kost het jou?</h3>
                 </div>
                 <div class="lead">
@@ -306,7 +306,7 @@
             </div>
             <div class="infobox">
                 <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                    <md-icon size="28" aria-hidden="true" style="font-size: 28px;">help_outline</md-icon>
+                    <ng-md-icon size="32" icon="contact_phone" aria-hidden="true"></ng-md-icon>
                     <h3 class="infobox--title--text">Wat verdienen wij eraan?</h3>
                 </div>
                 <div class="lead">
@@ -315,7 +315,7 @@
             </div>
             <div class="infobox">
                 <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                    <md-icon size="28" aria-hidden="true" style="font-size: 28px;">call_split</md-icon>
+                    <ng-md-icon size="32" icon="call_split" aria-hidden="true"></ng-md-icon>
                     <h3 class="infobox--title--text">Dag en nacht hulp bij pech</h3>
                 </div>
                 <div class="lead">
@@ -336,14 +336,14 @@
 
             <div class="ratings--average text-center">
                 <span class="ratings--average--stars">
-                    <md-icon aria-hidden="true" class="rating--title--icon">star</md-icon>
-                    <md-icon aria-hidden="true" class="rating--title--icon">star</md-icon>
-                    <md-icon aria-hidden="true" class="rating--title--icon">star</md-icon>
-                    <md-icon aria-hidden="true" class="rating--title--icon">star</md-icon>
-                    <md-icon aria-hidden="true" class="rating--title--icon grey-star">star_half</md-icon>
-                    <span class="ratings--average--text"><strong>8.7</strong><small> / 10</small></span>
+                    <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+                    <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+                    <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+                    <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+                    <ng-md-icon icon="star_half" aria-hidden="true" class="rating--title--icon grey-star"></ng-md-icon>
+                    <span class="ratings--average--text"><strong>8.1</strong><small> / 10</small></span>
                     <br/>
-                    Gebaseerd op 63 beoordelingen bij <a href="https://kiyoh.nl/mywheels/" target="_blank">Kiyoh</a>
+                    Gebaseerd op 64 beoordelingen bij <a href="https://kiyoh.nl/mywheels/" target="_blank">Kiyoh</a>
                 </span>
             </div>
 
@@ -351,11 +351,11 @@
                 <div class="rating">
                     <div layout="row">
                         <span class="rating--title--stars">
-                            <md-icon aria-hidden="true" class="rating--title--icon">star</md-icon>
-                            <md-icon aria-hidden="true" class="rating--title--icon">star</md-icon>
-                            <md-icon aria-hidden="true" class="rating--title--icon">star</md-icon>
-                            <md-icon aria-hidden="true" class="rating--title--icon">star</md-icon>
-                            <md-icon aria-hidden="true" class="rating--title--icon">star_half</md-icon>
+                            <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+                            <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+                            <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+                            <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+                            <ng-md-icon icon="star_half" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
                         </span>
                         <span class="rating--title--text">
                             <h3>9</h3>
@@ -368,11 +368,11 @@
                 <div class="rating">
                     <div layout="row">
                         <span class="rating--title--stars">
-                            <md-icon aria-hidden="true" class="rating--title--icon">star</md-icon>
-                            <md-icon aria-hidden="true" class="rating--title--icon">star</md-icon>
-                            <md-icon aria-hidden="true" class="rating--title--icon">star</md-icon>
-                            <md-icon aria-hidden="true" class="rating--title--icon">star</md-icon>
-                            <md-icon aria-hidden="true" class="rating--title--icon">star</md-icon>
+                            <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+                            <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+                            <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+                            <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+                            <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
                         </span>
                         <span class="rating--title--text">
                             <h3>10</h3>

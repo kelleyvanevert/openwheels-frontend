@@ -9,7 +9,7 @@
             <section class="upload-profile-image">
                 <img class="media-object " ng-if="!refreshProfileImage" person-profile-image="{ person: person, size: 'large', noCache: true }" />
                 <div class="file-input">
-                    <span class="filename" id="filename"><md-icon class="text-success" ng-if="profileImageSuccess">check</md-icon> {{profileFileName}} </span>
+                    <span class="filename" id="filename"><ng-md-icon icon="check" class="text-success" ng-if="profileImageSuccess"></ng-md-icon> {{profileFileName}} </span>
                     <label for="ProfileImage" class="mywheels-btn mywheels-btn-normal">Selecteer
                         <input type="file" name="imageFile" for="ProfileImage" class="uploadfile-input" id="ProfileImage" accept="image/x-png, image/gif, image/jpeg, image/jpg, application/pdf">
                     </label>
@@ -52,12 +52,12 @@
                 </div>
             </div>
             <p class="help-block">{{ 'USER_VISIBILITY_HELP_BLOCK' | translate }}</p>
-            <div class="details--card--form__navigation-buttons">
-                <button rel="prev" type="button" class="mywheels-btn mywheels-btn-transparant btn--navigation__previous" md-ink-ripple="#ded8d8" ng-click="back()">
-                    <md-icon>navigate_before</md-icon>
+            <div class="nav-buttons">
+                <button rel="prev" type="button" class="mywheels-btn mywheels-btn-border" md-ink-ripple="#ded8d8" ng-click="back()">
+                    <ng-md-icon icon="navigate_before"></ng-md-icon>
                     {{ 'PREVIOUS' | translate}}
                 </button>
-                <button id="submitForm" type="button" class="btn btn-primary" ng-disabled="aboutMeForm.$pristine || !aboutMeForm.$valid" ng-click="submitAboutMeForm()">
+                <button id="submitForm" type="button" class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" ng-disabled="aboutMeForm.$pristine || !aboutMeForm.$valid" ng-click="submitAboutMeForm()">
                     {{ 'SUBMIT' | translate }}
                 </button>
             </div>

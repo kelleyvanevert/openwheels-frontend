@@ -26,7 +26,7 @@
           <md-list class="margin-right">
               <md-list-item>
                 <!-- location -->
-                <md-icon alt="Icoon" aria-label="Icoon">directions_car</md-icon>
+                <ng-md-icon icon="directions_car" alt="Icoon" aria-label="Icoon"></ng-md-icon>
                 <div flex>
                     <span ng-if="resource.brand || resource.model" flex="none">{{ (resource.brand + ' ' + resource.model) | toTitleCase }}</span>
                     <span class="tag tag-warning" ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0" flex="none"> {{ 'MYWHEELS_OPEN_TIP' | translate }} 
@@ -38,7 +38,7 @@
               </md-list-item>
               <md-list-item>
                 <!-- location -->
-                <md-icon alt="Icoon" aria-label="Icoon">location_on</md-icon>
+                <ng-md-icon icon="location_on" alt="Icoon" aria-label="Icoon"></ng-md-icon>
                 <div flex>
                     <span> {{ resource.location }}, {{ resource.city }}
                       <span ng-if="resource.distance_to"> ({{ resource.distance_to | formatKilometers }})</span>
@@ -47,7 +47,7 @@
               </md-list-item>
               <md-list-item>
                 <!-- person -->
-                <md-icon alt="Icoon" aria-label="Icoon">person</md-icon>
+                <ng-md-icon icon="person" alt="Icoon" aria-label="Icoon"></ng-md-icon>
                 <div flex>
                     {{ resource.owner.firstName }}
                     <span rating-thumb="{ value : resource.rating.satisfaction, senders: resource.rating.senders }"></span>
@@ -55,7 +55,7 @@
               </md-list-item>
               <md-list-item hide-xs>
                 <!-- number of bookings -->
-                <md-icon alt="Icoon" aria-label="Icoon">check</md-icon>
+                <ng-md-icon icon="check" alt="Icoon" aria-label="Icoon"></ng-md-icon>
                   <div flex>
                     <span>
                       {{ resource.numberOfBookings | wasBookedTimes }}
@@ -65,7 +65,7 @@
           </md-list>
           <div class="next-icon">
               <a ui-sref="owm.resource.show({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id, start: startDate, end: endDate})">
-                  <md-icon alt="Icoon" aria-label="Icoon">navigate_next</md-icon>
+                  <ng-md-icon icon="navigate_next" alt="Icoon" aria-label="Icoon"></ng-md-icon>
               </a>
           </div>
       </md-card-body>

@@ -1,70 +1,91 @@
-<div ng-if="showPrice" ng-include="'resource/partials/resource-price.tpl.html'"></div>
+<form role="form" class="booking mywheels-form" name="createBookingForm">
 
-<form class="booking" name="createBookingForm" timeframe begin="booking.beginRequested" end="booking.endRequested">
+  <timeframe-picker name="timeframe"
+                    pickup-date-time="booking.beginRequested"
+                    return-date-time="booking.endRequested"
+                    mobile-autoscroll="true">
+  </timeframe-picker>
 
-  <div class="form-group">
-    <label>
-      {{ 'PICKUP_DATE' | translate }}
-      <button id="resource_now_button" type="button" class="btn btn-warning btn-xs" ng-click="setTimeframe(0)">{{ 'NOW' | translate }}</button>
+  <p>
+    <label for="res_comment">
+      <span ng-show="!showCommentBox" class="input-toggle" ng-click="showCommentBox = true">
+        <ng-md-icon icon="navigate_next"></ng-md-icon>
+        Voeg opmerking toe
+      </span>
+      <span ng-show="showCommentBox">Opmerking voor {{ resource.owner.firstName || 'de eigenaar' }}</span>
     </label>
-    <div class="row">
-      <div class="col-xs-7">
-        <input id="beginRequested" type="text" placeholder="{{ 'DATE' | translate }}" class="form-control pickadate-input" ng-model="booking.beginRequested" ng-change="onBeginDateChange()" pickadate="dateConfig">
-      </div>
-      <div class="col-xs-5">
-        <input id="endBequested" type="text" placeholder="{{ 'TIME' | translate }}" class="form-control pickadate-input" ng-model="booking.beginRequested" pickatime="timeConfig">
-      </div>
-    </div>
+  </p>
+  <div class="form-group" ng-show="showCommentBox">
+    <textarea id="res_comment" rows="2" auto-resize md-select-on-focus></textarea>
   </div>
 
-  <div class="form-group">
-    <label for="endTrip">{{ 'RETURN_DATE' | translate }}</label>
-    <div class="row">
-      <div class="col-xs-7">
-        <input type="text" placeholder="{{ 'DATE' | translate }}" class="form-control pickadate-input" ng-model="booking.endRequested" ng-change="onEndDateChange()" pickadate="dateConfig">
-      </div>
-      <div class="col-xs-5">
-        <input type="text" placeholder="{{ 'TIME' | translate }}" class="form-control pickadate-input" ng-model="booking.endRequested" pickatime="timeConfig">
-      </div>
-    </div>
+  <p>
+    <label for="res_discountCode">
+      <span ng-show="!(showDiscountCodeBox || booking.discountCode)" class="input-toggle" ng-click="showDiscountCodeBox = true">
+        <ng-md-icon icon="navigate_next"></ng-md-icon>
+        Voeg kortingscode toe
+      </span>
+      <span ng-show="(showDiscountCodeBox || booking.discountCode)">Kortingscode</span>
+    </label>
+  </p>
+  <div class="form-group mw-button" ng-show="(showDiscountCodeBox || booking.discountCode)">
+    <input id="res_discountCode" type="text" ng-model="booking.discountCode" ng-change="validateDiscountCode()" md-select-on-focus
+           ng-class="{
+             'discount-code-success': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.success,
+             'discount-code-error': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.error,
+           }" />
+    <md-button ng-if="booking.discountCode && !discountCodeValidation.showSpinner" class="md-icon-button" ng-click="removeLocalDiscountCode()">
+      <ng-md-icon icon="close" aria-hidden="true"></ng-md-icon>
+    </md-button>
+    <md-button ng-if="booking.discountCode && discountCodeValidation.showSpinner" class="md-icon-button">
+      <md-progress-circular md-diameter="24"></md-progress-circular>
+    </md-button>
   </div>
-
-  <div class="form-group">
-    <label translate="BOOKING.REMARK_REQUESTER_LABEL" translate-values="{ owner: resource.owner.firstName || 'de eigenaar' }"></label>
-    <textarea rows="2" id="remarkRequester" name="remarkRequester" class="form-control" ng-model="booking.remarkRequester"></textarea>
-  </div>
-
+<!--
   <div class="form-group"
        ng-if="features.discounts && !invitedDiscount"
        ng-class="{'has-error': discountCodeValidation.submitted && discountCodeValidation.error}">
-    <label >
+    <label class="control-label">
       {{ 'DISCOUNT' | translate }} {{me}} </label>
       <i class="fa fa-check text-success" ng-if="booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.success"></i>
       <i class="fa fa-spin fa-spinner" ng-if="discountCodeValidation.showSpinner"></i>
 
-    <input class="form-control" type="text" ng-model="booking.discountCode" ng-change="validateDiscountCode()" uib-collapse="isDiscountCollapsed"/>
+      <div class="input-group">
+        <input class="form-control" type="text" ng-model="booking.discountCode" ng-change="validateDiscountCode()" />
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button" ng-click="removeLocalDiscountCode()"
+                  style="padding: 4px;">
+            <ng-md-icon icon="close" aria-label="verwijder"></ng-md-icon>
+          </button>
+        </span>
+      </div>
   </div>
+-->
 
-  <div class="form-group" ng-if="contractOptions && contractOptions.length > 1">
-    <label for="contract">Contract</label>
-    <select id="contract" name="contract" class="form-control" ng-model="booking.contract" ng-options="c as (c.type.name + ' - ' + c.contractor.firstName) for c in contractOptions">
-      <option value="">-- {{ 'PICK_A_CONTRACT' | translate }} --</option>
-    </select>
+  <div ng-if="contractOptions && contractOptions.length > 1">
+    <p><label for="res_contract">Contract</label></p>
+    <div class="form-group mw-button">
+      <md-button class="md-icon-button" ng-click="">
+        <ng-md-icon icon="keyboard_arrow_down" aria-hidden="true"></ng-md-icon>
+      </md-button>
+      <select id="res_contract" name="contract" ng-model="booking.contract" ng-options="c as (c.type.name + ' - ' + c.contractor.firstName) for c in contractOptions">
+        <option value="">-- {{ 'PICK_A_CONTRACT' | translate }} --</option>
+      </select>
+    </div>
   </div>
 
   <div class="checkbox" ng-if="contractOptions && booking.contract.type.id !== 60 && booking.contract.ownRiskWaiver === 'not'">
-    <label for="riskReduction">
-        <input id="riskReduction" type="checkbox" ng-model="booking.riskReduction" />
+    <md-checkbox id="riskReduction" ng-model="booking.riskReduction">
         {{ 'DECREASE_OWN_RISK' | translate }}
         <info-icon tooltip-html="'DECREASE_OWN_RISK_INFO' | translate"></info-icon>
-    </label>
+    </md-checkbox>
   </div>
 
   <!-- availability & price -->
-  <div class="form-group">
+  <div class="form-group" style="margin: 1.5em 0;">
     <div class="text-center" ng-if="price || isPriceLoading || availability || isAvailabilityLoading">
-      <h4 ng-if="availability.available==='no'"><md-icon alt="Icoon" aria-label="Icoon" class="text-danger">close</md-icon> {{ 'NOT_AVAILABLE' | translate }}</h4>
-      <h4 ng-if="availability.available==='yes'"><md-icon alt="Icoon" aria-label="Icoon" class="text-success">check</md-icon> {{ 'AVAILABLE' | translate }}</h4>
+      <h4 ng-if="availability.available==='no'"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon> {{ 'NOT_AVAILABLE' | translate }}</h4>
+      <h4 ng-if="availability.available==='yes'"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon> {{ 'AVAILABLE' | translate }}</h4>
       <h4 ng-if="availability.available==='yes' && price">
         <div ng-if="!invitedDiscount">
           {{ 'COSTS' | translate }}:
@@ -94,8 +115,11 @@
 
   <div class="text-center">
     <p class="text-center">
-      <button class="btn btn-success mywheels-btn-big" ga-track-event="['booking', 'created_pre', user.isAuthenticated, null, true]" ng-disabled="discountCodeValidation.busy || discountCodeValidation.error || availability.available=='no' || loading.createBooking"
-        ng-click="createBooking(booking)">
+      <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action"
+              md-ink-ripple="#8f6700"
+              ga-track-event="['booking', 'created_pre', user.isAuthenticated, null, true]"
+              ng-disabled="discountCodeValidation.busy || discountCodeValidation.error || availability.available=='no' || loading.createBooking"
+              ng-click="createBooking(booking)">
         {{ 'CREATE_BOOKING' | translate }}
       </button>
     </p>
@@ -108,9 +132,9 @@
 
   <div class="booking-benefits-mywheels">
     <ul style="padding-left: 0px;">
-      <li class="benefit-1"><md-icon alt="Icoon" aria-label="Icoon">check</md-icon> <span>Uitgebreide verzekering</span></li>
-      <li class="benefit-2"><md-icon alt="Icoon" aria-label="Icoon">check</md-icon> <span>Leden geven ons een 8.7</span></li>
-      <li class="benefit-3"><md-icon alt="Icoon" aria-label="Icoon">check</md-icon> <span>24/7 klantenservice</span></li>
+      <li class="benefit-1"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon"></ng-md-icon> <span>Uitgebreide verzekering</span></li>
+      <li class="benefit-2"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon"></ng-md-icon> <span>Leden geven ons een 8.1</span></li>
+      <li class="benefit-3"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon"></ng-md-icon> <span>24/7 klantenservice</span></li>
     </ul>
   </div>
 

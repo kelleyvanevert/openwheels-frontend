@@ -6,7 +6,8 @@
 @import 'vendor/pickadate';
 @import 'vendor/fullcalendar';
 @import 'vendor/slick';
-@import 'vendor/ui-cropper/compile/unminified/ui-cropper.css';
+@import (less) 'vendor/ui-cropper/compile/unminified/ui-cropper.css';
+@import (less) 'vendor/angular-material-icons/angular-material-icons.css';
 .cropArea {
   background: #E4E4E4;
 }
@@ -19,6 +20,7 @@
 @import 'util';
 @import 'vendor-prefixes';
 @import 'transitional-container-sizes';
+
 /* UI elements */
 @import 'ui/forms';
 @import 'ui/animate';
@@ -40,6 +42,7 @@
 @import 'ui/booking';
 @import 'ui/datetime';
 @import 'ui/ng-autocomplete';
+
 /* Component-specific */
 @import 'components/shell';
 @import 'components/footer';
@@ -50,6 +53,7 @@
 @import 'components/table';
 @import 'components/resource';
 @import 'components/resourceFilter';
+@import 'components/resourcePricing.less';
 @import 'components/resourceCalendar';
 @import 'components/map';
 @import 'components/voucher';
@@ -64,3 +68,9 @@
 @import 'components/listYourCar.less';
 @import 'components/trips.less';
 @import 'components/invite.less';
+@import 'components/infoDialog.less';
+
+@import 'vendor_custom/eonasdan-bootstrap-datetimepicker/src/less/bootstrap-datetimepicker-build.less';
+
+
+@import 'fixes';

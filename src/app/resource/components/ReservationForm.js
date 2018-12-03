@@ -6,9 +6,10 @@ angular.module('owm.resource.reservationForm', [])
   return {
     restrict: 'E',
     scope: {
+      mobile: '=',
       person: '=',
       resource: '=',
-      booking: '=', // { beginRequested, endRequested, remarkRequester, contract }
+      booking: '=', // { beginRequested, endRequested, remarkRequester, contract }     , timeframe (!)
       showPrice: '=',
     },
     templateUrl: 'resource/components/reservationForm.tpl.html',
@@ -24,6 +25,7 @@ angular.module('owm.resource.reservationForm', [])
   // Check if this page is being called after login/singup in booking process
   handleAuthRedirect();
 
+  // This data does not change
   $scope.age = -1;
   if(authService.user.isAuthenticated && authService.user.identity.dateOfBirth) {
     var dob = moment(authService.user.identity.dateOfBirth);
@@ -38,87 +40,37 @@ angular.module('owm.resource.reservationForm', [])
     $scope.invitedDiscount = false;
   }
 
-  $scope.dateConfig = {
-    modelFormat: API_DATE_FORMAT,
-    formatSubmit: 'yyyy-mm-dd',
-    viewFormat: 'DD-MM-YYYY',
-    format: 'dd-mm-yyyy',
-    selectMonths: true
-  };
 
-  $scope.timeConfig = {
-    modelFormat: API_DATE_FORMAT,
-    formatSubmit: 'HH:i',
-    viewFormat: 'HH:mm',
-    format: 'HH:i',
-    interval: 15
-  };
+  // This data DOES change
 
-  function getStartOfThisQuarter() {
-    var mom = moment();
-    var quarter = Math.floor((mom.minutes() | 0) / 15); // returns 0, 1, 2 or 3
-    var minutes = (quarter * 15) % 60;
-    mom.minutes(minutes);
-    return mom;
+  function resetToPreTimeframe () {
+    $scope.availability = null;
+    $scope.isAvailabilityLoading = false;
+    $scope.discountCodeValidation = {
+      timer: null,
+      submitted: false,
+      busy: false,
+      showSpinner: false,
+      success: false,
+      error: false
+    };
   }
+  resetToPreTimeframe();
 
-  $scope.setTimeframe = function (addDays) {
-    var now = getStartOfThisQuarter();
-    $scope.booking.beginRequested = now.add('days', addDays).format(API_DATE_FORMAT);
-  };
+  $scope.showCommentBox = false;
+  $scope.showDiscountCodeBox = false;
 
-  function isToday(_moment) {
-    return _moment.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD');
-  }
-
-  $scope.onBeginDateChange = function () {
-    var booking = $scope.booking;
-    var begin = booking.beginRequested && moment(booking.beginRequested, API_DATE_FORMAT);
-    var end = booking.endRequested && moment(booking.endRequested, API_DATE_FORMAT);
-
-    if (begin && !isToday(begin)) {
-      begin = begin.startOf('day').add('hours', 9);
-      if (!end) {
-        end = begin.clone().startOf('day').add('hours', 18);
-      }
-      if (begin < end) {
-        booking.beginRequested = begin.format(API_DATE_FORMAT);
-        booking.endRequested = end.format(API_DATE_FORMAT);
-      }
-    }
-  };
-
-  $scope.onEndDateChange = function () {
-    var booking = $scope.booking;
-    var begin = booking.beginRequested && moment(booking.beginRequested, API_DATE_FORMAT);
-    var end = booking.endRequested && moment(booking.endRequested, API_DATE_FORMAT);
-
-    if (end && !isToday(end)) {
-      end = end.startOf('day').add('hours', 18);
-      if (!begin) {
-        begin = end.clone().startOf('day').add('hours', 9);
-      }
-      if (begin < end) {
-        booking.beginRequested = begin.format(API_DATE_FORMAT);
-        booking.endRequested = end.format(API_DATE_FORMAT);
-      } else {
-        booking.beginRequested = begin.format(API_DATE_FORMAT);
-        booking.endRequested = begin.format(API_DATE_FORMAT);
-      }
-    }
-  };
 
   $scope.price = null;
   $scope.isPriceLoading = false;
-  $scope.$watch('booking.beginRequested', onTimeFrameChange);
-  $scope.$watch('booking.endRequested', onTimeFrameChange);
   $scope.$watch('booking.riskReduction', loadPrice);
 
-  var timer;
+  var availabilityCheckTimer;
+  $scope.$watch('[booking.beginRequested, booking.endRequested]', function () {
+    $timeout.cancel(availabilityCheckTimer);
+    resetToPreTimeframe();
 
-  function onTimeFrameChange() {
-    $timeout.cancel(timer);
-    timer = $timeout(function () {
+    availabilityCheckTimer = $timeout(function () {
       loadAvailability().then(function (availability) {
         if (availability.available === 'yes') {
           loadContractsOnce().then(function () {
@@ -134,11 +86,9 @@ angular.module('owm.resource.reservationForm', [])
           }
         }
       });
-    }, 100);
-  }
+    }, 800);
+  });
 
-  $scope.availability = null;
-  $scope.isAvailabilityLoading = false;
 
   function loadAvailability() {
     var dfd = $q.defer();
@@ -245,18 +195,21 @@ angular.module('owm.resource.reservationForm', [])
     return s;
   };
 
-  $scope.discountCodeValidation = {
-    timer: null,
-    submitted: false,
-    busy: false,
-    showSpinner: false,
-    success: false,
-    error: false
+  $scope.removeLocalDiscountCode = function removeLocalDiscountCode () {
+    // Ideally, we'd just want to `$state.go('.', { discountCode: '' })`
+    //  and be done with it.
+    // But, because `app.js` doesn't treat `$stateChangeStart` and `$stateChangeSuccess`
+    //  lightly, we can't really do this. Hence still small 'workaround'
+    //  in which we `notify: false` and then change the discountCode ourselves.
+    //  (We know for sure this is the only change, so it doesn't hurt that much.)
+    $localStorage.discountCode = $scope.booking.discountCode = '';
+    resetToPreTimeframe();
+    $state.go('.', { discountCode: '' }, {
+      notify: false,
+    });
   };
 
-
   $scope.validateDiscountCode = validateDiscountCode;
-
   function validateDiscountCode() {
     var DEBOUNCE_TIMEOUT_MS = 500,
       validation = $scope.discountCodeValidation,
@@ -268,14 +221,14 @@ angular.module('owm.resource.reservationForm', [])
     validation.success = false;
     validation.error = false;
 
-    if (!code || !$scope.person || !$scope.booking.contract.id) {
+    if (!code || !$scope.person || !$scope.booking.contract || !$scope.booking.contract.id) {
       return;
     }
 
     validation.busy = true;
+    validation.showSpinner = true;
     validation.timer = $timeout(function validateDebounced() {
       $log.debug('validating', code);
-      validation.showSpinner = true;
 
       discountService.isApplicable({
           resource: $scope.resource.id,
@@ -438,7 +391,7 @@ angular.module('owm.resource.reservationForm', [])
         //  */
         .then(function (response) {
           Analytics.trackEvent('booking', 'created_post', response.id, $scope.resource.owner.id === 282 ? 11 : (!$scope.resource.isConfirmationRequiredOthers ? 4 : undefined), true);
-          if (!booking.discountCode) {
+          if (!booking.discountCode) { // === undefined (?)
             return response;
           } else {
             return discountService.apply({

@@ -17,6 +17,7 @@ angular.module('openwheels', [
   'ui.sortable', // bower install ng-sortable
   'validation.match', // see vendor_custom
   'angularMoment',
+  'ngMdIcons',
   'uiGmapgoogle-maps',
   'ngStorage',
   'pascalprecht.translate',
@@ -55,6 +56,7 @@ angular.module('openwheels', [
   'owm.metaInfoService',
   'owm.meHelperService',
   'angular-google-analytics',
+  'mobileDetectService',
 
   /* Directives */
   'form.validation',
@@ -87,7 +89,12 @@ angular.module('openwheels', [
   'sameHeightDirective',
   'autoblurDirective',
   'restrictToDirective',
+  'autoResize',
+  
+  'bootstrapDateTimePickerDirective',
+  'timeframePickerDirective',
   'validPhoneNumberDirective',
+  'resourcePricingDirective',
 
   /* Filters */
   'filters.util',
@@ -128,6 +135,26 @@ angular.module('openwheels', [
 
 .constant('API_DATE_FORMAT', 'YYYY-MM-DD HH:mm')
 .constant('FRONT_DATE_FORMAT', 'dddd DD MMMM HH:mm')
+
+.provider('authUrl', function () {
+  this.$get = ['$window', 'appConfig', function ($window, appConfig) {
+    return function authUrl (errorPath, successPath) {
+      var oAuth2CallbackUrl =
+        $window.location.protocol + '//' +
+        $window.location.host +
+        //$state.href('oauth2callback') +
+        '/assets/oauth2callback.html' +
+        '?' +
+        (!successPath ? '' : '&successPath=' + encodeURIComponent(successPath)) +
+        (!errorPath ? '' : '&errorPath=' + encodeURIComponent(errorPath));
+
+      return appConfig.authEndpoint +
+        '?client_id=' + appConfig.appId +
+        '&response_type=' + 'token' +
+        '&redirect_uri=' + encodeURIComponent(oAuth2CallbackUrl);
+    };
+  }];
+})
 
 .config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
 
@@ -216,7 +243,6 @@ angular.module('openwheels', [
   $rootScope.$state = $state;
   $rootScope.$stateParams = $stateParams;
   $rootScope.isLanguageLoaded = false;
-  var discountCode = $location.search().discountCode;
 
   $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState) {
     // show spinner
@@ -258,14 +284,7 @@ angular.module('openwheels', [
       Analytics.set('dimension4', userPreference);
     }
 
-    if(discountCode !== undefined){
-
-      if($localStorage.discountCode){
-        delete $localStorage.discountCode;
-      }
-
-      $localStorage.discountCode = discountCode;
-    }
+    $localStorage.discountCode = ($location.search().discountCode || $localStorage.discountCode);
 
     // scroll to top, except for place pages (for toggling map <--> list)
     // depends on presence of DOM-element with id="scroll-to-top-anchor"
@@ -294,7 +313,8 @@ angular.module('openwheels', [
       $state.includes('subscribe') ||
       $state.includes('invite') ||
       $state.includes('member') ||
-      $state.includes('owm-landing')
+      $state.includes('owm.person.details') ||
+      $state.includes('owmlanding')
     );
     $rootScope.containerHome = (
       ($state.includes('home')) || ($state.$current.self.url === '/auto-verhuren')
@@ -302,6 +322,7 @@ angular.module('openwheels', [
     $rootScope.containerIntro = (
       ($state.includes('owm.person.intro'))
     );
+    $rootScope.mdOk = ($rootScope.containerTransitional || $rootScope.containerHome);
   });
 
   // show an error on state change error

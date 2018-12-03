@@ -9,27 +9,37 @@
 @mywheels-red    : rgb(230, 90, 55);
 @mywheels-gray   : rgb(90, 90, 90);
 
-.text-info {
+ng-md-icon {
+  color: rgba(0,0,0,0.54);
+}
+
+.text-info,
+.text-info ng-md-icon {
   color: @mywheels-blue;
 }
 
-.text-success {
-  color: @mywheels-green;
+.text-success,
+.text-success ng-md-icon {
+  color: darken(@mywheels-green, 3%);
 }
 
-.text-warning {
+.text-warning,
+.text-warning ng-md-icon {
   color: @mywheels-orange;
 }
 
-.text-danger {
+.text-danger,
+.text-danger ng-md-icon {
   color: @mywheels-red;
 }
 
-.text-muted {
+.text-muted,
+.text-muted ng-md-icon {
   color: #999;
 }
 
-.text-white {
+.text-white,
+.text-white ng-md-icon {
   color: #fff;
 }
 

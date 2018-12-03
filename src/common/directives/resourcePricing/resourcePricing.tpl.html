@@ -1,0 +1,58 @@
+
+<div class="resource-pricing">
+  <div class="featured-price" md-ink-ripple="#527d2e" style="position: relative;">
+    <div class="pad">
+      <span class="price">{{ (showPricePerHour ? resource.price.hourRate : resource.price.dayRateTotal) | currency }}</span>
+      <span class="annotation">{{ showPricePerHour ? 'per uur' : 'per dag' }}</span>
+    </div>
+    <div class="price-per">
+      <a href="#" ng-click="showPricePerHour = false;" ng-class="{ active: !showPricePerHour }">dagprijs</a>
+      <a href="#" ng-click="showPricePerHour =  true;" ng-class="{ active:  showPricePerHour }">uurprijs</a>
+    </div>
+  </div>
+  <div class="secondary">
+
+    <!-- KILOMETERPRIJS -->
+
+    <!-- geen gratis kilometers -->
+    <div class="secondary-item" ng-click="infoDialog('kilometerkosten')" ng-if="!resource.price.kmFree">
+      <ng-md-icon icon="directions_car"></ng-md-icon>
+      <div class="lines">
+        <div class="line underline"><span class="price">{{ resource.price.kilometerRate | currency }}</span> per km</div>
+      </div>
+    </div>
+
+    <!-- wel gratis kilometers -->
+    <div class="secondary-item" ng-click="infoDialog('kilometerkosten')" ng-if="resource.price.kmFree">
+      <ng-md-icon icon="directions_car"></ng-md-icon>
+      <div class="lines">
+        <div class="line"><span class="free-km">{{ (showPricePerHour ? 'FREE_KM_HOUR' : 'FREE_KM_DAY') | translate }}</span></div>
+        <div class="line underline"><span class="price">{{ resource.price.kilometerRate | currency }}</span> per extra km</div>
+      </div>
+    </div>
+
+
+
+    <!-- BRANDSTOFBELEID -->
+
+    <!-- zelf tanken -->
+    <div class="secondary-item" ng-click="infoDialog('zelfTanken')" ng-if="resource.refuelByRenter">
+      <ng-md-icon icon="local_gas_station"></ng-md-icon>
+      <div class="lines">
+        <div class="line refuel-by-renter underline">zelf tanken</div>
+      </div>
+    </div>
+
+    <!-- vaste prijs per km -->
+    <!-- (the `hidden-md` is an ugly fix, dependent on the specific current layout) -->
+    <div class="plus hidden-md" ng-if="!resource.refuelByRenter">+</div>
+
+    <div class="secondary-item" ng-click="infoDialog('vasteBrandstofprijs')" ng-if="!resource.refuelByRenter">
+      <ng-md-icon icon="local_gas_station"></ng-md-icon>
+      <div class="lines">
+        <div class="line km-rate underline"><span class="price">{{ resource.price.fuelPerKilometer | currency }}</span> per km</div>
+      </div>
+    </div>
+
+  </div>
+</div>

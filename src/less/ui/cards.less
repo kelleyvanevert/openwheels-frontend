@@ -85,7 +85,8 @@
     color: #fff;
     height: 2.3em;
     vertical-align: middle;
-    md-icon {
+    md-icon,
+    ng-md-icon {
         color: #fff;
         font-size: 1.4em;
         height: auto;
@@ -188,6 +189,10 @@ md-card {
     }
     &-body {
         padding: 15px;
+
+        .escape-card-padding {
+            margin: -15px;
+        }
     }
     &-heading + &-body,
     &-heading + .collapse > &-body,
@@ -198,6 +203,30 @@ md-card {
         -webkit-box-shadow: none !important;
         box-shadow: none !important;
         border: 1px solid #eee;
+    }
+
+    .card-body.card-inverse.mw-warning {
+      background: @mywheels-orange;
+    }
+
+    &.inverted-heading .card-heading {
+        background: @mywheels-blue;
+
+        color: white;
+        h1, h2, h3, h4, h5, h6 { color: white; }
+    }
+
+    &.inverted-heading.mw-error .card-heading {
+        background: @mywheels-red;
+    }
+
+    &.inverted-heading.mw-warning .card-heading {
+        background: @mywheels-orange;
+    }
+
+    &.inverted-heading .card-body {
+        padding-top: 2em;
+        padding-bottom: 2em;
     }
 }
 .card-navigation {
@@ -216,7 +245,7 @@ md-card {
     background-color: #fff !important;
     border-top: 1px solid rgba(0,0,0,0.12);
     .md-button {
-        background-color: @mywheels-green !important;
+        background-color: @mywheels-orange !important;
         width: 100%;
         margin-left: 0 !important;
     }

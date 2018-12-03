@@ -1,0 +1,132 @@
+
+.resource-pricing {
+  margin-bottom: 2em;
+
+  .featured-price {
+    background: @mywheels-green;
+    
+    .pad {
+      padding: 1em 1.1em .7em 1.1em;
+    }
+
+    .price {
+      font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+      font-size: 2.4em;
+      color: white;
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    }
+    .annotation {
+      font-size: 1.4em;
+      color: white;
+      margin-left: .3em;
+    }
+
+    a.show-price-per-hour {
+      display: block;
+      color: #eee;
+      background: rgba(0, 0, 0, 0.12);
+      border-top: 1px solid rgba(56, 53, 53, 0.1);
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 0.8em;
+      text-align: center;
+      padding: .2em;
+    }
+
+    .price-per {
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 0.8em;
+
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      
+      background: rgba(0, 0, 0, 0.12);
+      border-top: 1px solid darken(@mywheels-green, 10%);
+      padding: 0 5px 1px;
+
+      a {
+        flex-grow: 1;
+        color: white;
+        text-align: center;
+        padding: .2em;
+
+        &.active {
+          background: @mywheels-green;
+          position: relative;
+          top: -1px;
+          color: white;
+          border-left: 1px solid darken(@mywheels-green, 10%);
+          border-right: 1px solid darken(@mywheels-green, 10%);
+          border-bottom: 1px solid darken(@mywheels-green, 10%);
+        }
+
+        outline: none !important;
+      }
+    }
+  }
+
+  .secondary {
+    padding: 1em .1em;
+    padding-bottom: .6em;
+    color: #777;
+    line-height: 1.8em;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    justify-content: space-evenly;
+    align-items: flex-start;
+
+    .secondary-item {
+      margin: 0 .2em;
+      padding: .2em .4em;
+      position: relative;
+      text-align: center;
+      border: 1px solid transparent;
+      border-radius: .3em;
+
+      ng-md-icon {
+        color: #444;
+        vertical-align: bottom;
+        margin: .2em;
+      }
+
+      .lines {
+//        text-align: left;
+      }
+
+      &:hover {
+        border-color: #ddd;
+        box-shadow: .1em .1em .3em rgba(0,0,0,.1);
+      }
+    }
+
+    .plus {
+      font-size: 1.4em;
+      margin-top: 1em;
+    }
+
+    .price {
+      color: #666;
+      font-size: 1.2em;
+    }
+  }
+
+  .secondary-line > span + span {
+    margin-left: .5em;
+  }
+
+  .free-km {
+    color: darken(@mywheels-green, 3%);
+    font-weight: bold;
+
+    padding: 3px 4px;
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+}
