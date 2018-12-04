@@ -468,7 +468,7 @@ angular.module('owm.person.details', [])
       .then(function(results) {
         return voucherService.createVoucher({
           person: $scope.me.id,
-          value: results.booking_price.total + results.km_price - results.friend_invite_discount,
+          value: results.booking_price.total + results.km_price - results.discount - results.friend_invite_discount,
         });
       })
       .then(function (voucher) {
