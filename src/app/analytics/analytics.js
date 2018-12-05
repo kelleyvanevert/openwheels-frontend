@@ -40,7 +40,7 @@ angular.module('openwheels.analytics', [
 
 // proxy the old `ga-track-event` directive to
 //  the new Angulartics implementation
-.directive('gaTrackEvent', ['Analytics', function (Analytics) {
+.directive('gaTrackEvent', function (Analytics) {
   return {
     restrict: 'A',
     scope: {
@@ -60,7 +60,7 @@ angular.module('openwheels.analytics', [
       });
     }
   };
-}])
+})
 
 // This is just a custom piece of code, because
 //  apparently `angulartics.google.tagmanager` doesn't
