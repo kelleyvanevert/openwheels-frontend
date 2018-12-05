@@ -38,6 +38,30 @@ angular.module('openwheels.analytics', [
   };
 })
 
+// proxy the old `ga-track-event` directive to
+//  the new Angulartics implementation
+.directive('gaTrackEvent', ['Analytics', function (Analytics) {
+  return {
+    restrict: 'A',
+    scope: {
+      options: '=gaTrackEvent',
+      condition: '=gaTrackEventIf',
+    },
+    link: function (scope, element, attrs) {
+      element.bind('click', function () {
+        if (attrs.gaTrackEventIf) {
+          if (!scope.condition) {
+            return; // Cancel this event if we don't pass the ga-track-event-if condition
+          }
+        }
+        if (scope.options) {
+          Analytics.trackEvent.apply(Analytics, scope.options);
+        }
+      });
+    }
+  };
+}])
+
 // This is just a custom piece of code, because
 //  apparently `angulartics.google.tagmanager` doesn't
 //  actually do the registering, and just uses
