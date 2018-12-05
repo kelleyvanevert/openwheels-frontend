@@ -81,8 +81,10 @@ module.exports = {
       'vendor_custom/ngAutocomplete/src/ngAutocomplete.js',
       'vendor_custom/pwstrength-bootstrap/pwstrength-bootstrap-1.2.2.js',
       'vendor_custom/angular-input-match/angular-input-match-1.4.1.js',
-      'vendor_custom/angular-track/dist/angular-ggaa.min.js',
       'vendor_custom/angular-google-places-autocomplete/src/autocomplete.js',
+
+      'vendor/angulartics/dist/angulartics.min.js',
+      'vendor/angulartics-google-tag-manager/dist/angulartics-google-tag-manager.min.js',
     ],
     fonts: [
       'vendor/font-awesome/fonts/*'
