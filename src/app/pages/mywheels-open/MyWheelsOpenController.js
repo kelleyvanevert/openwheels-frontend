@@ -2,7 +2,8 @@
 
 angular.module('owmlanding.mywheels-open', ['slick'])
 
-.controller('MyWheelsOpenController', function ($scope, $log, metaInfoService, appConfig, $anchorScroll, formSubmissionService, personService) {
+.controller('MyWheelsOpenController', function ($scope, $log, metaInfoService, appConfig, $anchorScroll, formSubmissionService, personService,
+  Analytics) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/mywheels-open'});
   metaInfoService.set({canonical: 'https://mywheels.nl' + '/mywheels-open'});
@@ -55,9 +56,11 @@ angular.module('owmlanding.mywheels-open', ['slick'])
       })
       .then(function (r) {
         $scope.formSendStatus = 'success';
+        Analytics.trackEvent('forms', 'mywheels_open_meedoen', undefined, undefined, true);
       })
       .catch(function (e) {
         $scope.formSendStatus = 'error';
+        Analytics.trackEvent('exceptions', 'mywheels_open_meedoen', undefined, undefined, true);
       })
       .finally(function () {
         // hi
