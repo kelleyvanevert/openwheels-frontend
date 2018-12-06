@@ -201,9 +201,9 @@ angular.module('openwheels', [
 
 })
 
-.config(function (uiGmapGoogleMapApiProvider) {
+.config(function (appConfig, uiGmapGoogleMapApiProvider) {
   uiGmapGoogleMapApiProvider.configure({
-    key: 'AIzaSyC1QrtfmsYNsJAfx9OOl5QX0oNpMVo3fbw',
+    key: appConfig.test.gmaps_js_api_key || 'AIzaSyC1QrtfmsYNsJAfx9OOl5QX0oNpMVo3fbw',
     v: '3.34.0',
     libraries: 'places',
     language: 'nl'
@@ -246,9 +246,33 @@ angular.module('openwheels', [
   $rootScope.$stateParams = $stateParams;
   $rootScope.isLanguageLoaded = false;
 
+  var hash = function(s) {
+    /* Simple hash function. */
+    var a = 1, c = 0, h, o;
+    if (s) {
+      a = 0;
+      for (h = s.length - 1; h >= 0; h--) {
+        o = s.charCodeAt(h);
+        a = (a<<6&268435455) + o + (o<<14);
+        c = a & 266338304;
+        a = c!==0?a^c>>21:a;
+      }
+    }
+    return String(a);
+  };
+
+  function setAnalyticsUser () {
+    if (authService.user.isAuthenticated) {
+      var userId = authService.user.identity.firstName + authService.user.identity.id;
+      var hashedUserId = hash(userId);
+      $analytics.setUsername(hashedUserId);
+    }
+  }
+
   $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState) {
     // show spinner
     alertService.load();
+    setAnalyticsUser();
   });
 
   $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
@@ -259,33 +283,12 @@ angular.module('openwheels', [
     // hide spinner
     alertService.loaded();
 
-    var hash = function(s) {
-      /* Simple hash function. */
-      var a = 1, c = 0, h, o;
-      if (s) {
-        a = 0;
-        for (h = s.length - 1; h >= 0; h--) {
-          o = s.charCodeAt(h);
-          a = (a<<6&268435455) + o + (o<<14);
-          c = a & 266338304;
-          a = c!==0?a^c>>21:a;
-        }
-      }
-      return String(a);
-    };
+    if (authService.user.isAuthenticated) {
+      setAnalyticsUser();
 
-    if(authService.user.isAuthenticated) {
-      var userId = authService.user.identity.firstName + authService.user.identity.id;
-      var hashedUserId = hash(userId);
       var userStatus = authService.user.identity.status;
       var numberBookings = authService.user.identity.numberOfBookings;
       var userPreference = authService.user.identity.preference;
-//      Analytics.set('&uid', hashedUserId);
-//      Analytics.set('dimension1', userStatus);
-//      Analytics.set('dimension3', numberBookings);
-//      Analytics.set('dimension4', userPreference);
-
-      $analytics.setUsername(hashedUserId);
 
       var dataLayer = window.dataLayer = window.dataLayer || [];
       dataLayer.push({
@@ -397,7 +400,8 @@ angular.module('openwheels', [
         gtmContainerId: config.gtm_container_id || null,
         ga_tracking_id: config.ga_tracking_id || null,
         fbAppId: config.fb_app_id || null,
-        features: config.features || {}
+        features: config.features || {},
+        test: config.test || {},
       });
       angular.bootstrap(angular.element('html'), ['openwheels']);
       return true;
