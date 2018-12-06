@@ -358,10 +358,11 @@ angular.module('owm.person.details', [])
       timeFrame: timeFrame,
       person: me.id,
       remark: remarkRequester
-    }).then(function (value) { //go to an other state
-      goToNextState(3, value.id); //set the booking id in the url
+    }).then(function (booking) { //go to an other state
+      Analytics.trackEvent('booking', 'created_post', booking.id, booking.resource.owner.id === 282 ? 11 : (!booking.resource.isConfirmationRequiredOthers ? 4 : undefined), true);
+      goToNextState(3, booking.id); //set the booking id in the url
       $scope.isAvailable = true; //set isAvailable to true to render the table
-      return value;
+      return booking;
     }).catch(function (err) {
       $log.debug(err.message);
       if (err.message === 'De auto is niet beschikbaar') {

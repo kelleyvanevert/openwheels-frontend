@@ -55,7 +55,7 @@ angular.module('openwheels', [
   'owm.featuresService',
   'owm.metaInfoService',
   'owm.meHelperService',
-  'angular-google-analytics',
+  // 'angular-google-analytics', // this is `angular-track`, and is being phased out
   'mobileDetectService',
 
   /* Directives */
@@ -211,10 +211,11 @@ angular.module('openwheels', [
 })
 
 .config(function (appConfig, googleTagManagerProvider) {
-    if (appConfig.gtmContainerId) {
-      googleTagManagerProvider.init(appConfig.gtmContainerId);
-    }
-  })
+  if (appConfig.gtmContainerId) {
+    googleTagManagerProvider.init(appConfig.gtmContainerId);
+  }
+})
+
 .config(function (appConfig, facebookProvider, twitterProvider) {
     // if (appConfig.features.facebook && appConfig.fbAppId) {
     //   facebookProvider.init(appConfig.fbAppId);
@@ -237,7 +238,8 @@ angular.module('openwheels', [
 })
 
 .run(function ($window, $log, $timeout, $state, $stateParams, $rootScope, $anchorScroll,
-  alertService, featuresService, linksService, metaInfoService, Analytics, authService, $location, $localStorage) {
+  alertService, featuresService, linksService, metaInfoService, Analytics, authService, $location, $localStorage,
+  $analytics) {
 
 
   $rootScope.$state = $state;
@@ -278,10 +280,19 @@ angular.module('openwheels', [
       var userStatus = authService.user.identity.status;
       var numberBookings = authService.user.identity.numberOfBookings;
       var userPreference = authService.user.identity.preference;
-      Analytics.set('&uid', hashedUserId);
-      Analytics.set('dimension1', userStatus);
-      Analytics.set('dimension3', numberBookings);
-      Analytics.set('dimension4', userPreference);
+//      Analytics.set('&uid', hashedUserId);
+//      Analytics.set('dimension1', userStatus);
+//      Analytics.set('dimension3', numberBookings);
+//      Analytics.set('dimension4', userPreference);
+
+      $analytics.setUsername(hashedUserId);
+
+      var dataLayer = window.dataLayer = window.dataLayer || [];
+      dataLayer.push({
+        'mywheels user status': userStatus,
+        'mywheels number of bookings': numberBookings,
+        'mywheels user preference': userPreference,
+      });
     }
 
     $localStorage.discountCode = ($location.search().discountCode || $localStorage.discountCode);
