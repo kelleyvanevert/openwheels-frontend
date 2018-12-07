@@ -16,7 +16,11 @@
     </label>
   </p>
   <div class="form-group" ng-show="showCommentBox">
-    <textarea id="res_comment" rows="2" auto-resize md-select-on-focus></textarea>
+    <textarea id="res_comment"
+              rows="2"
+              auto-resize
+              md-select-on-focus
+              ng-model="booking.remarkRequester"></textarea>
   </div>
 
   <p>
@@ -29,7 +33,11 @@
     </label>
   </p>
   <div class="form-group mw-button" ng-show="(showDiscountCodeBox || booking.discountCode)">
-    <input id="res_discountCode" type="text" ng-model="booking.discountCode" ng-change="validateDiscountCode()" md-select-on-focus
+    <input id="res_discountCode"
+           type="text"
+           ng-model="booking.discountCode"
+           ng-change="validateDiscountCode()"
+           md-select-on-focus
            ng-class="{
              'discount-code-success': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.success,
              'discount-code-error': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.error,
