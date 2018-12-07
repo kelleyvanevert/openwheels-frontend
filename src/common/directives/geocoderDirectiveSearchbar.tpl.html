@@ -13,7 +13,7 @@
              style="font-weight: normal;"
              ng-focus="handleFocus()"
              ng-blur="handleBlur()" />
-      <div class="clearbutton__flex" ng-show="search.text && !lightweight">
+      <div class="clearbutton__flex" ng-show="search.text">
         <md-button class="md-icon-button geo-button" style="width:24px !important;" ng-click="clear()" ga-track-event="['interaction', 'removeLocation', 'searchbar']">
           <ng-md-icon icon="close"></ng-md-icon>
         </md-button>

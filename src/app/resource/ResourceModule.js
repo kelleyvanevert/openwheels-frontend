@@ -31,10 +31,14 @@ angular.module('owm.resource', [
      * WORKAROUND FOR UI ROUTER ISSUE: $stateParams not updating after $location.search()
      * https://github.com/angular-ui/ui-router/issues/1546
      */
-    onEnter: ['$stateParams', 'resourceQueryService', function ($stateParams, resourceQueryService) {
-      resourceQueryService.parseStateParams($stateParams);
-    }],
+//    onEnter: ['$stateParams', 'resourceQueryService', function ($stateParams, resourceQueryService) {
+//      resourceQueryService.parseStateParams($stateParams);
+//    }],
     resolve: {
+      query: ['$stateParams', 'resourceQueryService', function ($stateParams, resourceQueryService) {
+        resourceQueryService.parseStateParams($stateParams);
+        return 'ok, done';
+      }],
       user: ['authService', function (authService) {
         return authService.userPromise();
       }]
