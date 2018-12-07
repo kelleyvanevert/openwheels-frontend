@@ -1,15 +1,27 @@
 <div class="app-menu">
 
+  <md-list ng-if="showGeoSearch">
+    <md-list-item id="menuGeoSearch" class="menu-item-signup">
+      <p>
+        <ow-geocoder-searchbar style="width: 100%;"
+                               lightweight="true"
+                               on-new-place="closeMenu"></ow-geocoder-searchbar>
+      </p>
+    </md-list-item>
+
+    <md-divider></md-divider>
+  </md-list>
+
   <md-list ng-if="!user.isAuthenticated">
-    <md-list-item id= "menuSignup" class="menu-item-signup" ng-click="navigate('owm.auth.signup')" ng-show="!invitedBySlug">
+    <md-list-item id="menuSignup" class="menu-item-signup" ng-click="navigate('owm.auth.signup')" ng-show="!invitedBySlug">
       <ng-md-icon icon="person_outline" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'SIGNUP' | translate }}</p>
     </md-list-item>
 
-    <md-list-item id= "menuSignup" class="menu-item-signup" ng-click="navigate('subscribe', {slug: invitedBySlug})" ng-show="invitedBySlug">
+    <md-list-item id="menuSignup" class="menu-item-signup" ng-click="navigate('subscribe', {slug: invitedBySlug})" ng-show="invitedBySlug">
       <ng-md-icon icon="person_outline" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'SIGNUP' | translate }}</p>
     </md-list-item>
 
-    <md-list-item id= "menuLogin" class="menu-item-login" ng-click="login()">
+    <md-list-item id="menuLogin" class="menu-item-login" ng-click="login()">
       <ng-md-icon icon="person" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'LOGIN' | translate }}</p>
     </md-list-item>
 
