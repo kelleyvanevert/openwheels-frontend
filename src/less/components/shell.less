@@ -18,6 +18,16 @@
 
 .app-toolbar {
   background-color: #fff !important;
+  overflow: hidden;
+
+  .search-mode-hide {
+    transition: width .3s ease;
+    padding: 0;
+  }
+
+  &.in-search-mode .search-mode-hide {
+    width: 0;
+  }
 
   .md-toolbar-tools {
     font-family: @headings-font-family;
@@ -74,9 +84,33 @@
   md-list-item p {
     color: @mywheels-gray;
   }
+  md-list-item > ng-md-icon:first-child,
+  md-list-item .md-list-item-inner > ng-md-icon:first-child {
+    margin-top: 10px;
+    margin-right: 16px;
+  }
 
   md-divider {
     margin-top: 8px;
     margin-bottom: 8px;
+  }
+
+  md-list-item#menuGeoSearch {
+    padding: 0;
+  }
+
+  ow-geocoder-searchbar {
+    ng-md-icon {
+      color: @mywheels-gray !important;
+      left: 16px !important;
+    }
+    input {
+      border: none !important;
+      box-shadow: none !important;
+      font-family: @headings-font-family;
+      font-size: 16px !important;
+
+      padding-left: calc(16px + 24px + 16px) !important;
+    }
   }
 }
