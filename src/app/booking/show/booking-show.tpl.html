@@ -782,10 +782,22 @@
   </div>
   <div uib-collapse="isDeclarationsCollapsed ">
     <div class="card-body">
-      <leave-review-teaser style="margin-bottom: 1em;"
-                           type="(userPerspective === 'renter') ? 'rating' : 'satisfaction'"
-                           sref="'owm.booking.rating-' + userPerspective"
-                           state-params="{ bookingId: booking.id }"></leave-review-teaser>
+      <div class="leave-review-teaser" style="margin-bottom: 1em;">
+        <a ui-sref="{{ 'owm.booking.rating-' + userPerspective + '({ bookingId: ' + booking.id + ', setsatisfaction: \'negative\' })' }}">
+          <ng-md-icon size="50"
+                      icon="thumb_down"
+                      satisfaction="negative"
+                      alt="Icoon"
+                      aria-label="Icoon"></ng-md-icon>
+        </a>
+        <a ui-sref="{{ 'owm.booking.rating-' + userPerspective + '({ bookingId: ' + booking.id + ', setsatisfaction: \'positive\' })' }}">
+          <ng-md-icon size="50"
+                      icon="thumb_up"
+                      satisfaction="positive"
+                      alt="Icoon"
+                      aria-label="Icoon"></ng-md-icon>
+        </a>
+      </div>
     </div>
   </div>
 </div>

@@ -18,18 +18,14 @@ angular.module('owm.booking.rating', [])
   $scope.userPerspective = userPerspective;
 
   // rating defaults
-  if (rating.satisfaction === 0) {
-    $scope.rating.satisfaction = rating.satisfaction;
+  if ($stateParams.setsatisfaction) {
+    $scope.rating.satisfaction = ({ positive: 1, negative: 0 })[$stateParams.setsatisfaction];
+    $scope.ratingChange = true;
   } else {
-    var satmap = {
-      negative: false,
-      neutral: null,
-      positive: true,
-    };
-    $scope.rating.satisfaction = rating.satisfaction || ($stateParams.setsatisfaction !== undefined ? satmap[$stateParams.setsatisfaction] : 1); // nullable boolean (see fix below)   
+    $scope.rating.satisfaction = (rating.satisfaction !== undefined ? rating.satisfaction : 1);
   }
-  $scope.rating.quality      = rating.quality     || ($stateParams.setrating !== undefined ? $stateParams.setrating : 0);
-  $scope.rating.cleanliness  = rating.cleanliness || ($stateParams.setrating !== undefined ? $stateParams.setrating : 0);
+  $scope.rating.quality      = rating.quality     || 0;
+  $scope.rating.cleanliness  = rating.cleanliness || 0;
 
   // fix api not returning nullable boolean
   if ( !(rating.satisfaction === false || rating.satisfaction === true || rating.satisfaction === null) ) {

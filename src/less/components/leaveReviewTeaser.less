@@ -1,47 +1,23 @@
 
 .leave-review-teaser {
-  .rrow {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  }
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   
   a {
     display: block;
+    margin: 0 20px;
   }
 
   ng-md-icon {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
   }
 
-  ng-md-icon[satisfaction='neutral'] {
-    transform: rotate(90deg);
+  ng-md-icon[satisfaction='negative'] {
+    color: @mywheels-red;
   }
-
-  &.activated {
-    ng-md-icon.active {
-      color: @mywheels-orange;
-    }
-    ng-md-icon[satisfaction='negative'].active {
-      color: @mywheels-red;
-    }
-    ng-md-icon[satisfaction='neutral'].active {
-      color: @mywheels-orange;
-    }
-    ng-md-icon[satisfaction='positive'].active {
-      color: @mywheels-green;
-    }
+  ng-md-icon[satisfaction='positive'] {
+    color: @mywheels-green;
   }
-/*
-  ng-md-icon.rate-zero,
-  &.activated ng-md-icon.rate-zero {
-    color: white;
-  }
-
-  ng-md-icon.rate-zero:hover,
-  &.activated ng-md-icon.rate-zero:hover {
-    color: #ccc;
-  }
-*/
 }
