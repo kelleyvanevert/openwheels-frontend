@@ -2,7 +2,7 @@
      ng-class="{ activated: activated }"
      ng-mouseout="deactivate()">
   
-  <div ng-if="(type === 'rating')">
+  <div class="rrow" ng-if="(type === 'rating')">
     <!--
     <a ui-sref="{{ srefForRating(0) }}">
       <ng-md-icon size="40"
@@ -23,7 +23,7 @@
                   ng-mouseover="setRating(num)"></ng-md-icon>
     </a>
   </div>
-  <div ng-if="(type === 'satisfaction')">
+  <div class="rrow" ng-if="(type === 'satisfaction')">
     <a ui-sref="{{ srefForSatisfaction(sat) }}"
        ng-repeat="sat in ['negative', 'neutral', 'positive']">
       <ng-md-icon size="40"
