@@ -44,7 +44,6 @@ angular.module('owm.resource', [
   $stateProvider.state('owm.resource.search', {
     url: '/auto-huren',
     abstract: true,
-    reloadOnSearch: false,
     views: {
       'main-full@shell': {
         controller: 'ResourceSearchController',
@@ -69,14 +68,12 @@ angular.module('owm.resource', [
 
   $stateProvider.state('owm.resource.search.list', {
     url: '',
-    reloadOnSearch: false,
     controller: 'ResourceSearchListController',
     templateUrl: 'resource/search/list/resource-search-list.tpl.html'
   });
 
   $stateProvider.state('owm.resource.search.map', {
     url: '/kaart',
-    reloadOnSearch: false,
     controller: 'ResourceSearchMapController',
     templateUrl: 'resource/search/map/resource-search-map.tpl.html'
   });
