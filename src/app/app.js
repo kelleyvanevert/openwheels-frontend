@@ -95,7 +95,6 @@ angular.module('openwheels', [
   'timeframePickerDirective',
   'validPhoneNumberDirective',
   'resourcePricingDirective',
-  'leaveReviewTeaserDirective',
 
   /* Filters */
   'filters.util',
