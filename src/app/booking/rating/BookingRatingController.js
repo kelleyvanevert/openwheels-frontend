@@ -5,7 +5,9 @@ angular.module('owm.booking.rating', [])
 /*
  * @param {string} userPerspective - 'renter' | 'owner'
  */
-.controller('BookingRatingController', function ($log, $scope, $state, $translate, alertService, ratingService, booking, rating, userPerspective, metaInfoService, appConfig) {
+.controller('BookingRatingController', function ($log, $scope, $state, $translate, alertService,
+  ratingService, booking, rating, userPerspective, metaInfoService, appConfig,
+  $stateParams) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/booking/rating/renter'});
   metaInfoService.set({canonical: 'https://mywheels.nl/booking/rating/renter'});
@@ -19,10 +21,15 @@ angular.module('owm.booking.rating', [])
   if (rating.satisfaction === 0) {
     $scope.rating.satisfaction = rating.satisfaction;
   } else {
-    $scope.rating.satisfaction = rating.satisfaction || 1; // nullable boolean (see fix below)   
+    var satmap = {
+      negative: false,
+      neutral: null,
+      positive: true,
+    };
+    $scope.rating.satisfaction = rating.satisfaction || ($stateParams.setsatisfaction !== undefined ? satmap[$stateParams.setsatisfaction] : 1); // nullable boolean (see fix below)   
   }
-  $scope.rating.quality      = rating.quality || 0;
-  $scope.rating.cleanliness  = rating.cleanliness || 0;
+  $scope.rating.quality      = rating.quality     || ($stateParams.setrating !== undefined ? $stateParams.setrating : 0);
+  $scope.rating.cleanliness  = rating.cleanliness || ($stateParams.setrating !== undefined ? $stateParams.setrating : 0);
 
   // fix api not returning nullable boolean
   if ( !(rating.satisfaction === false || rating.satisfaction === true || rating.satisfaction === null) ) {

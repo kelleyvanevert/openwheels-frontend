@@ -1,0 +1,38 @@
+<div class="leave-review-teaser"
+     ng-class="{ activated: activated }"
+     ng-mouseout="deactivate()">
+  
+  <div ng-if="(type === 'rating')">
+    <!--
+    <a ui-sref="{{ srefForRating(0) }}">
+      <ng-md-icon size="40"
+                  class="rate-zero"
+                  icon="close"
+                  alt="Icoon"
+                  aria-label="Icoon"
+                  ng-mouseover="setRating(0)"></ng-md-icon>
+    </a>
+    -->
+    <a ui-sref="{{ srefForRating(num) }}"
+       ng-repeat="num in [1,2,3,4,5]">
+      <ng-md-icon size="40"
+                  icon="{{ (activated && num <= rating) ? 'star' : 'star_border' }}"
+                  ng-class="{ active: (num <= rating) }"
+                  alt="Icoon"
+                  aria-label="Icoon"
+                  ng-mouseover="setRating(num)"></ng-md-icon>
+    </a>
+  </div>
+  <div ng-if="(type === 'satisfaction')">
+    <a ui-sref="{{ srefForSatisfaction(sat) }}"
+       ng-repeat="sat in ['negative', 'neutral', 'positive']">
+      <ng-md-icon size="40"
+                  icon="{{ satisfactionIcons[sat] }}"
+                  ng-class="{ active: (activated && satisfaction === sat) }"
+                  ng-attr-satisfaction="{{ sat }}"
+                  alt="Icoon"
+                  aria-label="Icoon"
+                  ng-mouseover="setSatisfaction(sat)"></ng-md-icon>
+    </a>
+  </div>
+</div>

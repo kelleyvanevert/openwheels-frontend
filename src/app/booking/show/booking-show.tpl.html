@@ -773,6 +773,23 @@
   </div>
 </div>
 
+<!-- Review -->
+<div class="card">
+  <div class="card-heading">
+    <h3 class="card-title">
+      {{ (userPerspective === 'renter') ? 'Beoordeel de rit' : 'Beoordeel de huurder' }}
+    </h3>
+  </div>
+  <div uib-collapse="isDeclarationsCollapsed ">
+    <div class="card-body">
+      <leave-review-teaser style="margin-bottom: 1em;"
+                           type="(userPerspective === 'renter') ? 'rating' : 'satisfaction'"
+                           sref="'owm.booking.rating-' + userPerspective"
+                           state-params="{ bookingId: booking.id }"></leave-review-teaser>
+    </div>
+  </div>
+</div>
+
 <!-- Tips and rules for renter of MyWheels Open -->
 <div class="card"  ng-if="userPerspective === 'renter' && !bookingEndedRealy">
   <div class="card-heading">

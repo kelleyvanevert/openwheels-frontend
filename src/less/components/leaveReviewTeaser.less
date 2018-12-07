@@ -1,0 +1,41 @@
+
+.leave-review-teaser {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  ng-md-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  ng-md-icon[satisfaction='neutral'] {
+    transform: rotate(90deg);
+  }
+
+  &.activated {
+    ng-md-icon.active {
+      color: @mywheels-orange;
+    }
+    ng-md-icon[satisfaction='negative'].active {
+      color: @mywheels-red;
+    }
+    ng-md-icon[satisfaction='neutral'].active {
+      color: @mywheels-orange;
+    }
+    ng-md-icon[satisfaction='positive'].active {
+      color: @mywheels-green;
+    }
+  }
+/*
+  ng-md-icon.rate-zero,
+  &.activated ng-md-icon.rate-zero {
+    color: white;
+  }
+
+  ng-md-icon.rate-zero:hover,
+  &.activated ng-md-icon.rate-zero:hover {
+    color: #ccc;
+  }
+*/
+}
