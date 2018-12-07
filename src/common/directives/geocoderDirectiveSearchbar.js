@@ -2,7 +2,7 @@
 
 angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMaterial'])
  
-.directive('owGeocoderSearchbar', function ($filter, Geocoder, resourceQueryService, $state, $mdMenu, $window, alertService, $location) {
+.directive('owGeocoderSearchbar', function ($rootScope, $log, $filter, Geocoder, resourceQueryService, $state, $mdMenu, $window, alertService, $location) {
   return {
     restrict: 'E',
     templateUrl: 'directives/geocoderDirectiveSearchbar.tpl.html',
@@ -20,9 +20,6 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
     link: function($scope, element) {
       $scope.geolocation = false;
 
-      $window.s = $state;
-      $window.loc = $location;
-
       if($scope.filters) {
         $scope.hasFilters = !$scope.filters.filters.fuelType && !$scope.filters.filters.resourceType && !$scope.filters.filters.minSeats;
       } else {
@@ -31,11 +28,17 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
       $scope.$mdMenu = $mdMenu;
       $scope.search = {};
 
-      if($scope.searchtext) {
+      if ($scope.searchtext) {
         $scope.search.text = $scope.searchtext;
       } else {
         $scope.search.text = resourceQueryService.data.text;
       }
+      $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+        if (toState.name.match(/^owm\.resource\.search/) && toParams.text && $scope.search.text !== toParams.text) {
+          $scope.search.text = toParams.text;
+          $log.log('$scope.search.text changed');
+        }
+      });
 
       $scope.$on('g-places-autocomplete:select', function(event, res) {
         handleEvent(res);
@@ -100,9 +103,6 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
 
       $scope.clear = function () {
         $scope.search.text = '';
-        setTimeout(function () {
-          element.find('input[form-control]').focus();
-        }, 10);
       };
 
       $scope.getLocation = function() {
