@@ -908,7 +908,7 @@
             <small ng-if="booking.person.phoneNumbers[0].verified" class="text-success">(geverifieerd)</small>
           </li>
           <li><ng-md-icon icon="check"></ng-md-icon>
-            {{ person.numberOfBookings | hasBookedTimes }}
+            {{ booking.person.numberOfBookings | hasBookedTimes }}
           </li>
           <li ng-if="booking.person.facebookUid"><ng-md-icon icon="share"></ng-md-icon>
             <a target="_blank" ng-href="https://facebook.com/{{ booking.person.facebookUid }}">Facebook</a>
