@@ -89,6 +89,10 @@ angular.module('owm.booking.show', [])
     $scope.allowDeclarations = contract.type.canHaveDeclaration && ($scope.booking.approved === 'OK' || $scope.booking.approved === null) && $scope.bookingStarted && !$scope.booking.resource.refuelByRenter && !booking.resource.fuelCardCar;
     $scope.allowDeclarationsAdd = $scope.allowDeclarations && moment().isBefore(moment(booking.endBooking).add(5, 'days'));
 
+    $scope.showReviewTeaser = (booking.status === 'accepted') && booking.ok && // booking is definitely accepted and OK
+      booking.beginBooking && booking.endBooking && // booking has a(n accepted) timeframe
+      (moment().isAfter(moment(booking.beginBooking)) || moment().isAfter(moment(booking.endBooking))); // bezig of geweest
+
     // whether to show (possibly deactivated) buttons to open/close the car
     $scope.showBoardComputerButtons = false;
 
