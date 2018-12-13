@@ -106,7 +106,7 @@ angular.module('owm.resource.show', [])
       }
       return path;
     })
-    .filter(url => url);
+    .filter(function (url) { return url; });
 
   if ($scope.images.length === 0) {
     $scope.images.push('assets/img/resource-avatar-large.jpg');
