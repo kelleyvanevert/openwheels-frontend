@@ -1,8 +1,64 @@
-<div ng-if="removed === false" class="container" ng-class="{ 'container-transitional': features.resourceSidebar }">
+<div ng-if="removed === false">
     <div>
+        <ng-owl-carousel class="owl-theme" owl-items="images" owl-properties="{
+            loop: (images.length > 2),
+            center: true,
+            nav: false,
+            dots: false,
+            responsive: {
+                '0': { items: 1 },
+                '768': { items: 2 },
+                '992': { items: 2.4 },
+                '1200': { items: 3 },
+            },
+        }">
+            <div class="item" data-ng-repeat="url in images">
+                <img src="{{ url }}" />
+            </div>
+        </ng-owl-carousel>
+    </div>
+    <div class="container" ng-class="{ 'container-transitional': features.resourceSidebar }" style="margin-top: -70px; z-index: 1; position: relative;">
         <div ng-class="{ 'col-md-8 col-xs-12' : features.resourceSidebar }" class="no-padding">
+            <div class="card resource-header mw">
+                <div class="card-body">
+                    <h1>{{ resource.alias || ('RESOURCE_NO_NAME' | translate) }}</h1>
+                    <div class="subtitle">
+                        <span class="subtitle-feature">
+                            {{ (resource.brand | toTitleCase) || ('UNKNOWN_BRAND' | translate) }}
+                            <span ng-if="resource.model">{{ resource.model }}</span>
+                        </span>
+                        <span ng-if="resource.city">
+                            <span class="bullet"></span>
+                            <span class="subtitle-feature">
+                                {{ resource.city | toTitleCase }}
+                            </span>
+                        </span>
+                        <!--
+                        <span class="bullet"></span>
+                        <span class="subtitle-feature">
+                            {{ resource.numberOfBookings | wasBookedTimes }}
+                        </span>
+                        -->
+                    </div>
+
+                    <div ng-include="'resource/partials/resource-key-features.tpl.html'"></div>
+
+                    <div class="resource-advertisement" ng-if="resource.advertisement">
+                        <h3>Over mijn auto</h3>
+
+                        <div class="user-text">
+                            <p style="white-space: pre-line;">{{ resource.advertisement }}</p>
+                        </div>
+                    </div>
+
+                    <div ng-include="'resource/partials/technische-kenmerken.tpl.html'"></div>
+
+                    <div ng-include="'resource/partials/opties-en-accessoires.tpl.html'"></div>
+                </div>
+            </div>
+
             <!-- edit -->
-            <div class="card card-navigation clearfix">
+            <div class="card mw card-navigation clearfix" ng-if="false">
 
                 <div ng-if="me" class="text-warning pull-right" style="padding-top: 3px;">
                     <div ng-if="!isFavoriteResolved">
@@ -21,60 +77,6 @@
                 <button ng-if="me && (resource.owner.id === me.id || resource.contactPerson.id === me.id)" ui-sref="owm.resource.edit({ resourceId: resource.id })" type="button" class="btn btn-link">
                     <i class="fa fa-cog"></i> {{ 'EDIT_RESOURCE' | translate }}
                 </button>
-            </div>
-
-            <!-- header -->
-            <div flex>
-                <md-card ng-class="{'ow-card': !isWindowSizeSM}">
-                    <md-card-header class="blue-header" ng-if="isWindowSizeSM">
-                        <md-card-header-text>
-                            <h1 class="resource-md-title">Huur {{ resource.alias || ('RESOURCE_NO_NAME' | translate) }} in {{ resource.city | toTitleCase }}</h1>
-                        </md-card-header-text>
-                    </md-card-header>
-                    <div ng-class="{'card-responsive': isWindowSizeSM}">
-                        <div class="md-card-image">
-                            <div class="media-object img-width50p pull-left md-card-image" resource-carousel="resource"></div>
-                        </div>
-                        <div class="md-card-padding">
-                            <md-card-title ng-if="!isWindowSizeSM">
-                                <md-card-title-text layout="colum" layout-wrap>
-                                    <h1 class="no-margin" style="font-size: 2rem;" flex="100">{{ resource.alias || ('RESOURCE_NO_NAME' | translate) }} in {{ resource.city | toTitleCase }}</h1>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-card-body class="ow-list-compact">
-                                <div class="card-body-margin">
-                                    <h3 style="margin-bottom: 5px;">{{ (resource.brand | toTitleCase) || ('UNKNOWN_BRAND' | translate) }}
-                                      <span ng-if="resource.model"> {{ resource.model }}</span>
-                                    </h3>
-                                        <span 
-                                            ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0" 
-                                            class="tag tag-warning" 
-                                            style="margin-top: 8px; margin-bottom: 8px; margin-left: 0px;"
-                                            id="mywheels-open-tip-label"
-                                        >
-                                            {{ 'MYWHEELS_OPEN_TIP' | translate }}
-                                            <md-tooltip md-direction="bottom" class="multiline">{{ 'MYWHEELS_OPEN_INFO' | translate }}</md-tooltip>
-                                        </span>
-                                        <span 
-                                            ng-if="resource.isNew && ['smartphone', 'chipcard'].indexOf(resource.locktype) < 0"
-                                            class="tag tag-success"
-                                            style="margin-top: 8px; margin-bottom: 8px; margin-left: 0px;"
-                                        >
-                                            {{ 'NEW_TIP' | translate }}
-                                        </span>
-                                        <span 
-                                            ng-if="resource.isNew && ['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0"
-                                            class="tag tag-success"
-                                            style="margin-left: 0px;"
-                                        >
-                                            {{ 'NEW_TIP' | translate }}
-                                        </span>
-                                    <div ng-include="'resource/partials/resource-features.tpl.html'"></div>
-                                </div>
-                            </md-card-body>
-                        </div>
-                    </div>
-                </md-card>
             </div>
 
             <!-- resource sidebar smaller screens (not in sidebar) -->
@@ -120,9 +122,11 @@
             </div>
 
             <!-- owner -->
-            <div class="card">
+            <div class="card mw">
                 <div class="card-heading">
-                    <h3 class="card-title">{{ 'OWNER' | translate }}</h3>
+                    <h3>Eigenaar</h3>
+                </div>
+                <div class="card-body">
                     <div class="media">
                         <img class="media-object pull-left img-user-normal" person-profile-image="{ person: resource.owner, size: 'normal' }" />
                         <div class="media-body">
@@ -137,23 +141,18 @@
                             </button>
                         </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <div ng-if="resource.advertisement">
-                        <h5>{{ 'ABOUT_CAR' | translate}}</h5>
-                        <p style="white-space:pre-line">{{ resource.advertisement }}</p>
-                    </div>
                     <div ng-if="resource.owner.about">
-                        <h5>{{ 'ABOUT_ME' | translate }}</h5>
                         <p style="white-space:pre-line">{{ resource.owner.about}}</p>
                     </div>
                 </div>
             </div>
 
             <!-- mywheels open benefits -->
-            <div class="card" ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0" id="mywheels_open_info">
+            <div class="card mw"
+                 id="mywheels_open_info"
+                 ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0">
                 <div class="card-heading">
-                    <h3 class="card-title">{{ 'MYWHEELS_OPEN_TITLE' | translate }}</h3>
+                    <h3>{{ 'MYWHEELS_OPEN_TITLE' | translate }}</h3>
                 </div>
                 <div class="card-body">
                     <div layout="row" layout-xs="column">
@@ -193,129 +192,10 @@
                 </div>
             </div>
 
-            <!-- resource info -->
-            <div class="card" id="resourceInfo">
-                <div class="card-heading">
-                    <h3 class="card-title">{{ 'RESOURCE_INFO' | translate }}</h3>
-                </div>
-                <div class="card-body">
-
-                    <div class="specifics">
-                        <div flex layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item fuel_type">
-                                <div flex="50" class="title">{{ 'FUEL_TYPE' | translate }}</div>
-                                <div flex="50" class="info">{{ (resource.fuelType | translate | toTitleCase) || ('UNKNOWN' | translate | toTitleCase) }}</div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item gear">
-                                <div flex="50" class="title">{{ 'GEAR' | translate }}</div>
-                                <div flex="50" class="info" ng-if="automaticGear >= 0">{{ 'AUTOMATIC_GEAR' | translate }}</div>
-                                <div flex="50" class="info" ng-if="automaticGear < 0">{{ 'MANUAL_GEAR' | translate }}</div>
-                            </div>
-                        </div>
-                        <div flex="100" layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item resource_type">
-                                <div flex="50" class="title">{{ 'RESOURCE_TYPE' | translate }}</div>
-                                <div flex="50" class="info">{{ resourceTypeValue }}</div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item minimum_age">
-                                <div flex="50" class="title">{{ 'MINIMUM_AGE' | translate }}</div>
-                                <div flex="50" class="info">{{ resource.minimumAge }} {{ 'YEAR' | translate }}</div>
-                            </div>
-                        </div>
-                        <div flex="100" layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item time_of_origin">
-                                <div flex="50" class="title">{{ 'TIME_OF_ORGIN' | translate }}</div>
-                                <div flex="50" class="info">{{ resource.bouwjaar || ('UNKNOWN' | translate) }}</div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item number_of_seats">
-                                <div flex="50" class="title">{{ 'NUMBER_OF_SEATS' | translate }}</div>
-                                <div flex="50" class="info">{{ resource.numberOfSeats }}</div>
-                            </div>
-                        </div>
-                        <div flex="100" layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item color">
-                                <div flex="50" class="title">{{ 'COLOR' | translate }}</div>
-                                <div flex="50" class="info">{{ (resource.color | toTitleCase) || ('UNKNOWN' | translate) }}</div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item created">
-                                <div flex="50" class="title">{{ 'RESOURCE_AGE' | translate }}</div>
-                                <div flex="50" class="info" ng-if="resource.created">{{ resource.created | resourceAge }}</div>
-                                <div flex="50" class="info" ng-if="!resource.created">{{ 'UNKNOWN' | translate }}</div>
-                            </div>
-                        </div>
-                        <div flex="100" layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item smoking">
-                                <div flex="50" class="title">{{ 'SMOKING' | translate }}</div>
-                                <div flex="50" class="info"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item pets">
-                                <div flex="50" class="title">{{ 'PETS' | translate }}</div>
-                                <div flex="50" class="info"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subTitle">
-                        <h3 class="card-title">{{ 'RESOURCE_PROPERTIES' | translate }}</h3>
-                    </div>
-                    <div class="specifics">
-                        <div flex="100" layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item airconditioning">
-                                <div flex="50" class="title">{{ 'ACCESSORIES.AIRCONDITIONING' | translate }}</div>
-                                <div flex="50" class="info" ng-if="airconditioning >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
-                                <div flex="50" class="info" ng-if="airconditioning < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item bike_carrier">
-                                <div flex="50" class="title">{{ 'ACCESSORIES.BIKE_CARRIER' | translate }}</div>
-                                <div flex="50" class="info" ng-if="bikeCarrier >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
-                                <div flex="50" class="info" ng-if="bikeCarrier < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                        </div>
-                        <div flex="100" layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item child_seat">
-                                <div flex="50" class="title">{{ 'ACCESSORIES.CHILD_SEAT' | translate }}</div>
-                                <div flex="50" class="info" ng-if="childSeat >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
-                                <div flex="50" class="info" ng-if="childSeat < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item mp3_connection">
-                                <div flex="50" class="title">{{ 'ACCESSORIES.MP3_CONNECTION' | translate }}</div>
-                                <div flex="50" class="info" ng-if="mp3Connection >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
-                                <div flex="50" class="info" ng-if="mp3Connection < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                        </div>
-                        <div flex="100" layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item navigation">
-                                <div flex="50" class="title">{{ 'ACCESSORIES.NAVIGATION' | translate }}</div>
-                                <div flex="50" class="info" ng-if="navigation >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
-                                <div flex="50" class="info" ng-if="navigation < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item wheelchair_friendly">
-                                <div flex="50" class="title">{{ 'ACCESSORIES.WHEELCHAIR_FRIENDLY' | translate }}</div>
-                                <div flex="50" class="info" ng-if="wheelchairFriendly >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
-                                <div flex="50" class="info" ng-if="wheelchairFriendly < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                        </div>
-                        <div flex="100" layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item towbar">
-                                <div flex="50" class="title">{{ 'ACCESSORIES.TOW_BAR' | translate }}</div>
-                                <div flex="50" class="info" ng-if="towbar >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
-                                <div flex="50" class="info" ng-if="towbar < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item winter_tires">
-                                <div flex="50" class="title">{{ 'ACCESSORIES.WINTER_TIRES' | translate }}</div>
-                                <div flex="50" class="info" ng-if="winterTires >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
-                                <div flex="50" class="info" ng-if="winterTires < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
             <!-- contact person -->
-            <div class="card" ng-if="me && resource.contactPerson && (resource.contactPerson.id !== resource.owner.id)">
+            <div class="card mw" ng-if="me && resource.contactPerson && (resource.contactPerson.id !== resource.owner.id)">
                 <div class="card-heading">
-                    <h3 class="card-title">{{ 'CONTACT_PERSON' | translate }}</h3>
+                    <h3>{{ 'CONTACT_PERSON' | translate }}</h3>
                     <div class="media">
                         <img class="media-object pull-left img-user-normal" person-profile-image="{ person: resource.contactPerson, size: 'normal' }" />
                         <div class="media-body">
@@ -333,19 +213,18 @@
                 </div>
                 <div class="card-body">
                     <div ng-if="resource.contactPerson.about">
-                        <h5>{{ 'ABOUT_ME' | translate }}</h5>
                         <p>{{ resource.contactPerson.about}}</p>
                     </div>
                 </div>
             </div>
 
             <!-- ratings -->
-            <div class="card" ng-if="features.ratings">
+            <div class="card mw" ng-if="features.ratings">
                 <div class="card-heading">
-                    <h3 class="card-title">
-                  <span ng-bind="'RATINGS' | translate"></span>
-                  &nbsp;<span ng-if="resource.ratings.length >= 1">({{ resource.ratings.length }})</span>
-                </h3>
+                    <h3>
+                      <span ng-bind="'RATINGS' | translate"></span>
+                      &nbsp;<span ng-if="resource.ratings.length >= 1">({{ resource.ratings.length }})</span>
+                    </h3>
                 </div>
                 <div class="card-body">
                     <div ng-include="'resource/partials/resource-rating-summary.tpl.html'"></div>
@@ -356,7 +235,7 @@
                 </div>
             </div>
 
-            <div ng-if="resource.isActive && features.social && !isWindowSizeMD" class="card">
+            <div ng-if="resource.isActive && features.social && !isWindowSizeMD" class="card mw">
                 <div class="card-body">
                     <p ng-if="resource.owner.id === me.id || resource.contactPerson.id === me.id">{{ 'SOCIAL_SHARE_RESOURCE' | translateOrDefault }}</p>
                     <p ng-if="resource.owner.id !== me.id && resource.contactPerson.id !== me.id">{{ 'SOCIAL_SHARE_RESOURCE_NOT_OWNER' | translateOrDefault }}</p>
@@ -404,9 +283,9 @@
             </div>
 
             <!-- location -->
-            <div class="card">
-                <div class="card-heading">
-                    <h3 class="card-title">{{ resource.location }} <small>{{ resource.city }}</small></h3>
+            <div class="card mw">
+                <div class="card-heading" ng-if="resource.location">
+                    <h3>{{ resource.location }} <small ng-if="resource.city">{{ resource.city }}</small></h3>
                 </div>
                 <ui-gmap-google-map class="google-map" center="map.center" zoom="map.zoom" draggable="false" dragging="map.dragging" bounds="map.bounds" events="map.events" options="map.options">
                     <!-- prefedined markers -->
@@ -417,7 +296,7 @@
                     </ui-gmap-marker>
                 </ui-gmap-google-map>
 
-                <div class="card-body">
+                <div class="card-body" ng-show="resource.city">
                     {{ 'RESOURCE_MORE_IN_CITY' | translate }} <a ui-sref="owm.resource.place.list({ city: (resource.city | replaceSpaceToDash | lowercase) })">{{ resource.city }}</a>
                 </div>
             </div>
@@ -479,6 +358,8 @@
     <!-- /row -->
 </div>
 
+
+<!-- "book now" floating bottom toolbar, for mobile -->
 <md-toolbar class="md-hue-2 fixed-call-to-action" ng-if="removed === false && !showBookingForm" hide-gt-xs>
     <div class="md-toolbar-tools">
         <md-button class="md-raised md-primary" ng-click="toggleBookingForm()" ng-if="!openDialogSpinner" ga-track-event="['booking', 'created_pre', user.isAuthenticated, null, true]">{{ 'BOOK_A_CAR' | translate }}</md-button>

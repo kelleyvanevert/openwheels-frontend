@@ -148,14 +148,6 @@ label[for=mywheelsOpen] {
       margin: auto;
     }
 }
-.resource-md-title {
-    font-size: 17.5px;
-    font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
-    font-weight: 700;
-    line-height: 1.1;
-    color: #fff !important;
-    margin: 0 !important;
-}
 
 .resourceOwnListMobile {
     div {
@@ -236,53 +228,77 @@ label[for=mywheelsOpen] {
     }
 }
 
-#resourceInfo {
-    .specifics {
-        .item {
-            .title {
-                font-weight: 550;
-            }
-            md-icon,
-            ng-md-icon {
-                font-size: 20px;
-                max-height: 20px;
-            }
-            padding: 10px;
-            border-top: 1px solid #f2f2f2;
-            border-bottom: 1px solid #f2f2f2;
-            height: 42px;
+.specifics-table {
+    border-top: 1px solid #ddd;
+    margin-bottom: 1.4em;
+
+    .item {
+        .title {
+            color: #777;
         }
-        .item:nth-child(odd) {
-            border-right: 1px solid #f2f2f2;
+        .info {
+            color: black;
         }
-        .item:nth-child(even) {
-            padding-left: 10px;
-            border-left: 1px solid #f2f2f2;
-        }
-    }
-    .subTitle {
-        margin-top: 20px;
+        padding: .8rem;
+        border-bottom: 1px solid #ddd;
     }
 }
 @media all and (max-width: 600px) {
-     #resourceInfo {
-        .specifics {
-            .item:nth-child(odd) {
-                border-right: 0;
-            }
-            .item:nth-child(even) {
-                border-left: 0;
-                background-color: #eee;
-            }
+    .specifics-table {
+        .item:nth-child(odd) {
+            border-right: 0;
+        }
+        .item:nth-child(even) {
+            border-left: 0;
+            background-color: #f5f5f5;
         }
     }
 }
 @media all and (min-width: 600px) {
-     #resourceInfo {
-        .specifics {
-            .specificRow:nth-child(odd) {
-                background-color: #eee;
-            }
+    .specifics-table {
+        .specificRow:nth-child(odd) {
+            background-color: #f5f5f5;
+        }
+    }
+}
+
+.resource-key-features {
+    margin: 2rem 0;
+    font-size: 1.8rem;
+    font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+    color: #444;
+
+    background: #f5f5f5;
+    padding: .5rem;
+    border-radius: 1rem;
+
+    .key-features-row {
+        margin: 1.2rem 0;
+    }
+
+    ng-md-icon {
+        margin-right: 1rem;
+        color: black;
+    }
+}
+
+.resource-header {
+    h1 {
+        font-family: @headings-font-family;
+        color: black;
+    }
+    .subtitle {
+        font-size: 1.3em;
+        color: #777;
+        margin-top: -.4em;
+
+        .bullet {
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            background: #888;
+            margin: .15em .5em;
+            border-radius: 999px;
         }
     }
 }

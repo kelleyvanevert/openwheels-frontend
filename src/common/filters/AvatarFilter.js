@@ -6,8 +6,11 @@ angular.module('filters.avatar', [])
   return function(resourcePics, size) {
     var avatar = 'assets/img/resource-avatar-' + size + '.jpg';
 
-    if(resourcePics && resourcePics[size]) {
-      avatar = appConfig.serverUrl + '/' + resourcePics[size];
+    if (resourcePics && resourcePics[size]) {
+      avatar = resourcePics[size];
+      if (!avatar.match(/^http/)) {
+        avatar = appConfig.serverUrl + '/' + avatar;
+      }
     }
     return avatar;
   };

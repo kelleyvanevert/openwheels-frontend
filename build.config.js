@@ -83,6 +83,9 @@ module.exports = {
       'vendor_custom/angular-input-match/angular-input-match-1.4.1.js',
       'vendor_custom/angular-google-places-autocomplete/src/autocomplete.js',
 
+      'vendor/owl.carousel/dist/owl.carousel.js',
+      'vendor/angular-owl-carousel2/src/angular-owl-carousel-2.js',
+
       'vendor/angulartics/dist/angulartics.min.js',
       'vendor/angulartics-google-tag-manager/dist/angulartics-google-tag-manager.min.js',
     ],

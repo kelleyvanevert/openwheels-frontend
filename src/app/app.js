@@ -90,11 +90,14 @@ angular.module('openwheels', [
   'autoblurDirective',
   'restrictToDirective',
   'autoResize',
+
+  'angular-owl-carousel-2',
   
   'bootstrapDateTimePickerDirective',
   'timeframePickerDirective',
   'validPhoneNumberDirective',
   'resourcePricingDirective',
+  'hasFeatureIconDirective',
 
   /* Filters */
   'filters.util',
