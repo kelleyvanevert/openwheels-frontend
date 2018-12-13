@@ -45,6 +45,9 @@ module.exports = {
       'vendor/angular-google-maps/dist/angular-google-maps.js',
       'vendor/lodash/dist/lodash.js', // required by angular-google-maps
 
+      'vendor/angular-sticky/dist/angular-sticky.js',
+      //'vendor/ngSticky/lib/sticky.js',
+
        // front page slider
       'vendor/slick-carousel/slick/slick.js',
       'vendor/angular-slick/dist/slick.js',

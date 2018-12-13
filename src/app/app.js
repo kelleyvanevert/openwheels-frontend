@@ -92,6 +92,7 @@ angular.module('openwheels', [
   'autoResize',
 
   'angular-owl-carousel-2',
+  'hl.sticky',
   
   'bootstrapDateTimePickerDirective',
   'timeframePickerDirective',

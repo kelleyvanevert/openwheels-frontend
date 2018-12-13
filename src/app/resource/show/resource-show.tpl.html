@@ -17,7 +17,10 @@
             </div>
         </ng-owl-carousel>
     </div>
-    <div class="container" ng-class="{ 'container-transitional': features.resourceSidebar }" style="margin-top: -70px; z-index: 1; position: relative;">
+    <!-- style="margin-top: -70px; z-index: 1; position: relative;" -->
+    <div id="resource-page-container"
+         class="container"
+         ng-class="{ 'container-transitional': features.resourceSidebar }">
         <div ng-class="{ 'col-md-8 col-xs-12' : features.resourceSidebar }" class="no-padding">
             <div class="card resource-header mw">
                 <div class="card-body">
@@ -235,52 +238,7 @@
                 </div>
             </div>
 
-            <div ng-if="resource.isActive && features.social && !isWindowSizeMD" class="card mw">
-                <div class="card-body">
-                    <p ng-if="resource.owner.id === me.id || resource.contactPerson.id === me.id">{{ 'SOCIAL_SHARE_RESOURCE' | translateOrDefault }}</p>
-                    <p ng-if="resource.owner.id !== me.id && resource.contactPerson.id !== me.id">{{ 'SOCIAL_SHARE_RESOURCE_NOT_OWNER' | translateOrDefault }}</p>
-                    <div class="share-buttons text-center">
-                        <a 
-                            href="#"
-                            socialshare
-                            socialshare-provider="facebook"
-                            socialshare-via="appConfig.fbAppId"
-                            socialshare-text="Huur een {{ resource.brand | toTitleCase }} {{ resource.model | toTitleCase }} voor {{ resource.price.dayRateTotal | currency }} per dag via MyWheels"
-                            socialshare-hashtags="autodelen"
-                            socialshare-url="{{ shareUrl }}"
-                            class="btn btn-link"
-                            ga-track-event="['interaction', 'shareResourceFacebook', 'resourceShow']"
-                        >
-                            <i class="fa fa-fw fa-1x fa-facebook"></i>Facebook
-                        </a>
-                        <a 
-                            href="#"
-                            socialshare
-                            socialshare-provider="twitter"
-                            socialshare-text="Huur een {{ resource.brand | toTitleCase }} {{ resource.model | toTitleCase }} voor {{ resource.price.dayRateTotal | currency }} per dag via MyWheels"
-                            socialshare-hashtags="autodelen"
-                            socialshare-url="{{ shareUrl }}"
-                            class="btn btn-link"
-                            ga-track-event="['interaction', 'shareResourceTwitter', 'resourceShow']"
-
-                        >
-                            <i class="fa fa-fw fa-1x fa-twitter"></i>Twitter
-                        </a>
-                        <a 
-                            href="#"
-                            socialshare
-                            socialshare-provider="whatsapp"
-                            socialshare-text="Huur een {{ resource.brand | toTitleCase }} {{ resource.model | toTitleCase }} voor {{ resource.price.dayRateTotal | currency }} per dag via MyWheels"
-                            socialshare-url="{{ shareUrl }}"
-                            class="btn btn-link"
-                            ga-track-event="['interaction', 'shareResourceWhatsApp', 'resourceShow']"
-                            hide-gt-xs
-                        >
-                            <i class="fa fa-fw fa-1x fa-whatsapp"></i>WhatsApp
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <div ng-include="'resource/partials/social.tpl.html'" ng-if="!isWindowSizeMD"></div>
 
             <!-- location -->
             <div class="card mw">
@@ -307,51 +265,23 @@
         <!-- resource sidebar -->
         <div ng-if="features.resourceSidebar && isWindowSizeMD" class="col-md-4 hidden-xs hidden-sm">
             <div class="card">
+                <resource-pricing resource="resource"></resource-pricing>
+            </div>
+
+            <div class="card reservation-form-card" hl-sticky offset-top="20" container="resource-page-container">
+                <div class="not-sticky-connect"></div>
+                <!--
+                <div class="sticky-header">
+                    <h4>Reserveer nu</h4>
+                </div>
+                -->
                 <div class="card-body">
-                    <!--<div ng-include="'resource/partials/resource-price.tpl.html'"></div>-->
-                    <div class="escape-card-padding">
-                        <resource-pricing resource="resource"></resource-pricing>
-                    </div>
                     <div ng-if="unavailable" ng-include="'resource/partials/resource-unavailable.tpl.html'"></div>
                     <reservation-form ng-if="!unavailable" person="me" resource="resource" booking="booking"></reservation-form>
                 </div>
             </div>
 
-            <div ng-if="resource.isActive && features.social" class="card">
-                <div class="card-body">
-                    <p ng-if="resource.owner.id === me.id || resource.contactPerson.id === me.id">{{ 'SOCIAL_SHARE_RESOURCE' | translateOrDefault }}</p>
-                    <p ng-if="resource.owner.id !== me.id && resource.contactPerson.id !== me.id">{{ 'SOCIAL_SHARE_RESOURCE_NOT_OWNER' | translateOrDefault }}</p>
-                    <div class="share-buttons text-center">
-                        <a 
-                            href="#"
-                            socialshare
-                            socialshare-provider="facebook"
-                            socialshare-via="appConfig.fbAppId"
-                            socialshare-text="Huur een {{ resource.brand | toTitleCase }} {{ resource.model | toTitleCase }} voor {{ resource.price.dayRateTotal | currency }} per dag via MyWheels"
-                            socialshare-hashtags="autodelen"
-                            socialshare-url="{{ shareUrl }}"
-                            class="btn btn-link"
-                            ga-track-event="['interaction', 'shareResourceFacebook', 'resourceShow']"
-                        >
-                            <i class="fa fa-fw fa-1x fa-facebook"></i>Facebook
-                        </a>
-                        <a 
-                            href="#"
-                            socialshare
-                            socialshare-provider="twitter"
-                            socialshare-text="Huur een {{ resource.brand | toTitleCase }} {{ resource.model | toTitleCase }} voor {{ resource.price.dayRateTotal | currency }} per dag via MyWheels"
-                            socialshare-hashtags="autodelen"
-                            socialshare-url="{{ shareUrl }}"
-                            class="btn btn-link"
-                            ga-track-event="['interaction', 'shareResourceTwitter', 'resourceShow']"
-
-                        >
-                            <i class="fa fa-fw fa-1x fa-twitter"></i>Twitter
-                        </a>
-                    </div>
-                </div>
-            </div>
-
+            <!--<div ng-include="'resource/partials/social.tpl.html'"></div>-->
         </div>
 
     </div>
