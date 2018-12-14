@@ -263,7 +263,7 @@ label[for=mywheelsOpen] {
 }
 
 .resource-key-features {
-    margin: 1.6rem 0;
+    margin: 2rem 0;
     font-size: 1.3em;
     font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
     color: #444;
@@ -274,17 +274,22 @@ label[for=mywheelsOpen] {
 
     .key-features-row .item {
         margin: 1rem 0;
-    }
+        padding-left: 34px;
+        position: relative;
 
-    ng-md-icon {
-        margin-right: 1rem;
-        color: black;
+        ng-md-icon {
+            margin-right: 1rem;
+            color: black;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
     }
 }
 
 @media all and (max-width: 480px) {
     .resource-key-features {
-        margin: .8rem 0;
+        margin: 1.4rem 0;
         font-size: 1.1em;
         .key-features-row .item {
             margin: .4rem 0;
@@ -308,28 +313,6 @@ label[for=mywheelsOpen] {
 
     &.is-sticky .not-sticky-connect {
         display: none;
-    }
-
-    .sticky-header {
-        background: white;
-        padding: 1rem 15px;
-        border-top-left-radius: 3px;
-        border-top-right-radius: 3px;
-
-        h4 {
-            text-indent: -9999px;
-            margin: 0;
-            padding: 0;
-            color: white;
-        }
-    }
-
-    &.is-sticky .sticky-header {
-        background: @mywheels-green;
-
-        h4 {
-            text-indent: 0;
-        }
     }
 }
 

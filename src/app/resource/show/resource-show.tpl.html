@@ -33,10 +33,28 @@
         </ng-owl-carousel>
     </div>
 
-    <div id="resource-page-container"
-         class="container"
-         ng-class="{ 'container-transitional': features.resourceSidebar }">
-        <div ng-class="{ 'col-md-8 col-xs-12' : features.resourceSidebar }" class="no-padding">
+    <div class="return-toolbar-container container container-transitional hidden-xs">
+        <div class="return-toolbar">
+            <button type="button"
+                    ui-sref="owm.resource.search.list"
+                    class="btn btn-link return">
+                <ng-md-icon size="32" icon="arrow_back"></ng-md-icon>
+                <md-tooltip md-direction="top">{{ 'RESOURCE_BACK_TO_LIST' | translate }}</md-tooltip>
+            </button>
+
+            <button ng-if="(me && (resource.owner.id === me.id || resource.contactPerson.id === me.id))"
+                    ui-sref="owm.resource.edit({ resourceId: resource.id })"
+                    type="button"
+                    class="btn btn-link edit-resource">
+                <ng-md-icon size="32" icon="create"></ng-md-icon>
+                <md-tooltip md-direction="top">{{ 'EDIT_RESOURCE' | translate }}</md-tooltip>
+            </button>
+        </div>
+    </div>
+
+    <div id="resource-page-container" class="container container-transitional">
+
+        <div class="col-md-8 col-xs-12 no-padding">
             <div class="card resource-header mw">
                 <div class="card-body">
                     <div flex layout="row">
@@ -111,7 +129,7 @@
             </div>
 
             <!-- resource sidebar smaller screens (not in sidebar) -->
-            <div class="card" ng-if="!features.resourceSidebar || !isWindowSizeMD" id ="priceBookingContainer">
+            <div class="card" ng-if="!isWindowSizeMD" id="priceBookingContainer">
                 <div class="card-body">
                     <!-- price -->
                     <!--<div ng-include="'resource/partials/resource-price.tpl.html'"></div>-->
@@ -291,18 +309,13 @@
         <!-- /col -->
 
         <!-- resource sidebar -->
-        <div ng-if="features.resourceSidebar && isWindowSizeMD" class="col-md-4 hidden-xs hidden-sm">
+        <div ng-if="isWindowSizeMD" class="col-md-4 hidden-xs hidden-sm">
             <div class="card">
                 <resource-pricing resource="resource"></resource-pricing>
             </div>
 
-            <div class="card reservation-form-card" hl-sticky offset-top="30" container="resource-page-container">
+            <div class="card reservation-form-card" hl-sticky offset-top="20" container="resource-page-container">
                 <div class="not-sticky-connect"></div>
-                <!--
-                <div class="sticky-header">
-                    <h4>Reserveer nu</h4>
-                </div>
-                -->
                 <div class="card-body">
                     <div ng-if="unavailable" ng-include="'resource/partials/resource-unavailable.tpl.html'"></div>
                     <reservation-form ng-if="!unavailable" person="me" resource="resource" booking="booking"></reservation-form>
@@ -328,7 +341,7 @@
 </md-toolbar>
 
 
-<div ng-if="removed === true" class="container" ng-class="{ 'container-transitional': features.resourceSidebar }">
+<div ng-if="removed === true" class="container container-transitional">
     <div class="col-xs-12 no-padding">
 
         <md-card >
