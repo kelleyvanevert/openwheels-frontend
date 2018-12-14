@@ -1,32 +1,65 @@
 <div ng-if="removed === false">
-    <div>
-        <ng-owl-carousel class="owl-theme" owl-items="images" owl-properties="{
-            loop: (images.length > 2),
-            center: true,
-            nav: false,
-            dots: false,
-            responsive: {
-                '0': { items: 1 },
-                '768': { items: 2 },
-                '992': { items: 2.4 },
-                '1200': { items: 3 },
-            },
-        }">
-            <div class="item" data-ng-repeat="url in images">
+    <div class="carousel-background">
+        <div class="carousel-background-image" ng-if="images.length < 3" ng-style="carouselBackgroundImage"></div>
+        <ng-owl-carousel class="owl-theme"
+            owl-items="images"
+            owl-ready="owlReady($api)"
+            owl-properties="{
+                loop: (images.length > 2),
+                center: true,
+                nav: true,
+                dots: false,
+                responsive: {
+                    '0': { items: 1 },
+                    '300': { items: 1 },
+                    '400': { items: 1.2 },
+                    '500': { items: 1.5 },
+                    '600': { items: 1.8 },
+                    '700': { items: 2 },
+                    '800': { items: 2.2 },
+                    '900': { items: 2.4 },
+                    '1000': { items: 2.6 },
+                    '1200': { items: 2.7 },
+                    '1400': { items: 3 },
+                },
+            }"
+            ng-click="owlClick($event)">
+            <!-- ng-click doesn't work on automatically cloned elements :|-->
+            <div class="item"
+                 ng-attr-index="{{ i }}"
+                 ng-repeat="(i, url) in images">
                 <img src="{{ url }}" />
             </div>
         </ng-owl-carousel>
     </div>
-    
+
     <div id="resource-page-container"
-         style="margin-top: -70px; z-index: 1; position: relative;"
          class="container"
          ng-class="{ 'container-transitional': features.resourceSidebar }">
         <div ng-class="{ 'col-md-8 col-xs-12' : features.resourceSidebar }" class="no-padding">
             <div class="card resource-header mw">
                 <div class="card-body">
-                    <h1>{{ resource.alias || ('RESOURCE_NO_NAME' | translate) }}</h1>
+                    <div flex layout="row">
+                        <h1 class="single-line" flex>
+                            Huur {{ resource.alias || ('RESOURCE_NO_NAME' | translate) }} {{ resource.city ? 'in ' + resource.city : '' }}
+                        </h1>
+                        <md-button ng-if="me" class="is-favorite-button md-icon-button md-accent" aria-label="Favorite"
+                                              ng-class="{ 'is-favorite': isFavorite, 'loading': !isFavoriteResolved }">
+                            <ng-md-icon size="28" icon="favorite_border" ng-if="isFavoriteResolved && !isFavorite" ng-click="toggleFavorite(true)"></ng-md-icon>
+                            <ng-md-icon size="28" icon="favorite" ng-if="isFavoriteResolved && isFavorite" ng-click="toggleFavorite(false)"></ng-md-icon>
+                            <md-progress-circular md-mode="indeterminate" ng-if="!isFavoriteResolved"></md-progress-circular>
+                        </md-button>
+                    </div>
+
                     <div class="subtitle">
+                        <span ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0">
+                            <span class="tag tag-warning mw-badge mw-badge-open">MyWheels Open</span>
+                            <span class="bullet"></span>
+                        </span>
+                        <span ng-if="resource.isNew">
+                            <span class="tag tag-warning mw-badge mw-badge-new">Nieuw</span>
+                            <span class="bullet"></span>
+                        </span>
                         <span class="subtitle-feature">
                             {{ (resource.brand | toTitleCase) || ('UNKNOWN_BRAND' | translate) }}
                             <span ng-if="resource.model">{{ resource.model }}</span>
@@ -37,18 +70,12 @@
                                 {{ resource.city | toTitleCase }}
                             </span>
                         </span>
-                        <!--
-                        <span class="bullet"></span>
-                        <span class="subtitle-feature">
-                            {{ resource.numberOfBookings | wasBookedTimes }}
-                        </span>
-                        -->
                     </div>
 
                     <div ng-include="'resource/partials/resource-key-features.tpl.html'"></div>
 
                     <div class="resource-advertisement" ng-if="resource.advertisement">
-                        <h3>Over mijn auto</h3>
+                        <h2>Over mijn deelauto</h2>
 
                         <div class="user-text">
                             <p style="white-space: pre-line;">{{ resource.advertisement }}</p>
@@ -269,7 +296,7 @@
                 <resource-pricing resource="resource"></resource-pricing>
             </div>
 
-            <div class="card reservation-form-card" hl-sticky offset-top="20" container="resource-page-container">
+            <div class="card reservation-form-card" hl-sticky offset-top="30" container="resource-page-container">
                 <div class="not-sticky-connect"></div>
                 <!--
                 <div class="sticky-header">

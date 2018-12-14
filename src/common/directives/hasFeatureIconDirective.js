@@ -24,9 +24,9 @@
         type: '@', // "has", "allow"
       },
       template: '<span class="has-feature-icon" ng-class="{ has: has, hasnot: !has }">' +
-        '<ng-md-icon ng-if="has" icon="check_circle" alt="{{ label }}" aria-hidden="true"></ng-md-icon>' +
-        '<ng-md-icon ng-if="!has" icon="cancel" alt="{{ label }}" aria-hidden="true"></ng-md-icon>' +
-        ' {{ label }}' +
+        '<ng-md-icon ng-if="has" icon="check_circle" alt="{{ label }}" aria-label="{{ label }}" aria-hidden="true"></ng-md-icon>' +
+        '<ng-md-icon ng-if="!has" icon="cancel" alt="{{ label }}" aria-label="{{ label }}" aria-hidden="true"></ng-md-icon>' +
+        //' <span ng-if="type == \'allow\'">{{ label }}</span>' +
       '</span>',
       controller: function ($scope) {
         $scope.label = (labels[$scope.type] || labels.has)[$scope.has ? 1 : 0];
