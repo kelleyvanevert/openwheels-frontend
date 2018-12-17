@@ -226,6 +226,7 @@ angular.module('personalDataDirective', [])
                 'isAvailableFriends': true
               }
             }).then(function(){
+              Analytics.trackEvent('resource', 'resource_finished', $scope.resource.id, undefined, true);
               // send owner to next page
               $log.debug($rootScope.personSubmitted);
               $rootScope.personSubmitted = true;
