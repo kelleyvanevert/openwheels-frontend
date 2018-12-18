@@ -335,7 +335,7 @@
       <table class="table">
         <tr>
         <tr>
-          <td style="width:100%">Benodigd voor je reserveringen</td>
+          <td style="width:100%">Benodigd voor je ritten</td>
           <td class="text-right">{{ requiredValue.value.sub_total | currency }}</td>
         </tr>
         <tr ng-if="requiredValue.value.debt > 0">
@@ -345,6 +345,10 @@
         <tr>
           <td>Af: je huidige rijtegoed</td>
           <td class="text-right">{{ requiredValue.value.credit | currency }}</td>
+        </tr>
+        <tr ng-if="requiredValue.value.credit_limit > 0">
+          <td>Af: je kredietlimiet <info-icon tooltip-placement="bottom" tooltip-html="'Je betaalt ritten achteraf per automatische incasso, je kredietlimiet is het maximale bedrag dat je achteraf kunt betalen.'"></info-icon></td>
+          <td class="text-right">{{ requiredValue.value.credit_limit | currency }}</td>
         </tr>
         <tr>
           <td ng-if="requiredValue.value.total >= 0"><b>Te betalen</b></td>
