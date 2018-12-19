@@ -1,8 +1,8 @@
 
-<div class="resource-pricing">
-  <div class="featured-price" md-ink-ripple="#527d2e" style="position: relative;">
+<div class="resource-pricing mw">
+  <div class="featured-price" style="position: relative;">
     <div class="pad">
-      <span class="price">{{ (showPricePerHour ? resource.price.hourRate : resource.price.dayRateTotal) | currency }}</span>
+      <span class="price is-1">{{ (showPricePerHour ? resource.price.hourRate : resource.price.dayRateTotal) | currency }}</span>
       <span class="annotation">{{ showPricePerHour ? 'per uur' : 'per dag' }}</span>
     </div>
     <div class="price-per">
@@ -27,7 +27,7 @@
       <ng-md-icon icon="directions_car"></ng-md-icon>
       <div class="lines">
         <div class="line"><span class="free-km">{{ (showPricePerHour ? 'FREE_KM_HOUR' : 'FREE_KM_DAY') | translate }}</span></div>
-        <div class="line"><span class="price">{{ resource.price.kilometerRate | currency }}</span> per extra km</div>
+        <div class="line underline"><span class="price">{{ resource.price.kilometerRate | currency }}</span> per extra km</div>
       </div>
     </div>
 
@@ -39,16 +39,18 @@
     <div class="secondary-item" ng-click="infoDialog('zelfTanken')" ng-if="resource.refuelByRenter">
       <ng-md-icon icon="local_gas_station"></ng-md-icon>
       <div class="lines">
-        <div class="line fuel-info refuel-by-renter">zelf tanken</div>
+        <div class="line refuel-by-renter underline">zelf tanken</div>
       </div>
     </div>
 
     <!-- vaste prijs per km -->
+    <!-- (the `hidden-md` is an ugly fix, dependent on the specific current layout) -->
+    <div class="plus hidden-md" ng-if="!resource.refuelByRenter">+</div>
+
     <div class="secondary-item" ng-click="infoDialog('vasteBrandstofprijs')" ng-if="!resource.refuelByRenter">
       <ng-md-icon icon="local_gas_station"></ng-md-icon>
       <div class="lines">
-        <div class="line fuel-info incl-fuel">vaste brandstofprijs</div>
-        <div class="line km-rate">van <span class="price">{{ resource.price.fuelPerKilometer | currency }}</span> per km</div>
+        <div class="line km-rate underline"><span class="price">{{ resource.price.fuelPerKilometer | currency }}</span> per km</div>
       </div>
     </div>
 

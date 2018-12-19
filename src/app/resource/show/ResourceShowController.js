@@ -100,6 +100,41 @@ angular.module('owm.resource.show', [])
     loadRatings();
   }
 
+  $scope.images = resource.pictures
+    .map(function (picture) {
+      var path = picture.large || picture.normal || picture.small || null;
+      if (path && !path.match(/^http/)) {
+        path = appConfig.serverUrl + '/' + path;
+      }
+      return path;
+    })
+    .filter(function (url) { return url; });
+
+  if ($scope.images.length === 0) {
+    $scope.images.push('assets/img/resource-avatar-large.jpg');
+  }
+
+  $scope.carouselBackgroundImage = {
+    backgroundImage: 'url("' + $scope.images[0] + '")',
+  };
+
+  $scope.owlApi = null;
+  $scope.owlReady = function ($api) {
+    $scope.owlApi = $api;
+  };
+  $scope.owlGoto = function (i) {
+    if ($scope.owlApi) {
+      $scope.owlApi.trigger('to.owl.carousel', i);
+    }
+  };
+  $scope.owlClick = function ($event) {
+    var item = $($event.target).closest('.item');
+    if (item.length) {
+      var i = parseInt(item.attr('index'));
+      $scope.owlApi.trigger('to.owl.carousel', i);
+    }
+  };
+
   function openChatWith (otherPerson) {
     var otherPersonName = $filter('fullname')(otherPerson);
     chatPopupService.openPopup(otherPersonName, otherPerson.id, resource.id, null);

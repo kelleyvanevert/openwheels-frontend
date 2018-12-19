@@ -48,7 +48,7 @@ angular.module('owm.shell', [])
   /**
    * Application with populated menu, toolbar & footer
    */
-  $stateProvider.state('owm-landing', {
+  $stateProvider.state('owmlanding', {
     parent: 'shell',
     views: {
       'toolbar@shell': {

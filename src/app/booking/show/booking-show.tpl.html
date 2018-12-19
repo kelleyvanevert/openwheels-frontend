@@ -230,7 +230,7 @@
 </div>
 
 <!-- Add kilometers -->
-<div class="card" ng-if="booking.ok && bookingStarted && (!booking.trip.odoBegin || !booking.trip.odoEnd) && !booking.resource.boardcomputer && !booking.trip.finalized" id="kilometerForm">
+<div class="card" ng-if="accepted && booking.ok && bookingStarted && (!booking.trip.odoBegin || !booking.trip.odoEnd) && !booking.resource.boardcomputer && !booking.trip.finalized" id="kilometerForm">
   <div class="card-body card-inverse" style="background-color:#5faac8; color:white;" layout="row" layout-xs="column">
     <div flex="75" flex-xs="100">
       <h3 style="color:#fff; margin-bottom:10px;">Kilometerstanden doorgeven</h3>
@@ -371,18 +371,36 @@
 </div>
 
 <!-- Open and close buttons -->
-<div class="card" ng-if="userPerspective === 'renter' && allowBoardComputer">
+<div class="board-computer-control card"
+     ng-show="showBoardComputerButtons">
   <div class="card">
     <div class="card-heading">
       <h3 class="card-title">Openen en sluiten</h3>
     </div>
     <div class="card-body text-center" id="resource__boardcomputer">
+      <p ng-if="!enableBoardComputerButtons"
+         class="lead"
+         style="text-align: left;">
+        Als alles in orde is, kun je aan het begin van de rit de auto openen en sluiten met onderstaande knoppen.
+      </p>
       <ul class="list-inline">
         <li>
-          <button title="Open de auto" ng-click="openDoorDialog($event, resource)" class="btn btn-lg btn-default btn-success"><i class="fa fa-unlock fa-fw fa-lg"></i></button>
+          <button title="Open de auto"
+                  ng-click="boardComputerControl('openDoor', $event)"
+                  class="mywheels-btn mywheels-btn-big mywheels-btn-normal"
+                  ng-class="{ 'mw-disabled': !enableBoardComputerButtons }"
+                  md-ink-ripple="#4b702c">
+            <ng-md-icon icon="lock_open" size="36" style="width: 36px; height: 36px;"></ng-md-icon>
+          </button>
         </li>
         <li>
-          <button title="Sluit de auto" ng-click="closeDoor(resource)" class="btn btn-lg btn-default btn-danger"><i class="fa fa-lock fa-fw fa-lg"></i></button>
+          <button title="Sluit de auto"
+                  ng-click="boardComputerControl('closeDoor', $event)"
+                  class="mywheels-btn mywheels-btn-big mywheels-btn-error"
+                  ng-class="{ 'mw-disabled': !enableBoardComputerButtons }"
+                  md-ink-ripple="#9a3d26">
+            <ng-md-icon icon="lock" size="36" style="width: 36px; height: 36px;"></ng-md-icon>
+          </button>
         </li>
       </ul>
     </div>
@@ -645,7 +663,7 @@
     <p hide-gt-xs></p>
 
     <div flex="25" flex-xs="100" class="text-center">
-      <md-button class="md-raised" href="/open" ui-sref="owm-landing.mywheels-open" target="_blank">Lees meer</md-button>
+      <md-button class="md-raised" href="/open" ui-sref="owmlanding.mywheels-open" target="_blank">Lees meer</md-button>
     </div>
   </div>
 </div>
@@ -751,6 +769,33 @@
       <div class="row" style="margin-top: 2em;" ng-if="allowDeclarationsAdd">
         <div class="col-sm-12"><a class="btn btn-default" ui-sref="^.administer">{{ 'DECL_ADD' | translate }}</a></div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Review -->
+<div class="card" ng-if="showReviewTeaser">
+  <div class="card-heading">
+    <h3 class="card-title">
+      {{ (userPerspective === 'renter') ? 'Beoordeel de rit' : 'Beoordeel de huurder' }}
+    </h3>
+  </div>
+  <div class="card-body">
+    <div class="leave-review-teaser" style="margin-bottom: 1em;">
+      <a ui-sref="{{ 'owm.booking.rating-' + userPerspective + '({ bookingId: ' + booking.id + ', setsatisfaction: \'negative\' })' }}">
+        <ng-md-icon size="50"
+                    icon="thumb_down"
+                    satisfaction="negative"
+                    alt="Icoon"
+                    aria-label="Icoon"></ng-md-icon>
+      </a>
+      <a ui-sref="{{ 'owm.booking.rating-' + userPerspective + '({ bookingId: ' + booking.id + ', setsatisfaction: \'positive\' })' }}">
+        <ng-md-icon size="50"
+                    icon="thumb_up"
+                    satisfaction="positive"
+                    alt="Icoon"
+                    aria-label="Icoon"></ng-md-icon>
+      </a>
     </div>
   </div>
 </div>

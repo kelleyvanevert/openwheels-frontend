@@ -2,29 +2,33 @@
 .resource-pricing {
   margin-bottom: 2em;
 
+  @rp-header-bg: #f5f5f5;
+
   .featured-price {
-    background: @mywheels-green;
+    background: @rp-header-bg;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
     
     .pad {
-      padding: 1em 1.1em .7em 1.1em;
+      padding: 2.2rem;
+      border-left: 1px solid darken(@rp-header-bg, 9%);
+      border-right: 1px solid darken(@rp-header-bg, 9%);
+      border-top: 1px solid darken(@rp-header-bg, 9%);
     }
 
     .price {
-      font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
-      font-size: 2.4em;
-      color: white;
-      text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+      font-size: 3rem; /* just a tad bit larger than `.mw h1` */
     }
     .annotation {
       font-size: 1.4em;
-      color: white;
+      color: black;
       margin-left: .3em;
     }
 
     a.show-price-per-hour {
       display: block;
       color: #eee;
-      background: rgba(0, 0, 0, 0.12);
+      /*background: rgba(0, 0, 0, 0.12);*/
       border-top: 1px solid rgba(56, 53, 53, 0.1);
       text-transform: uppercase;
       font-weight: bold;
@@ -42,24 +46,24 @@
       flex-direction: row;
       flex-wrap: nowrap;
       
-      background: rgba(0, 0, 0, 0.12);
-      border-top: 1px solid darken(@mywheels-green, 10%);
+      background: white;
+      border-top: 1px solid darken(@rp-header-bg, 9%);
       padding: 0 5px 1px;
 
       a {
         flex-grow: 1;
-        color: white;
+        color: #666;
         text-align: center;
-        padding: .2em;
+        padding: .3em;
 
         &.active {
-          background: @mywheels-green;
+          background: @rp-header-bg;
           position: relative;
           top: -1px;
-          color: white;
-          border-left: 1px solid darken(@mywheels-green, 10%);
-          border-right: 1px solid darken(@mywheels-green, 10%);
-          border-bottom: 1px solid darken(@mywheels-green, 10%);
+          color: black;
+          border-left: 1px solid darken(@rp-header-bg, 9%);
+          border-right: 1px solid darken(@rp-header-bg, 9%);
+          border-bottom: 1px solid darken(@rp-header-bg, 9%);
         }
 
         outline: none !important;
@@ -100,6 +104,11 @@
       }
     }
 
+    .plus {
+      font-size: 1.4em;
+      margin-top: 1em;
+    }
+
     .price {
       color: #666;
       font-size: 1.2em;
@@ -114,18 +123,11 @@
   .free-km {
     color: darken(@mywheels-green, 3%);
     font-weight: bold;
-    text-decoration: underline;
 
     padding: 3px 4px;
   }
 
   .nowrap {
     white-space: nowrap;
-  }
-
-  .fuel-info {
-    color: darken(@mywheels-blue, 3%);
-    font-weight: bold;
-    text-decoration: underline;
   }
 }

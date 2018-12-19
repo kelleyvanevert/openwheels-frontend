@@ -1,7 +1,72 @@
 'use strict';
 
-angular.module('openwheels.analytics', [])
+/*
+  The Analytics methodology has changed per dec 2018.
 
+  See `https://gist.github.com/kelleyvanevert/590813337f0ebf3fc8e97b52c65cb39e`
+   for a more detailed description.
+
+  The current setup involves:
+  1. Manually registering the GTM tag in the `googleTagManager` provider
+      - the provider below, and the actual config/init happens in `app.js`
+  2. The Angulartics package, and a plugin for GTM (the two module dependencies below)
+  3. A GTM configuration (in the GTM interface, that is), which delegates
+      pageviews and events to Google Analytics,
+      but is open-ended in possible usage.
+*/
+
+angular.module('openwheels.analytics', [
+  'angulartics',
+  'angulartics.google.tagmanager',
+])
+
+// proxy the old `Analytics.XX` methods to
+//  the new Angulartics implementation
+.provider('Analytics', function () {
+  this.$get = function ($log, $analytics) {
+    return {
+      trackEvent: function (category, action, label, value, noninteraction) {
+        $log.debug('Analytics.trackEvent', arguments);
+        $analytics.eventTrack(action, {
+          category: category,
+          label: label,
+          value: value,
+          noninteraction: noninteraction,
+        });
+      },
+    };
+  };
+})
+
+// proxy the old `ga-track-event` directive to
+//  the new Angulartics implementation
+.directive('gaTrackEvent', function (Analytics) {
+  return {
+    restrict: 'A',
+    scope: {
+      options: '=gaTrackEvent',
+      condition: '=gaTrackEventIf',
+    },
+    link: function (scope, element, attrs) {
+      element.bind('click', function () {
+        if (attrs.gaTrackEventIf) {
+          if (!scope.condition) {
+            return; // Cancel this event if we don't pass the ga-track-event-if condition
+          }
+        }
+        if (scope.options) {
+          Analytics.trackEvent.apply(Analytics, scope.options);
+        }
+      });
+    }
+  };
+})
+
+// This is just a custom piece of code, because
+//  apparently `angulartics.google.tagmanager` doesn't
+//  actually do the registering, and just uses
+//  the current global `dataLayer` variable instead.
+// Hence, we have to register ourselves.
 .provider('googleTagManager', function () {
 
   this.init = function (gtmContainerId) {
@@ -22,18 +87,17 @@ angular.module('openwheels.analytics', [])
     return angular.noop;
   }];
 })
-.config(function(AnalyticsProvider, appConfig) {
-  AnalyticsProvider
-  .setAccount(appConfig.ga_tracking_id)
-  .trackUrlParams(true)
-  .ignoreFirstPageLoad(true)
-  .setPageEvent('$stateChangeSuccess')
-  .useDisplayFeatures(true)
-  ;
-})
-.run(function(Analytics, $cookieStore) {
 
+// This is Angulartics (confusingly providing `$analytics`)
+.config(function ($analyticsProvider) {
+  // noop
 });
+
+
+
+
+
+
 /*
 LIST OF ALL EVENTS
 

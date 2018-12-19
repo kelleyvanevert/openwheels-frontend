@@ -20,11 +20,10 @@
   </div>
 
   <div class="checkbox" ng-if="contractOptions && booking.contract.type.id !== 60 && booking.contract.ownRiskWaiver === 'not'">
-    <label for="riskReduction">
-        <input id="riskReduction" type="checkbox" ng-model="booking.riskReduction" />
+    <md-checkbox id="riskReduction" ng-model="booking.riskReduction">
         {{ 'DECREASE_OWN_RISK' | translate }}
-        <info-icon tooltip-html="'DECREASE_OWN_RISK_INFO' | translate"></info-icon>
-    </label>
+    </md-checkbox>
+    <info-icon tooltip-html="'DECREASE_OWN_RISK_INFO' | translate"></info-icon>
   </div>
 -->
 
@@ -107,7 +106,11 @@
     </label>
   </p>
   <div class="form-group mw-button" ng-show="(showDiscountCodeBox || booking.discountCode)">
-    <input id="res_discountCode" type="text" ng-model="booking.discountCode" ng-change="validateDiscountCode()" md-select-on-focus
+    <input id="res_discountCode"
+           type="text"
+           ng-model="booking.discountCode"
+           ng-change="validateDiscountCode()"
+           md-select-on-focus
            ng-class="{
              'discount-code-success': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.success,
              'discount-code-error': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.error,
@@ -130,7 +133,11 @@
     </label>
   </p>
   <div class="form-group" ng-show="showCommentBox">
-    <textarea id="res_comment" rows="2" auto-resize md-select-on-focus></textarea>
+    <textarea id="res_comment"
+              rows="2"
+              auto-resize
+              md-select-on-focus
+              ng-model="booking.remarkRequester"></textarea>
   </div>
 
   <div class="text-center" style="margin-top: 1.3em;">
@@ -153,7 +160,7 @@
   <div class="booking-benefits-mywheels">
     <ul style="padding-left: 0px;">
       <li class="benefit-1"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon"></ng-md-icon> <span>Uitgebreide verzekering</span></li>
-      <li class="benefit-2"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon"></ng-md-icon> <span>Leden geven ons een 8.7</span></li>
+      <li class="benefit-2"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon"></ng-md-icon> <span>Leden geven ons een 8.1</span></li>
       <li class="benefit-3"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon"></ng-md-icon> <span>24/7 klantenservice</span></li>
     </ul>
   </div>

@@ -55,7 +55,7 @@ angular.module('openwheels', [
   'owm.featuresService',
   'owm.metaInfoService',
   'owm.meHelperService',
-  'angular-google-analytics',
+  // 'angular-google-analytics', // this is `angular-track`, and is being phased out
   'mobileDetectService',
 
   /* Directives */
@@ -90,6 +90,9 @@ angular.module('openwheels', [
   'autoblurDirective',
   'restrictToDirective',
   'autoResize',
+
+  'angular-owl-carousel-2',
+  'hl.sticky',
   
   'bootstrapDateTimePickerDirective',
   'timeframePickerDirective',
@@ -97,6 +100,7 @@ angular.module('openwheels', [
   'invoiceEstimateDirective',
   'noUiSliderDirective',
   'validPhoneNumberDirective',
+  'hasFeatureIconDirective',
 
   /* Filters */
   'filters.util',
@@ -158,6 +162,10 @@ angular.module('openwheels', [
   }];
 })
 
+.config(function (ngMdIconServiceProvider) {
+//  ngMdIconService.addShape('heart', '<path fill-opacity=".3" d="M17 5.33C17 4.6 16.4 4 15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33V13h10V5.33z"/><path d="M7 13v7.67C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V13H7z"/>');
+})
+
 .config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
 
   $locationProvider.html5Mode(true);
@@ -203,9 +211,9 @@ angular.module('openwheels', [
 
 })
 
-.config(function (uiGmapGoogleMapApiProvider) {
+.config(function (appConfig, uiGmapGoogleMapApiProvider) {
   uiGmapGoogleMapApiProvider.configure({
-    key: 'AIzaSyC1QrtfmsYNsJAfx9OOl5QX0oNpMVo3fbw',
+    key: appConfig.test.gmaps_js_api_key || 'AIzaSyC1QrtfmsYNsJAfx9OOl5QX0oNpMVo3fbw',
     v: '3.34.0',
     libraries: 'places',
     language: 'nl'
@@ -213,10 +221,11 @@ angular.module('openwheels', [
 })
 
 .config(function (appConfig, googleTagManagerProvider) {
-    if (appConfig.gtmContainerId) {
-      googleTagManagerProvider.init(appConfig.gtmContainerId);
-    }
-  })
+  if (appConfig.gtmContainerId) {
+    googleTagManagerProvider.init(appConfig.gtmContainerId);
+  }
+})
+
 .config(function (appConfig, facebookProvider, twitterProvider) {
     // if (appConfig.features.facebook && appConfig.fbAppId) {
     //   facebookProvider.init(appConfig.fbAppId);
@@ -265,16 +274,41 @@ angular.module('openwheels', [
 })
 
 .run(function ($window, $log, $timeout, $state, $stateParams, $rootScope, $anchorScroll,
-  alertService, featuresService, linksService, metaInfoService, Analytics, authService, $location, $localStorage) {
+  alertService, featuresService, linksService, metaInfoService, Analytics, authService, $location, $localStorage,
+  $analytics) {
 
 
   $rootScope.$state = $state;
   $rootScope.$stateParams = $stateParams;
   $rootScope.isLanguageLoaded = false;
 
+  var hash = function(s) {
+    /* Simple hash function. */
+    var a = 1, c = 0, h, o;
+    if (s) {
+      a = 0;
+      for (h = s.length - 1; h >= 0; h--) {
+        o = s.charCodeAt(h);
+        a = (a<<6&268435455) + o + (o<<14);
+        c = a & 266338304;
+        a = c!==0?a^c>>21:a;
+      }
+    }
+    return String(a);
+  };
+
+  function setAnalyticsUser () {
+    if (authService.user.isAuthenticated) {
+      var userId = authService.user.identity.firstName + authService.user.identity.id;
+      var hashedUserId = hash(userId);
+      $analytics.setUsername(hashedUserId);
+    }
+  }
+
   $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState) {
     // show spinner
     alertService.load();
+    setAnalyticsUser();
   });
 
   $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
@@ -285,31 +319,19 @@ angular.module('openwheels', [
     // hide spinner
     alertService.loaded();
 
-    var hash = function(s) {
-      /* Simple hash function. */
-      var a = 1, c = 0, h, o;
-      if (s) {
-        a = 0;
-        for (h = s.length - 1; h >= 0; h--) {
-          o = s.charCodeAt(h);
-          a = (a<<6&268435455) + o + (o<<14);
-          c = a & 266338304;
-          a = c!==0?a^c>>21:a;
-        }
-      }
-      return String(a);
-    };
+    if (authService.user.isAuthenticated) {
+      setAnalyticsUser();
 
-    if(authService.user.isAuthenticated) {
-      var userId = authService.user.identity.firstName + authService.user.identity.id;
-      var hashedUserId = hash(userId);
       var userStatus = authService.user.identity.status;
       var numberBookings = authService.user.identity.numberOfBookings;
       var userPreference = authService.user.identity.preference;
-      Analytics.set('&uid', hashedUserId);
-      Analytics.set('dimension1', userStatus);
-      Analytics.set('dimension3', numberBookings);
-      Analytics.set('dimension4', userPreference);
+
+      var dataLayer = window.dataLayer = window.dataLayer || [];
+      dataLayer.push({
+        'mywheels user status': userStatus,
+        'mywheels number of bookings': numberBookings,
+        'mywheels user preference': userPreference,
+      });
     }
 
     $localStorage.discountCode = ($location.search().discountCode || $localStorage.discountCode);
@@ -342,7 +364,7 @@ angular.module('openwheels', [
       $state.includes('invite') ||
       $state.includes('member') ||
       $state.includes('owm.person.details') ||
-      $state.includes('owm-landing')
+      $state.includes('owmlanding')
     );
     $rootScope.containerHome = (
       ($state.includes('home')) || ($state.$current.self.url === '/auto-verhuren')
@@ -350,6 +372,7 @@ angular.module('openwheels', [
     $rootScope.containerIntro = (
       ($state.includes('owm.person.intro'))
     );
+    $rootScope.mdOk = ($rootScope.containerTransitional || $rootScope.containerHome);
   });
 
   // show an error on state change error
@@ -413,7 +436,8 @@ angular.module('openwheels', [
         gtmContainerId: config.gtm_container_id || null,
         ga_tracking_id: config.ga_tracking_id || null,
         fbAppId: config.fb_app_id || null,
-        features: config.features || {}
+        features: config.features || {},
+        test: config.test || {},
       });
       angular.bootstrap(angular.element('html'), ['openwheels']);
       return true;

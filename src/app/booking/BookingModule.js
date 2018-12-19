@@ -119,7 +119,7 @@ angular.module('owm.booking', [
   })
 
   .state('owm.booking.rating-renter', {
-    url: '/rating/renter',
+    url: '/rating/renter?setsatisfaction',
     templateUrl: 'booking/rating/booking-rating.tpl.html',
     controller: 'BookingRatingController',
     data: {
@@ -138,7 +138,7 @@ angular.module('owm.booking', [
   })
 
   .state('owm.booking.rating-owner', {
-    url: '/rating/owner',
+    url: '/rating/owner?setsatisfaction',
     templateUrl: 'booking/rating/booking-rating.tpl.html',
     controller: 'BookingRatingController',
     data: {

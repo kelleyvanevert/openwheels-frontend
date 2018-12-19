@@ -11,6 +11,4 @@ angular.module('owm.shell')
     $translate.use(langKey);
     $window.moment.lang(langKey);
   };
-
-  $scope.mdOk = ($rootScope.containerTransitional || $rootScope.containerHome);
 });

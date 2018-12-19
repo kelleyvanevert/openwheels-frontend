@@ -118,13 +118,27 @@
     .landing-title {
       text-shadow: 0.07rem 0.14rem 0.21rem rgba(0, 0, 0, .5);
       position: absolute;
-      top: 20%;
+      top: 25%;
       left: 0;
       right: 0;
 
+      a {
+        margin-top: 3.5em;
+        padding: .4em;
+        font-size: 1.7em;
+      }
+
+      @media (max-width: 480px) {
+        a {
+          margin-top: 1em;
+          padding: .4em;
+          font-size: 1.7em;
+        }
+      }
+
       .highlight {
         display: inline-block;
-        background: rgba(230, 165, 0, 0.65);
+        background: rgba(0,0,0,.5);
         padding: .2em .3em;
       }
     }
@@ -196,6 +210,7 @@
           display: inline-block;
 
           background: @mywheels-green;
+          
           width: 10rem;
           height: 10rem;
           line-height: 10rem;
@@ -296,21 +311,29 @@
 
       li {
         list-style: none;
-        min-height: 32px;
+        margin: 0 0 .2em 2.5em;
 
         .n {
+          float:left;
+          display: block;
           margin: 0 .5em;
           font-weight: bold;
+          width: 2em;
+          margin-right: .5em;
+          margin-left: -2.5em;
+          text-align: center;
+        }
+
+        ng-md-icon {
+          float:left;
+          display: block;
+          color: @mywheels-green;
+          height: 32px;
+          width: 2em;
+          margin-right: .5em;
+          margin-left: -2.5em;
         }
       }
-    }
-
-    ng-md-icon {
-      color: @mywheels-green;
-      height: 32px;
-      width: 32px;
-
-      margin-right: .5em;
     }
   }
 

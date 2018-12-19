@@ -2,17 +2,20 @@
 
 angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMaterial'])
  
-.directive('owGeocoderSearchbar', function ($filter, Geocoder, resourceQueryService, $state, $mdMenu, $window, alertService) {
+.directive('owGeocoderSearchbar', function ($rootScope, $log, $filter, Geocoder, resourceQueryService, $state, $mdMenu, $window, alertService, $location) {
   return {
     restrict: 'E',
     templateUrl: 'directives/geocoderDirectiveSearchbar.tpl.html',
     scope: {
+      'onFocus': '=',
+      'onBlur': '=',
       'onNewPlace': '=',
       'onClickTime': '=',
       'onClickFilters': '=',
       'onSortChange': '=',
       'filters': '=',
-      'searchtext': '='
+      'searchtext': '=',
+      'lightweight': '=',
     },
     link: function($scope, element) {
       $scope.geolocation = false;
@@ -25,11 +28,17 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
       $scope.$mdMenu = $mdMenu;
       $scope.search = {};
 
-      if($scope.searchtext) {
+      if ($scope.searchtext) {
         $scope.search.text = $scope.searchtext;
       } else {
         $scope.search.text = resourceQueryService.data.text;
       }
+      $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+        if (toState.name.match(/^owm\.resource\.search/) && toParams.text && $scope.search.text !== toParams.text) {
+          $scope.search.text = toParams.text;
+          $log.log('$scope.search.text changed');
+        }
+      });
 
       $scope.$on('g-places-autocomplete:select', function(event, res) {
         handleEvent(res);
@@ -43,6 +52,18 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
       $scope.showSort = _.isFunction($scope.onSortChange);
 
       $scope.sort = resourceQueryService.getSort();
+
+      $scope.handleFocus = function () {
+        if (_.isFunction($scope.onFocus)) {
+          $scope.onFocus();
+        }
+      };
+
+      $scope.handleBlur = function () {
+        if (_.isFunction($scope.onBlur)) {
+          $scope.onBlur();
+        }
+      };
 
       $scope.setSort = function(sort) {
         $scope.sort = sort;
@@ -79,6 +100,10 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
       if($window.navigator.geolocation) {
         $scope.geolocation = true;
       }
+
+      $scope.clear = function () {
+        $scope.search.text = '';
+      };
 
       $scope.getLocation = function() {
         $window.navigator.geolocation.getCurrentPosition(setLocation, locationError);
@@ -131,7 +156,8 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
 
       function doCall(res) {
         $scope.search.text = res.text;
-        return $state.go('owm.resource.search.list', res, {reload: true, inherit: false, notify: true})
+        var targetStateName = $state.includes('owm.resource.search') ? '.' : 'owm.resource.search.list';
+        return $state.go(targetStateName, res, {reload: false, notify: true})
         .then(function() {
           if(_.isFunction($scope.onNewPlace)) {
             $scope.onNewPlace(res);
@@ -140,20 +166,22 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
       }
 
       function handleEvent(res) {
-        if(res) {
-          //close keyboard on iOS
-          document.activeElement.blur();
-          var inputs = document.querySelectorAll('input');
-          for(var i=0; i < inputs.length; i++) {
-            inputs[i].blur();
+        if (true || !$scope.lightweight) {
+          if(res) {
+            //close keyboard on iOS
+            document.activeElement.blur();
+            var inputs = document.querySelectorAll('input');
+            for(var i=0; i < inputs.length; i++) {
+              inputs[i].blur();
+            }
+            
+            resourceQueryService.setText(res.formatted_address);
+            resourceQueryService.setLocation({
+              latitude: res.geometry.location.lat(),
+              longitude: res.geometry.location.lng()
+            });
+            doCall(resourceQueryService.createStateParams());
           }
-          
-          resourceQueryService.setText(res.formatted_address);
-          resourceQueryService.setLocation({
-            latitude: res.geometry.location.lat(),
-            longitude: res.geometry.location.lng()
-          });
-          doCall(resourceQueryService.createStateParams());
         }
       }
 
