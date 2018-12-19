@@ -15,7 +15,9 @@ angular.module('ratingThumbDirective', [])
   return {
     restrict: 'A',
     scope: {},
-    template: '<span class="{{ colorClass }}" style="vertical-align: middle;" uib-tooltip-html="tooltipHtml"><ng-md-icon icon="{{ iconClass }}" class="{{ colorClass }} material-icons" style="font-size:26px;"></ng-md-icon>&nbsp;{{ label }}</span>',
+    template: '<span class="{{ colorClass }}" uib-tooltip-html="tooltipHtml">' +
+              '  <i class="{{ iconClass }}"></i>&nbsp;{{ label }}' +
+              '</span>',
     link: function (scope, elm, attrs) {
       var options = scope.$parent.$eval(attrs.ratingThumb);
       var value = options.value;
@@ -31,22 +33,22 @@ angular.module('ratingThumbDirective', [])
       if (value === null || value < 0) {
         scope.label = '';
         scope.colorClass = 'text-muted rotate-90';
-        scope.iconClass = 'thumb_up';
+        scope.iconClass = 'fa fa-thumbs-up';
       }
       else {
         scope.label = Math.round(value * 100) + '%';
 
         if (value >= 0) {
           scope.colorClass = 'text-danger';
-          scope.iconClass = 'thumb_down';
+          scope.iconClass = 'fa fa-thumbs-down';
         }
         if (value > 0.3) {
           scope.colorClass = 'text-warning';
-          scope.iconClass = 'thumb_up';
+          scope.iconClass = 'fa fa-thumbs-up';
         }
         if (value > 0.65) {
           scope.colorClass = 'text-success';
-          scope.iconClass = 'thumb_up';
+          scope.iconClass = 'fa fa-thumbs-up';
         }
       }
 
