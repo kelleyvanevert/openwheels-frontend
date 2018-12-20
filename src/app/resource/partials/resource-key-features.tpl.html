@@ -8,7 +8,8 @@
     </div>
     <div flex-gt-sm="40" flex="100" class="item">
       <ng-md-icon icon="message"></ng-md-icon>
-      <span>{{ resource.response_accept | percentage : 0 }} {{ 'ACCEPTED_REQUESTS' | translate}}</span>
+      <span ng-if="resource.numberOfBookings">{{ resource.response_accept | percentage : 0 }} {{ 'ACCEPTED_REQUESTS' | translate}}</span>
+      <span ng-if="!resource.numberOfBookings">Nog geen huurverzoeken</span>
     </div>
   </div>
   <div layout="column" layout-gt-xs="row" layout-align="center" class="key-features-row">
