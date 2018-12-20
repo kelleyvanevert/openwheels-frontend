@@ -20,7 +20,12 @@ angular.module('resourceCarouselDirective', [])
       angular.forEach(scope.resource.pictures, function (picture) {
         var path = picture.large || picture.normal || picture.small || null;
         if (path) {
-          scope.images.push({ url: appConfig.serverUrl + '/' + path });
+          if (!path.match(/^http/)) {
+            path = appConfig.serverUrl + '/' + path;
+          }
+          scope.images.push({
+            url: path
+          });
         }
       });
 

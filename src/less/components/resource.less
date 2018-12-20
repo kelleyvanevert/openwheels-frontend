@@ -148,14 +148,6 @@ label[for=mywheelsOpen] {
       margin: auto;
     }
 }
-.resource-md-title {
-    font-size: 17.5px;
-    font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
-    font-weight: 700;
-    line-height: 1.1;
-    color: #fff !important;
-    margin: 0 !important;
-}
 
 .resourceOwnListMobile {
     div {
@@ -236,53 +228,131 @@ label[for=mywheelsOpen] {
     }
 }
 
-#resourceInfo {
-    .specifics {
-        .item {
-            .title {
-                font-weight: 550;
-            }
-            md-icon,
-            ng-md-icon {
-                font-size: 20px;
-                max-height: 20px;
-            }
-            padding: 10px;
-            border-top: 1px solid #f2f2f2;
-            border-bottom: 1px solid #f2f2f2;
-            height: 42px;
+.specifics-table {
+    border-top: 1px solid #ddd;
+    margin-bottom: 1.4em;
+
+    .item {
+        .title {
+            color: #777;
         }
-        .item:nth-child(odd) {
-            border-right: 1px solid #f2f2f2;
+        .info {
+            color: black;
         }
-        .item:nth-child(even) {
-            padding-left: 10px;
-            border-left: 1px solid #f2f2f2;
-        }
-    }
-    .subTitle {
-        margin-top: 20px;
+        padding: .8rem;
+        border-bottom: 1px solid #ddd;
     }
 }
 @media all and (max-width: 600px) {
-     #resourceInfo {
-        .specifics {
-            .item:nth-child(odd) {
-                border-right: 0;
-            }
-            .item:nth-child(even) {
-                border-left: 0;
-                background-color: #eee;
-            }
+    .specifics-table {
+        .item:nth-child(odd) {
+            border-right: 0;
+        }
+        .item:nth-child(even) {
+            border-left: 0;
+            background-color: #f5f5f5;
         }
     }
 }
 @media all and (min-width: 600px) {
-     #resourceInfo {
-        .specifics {
-            .specificRow:nth-child(odd) {
-                background-color: #eee;
-            }
+    .specifics-table {
+        .specificRow:nth-child(odd) {
+            background-color: #f5f5f5;
         }
     }
 }
+
+.resource-key-features {
+    margin: 2rem 0;
+    font-size: 1.3em;
+    font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+    color: #444;
+
+    border: 1px solid #ccc;
+    padding: .5rem 2rem;
+    border-radius: 1rem;
+
+    .key-features-row .item {
+        margin: 1rem 0;
+        padding-left: 34px;
+        position: relative;
+
+        ng-md-icon {
+            margin-right: 1rem;
+            color: black;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    }
+}
+
+@media all and (max-width: 480px) {
+    .resource-key-features {
+        margin: 1.4rem 0;
+        font-size: 1.1em;
+        .key-features-row .item {
+            margin: .4rem 0;
+        }
+    }
+}
+
+
+.reservation-form-card {
+    position: relative;
+    margin-top: -30px;
+
+    .not-sticky-connect {
+        position: absolute;
+        top: -5px;
+        left: 0;
+        right: 0;
+        height: 10px;
+        background: white;
+    }
+
+    &.is-sticky .not-sticky-connect {
+        display: none;
+    }
+}
+
+.resource-header {
+    button.is-favorite-button {
+        margin: -8px;
+        width: 48px;
+        height: 48px;
+        line-height: 28px;
+
+        ng-md-icon {
+            width: 28px;
+            height: 28px;
+            color: #888;
+
+            &[icon='favorite'] {
+                color: @mywheels-orange;
+            }
+        }
+
+        md-progress-circular {
+            margin: -10px;
+        }
+    }
+}
+
+#resource-page-container {
+    margin-top: -70px;
+    z-index: 1;
+    position: relative;
+}
+
+@media all and (max-width: 480px) {
+    #resource-page-container {
+        margin-top: -40px;
+    }
+    .resource-header {
+        button.is-favorite-button {
+            margin: -13px;
+        }
+    }
+}
+

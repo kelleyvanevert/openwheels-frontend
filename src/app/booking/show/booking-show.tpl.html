@@ -335,7 +335,7 @@
       <table class="table">
         <tr>
         <tr>
-          <td style="width:100%">Benodigd voor je reserveringen</td>
+          <td style="width:100%">Benodigd voor je ritten</td>
           <td class="text-right">{{ requiredValue.value.sub_total | currency }}</td>
         </tr>
         <tr ng-if="requiredValue.value.debt > 0">
@@ -345,6 +345,10 @@
         <tr>
           <td>Af: je huidige rijtegoed</td>
           <td class="text-right">{{ requiredValue.value.credit | currency }}</td>
+        </tr>
+        <tr ng-if="requiredValue.value.credit_limit > 0">
+          <td>Af: je kredietlimiet <info-icon tooltip-placement="bottom" tooltip-html="'Je betaalt ritten achteraf per automatische incasso, je kredietlimiet is het maximale bedrag dat je achteraf kunt betalen.'"></info-icon></td>
+          <td class="text-right">{{ requiredValue.value.credit_limit | currency }}</td>
         </tr>
         <tr>
           <td ng-if="requiredValue.value.total >= 0"><b>Te betalen</b></td>
@@ -774,30 +778,28 @@
 </div>
 
 <!-- Review -->
-<div class="card">
+<div class="card" ng-if="showReviewTeaser">
   <div class="card-heading">
     <h3 class="card-title">
       {{ (userPerspective === 'renter') ? 'Beoordeel de rit' : 'Beoordeel de huurder' }}
     </h3>
   </div>
-  <div uib-collapse="isDeclarationsCollapsed ">
-    <div class="card-body">
-      <div class="leave-review-teaser" style="margin-bottom: 1em;">
-        <a ui-sref="{{ 'owm.booking.rating-' + userPerspective + '({ bookingId: ' + booking.id + ', setsatisfaction: \'negative\' })' }}">
-          <ng-md-icon size="50"
-                      icon="thumb_down"
-                      satisfaction="negative"
-                      alt="Icoon"
-                      aria-label="Icoon"></ng-md-icon>
-        </a>
-        <a ui-sref="{{ 'owm.booking.rating-' + userPerspective + '({ bookingId: ' + booking.id + ', setsatisfaction: \'positive\' })' }}">
-          <ng-md-icon size="50"
-                      icon="thumb_up"
-                      satisfaction="positive"
-                      alt="Icoon"
-                      aria-label="Icoon"></ng-md-icon>
-        </a>
-      </div>
+  <div class="card-body">
+    <div class="leave-review-teaser" style="margin-bottom: 1em;">
+      <a ui-sref="{{ 'owm.booking.rating-' + userPerspective + '({ bookingId: ' + booking.id + ', setsatisfaction: \'negative\' })' }}">
+        <ng-md-icon size="50"
+                    icon="thumb_down"
+                    satisfaction="negative"
+                    alt="Icoon"
+                    aria-label="Icoon"></ng-md-icon>
+      </a>
+      <a ui-sref="{{ 'owm.booking.rating-' + userPerspective + '({ bookingId: ' + booking.id + ', setsatisfaction: \'positive\' })' }}">
+        <ng-md-icon size="50"
+                    icon="thumb_up"
+                    satisfaction="positive"
+                    alt="Icoon"
+                    aria-label="Icoon"></ng-md-icon>
+      </a>
     </div>
   </div>
 </div>

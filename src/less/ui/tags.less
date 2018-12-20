@@ -3,7 +3,7 @@
   background: #888;
   border: 1px solid darken(#888, 15%);
   color:white;
-  font-size: 75%;
+  font-size: .8em;
   font-weight: bold;
   padding: 1px 3px 0 3px;
   margin-right: 5px;
@@ -35,4 +35,16 @@
   background: @brand-danger;
   border-color: @brand-danger;
   text-transform: uppercase;
+}
+
+.mw-badge {
+  margin: 0;
+}
+
+.mw-badge-open {
+  .tag-warning();
+}
+
+.mw-badge-new {
+  .tag-success();
 }

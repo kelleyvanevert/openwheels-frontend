@@ -49,24 +49,42 @@ angular.module('filters.util', [])
 .filter('wasBookedTimes', function ($translate) {
   return function (count) {
     count = count || 0;
-    if (count <= 2) {
-      return $translate.instant('WAS_BOOKED_0_TO_2');
-    } else if (count <= 10) {
-      return $translate.instant('WAS_BOOKED_3_TO_10');
+    if (count > 50) {
+      return 'Meer dan 50 keer verhuurd';
     }
-    return $translate.instant('WAS_BOOKED_11_TO_INF');
+    else if (count > 20) {
+      return 'Meer dan 20 keer verhuurd';
+    }
+    else if (count > 10) {
+      return 'Meer dan 10 keer verhuurd';
+    }
+    else if (count > 3) {
+      return 'Meer dan 3 keer verhuurd';
+    }
+    else {
+      return 'Minder dan 4 keer verhuurd';
+    }
   };
 })
 
 .filter('hasBookedTimes', function ($translate) {
   return function (count) {
     count = count || 0;
-    if (count <= 2) {
-      return $translate.instant('HAS_BOOKED_0_TO_2');
-    } else if (count <= 10) {
-      return $translate.instant('HAS_BOOKED_3_TO_10');
+    if (count > 50) {
+      return 'Meer dan 50 keer gehuurd';
     }
-    return $translate.instant('HAS_BOOKED_11_TO_INF');
+    else if (count > 20) {
+      return 'Meer dan 20 keer gehuurd';
+    }
+    else if (count > 10) {
+      return 'Meer dan 10 keer gehuurd';
+    }
+    else if (count > 3) {
+      return 'Meer dan 3 keer gehuurd';
+    }
+    else {
+      return 'Minder dan 4 keer gehuurd';
+    }
   };
 })
 

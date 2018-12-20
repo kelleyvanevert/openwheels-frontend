@@ -169,10 +169,16 @@ md-card {
 }
 .card {
     position: relative;
-    border-left: 1px solid #e5e5e5;
+    /*border-left: 1px solid #e5e5e5;*/
     background-color: #fff;
     margin-bottom: 1em;
-    .box-shadow(4px 4px 8px rgba(0, 0, 0, 0.1));
+    .box-shadow(2px 2px 8px rgba(0, 0, 0, 0.1));
+    border-radius: 3px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
     &-heading {
         padding: 15px;
         .card-title {
@@ -191,6 +197,10 @@ md-card {
         padding: 15px;
 
         .escape-card-padding {
+            margin: -15px;
+        }
+
+        .escape-h-card-padding {
             margin: -15px;
         }
     }
