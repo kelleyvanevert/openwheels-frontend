@@ -1,8 +1,8 @@
 
-<div class="resource-pricing">
-  <div class="featured-price" md-ink-ripple="#527d2e" style="position: relative;">
+<div class="resource-pricing mw">
+  <div class="featured-price" style="position: relative;">
     <div class="pad">
-      <span class="price">{{ (showPricePerHour ? resource.price.hourRate : resource.price.dayRateTotal) | currency }}</span>
+      <span class="price is-1">{{ (showPricePerHour ? resource.price.hourRate : resource.price.dayRateTotal) | currency }}</span>
       <span class="annotation">{{ showPricePerHour ? 'per uur' : 'per dag' }}</span>
     </div>
     <div class="price-per">

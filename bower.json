@@ -35,7 +35,9 @@
     "angular-material-icons": "^0.7.1",
     "mobile-detect": "hgoebl/mobile-detect.js#^1.4.3",
     "angulartics-google-analytics": "^0.5.0",
-    "angulartics-google-tag-manager": "^0.0.1"
+    "angulartics-google-tag-manager": "^0.0.1",
+    "angular-owl-carousel2": "^1.0.7",
+    "angular-sticky": "angular-sticky-plugin#^0.5.0"
   },
   "resolutions": {
     "jquery": "~2.x",

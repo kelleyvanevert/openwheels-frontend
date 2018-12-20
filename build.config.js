@@ -45,12 +45,18 @@ module.exports = {
       'vendor/angular-google-maps/dist/angular-google-maps.js',
       'vendor/lodash/dist/lodash.js', // required by angular-google-maps
 
+      'vendor/angular-sticky/dist/angular-sticky.js',
+      //'vendor/ngSticky/lib/sticky.js',
+
        // front page slider
       'vendor/slick-carousel/slick/slick.js',
       'vendor/angular-slick/dist/slick.js',
 
       'vendor/bootstrap/dist/js/bootstrap.js',
       'vendor_custom/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js', // depends: jquery, momentjs
+
+      'vendor_custom/nouislider/wNumb.js',
+      'vendor_custom/nouislider/nouislider.min.js',
 
       'vendor/angular-uuid/uuid.js',
       'vendor/angular-jsonrpc-q/build/jsonrpc.js',
@@ -82,6 +88,9 @@ module.exports = {
       'vendor_custom/pwstrength-bootstrap/pwstrength-bootstrap-1.2.2.js',
       'vendor_custom/angular-input-match/angular-input-match-1.4.1.js',
       'vendor_custom/angular-google-places-autocomplete/src/autocomplete.js',
+
+      'vendor/owl.carousel/dist/owl.carousel.js',
+      'vendor/angular-owl-carousel2/src/angular-owl-carousel-2.js',
 
       'vendor/angulartics/dist/angulartics.min.js',
       'vendor/angulartics-google-tag-manager/dist/angulartics-google-tag-manager.min.js',

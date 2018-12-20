@@ -1,0 +1,46 @@
+
+.availability-and-pricing-details {
+  margin: 1.6em 0;
+
+  .loading-message {
+    margin: 1.4em 0;
+
+    text-align: center;
+    font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+    font-size: 1.1em;
+  }
+
+  .availability-notice {
+    text-align: center;
+    color: #444;
+
+    p.notice {
+      font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+      font-size: 1.4em;
+    }
+
+    &.is-unavailable {
+      color: #555;
+
+      ng-md-icon {
+        color: #555;
+      }
+    }
+  }
+}
+
+.booking.mywheels-form {
+  .error-message {
+    margin: .5rem 0 1.5rem 0;
+    padding: 1.5rem;
+
+    background: #ffebe3;
+    color: @mywheels-red;
+    font-weight: bold;
+    border-radius: .4rem;
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

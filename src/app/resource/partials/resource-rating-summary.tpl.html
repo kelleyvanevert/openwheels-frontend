@@ -1,9 +1,7 @@
 <div>
-  <div ng-if="!resource.ratings.length">
-    <div class="alert alert-info">
-      {{ 'RATING.NO_RATINGS' | translate }}
-    </div>
-  </div>
+  <p ng-if="!resource.ratings.length">
+    {{ 'RATING.NO_RATINGS' | translate }}
+  </p>
 
   <div ng-if="resource.ratings.length">
     <div class="row">

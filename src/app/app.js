@@ -90,11 +90,17 @@ angular.module('openwheels', [
   'autoblurDirective',
   'restrictToDirective',
   'autoResize',
+
+  'angular-owl-carousel-2',
+  'hl.sticky',
   
   'bootstrapDateTimePickerDirective',
   'timeframePickerDirective',
-  'validPhoneNumberDirective',
   'resourcePricingDirective',
+  'invoiceEstimateDirective',
+  'noUiSliderDirective',
+  'validPhoneNumberDirective',
+  'hasFeatureIconDirective',
 
   /* Filters */
   'filters.util',
@@ -154,6 +160,10 @@ angular.module('openwheels', [
         '&redirect_uri=' + encodeURIComponent(oAuth2CallbackUrl);
     };
   }];
+})
+
+.config(function (ngMdIconServiceProvider) {
+//  ngMdIconService.addShape('heart', '<path fill-opacity=".3" d="M17 5.33C17 4.6 16.4 4 15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33V13h10V5.33z"/><path d="M7 13v7.67C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V13H7z"/>');
 })
 
 .config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
@@ -233,6 +243,32 @@ angular.module('openwheels', [
     }
   })
 
+.config(function ($mdThemingProvider) {
+  $mdThemingProvider.theme('default');
+   // .primaryPalette('pink', {
+   //   'hue-3': 'A100' // use shade A100 for the <code>md-hue-3</code> class
+   // })
+   // // If you specify less than all of the keys, it will inherit from the
+   // // default shades
+   // .accentPalette('purple', {
+   //   'default': '200' // use shade 200 for default, and keep all other shades the same
+   // });
+})
+
+.directive('convertToNumber', function() {
+  return {
+    require: 'ngModel',
+    link: function (scope, element, attrs, ngModel) {
+      ngModel.$parsers.push(function(val) {
+        return val !== null ? parseInt(val, 10) : null;
+      });
+      ngModel.$formatters.push(function(val) {
+        return val !== null ? '' + val : null;
+      });
+    }
+  };
+})
+
 .run(function (windowSizeService, oAuth2MessageListener, stateAuthorizer, authService, featuresService) {
   /* Intentionally left blank */
 })
@@ -241,6 +277,20 @@ angular.module('openwheels', [
   alertService, featuresService, linksService, metaInfoService, Analytics, authService, $location, $localStorage,
   $analytics) {
 
+  var dataLayer = window.dataLayer = window.dataLayer || [];
+  $rootScope.experiments = {};
+  dataLayer.push({ experiments: $rootScope.experiments });
+  window.experiment = $rootScope.experiment = function (k, v, apply) {
+    if ($rootScope.experiments[k] !== v) {
+      var o = {};
+      o['experiment_' + k] = v;
+      dataLayer.push(o);
+      $rootScope.experiments[k] = v;
+      if (apply) {
+        $rootScope.$apply();
+      }
+    }
+  };
 
   $rootScope.$state = $state;
   $rootScope.$stateParams = $stateParams;

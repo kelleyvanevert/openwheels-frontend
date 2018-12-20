@@ -22,7 +22,10 @@
           var pictures = $filter('orderBy')(resource.pictures, 'order', false);
 
           if (pictures[0][size]) {
-            scope.imageUrl = appConfig.serverUrl + '/' + pictures[0][size];
+            scope.imageUrl = pictures[0][size];
+            if (!scope.imageUrl.match(/^http/)) {
+              scope.imageUrl = appConfig.serverUrl + '/' + scope.imageUrl;
+            }
           }
         });
         attrs.$observe('alttext', function (alttext) {
