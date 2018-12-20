@@ -150,13 +150,33 @@ angular.module('rpcServices', [])
   var m = function (name) {
     return api.createRpcMethod('invoice2.' + name);
   };
-  this.calculatePrice = m('calculatePrice');
   this.getSent = m('getSent');
   this.getReceived = m('getReceived'); // status = paid | unpaid | both
   this.getUngroupedForPerson = m('getUngroupedForPerson');
   this.calculateBookingPrice = m('calculateBookingPrice'); // status = paid | unpaid | both
   this.createSenderInvoiceGroup = m('createSenderInvoiceGroup');
   this.createRecipientInvoiceGroup = m('createRecipientInvoiceGroup');
+
+  var _calculatePrice = m('calculatePrice');
+  this.calculatePrice = function (params) {
+    return _calculatePrice(params).then(function (price) {
+      
+      if (price.free_km_day) {
+        // similarly, if the resource has this setting, the free kms are calculated this way
+        price.free_km_total   = price.time_days * price.default_free_km_day     + price.time_hours * price.default_free_km_hour;
+      } else {
+        price.free_km_total = 0;
+      }
+
+      if (!params.includeRedemption) {
+        price.total -= price.redemption;
+        price.sub_total -= price.redemption;
+        price.redemption = 0;
+      }
+
+      return price;
+    });
+  };
 })
 
 .service('accountService', function (api) {

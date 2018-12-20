@@ -6,6 +6,14 @@
                     mobile-autoscroll="true">
   </timeframe-picker>
 
+  <div class="error-message" ng-if="timeFrameError === 'not_given'">
+    <p>Vul een begin- en eindtijd in zodat we weten wanneer je de auto wil huren.</p>
+  </div>
+
+  <div class="error-message" ng-if="timeFrameError === 'invalid'">
+    <p>Vul een geldige begin- en eindtijd in. De begintijd van de rit moet vóór de eindtijd liggen.</p>
+  </div>
+
 <!--
   <div ng-if="contractOptions && contractOptions.length > 1">
     <p><label for="res_contract">Contract</label></p>
@@ -26,76 +34,118 @@
     <info-icon tooltip-html="'DECREASE_OWN_RISK_INFO' | translate"></info-icon>
   </div>
 -->
+  
 
   <!-- availability & price -->
-  <div class="escape-h-card-padding" ng-show="booking.beginRequested && booking.endRequested">
-    <div class="availability-and-pricing-details">
-      <div class="availability-loading pad" ng-if="isAvailabilityLoading">
-        <p>Beschikbaarheid wordt gecontroleerd...</p>
-        <md-progress-circular md-mode="indeterminate" class="md-hue-1"></md-progress-circular>
-      </div>
-      <div class="pad" ng-if="true || availability"> <!-- iff !isAvailabilityLoading -->
-        <div class="availability-notice is-unavailable" ng-if="(availability.available === 'no')">
-          <p class="notice">
-            <ng-md-icon icon="close" aria-hidden="true"></ng-md-icon>
-            Helaas is deze auto voor de gewenste periode niet beschikbaar.
-          </p>
-          <p class="extra">
-            <!-- TODO -->
-            <a href="/auto-huren" ui-sref="owm.resource.search.list">Probeer een van de andere auto's in de omgeving.</a>
-          </p>
-        </div>
-        <div ng-if="(availability.available === 'yes')">
-          <div class="availability-notice is-available">
-            <p class="notice">
-              <ng-md-icon icon="check" aria-hidden="true"></ng-md-icon>
-              De auto is beschikbaar voor de gewenste periode.
-            </p>
-          </div>
-          <invoice-estimate booking="booking"></invoice-estimate>
-        </div>
-      </div>
+  <div class="availability-and-pricing-details" ng-show="booking.beginRequested && booking.endRequested && !timeFrameError">
 
-      <!-- TODO (move to invoice estimate component) -->
-      <div class="invited-discount" ng-if="invitedDiscount">
-        Je ontvangt €10 korting van {{ person.invited.firstName }}!
-      </div>
+    <div class="loading-message" ng-if="!availability || (availability && !availability.no && !price)">
+      <p ng-if="!availability">Beschikbaarheid controleren...</p>
+      <p ng-if="availability && !availability.no && !price">Prijs berekenen...</p>
+      <md-progress-linear md-mode="indeterminate"></md-progress-linear>
     </div>
-  </div>
 
-  <!-- legacy
-  <div class="form-group">
-    <div class="text-center" ng-if="price || isPriceLoading || availability || isAvailabilityLoading">
-      <h4 ng-if="availability.available==='no'"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon> {{ 'NOT_AVAILABLE' | translate }}</h4>
-      <h4 ng-if="availability.available==='yes'"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon> {{ 'AVAILABLE' | translate }}</h4>
-      <h4 ng-if="availability.available==='yes' && price">
-        <div ng-if="!invitedDiscount">
-          {{ 'COSTS' | translate }}:
-          <span>{{ price.total | currency }}</span>
-          <info-icon tooltip-html="priceHtml(price)"></info-icon>
-          <span ng-if="booking.discountCode && !discountCodeValidation.error" style="display: block; font-size: 0.8em;">
-            De kortingscode wordt later verrekend.
-          </span>
-          <span ng-if="booking.discountCode && discountCodeValidation.error" class="text-danger" style="display: block; font-size: 0.8em;">
-            De kortingscode is ongeldig.
-          </span>
-        </div>
-        <div ng-if="invitedDiscount">
-          <div style="padding-bottom:5px;">{{ 'COSTS_WITHOUT_DISCOUNT' | translate }}:</div>
-          <span>{{ price.total | currency }}</span>
-          <info-icon tooltip-html="priceHtml(price)"></info-icon>
-        </div>
-      </h4>
-      <h4 ng-if="isPriceLoading || isAvailabilityLoading">
-        <i class="fa fa-spinner fa-spin"></i>
-      </h4>
+    <div class="availability-notice is-unavailable" ng-if="availability && availability.no">
+      <p class="notice">
+        <ng-md-icon icon="close" aria-hidden="true"></ng-md-icon>
+        Helaas is deze auto voor de gewenste periode niet beschikbaar.
+      </p>
+      <p class="extra">
+        <!-- TODO -->
+        <a href="/auto-huren" ui-sref="owm.resource.search.list">Probeer een van de andere auto's in de omgeving.</a>
+      </p>
     </div>
-    <h4 class="text-center"><span ng-if="invitedDiscount" class="text-success" style="display: block; font-size: 1em; padding: 0.5em">
+
+    <invoice-estimate ng-if="availability && price"
+                      resource="resource"
+                      booking="booking"
+                      price="price"></invoice-estimate>
+
+    <!-- TODO (move to invoice estimate component) -->
+    <div class="invited-discount" ng-if="invitedDiscount">
       Je ontvangt €10 korting van {{ person.invited.firstName }}!
-    </span></h4>
+    </div>
   </div>
-  /legacy -->
 
+  <p>
+    <label for="res_discountCode">
+      <span ng-show="!(showDiscountCodeBox || booking.discountCode)" class="input-toggle" ng-click="showDiscountCodeBox = true">
+        <ng-md-icon icon="local_offer"></ng-md-icon> Voeg kortingscode toe
+      </span>
+      <span ng-show="(showDiscountCodeBox || booking.discountCode)">
+        <ng-md-icon icon="local_offer"></ng-md-icon> Kortingscode
+      </span>
+    </label>
+  </p>
+  <div class="form-group mw-button" ng-show="(showDiscountCodeBox || booking.discountCode)">
+    <input id="res_discountCode"
+           type="text"
+           ng-model="booking.discountCode"
+           ng-change="validateDiscountCode()"
+           md-select-on-focus
+           ng-blur="discountBlur()"
+           ng-class="{
+             'discount-code-success': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.success,
+             'discount-code-error': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.error,
+           }" />
+    <md-button ng-if="booking.discountCode && !discountCodeValidation.showSpinner" class="md-icon-button" ng-click="removeLocalDiscountCode()">
+      <ng-md-icon icon="close" aria-hidden="true"></ng-md-icon>
+    </md-button>
+    <md-button ng-if="booking.discountCode && discountCodeValidation.showSpinner" class="md-icon-button">
+      <md-progress-circular md-diameter="24"></md-progress-circular>
+    </md-button>
+  </div>
+
+  <p>
+    <label for="res_comment">
+      <span ng-show="!showCommentBox" class="input-toggle" ng-click="showCommentBox = true">
+        <ng-md-icon icon="create"></ng-md-icon> Voeg opmerking to
+      </span>
+      <span ng-show="showCommentBox">
+        <ng-md-icon icon="create"></ng-md-icon> Opmerking voor {{ resource.owner.firstName || 'de eigenaar' }}
+      </span>
+    </label>
+  </p>
+  <div class="form-group" ng-show="showCommentBox">
+    <textarea id="res_comment"
+              rows="2"
+              auto-resize
+              md-select-on-focus
+              ng-model="booking.remarkRequester"
+              ng-blur="remarkBlur()"></textarea>
+  </div>
+
+  <div class="text-center" style="margin-top: 1.3em;">
+
+    <div class="secondary-buttons btn-group-justified" role="group" style="margin-bottom: 1em;" ng-show="false && (!showDiscountCodeBox || !showCommentBox)">
+      <div class="btn-group" role="group" style="padding-right: 3px;" ng-show="!showDiscountCodeBox">
+        <a class="btn mywheels-btn mywheels-btn-secondary" ng-click="showDiscountCodeBox = true"><ng-md-icon icon="local_offer"></ng-md-icon> kortingscode</a>
+      </div>
+      <div class="btn-group" role="group" style="padding-left: 3px;" ng-show="!showCommentBox">
+        <a class="btn mywheels-btn mywheels-btn-secondary" ng-click="showCommentBox = true"><ng-md-icon icon="create"></ng-md-icon> opmerking</a>
+      </div>
+    </div>
+
+    <p style="margin: 0;">
+      <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action"
+              style="width: 100%;"
+              md-ink-ripple="#8f6700"
+              ga-track-event="['booking', 'created_pre', user.isAuthenticated, null, true]"
+              ng-disabled="discountCodeValidation.busy || discountCodeValidation.error || availability.available=='no' || loading.createBooking"
+              ng-click="createBooking(booking)">
+        {{ 'CREATE_BOOKING' | translate }}
+      </button>
+    </p>
+<!--
+    <p>
+      <a class="btn btn-link" ui-sref="owm.resource.calendar({ city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
+        <i class="fa fa-calendar"></i> {{ 'CALENDAR_BUTTON' | translate }}
+      </a>
+    </p>
+-->
+  </div>
+
+<!--
   <p>
     <label for="res_discountCode">
       <span ng-show="!(showDiscountCodeBox || booking.discountCode)" class="input-toggle" ng-click="showDiscountCodeBox = true">
@@ -139,24 +189,9 @@
               md-select-on-focus
               ng-model="booking.remarkRequester"></textarea>
   </div>
+-->
 
-  <div class="text-center" style="margin-top: 1.3em;">
-    <p>
-      <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action"
-              md-ink-ripple="#8f6700"
-              ga-track-event="['booking', 'created_pre', user.isAuthenticated, null, true]"
-              ng-disabled="discountCodeValidation.busy || discountCodeValidation.error || availability.available=='no' || loading.createBooking"
-              ng-click="createBooking(booking)">
-        {{ 'CREATE_BOOKING' | translate }}
-      </button>
-    </p>
-    <p>
-      <a class="btn btn-link" ui-sref="owm.resource.calendar({ city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
-        <i class="fa fa-calendar"></i> {{ 'CALENDAR_BUTTON' | translate }}
-      </a>
-    </p>
-  </div>
-
+<!--
   <div class="booking-benefits-mywheels">
     <ul style="padding-left: 0px;">
       <li class="benefit-1"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon"></ng-md-icon> <span>Uitgebreide verzekering</span></li>
@@ -164,5 +199,6 @@
       <li class="benefit-3"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon"></ng-md-icon> <span>24/7 klantenservice</span></li>
     </ul>
   </div>
+-->
 
 </form>

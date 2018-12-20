@@ -1,11 +1,5 @@
 
 .invoice-estimate {
-  .pricing-details-loading {
-    text-align: center;
-    font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
-    font-size: 1.1em;
-  }
-
   .pricing-feature-container {
     margin: 1em 0;
     text-align: center;
@@ -32,8 +26,9 @@
   }
 
   .pricing-details {
-    margin: 1.3em auto;
+    margin: .3em auto 1.3em auto;
     max-width: 40rem;
+    color: #444;
 
     table {
       width: 100%;
@@ -41,7 +36,6 @@
 
     td {
       vertical-align: top;
-      padding-bottom: .2em;
     }
 
     td.price {
@@ -49,7 +43,7 @@
     }
 
     .price, .name {
-      line-height: 3.4rem;
+      line-height: 3.2rem;
     }
     .name {
       position: relative;
@@ -77,28 +71,25 @@
       md-checkbox {
         margin: 0 -6px 0 0;
       }
+
+      .km {
+        font-size: .9em;
+        margin-left: 6px;
+      }
     }
     .price {
       font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
       font-size: 1.2em;
     }
     .total {
+      color: black;
+
       .name {
         font-weight: bold;
       }
       .price {
         font-size: 1.3em;
         text-shadow: 1px 1px 0px rgba(0,0,0,.2);
-      }
-
-      &.deposit {
-        .name {
-          color: @mywheels-orange;
-        }
-        .price {
-          color: @mywheels-orange;
-          text-shadow: none;
-        }
       }
     }
 
@@ -111,8 +102,9 @@
     .line {
       position: relative;
       margin: .2em 0;
-      border-top: 1px solid #555;
+      border-top: 1px solid #999;
     }
+    /*
     .line:after {
       content: "+";
       position: absolute;
@@ -124,7 +116,9 @@
       line-height: .95em;
       text-align: center;
       font-weight: bold;
+      color: #999;
     }
+    */
 
     .estimate-title {
       text-align: center;

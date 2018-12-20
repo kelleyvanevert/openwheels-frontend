@@ -17,135 +17,48 @@ angular.module('invoiceEstimateDirective', [])
   return {
     restrict: 'E',
     scope: {
+      resource: '=',
       booking: '=',
+      price: '=',
     },
-    templateUrl: 'directives/invoiceEstimate/invoiceEstimate.tpl.html',
+    //templateUrl: 'directives/invoiceEstimate/invoiceEstimate.tpl.html',
+    template: '<div ng-include="templateUrl"></div>',
     replace: true,
-    controller: ['$scope', '$element', 'invoice2Service', function ($scope, $element, invoice2Service) {
+    controller: ['$scope', '$filter', function ($scope, $filter) {
 
-      // loading iff !price
-      $scope.price = null;
+      // A/B testing
+      function setDesign () {
+        var design = $scope.$root.experiments.invoiceEstimate;
+        var affix = (!design || design === 'A') ? '' : '-' + design;
+        $scope.templateUrl = 'directives/invoiceEstimate/invoiceEstimate' + affix + '.tpl.html';
+      }
+      $scope.$watch('$root.experiments.invoiceEstimate', setDesign);
+      $scope.$root.experiment('invoiceEstimate', 'A');
+      
+      var currency = $filter('currency');
+
+      $scope.huurkosten = function () {
+        if (!$scope.price) {
+          return '';
+        }
+
+        var h = [];
+        if ($scope.price.time_days) {
+          h.push(currency($scope.resource.price.dayRateTotal) + ' x ' + $scope.price.time_days + ' ' + ($scope.price.time_days === 1 ? 'dag' : 'dagen'));
+        }
+        if ($scope.price.time_hours) {
+          h.push(currency($scope.resource.price.hourRate) + ' x ' + $scope.price.time_hours + ' uur');
+        }
+        return h.join(' + ');
+      };
 
       $scope.showPriceDetails = false;
       $scope.setShowPriceDetails = function (b) {
         $scope.showPriceDetails = b;
       };
-
-      $scope.calculation = {
-        done: false,
+      $scope.toggleShowPriceDetails = function () {
+        $scope.showPriceDetails = !$scope.showPriceDetails;
       };
-
-      $scope.booking.numAdditionalDrivers = 0;
-
-      invoice2Service.calculatePrice({
-        resource: $scope.booking.resource.id,
-        timeFrame: {
-          startDate: $scope.booking.beginRequested,
-          endDate: $scope.booking.endRequested,
-        },
-        includeRedemption: $scope.booking.riskReduction,
-        contract: $scope.booking.contract ? $scope.booking.contract.id : undefined,
-      }).then(function (price) {
-        $scope.price = price;
-        update();
-        updateKmEstimate();
-      });
-
-      function update () {
-        var d = moment.duration(moment($scope.booking.endRequested).diff(moment($scope.booking.beginRequested)));
-        if ($scope.price) {
-
-          var calculation = $scope.calculation;
-
-          // CALCULATE
-
-          // parameters
-          calculation.dayRate = $scope.booking.resource.price.dayRateTotal;
-          calculation.hourRate = $scope.booking.resource.price.hourRate;
-          calculation.riskReductionPrice = $scope.price.default_price_decrease_own_risk;
-
-          // how many days, and remaining hours in the timeframe
-          calculation.numDays = d.asDays();
-          calculation.numRemainingHours = d.asHours() % 24;
-
-          // how many times does the hour rate fit into the day rate?
-          calculation.hourRate_in_dayRate = calculation.dayRate / calculation.hourRate;
-
-          // how many times we apply the day and hour rate, resp.
-          // taking into account that remaining hours may not exceed the day rate
-          calculation.num_dayRate = Math.floor(calculation.numDays); // === time_days @ invoice2.calculatePrice
-          calculation.num_hourRate = calculation.numRemainingHours; // === time_hours @ invoice2.calculatePrice
-          calculation.remainingHoursExceedDayRate = false;
-          if (calculation.num_hourRate * calculation.hourRate > calculation.dayRate) {
-            calculation.num_dayRate += 1;
-            calculation.num_hourRate = 0;
-            calculation.remainingHoursExceedDayRate = true;
-          }
-
-          calculation.rent = (calculation.num_dayRate * calculation.dayRate) + (calculation.num_hourRate * calculation.hourRate);
-
-          calculation.subTotal = calculation.rent;
-
-          // risk reduction (optionally applied)
-          calculation.applyRiskReduction = $scope.booking.riskReduction;
-          if (calculation.applyRiskReduction) {
-            calculation.num_riskReductionPrice = Math.ceil(calculation.numDays);
-            calculation.riskReductionTotal = calculation.num_riskReductionPrice * calculation.riskReductionPrice;
-          } else {
-            calculation.num_riskReductionPrice = 0;
-            calculation.riskReductionTotal = 0;
-          }
-          calculation.subTotal += calculation.riskReductionTotal;
-
-          // additional drivers
-          calculation.numAdditionalDrivers = $scope.booking.numAdditionalDrivers;
-          calculation.pricePerAdditionalDriver = $scope.price.default_price_additional_driver;
-          calculation.additionalDriversTotal = (calculation.pricePerAdditionalDriver * calculation.numAdditionalDrivers);
-          calculation.subTotal += calculation.additionalDriversTotal;
-
-          // SET new price object
-
-          calculation.bookingFee = $scope.price.booking_fee;
-          calculation.total = calculation.subTotal + calculation.bookingFee;
-
-          calculation.done = true;
-
-          if (calculation.automaticKilometerEstimate === undefined) {
-            calculation.automaticKilometerEstimate = Math.ceil(calculation.numDays * 150 + calculation.numRemainingHours * 15);
-            calculation.kilometerEstimate = calculation.automaticKilometerEstimate;
-            calculation.maxKmEstimate = Math.ceil(Math.max(300, calculation.automaticKilometerEstimate + 50));
-            //setTimeout(function () {
-            //  $element.find('#kilometerEstimate').attr('max', calculation.maxKmEstimate);
-            //  $log.log(calculation.maxKmEstimate, $element, $element.find('#kilometerEstimate')[0]);
-            //}, 100);
-          }
-        }
-      }
-
-      $scope.$watch('[booking.numAdditionalDrivers, booking.beginRequested, booking.endRequested, booking.riskReduction]', update);
-
-      function totalForKmEstimate (estimatedKms) {
-
-        var subcalculation = {};
-        subcalculation.fuelCosts = $scope.price.fuel_per_kilometer * estimatedKms;
-
-        subcalculation.freeKms = Math.floor($scope.calculation.numDays * 100 + $scope.calculation.numRemainingHours * 10);
-        subcalculation.paidKms = Math.max(0, estimatedKms - subcalculation.freeKms);
-        subcalculation.kmCosts = parseFloat($scope.booking.resource.price.kilometerRate) * subcalculation.paidKms;
-
-        subcalculation.total = $scope.calculation.total + subcalculation.fuelCosts + subcalculation.kmCosts;
-
-        return subcalculation;
-      }
-
-      function updateKmEstimate () {
-
-        var calculation = $scope.calculation;
-        
-        calculation.uponUserEstimate = totalForKmEstimate(calculation.kilometerEstimate);
-        calculation.uponMyWheelsEstimate = totalForKmEstimate(calculation.automaticKilometerEstimate);
-      }
-      $scope.updateKmEstimate = updateKmEstimate;
 
     }],
   };

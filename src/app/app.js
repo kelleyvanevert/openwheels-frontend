@@ -277,6 +277,20 @@ angular.module('openwheels', [
   alertService, featuresService, linksService, metaInfoService, Analytics, authService, $location, $localStorage,
   $analytics) {
 
+  var dataLayer = window.dataLayer = window.dataLayer || [];
+  $rootScope.experiments = {};
+  dataLayer.push({ experiments: $rootScope.experiments });
+  window.experiment = $rootScope.experiment = function (k, v, apply) {
+    if ($rootScope.experiments[k] !== v) {
+      var o = {};
+      o['experiment_' + k] = v;
+      dataLayer.push(o);
+      $rootScope.experiments[k] = v;
+      if (apply) {
+        $rootScope.$apply();
+      }
+    }
+  };
 
   $rootScope.$state = $state;
   $rootScope.$stateParams = $stateParams;
