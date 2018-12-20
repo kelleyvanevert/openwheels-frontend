@@ -117,7 +117,7 @@ angular.module('timeframePickerDirective', [])
           return;
         }
         else {
-          tf.pickup = tf.return.subtract('hours', 6);
+          tf.pickup = tf.return.clone().subtract('hours', 6);
         }
         
         $scope.pickupDate = tf.pickup.format(dateConfig.format);
