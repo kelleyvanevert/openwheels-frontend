@@ -44,10 +44,12 @@ angular.module('invoiceEstimateDirective', [])
 
         var h = [];
         if ($scope.price.time_days) {
-          h.push(currency($scope.resource.price.dayRateTotal) + ' x ' + $scope.price.time_days + ' ' + ($scope.price.time_days === 1 ? 'dag' : 'dagen'));
+          //h.push(currency($scope.resource.price.dayRateTotal) + ' x ' + $scope.price.time_days + ' ' + ($scope.price.time_days === 1 ? 'dag' : 'dagen'));
+          h.push($scope.price.time_days + ' ' + ($scope.price.time_days === 1 ? 'dag' : 'dagen') + ' x ' + currency($scope.resource.price.dayRateTotal));
         }
         if ($scope.price.time_hours) {
-          h.push(currency($scope.resource.price.hourRate) + ' x ' + $scope.price.time_hours + ' uur');
+          //h.push(currency($scope.resource.price.hourRate) + ' x ' + $scope.price.time_hours + ' uur');
+          h.push($scope.price.time_hours + ' uur' + ' x ' + currency($scope.resource.price.hourRate));
         }
         return h.join(' + ');
       };

@@ -1,9 +1,11 @@
 
 .mw-timeframe-picker {
+  margin-bottom: 1.8rem;
+  
   .dt-line {
     display: flex;
     justify-content: center;
-    margin-bottom: 1.6rem;
+    margin-bottom: 1rem;
 
     .dt-controls {
       display: flex;
@@ -28,16 +30,22 @@
         border-color: transparent;
         box-shadow: none;
       }
-    }
 
-    .mw-datepicker input {
-      border-top-right-radius: 0 !important;
-      border-bottom-right-radius: 0 !important;
-    }
+      &.mw-datepicker {
+        input {
+          border-top-right-radius: 0 !important;
+          border-bottom-right-radius: 0 !important;
 
-    .mw-timepicker input {
-      border-top-left-radius: 0 !important;
-      border-bottom-left-radius: 0 !important;
+          border-right: 1px solid #eee;
+        }
+      }
+
+      &.mw-timepicker {
+        input {
+          border-top-left-radius: 0 !important;
+          border-bottom-left-radius: 0 !important;
+        }
+      }
     }
   }
 }
