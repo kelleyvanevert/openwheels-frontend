@@ -1,11 +1,23 @@
 
-<div class="resource-pricing mw">
+<div class="resource-pricing mw design-b">
   <div class="featured-price" style="position: relative;">
     <div class="pad">
+      <span class="price is-1">{{ resource.price.hourRate | currency }}</span>
+      <span class="annotation">per uur</span>
+      <span style="margin: 0 10px;">/</span>
       <span class="price is-1">{{ resource.price.dayRateTotal | currency }}</span>
-      <span class="annotation">per dag / {{ resource.price.hourRate | currency }} per uur</span>
-      <div style="color: #777;">*excl kilometer- en brandstofkosten</div>
+      <span class="annotation">per dag</span>
     </div>
+  </div>
+  <div style="padding: 0 1.6rem 1rem">
+    <p style="
+    margin: .4rem 0;
+    color: #777;"><ng-md-icon icon="directions_car" style="margin-right: .5rem;"></ng-md-icon>
+    100 km gratis per dag, <span class="price">{{ resource.price.kilometerRate | currency }}</span> per extra km</p>
+    <p style="
+    margin: .4rem 0;
+    color: #777;"><ng-md-icon icon="local_gas_station" style="margin-right: .5rem;"></ng-md-icon>
+    <span class="price">{{ resource.price.fuelPerKilometer | currency }}</span> per km</p>
   </div>
   <div class="secondary" ng-if="false">
 

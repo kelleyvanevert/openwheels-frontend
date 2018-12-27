@@ -67,52 +67,49 @@
     </div>
   </div>
 
-  <p>
-    <label for="res_discountCode">
-      <span ng-show="!(showDiscountCodeBox || booking.discountCode)" class="input-toggle" ng-click="showDiscountCodeBox = true">
-        <ng-md-icon icon="local_offer"></ng-md-icon> Voeg kortingscode toe
-      </span>
-      <span ng-show="(showDiscountCodeBox || booking.discountCode)">
-        <ng-md-icon icon="local_offer"></ng-md-icon> Kortingscode
-      </span>
-    </label>
-  </p>
-  <div class="form-group mw-button" ng-show="(showDiscountCodeBox || booking.discountCode)">
-    <input id="res_discountCode"
-           type="text"
-           ng-model="booking.discountCode"
-           ng-change="validateDiscountCode()"
-           md-select-on-focus
-           ng-blur="discountBlur()"
-           ng-class="{
-             'discount-code-success': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.success,
-             'discount-code-error': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.error,
-           }" />
-    <md-button ng-if="booking.discountCode && !discountCodeValidation.showSpinner" class="md-icon-button" ng-click="removeLocalDiscountCode()">
-      <ng-md-icon icon="close" aria-hidden="true"></ng-md-icon>
-    </md-button>
-    <md-button ng-if="booking.discountCode && discountCodeValidation.showSpinner" class="md-icon-button">
-      <md-progress-circular md-diameter="24"></md-progress-circular>
-    </md-button>
-  </div>
-
-  <p>
-    <label for="res_comment">
-      <span ng-show="!showCommentBox" class="input-toggle" ng-click="showCommentBox = true">
-        <ng-md-icon icon="create"></ng-md-icon> Voeg opmerking toe
-      </span>
-      <span ng-show="showCommentBox">
-        <ng-md-icon icon="create"></ng-md-icon> Opmerking voor {{ resource.owner.firstName || 'de eigenaar' }}
-      </span>
-    </label>
-  </p>
-  <div class="form-group" ng-show="showCommentBox">
-    <textarea id="res_comment"
-              rows="2"
-              auto-resize
-              md-select-on-focus
-              ng-model="booking.remarkRequester"
-              ng-blur="remarkBlur()"></textarea>
+  <div class="tabbed">
+    <div class="tabh">
+      <a href="#" class="mywheels-btn mywheels-btn-secondary" ng-click="clickTab('discount')" ng-class="{ active: showDiscountCodeBox }">
+        <ng-md-icon icon="local_offer"></ng-md-icon>
+        Kortingscode
+      </a>
+      <a href="#" class="mywheels-btn mywheels-btn-secondary" ng-click="clickTab('comment')" ng-class="{ active: showCommentBox }">
+        <ng-md-icon icon="create"></ng-md-icon>
+        Opmerking
+      </a>
+    </div>
+    <div class="tabb" ng-show="(showDiscountCodeBox || booking.discountCode)">
+      <p>Voeg een kortingscode toe</p>
+      <div class="form-group mw-button">
+        <input id="res_discountCode"
+               type="text"
+               ng-model="booking.discountCode"
+               ng-change="validateDiscountCode()"
+               md-select-on-focus
+               ng-blur="discountBlur()"
+               ng-class="{
+                 'discount-code-success': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.success,
+                 'discount-code-error': booking.discountCode && !discountCodeValidation.busy && discountCodeValidation.error,
+               }" />
+        <md-button ng-if="booking.discountCode && !discountCodeValidation.showSpinner" class="md-icon-button" ng-click="removeLocalDiscountCode()">
+          <ng-md-icon icon="close" aria-hidden="true"></ng-md-icon>
+        </md-button>
+        <md-button ng-if="booking.discountCode && discountCodeValidation.showSpinner" class="md-icon-button">
+          <md-progress-circular md-diameter="24"></md-progress-circular>
+        </md-button>
+      </div>
+    </div>
+    <div class="tabb" ng-show="showCommentBox">
+      <p>Voeg een opmerking toe</p>
+      <div class="form-group">
+        <textarea id="res_comment"
+                  rows="2"
+                  auto-resize
+                  md-select-on-focus
+                  ng-model="booking.remarkRequester"
+                  ng-blur="remarkBlur()"></textarea>
+      </div>
+    </div>
   </div>
 
   <div class="text-center" style="margin-top: 1.3em;">

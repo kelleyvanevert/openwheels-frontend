@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <div class="pricing-details" ng-if="price">
+  <div class="pricing-details" ng-show="price">
     <table>
       <tbody>
         <tr>
@@ -29,8 +29,11 @@
         <tr>
           <td class="description">
             <div class="name">
-              Eigen risico verlagen
-              <md-checkbox ng-model="booking.riskReduction"></md-checkbox>
+              Eigen risico verlagen:
+              <!--<md-checkbox ng-model="booking.riskReduction"></md-checkbox>-->
+              <span class="choice" ng-click="booking.riskReduction = true" ng-class="{ chosen: booking.riskReduction }">aan</span>
+              /
+              <span class="choice" ng-click="booking.riskReduction = false" ng-class="{ chosen: !booking.riskReduction }">uit</span>
               <!--<info-icon tooltip-html="'Bij een MyWheels Go contract moet je verplicht je eigen risico verlagen, van 500 euro naar 250 euro.'"></info-icon>-->
             </div>
             <div class="calculation" ng-if="booking.riskReduction && (price.redemption > price.default_price_decrease_own_risk)">
@@ -59,11 +62,11 @@
     </table>
 
     <h4 ng-if="!showPriceDetails" ng-click="toggleShowPriceDetails()">
-      <a class="underline">*excl. voorschot kilometerkosten</a>
+      <a class="underline">*excl. schatting kilometerkosten</a>
       <ng-md-icon icon="expand_more"></ng-md-icon>
     </h4>
     <h4 ng-if="showPriceDetails" ng-click="toggleShowPriceDetails()">
-      <a class="underline" style="text-trasform: uppercase;">Schatting variabele kosten</a>
+      <a class="underline" style="text-trasform: uppercase;">Schatting kilometerkosten</a>
       <ng-md-icon icon="expand_less"></ng-md-icon>
     </h4>
 
@@ -104,13 +107,13 @@
           -->
           <tr class="total">
             <td class="description">
-              <div class="name">Totaal voorschot</div>
+              <div class="name">Totaal te betalen</div>
             </td>
             <td class="price">{{ price.total + (price.fuel_per_kilometer * price.estimate_km_total) + (price.estimate_km_total - price.free_km_total) * resource.price.kilometerRate | currency }}</td>
           </tr>
         </tbody>
       </table>
-      <p class="km-explanation">Het voorschot is gebaseerd op een schatting van het aantal km per uur. Rijd je minder? Dan kun je na afloop het teveel betaalde bedrag terugvragen.</p>
+      <p class="km-explanation">De kilometerkosten zijn gebaseerd op een schatting van het aantal km per uur. Rijd je minder? Dan kun je na afloop het teveel betaalde bedrag terugvragen.</p>
     </div>
   </div>
 </div>

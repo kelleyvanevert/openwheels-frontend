@@ -26,7 +26,7 @@
   }
 
   .pricing-details {
-    margin: .3em auto;
+    margin: 1.5em auto;
     max-width: 40rem;
     color: #444;
     
@@ -134,10 +134,11 @@
 
     h4 {
       font-size: .95em;
+      font-family: Helvetica, sans-serif;
       font-weight: normal;
-      text-align: center;
+      /*text-align: center;*/
       margin: .5rem 0 0;
-      padding: 3px .6rem 2px;
+      padding: 3px 0 2px;
 
       &, a, ng-md-icon {
         color: darken(@mywheels-blue, 12%);
@@ -152,6 +153,17 @@
         margin: .8rem 0 0;
         color: #666;
       }
+    }
+  }
+
+  .choice {
+    text-decoration: underline;
+    color: darken(@mywheels-blue, 10%);
+
+    &.chosen {
+      font-weight: bold;
+      text-decoration: none;
+      color: black;
     }
   }
 }

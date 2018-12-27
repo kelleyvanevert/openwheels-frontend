@@ -40,6 +40,11 @@ angular.module('owm.resource.reservationForm', [])
     $scope.invitedDiscount = false;
   }
 
+  if (!$scope.person) {
+    $scope.mustReduceOwnRisk = true;
+    $scope.booking.riskReduction = true;
+  }
+
 
   // This data DOES change
 
@@ -60,6 +65,21 @@ angular.module('owm.resource.reservationForm', [])
 
   $scope.showCommentBox = false;
   $scope.showDiscountCodeBox = false;
+
+  $scope.clickTab = function (tab) {
+    if ((tab === 'discount' && $scope.showDiscountCodeBox) || (tab === 'comment' && $scope.showCommentBox)) {
+      $scope.showCommentBox = false;
+      $scope.showDiscountCodeBox = false;
+    }
+    else if (tab === 'comment') {
+      $scope.showCommentBox = true;
+      $scope.showDiscountCodeBox = false;
+    }
+    else if (tab === 'discount') {
+      $scope.showCommentBox = false;
+      $scope.showDiscountCodeBox = true;
+    }
+  };
 
   var availabilityCheckTimer;
   $scope.$watch('[booking.beginRequested, booking.endRequested]', function () {
