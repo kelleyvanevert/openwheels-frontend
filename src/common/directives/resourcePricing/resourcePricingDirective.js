@@ -35,24 +35,6 @@ angular.module('resourcePricingDirective', [])
       $scope.$root.experiment('resourcePricing', 'A');
 
       $scope.showPricePerHour = false;
-
-      $scope.infoDialog = function (messageCode) {
-        $mdDialog.show({
-          templateUrl: 'directives/resourcePricing/dialog-' + messageCode + '.tpl.html',
-          parent: angular.element(document.body),
-          // targetEvent: $event,
-          clickOutsideToClose: true,
-          hasBackdrop: true,
-          controller: ['$scope', function ($scope) {
-            $scope.tankpas = resource.fuelCardCar;
-            $scope.kmFree = resource.kmFree;
-            $scope.price = resource.price;
-            $scope.hide = function () {
-              $mdDialog.hide();
-            };
-          }],
-        });
-      };
     }],
   };
 

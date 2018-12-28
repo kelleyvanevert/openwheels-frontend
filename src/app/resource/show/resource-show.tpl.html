@@ -133,9 +133,7 @@
                 <div class="card-body">
                     <!-- price -->
                     <!--<div ng-include="'resource/partials/resource-price.tpl.html'"></div>-->
-                    <div class="escape-card-padding">
-                        <resource-pricing resource="resource"></resource-pricing>
-                    </div>
+                    <resource-pricing resource="resource"></resource-pricing>
 
                     <!-- unavailability notice -->
                     <div ng-if="unavailable" ng-include="'resource/partials/resource-unavailable.tpl.html'"></div>
@@ -311,7 +309,9 @@
         <!-- resource sidebar -->
         <div ng-if="isWindowSizeMD" class="col-md-4 hidden-xs hidden-sm">
             <div class="card">
-                <resource-pricing resource="resource"></resource-pricing>
+                <div class="card-body">
+                    <resource-pricing resource="resource"></resource-pricing>
+                </div>
             </div>
 
             <div class="card reservation-form-card" hl-sticky offset-top="20" container="resource-page-container">

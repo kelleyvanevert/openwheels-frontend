@@ -40,11 +40,6 @@ angular.module('owm.resource.reservationForm', [])
     $scope.invitedDiscount = false;
   }
 
-  if (!$scope.person) {
-    $scope.mustReduceOwnRisk = true;
-    $scope.booking.riskReduction = true;
-  }
-
 
   // This data DOES change
 
@@ -193,6 +188,15 @@ angular.module('owm.resource.reservationForm', [])
     var resource = $scope.resource;
     var booking = $scope.booking;
     $scope.price = null;
+
+    // decide whether to allow risk reduction
+    var allowRiskReduction = ($scope.user.identity && booking.contractOptions && booking.contract && booking.contract.type.id !== 60 && booking.contract.ownRiskWaiver === 'not');
+    if (!allowRiskReduction) {
+      $scope.mustReduceOwnRisk = true;
+      $scope.booking.riskReduction = true;
+    } else {
+      $scope.mustReduceOwnRisk = false;
+    }
 
     return $q(function (resolve, reject) {
       if (!availability || availability.no || !booking.beginRequested || !booking.endRequested) {

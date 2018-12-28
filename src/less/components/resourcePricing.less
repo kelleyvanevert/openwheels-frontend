@@ -1,30 +1,12 @@
 
 .resource-pricing {
-  margin-bottom: 2em;
-
-  &.design-b {
-    .featured-price {
-      .price {
-        font-size: 2.2rem;
-      }
-      .annotation {
-        font-size: 1.2em;
-      }
-    }
-  }
-
-  @rp-header-bg: white;
 
   .featured-price {
-    background: @rp-header-bg;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     
     .pad {
-      padding: 2.2rem 2.2rem 1rem;
-      border-left: 1px solid darken(@rp-header-bg, 9%);
-      border-right: 1px solid darken(@rp-header-bg, 9%);
-      border-top: 1px solid darken(@rp-header-bg, 9%);
+      padding: .6rem .6rem 0;
     }
 
     .price {
@@ -34,6 +16,16 @@
       font-size: 1.3em;
       color: black;
       margin-left: .2em;
+
+      .hourly {
+        white-space: nowrap;
+        color: #555;
+      }
+    }
+
+    .sub-price-line {
+      color: #777;
+      margin-top: 3px;
     }
 
     a.show-price-per-hour {
@@ -84,9 +76,8 @@
   }
 
   .secondary {
-    margin: 1.4rem 0;
-    padding: 1em .1em;
-    padding-bottom: .6em;
+    margin: 0;
+    padding: 1em 0 0;
     color: #777;
     line-height: 1.6em;
 
@@ -97,7 +88,7 @@
     align-items: flex-start;
 
     .secondary-item {
-      margin: 0 .2em;
+      margin: 0;
       padding: .2em .4em;
       position: relative;
       text-align: center;
@@ -133,7 +124,7 @@
   }
 
   .free-km {
-    color: darken(@mywheels-green, 3%);
+    color: darken(@mywheels-green, 10%);
     font-weight: bold;
 
     padding: 3px 4px;

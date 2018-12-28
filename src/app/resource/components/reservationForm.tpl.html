@@ -14,28 +14,6 @@
     <p>Vul een geldige begin- en eindtijd in. De begintijd van de rit moet vóór de eindtijd liggen.</p>
   </div>
 
-<!--
-  <div ng-if="contractOptions && contractOptions.length > 1">
-    <p><label for="res_contract">Contract</label></p>
-    <div class="form-group mw-button">
-      <md-button class="md-icon-button" ng-click="">
-        <ng-md-icon icon="keyboard_arrow_down" aria-hidden="true"></ng-md-icon>
-      </md-button>
-      <select id="res_contract" name="contract" ng-model="booking.contract" ng-options="c as (c.type.name + ' - ' + c.contractor.firstName) for c in contractOptions">
-        <option value="">-- {{ 'PICK_A_CONTRACT' | translate }} --</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="checkbox" ng-if="contractOptions && booking.contract.type.id !== 60 && booking.contract.ownRiskWaiver === 'not'">
-    <md-checkbox id="riskReduction" ng-model="booking.riskReduction">
-        {{ 'DECREASE_OWN_RISK' | translate }}
-    </md-checkbox>
-    <info-icon tooltip-html="'DECREASE_OWN_RISK_INFO' | translate"></info-icon>
-  </div>
--->
-  
-
   <!-- availability & price -->
   <div class="availability-and-pricing-details" ng-show="booking.beginRequested && booking.endRequested && !timeFrameError">
 
@@ -59,6 +37,7 @@
     <invoice-estimate ng-if="availability && price"
                       resource="resource"
                       booking="booking"
+                      must-reduce-own-risk="mustReduceOwnRisk"
                       price="price"></invoice-estimate>
 
     <!-- TODO (move to invoice estimate component) -->
