@@ -18,7 +18,7 @@ angular.module('owm.resource.reservationForm', [])
 })
 
 .controller('ReservationFormController', function (
-  $log, $q, $timeout, $filter, $rootScope, $scope, $state,
+  $log, $q, $timeout, $filter, $rootScope, $scope, $state, $element,
   API_DATE_FORMAT, resourceService, invoice2Service, alertService, authService, bookingService, discountService,
   contractService, featuresService, $mdDialog, $mdMedia, $translate, $location, $localStorage, Analytics) {
 
@@ -64,6 +64,13 @@ angular.module('owm.resource.reservationForm', [])
     if (!$scope.booking.discountCode && !$scope.booking.remarkRequester) {
       $scope.showExtraFields = false;
     }
+  };
+
+  $scope.extraField = function (field) {
+    $scope.showExtraFields = true;
+    setTimeout(function () {
+      $element.find('#res_' + field).focus();
+    }, 10);
   };
 
   var availabilityCheckTimer;

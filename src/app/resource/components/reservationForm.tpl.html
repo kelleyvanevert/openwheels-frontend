@@ -96,11 +96,11 @@
   <div class="text-center" style="margin-top: 1em;">
 
     <div class="secondary-buttons btn-group-justified" role="group" style="margin-bottom: 1em;" ng-show="!showExtraFields">
-      <div class="btn-group" role="group" style="padding-right: 3px;" ng-show="!showExtraFields">
-        <a class="btn mywheels-btn mywheels-btn-secondary" ng-click="showExtraFields = true"><ng-md-icon icon="local_offer"></ng-md-icon> Kortingscode</a>
+      <div class="btn-group" role="group" style="padding-right: 3px;">
+        <a class="btn mywheels-btn mywheels-btn-secondary" ng-click="extraField('discountCode')"><ng-md-icon icon="local_offer"></ng-md-icon> Kortingscode</a>
       </div>
-      <div class="btn-group" role="group" style="padding-left: 3px;" ng-show="!showExtraFields">
-        <a class="btn mywheels-btn mywheels-btn-secondary" ng-click="showExtraFields = true"><ng-md-icon icon="message"></ng-md-icon> Opmerking</a>
+      <div class="btn-group" role="group" style="padding-left: 3px;">
+        <a class="btn mywheels-btn mywheels-btn-secondary" ng-click="extraField('comment')"><ng-md-icon icon="message"></ng-md-icon> Opmerking</a>
       </div>
     </div>
 
