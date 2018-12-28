@@ -58,6 +58,9 @@ angular.module('openwheels', [
   // 'angular-google-analytics', // this is `angular-track`, and is being phased out
   'mobileDetectService',
 
+  'Cookies',
+  'AB',
+
   /* Directives */
   'form.validation',
   'signupFormDirective',
@@ -291,24 +294,8 @@ angular.module('openwheels', [
 
 .run(function ($window, $log, $timeout, $state, $stateParams, $rootScope, $anchorScroll,
   alertService, featuresService, linksService, metaInfoService, Analytics, authService, $location, $localStorage,
+  AB,
   $analytics) {
-
-  var dataLayer = window.dataLayer = window.dataLayer || [];
-  $rootScope.experiments = {};
-  dataLayer.push({ experiments: $rootScope.experiments });
-  window.experiment = $rootScope.experiment = function (k, v, apply) {
-    if ($rootScope.experiments[k] !== v) {
-      var o = {};
-      o['experiment_' + k] = v;
-      dataLayer.push(o);
-      $rootScope.experiments[k] = v;
-      if (apply) {
-        $rootScope.$apply();
-      }
-    }
-  };
-
-  $rootScope.experiment('schattingKmKostenDropdown', true);
 
 
   $rootScope.$state = $state;
