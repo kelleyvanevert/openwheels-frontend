@@ -220,13 +220,13 @@
             {{ booking.resource.alias | limitTo: 30}}{{booking.resource.alias.length > 30 ? '...' : ''}}
           </td>
           <td width="20%">
-            <span ng-if="booking.status === 'accepted' && booking.ok && (now < booking.beginBooking || booking.trip.odoBegin || booking.trip.finalized || booking.resource.boardcomputer)">
+            <span ng-if="booking.status === 'accepted' && (booking.ok || booking.endBooking < now) && (now < booking.beginBooking || booking.trip.odoBegin || booking.trip.finalized || booking.resource.boardcomputer)">
               Geaccepteerd
             </span>
             <span ng-if="booking.status === 'accepted' && booking.approved === 'BUY_VOUCHER'" class="text-danger">
               Te betalen
             </span>
-            <span ng-if="booking.status === 'accepted' && booking.approved !== 'BUY_VOUCHER' && !booking.ok" class="text-danger">
+            <span ng-if="booking.status === 'accepted' && booking.approved !== 'BUY_VOUCHER' && !booking.ok && booking.endBooking > now" class="text-danger">
               De boeking is nog niet in orde
             </span>
             <span ng-if="booking.status === 'rejected'">Afgewezen</span>
