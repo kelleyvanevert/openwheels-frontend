@@ -1,28 +1,31 @@
 
 .resource-pricing {
-  margin-bottom: 2em;
-
-  @rp-header-bg: #f5f5f5;
 
   .featured-price {
-    background: @rp-header-bg;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     
     .pad {
-      padding: 2.2rem;
-      border-left: 1px solid darken(@rp-header-bg, 9%);
-      border-right: 1px solid darken(@rp-header-bg, 9%);
-      border-top: 1px solid darken(@rp-header-bg, 9%);
+      padding: .6rem .6rem 0;
     }
 
     .price {
       font-size: 3rem; /* just a tad bit larger than `.mw h1` */
     }
     .annotation {
-      font-size: 1.4em;
+      font-size: 1.3em;
       color: black;
-      margin-left: .3em;
+      margin-left: .2em;
+
+      .hourly {
+        white-space: nowrap;
+        color: #555;
+      }
+    }
+
+    .sub-price-line {
+      color: #777;
+      margin-top: 3px;
     }
 
     a.show-price-per-hour {
@@ -43,27 +46,28 @@
       font-size: 0.8em;
 
       display: flex;
+      justify-content: center;
       flex-direction: row;
       flex-wrap: nowrap;
       
       background: white;
-      border-top: 1px solid darken(@rp-header-bg, 9%);
       padding: 0 5px 1px;
 
       a {
-        flex-grow: 1;
-        color: #666;
-        text-align: center;
-        padding: .3em;
+      color: #666;
+      text-align: center;
+      margin: 0 .5rem;
+      padding: 6px 11px 3px;
+      outline: none !important;
+      border: 1px solid #ccc;
+      border-radius: 4rem;
+      background: white;
 
         &.active {
-          background: @rp-header-bg;
-          position: relative;
-          top: -1px;
-          color: black;
-          border-left: 1px solid darken(@rp-header-bg, 9%);
-          border-right: 1px solid darken(@rp-header-bg, 9%);
-          border-bottom: 1px solid darken(@rp-header-bg, 9%);
+          color: darken(@mywheels-green, 20%);
+          border-color: @mywheels-green;
+          border-width: 2px;
+          padding: 5px 10px 2px;
         }
 
         outline: none !important;
@@ -72,20 +76,19 @@
   }
 
   .secondary {
-    padding: 1em .1em;
-    padding-bottom: .6em;
+    margin: 0;
+    padding: 1em 0 0;
     color: #777;
-    line-height: 1.8em;
+    line-height: 1.6em;
 
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
     justify-content: space-evenly;
     align-items: flex-start;
 
     .secondary-item {
-      margin: 0 .2em;
+      margin: 0;
       padding: .2em .4em;
       position: relative;
       text-align: center;
@@ -121,7 +124,7 @@
   }
 
   .free-km {
-    color: darken(@mywheels-green, 3%);
+    color: darken(@mywheels-green, 10%);
     font-weight: bold;
 
     padding: 3px 4px;

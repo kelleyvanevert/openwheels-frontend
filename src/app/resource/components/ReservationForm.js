@@ -18,7 +18,7 @@ angular.module('owm.resource.reservationForm', [])
 })
 
 .controller('ReservationFormController', function (
-  $log, $q, $timeout, $filter, $rootScope, $scope, $state,
+  $log, $q, $timeout, $filter, $rootScope, $scope, $state, $element,
   API_DATE_FORMAT, resourceService, invoice2Service, alertService, authService, bookingService, discountService,
   contractService, featuresService, $mdDialog, $mdMedia, $translate, $location, $localStorage, Analytics) {
 
@@ -58,8 +58,20 @@ angular.module('owm.resource.reservationForm', [])
   }
   resetToPreTimeframe();
 
-  $scope.showCommentBox = false;
-  $scope.showDiscountCodeBox = false;
+  $scope.showExtraFields = false;
+
+  $scope.extraFieldBlur = function () {
+    if (!$scope.booking.discountCode && !$scope.booking.remarkRequester) {
+      $scope.showExtraFields = false;
+    }
+  };
+
+  $scope.extraField = function (field) {
+    $scope.showExtraFields = true;
+    setTimeout(function () {
+      $element.find('#res_' + field).focus();
+    }, 10);
+  };
 
   var availabilityCheckTimer;
   $scope.$watch('[booking.beginRequested, booking.endRequested]', function () {
@@ -68,6 +80,8 @@ angular.module('owm.resource.reservationForm', [])
     if (!$scope.booking.beginRequested || !$scope.booking.endRequested) {
       return false;
     }
+
+    Analytics.trackEvent('booking', 'timeframe_entered', $scope.user.identity ? $scope.user.identity.id : undefined, undefined, true);
 
     $timeout.cancel(availabilityCheckTimer);
     resetToPreTimeframe();
@@ -174,6 +188,15 @@ angular.module('owm.resource.reservationForm', [])
     var booking = $scope.booking;
     $scope.price = null;
 
+    // decide whether to allow risk reduction
+    var allowRiskReduction = ($scope.user.identity && booking.contractOptions && booking.contract && booking.contract.type.id !== 60 && booking.contract.ownRiskWaiver === 'not');
+    if (!allowRiskReduction) {
+      $scope.mustReduceOwnRisk = true;
+      $scope.booking.riskReduction = true;
+    } else {
+      $scope.mustReduceOwnRisk = false;
+    }
+
     return $q(function (resolve, reject) {
       if (!availability || availability.no || !booking.beginRequested || !booking.endRequested) {
         //$log.log(' (aborted)');
@@ -222,7 +245,7 @@ angular.module('owm.resource.reservationForm', [])
     //  in which we `notify: false` and then change the discountCode ourselves.
     //  (We know for sure this is the only change, so it doesn't hurt that much.)
     $localStorage.discountCode = $scope.booking.discountCode = '';
-    $scope.showDiscountCodeBox = false;
+    $scope.extraFieldBlur();
     $scope.discountCodeValidation = {
       timer: null,
       submitted: false,
@@ -291,18 +314,6 @@ angular.module('owm.resource.reservationForm', [])
         });
     }, DEBOUNCE_TIMEOUT_MS);
   }
-
-  $scope.discountBlur = function () {
-    if (!$scope.booking.discountCode) {
-      $scope.showDiscountCodeBox = false;
-    }
-  };
-
-  $scope.remarkBlur = function () {
-    if (!$scope.booking.remarkRequester) {
-      $scope.showCommentBox = false;
-    }
-  };
 
   function handleAuthRedirect() {
     if ($location.search().authredirect) {}
