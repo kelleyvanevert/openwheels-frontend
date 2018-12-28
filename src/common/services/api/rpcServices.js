@@ -167,13 +167,7 @@ angular.module('rpcServices', [])
       } else {
         price.free_km_total = 0;
       }
-
-      if (!params.includeRedemption) {
-        price.total -= price.redemption;
-        price.sub_total -= price.redemption;
-        price.redemption = 0;
-      }
-
+      
       return price;
     });
   };
