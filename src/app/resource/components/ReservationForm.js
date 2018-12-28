@@ -58,21 +58,11 @@ angular.module('owm.resource.reservationForm', [])
   }
   resetToPreTimeframe();
 
-  $scope.showCommentBox = false;
-  $scope.showDiscountCodeBox = false;
+  $scope.showExtraFields = false;
 
-  $scope.clickTab = function (tab) {
-    if ((tab === 'discount' && $scope.showDiscountCodeBox) || (tab === 'comment' && $scope.showCommentBox)) {
-      $scope.showCommentBox = false;
-      $scope.showDiscountCodeBox = false;
-    }
-    else if (tab === 'comment') {
-      $scope.showCommentBox = true;
-      $scope.showDiscountCodeBox = false;
-    }
-    else if (tab === 'discount') {
-      $scope.showCommentBox = false;
-      $scope.showDiscountCodeBox = true;
+  $scope.extraFieldBlur = function () {
+    if (!$scope.booking.discountCode && !$scope.booking.remarkRequester) {
+      $scope.showExtraFields = false;
     }
   };
 
@@ -246,7 +236,7 @@ angular.module('owm.resource.reservationForm', [])
     //  in which we `notify: false` and then change the discountCode ourselves.
     //  (We know for sure this is the only change, so it doesn't hurt that much.)
     $localStorage.discountCode = $scope.booking.discountCode = '';
-    $scope.showDiscountCodeBox = false;
+    $scope.extraFieldBlur();
     $scope.discountCodeValidation = {
       timer: null,
       submitted: false,
@@ -315,18 +305,6 @@ angular.module('owm.resource.reservationForm', [])
         });
     }, DEBOUNCE_TIMEOUT_MS);
   }
-
-  $scope.discountBlur = function () {
-    if (!$scope.booking.discountCode) {
-      $scope.showDiscountCodeBox = false;
-    }
-  };
-
-  $scope.remarkBlur = function () {
-    if (!$scope.booking.remarkRequester) {
-      $scope.showCommentBox = false;
-    }
-  };
 
   function handleAuthRedirect() {
     if ($location.search().authredirect) {}
