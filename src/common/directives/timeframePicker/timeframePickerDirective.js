@@ -31,7 +31,7 @@ angular.module('timeframePickerDirective', [])
     format: 'DD-MM-YYYY',
     minDate: moment().startOf('day'),
     widgetPositioning: { // with knowledge of the html (!)
-      horizontal: 'left',
+      horizontal: 'auto', // 'left',
       vertical: 'bottom',
     },
     width: '20em',

@@ -1,6 +1,6 @@
 
 .availability-and-pricing-details {
-  margin: 1.6em 0;
+  margin: 1em 0;
 
   .loading-message {
     margin: 1.4em 0;
@@ -42,5 +42,36 @@
     p:last-child {
       margin-bottom: 0;
     }
+  }
+}
+
+.tabbed {
+  margin: 2rem 0 -1rem 0;
+  
+  .tabh {
+    display: flex;
+    margin: 0 -.5rem;
+
+    .mywheels-btn {
+      margin: 0 .5rem;
+      flex-grow: 1;
+      position: relative;
+      bottom: 0;
+      z-index: 99;
+
+      &.active {
+        background: white;
+        border-color: #ccc;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-bottom: none;
+        bottom: -1px;
+      }
+    }
+  }
+  .tabb {
+    border: 1px solid #ccc;
+    background: white;
+    padding: 1.6rem;
   }
 }

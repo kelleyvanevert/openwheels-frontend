@@ -20,37 +20,41 @@ angular.module('invoiceEstimateDirective', [])
       resource: '=',
       booking: '=',
       price: '=',
+      mustReduceOwnRisk: '=',
     },
-    //templateUrl: 'directives/invoiceEstimate/invoiceEstimate.tpl.html',
-    template: '<div ng-include="templateUrl"></div>',
+    templateUrl: 'directives/invoiceEstimate/invoiceEstimate.tpl.html',
     replace: true,
-    controller: ['$scope', '$filter', function ($scope, $filter) {
-
-      // A/B testing
-      function setDesign () {
-        var design = $scope.$root.experiments.invoiceEstimate;
-        var affix = (!design || design === 'A') ? '' : '-' + design;
-        $scope.templateUrl = 'directives/invoiceEstimate/invoiceEstimate' + affix + '.tpl.html';
-      }
-      $scope.$watch('$root.experiments.invoiceEstimate', setDesign);
-      $scope.$root.experiment('invoiceEstimate', 'A');
+    controller: ['$scope', '$filter', '$mdDialog', function ($scope, $filter, $mdDialog) {
       
       var currency = $filter('currency');
 
-      $scope.huurkosten = function () {
-        if (!$scope.price) {
-          return '';
-        }
+      // TODO replace this with a check on the API results
+      // (but for now we're still waiting on the required API fields)
+      var numDaysDiffCalcDays = $scope.numDaysDiffCalcDays = (function () {
+
+        var a = moment($scope.booking.beginRequested);
+        var b = moment($scope.booking.endRequested);
+        var d = moment.duration(b.diff(a));
+        var numDays = d.asDays(); // e.g. 2.25
+
+        return ($scope.price.time_days > numDays);
+      }());
+
+      $scope.huurkosten = (function () {
 
         var h = [];
         if ($scope.price.time_days) {
-          h.push(currency($scope.resource.price.dayRateTotal) + ' x ' + $scope.price.time_days + ' ' + ($scope.price.time_days === 1 ? 'dag' : 'dagen'));
+          if (numDaysDiffCalcDays) {
+            h.push($scope.price.time_days + ' x dagprijs ' + currency($scope.resource.price.dayRateTotal));
+          } else {
+            h.push($scope.price.time_days + ' ' + ($scope.price.time_days === 1 ? 'dag' : 'dagen') + ' x ' + currency($scope.resource.price.dayRateTotal));
+          }
         }
         if ($scope.price.time_hours) {
-          h.push(currency($scope.resource.price.hourRate) + ' x ' + $scope.price.time_hours + ' uur');
+          h.push($scope.price.time_hours + ' uur' + ' x ' + currency($scope.resource.price.hourRate));
         }
         return h.join(' + ');
-      };
+      }());
 
       $scope.showPriceDetails = false;
       $scope.setShowPriceDetails = function (b) {
@@ -59,7 +63,6 @@ angular.module('invoiceEstimateDirective', [])
       $scope.toggleShowPriceDetails = function () {
         $scope.showPriceDetails = !$scope.showPriceDetails;
       };
-
     }],
   };
 
