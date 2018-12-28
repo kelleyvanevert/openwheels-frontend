@@ -81,6 +81,8 @@ angular.module('owm.resource.reservationForm', [])
       return false;
     }
 
+    Analytics.trackEvent('booking', 'timeframe_entered', $scope.user.identity ? $scope.user.identity.id : undefined, undefined, true);
+
     $timeout.cancel(availabilityCheckTimer);
     resetToPreTimeframe();
 
