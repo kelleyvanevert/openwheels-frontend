@@ -131,38 +131,43 @@
             <!-- resource sidebar smaller screens (not in sidebar) -->
             <div class="card" ng-if="!isWindowSizeMD" id="priceBookingContainer">
                 <div class="card-body">
-                    <!-- price -->
-                    <!--<div ng-include="'resource/partials/resource-price.tpl.html'"></div>-->
-                    <resource-pricing resource="resource"></resource-pricing>
+                    <div style="max-width: 50rem; margin-left: auto; margin-right: auto;">
+                        <!-- price -->
+                        <!--<div ng-include="'resource/partials/resource-price.tpl.html'"></div>-->
+                        <resource-pricing resource="resource"></resource-pricing>
+                    </div>
+                </div>
+                <div class="card-body" style="padding-top: 0;">
+                    <div style="max-width: 50rem; margin-left: auto; margin-right: auto;">
+                        <!-- unavailability notice -->
+                        <div ng-if="unavailable" ng-include="'resource/partials/resource-unavailable.tpl.html'"></div>
 
-                    <!-- unavailability notice -->
-                    <div ng-if="unavailable" ng-include="'resource/partials/resource-unavailable.tpl.html'"></div>
+                        <!-- booking form -->
+                        <div ng-if="!unavailable">
+                            <div class="text-center" ng-if="showBookingFormToggle">
+                                <p>
+                                    <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" ng-click="toggleBookingForm()">
+                                        {{ 'BOOK_A_CAR' | translate }}
+                                    </button>
+                                </p>
+                                <p>
+                                    <a class="btn btn-link" ui-sref="owm.resource.calendar({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
+                                        <i class="fa fa-calendar"></i> {{ 'CALENDAR_BUTTON' | translate }}
+                                    </a>
+                                </p>
+                            </div>
+                            <div id="createBookingContainer" uib-collapse="!showBookingForm">
+                                <reservation-form person="me" resource="resource" booking="booking"></reservation-form>
+                            </div>
+                            <!--/ booking form -->
 
-                    <!-- booking form -->
-                    <div ng-if="!unavailable">
-                        <div class="text-center" ng-if="showBookingFormToggle">
-                            <p>
-                                <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" ng-click="toggleBookingForm()">
-                                    {{ 'BOOK_A_CAR' | translate }}
-                                </button>
-                            </p>
-                            <p>
-                                <a class="btn btn-link" ui-sref="owm.resource.calendar({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
-                                    <i class="fa fa-calendar"></i> {{ 'CALENDAR_BUTTON' | translate }}
-                                </a>
-                            </p>
-                        </div>
-                        <div id="createBookingContainer" uib-collapse="!showBookingForm">
-                            <reservation-form person="me" resource="resource" booking="booking"></reservation-form>
-                        </div>
-                        <!--/ booking form -->
-
-                        <div class="text-center">
-                            <p>
-                                <a class="btn btn-link btn-sm" ng-show="showBookingForm" ng-click="toggleBookingForm()">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
-                            </p>
+                            <div class="text-center">
+                                <p>
+                                    <a class="btn btn-link btn-sm" ng-show="showBookingForm" ng-click="toggleBookingForm()">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -282,7 +287,7 @@
                 </div>
             </div>
 
-            <div ng-include="'resource/partials/social.tpl.html'" ng-if="!isWindowSizeMD"></div>
+            <!--<div ng-include="'resource/partials/social.tpl.html'" ng-if="!isWindowSizeMD"></div>-->
 
             <!-- location -->
             <div class="card mw">

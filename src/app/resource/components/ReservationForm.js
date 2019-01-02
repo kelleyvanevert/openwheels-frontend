@@ -211,7 +211,7 @@ angular.module('owm.resource.reservationForm', [])
         },
         includeRedemption: booking.riskReduction,
         contract: booking.contract ? booking.contract.id : undefined,
-      })
+      }, resource)
       .then(function (price) {
         $scope.price = price;
         resolve(price);

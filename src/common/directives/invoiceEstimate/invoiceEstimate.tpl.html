@@ -22,6 +22,9 @@
               {{ huurkosten }}
               <ng-md-icon ng-if="numDaysDiffCalcDays" size="20" icon="info_italic" class="info-icon" info-dialog="numDaysDiffCalcDays"></ng-md-icon>
             </div>
+            <div class="discount-line" ng-if="price.discount_rent">
+              incl. {{ price.discount_rent | currency }} korting
+            </div>
           </td>
           <td class="price">{{ price.rent | currency }}</td>
         </tr>
@@ -29,7 +32,6 @@
           <td class="description">
             <div class="name">
               Eigen risico verlagen{{ mustReduceOwnRisk ? '' : ':' }}
-              <!--<md-checkbox ng-model="booking.riskReduction"></md-checkbox>-->
               <span style="white-space: nowrap;">
                 <span ng-if="!mustReduceOwnRisk">
                   <span class="choice" ng-click="booking.riskReduction = true" ng-class="{ chosen: booking.riskReduction }">aan</span>
@@ -84,22 +86,19 @@
               <td class="description">
                 <div class="name">Brandstof <span class="km">{{ price.estimate_km_total }} km</span></div>
               </td>
-              <td class="price">{{ price.fuel_per_kilometer * price.estimate_km_total | currency }}</td>
+              <td class="price">{{ price.km_price_fuel | currency }}</td>
             </tr>
             <tr>
               <td class="description">
                 <div class="name">Kilometerkosten <span class="km">{{ price.estimate_km_total }} km</span></div>
-                <!--<div class="calculation">
-                  waarvan {{ price.free_km_total }} km gratis
-                  
-                  <span ng-if="calculation.uponUserEstimate.paidKms > 0">
-                    <br />
-                    {{ resource.price.kilometerRate | currency }} x {{ calculation.uponUserEstimate.paidKms }} km
-                  </span>
+                <div class="discount-line" ng-if="price.discount_per_km">
+                  incl. {{ price.discount_per_km | currency }} korting per km
                 </div>
-                  -->
+                <div class="discount-line" ng-if="price.discount_kmpoints_remaining">
+                  incl. {{ price.discount_kmpoints_remaining | currency }} korting
+                </div>
               </td>
-              <td class="price">{{ (price.estimate_km_total - price.free_km_total) * resource.price.kilometerRate | currency }}</td>
+              <td class="price">{{ price.km_price_rate | currency }}</td>
             </tr>
             <tr>
               <td colspan="2"><div class="line"></div></td>
@@ -116,7 +115,7 @@
               <td class="description">
                 <div class="name">Totaal te betalen</div>
               </td>
-              <td class="price">{{ price.total + (price.fuel_per_kilometer * price.estimate_km_total) + (price.estimate_km_total - price.free_km_total) * resource.price.kilometerRate | currency }}</td>
+              <td class="price">{{ price.total + price.km_price_fuel + price.km_price_rate | currency }}</td>
             </tr>
           </tbody>
         </table>

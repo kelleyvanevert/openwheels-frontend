@@ -31,13 +31,7 @@ angular.module('invoiceEstimateDirective', [])
       // TODO replace this with a check on the API results
       // (but for now we're still waiting on the required API fields)
       var numDaysDiffCalcDays = $scope.numDaysDiffCalcDays = (function () {
-
-        var a = moment($scope.booking.beginRequested);
-        var b = moment($scope.booking.endRequested);
-        var d = moment.duration(b.diff(a));
-        var numDays = d.asDays(); // e.g. 2.25
-
-        return ($scope.price.time_days > numDays);
+        return ($scope.price.time_days > $scope.price.num_of_days);
       }());
 
       $scope.huurkosten = (function () {
