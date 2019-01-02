@@ -60,7 +60,7 @@
     <!-- vaste prijs per km   // ng-click="infoDialog('vasteBrandstofprijs')" -->
     <div flex-gt-sm="40" flex="100" class="item" info-dialog="vasteBrandstofprijs" info-dialog-params="{ tankpas: resource.fuelCardCar }" ng-if="!resource.refuelByRenter">
       <ng-md-icon icon="local_gas_station"></ng-md-icon>
-      <span class="underline">Brandstof <span class="price">{{ resource.price.fuelPerKilometer | currency }}</span> per km</span>
+      <span class="underline"><span class="price">{{ resource.price.fuelPerKilometer | currency }}</span> per km</span>
     </div>
 
   </div>
