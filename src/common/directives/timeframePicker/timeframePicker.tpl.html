@@ -4,11 +4,11 @@
       <button id="resource_now_button" type="button" class="btn btn-success btn-xs" ng-click="setPickupNow()">{{ 'NOW' | translate }}</button>
     </p>-->
 
-    <div class="dt-line">
+    <div class="dt-line dt-line-pickup">
       <label for="pickupDate">Van</label>
       <div class="dt-controls">
         <div class="form-group mw-datepicker mw-icon"
-            bootstrap-date-time-picker="dateConfig"
+            bootstrap-date-time-picker="pickupDateConfig"
             mobile="mobile"
             dtp-broadcast-accept="pickupDateAccepted"
             scroll-to-closest="(mobileAutoscroll ? '.mw-timeframe-picker' : false)">
@@ -21,7 +21,7 @@
         </div>
         <div class="form-group mw-timepicker mw-icon"
             mobile="mobile"
-            bootstrap-date-time-picker="timeConfig"
+            bootstrap-date-time-picker="pickupTimeConfig"
             scroll-to-closest="(mobileAutoscroll ? '.mw-timeframe-picker' : false)"
             dtp-autoshow="pickupDateAccepted">
           <ng-md-icon aria-hidden="true" icon="schedule"></ng-md-icon>
@@ -43,11 +43,11 @@
       </span>
     </p>-->
 
-    <div class="dt-line">
+    <div class="dt-line dt-line-return">
       <label for="returnDate">Tot</label>
       <div class="dt-controls">
         <div class="form-group mw-datepicker mw-icon"
-            bootstrap-date-time-picker="dateConfig"
+            bootstrap-date-time-picker="returnDateConfig"
             mobile="mobile"
             dtp-broadcast-accept="returnDateAccepted"
             scroll-to-closest="(mobileAutoscroll ? '.mw-timeframe-picker' : false)">
@@ -60,7 +60,7 @@
         </div>
         <div class="form-group mw-timepicker mw-icon"
             mobile="mobile"
-            bootstrap-date-time-picker="timeConfig"
+            bootstrap-date-time-picker="returnTimeConfig"
             scroll-to-closest="(mobileAutoscroll ? '.mw-timeframe-picker' : false)"
             dtp-autoshow="returnDateAccepted">
           <ng-md-icon aria-hidden="true" icon="schedule"></ng-md-icon>
