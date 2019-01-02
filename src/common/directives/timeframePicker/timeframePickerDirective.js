@@ -80,8 +80,18 @@ angular.module('timeframePickerDirective', [])
 
       // In order to pass to child components
 
-      $scope.dateConfig = dateConfig;
-      $scope.timeConfig = timeConfig;
+      $scope.pickupDateConfig = angular.extend({}, dateConfig, {
+        widgetParent: $element.find('.dt-line-pickup'),
+      });
+      $scope.pickupTimeConfig = angular.extend({}, timeConfig, {
+        //widgetParent: $element.find('.dt-line-pickup'),
+      });
+      $scope.returnDateConfig = angular.extend({}, dateConfig, {
+        widgetParent: $element.find('.dt-line-return'),
+      });
+      $scope.returnTimeConfig = angular.extend({}, timeConfig, {
+        //widgetParent: $element.find('.dt-line-return'),
+      });
 
       // Local state
 

@@ -156,21 +156,7 @@ angular.module('rpcServices', [])
   this.calculateBookingPrice = m('calculateBookingPrice'); // status = paid | unpaid | both
   this.createSenderInvoiceGroup = m('createSenderInvoiceGroup');
   this.createRecipientInvoiceGroup = m('createRecipientInvoiceGroup');
-
-  var _calculatePrice = m('calculatePrice');
-  this.calculatePrice = function (params) {
-    return _calculatePrice(params).then(function (price) {
-      
-      if (price.free_km_day) {
-        // similarly, if the resource has this setting, the free kms are calculated this way
-        price.free_km_total   = price.time_days * price.default_free_km_day     + price.time_hours * price.default_free_km_hour;
-      } else {
-        price.free_km_total = 0;
-      }
-      
-      return price;
-    });
-  };
+  this.calculatePrice = m('calculatePrice');
 })
 
 .service('accountService', function (api) {
