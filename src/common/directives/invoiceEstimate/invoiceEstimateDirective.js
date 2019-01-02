@@ -20,7 +20,6 @@ angular.module('invoiceEstimateDirective', [])
       resource: '=',
       booking: '=',
       price: '=',
-      mustReduceOwnRisk: '=',
     },
     templateUrl: 'directives/invoiceEstimate/invoiceEstimate.tpl.html',
     replace: true,

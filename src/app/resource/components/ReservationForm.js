@@ -61,9 +61,13 @@ angular.module('owm.resource.reservationForm', [])
   $scope.showExtraFields = false;
 
   $scope.extraFieldBlur = function () {
-    if (!$scope.booking.discountCode && !$scope.booking.remarkRequester) {
-      $scope.showExtraFields = false;
-    }
+    setTimeout(function () {
+      var has_focus = $element.find('#res_discountCode').is(':focus') || $element.find('#res_comment').is(':focus');
+      if (!has_focus && !$scope.booking.discountCode && !$scope.booking.remarkRequester) {
+        $scope.showExtraFields = false;
+        $scope.$apply(); // necessary because of the timeout wrapper
+      }
+    }, 150);
   };
 
   $scope.extraField = function (field) {
@@ -187,15 +191,6 @@ angular.module('owm.resource.reservationForm', [])
     var resource = $scope.resource;
     var booking = $scope.booking;
     $scope.price = null;
-
-    // decide whether to allow risk reduction
-    var allowRiskReduction = ($scope.user.identity && booking.contractOptions && booking.contract && booking.contract.type.id !== 60 && booking.contract.ownRiskWaiver === 'not');
-    if (!allowRiskReduction) {
-      $scope.mustReduceOwnRisk = true;
-      $scope.booking.riskReduction = true;
-    } else {
-      $scope.mustReduceOwnRisk = false;
-    }
 
     return $q(function (resolve, reject) {
       if (!availability || availability.no || !booking.beginRequested || !booking.endRequested) {

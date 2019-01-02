@@ -31,9 +31,9 @@
         <tr>
           <td class="description">
             <div class="name">
-              Eigen risico verlagen{{ mustReduceOwnRisk ? '' : ':' }}
+              Eigen risico verlagen{{ price.must_decrease_own_risk ? '' : ':' }}
               <span style="white-space: nowrap;">
-                <span ng-if="!mustReduceOwnRisk">
+                <span ng-if="!price.must_decrease_own_risk">
                   <span class="choice" ng-click="booking.riskReduction = true" ng-class="{ chosen: booking.riskReduction }">aan</span>
                   /
                   <span class="choice" ng-click="booking.riskReduction = false" ng-class="{ chosen: !booking.riskReduction }">uit</span>
