@@ -108,7 +108,7 @@
               style="width: 100%;"
               md-ink-ripple="#8f6700"
               ga-track-event="['booking', 'created_pre', user.isAuthenticated, null, true]"
-              ng-disabled="discountCodeValidation.busy || discountCodeValidation.error || availability.available=='no' || loading.createBooking"
+              ng-disabled="timeFrameError || discountCodeValidation.busy || discountCodeValidation.error || availability.available=='no' || loading.createBooking"
               ng-click="createBooking(booking)">
         {{ 'CREATE_BOOKING' | translate }}
       </button>
