@@ -15,10 +15,10 @@ params:
         <ng-md-icon icon="close"></ng-md-icon>
       </md-button>
     </h3>
-    <p>Naast de vaste huurkosten, betaal je voor het huren van een auto een bedrag per kilometer, en eventueel ook een brandstofprijs.</p>
+    <p>Naast de vaste huurkosten, betaal je voor het huren van deze auto een bedrag per kilometer{{ resource.refuelByRenter ? '.' : ' en een brandstofprijs.' }}</p>
     <p>Met deze tool kun je je ritkosten schatten op basis van het aantal kilometers dat je denkt te gaan rijden.</p>
     <div>
-      <no-ui-slider style="margin: 50px 20px 10px;"
+      <no-ui-slider style="margin: 60px 20px 10px;"
                 min="params.controller.min"
                 max="params.controller.max"
                 step="1"
@@ -48,14 +48,14 @@ params:
                 <div class="name">
                   Kilometerkosten
                 </div>
-                <div class="discount-line mw-blue" ng-if="params.price.free_km_total">
-                  {{ params.price.free_km_total }} km gratis
+                <div class="discount-line" ng-if="params.price.free_km_total">
+                  - {{ params.price.free_km_total }} km gratis
                 </div>
                 <div class="discount-line" ng-if="params.price.discount_per_km">
-                  incl. {{ params.price.discount_per_km | currency }} korting per km
+                  - incl. {{ params.price.discount_per_km | currency }} korting per km
                 </div>
                 <div class="discount-line" ng-if="params.controller.estimatedPrice.discount_km_points_included">
-                  incl. {{ params.controller.estimatedPrice.discount_km_points_included | currency }} korting
+                  - incl. {{ params.controller.estimatedPrice.discount_km_points_included | currency }} beheerdersvergoeding
                 </div>
               </td>
               <td class="price">{{ params.controller.estimatedPrice.km_price_rate | currency }}</td>
