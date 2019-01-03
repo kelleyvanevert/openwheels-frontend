@@ -4,31 +4,15 @@
         <ng-owl-carousel class="owl-theme"
             owl-items="images"
             owl-ready="owlReady($api)"
-            owl-properties="{
-                loop: (images.length > 2),
-                center: true,
-                nav: true,
-                dots: false,
-                responsive: {
-                    '0': { items: 1 },
-                    '300': { items: 1 },
-                    '400': { items: 1.2 },
-                    '500': { items: 1.5 },
-                    '600': { items: 1.8 },
-                    '700': { items: 2 },
-                    '800': { items: 2.2 },
-                    '900': { items: 2.4 },
-                    '1000': { items: 2.6 },
-                    '1200': { items: 2.7 },
-                    '1400': { items: 3 },
-                },
-            }"
+            owl-properties="owlProperties"
             ng-click="owlClick($event)">
-            <!-- ng-click doesn't work on automatically cloned elements :|-->
+            <!-- ng-click doesn't work on automatically cloned elements :| -->
+            <!-- using aspect ratio & bg image so that the header has the right dimensions even
+                  if the photos haven't been loaded yet -->
             <div class="item"
                  ng-attr-index="{{ i }}"
-                 ng-repeat="(i, url) in images">
-                <img src="{{ url }}" />
+                 ng-repeat="(i, url) in images"
+                 ng-style="{ 'background-image': 'url(' + url + ')' }">
             </div>
         </ng-owl-carousel>
     </div>
@@ -57,37 +41,44 @@
         <div class="col-md-8 col-xs-12 no-padding">
             <div class="card resource-header mw">
                 <div class="card-body">
-                    <div flex layout="row">
-                        <h1 class="single-line" flex>
-                            Huur {{ resource.alias || ('RESOURCE_NO_NAME' | translate) }} {{ resource.city ? 'in ' + resource.city : '' }}
-                        </h1>
-                        <md-button ng-if="me" class="is-favorite-button md-icon-button md-accent" aria-label="Favorite"
-                                              ng-class="{ 'is-favorite': isFavorite, 'loading': !isFavoriteResolved }">
-                            <ng-md-icon size="28" icon="favorite_border" ng-if="isFavoriteResolved && !isFavorite" ng-click="toggleFavorite(true)"></ng-md-icon>
-                            <ng-md-icon size="28" icon="favorite" ng-if="isFavoriteResolved && isFavorite" ng-click="toggleFavorite(false)"></ng-md-icon>
-                            <md-progress-circular md-mode="indeterminate" ng-if="!isFavoriteResolved"></md-progress-circular>
-                        </md-button>
-                    </div>
+                    <div flex layout="row" class="title-bar-wrapper">
+                        <a href="#" class="back-button" ui-sref="owm.resource.search.list">
+                            <ng-md-icon icon="arrow_back"></ng-md-icon>
+                        </a>
+                        <div class="title-bar">
+                            <div flex layout="row">
+                                <h1 class="single-line" flex>
+                                    Huur {{ resource.alias || ('RESOURCE_NO_NAME' | translate) }} {{ resource.city ? 'in ' + resource.city : '' }}
+                                </h1>
+                                <md-button ng-if="me" class="is-favorite-button md-icon-button md-accent" aria-label="Favorite"
+                                                      ng-class="{ 'is-favorite': isFavorite, 'loading': !isFavoriteResolved }">
+                                    <ng-md-icon size="28" icon="favorite_border" ng-if="isFavoriteResolved && !isFavorite" ng-click="toggleFavorite(true)"></ng-md-icon>
+                                    <ng-md-icon size="28" icon="favorite" ng-if="isFavoriteResolved && isFavorite" ng-click="toggleFavorite(false)"></ng-md-icon>
+                                    <md-progress-circular md-mode="indeterminate" ng-if="!isFavoriteResolved"></md-progress-circular>
+                                </md-button>
+                            </div>
 
-                    <div class="subtitle">
-                        <span ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0">
-                            <span class="tag tag-warning mw-badge mw-badge-open">MyWheels Open</span>
-                            <span class="bullet"></span>
-                        </span>
-                        <span ng-if="resource.isNew">
-                            <span class="tag tag-warning mw-badge mw-badge-new">Nieuw</span>
-                            <span class="bullet"></span>
-                        </span>
-                        <span class="subtitle-feature">
-                            {{ (resource.brand | toTitleCase) || ('UNKNOWN_BRAND' | translate) }}
-                            <span ng-if="resource.model">{{ resource.model }}</span>
-                        </span>
-                        <span ng-if="resource.city">
-                            <span class="bullet"></span>
-                            <span class="subtitle-feature">
-                                {{ resource.city | toTitleCase }}
-                            </span>
-                        </span>
+                            <div class="subtitle">
+                                <span ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0">
+                                    <span class="tag tag-warning mw-badge mw-badge-open">MyWheels Open</span>
+                                    <span class="bullet"></span>
+                                </span>
+                                <span ng-if="resource.isNew">
+                                    <span class="tag tag-warning mw-badge mw-badge-new">Nieuw</span>
+                                    <span class="bullet"></span>
+                                </span>
+                                <span class="subtitle-feature">
+                                    {{ (resource.brand | toTitleCase) || ('UNKNOWN_BRAND' | translate) }}
+                                    <span ng-if="resource.model">{{ resource.model }}</span>
+                                </span>
+                                <span ng-if="resource.city">
+                                    <span class="bullet"></span>
+                                    <span class="subtitle-feature">
+                                        {{ resource.city | toTitleCase }}
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
                     </div>
 
                     <div ng-include="'resource/partials/resource-key-features.tpl.html'"></div>

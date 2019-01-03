@@ -27,8 +27,18 @@
 
       .owl-item {
         opacity: .55;
+        
         &.center {
           opacity: 1;
+        }
+
+        .item {
+          height: 0;
+          overflow: hidden;
+          position: relative;
+          padding-top: calc((2px / 3px) * 100%);
+          background-size: cover;
+          background-position: 50% 50%;
         }
       }
     }
