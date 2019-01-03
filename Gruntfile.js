@@ -441,11 +441,6 @@ module.exports = function (grunt) {
         tasks: [ 'jshint:src', 'copy:buildAppjs' ]
       },
 
-      // testSpecs: {
-      //   files: ['test/unit/**/*.spec.js'],
-      //   tasks: ['karma:background:run']
-      // },
-
       config: {
         files: [
           'config/**',
@@ -520,31 +515,6 @@ module.exports = function (grunt) {
       }
     },
 
-    karma: {
-      options: {
-        configFile: './test/unit/config/karma.conf.js',
-        reporters: ['progress', 'coverage'],
-        preprocessors: {
-          'src/**/*.js': ['coverage']
-        },
-        coverageReporter: {
-          type: 'html',
-          dir : 'test/coverage/',
-          subdir: 'www'
-        }
-      },
-      background: {
-        background: true,
-        singleRun: false
-      },
-      autoWatch: {
-        autoWatch: true
-      },
-      singleRun: {
-        singleRun: true
-      }
-    },
-
     synclocale: {
       options: {
         base: 'src/assets/locale'
@@ -590,16 +560,10 @@ module.exports = function (grunt) {
     'index:build'
   ]);
 
-  // run unit tests once
-  grunt.registerTask('unit', ['karma:singleRun']);
-
-  // run unit tests in background
-  grunt.registerTask('unit-watch', ['karma:autoWatch']);
-
   // open coverage report (+ livereload, so can't be used at the same time as 'grunt server')
   grunt.registerTask('coverage', function () {
     grunt.initConfig(grunt.util._.extend(gruntConfig, buildConfig, coverageConfig));
-    grunt.task.run(['karma:singleRun', 'connect:coverage', 'watch:coverage']);
+    grunt.task.run(['connect:coverage', 'watch:coverage']);
   });
 
   // sync locale files
