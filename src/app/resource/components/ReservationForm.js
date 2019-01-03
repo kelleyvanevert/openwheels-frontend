@@ -359,6 +359,9 @@ angular.module('owm.resource.reservationForm', [])
       $scope.initPhoneNumbers();
     }
 
+    if ($scope.timeFrameError) {
+      return;
+    }
     if (!booking.beginRequested || !booking.endRequested) {
       $scope.loading.createBooking = false;
       $scope.timeFrameError = 'not_given';
