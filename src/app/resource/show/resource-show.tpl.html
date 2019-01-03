@@ -4,31 +4,15 @@
         <ng-owl-carousel class="owl-theme"
             owl-items="images"
             owl-ready="owlReady($api)"
-            owl-properties="{
-                loop: (images.length > 2),
-                center: true,
-                nav: true,
-                dots: false,
-                responsive: {
-                    '0': { items: 1 },
-                    '300': { items: 1 },
-                    '400': { items: 1.2 },
-                    '500': { items: 1.5 },
-                    '600': { items: 1.8 },
-                    '700': { items: 2 },
-                    '800': { items: 2.2 },
-                    '900': { items: 2.4 },
-                    '1000': { items: 2.6 },
-                    '1200': { items: 2.7 },
-                    '1400': { items: 3 },
-                },
-            }"
+            owl-properties="owlProperties"
             ng-click="owlClick($event)">
-            <!-- ng-click doesn't work on automatically cloned elements :|-->
+            <!-- ng-click doesn't work on automatically cloned elements :| -->
+            <!-- using aspect ratio & bg image so that the header has the right dimensions even
+                  if the photos haven't been loaded yet -->
             <div class="item"
                  ng-attr-index="{{ i }}"
-                 ng-repeat="(i, url) in images">
-                <img src="{{ url }}" />
+                 ng-repeat="(i, url) in images"
+                 ng-style="{ 'background-image': 'url(' + url + ')' }">
             </div>
         </ng-owl-carousel>
     </div>
