@@ -18,7 +18,7 @@
           <ng-md-icon icon="close"></ng-md-icon>
         </md-button>
       </div>
-      <div class="clearbutton__flex" ng-show="!search.text && geolocation && !lightweight">
+      <div class="clearbutton__flex" ng-show="!search.text && geolocation">
         <md-button class="md-icon-button geo-button" style="width:24px !important;" ng-click="getLocation()" ga-track-event="['interaction', 'getGeolocation', 'searchbar']">
           <ng-md-icon icon="near_me"></ng-md-icon>
         </md-button>
