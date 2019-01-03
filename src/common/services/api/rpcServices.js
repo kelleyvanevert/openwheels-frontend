@@ -271,6 +271,7 @@ angular.module('rpcServices', [])
   this.get = m('get');
   this.search = m('search');
   this.isApplicable = m('isApplicable');
+  this.getApplicableState = m('getApplicableState');
   this.apply = m('apply');
   this.disable = m('disable');
 })

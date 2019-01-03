@@ -40,8 +40,8 @@
                       price="price"></invoice-estimate>
 
     <!-- TODO (move to invoice estimate component) -->
-    <div class="invited-discount" ng-if="invitedDiscount">
-      Je ontvangt €10 korting van {{ person.invited.firstName }}!
+    <div class="discount-notice success invited-discount" ng-if="invitedDiscount">
+      Je ontvangt {{ 10 | currency }} korting van {{ person.invited.firstName }}!
     </div>
   </div>
 
@@ -71,6 +71,16 @@
               <md-progress-circular md-diameter="24"></md-progress-circular>
             </md-button>
           </div>
+          <p ng-if="discountCodeValidation.success" class="discount-notice success">
+            Je ontvangt tot
+              <span ng-if="discountCodeValidation.discountState.amount">{{ discountCodeValidation.discountState.amount | currency }}</span>
+              <span ng-if="discountCodeValidation.discountState.percentage">{{ (discountCodeValidation.discountState.percentage / 100) | percentage: 0 }}</span>
+            korting.
+          </p>
+          <p ng-if="discountCodeValidation.error" class="discount-notice error">
+            Kortingscode niet toepasselijk.
+          </p>
+          <p ng-if="booking.discountCode && !user.identity" class="discount-notice">Kortingscode wordt later verrekend.</p>
         </td>
       </tr>
       <tr>
