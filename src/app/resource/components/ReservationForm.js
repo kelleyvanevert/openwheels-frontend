@@ -199,7 +199,7 @@ angular.module('owm.resource.reservationForm', [])
       }
 
       if (booking.riskReduction === undefined) {
-        booking.riskReduction = true;
+        booking.riskReduction = false;
       }
 
       invoice2Service.calculatePrice({
