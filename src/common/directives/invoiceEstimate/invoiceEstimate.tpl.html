@@ -28,12 +28,12 @@
           </td>
           <td class="price">{{ price.rent | currency }}</td>
         </tr>
-        <tr>
+        <tr ng-if="booking.contract.ownRiskWaiver !== 'month'">
           <td class="description">
             <div class="name">
-              Eigen risico verlagen{{ price.must_decrease_own_risk ? '' : ':' }}
+              Eigen risico verlagen{{ (!price.must_decrease_own_risk && (booking.contract.ownRiskWaiver === 'not')) ? ':' : '' }}
               <span style="white-space: nowrap;">
-                <span ng-if="!price.must_decrease_own_risk">
+                <span ng-if="!price.must_decrease_own_risk && (booking.contract.ownRiskWaiver === 'not')">
                   <span class="choice" ng-click="booking.riskReduction = true" ng-class="{ chosen: booking.riskReduction }">aan</span>
                   /
                   <span class="choice" ng-click="booking.riskReduction = false" ng-class="{ chosen: !booking.riskReduction }">uit</span>
