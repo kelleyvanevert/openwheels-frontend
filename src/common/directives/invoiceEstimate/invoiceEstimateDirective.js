@@ -56,6 +56,22 @@ angular.module('invoiceEstimateDirective', [])
       $scope.toggleShowPriceDetails = function () {
         $scope.showPriceDetails = !$scope.showPriceDetails;
       };
+
+      $scope.estimateDialogController = {
+        kilometerEstimate: $scope.price.estimate_km_total,
+        estimatedPrice: $scope.price,
+        updateKmEstimate: function () {
+          var controller = $scope.estimateDialogController;
+          
+          controller.estimatedPrice.km_price_fuel = controller.kilometerEstimate * parseFloat($scope.resource.price.fuelPerKilometer);
+
+          var paidKms = Math.max(0, controller.kilometerEstimate - $scope.price.free_km_total);
+          controller.estimatedPrice.km_price_rate = paidKms * (parseFloat($scope.resource.price.kilometerRate) - ($scope.price.discount_per_km || 0));
+
+          controller.estimatedPrice.discount_km_points_included = Math.min(controller.estimatedPrice.km_price_rate, $scope.price.discount_km_points_remaining || 0);
+          controller.estimatedPrice.km_price_rate -= controller.estimatedPrice.discount_km_points_included;
+        },
+      };
     }],
   };
 

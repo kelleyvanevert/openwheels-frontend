@@ -1,0 +1,77 @@
+
+<!--
+params:
+  resource
+  booking
+  price
+-->
+<md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="30" flex-xl="25"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3>
+      <ng-md-icon icon="info_italic" size="28"></ng-md-icon>
+      Wat gaat mijn rit kosten?
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+    <p>Naast de vaste huurkosten, betaal je voor het huren van een auto een bedrag per kilometer, en eventueel ook een brandstofprijs.</p>
+    <p>Met deze tool kun je je ritkosten schatten op basis van het aantal kilometers dat je denkt te gaan rijden.</p>
+    <div>
+      <no-ui-slider style="margin: 50px 20px 10px;"
+                min="20"
+                max="300"
+                step="1"
+                ng-model="params.controller.kilometerEstimate"
+                ng-change="params.controller.updateKmEstimate()"></no-ui-slider>
+    </div>
+    <div class="invoice-estimate">
+      <div class="pricing-details">
+        <table>
+          <tbody>
+            <tr>
+              <td class="description">
+                <div class="name">Vaste huurkosten</div>
+              </td>
+              <td class="price">{{ params.price.total | currency }}</td>
+            </tr>
+            <tr ng-if="!params.resource.refuelByRenter">
+              <td class="description">
+                <div class="name">
+                  Brandstof
+                </div>
+              </td>
+              <td class="price">{{ params.controller.estimatedPrice.km_price_fuel | currency }}</td>
+            </tr>
+            <tr>
+              <td class="description">
+                <div class="name">
+                  Kilometerkosten
+                </div>
+                <div class="discount-line mw-blue" ng-if="params.price.free_km_total">
+                  {{ params.price.free_km_total }} km gratis
+                </div>
+                <div class="discount-line" ng-if="params.price.discount_per_km">
+                  incl. {{ params.price.discount_per_km | currency }} korting per km
+                </div>
+                <div class="discount-line" ng-if="params.controller.estimatedPrice.discount_km_points_included">
+                  incl. {{ params.controller.estimatedPrice.discount_km_points_included | currency }} korting
+                </div>
+              </td>
+              <td class="price">{{ params.controller.estimatedPrice.km_price_rate | currency }}</td>
+            </tr>
+            <tr>
+              <td colspan="2"><div class="line"></div></td>
+            </tr>
+            <tr class="total">
+              <td class="description">
+                <div class="name">Ritkosten {{ params.controller.kilometerEstimate }} km</div>
+              </td>
+              <td class="price">{{ params.price.total + params.controller.estimatedPrice.km_price_fuel + params.controller.estimatedPrice.km_price_rate | currency }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </md-dialog-content>
+</md-dialog>
