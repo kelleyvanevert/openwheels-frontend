@@ -198,6 +198,10 @@ angular.module('owm.resource.reservationForm', [])
         return reject();
       }
 
+      if (booking.riskReduction === undefined) {
+        booking.riskReduction = true;
+      }
+
       invoice2Service.calculatePrice({
         resource: resource.id,
         timeFrame: {
@@ -275,7 +279,7 @@ angular.module('owm.resource.reservationForm', [])
     validation.timer = $timeout(function validateDebounced() {
       $log.debug('validating', code);
 
-      discountService.isApplicable({
+      discountService.getApplicableState({
           resource: $scope.resource.id,
           person: $scope.person.id,
           contract: $scope.booking.contract.id,
@@ -289,8 +293,9 @@ angular.module('owm.resource.reservationForm', [])
           if (!validation.busy || code !== $scope.booking.discountCode) {
             return;
           }
-          validation.success = result.applicable;
+          validation.success = result.valid;
           validation.error = !validation.success;
+          validation.discountState = result;
         })
         .catch(function () {
           if (!validation.busy || code !== $scope.booking.discountCode) {
@@ -359,6 +364,9 @@ angular.module('owm.resource.reservationForm', [])
       $scope.initPhoneNumbers();
     }
 
+    if ($scope.timeFrameError) {
+      return;
+    }
     if (!booking.beginRequested || !booking.endRequested) {
       $scope.loading.createBooking = false;
       $scope.timeFrameError = 'not_given';
