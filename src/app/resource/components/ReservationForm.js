@@ -198,6 +198,10 @@ angular.module('owm.resource.reservationForm', [])
         return reject();
       }
 
+      if (booking.riskReduction === undefined) {
+        booking.riskReduction = true;
+      }
+
       invoice2Service.calculatePrice({
         resource: resource.id,
         timeFrame: {
