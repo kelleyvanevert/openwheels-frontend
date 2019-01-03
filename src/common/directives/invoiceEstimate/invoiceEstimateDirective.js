@@ -58,6 +58,10 @@ angular.module('invoiceEstimateDirective', [])
       };
 
       $scope.estimateDialogController = {
+        // sensible defaults
+        min: Math.min(20, $scope.price.estimate_km_total),
+        max: Math.max(200, 2.7 * $scope.price.estimate_km_total),
+        
         kilometerEstimate: $scope.price.estimate_km_total,
         estimatedPrice: $scope.price,
         updateKmEstimate: function () {

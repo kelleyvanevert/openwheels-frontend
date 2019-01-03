@@ -19,8 +19,8 @@ params:
     <p>Met deze tool kun je je ritkosten schatten op basis van het aantal kilometers dat je denkt te gaan rijden.</p>
     <div>
       <no-ui-slider style="margin: 50px 20px 10px;"
-                min="20"
-                max="300"
+                min="params.controller.min"
+                max="params.controller.max"
                 step="1"
                 ng-model="params.controller.kilometerEstimate"
                 ng-change="params.controller.updateKmEstimate()"></no-ui-slider>
