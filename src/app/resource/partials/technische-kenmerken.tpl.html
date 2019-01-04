@@ -1,10 +1,28 @@
 
 <h2>
     Technische kenmerken
-    <span ng-if="resource.brand">{{ resource.brand | toTitleCase }}</span>
-    <span ng-if="resource.model">{{ resource.model | toTitleCase }}</span>
+    <span class="hidden-lt-600">
+        <span ng-if="resource.brand">{{ resource.brand | toTitleCase }}</span>
+        <span ng-if="resource.model">{{ resource.model | toTitleCase }}</span>
+    </span>
 </h2>
 <div class="specifics-table">
+    <!-- so that the even/odd coloring works the same as "opties en accessoires" -->
+    <div flex layout-gt-xs="row" class="specificRow" style="padding: 0; margin: 0; border: none;"></div>
+
+    <!-- for mobile only -->
+    <div flex layout-gt-xs="row" class="specificRow hideOnMobile">
+        <div flex-xs="100" flex="50" layout="row" class="item" style="padding: 0; border: 0;"></div>
+        <div flex-xs="100" flex="50" layout="row" class="item">
+            <div flex="50" class="title">Merk/model</div>
+            <div flex="50" class="info">
+                <span ng-if="resource.brand">{{ resource.brand | toTitleCase }}</span>
+                <span ng-if="resource.model">{{ resource.model | toTitleCase }}</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- for all sizes -->
     <div flex layout-gt-xs="row" class="specificRow">
         <div flex-xs="100" flex="50" layout="row" class="item fuel_type">
             <div flex="50" class="title">{{ 'FUEL_TYPE' | translate }}</div>

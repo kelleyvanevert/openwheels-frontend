@@ -5,8 +5,8 @@
       <span class="price is-1">{{ resource.price.dayRateTotal | currency }}</span>
       <span class="annotation">per dag <span class="hourly">/ {{ resource.price.hourRate | currency }} per uur</span></span>
       <div class="sub-price-line" ng-if="$root.experiments.schattingKmKostenDropdown">
-        *excl <span ng-if="resource.refuelByRenter">kilometerkosten</span>
-              <span ng-if="!resource.refuelByRenter">kilometer- en brandstofkosten</span>
+        *excl. <span ng-if="resource.refuelByRenter">kilometerkosten</span>
+               <span ng-if="!resource.refuelByRenter">kilometer- en brandstofkosten</span>
       </div>
     </div>
   </div>
@@ -15,7 +15,7 @@
     <!-- KILOMETERPRIJS -->
 
     <!-- geen gratis kilometers -->
-    <div class="secondary-item" info-dialog="kilometerkosten" info-dialog-params="{ kmFree: resource.price.kmFree }" ng-if="!resource.price.kmFree">
+    <div class="secondary-item" info-dialog="kilometerkosten" info-dialog-params="{ resource: resource }" ng-if="!resource.price.kmFree">
       <ng-md-icon icon="directions_car"></ng-md-icon>
       <div class="lines">
         <div class="line underline"><span class="price">{{ resource.price.kilometerRate | currency }}</span> per km</div>
@@ -23,7 +23,7 @@
     </div>
 
     <!-- wel gratis kilometers -->
-    <div class="secondary-item" info-dialog="kilometerkosten" info-dialog-params="{ kmFree: resource.price.kmFree }" ng-if="resource.price.kmFree">
+    <div class="secondary-item" info-dialog="kilometerkosten" info-dialog-params="{ resource: resource }" ng-if="resource.price.kmFree">
       <ng-md-icon icon="directions_car"></ng-md-icon>
       <div class="lines">
         <div class="line"><span class="free-km">{{ (showPricePerHour ? 'FREE_KM_HOUR' : 'FREE_KM_DAY') | translate }}</span></div>

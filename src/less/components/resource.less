@@ -231,6 +231,7 @@ label[for=mywheelsOpen] {
 .specifics-table {
     border-top: 1px solid #ddd;
     margin-bottom: 1.4em;
+    font-size: 1.1em;
 
     .item {
         .title {
@@ -244,6 +245,9 @@ label[for=mywheelsOpen] {
     }
 }
 @media all and (max-width: 600px) {
+    .hidden-lt-600 {
+        display: none;
+    }
     .specifics-table {
         .item:nth-child(odd) {
             border-right: 0;
@@ -259,16 +263,17 @@ label[for=mywheelsOpen] {
         .specificRow:nth-child(odd) {
             background-color: #f5f5f5;
         }
+        .specificRow.hideOnMobile {
+            display: none;
+        }
     }
 }
 
 .resource-key-features {
-    margin: 2rem 0;
-    font-size: 1.2em;
-    color: #444;
+    font-size: 1.1em;
+    color: #333;
 
-    border: 1px solid #ccc;
-    padding: .5rem 2rem;
+    padding: 0 2rem;
     border-radius: 1rem;
 
     .key-features-row .item {
@@ -278,7 +283,6 @@ label[for=mywheelsOpen] {
 
         ng-md-icon {
             margin-right: 1rem;
-            color: black;
             position: absolute;
             top: 50%;
             left: 0;
@@ -292,14 +296,20 @@ label[for=mywheelsOpen] {
         }
     }
 }
+.resource-header .resource-key-features {
+    margin: 2rem 0;
+}
 
 @media all and (max-width: 480px) {
     .resource-key-features {
-        margin: 1.4rem 0;
+        padding: 0;
         font-size: 1.1em;
         .key-features-row .item {
-            margin: .4rem 0;
+            margin: .8rem 0;
         }
+    }
+    .resource-header .resource-key-features {
+        margin: 1.4rem 0;
     }
 }
 
@@ -343,52 +353,11 @@ label[for=mywheelsOpen] {
             margin: -10px;
         }
     }
-
-    .title-bar-wrapper {
-        .back-button {
-            display: none;
-            margin: .3rem 1rem .3rem 0;
-            padding: .3rem;
-            max-height: 6rem;
-
-            background: #eee;
-            border-top-right-radius: 1rem;
-            border-bottom-right-radius: 1rem;
-        }
-
-        .title-bar {
-            flex-grow: 1;
-            overflow: hidden;
-        }
-    }
 }
 
-@media all and (max-width: 1350px) {
-    .resource-header {
-        .title-bar-wrapper {
-            margin-left: -2.2rem;
-
-            .back-button {
-                display: flex !important;
-            }
-        }
-    }
+@media all and (max-width: 1300px) {
     .return-toolbar .btn-link.return {
         display: none !important;
-    }
-}
-
-@media all and (max-width: 480px) {
-    .resource-header {
-        .title-bar-wrapper {
-            margin-left: -1.2rem;
-
-            .back-button {
-                margin-right: .8rem;
-                padding-left: 0;
-                padding-right: 0;
-            }
-        }
     }
 }
 

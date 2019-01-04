@@ -28,6 +28,15 @@
           </td>
           <td class="price">{{ price.rent | currency }}</td>
         </tr>
+        <tr>
+          <td class="description">
+            <div class="name">Boekingskosten</div>
+            <div class="discount-line" ng-if="price.discount_booking_fee">
+              - incl. {{ price.discount_booking_fee | currency }} korting
+            </div>
+          </td>
+          <td class="price">{{ price.booking_fee | currency }}</td>
+        </tr>
         <tr ng-if="booking.contract.ownRiskWaiver !== 'month'">
           <td class="description">
             <div class="name">
@@ -43,12 +52,6 @@
             </div>
           </td>
           <td class="price">{{ price.redemption | currency }}</td>
-        </tr>
-        <tr>
-          <td class="description">
-            <div class="name">Boekingskosten</div>
-          </td>
-          <td class="price">{{ price.booking_fee | currency }}</td>
         </tr>
         <tr>
           <td colspan="2"><div class="line"></div></td>
@@ -70,34 +73,22 @@
 
     <div ng-if="$root.experiments.schattingKmKostenDropdown">
 
-      <h4 ng-if="!showPriceDetails" ng-click="toggleShowPriceDetails()">
-        <a class="underline">*excl. schatting kilometerkosten</a>
-        <ng-md-icon icon="expand_more"></ng-md-icon>
+      <h4 ng-if="!showPriceDetails">
+        <a href="#" ng-click="toggleShowPriceDetails()">
+          <span class="underline">*excl. schatting kilometerkosten</span>
+          <ng-md-icon icon="expand_more"></ng-md-icon>
+        </a>
       </h4>
-      <h4 ng-if="showPriceDetails" ng-click="toggleShowPriceDetails()">
-        <a class="underline" style="text-trasform: uppercase;">Schatting kilometerkosten</a>
-        <ng-md-icon icon="expand_less"></ng-md-icon>
+      <h4 ng-if="showPriceDetails">
+        <a href="#" ng-click="toggleShowPriceDetails()">
+          <span class="underline">Schatting kilometerkosten</span>
+          <ng-md-icon icon="expand_less"></ng-md-icon>
+        </a>
       </h4>
 
       <div class="km-price-details slide-toggleable" ng-class="{ 'ct-show': showPriceDetails }">
         <table>
           <tbody>
-            <tr ng-if="!resource.refuelByRenter">
-              <td class="description">
-                <div class="name">
-                  Brandstof
-                  <a class="km" href="#"
-                      info-dialog="schatJeRitPrijs"
-                      info-dialog-params="{
-                        resource: resource,
-                        booking: booking,
-                        price: price,
-                        controller: estimateDialogController,
-                      }" >{{ price.estimate_km_total }} km</a>
-                </div>
-              </td>
-              <td class="price">{{ price.km_price_fuel | currency }}</td>
-            </tr>
             <tr>
               <td class="description">
                 <div class="name">
@@ -120,6 +111,22 @@
               </td>
               <td class="price">{{ price.km_price_rate | currency }}</td>
             </tr>
+            <tr ng-if="!resource.refuelByRenter">
+              <td class="description">
+                <div class="name">
+                  Brandstof
+                  <a class="km" href="#"
+                      info-dialog="schatJeRitPrijs"
+                      info-dialog-params="{
+                        resource: resource,
+                        booking: booking,
+                        price: price,
+                        controller: estimateDialogController,
+                      }" >{{ price.estimate_km_total }} km</a>
+                </div>
+              </td>
+              <td class="price">{{ price.km_price_fuel | currency }}</td>
+            </tr>
             <tr>
               <td colspan="2"><div class="line"></div></td>
             </tr>
@@ -133,13 +140,15 @@
             -->
             <tr class="total">
               <td class="description">
-                <div class="name">Totaal te betalen</div>
+                <div class="name">
+                  Totaal te betalen
+                  <ng-md-icon size="20" icon="info_italic" class="info-icon" info-dialog="schattingKilometerkosten" info-dialog-params="{ resource: resource }"></ng-md-icon>
+                </div>
               </td>
               <td class="price">{{ price.total + price.km_price_fuel + price.km_price_rate | currency }}</td>
             </tr>
           </tbody>
         </table>
-        <p class="km-explanation">De kilometerkosten zijn gebaseerd op een schatting van het aantal km per uur. Rijd je minder? Dan kun je na afloop het teveel betaalde bedrag terugvragen.</p>
       </div>
     </div>
   </div>

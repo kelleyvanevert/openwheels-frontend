@@ -15,7 +15,7 @@ params:
         <ng-md-icon icon="close"></ng-md-icon>
       </md-button>
     </h3>
-    <p>Naast de vaste huurkosten, betaal je voor het huren van deze auto een bedrag per kilometer{{ resource.refuelByRenter ? '.' : ' en een brandstofprijs.' }}</p>
+    <p>Naast de vaste huurkosten betaal je voor het huren van deze auto een bedrag per kilometer{{ resource.refuelByRenter ? '.' : ' en een brandstofprijs.' }}</p>
     <p>Met deze tool kun je je ritkosten schatten op basis van het aantal kilometers dat je denkt te gaan rijden.</p>
     <div>
       <no-ui-slider style="margin: 60px 20px 10px;"
@@ -35,14 +35,6 @@ params:
               </td>
               <td class="price">{{ params.price.total | currency }}</td>
             </tr>
-            <tr ng-if="!params.resource.refuelByRenter">
-              <td class="description">
-                <div class="name">
-                  Brandstof
-                </div>
-              </td>
-              <td class="price">{{ params.controller.estimatedPrice.km_price_fuel | currency }}</td>
-            </tr>
             <tr>
               <td class="description">
                 <div class="name">
@@ -59,6 +51,14 @@ params:
                 </div>
               </td>
               <td class="price">{{ params.controller.estimatedPrice.km_price_rate | currency }}</td>
+            </tr>
+            <tr ng-if="!params.resource.refuelByRenter">
+              <td class="description">
+                <div class="name">
+                  Brandstof
+                </div>
+              </td>
+              <td class="price">{{ params.controller.estimatedPrice.km_price_fuel | currency }}</td>
             </tr>
             <tr>
               <td colspan="2"><div class="line"></div></td>
