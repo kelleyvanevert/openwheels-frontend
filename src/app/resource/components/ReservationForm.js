@@ -198,6 +198,9 @@ angular.module('owm.resource.reservationForm', [])
         return reject();
       }
 
+      if (!$scope.user.identity) {
+        booking.riskReduction = true;
+      }
       if (booking.riskReduction === undefined) {
         booking.riskReduction = false;
       }
