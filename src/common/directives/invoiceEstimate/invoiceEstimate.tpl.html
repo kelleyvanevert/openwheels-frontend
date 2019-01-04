@@ -70,13 +70,18 @@
 
     <div ng-if="$root.experiments.schattingKmKostenDropdown">
 
-      <h4 ng-if="!showPriceDetails" ng-click="toggleShowPriceDetails()">
-        <a class="underline">*excl. schatting kilometerkosten</a>
-        <ng-md-icon icon="expand_more"></ng-md-icon>
+      <h4 ng-if="!showPriceDetails">
+        <a href="#" ng-click="toggleShowPriceDetails()">
+          <span class="underline">*excl. schatting kilometerkosten</span>
+          <ng-md-icon icon="expand_more"></ng-md-icon>
+        </a>
       </h4>
-      <h4 ng-if="showPriceDetails" ng-click="toggleShowPriceDetails()">
-        <a class="underline" style="text-trasform: uppercase;">Schatting kilometerkosten</a>
-        <ng-md-icon icon="expand_less"></ng-md-icon>
+      <h4 ng-if="showPriceDetails">
+        <a href="#" ng-click="toggleShowPriceDetails()">
+          <span class="underline">Schatting kilometerkosten</span>
+          <ng-md-icon icon="expand_less"></ng-md-icon>
+        </a>
+        <ng-md-icon size="20" icon="info_italic" class="info-icon" info-dialog="schattingKilometerkosten"></ng-md-icon>
       </h4>
 
       <div class="km-price-details slide-toggleable" ng-class="{ 'ct-show': showPriceDetails }">
@@ -139,7 +144,6 @@
             </tr>
           </tbody>
         </table>
-        <p class="km-explanation">De kilometerkosten zijn gebaseerd op een schatting van het aantal km per uur. Rijd je minder? Dan kun je na afloop het teveel betaalde bedrag terugvragen.</p>
       </div>
     </div>
   </div>
