@@ -70,6 +70,12 @@ module.exports = function (grunt) {
       '<%= compile_dir %>'
     ],
 
+    ts: {
+      default : {
+        tsconfig: './tsconfig.json'
+      }
+    },
+
     /**
      * The `copy` task just copies files from A to B. We use it here to copy
      * our project assets (images, fonts, etc.) and javascripts into
@@ -430,15 +436,22 @@ module.exports = function (grunt) {
 
       gruntfile: {
         files: 'Gruntfile.js',
-        tasks: [ 'jshint:gruntfile' ],
+        tasks: [],
         options: { livereload: 35730 }
+      },
+
+      tssrc: {
+        files: [
+          '<%= app_files.ts %>'
+        ],
+        tasks: [ 'ts', 'copy:buildAppjs' ]
       },
 
       jssrc: {
         files: [
           '<%= app_files.js %>'
         ],
-        tasks: [ 'jshint:src', 'copy:buildAppjs' ]
+        tasks: [ /*'jshint:src',*/ 'copy:buildAppjs' ]
       },
 
       config: {
@@ -539,6 +552,7 @@ module.exports = function (grunt) {
     }
   };
 
+  grunt.loadNpmTasks("grunt-ts");
   grunt.initConfig(grunt.util._.extend(gruntConfig, buildConfig));
 
   // run local server
@@ -586,13 +600,15 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build-common', [
-    'clean', 'html2js', 'jshint:src',
+    'clean', 'html2js', //'jshint:src',
+    'ts',
     'replace:angularMaterialCss', // TODO: remove temp fix
     'copy:buildAppAssets', 'copy:buildAppBranding', 'copy:buildApp', 'copy:buildVendorFonts',
     'copy:buildAppjs', 'copy:buildVendorjs'
   ]);
 
   grunt.registerTask('compile', [
+    'ts',
     'less:compile', 'copy:compileAssets', 'copy:compileBranding', 'copy:compileApp', 'ngmin', 'concat:compileJs', 'uglify', 'index:compile'
   ]);
 

@@ -10,6 +10,9 @@ module.exports = {
       'src/**/*Module.js', // modules first
       'src/**/*.js'
     ],
+    ts: [
+      'src-ts/**/*.ts'
+    ],
     atpl: [ 'src/app/**/*.tpl.html' ],
     ctpl: [ 'src/common/**/*.tpl.html' ],
     html: [ 'src/index.html' ],

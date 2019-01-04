@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es3",
+    "outDir": "./src",
+		"rootDir": "./src-ts",
+    "allowJs": true,
+    "module": "none",
+    "moduleResolution": "classic",
+    "noEmitOnError": false,
+    "noImplicitAny": false
+  },
+  "include": [
+    "src-ts/**/*.ts"
+  ] 
+}

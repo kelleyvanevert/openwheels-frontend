@@ -5,6 +5,9 @@
 .bower-tmp
 .DS_Store
 .idea
+.vscode
+.tscache
+*.js.map
 .sublime/*.sublime-workspace
 .tmp
 bin
