@@ -189,7 +189,11 @@ angular.module('owm.resource.reservationForm', [])
         .then(function (contracts) {
           booking.contractOptions = contracts || [];
           booking.contract = contracts.length ? contracts[0] : null;
-          $scope.$watch('booking.contract.id', loadPrice);
+          $scope.$watch('booking.contract.id', function (n, o) {
+            if (n !== o) {
+              loadPrice();
+            }
+          });
           resolve(contracts);
         });
       }
