@@ -100,10 +100,12 @@ angular.module('owm.resource.reservationForm', [])
           if (availability.yes) {
             loadContractsOnce().then(function () {
               validateDiscountCode();
+              $log.log('loadPrice after availability');
               loadPrice();
             });
           } else {
             validateDiscountCode();
+            $log.log('loadPrice after availability');
             loadPrice();
           }
         });
@@ -111,7 +113,17 @@ angular.module('owm.resource.reservationForm', [])
     }
   });
 
-  $scope.$watch('[booking.riskReduction]', loadPrice);
+  if (!$scope.user.identity) {
+    $scope.booking.riskReduction = true;
+  }
+  if ($scope.booking.riskReduction === undefined) {
+    $scope.booking.riskReduction = false;
+  }
+
+  $scope.$watch('[booking.riskReduction]', function () {
+    $log.log('loadPrice after booking.riskReduction changed');
+    loadPrice();
+  });
 
 
   function loadAvailability () {
@@ -198,13 +210,6 @@ angular.module('owm.resource.reservationForm', [])
         return reject();
       }
 
-      if (!$scope.user.identity) {
-        booking.riskReduction = true;
-      }
-      if (booking.riskReduction === undefined) {
-        booking.riskReduction = false;
-      }
-
       invoice2Service.calculatePrice({
         resource: resource.id,
         timeFrame: {
@@ -213,7 +218,7 @@ angular.module('owm.resource.reservationForm', [])
         },
         includeRedemption: booking.riskReduction,
         contract: booking.contract ? booking.contract.id : undefined,
-      }, resource)
+      })
       .then(function (price) {
         $scope.price = price;
         resolve(price);

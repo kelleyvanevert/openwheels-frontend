@@ -45,7 +45,7 @@
     </div>
   </div>
 
-  <table class="reservation-extra-fields" ng-show="showExtraFields">
+  <table class="reservation-extra-fields" ng-show="showExtraFields || booking.discountCode">
     <tbody>
       <tr>
         <th>
@@ -81,6 +81,7 @@
             Kortingscode niet toepasselijk.
           </p>
           <p ng-if="booking.discountCode && !user.identity" class="discount-notice">Kortingscode wordt later verrekend.</p>
+          <p ng-if="booking.discountCode && !booking.beginRequested && !booking.endRequested" class="discount-notice">Vul een begin- en eindtijd in om de kortingscode te valideren.</p>
         </td>
       </tr>
       <tr>
@@ -102,13 +103,13 @@
     </tbody>
   </table>
 
-  <div class="text-center" style="margin-top: 1em;">
+  <div class="text-center" style="margin-top: 1em; font-size: 1.1em;">
 
-    <div class="secondary-buttons btn-group-justified" role="group" style="margin-bottom: 1em;" ng-show="!showExtraFields">
-      <div class="btn-group" role="group" style="padding-right: 3px;">
+    <div class="secondary-buttons btn-group-justified" role="group" style="margin-bottom: 1em;" ng-show="!showExtraFields && !booking.discountCode">
+      <div class="btn-group" role="group">
         <a class="btn mywheels-btn mywheels-btn-secondary" ng-click="extraField('discountCode')"><ng-md-icon icon="local_offer"></ng-md-icon> Kortingscode</a>
       </div>
-      <div class="btn-group" role="group" style="padding-left: 3px;">
+      <div class="btn-group" role="group">
         <a class="btn mywheels-btn mywheels-btn-secondary" ng-click="extraField('comment')"><ng-md-icon icon="message"></ng-md-icon> Opmerking</a>
       </div>
     </div>
