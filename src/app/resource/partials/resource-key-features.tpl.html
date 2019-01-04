@@ -13,15 +13,15 @@
     </div>
   </div>
   <div layout="column" layout-gt-xs="row" layout-align="center start" class="key-features-row">
-    <div flex-gt-sm="40" flex="100" class="item" ng-if="resource.rating_totals.senders && resource.rating_totals.satisfaction >= .5">
+    <div flex-gt-sm="40" flex="100" class="item hidden-lt-600" ng-if="resource.rating_totals.senders && resource.rating_totals.satisfaction >= .5">
       <ng-md-icon icon="thumb_up"></ng-md-icon>
       {{ resource.rating_totals.satisfaction | percentage: 0 }} tevredenheid
     </div>
-    <div flex-gt-sm="40" flex="100" class="item" ng-if="resource.rating_totals.senders && resource.rating_totals.satisfaction < .5">
+    <div flex-gt-sm="40" flex="100" class="item hidden-lt-600" ng-if="resource.rating_totals.senders && resource.rating_totals.satisfaction < .5">
       <ng-md-icon icon="thumb_down"></ng-md-icon>
       {{ resource.rating_totals.satisfaction | percentage: 0 }} tevredenheid
     </div>
-    <div flex-gt-sm="40" flex="100" class="item" ng-if="!resource.rating_totals.senders">
+    <div flex-gt-sm="40" flex="100" class="item hidden-lt-600" ng-if="!resource.rating_totals.senders">
       <ng-md-icon icon="thumbs_up_down"></ng-md-icon>
       Nog niet beoordeeld
     </div>
@@ -36,13 +36,13 @@
     <!-- KILOMETERPRIJS -->
 
     <!-- geen gratis kilometers    //  ng-click="infoDialog('kilometerkosten')" -->
-    <div flex-gt-sm="40" flex="100" class="item" info-dialog="kilometerkosten" info-dialog-params="{ kmFree: resource.price.kmFree }" ng-if="!resource.price.kmFree">
+    <div flex-gt-sm="40" flex="100" class="item" info-dialog="kilometerkosten" info-dialog-params="{ resource: resource }" ng-if="!resource.price.kmFree">
       <ng-md-icon icon="directions_car"></ng-md-icon>
       <span class="underline"><span class="price">{{ resource.price.kilometerRate | currency }}</span> per km</span>
     </div>
 
     <!-- wel gratis kilometers     // ng-click="infoDialog('kilometerkosten')" -->
-    <div flex-gt-sm="40" flex="100" class="item" info-dialog="kilometerkosten" info-dialog-params="{ kmFree: resource.price.kmFree }" ng-if="resource.price.kmFree">
+    <div flex-gt-sm="40" flex="100" class="item" info-dialog="kilometerkosten" info-dialog-params="{ resource: resource }" ng-if="resource.price.kmFree">
       <ng-md-icon icon="directions_car"></ng-md-icon>
       <span class="free-km">{{ (showPricePerHour ? 'FREE_KM_HOUR' : 'FREE_KM_DAY') | translate }}</span><br />
       <span class="underline">daarna <span class="price">{{ resource.price.kilometerRate | currency }}</span> per km</span>

@@ -41,44 +41,37 @@
         <div class="col-md-8 col-xs-12 no-padding">
             <div class="card resource-header mw">
                 <div class="card-body">
-                    <div flex layout="row" class="title-bar-wrapper">
-                        <a href="#" class="back-button" ui-sref="owm.resource.search.list">
-                            <ng-md-icon icon="arrow_back"></ng-md-icon>
-                        </a>
-                        <div class="title-bar">
-                            <div flex layout="row">
-                                <h1 class="single-line" flex>
-                                    Huur {{ resource.alias || ('RESOURCE_NO_NAME' | translate) }} {{ resource.city ? 'in ' + resource.city : '' }}
-                                </h1>
-                                <md-button ng-if="me" class="is-favorite-button md-icon-button md-accent" aria-label="Favorite"
-                                                      ng-class="{ 'is-favorite': isFavorite, 'loading': !isFavoriteResolved }">
-                                    <ng-md-icon size="28" icon="favorite_border" ng-if="isFavoriteResolved && !isFavorite" ng-click="toggleFavorite(true)"></ng-md-icon>
-                                    <ng-md-icon size="28" icon="favorite" ng-if="isFavoriteResolved && isFavorite" ng-click="toggleFavorite(false)"></ng-md-icon>
-                                    <md-progress-circular md-mode="indeterminate" ng-if="!isFavoriteResolved"></md-progress-circular>
-                                </md-button>
-                            </div>
+                    <div flex layout="row">
+                        <h1 class="single-line" flex>
+                            Huur {{ resource.alias || ('RESOURCE_NO_NAME' | translate) }} {{ resource.city ? 'in ' + resource.city : '' }}
+                        </h1>
+                        <md-button ng-if="me" class="is-favorite-button md-icon-button md-accent" aria-label="Favorite"
+                                                ng-class="{ 'is-favorite': isFavorite, 'loading': !isFavoriteResolved }">
+                            <ng-md-icon size="28" icon="favorite_border" ng-if="isFavoriteResolved && !isFavorite" ng-click="toggleFavorite(true)"></ng-md-icon>
+                            <ng-md-icon size="28" icon="favorite" ng-if="isFavoriteResolved && isFavorite" ng-click="toggleFavorite(false)"></ng-md-icon>
+                            <md-progress-circular md-mode="indeterminate" ng-if="!isFavoriteResolved"></md-progress-circular>
+                        </md-button>
+                    </div>
 
-                            <div class="subtitle">
-                                <span ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0">
-                                    <span class="tag tag-warning mw-badge mw-badge-open">MyWheels Open</span>
-                                    <span class="bullet"></span>
-                                </span>
-                                <span ng-if="resource.isNew">
-                                    <span class="tag tag-warning mw-badge mw-badge-new">Nieuw</span>
-                                    <span class="bullet"></span>
-                                </span>
-                                <span class="subtitle-feature">
-                                    {{ (resource.brand | toTitleCase) || ('UNKNOWN_BRAND' | translate) }}
-                                    <span ng-if="resource.model">{{ resource.model }}</span>
-                                </span>
-                                <span ng-if="resource.city">
-                                    <span class="bullet"></span>
-                                    <span class="subtitle-feature">
-                                        {{ resource.city | toTitleCase }}
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
+                    <div class="subtitle">
+                        <span ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0">
+                            <span class="tag tag-warning mw-badge mw-badge-open">MyWheels Open</span>
+                            <span class="bullet"></span>
+                        </span>
+                        <span ng-if="resource.isNew">
+                            <span class="tag tag-warning mw-badge mw-badge-new">Nieuw</span>
+                            <span class="bullet"></span>
+                        </span>
+                        <span class="subtitle-feature">
+                            {{ (resource.brand | toTitleCase) || ('UNKNOWN_BRAND' | translate) }}
+                            <span ng-if="resource.model">{{ resource.model }}</span>
+                        </span>
+                        <span ng-if="resource.city">
+                            <span class="bullet"></span>
+                            <span class="subtitle-feature">
+                                {{ resource.city | toTitleCase }}
+                            </span>
+                        </span>
                     </div>
 
                     <div ng-include="'resource/partials/resource-key-features.tpl.html'"></div>
@@ -198,40 +191,7 @@
                     <h3>{{ 'MYWHEELS_OPEN_TITLE' | translate }}</h3>
                 </div>
                 <div class="card-body">
-                    <div layout="row" layout-xs="column">
-                        <div flex="50" flex-xs="100">
-                            <md-list style="padding: 0px;">
-                              <md-list-item ng-if="resource.locktypes.indexOf('chipcard') >= 0 && resource.locktypes.indexOf('smartphone') < 0">
-                                <ng-md-icon icon="vpn_key" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
-                                <span>Openen met je <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-ik-een-auto-met-mijn-chipkaart/">chipkaart</a></span>
-                              </md-list-item>
-                              <md-list-item ng-if="resource.locktypes.indexOf('chipcard') < 0 && resource.locktypes.indexOf('smartphone') >= 0">
-                                <ng-md-icon icon="vpn_key" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
-                                <span>Openen met je <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-auto-smartphone/">smartphone</a></span>
-                              </md-list-item>
-                              <md-list-item ng-if="resource.locktypes.indexOf('chipcard') >= 0 && resource.locktypes.indexOf('smartphone') >= 0">
-                                <ng-md-icon icon="vpn_key" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
-                                <span>Openen met je <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-auto-smartphone/">smartphone</a> & <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-ik-een-auto-met-mijn-chipkaart/">chipkaart</a></span>
-                              </md-list-item>
-                              <md-list-item>
-                                <ng-md-icon icon="date_range" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
-                                <span>24 uur per dag te huur</span>
-                              </md-list-item>
-                            </md-list>
-                        </div>
-                        <div flex="50" flex-xs="100">
-                            <md-list style="padding: 0px;">
-                              <md-list-item>
-                                <ng-md-icon icon="access_time" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
-                                <span>Direct geaccepteerd</span>
-                              </md-list-item>
-                              <md-list-item>
-                                <ng-md-icon icon="mode_edit" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
-                                <span>Automatische kilometerregistratie</span>
-                              </md-list-item>
-                            </md-list>
-                        </div>
-                    </div>
+                    <div ng-include="'resource/partials/mw-open-benefits.tpl.html'"></div>
                 </div>
             </div>
 

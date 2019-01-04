@@ -102,7 +102,7 @@ angular.module('owm.resource.show', [])
 
   $scope.images = resource.pictures
     .map(function (picture) {
-      var path = picture.large || picture.normal || picture.small || null;
+      var path = (picture.large || picture.normal || picture.small || '').replace(/resource\/[0-9]+x[0-9]+\//, 'resource/');
       if (path && !path.match(/^http/)) {
         path = appConfig.serverUrl + '/' + path;
       }

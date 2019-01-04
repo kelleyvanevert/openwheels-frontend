@@ -1,0 +1,30 @@
+
+<div class="resource-key-features">
+  <div layout="column" layout-gt-xs="row" layout-align="center start" class="key-features-row">
+    <div flex-gt-sm="40" flex="100" class="item"
+          ng-if="resource.locktypes.indexOf('chipcard') >= 0 && resource.locktypes.indexOf('smartphone') < 0">
+      <ng-md-icon icon="vpn_key" aria-hidden="true"></ng-md-icon>
+      Openen met je
+        <a ng-if="resource.locktypes.indexOf('smartphone') >= 0"
+            target="_blank"
+            href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-auto-smartphone/">smartphone</a>
+      <span ng-if="resource.locktypes.indexOf('smartphone') >= 0 && resource.locktypes.indexOf('chipcard') >= 0">/</span>
+        <a ng-if="resource.locktypes.indexOf('chipcard') >= 0"
+            target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-ik-een-auto-met-mijn-chipkaart/">chipkaart</a>
+    </div>
+    <div flex-gt-sm="40" flex="100" class="item">
+      <ng-md-icon icon="access_time" aria-hidden="true"></ng-md-icon>
+      Direct geaccepteerd
+    </div>
+  </div>
+  <div layout="column" layout-gt-xs="row" layout-align="center start" class="key-features-row">
+    <div flex-gt-sm="40" flex="100" class="item">
+      <ng-md-icon icon="date_range" aria-hidden="true"></ng-md-icon>
+      24 uur per dag te huur
+    </div>
+    <div flex-gt-sm="40" flex="100" class="item">
+      <ng-md-icon icon="mode_edit" aria-hidden="true"></ng-md-icon>
+      Automatische kilometerregistratie
+    </div>
+  </div>
+</div>

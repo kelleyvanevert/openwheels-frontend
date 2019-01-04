@@ -1042,6 +1042,7 @@ angular.module('owm.booking.show', [])
 
     $q.all([ getVouchers(), getRequiredValue(), getCredit(), getDebt() ]).finally(function () {
       alertService.loaded();
+      $rootScope.isPaymentLoading = false;
     });
   }
 
