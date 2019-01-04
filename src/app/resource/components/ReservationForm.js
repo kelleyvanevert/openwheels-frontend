@@ -45,6 +45,7 @@ angular.module('owm.resource.reservationForm', [])
 
   function resetToPreTimeframe () {
     $scope.timeFrameError = false;
+    $scope.generalError = false;
     $scope.availability = null; // null | { yes: true | no: true | unknown: true, available: 'yes'|'no'|'unknown' }
     $scope.price = null;        // null | result of invoice2.calculatePrice(...)
     $scope.discountCodeValidation = {
@@ -433,7 +434,7 @@ angular.module('owm.resource.reservationForm', [])
       $scope.loading.createBooking = false;
       return alertService.add('danger', 'Voordat je een auto kunt boeken, hebben we een borg van je nodig', 5000);
     } else {
-      alertService.load();
+      //alertService.load();
 
       return authService.me().then(function (me) {
           /**
@@ -470,8 +471,9 @@ angular.module('owm.resource.reservationForm', [])
                 return response; // <-- the response from bookingService.create
               })
               .catch(function (err) {
-                $log.debug('error applying discount');
-                alertService.addError(err);
+                $log.debug('error applying discount', err);
+                //alertService.addError(err);
+                $scope.generalError = err.message || err;
                 return response; // <-- continue, although the discount has not been applied!
               });
           }
@@ -480,10 +482,14 @@ angular.module('owm.resource.reservationForm', [])
           var bookingId = response.id;
           return $state.go('owm.booking.show', { bookingId: bookingId });
         })
-        .catch(alertService.addError)
+        .catch(function (err) {
+          $log.debug('got error', err);
+          //alertService.addError(err);
+          $scope.generalError = err.message;
+        })
         .finally(function() {
           $scope.loading.createBooking = false;
-          alertService.loaded();
+          //alertService.loaded();
         });
     }
   }

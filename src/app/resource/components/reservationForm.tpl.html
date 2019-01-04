@@ -6,6 +6,10 @@
                     mobile-autoscroll="true">
   </timeframe-picker>
 
+  <div class="error-message" ng-if="generalError">
+    <p>{{ generalError }}</p>
+  </div>
+
   <div class="error-message" ng-if="timeFrameError === 'not_given'">
     <p>Vul een begin- en eindtijd in zodat we weten wanneer je de auto wil huren.</p>
   </div>
