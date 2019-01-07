@@ -16,7 +16,7 @@
 }
 @media (max-width: 450px) {
     .homepage-baseline {
-        height: 31rem;
+        height: 20rem;
     }
     .homepage-baseline-header h1 {
         margin-bottom: 5px !important;
