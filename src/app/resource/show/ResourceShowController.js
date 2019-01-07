@@ -102,7 +102,7 @@ angular.module('owm.resource.show', [])
 
   $scope.images = resource.pictures
     .map(function (picture) {
-      var path = (picture.large || picture.normal || picture.small || '').replace(/resource\/[0-9]+x[0-9]+\//, 'resource/');
+      var path = (picture.large || picture.normal || picture.small || '');
       if (path && !path.match(/^http/)) {
         path = appConfig.serverUrl + '/' + path;
       }
@@ -129,7 +129,7 @@ angular.module('owm.resource.show', [])
     responsive: {},
   };
   for (var screenWidth = 0; screenWidth < 3000; screenWidth += 100) {
-    var desiredHeight = Math.max(250, Math.min(500, screenWidth * (400 / 1800)));
+    var desiredHeight = Math.max(250, Math.min(330, screenWidth * (400 / 1800)));
     $scope.owlProperties.responsive[screenWidth] = {
       items: Math.max(1, (2 * screenWidth) / (3 * desiredHeight)),
     };
