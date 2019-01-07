@@ -11,16 +11,17 @@
     </md-toolbar>
 
     <md-dialog-content layout-padding>
-        <form name="form">
-            <div layout="row">
-                <md-input-container flex>
-                    <label class="disable-ng-animate">Kortingscode</label>
-                    <ng-md-icon icon="card_giftcard"></ng-md-icon>
-                    <input type="text" name="discountCode" ng-model="discountCode" />
-                    <div ng-messages="form.discountCode.$error">
-                        <div ng-message="wrongdiscountCode">Voer een geldig kortingscode in</div>
-                    </div>
-                </md-input-container>
+        <form name="form" class="mywheels-form">
+            <div class="form-group mw-icon">
+                <ng-md-icon icon="card_giftcard"></ng-md-icon>
+                <input type="text"
+                       name="discountCode"
+                       ng-model="discountCode"
+                       placeholder="Kortingscode" />
+            </div>
+
+            <div ng-messages="form.discountCode.$error">
+                <div ng-message="wrongdiscountCode">Voer een geldig kortingscode in</div>
             </div>
         </form>
 

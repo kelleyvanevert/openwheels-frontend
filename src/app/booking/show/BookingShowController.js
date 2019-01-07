@@ -89,6 +89,10 @@ angular.module('owm.booking.show', [])
     $scope.allowDeclarations = contract.type.canHaveDeclaration && ($scope.booking.approved === 'OK' || $scope.booking.approved === null) && $scope.bookingStarted && !$scope.booking.resource.refuelByRenter && !booking.resource.fuelCardCar;
     $scope.allowDeclarationsAdd = $scope.allowDeclarations && moment().isBefore(moment(booking.endBooking).add(5, 'days'));
 
+    $scope.showReviewTeaser = (booking.status === 'accepted') && booking.ok && // booking is definitely accepted and OK
+      booking.beginBooking && booking.endBooking && // booking has a(n accepted) timeframe
+      (moment().isAfter(moment(booking.beginBooking)) || moment().isAfter(moment(booking.endBooking))); // bezig of geweest
+
     // whether to show (possibly deactivated) buttons to open/close the car
     $scope.showBoardComputerButtons = false;
 
@@ -103,7 +107,7 @@ angular.module('owm.booking.show', [])
     if ($scope.userPerspective === 'renter') {
       $scope.allowEdit = (function () {
         if (booking.endBooking) {
-          return moment().isBefore(moment(booking.endBooking).add(1, 'hours')); // hooguit een uur geleden afgelopen
+          return moment().isBefore(moment(booking.endBooking).add(30, 'minutes')); // hooguit 30 minuten geleden afgelopen
         }
         else if (booking.beginRequested) {
           return moment().isBefore(moment(booking.beginRequested).add(15, 'minutes')); // moet nog beginnen
@@ -124,7 +128,7 @@ angular.module('owm.booking.show', [])
           (booking.status === 'accepted') && booking.ok && // booking is definitely accepted and OK
           booking.beginBooking && booking.endBooking && // booking has a(n accepted) timeframe
           moment().isAfter(moment(booking.beginBooking).add(-5, 'minutes')) && // hooguit 5 minuten geleden begonnen
-          moment().isBefore(moment(booking.endBooking).add(1, 'hours')); // hooguit een uur geleden afgelopen
+          moment().isBefore(moment(booking.endBooking).add(1, 'hour')); // hooguit 1 uur geleden afgelopen
       }
 
       $scope.allowStop = (function () {
@@ -1038,6 +1042,7 @@ angular.module('owm.booking.show', [])
 
     $q.all([ getVouchers(), getRequiredValue(), getCredit(), getDebt() ]).finally(function () {
       alertService.loaded();
+      $rootScope.isPaymentLoading = false;
     });
   }
 

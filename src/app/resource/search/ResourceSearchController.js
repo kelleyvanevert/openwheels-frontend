@@ -218,7 +218,11 @@ angular.module('owm.resource.search', [
         } else {
           var images = _.map(resources, function(resource) {
             if(resource.pictures && resource.pictures.length > 0 && resource.pictures[0] && resource.pictures[0].large) {
-              return appConfig.serverUrl + '/' + resource.pictures[0].large;
+              var url = resource.pictures[0].large;
+              if (!url.match(/^http/)) {
+                url = appConfig.serverUrl + '/' + url;
+              }
+              return url;
             }
           });
           preloader.preloadImages(images);

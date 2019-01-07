@@ -150,13 +150,13 @@ angular.module('rpcServices', [])
   var m = function (name) {
     return api.createRpcMethod('invoice2.' + name);
   };
-  this.calculatePrice = m('calculatePrice');
   this.getSent = m('getSent');
   this.getReceived = m('getReceived'); // status = paid | unpaid | both
   this.getUngroupedForPerson = m('getUngroupedForPerson');
   this.calculateBookingPrice = m('calculateBookingPrice'); // status = paid | unpaid | both
   this.createSenderInvoiceGroup = m('createSenderInvoiceGroup');
   this.createRecipientInvoiceGroup = m('createRecipientInvoiceGroup');
+  this.calculatePrice = m('calculatePrice');
 })
 
 .service('accountService', function (api) {
@@ -271,6 +271,7 @@ angular.module('rpcServices', [])
   this.get = m('get');
   this.search = m('search');
   this.isApplicable = m('isApplicable');
+  this.getApplicableState = m('getApplicableState');
   this.apply = m('apply');
   this.disable = m('disable');
 })

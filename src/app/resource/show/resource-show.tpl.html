@@ -1,8 +1,97 @@
-<div ng-if="removed === false" class="container" ng-class="{ 'container-transitional': features.resourceSidebar }">
-    <div>
-        <div ng-class="{ 'col-md-8 col-xs-12' : features.resourceSidebar }" class="no-padding">
+<div ng-if="removed === false">
+    <div class="carousel-background">
+        <div class="carousel-background-image" ng-if="images.length < 3" ng-style="carouselBackgroundImage"></div>
+        <ng-owl-carousel class="owl-theme"
+            owl-items="images"
+            owl-ready="owlReady($api)"
+            owl-properties="owlProperties"
+            ng-click="owlClick($event)">
+            <!-- ng-click doesn't work on automatically cloned elements :| -->
+            <!-- using aspect ratio & bg image so that the header has the right dimensions even
+                  if the photos haven't been loaded yet -->
+            <div class="item"
+                 ng-attr-index="{{ i }}"
+                 ng-repeat="(i, url) in images"
+                 ng-style="{ 'background-image': 'url(' + url + ')' }">
+            </div>
+        </ng-owl-carousel>
+    </div>
+
+    <div class="return-toolbar-container container container-transitional hidden-xs">
+        <div class="return-toolbar">
+            <button type="button"
+                    ui-sref="owm.resource.search.list"
+                    class="btn btn-link return">
+                <ng-md-icon size="32" icon="arrow_back"></ng-md-icon>
+                <md-tooltip md-direction="top">{{ 'RESOURCE_BACK_TO_LIST' | translate }}</md-tooltip>
+            </button>
+
+            <button ng-if="(me && (resource.owner.id === me.id || resource.contactPerson.id === me.id))"
+                    ui-sref="owm.resource.edit({ resourceId: resource.id })"
+                    type="button"
+                    class="btn btn-link edit-resource">
+                <ng-md-icon size="32" icon="create"></ng-md-icon>
+                <md-tooltip md-direction="top">{{ 'EDIT_RESOURCE' | translate }}</md-tooltip>
+            </button>
+        </div>
+    </div>
+
+    <div id="resource-page-container" class="container container-transitional">
+
+        <div class="col-md-8 col-xs-12 no-padding">
+            <div class="card resource-header mw">
+                <div class="card-body">
+                    <div flex layout="row">
+                        <h1 class="single-line" flex>
+                            Huur {{ resource.alias || ('RESOURCE_NO_NAME' | translate) }} {{ resource.city ? 'in ' + resource.city : '' }}
+                        </h1>
+                        <md-button ng-if="me" class="is-favorite-button md-icon-button md-accent" aria-label="Favorite"
+                                                ng-class="{ 'is-favorite': isFavorite, 'loading': !isFavoriteResolved }">
+                            <ng-md-icon size="28" icon="favorite_border" ng-if="isFavoriteResolved && !isFavorite" ng-click="toggleFavorite(true)"></ng-md-icon>
+                            <ng-md-icon size="28" icon="favorite" ng-if="isFavoriteResolved && isFavorite" ng-click="toggleFavorite(false)"></ng-md-icon>
+                            <md-progress-circular md-mode="indeterminate" ng-if="!isFavoriteResolved"></md-progress-circular>
+                        </md-button>
+                    </div>
+
+                    <div class="subtitle">
+                        <span ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0">
+                            <span class="tag tag-warning mw-badge mw-badge-open">MyWheels Open</span>
+                            <span class="bullet"></span>
+                        </span>
+                        <span ng-if="resource.isNew">
+                            <span class="tag tag-warning mw-badge mw-badge-new">Nieuw</span>
+                            <span class="bullet"></span>
+                        </span>
+                        <span class="subtitle-feature">
+                            {{ (resource.brand | toTitleCase) || ('UNKNOWN_BRAND' | translate) }}
+                            <span ng-if="resource.model">{{ resource.model }}</span>
+                        </span>
+                        <span ng-if="resource.city">
+                            <span class="bullet"></span>
+                            <span class="subtitle-feature">
+                                {{ resource.city | toTitleCase }}
+                            </span>
+                        </span>
+                    </div>
+
+                    <div ng-include="'resource/partials/resource-key-features.tpl.html'"></div>
+
+                    <div class="resource-advertisement" ng-if="resource.advertisement">
+                        <h2>Over mijn deelauto</h2>
+
+                        <div class="user-text">
+                            <p style="white-space: pre-line;">{{ resource.advertisement }}</p>
+                        </div>
+                    </div>
+
+                    <div ng-include="'resource/partials/technische-kenmerken.tpl.html'"></div>
+
+                    <div ng-include="'resource/partials/opties-en-accessoires.tpl.html'"></div>
+                </div>
+            </div>
+
             <!-- edit -->
-            <div class="card card-navigation clearfix">
+            <div class="card mw card-navigation clearfix" ng-if="false">
 
                 <div ng-if="me" class="text-warning pull-right" style="padding-top: 3px;">
                     <div ng-if="!isFavoriteResolved">
@@ -23,106 +112,57 @@
                 </button>
             </div>
 
-            <!-- header -->
-            <div flex>
-                <md-card ng-class="{'ow-card': !isWindowSizeSM}">
-                    <md-card-header class="blue-header" ng-if="isWindowSizeSM">
-                        <md-card-header-text>
-                            <h1 class="resource-md-title">Huur {{ resource.alias || ('RESOURCE_NO_NAME' | translate) }} in {{ resource.city | toTitleCase }}</h1>
-                        </md-card-header-text>
-                    </md-card-header>
-                    <div ng-class="{'card-responsive': isWindowSizeSM}">
-                        <div class="md-card-image">
-                            <div class="media-object img-width50p pull-left md-card-image" resource-carousel="resource"></div>
-                        </div>
-                        <div class="md-card-padding">
-                            <md-card-title ng-if="!isWindowSizeSM">
-                                <md-card-title-text layout="colum" layout-wrap>
-                                    <h1 class="no-margin" style="font-size: 2rem;" flex="100">{{ resource.alias || ('RESOURCE_NO_NAME' | translate) }} in {{ resource.city | toTitleCase }}</h1>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-card-body class="ow-list-compact">
-                                <div class="card-body-margin">
-                                    <h3 style="margin-bottom: 5px;">{{ (resource.brand | toTitleCase) || ('UNKNOWN_BRAND' | translate) }}
-                                      <span ng-if="resource.model"> {{ resource.model }}</span>
-                                    </h3>
-                                        <span 
-                                            ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0" 
-                                            class="tag tag-warning" 
-                                            style="margin-top: 8px; margin-bottom: 8px; margin-left: 0px;"
-                                            id="mywheels-open-tip-label"
-                                        >
-                                            {{ 'MYWHEELS_OPEN_TIP' | translate }}
-                                            <md-tooltip md-direction="bottom" class="multiline">{{ 'MYWHEELS_OPEN_INFO' | translate }}</md-tooltip>
-                                        </span>
-                                        <span 
-                                            ng-if="resource.isNew && ['smartphone', 'chipcard'].indexOf(resource.locktype) < 0"
-                                            class="tag tag-success"
-                                            style="margin-top: 8px; margin-bottom: 8px; margin-left: 0px;"
-                                        >
-                                            {{ 'NEW_TIP' | translate }}
-                                        </span>
-                                        <span 
-                                            ng-if="resource.isNew && ['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0"
-                                            class="tag tag-success"
-                                            style="margin-left: 0px;"
-                                        >
-                                            {{ 'NEW_TIP' | translate }}
-                                        </span>
-                                    <div ng-include="'resource/partials/resource-features.tpl.html'"></div>
-                                </div>
-                            </md-card-body>
-                        </div>
-                    </div>
-                </md-card>
-            </div>
-
             <!-- resource sidebar smaller screens (not in sidebar) -->
-            <div class="card" ng-if="!features.resourceSidebar || !isWindowSizeMD" id ="priceBookingContainer">
+            <div class="card" ng-if="!isWindowSizeMD" id="priceBookingContainer">
                 <div class="card-body">
-                    <!-- price -->
-                    <!--<div ng-include="'resource/partials/resource-price.tpl.html'"></div>-->
-                    <div class="escape-card-padding">
+                    <div style="max-width: 50rem; margin-left: auto; margin-right: auto;">
+                        <!-- price -->
+                        <!--<div ng-include="'resource/partials/resource-price.tpl.html'"></div>-->
                         <resource-pricing resource="resource"></resource-pricing>
                     </div>
+                </div>
+                <div class="card-body" style="padding-top: 0;">
+                    <div style="max-width: 50rem; margin-left: auto; margin-right: auto;">
+                        <!-- unavailability notice -->
+                        <div ng-if="unavailable" ng-include="'resource/partials/resource-unavailable.tpl.html'"></div>
 
-                    <!-- unavailability notice -->
-                    <div ng-if="unavailable" ng-include="'resource/partials/resource-unavailable.tpl.html'"></div>
+                        <!-- booking form -->
+                        <div ng-if="!unavailable">
+                            <div class="text-center" ng-if="showBookingFormToggle">
+                                <p>
+                                    <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" ng-click="toggleBookingForm()">
+                                        {{ 'BOOK_A_CAR' | translate }}
+                                    </button>
+                                </p>
+                                <p>
+                                    <a class="btn btn-link" ui-sref="owm.resource.calendar({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
+                                        <i class="fa fa-calendar"></i> {{ 'CALENDAR_BUTTON' | translate }}
+                                    </a>
+                                </p>
+                            </div>
+                            <div id="createBookingContainer" uib-collapse="!showBookingForm">
+                                <reservation-form person="me" resource="resource" booking="booking"></reservation-form>
+                            </div>
+                            <!--/ booking form -->
 
-                    <!-- booking form -->
-                    <div ng-if="!unavailable">
-                        <div class="text-center" ng-if="showBookingFormToggle">
-                            <p>
-                                <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" ng-click="toggleBookingForm()">
-                                    {{ 'BOOK_A_CAR' | translate }}
-                                </button>
-                            </p>
-                            <p>
-                                <a class="btn btn-link" ui-sref="owm.resource.calendar({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
-                                    <i class="fa fa-calendar"></i> {{ 'CALENDAR_BUTTON' | translate }}
-                                </a>
-                            </p>
-                        </div>
-                        <div id="createBookingContainer" uib-collapse="!showBookingForm">
-                            <reservation-form person="me" resource="resource" booking="booking"></reservation-form>
-                        </div>
-                        <!--/ booking form -->
-
-                        <div class="text-center">
-                            <p>
-                                <a class="btn btn-link btn-sm" ng-show="showBookingForm" ng-click="toggleBookingForm()">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
-                            </p>
+                            <div class="text-center">
+                                <p>
+                                    <a class="btn btn-link btn-sm" ng-show="showBookingForm" ng-click="toggleBookingForm()">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- owner -->
-            <div class="card">
+            <div class="card mw">
                 <div class="card-heading">
-                    <h3 class="card-title">{{ 'OWNER' | translate }}</h3>
+                    <h3>Eigenaar</h3>
+                </div>
+                <div class="card-body">
                     <div class="media">
                         <img class="media-object pull-left img-user-normal" person-profile-image="{ person: resource.owner, size: 'normal' }" />
                         <div class="media-body">
@@ -137,185 +177,28 @@
                             </button>
                         </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <div ng-if="resource.advertisement">
-                        <h5>{{ 'ABOUT_CAR' | translate}}</h5>
-                        <p style="white-space:pre-line">{{ resource.advertisement }}</p>
-                    </div>
                     <div ng-if="resource.owner.about">
-                        <h5>{{ 'ABOUT_ME' | translate }}</h5>
                         <p style="white-space:pre-line">{{ resource.owner.about}}</p>
                     </div>
                 </div>
             </div>
 
             <!-- mywheels open benefits -->
-            <div class="card" ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0" id="mywheels_open_info">
+            <div class="card mw"
+                 id="mywheels_open_info"
+                 ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0">
                 <div class="card-heading">
-                    <h3 class="card-title">{{ 'MYWHEELS_OPEN_TITLE' | translate }}</h3>
+                    <h3>{{ 'MYWHEELS_OPEN_TITLE' | translate }}</h3>
                 </div>
                 <div class="card-body">
-                    <div layout="row" layout-xs="column">
-                        <div flex="50" flex-xs="100">
-                            <md-list style="padding: 0px;">
-                              <md-list-item ng-if="resource.locktypes.indexOf('chipcard') >= 0 && resource.locktypes.indexOf('smartphone') < 0">
-                                <ng-md-icon icon="vpn_key" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
-                                <span>Openen met je <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-ik-een-auto-met-mijn-chipkaart/">chipkaart</a></span>
-                              </md-list-item>
-                              <md-list-item ng-if="resource.locktypes.indexOf('chipcard') < 0 && resource.locktypes.indexOf('smartphone') >= 0">
-                                <ng-md-icon icon="vpn_key" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
-                                <span>Openen met je <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-auto-smartphone/">smartphone</a></span>
-                              </md-list-item>
-                              <md-list-item ng-if="resource.locktypes.indexOf('chipcard') >= 0 && resource.locktypes.indexOf('smartphone') >= 0">
-                                <ng-md-icon icon="vpn_key" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
-                                <span>Openen met je <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-auto-smartphone/">smartphone</a> & <a target="_blank" href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-ik-een-auto-met-mijn-chipkaart/">chipkaart</a></span>
-                              </md-list-item>
-                              <md-list-item>
-                                <ng-md-icon icon="date_range" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
-                                <span>24 uur per dag te huur</span>
-                              </md-list-item>
-                            </md-list>
-                        </div>
-                        <div flex="50" flex-xs="100">
-                            <md-list style="padding: 0px;">
-                              <md-list-item>
-                                <ng-md-icon icon="access_time" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
-                                <span>Direct geaccepteerd</span>
-                              </md-list-item>
-                              <md-list-item>
-                                <ng-md-icon icon="mode_edit" alt="Icoon" aria-label="Icoon" class="text-success list-margin"></ng-md-icon>
-                                <span>Automatische kilometerregistratie</span>
-                              </md-list-item>
-                            </md-list>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- resource info -->
-            <div class="card" id="resourceInfo">
-                <div class="card-heading">
-                    <h3 class="card-title">{{ 'RESOURCE_INFO' | translate }}</h3>
-                </div>
-                <div class="card-body">
-
-                    <div class="specifics">
-                        <div flex layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item fuel_type">
-                                <div flex="50" class="title">{{ 'FUEL_TYPE' | translate }}</div>
-                                <div flex="50" class="info">{{ (resource.fuelType | translate | toTitleCase) || ('UNKNOWN' | translate | toTitleCase) }}</div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item gear">
-                                <div flex="50" class="title">{{ 'GEAR' | translate }}</div>
-                                <div flex="50" class="info" ng-if="automaticGear >= 0">{{ 'AUTOMATIC_GEAR' | translate }}</div>
-                                <div flex="50" class="info" ng-if="automaticGear < 0">{{ 'MANUAL_GEAR' | translate }}</div>
-                            </div>
-                        </div>
-                        <div flex="100" layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item resource_type">
-                                <div flex="50" class="title">{{ 'RESOURCE_TYPE' | translate }}</div>
-                                <div flex="50" class="info">{{ resourceTypeValue }}</div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item minimum_age">
-                                <div flex="50" class="title">{{ 'MINIMUM_AGE' | translate }}</div>
-                                <div flex="50" class="info">{{ resource.minimumAge }} {{ 'YEAR' | translate }}</div>
-                            </div>
-                        </div>
-                        <div flex="100" layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item time_of_origin">
-                                <div flex="50" class="title">{{ 'TIME_OF_ORGIN' | translate }}</div>
-                                <div flex="50" class="info">{{ resource.bouwjaar || ('UNKNOWN' | translate) }}</div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item number_of_seats">
-                                <div flex="50" class="title">{{ 'NUMBER_OF_SEATS' | translate }}</div>
-                                <div flex="50" class="info">{{ resource.numberOfSeats }}</div>
-                            </div>
-                        </div>
-                        <div flex="100" layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item color">
-                                <div flex="50" class="title">{{ 'COLOR' | translate }}</div>
-                                <div flex="50" class="info">{{ (resource.color | toTitleCase) || ('UNKNOWN' | translate) }}</div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item created">
-                                <div flex="50" class="title">{{ 'RESOURCE_AGE' | translate }}</div>
-                                <div flex="50" class="info" ng-if="resource.created">{{ resource.created | resourceAge }}</div>
-                                <div flex="50" class="info" ng-if="!resource.created">{{ 'UNKNOWN' | translate }}</div>
-                            </div>
-                        </div>
-                        <div flex="100" layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item smoking">
-                                <div flex="50" class="title">{{ 'SMOKING' | translate }}</div>
-                                <div flex="50" class="info"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item pets">
-                                <div flex="50" class="title">{{ 'PETS' | translate }}</div>
-                                <div flex="50" class="info"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subTitle">
-                        <h3 class="card-title">{{ 'RESOURCE_PROPERTIES' | translate }}</h3>
-                    </div>
-                    <div class="specifics">
-                        <div flex="100" layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item airconditioning">
-                                <div flex="50" class="title">{{ 'ACCESSORIES.AIRCONDITIONING' | translate }}</div>
-                                <div flex="50" class="info" ng-if="airconditioning >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
-                                <div flex="50" class="info" ng-if="airconditioning < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item bike_carrier">
-                                <div flex="50" class="title">{{ 'ACCESSORIES.BIKE_CARRIER' | translate }}</div>
-                                <div flex="50" class="info" ng-if="bikeCarrier >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
-                                <div flex="50" class="info" ng-if="bikeCarrier < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                        </div>
-                        <div flex="100" layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item child_seat">
-                                <div flex="50" class="title">{{ 'ACCESSORIES.CHILD_SEAT' | translate }}</div>
-                                <div flex="50" class="info" ng-if="childSeat >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
-                                <div flex="50" class="info" ng-if="childSeat < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item mp3_connection">
-                                <div flex="50" class="title">{{ 'ACCESSORIES.MP3_CONNECTION' | translate }}</div>
-                                <div flex="50" class="info" ng-if="mp3Connection >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
-                                <div flex="50" class="info" ng-if="mp3Connection < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                        </div>
-                        <div flex="100" layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item navigation">
-                                <div flex="50" class="title">{{ 'ACCESSORIES.NAVIGATION' | translate }}</div>
-                                <div flex="50" class="info" ng-if="navigation >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
-                                <div flex="50" class="info" ng-if="navigation < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item wheelchair_friendly">
-                                <div flex="50" class="title">{{ 'ACCESSORIES.WHEELCHAIR_FRIENDLY' | translate }}</div>
-                                <div flex="50" class="info" ng-if="wheelchairFriendly >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
-                                <div flex="50" class="info" ng-if="wheelchairFriendly < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                        </div>
-                        <div flex="100" layout-gt-xs="row" class="specificRow">
-                            <div flex-xs="100" flex="50" layout="row" class="item towbar">
-                                <div flex="50" class="title">{{ 'ACCESSORIES.TOW_BAR' | translate }}</div>
-                                <div flex="50" class="info" ng-if="towbar >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
-                                <div flex="50" class="info" ng-if="towbar < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                            <div flex-xs="100" flex="50" layout="row" class="item winter_tires">
-                                <div flex="50" class="title">{{ 'ACCESSORIES.WINTER_TIRES' | translate }}</div>
-                                <div flex="50" class="info" ng-if="winterTires >= 0"><ng-md-icon icon="check" alt="Icoon" aria-label="Icoon" class="text-success"></ng-md-icon></div>
-                                <div flex="50" class="info" ng-if="winterTires < 0"><ng-md-icon icon="close" alt="Icoon" aria-label="Icoon" class="text-danger"></ng-md-icon></div>
-                            </div>
-                        </div>
-                    </div>
-
+                    <div ng-include="'resource/partials/mw-open-benefits.tpl.html'"></div>
                 </div>
             </div>
 
             <!-- contact person -->
-            <div class="card" ng-if="me && resource.contactPerson && (resource.contactPerson.id !== resource.owner.id)">
+            <div class="card mw" ng-if="me && resource.contactPerson && (resource.contactPerson.id !== resource.owner.id)">
                 <div class="card-heading">
-                    <h3 class="card-title">{{ 'CONTACT_PERSON' | translate }}</h3>
+                    <h3>{{ 'CONTACT_PERSON' | translate }}</h3>
                     <div class="media">
                         <img class="media-object pull-left img-user-normal" person-profile-image="{ person: resource.contactPerson, size: 'normal' }" />
                         <div class="media-body">
@@ -333,19 +216,18 @@
                 </div>
                 <div class="card-body">
                     <div ng-if="resource.contactPerson.about">
-                        <h5>{{ 'ABOUT_ME' | translate }}</h5>
                         <p>{{ resource.contactPerson.about}}</p>
                     </div>
                 </div>
             </div>
 
             <!-- ratings -->
-            <div class="card" ng-if="features.ratings">
+            <div class="card mw" ng-if="features.ratings">
                 <div class="card-heading">
-                    <h3 class="card-title">
-                  <span ng-bind="'RATINGS' | translate"></span>
-                  &nbsp;<span ng-if="resource.ratings.length >= 1">({{ resource.ratings.length }})</span>
-                </h3>
+                    <h3>
+                      <span ng-bind="'RATINGS' | translate"></span>
+                      &nbsp;<span ng-if="resource.ratings.length >= 1">({{ resource.ratings.length }})</span>
+                    </h3>
                 </div>
                 <div class="card-body">
                     <div ng-include="'resource/partials/resource-rating-summary.tpl.html'"></div>
@@ -356,57 +238,12 @@
                 </div>
             </div>
 
-            <div ng-if="resource.isActive && features.social && !isWindowSizeMD" class="card">
-                <div class="card-body">
-                    <p ng-if="resource.owner.id === me.id || resource.contactPerson.id === me.id">{{ 'SOCIAL_SHARE_RESOURCE' | translateOrDefault }}</p>
-                    <p ng-if="resource.owner.id !== me.id && resource.contactPerson.id !== me.id">{{ 'SOCIAL_SHARE_RESOURCE_NOT_OWNER' | translateOrDefault }}</p>
-                    <div class="share-buttons text-center">
-                        <a 
-                            href="#"
-                            socialshare
-                            socialshare-provider="facebook"
-                            socialshare-via="appConfig.fbAppId"
-                            socialshare-text="Huur een {{ resource.brand | toTitleCase }} {{ resource.model | toTitleCase }} voor {{ resource.price.dayRateTotal | currency }} per dag via MyWheels"
-                            socialshare-hashtags="autodelen"
-                            socialshare-url="{{ shareUrl }}"
-                            class="btn btn-link"
-                            ga-track-event="['interaction', 'shareResourceFacebook', 'resourceShow']"
-                        >
-                            <i class="fa fa-fw fa-1x fa-facebook"></i>Facebook
-                        </a>
-                        <a 
-                            href="#"
-                            socialshare
-                            socialshare-provider="twitter"
-                            socialshare-text="Huur een {{ resource.brand | toTitleCase }} {{ resource.model | toTitleCase }} voor {{ resource.price.dayRateTotal | currency }} per dag via MyWheels"
-                            socialshare-hashtags="autodelen"
-                            socialshare-url="{{ shareUrl }}"
-                            class="btn btn-link"
-                            ga-track-event="['interaction', 'shareResourceTwitter', 'resourceShow']"
-
-                        >
-                            <i class="fa fa-fw fa-1x fa-twitter"></i>Twitter
-                        </a>
-                        <a 
-                            href="#"
-                            socialshare
-                            socialshare-provider="whatsapp"
-                            socialshare-text="Huur een {{ resource.brand | toTitleCase }} {{ resource.model | toTitleCase }} voor {{ resource.price.dayRateTotal | currency }} per dag via MyWheels"
-                            socialshare-url="{{ shareUrl }}"
-                            class="btn btn-link"
-                            ga-track-event="['interaction', 'shareResourceWhatsApp', 'resourceShow']"
-                            hide-gt-xs
-                        >
-                            <i class="fa fa-fw fa-1x fa-whatsapp"></i>WhatsApp
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <!--<div ng-include="'resource/partials/social.tpl.html'" ng-if="!isWindowSizeMD"></div>-->
 
             <!-- location -->
-            <div class="card">
-                <div class="card-heading">
-                    <h3 class="card-title">{{ resource.location }} <small>{{ resource.city }}</small></h3>
+            <div class="card mw mb0">
+                <div class="card-heading" ng-if="resource.location">
+                    <h3>{{ resource.location }} <small ng-if="resource.city">{{ resource.city }}</small></h3>
                 </div>
                 <ui-gmap-google-map class="google-map" center="map.center" zoom="map.zoom" draggable="false" dragging="map.dragging" bounds="map.bounds" events="map.events" options="map.options">
                     <!-- prefedined markers -->
@@ -417,7 +254,7 @@
                     </ui-gmap-marker>
                 </ui-gmap-google-map>
 
-                <div class="card-body">
+                <div class="card-body" ng-show="resource.city">
                     {{ 'RESOURCE_MORE_IN_CITY' | translate }} <a ui-sref="owm.resource.place.list({ city: (resource.city | replaceSpaceToDash | lowercase) })">{{ resource.city }}</a>
                 </div>
             </div>
@@ -426,59 +263,30 @@
         <!-- /col -->
 
         <!-- resource sidebar -->
-        <div ng-if="features.resourceSidebar && isWindowSizeMD" class="col-md-4 hidden-xs hidden-sm">
+        <div ng-if="isWindowSizeMD" class="col-md-4 hidden-xs hidden-sm">
             <div class="card">
                 <div class="card-body">
-                    <!--<div ng-include="'resource/partials/resource-price.tpl.html'"></div>-->
-                    <div class="escape-card-padding">
-                        <resource-pricing resource="resource"></resource-pricing>
-                    </div>
+                    <resource-pricing resource="resource"></resource-pricing>
+                </div>
+            </div>
+
+            <div class="card reservation-form-card" hl-sticky offset-top="20" container="resource-page-container">
+                <div class="not-sticky-connect"></div>
+                <div class="card-body">
                     <div ng-if="unavailable" ng-include="'resource/partials/resource-unavailable.tpl.html'"></div>
                     <reservation-form ng-if="!unavailable" person="me" resource="resource" booking="booking"></reservation-form>
                 </div>
             </div>
 
-            <div ng-if="resource.isActive && features.social" class="card">
-                <div class="card-body">
-                    <p ng-if="resource.owner.id === me.id || resource.contactPerson.id === me.id">{{ 'SOCIAL_SHARE_RESOURCE' | translateOrDefault }}</p>
-                    <p ng-if="resource.owner.id !== me.id && resource.contactPerson.id !== me.id">{{ 'SOCIAL_SHARE_RESOURCE_NOT_OWNER' | translateOrDefault }}</p>
-                    <div class="share-buttons text-center">
-                        <a 
-                            href="#"
-                            socialshare
-                            socialshare-provider="facebook"
-                            socialshare-via="appConfig.fbAppId"
-                            socialshare-text="Huur een {{ resource.brand | toTitleCase }} {{ resource.model | toTitleCase }} voor {{ resource.price.dayRateTotal | currency }} per dag via MyWheels"
-                            socialshare-hashtags="autodelen"
-                            socialshare-url="{{ shareUrl }}"
-                            class="btn btn-link"
-                            ga-track-event="['interaction', 'shareResourceFacebook', 'resourceShow']"
-                        >
-                            <i class="fa fa-fw fa-1x fa-facebook"></i>Facebook
-                        </a>
-                        <a 
-                            href="#"
-                            socialshare
-                            socialshare-provider="twitter"
-                            socialshare-text="Huur een {{ resource.brand | toTitleCase }} {{ resource.model | toTitleCase }} voor {{ resource.price.dayRateTotal | currency }} per dag via MyWheels"
-                            socialshare-hashtags="autodelen"
-                            socialshare-url="{{ shareUrl }}"
-                            class="btn btn-link"
-                            ga-track-event="['interaction', 'shareResourceTwitter', 'resourceShow']"
-
-                        >
-                            <i class="fa fa-fw fa-1x fa-twitter"></i>Twitter
-                        </a>
-                    </div>
-                </div>
-            </div>
-
+            <!--<div ng-include="'resource/partials/social.tpl.html'"></div>-->
         </div>
 
     </div>
     <!-- /row -->
 </div>
 
+
+<!-- "book now" floating bottom toolbar, for mobile -->
 <md-toolbar class="md-hue-2 fixed-call-to-action" ng-if="removed === false && !showBookingForm" hide-gt-xs>
     <div class="md-toolbar-tools">
         <md-button class="md-raised md-primary" ng-click="toggleBookingForm()" ng-if="!openDialogSpinner" ga-track-event="['booking', 'created_pre', user.isAuthenticated, null, true]">{{ 'BOOK_A_CAR' | translate }}</md-button>
@@ -489,7 +297,7 @@
 </md-toolbar>
 
 
-<div ng-if="removed === true" class="container" ng-class="{ 'container-transitional': features.resourceSidebar }">
+<div ng-if="removed === true" class="container container-transitional">
     <div class="col-xs-12 no-padding">
 
         <md-card >

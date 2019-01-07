@@ -31,7 +31,7 @@ angular.module('timeframePickerDirective', [])
     format: 'DD-MM-YYYY',
     minDate: moment().startOf('day'),
     widgetPositioning: { // with knowledge of the html (!)
-      horizontal: 'left',
+      horizontal: 'auto', // 'left',
       vertical: 'bottom',
     },
     width: '20em',
@@ -80,8 +80,18 @@ angular.module('timeframePickerDirective', [])
 
       // In order to pass to child components
 
-      $scope.dateConfig = dateConfig;
-      $scope.timeConfig = timeConfig;
+      $scope.pickupDateConfig = angular.extend({}, dateConfig, {
+        widgetParent: $element.find('.dt-line-pickup'),
+      });
+      $scope.pickupTimeConfig = angular.extend({}, timeConfig, {
+        //widgetParent: $element.find('.dt-line-pickup'),
+      });
+      $scope.returnDateConfig = angular.extend({}, dateConfig, {
+        widgetParent: $element.find('.dt-line-return'),
+      });
+      $scope.returnTimeConfig = angular.extend({}, timeConfig, {
+        //widgetParent: $element.find('.dt-line-return'),
+      });
 
       // Local state
 
@@ -117,7 +127,7 @@ angular.module('timeframePickerDirective', [])
           return;
         }
         else {
-          tf.pickup = tf.return.subtract('hours', 6);
+          tf.pickup = tf.return.clone().subtract('hours', 6);
         }
         
         $scope.pickupDate = tf.pickup.format(dateConfig.format);

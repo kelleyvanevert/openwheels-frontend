@@ -1,0 +1,78 @@
+
+<h2>
+    Technische kenmerken
+    <span class="hidden-lt-600">
+        <span ng-if="resource.brand">{{ resource.brand | toTitleCase }}</span>
+        <span ng-if="resource.model">{{ resource.model | toTitleCase }}</span>
+    </span>
+</h2>
+<div class="specifics-table">
+    <!-- so that the even/odd coloring works the same as "opties en accessoires" -->
+    <div flex layout-gt-xs="row" class="specificRow" style="padding: 0; margin: 0; border: none;"></div>
+
+    <!-- for mobile only -->
+    <div flex layout-gt-xs="row" class="specificRow hideOnMobile">
+        <div flex-xs="100" flex="50" layout="row" class="item" style="padding: 0; border: 0;"></div>
+        <div flex-xs="100" flex="50" layout="row" class="item">
+            <div flex="50" class="title">Merk/model</div>
+            <div flex="50" class="info">
+                <span ng-if="resource.brand">{{ resource.brand | toTitleCase }}</span>
+                <span ng-if="resource.model">{{ resource.model | toTitleCase }}</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- for all sizes -->
+    <div flex layout-gt-xs="row" class="specificRow">
+        <div flex-xs="100" flex="50" layout="row" class="item fuel_type">
+            <div flex="50" class="title">{{ 'FUEL_TYPE' | translate }}</div>
+            <div flex="50" class="info">{{ (resource.fuelType | translate | toTitleCase) || ('UNKNOWN' | translate | toTitleCase) }}</div>
+        </div>
+        <div flex-xs="100" flex="50" layout="row" class="item gear">
+            <div flex="50" class="title">{{ 'GEAR' | translate }}</div>
+            <div flex="50" class="info" ng-if="automaticGear >= 0">{{ 'AUTOMATIC_GEAR' | translate }}</div>
+            <div flex="50" class="info" ng-if="automaticGear < 0">{{ 'MANUAL_GEAR' | translate }}</div>
+        </div>
+    </div>
+    <div flex="100" layout-gt-xs="row" class="specificRow">
+        <div flex-xs="100" flex="50" layout="row" class="item resource_type">
+            <div flex="50" class="title">{{ 'RESOURCE_TYPE' | translate }}</div>
+            <div flex="50" class="info">{{ resourceTypeValue }}</div>
+        </div>
+        <div flex-xs="100" flex="50" layout="row" class="item minimum_age">
+            <div flex="50" class="title">{{ 'MINIMUM_AGE' | translate }}</div>
+            <div flex="50" class="info">{{ resource.minimumAge }} {{ 'YEAR' | translate }}</div>
+        </div>
+    </div>
+    <div flex="100" layout-gt-xs="row" class="specificRow">
+        <div flex-xs="100" flex="50" layout="row" class="item time_of_origin">
+            <div flex="50" class="title">{{ 'TIME_OF_ORGIN' | translate }}</div>
+            <div flex="50" class="info">{{ resource.bouwjaar || ('UNKNOWN' | translate) }}</div>
+        </div>
+        <div flex-xs="100" flex="50" layout="row" class="item number_of_seats">
+            <div flex="50" class="title">{{ 'NUMBER_OF_SEATS' | translate }}</div>
+            <div flex="50" class="info">{{ resource.numberOfSeats }}</div>
+        </div>
+    </div>
+    <div flex="100" layout-gt-xs="row" class="specificRow">
+        <div flex-xs="100" flex="50" layout="row" class="item color">
+            <div flex="50" class="title">{{ 'COLOR' | translate }}</div>
+            <div flex="50" class="info">{{ (resource.color | toTitleCase) || ('UNKNOWN' | translate) }}</div>
+        </div>
+        <div flex-xs="100" flex="50" layout="row" class="item created">
+            <div flex="50" class="title">{{ 'RESOURCE_AGE' | translate }}</div>
+            <div flex="50" class="info" ng-if="resource.created">{{ resource.created | resourceAge }}</div>
+            <div flex="50" class="info" ng-if="!resource.created">{{ 'UNKNOWN' | translate }}</div>
+        </div>
+    </div>
+    <div flex="100" layout-gt-xs="row" class="specificRow">
+        <div flex-xs="100" flex="50" layout="row" class="item smoking">
+            <div flex="50" class="title">{{ 'SMOKING' | translate }}</div>
+            <div flex="50" class="info"><has-feature-icon has="false" type="allow"></has-feature-icon></div>
+        </div>
+        <div flex-xs="100" flex="50" layout="row" class="item pets">
+            <div flex="50" class="title">{{ 'PETS' | translate }}</div>
+            <div flex="50" class="info"><has-feature-icon has="false" type="allow"></has-feature-icon></div>
+        </div>
+    </div>
+</div>

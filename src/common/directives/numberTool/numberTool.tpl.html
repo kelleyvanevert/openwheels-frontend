@@ -1,0 +1,12 @@
+<div class="number-tool">
+  <a class="up" ng-class="{ 'rm': ngModel >= max }" href="#" ng-click="increment()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 12" width="24" height="12">
+      <path transform="translate(12 5.5) rotate(-90) translate(-12 -12)" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+    </svg>
+  </a>
+  <a class="down" ng-class="{ 'rm': ngModel <= min }" href="#" ng-click="decrement()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 12" width="24" height="12">
+      <path transform="translate(12 5.5) rotate(90) translate(-12 -12)" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+    </svg>
+  </a>
+</div>

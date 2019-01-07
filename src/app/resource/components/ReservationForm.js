@@ -18,7 +18,7 @@ angular.module('owm.resource.reservationForm', [])
 })
 
 .controller('ReservationFormController', function (
-  $log, $q, $timeout, $filter, $rootScope, $scope, $state,
+  $log, $q, $timeout, $filter, $rootScope, $scope, $state, $element,
   API_DATE_FORMAT, resourceService, invoice2Service, alertService, authService, bookingService, discountService,
   contractService, featuresService, $mdDialog, $mdMedia, $translate, $location, $localStorage, Analytics) {
 
@@ -44,8 +44,10 @@ angular.module('owm.resource.reservationForm', [])
   // This data DOES change
 
   function resetToPreTimeframe () {
-    $scope.availability = null;
-    $scope.isAvailabilityLoading = false;
+    $scope.timeFrameError = false;
+    $scope.generalError = false;
+    $scope.availability = null; // null | { yes: true | no: true | unknown: true, available: 'yes'|'no'|'unknown' }
+    $scope.price = null;        // null | result of invoice2.calculatePrice(...)
     $scope.discountCodeValidation = {
       timer: null,
       submitted: false,
@@ -57,124 +59,176 @@ angular.module('owm.resource.reservationForm', [])
   }
   resetToPreTimeframe();
 
-  $scope.showCommentBox = false;
-  $scope.showDiscountCodeBox = false;
+  $scope.showExtraFields = false;
 
+  $scope.extraFieldBlur = function () {
+    setTimeout(function () {
+      var has_focus = $element.find('#res_discountCode').is(':focus') || $element.find('#res_comment').is(':focus');
+      if (!has_focus && !$scope.booking.discountCode && !$scope.booking.remarkRequester) {
+        $scope.showExtraFields = false;
+        $scope.$apply(); // necessary because of the timeout wrapper
+      }
+    }, 150);
+  };
 
-  $scope.price = null;
-  $scope.isPriceLoading = false;
-  $scope.$watch('booking.riskReduction', loadPrice);
+  $scope.extraField = function (field) {
+    $scope.showExtraFields = true;
+    setTimeout(function () {
+      $element.find('#res_' + field).focus();
+    }, 10);
+  };
 
   var availabilityCheckTimer;
   $scope.$watch('[booking.beginRequested, booking.endRequested]', function () {
+    //$log.log($scope.booking.beginRequested + ' -> ' + $scope.booking.endRequested);
+
+    if (!$scope.booking.beginRequested || !$scope.booking.endRequested) {
+      return false;
+    }
+
+    Analytics.trackEvent('booking', 'timeframe_entered', $scope.user.identity ? $scope.user.identity.id : undefined, undefined, true);
+
     $timeout.cancel(availabilityCheckTimer);
     resetToPreTimeframe();
 
-    availabilityCheckTimer = $timeout(function () {
-      loadAvailability().then(function (availability) {
-        if (availability.available === 'yes') {
-          loadContractsOnce().then(function () {
-            validateDiscountCode();
-            if (featuresService.get('calculatePrice')) {
+    if (moment($scope.booking.beginRequested) >= moment($scope.booking.endRequested)) {
+      $scope.timeFrameError = 'invalid';
+    }
+    else {
+      $scope.timeFrameError = false;
+      availabilityCheckTimer = $timeout(function () {
+        loadAvailability().then(function (availability) {
+          if (availability.yes) {
+            loadContractsOnce().then(function () {
+              validateDiscountCode();
+              $log.log('loadPrice after availability');
               loadPrice();
-            }
-          });
-        } else {
-          validateDiscountCode();
-          if (featuresService.get('calculatePrice')) {
+            });
+          } else {
+            validateDiscountCode();
+            $log.log('loadPrice after availability');
             loadPrice();
           }
-        }
-      });
-    }, 800);
+        });
+      }, 800);
+    }
+  });
+
+  if (!$scope.user.identity) {
+    $scope.booking.riskReduction = true;
+  }
+  if ($scope.booking.riskReduction === undefined) {
+    $scope.booking.riskReduction = false;
+  }
+
+  $scope.$watch('[booking.riskReduction]', function () {
+    $log.log('loadPrice after booking.riskReduction changed');
+    loadPrice();
   });
 
 
-  function loadAvailability() {
-    var dfd = $q.defer();
-    var b = $scope.booking;
-    var r = $scope.resource;
-    $scope.availability = null;
-    $scope.price = null;
+  function loadAvailability () {
+    //$log.log('loadAvailability()');
 
-    if (b.beginRequested && b.endRequested) {
-      $scope.isAvailabilityLoading = true;
+    $scope.availability = null;
+    var resource = $scope.resource;
+    var booking = $scope.booking;
+
+    return $q(function (resolve, reject) {
+      if (!booking.beginRequested || !booking.endRequested) {
+        //$log.log(' (aborted)');
+        return reject();
+      }
+
       resourceService.checkAvailability({
-          resource: r.id,
+          resource: resource.id,
           timeFrame: {
-            startDate: b.beginRequested,
-            endDate: b.endRequested
+            startDate: booking.beginRequested,
+            endDate: booking.endRequested,
           }
         })
         .then(function (isAvailable) {
           $scope.availability = {
-            available: isAvailable ? 'yes' : 'no'
+            available: isAvailable ? 'yes' : 'no',
+            yes: isAvailable,
+            no: !isAvailable,
+            unknown: false,
           };
-          dfd.resolve($scope.availability);
         })
         .catch(function () {
           $scope.availability = {
-            available: 'unknown'
+            available: 'unknown',
+            yes: false,
+            no: false,
+            unknown: true,
           };
-          dfd.resolve($scope.availability);
         })
         .finally(function () {
-          $scope.isAvailabilityLoading = false;
+          resolve($scope.availability);
         });
-    }
-    return dfd.promise;
+    });
   }
 
-  function loadContractsOnce() {
-    var dfd = $q.defer();
-    if ($scope.contractOptions) {
-      dfd.resolve($scope.contractOptions);
-    } else if (!$scope.person) {
-      $scope.contractOptions = [];
-      $scope.booking.contract = null;
-      dfd.resolve([]);
-    } else {
-      contractService.forDriver({
-        person: $scope.person.id
-      }).then(function (contracts) {
-        $scope.contractOptions = contracts || [];
-        $scope.booking.contract = contracts.length ? contracts[0] : null;
-        if (featuresService.get('calculatePrice')) {
-          $scope.$watch('booking.contract.id', loadPrice);
-        }
-        dfd.resolve(contracts);
-      });
-    }
-    return dfd.promise;
+  function loadContractsOnce () {
+    //$log.log('loadContractsOnce()');
+
+    var booking = $scope.booking;
+
+    return $q(function (resolve, reject) {
+      if (booking.contractOptions) {
+        resolve(booking.contractOptions);
+      }
+      else if (!$scope.person) {
+        booking.contractOptions = [];
+        booking.contract = null;
+        resolve([]);
+      }
+      else {
+        contractService.forDriver({
+          person: $scope.person.id
+        })
+        .then(function (contracts) {
+          booking.contractOptions = contracts || [];
+          booking.contract = contracts.length ? contracts[0] : null;
+          $scope.$watch('booking.contract.id', function (n, o) {
+            if (n !== o) {
+              loadPrice();
+            }
+          });
+          resolve(contracts);
+        });
+      }
+    });
   }
 
-  function loadPrice() {
-    var r = $scope.resource;
-    var b = $scope.booking;
-    var params;
+  function loadPrice () {
+    //$log.log('loadPrice()');
+
+    var availability = $scope.availability;
+    var resource = $scope.resource;
+    var booking = $scope.booking;
     $scope.price = null;
 
-    if ($scope.availability && ['yes', 'unknown'].indexOf($scope.availability.available) >= 0 &&
-      (b.beginRequested && b.endRequested)) {
-      $scope.isPriceLoading = true;
-      params = {
-        resource: r.id,
-        timeFrame: {
-          startDate: b.beginRequested,
-          endDate: b.endRequested
-        },
-        includeRedemption: $scope.booking.riskReduction,
-      };
-      if (b.contract) {
-        params.contract = b.contract.id;
+    return $q(function (resolve, reject) {
+      if (!availability || availability.no || !booking.beginRequested || !booking.endRequested) {
+        //$log.log(' (aborted)');
+        return reject();
       }
-      invoice2Service.calculatePrice(params).then(function (price) {
-          $scope.price = price;
-        })
-        .finally(function () {
-          $scope.isPriceLoading = false;
-        });
-    }
+
+      invoice2Service.calculatePrice({
+        resource: resource.id,
+        timeFrame: {
+          startDate: booking.beginRequested,
+          endDate: booking.endRequested
+        },
+        includeRedemption: booking.riskReduction,
+        contract: booking.contract ? booking.contract.id : undefined,
+      })
+      .then(function (price) {
+        $scope.price = price;
+        resolve(price);
+      });
+    });
   }
 
   $scope.priceHtml = function (price) {
@@ -203,7 +257,15 @@ angular.module('owm.resource.reservationForm', [])
     //  in which we `notify: false` and then change the discountCode ourselves.
     //  (We know for sure this is the only change, so it doesn't hurt that much.)
     $localStorage.discountCode = $scope.booking.discountCode = '';
-    resetToPreTimeframe();
+    $scope.extraFieldBlur();
+    $scope.discountCodeValidation = {
+      timer: null,
+      submitted: false,
+      busy: false,
+      showSpinner: false,
+      success: false,
+      error: false
+    };
     $state.go('.', { discountCode: '' }, {
       notify: false,
     });
@@ -230,7 +292,7 @@ angular.module('owm.resource.reservationForm', [])
     validation.timer = $timeout(function validateDebounced() {
       $log.debug('validating', code);
 
-      discountService.isApplicable({
+      discountService.getApplicableState({
           resource: $scope.resource.id,
           person: $scope.person.id,
           contract: $scope.booking.contract.id,
@@ -244,8 +306,9 @@ angular.module('owm.resource.reservationForm', [])
           if (!validation.busy || code !== $scope.booking.discountCode) {
             return;
           }
-          validation.success = result.applicable;
+          validation.success = result.valid;
           validation.error = !validation.success;
+          validation.discountState = result;
         })
         .catch(function () {
           if (!validation.busy || code !== $scope.booking.discountCode) {
@@ -314,9 +377,13 @@ angular.module('owm.resource.reservationForm', [])
       $scope.initPhoneNumbers();
     }
 
+    if ($scope.timeFrameError) {
+      return;
+    }
     if (!booking.beginRequested || !booking.endRequested) {
       $scope.loading.createBooking = false;
-      return alertService.add('danger', $filter('translate')('DATETIME_REQUIRED'), 5000);
+      $scope.timeFrameError = 'not_given';
+      return;
     }
     if (!$scope.features.signupFlow && !$scope.person) { // not logged in
       $scope.loading.createBooking = false;
@@ -367,7 +434,7 @@ angular.module('owm.resource.reservationForm', [])
       $scope.loading.createBooking = false;
       return alertService.add('danger', 'Voordat je een auto kunt boeken, hebben we een borg van je nodig', 5000);
     } else {
-      alertService.load();
+      //alertService.load();
 
       return authService.me().then(function (me) {
           /**
@@ -404,8 +471,9 @@ angular.module('owm.resource.reservationForm', [])
                 return response; // <-- the response from bookingService.create
               })
               .catch(function (err) {
-                $log.debug('error applying discount');
-                alertService.addError(err);
+                $log.debug('error applying discount', err);
+                //alertService.addError(err);
+                $scope.generalError = err.message || err;
                 return response; // <-- continue, although the discount has not been applied!
               });
           }
@@ -414,10 +482,14 @@ angular.module('owm.resource.reservationForm', [])
           var bookingId = response.id;
           return $state.go('owm.booking.show', { bookingId: bookingId });
         })
-        .catch(alertService.addError)
+        .catch(function (err) {
+          $log.debug('got error', err);
+          //alertService.addError(err);
+          $scope.generalError = err.message;
+        })
         .finally(function() {
           $scope.loading.createBooking = false;
-          alertService.loaded();
+          //alertService.loaded();
         });
     }
   }

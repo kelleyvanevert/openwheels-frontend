@@ -32,7 +32,7 @@ angular.module('ratingThumbDirective', [])
 
       if (value === null || value < 0) {
         scope.label = '';
-        scope.colorClass = 'text-muted';
+        scope.colorClass = 'text-muted rotate-90';
         scope.iconClass = 'fa fa-thumbs-up';
       }
       else {
@@ -62,7 +62,7 @@ angular.module('ratingThumbDirective', [])
       });
 
       function createTooltipHtml () {
-        if (value === null) {
+        if (value === null || value < 0) {
           return $translate.instant('RESOURCE.RATING.TOOLTIP_NORATING');
         }
         return '<i class=\'fa fa-2x fa-thumbs-up pull-left\' style=\'margin-right:10px\'></i>' +

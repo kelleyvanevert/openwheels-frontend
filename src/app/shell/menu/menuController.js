@@ -27,4 +27,6 @@ angular.module('owm.shell')
     $window.location.href = translated;
   };
 
+  $scope.showGeoSearch = true; // $state.$current.toString(), $state.includes(<String>)
+
 });
