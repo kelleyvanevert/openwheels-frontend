@@ -28,7 +28,7 @@ angular.module('ratingThumbBinaryDirective', [])
       }
       else if (value === null) {
         // neutral
-        scope.colorClass = 'text-muted';
+        scope.colorClass = 'text-muted rotate-90';
         scope.iconClass = 'thumb_up';
       }
       else if (value === 0 || value === false) {

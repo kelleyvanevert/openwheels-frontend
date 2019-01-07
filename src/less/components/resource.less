@@ -148,14 +148,6 @@ label[for=mywheelsOpen] {
       margin: auto;
     }
 }
-.resource-md-title {
-    font-size: 17.5px;
-    font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
-    font-weight: 700;
-    line-height: 1.1;
-    color: #fff !important;
-    margin: 0 !important;
-}
 
 .resourceOwnListMobile {
     div {
@@ -236,53 +228,183 @@ label[for=mywheelsOpen] {
     }
 }
 
-#resourceInfo {
-    .specifics {
-        .item {
-            .title {
-                font-weight: 550;
-            }
-            md-icon,
-            ng-md-icon {
-                font-size: 20px;
-                max-height: 20px;
-            }
-            padding: 10px;
-            border-top: 1px solid #f2f2f2;
-            border-bottom: 1px solid #f2f2f2;
-            height: 42px;
+.specifics-table {
+    border-top: 1px solid #ddd;
+    margin-bottom: 1.4em;
+    font-size: 1.1em;
+
+    .item {
+        .title {
+            color: #777;
         }
-        .item:nth-child(odd) {
-            border-right: 1px solid #f2f2f2;
+        .info {
+            color: black;
         }
-        .item:nth-child(even) {
-            padding-left: 10px;
-            border-left: 1px solid #f2f2f2;
-        }
-    }
-    .subTitle {
-        margin-top: 20px;
+        padding: .8rem;
+        border-bottom: 1px solid #ddd;
     }
 }
 @media all and (max-width: 600px) {
-     #resourceInfo {
-        .specifics {
-            .item:nth-child(odd) {
-                border-right: 0;
-            }
-            .item:nth-child(even) {
-                border-left: 0;
-                background-color: #eee;
-            }
+    .hidden-lt-600 {
+        display: none;
+    }
+    .specifics-table {
+        .item:nth-child(odd) {
+            border-right: 0;
+        }
+        .item:nth-child(even) {
+            border-left: 0;
+            background-color: #f5f5f5;
         }
     }
 }
 @media all and (min-width: 600px) {
-     #resourceInfo {
-        .specifics {
-            .specificRow:nth-child(odd) {
-                background-color: #eee;
+    .specifics-table {
+        .specificRow:nth-child(odd) {
+            background-color: #f5f5f5;
+        }
+        .specificRow.hideOnMobile {
+            display: none;
+        }
+    }
+}
+
+.resource-key-features {
+    font-size: 1.1em;
+    color: #333;
+
+    padding: 0 2rem;
+    border-radius: 1rem;
+
+    .key-features-row .item {
+        margin: 1rem 0;
+        padding-left: 34px;
+        position: relative;
+
+        ng-md-icon {
+            margin-right: 1rem;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            margin-top: -12px;
+        }
+
+        .free-km {
+            font-weight: bold;
+            font-size: .9em;
+            color: darken(@mywheels-green, 10%);
+        }
+    }
+}
+.resource-header .resource-key-features {
+    margin: 2rem 0;
+}
+
+@media all and (max-width: 480px) {
+    .resource-key-features {
+        padding: 0;
+        font-size: 1.1em;
+        .key-features-row .item {
+            margin: .8rem 0;
+        }
+    }
+    .resource-header .resource-key-features {
+        margin: 1.4rem 0;
+    }
+}
+
+
+.reservation-form-card {
+    position: relative;
+    margin-top: -16px;
+
+    .not-sticky-connect {
+        position: absolute;
+        top: -5px;
+        left: 0;
+        right: 0;
+        height: 10px;
+        background: white;
+    }
+
+    &.is-sticky .not-sticky-connect {
+        display: none;
+    }
+}
+
+.resource-header {
+    button.is-favorite-button {
+        margin: -8px;
+        width: 48px;
+        height: 48px;
+        line-height: 28px;
+
+        ng-md-icon {
+            width: 28px;
+            height: 28px;
+            color: #888;
+
+            &[icon='favorite'] {
+                color: @mywheels-orange;
             }
+        }
+
+        md-progress-circular {
+            margin: -10px;
+        }
+    }
+}
+
+@media all and (max-width: 1300px) {
+    .return-toolbar .btn-link.return {
+        display: none !important;
+    }
+}
+
+#resource-page-container {
+    margin-top: -50px;
+    z-index: 1;
+    position: relative;
+}
+
+@media all and (max-width: 480px) {
+    #resource-page-container {
+        margin-top: -40px;
+    }
+    .resource-header {
+        button.is-favorite-button {
+            margin: -13px;
+        }
+    }
+}
+
+@media all and (min-width: 480px) and (max-width: 1500px) {
+    #resource-page-container {
+        margin-top: -40px;
+    }
+}
+
+.reservation-extra-fields {
+    margin-top: 2rem;
+    width: 100%;
+
+    th {
+        padding-right: .5rem;
+        ng-md-icon {
+            color: black;
+        }
+    }
+    th, td {
+        vertical-align: top;
+    }
+
+    tr .form-group {
+        margin-bottom: 1rem;
+    }
+
+    tr:last-child {
+        .form-group {
+            margin-bottom: 0;
         }
     }
 }

@@ -33,7 +33,9 @@ angular.module('owm.resource.show', [])
   /**
    * Warning: 'me' will be null for anonymous users
    */
-  $scope.booking = {};
+  $scope.booking = {
+    resource: resource,
+  };
   $scope.resource = resource;
   $scope.me = me;
   $scope.showBookingForm = false;
@@ -97,6 +99,58 @@ angular.module('owm.resource.show', [])
   if (featuresService.get('ratings')) {
     loadRatings();
   }
+
+  $scope.images = resource.pictures
+    .map(function (picture) {
+      var path = (picture.large || picture.normal || picture.small || '');
+      if (path && !path.match(/^http/)) {
+        path = appConfig.serverUrl + '/' + path;
+      }
+      return path;
+    })
+    .filter(function (url) { return url; });
+
+  if ($scope.images.length === 0) {
+    $scope.images.push('assets/img/resource-avatar-large.jpg');
+  }
+
+  $scope.carouselBackgroundImage = {
+    backgroundImage: 'url("' + $scope.images[0] + '")',
+  };
+
+  //  - aspect ratio of photos is 3:2
+  //  - formula: (2 * screen width) / (3 * height) = #items
+  //  - screen width + desired height => #items
+  $scope.owlProperties = {
+    loop: ($scope.images.length > 2),
+    center: true,
+    nav: true,
+    dots: false,
+    responsive: {},
+  };
+  for (var screenWidth = 0; screenWidth < 3000; screenWidth += 100) {
+    var desiredHeight = Math.max(250, Math.min(330, screenWidth * (400 / 1800)));
+    $scope.owlProperties.responsive[screenWidth] = {
+      items: Math.max(1, (2 * screenWidth) / (3 * desiredHeight)),
+    };
+  }
+
+  $scope.owlApi = null;
+  $scope.owlReady = function ($api) {
+    $scope.owlApi = $api;
+  };
+  $scope.owlGoto = function (i) {
+    if ($scope.owlApi) {
+      $scope.owlApi.trigger('to.owl.carousel', i);
+    }
+  };
+  $scope.owlClick = function ($event) {
+    var item = $($event.target).closest('.item');
+    if (item.length) {
+      var i = parseInt(item.attr('index'));
+      $scope.owlApi.trigger('to.owl.carousel', i);
+    }
+  };
 
   function openChatWith (otherPerson) {
     var otherPersonName = $filter('fullname')(otherPerson);

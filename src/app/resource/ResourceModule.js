@@ -31,10 +31,14 @@ angular.module('owm.resource', [
      * WORKAROUND FOR UI ROUTER ISSUE: $stateParams not updating after $location.search()
      * https://github.com/angular-ui/ui-router/issues/1546
      */
-    onEnter: ['$stateParams', 'resourceQueryService', function ($stateParams, resourceQueryService) {
-      resourceQueryService.parseStateParams($stateParams);
-    }],
+//    onEnter: ['$stateParams', 'resourceQueryService', function ($stateParams, resourceQueryService) {
+//      resourceQueryService.parseStateParams($stateParams);
+//    }],
     resolve: {
+      query: ['$stateParams', 'resourceQueryService', function ($stateParams, resourceQueryService) {
+        resourceQueryService.parseStateParams($stateParams);
+        return 'ok, done';
+      }],
       user: ['authService', function (authService) {
         return authService.userPromise();
       }]
@@ -44,7 +48,6 @@ angular.module('owm.resource', [
   $stateProvider.state('owm.resource.search', {
     url: '/auto-huren',
     abstract: true,
-    reloadOnSearch: false,
     views: {
       'main-full@shell': {
         controller: 'ResourceSearchController',
@@ -69,14 +72,12 @@ angular.module('owm.resource', [
 
   $stateProvider.state('owm.resource.search.list', {
     url: '',
-    reloadOnSearch: false,
     controller: 'ResourceSearchListController',
     templateUrl: 'resource/search/list/resource-search-list.tpl.html'
   });
 
   $stateProvider.state('owm.resource.search.map', {
     url: '/kaart',
-    reloadOnSearch: false,
     controller: 'ResourceSearchMapController',
     templateUrl: 'resource/search/map/resource-search-map.tpl.html'
   });

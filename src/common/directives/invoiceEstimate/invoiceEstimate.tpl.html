@@ -1,0 +1,155 @@
+
+<div class="invoice-estimate">
+
+  <div class="pricing-details" ng-show="price">
+    <div ng-if="booking.contractOptions && booking.contractOptions.length > 1"
+         style="text-align: center;">
+      <div class="form-group mw-button" style="margin-bottom: 5px;">
+        <md-button class="md-icon-button" ng-click="">
+          <ng-md-icon icon="keyboard_arrow_down" aria-hidden="true"></ng-md-icon>
+        </md-button>
+        <select id="res_contract" name="contract" ng-model="booking.contract" ng-options="c as (c.type.name + ' - ' + c.contractor.firstName) for c in booking.contractOptions">
+          <option value="" disabled>-- {{ 'PICK_A_CONTRACT' | translate }} --</option>
+        </select>
+      </div>
+    </div>
+
+    <table>
+      <tbody>
+        <tr>
+          <td class="description">
+            <div class="name">
+              {{ huurkosten }}
+              <ng-md-icon ng-if="numDaysDiffCalcDays" size="20" icon="info_italic" class="info-icon" info-dialog="numDaysDiffCalcDays"></ng-md-icon>
+            </div>
+            <div class="discount-line" ng-if="price.discount_rent">
+              incl. {{ price.discount_rent | currency }} korting
+            </div>
+          </td>
+          <td class="price">{{ price.rent | currency }}</td>
+        </tr>
+        <tr>
+          <td class="description">
+            <div class="name">Boekingskosten</div>
+            <div class="discount-line" ng-if="price.discount_booking_fee">
+              - incl. {{ price.discount_booking_fee | currency }} korting
+            </div>
+          </td>
+          <td class="price">{{ price.booking_fee | currency }}</td>
+        </tr>
+        <tr ng-if="booking.contract.ownRiskWaiver !== 'month'">
+          <td class="description">
+            <div class="name">
+              Eigen risico verlagen{{ (!price.must_decrease_own_risk && (booking.contract.ownRiskWaiver === 'not')) ? ':' : '' }}
+              <span style="white-space: nowrap;">
+                <span ng-if="!price.must_decrease_own_risk && (booking.contract.ownRiskWaiver === 'not')">
+                  <span class="choice" ng-click="booking.riskReduction = true" ng-class="{ chosen: booking.riskReduction }">aan</span>
+                  /
+                  <span class="choice" ng-click="booking.riskReduction = false" ng-class="{ chosen: !booking.riskReduction }">uit</span>
+                </span>
+                &nbsp;<ng-md-icon size="20" icon="info_italic" class="info-icon" info-dialog="eigenRisico"></ng-md-icon>
+              </span>
+            </div>
+          </td>
+          <td class="price">{{ price.redemption | currency }}</td>
+        </tr>
+        <tr>
+          <td colspan="2"><div class="line"></div></td>
+        </tr>
+        <tr class="total" ng-if="$root.experiments.schattingKmKostenDropdown">
+          <td class="description">
+            <div class="name">Vaste huurkosten<span ng-if="!showPriceDetails">*</span></div>
+          </td>
+          <td class="price">{{ price.total | currency }}</td>
+        </tr>
+        <tr class="total" ng-if="!$root.experiments.schattingKmKostenDropdown">
+          <td class="description">
+            <div class="name">Vaste huurkosten</div>
+          </td>
+          <td class="price">{{ price.total | currency }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div ng-if="$root.experiments.schattingKmKostenDropdown">
+
+      <h4 ng-if="!showPriceDetails">
+        <a href="#" ng-click="toggleShowPriceDetails()">
+          <span class="underline">*excl. schatting kilometerkosten</span>
+          <ng-md-icon icon="expand_more"></ng-md-icon>
+        </a>
+      </h4>
+      <h4 ng-if="showPriceDetails">
+        <a href="#" ng-click="toggleShowPriceDetails()">
+          <span class="underline">Schatting kilometerkosten</span>
+          <ng-md-icon icon="expand_less"></ng-md-icon>
+        </a>
+      </h4>
+
+      <div class="km-price-details slide-toggleable" ng-class="{ 'ct-show': showPriceDetails }">
+        <table>
+          <tbody>
+            <tr>
+              <td class="description">
+                <div class="name">
+                  Kilometerkosten
+                  <a class="km" href="#"
+                      info-dialog="schatJeRitPrijs"
+                      info-dialog-params="{
+                        resource: resource,
+                        booking: booking,
+                        price: price,
+                        controller: estimateDialogController,
+                      }" >{{ price.estimate_km_total }} km</a>
+                </div>
+                <div class="discount-line" ng-if="price.discount_per_km">
+                  - incl. {{ price.discount_per_km | currency }} korting per km
+                </div>
+                <div class="discount-line" ng-if="price.discount_km_points_included">
+                  - incl. {{ price.discount_km_points_included | currency }} beheerdersvergoeding
+                </div>
+              </td>
+              <td class="price">{{ price.km_price_rate | currency }}</td>
+            </tr>
+            <tr ng-if="!resource.refuelByRenter">
+              <td class="description">
+                <div class="name">
+                  Brandstof
+                  <a class="km" href="#"
+                      info-dialog="schatJeRitPrijs"
+                      info-dialog-params="{
+                        resource: resource,
+                        booking: booking,
+                        price: price,
+                        controller: estimateDialogController,
+                      }" >{{ price.estimate_km_total }} km</a>
+                </div>
+              </td>
+              <td class="price">{{ price.km_price_fuel | currency }}</td>
+            </tr>
+            <tr>
+              <td colspan="2"><div class="line"></div></td>
+            </tr>
+            <!--
+            <tr class="total">
+              <td class="description">
+                <div class="name">Totale ritkosten</div>
+              </td>
+              <td class="price">{{ calculation.uponUserEstimate.total | currency }}</td>
+            </tr>
+            -->
+            <tr class="total">
+              <td class="description">
+                <div class="name">
+                  Totaal te betalen
+                  <ng-md-icon size="20" icon="info_italic" class="info-icon" info-dialog="schattingKilometerkosten" info-dialog-params="{ resource: resource }"></ng-md-icon>
+                </div>
+              </td>
+              <td class="price">{{ price.total + price.km_price_fuel + price.km_price_rate | currency }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

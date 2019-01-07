@@ -46,14 +46,19 @@ angular.module('api', [])
   };
 
   api.invokeRpcMethod = function (rpcMethod, rpcParams, multiPartParams, isAnonymousMethod) {
-    /*// for debugging purposes
-    if (rpcMethod === 'boardcomputer.control') {
-      return $q(function (resolve, reject) {
-        setTimeout(function () {
-          resolve(true);
-        }, 500);
+    // for debugging purposes
+    if (appConfig.test.mock_api) {
+      var rule = appConfig.test.mock_api.find(function (rule) {
+        return (rule.rpcMethod === rpcMethod);
       });
-    }*/
+      if (rule) {
+        return $q(function (resolve, reject) {
+          setTimeout(function () {
+            resolve(rule.result);
+          }, 500);
+        });
+      }
+    }
 
     var http;
     var token;
