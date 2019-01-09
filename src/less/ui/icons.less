@@ -1,7 +1,20 @@
 .info-icon {
   margin-left : 3px;
   margin-right: 3px;
-  cursor  : pointer;
+  cursor: pointer;
+  
+  position: relative;
+  top: -1px;
+
+  &.bg {
+    background: #eee;
+    border-radius: 999px;
+  }
+  
+  &[size='20'] {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .carousel-control.left .glyphicon:before {
