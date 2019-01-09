@@ -1,13 +1,61 @@
-.voucher{
-  border-bottom: 1px solid gray;
-  .voucher__value {
-    margin:20px;
-    font-size: 20px;
+
+table.financial {
+  margin-bottom: 2rem;
+
+  td {
+    vertical-align: top;
+    padding: .6rem 0;
+  }
+
+  tr.bt td {
+    border-top: 1px solid #ddd;
+  }
+
+  .line {
+    position: relative;
+    margin: .2em 0;
+    border-top: 1px solid #bbb;
   }
 }
 
-.voucher:last-of-type {border-bottom: 0}
+.voucher {
+  position: relative;
+  
+  a.km {
+    font-size: .9em;
+    margin-left: 6px;
+    color: #444;
+    text-decoration: underline;
+    padding: 2px 4px;
+    border-radius: 4px;
 
-.label-break {
-  white-space: normal;
+    &:hover {
+      color: black;
+    }
+  }
+
+  .pricing-options {
+    background: #f5f5f5;
+    margin: 0.5rem -.5em;
+    padding: .5rem 1rem;
+    border: 2px solid #ddd;
+  }
+
+  .voucher-overlay {
+    background: rgba(255, 255, 255, .85);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+
+    padding: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+  }
 }

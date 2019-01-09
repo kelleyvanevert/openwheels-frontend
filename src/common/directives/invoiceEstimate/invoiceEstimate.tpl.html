@@ -19,11 +19,10 @@
         <tr>
           <td class="description">
             <div class="name">
-              {{ huurkosten }}
-              <ng-md-icon ng-if="numDaysDiffCalcDays" size="20" icon="info_italic" class="info-icon" info-dialog="numDaysDiffCalcDays"></ng-md-icon>
+              <huurkosten-line resource="resource" price="price"></huurkosten-line>
             </div>
             <div class="discount-line" ng-if="price.discount_rent">
-              incl. {{ price.discount_rent | currency }} korting
+              - incl. {{ price.discount_rent | currency }} korting
             </div>
           </td>
           <td class="price">{{ price.rent | currency }}</td>
@@ -47,7 +46,7 @@
                   /
                   <span class="choice" ng-click="booking.riskReduction = false" ng-class="{ chosen: !booking.riskReduction }">uit</span>
                 </span>
-                &nbsp;<ng-md-icon size="20" icon="info_italic" class="info-icon" info-dialog="eigenRisico"></ng-md-icon>
+                &nbsp;<ng-md-icon size="20" icon="info_italic" class="info-icon bg" info-dialog="eigenRisico"></ng-md-icon>
               </span>
             </div>
           </td>
@@ -142,7 +141,7 @@
               <td class="description">
                 <div class="name">
                   Totaal te betalen
-                  <ng-md-icon size="20" icon="info_italic" class="info-icon" info-dialog="schattingKilometerkosten" info-dialog-params="{ resource: resource }"></ng-md-icon>
+                  <ng-md-icon size="20" icon="info_italic" class="info-icon bg" info-dialog="schattingKilometerkosten" info-dialog-params="{ resource: resource }"></ng-md-icon>
                 </div>
               </td>
               <td class="price">{{ price.total + price.km_price_fuel + price.km_price_rate | currency }}</td>

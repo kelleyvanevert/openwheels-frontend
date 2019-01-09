@@ -25,30 +25,6 @@ angular.module('invoiceEstimateDirective', [])
     replace: true,
     controller: ['$scope', '$filter', '$mdDialog', function ($scope, $filter, $mdDialog) {
       
-      var currency = $filter('currency');
-
-      // TODO replace this with a check on the API results
-      // (but for now we're still waiting on the required API fields)
-      var numDaysDiffCalcDays = $scope.numDaysDiffCalcDays = (function () {
-        return ($scope.price.time_days > $scope.price.num_of_days);
-      }());
-
-      $scope.huurkosten = (function () {
-
-        var h = [];
-        if ($scope.price.time_days) {
-          if (numDaysDiffCalcDays) {
-            h.push($scope.price.time_days + ' x dagprijs ' + currency($scope.resource.price.dayRateTotal));
-          } else {
-            h.push($scope.price.time_days + ' ' + ($scope.price.time_days === 1 ? 'dag' : 'dagen') + ' x ' + currency($scope.resource.price.dayRateTotal));
-          }
-        }
-        if ($scope.price.time_hours) {
-          h.push($scope.price.time_hours + ' uur' + ' x ' + currency($scope.resource.price.hourRate));
-        }
-        return h.join(' + ');
-      }());
-
       $scope.showPriceDetails = false;
       $scope.setShowPriceDetails = function (b) {
         $scope.showPriceDetails = b;

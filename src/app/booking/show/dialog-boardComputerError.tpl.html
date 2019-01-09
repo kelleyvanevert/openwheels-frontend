@@ -10,7 +10,8 @@
     </div>
   </md-toolbar>
   <md-dialog-content class="md-dialog-content">
-    <div>
+    <p class="lead" ng-if="errorMessage">{{ errorMessage }}</p>
+    <div ng-if="!errorMessage">
       <p class="lead">
         Helaas lijkt er een probleem te zijn met het openen van de auto.
       </p>
