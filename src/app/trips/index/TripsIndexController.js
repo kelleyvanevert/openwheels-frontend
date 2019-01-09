@@ -16,14 +16,14 @@ angular.module('owm.trips.index', [])
 
   $scope.mobile = (mobileDetectService.phone() || mobileDetectService.mobile() || mobileDetectService.tablet());
 
-  const dateTimeConfig = {
+  var dateTimeConfig = {
     // showAccept: true,
     focusOnShow: false, // (!) important for mobile
     useCurrent: true,
     toolbarPlacement: 'bottom',
   };
 
-  const dateConfig = $scope.dateConfig = Object.assign({}, dateTimeConfig, {
+  var dateConfig = $scope.dateConfig = Object.assign({}, dateTimeConfig, {
     format: 'DD-MM-YYYY',
     widgetPositioning: { // with knowledge of the html (!)
       horizontal: 'left',
