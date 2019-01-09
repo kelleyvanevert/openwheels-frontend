@@ -21,7 +21,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
       //$log.log('hello from bootstrapDateTimePicker', '$scope', $scope, '$element', $element, 'attrs', attrs);
       $window.openDateTimePickers = $window.openDateTimePickers || [];
 
-      const input = $element.find('input');
+      var input = $element.find('input');
 
       if ($scope.dtpAutoshow) {
         $scope.$on($scope.dtpAutoshow, function () {
@@ -38,7 +38,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
           if ($scope.mobile && e.target !== input[0]) {
             //$log.log(' [blur replace] closing:', $window.openDateTimePickers.length);
             $window.openDateTimePickers.map(function (el) {
-              const c = $(el).data('DateTimePicker');
+              var c = $(el).data('DateTimePicker');
               if (!c) {
                 //$log.log('problem finding dtc for', el);
               }
@@ -52,8 +52,8 @@ angular.module('bootstrapDateTimePickerDirective', [])
 
       input.on('dp.change', function (e) {
         if (e.oldDate) {
-          const c = angular.element(input).controller('ngModel');//.$setTouched(true);
-          const viewVal = (e.date ? e.date.format($scope.config.format) : '');
+          var c = angular.element(input).controller('ngModel');//.$setTouched(true);
+          var viewVal = (e.date ? e.date.format($scope.config.format) : '');
           c.$setTouched(true);      // ??
           c.$setViewValue(viewVal); // ??
         }
@@ -63,7 +63,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
       });
       input.on('dp.hide', function () {
         input[0].dispatchEvent(new CustomEvent('input'));
-        const i = $window.openDateTimePickers.indexOf(input[0]);
+        var i = $window.openDateTimePickers.indexOf(input[0]);
         if (i >= 0) {
           $window.openDateTimePickers.splice(i, 1);
         }
@@ -112,7 +112,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
 
       $element.on('click', function (e) {
         if ($scope.mobile) {
-          const c = input.data('DateTimePicker');
+          var c = input.data('DateTimePicker');
           input.blur();
           e.stopPropagation();
           c.show();

@@ -94,6 +94,7 @@ angular.module('openwheels', [
   'restrictToDirective',
   'autoResize',
   'infoDialogDirective',
+  'huurkostenLineDirective',
 
   'angular-owl-carousel-2',
   'hl.sticky',
