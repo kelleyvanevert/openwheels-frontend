@@ -235,10 +235,10 @@ angular.module('owm.booking.show', [])
 
     // helper
     function showInfoDialog (dialog, scopeExtender) {
-      return function (errorCode) {
+      return function (errorMessage) {
         infoDialog(dialog, $event, function ($scope) {
-          if (errorCode) {
-            $scope.errorCode = errorCode;
+          if (errorMessage) {
+            $scope.errorMessage = errorMessage;
           }
           if (typeof scopeExtender === 'function') {
             scopeExtender($scope);
