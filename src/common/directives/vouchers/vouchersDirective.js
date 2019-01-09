@@ -17,7 +17,7 @@ angular.module('vouchersDirective', [])
       $scope.features = $rootScope.features;
 
       $scope.extraDrivers = {price: 1.25, check: false, drivers: [], new: ''};
-      $scope.vouchureError = {
+      $scope.voucherError = {
         show: false,
         message: ''
       };
@@ -114,7 +114,7 @@ angular.module('vouchersDirective', [])
 
       $scope.redemptionPending = {}; /* by booking id */
       $scope.toggleRedemption = function (booking) {
-        $scope.vouchureError.show = false;
+        $scope.voucherError.show = false;
         alertService.closeAll();
         alertService.load($scope);
 
@@ -133,12 +133,12 @@ angular.module('vouchersDirective', [])
           return getVoucherPrice(booking);
         })
         .then(function () {
-          $scope.vouchureError.show = false;
+          $scope.voucherError.show = false;
           $scope.booking.details.riskReduction = newValue;
         })
         .catch(function (err) {
           if (err.message === 'Bij je huidige gebruiksvorm is verlaging van het eigen risico verplicht.') {
-            $scope.vouchureError = {
+            $scope.voucherError = {
               show: true,
               message: err.message
             };
