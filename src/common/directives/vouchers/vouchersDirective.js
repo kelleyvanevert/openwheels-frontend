@@ -81,6 +81,26 @@ angular.module('vouchersDirective', [])
           $scope.holidaytrip = moment(booking.createdAt).add('days', 7).isBefore(moment(booking.cancelAfter));
           $scope.booking.details.extra_drivers_price = $scope.extraDrivers.check ? ($scope.extraDrivers.drivers.length + $scope.booking.details.drivers_count) * $scope.extraDrivers.price : 0;
 
+          var price = $scope.booking.details.booking_price;
+          $scope.estimateDialogController = {
+            min: 0,
+            max: Math.max(200, 2.7 * price.estimate_km_total),
+            
+            kilometerEstimate: price.estimate_km_total,
+            estimatedPrice: angular.extend({}, price),
+            updateKmEstimate: function () {
+              var controller = $scope.estimateDialogController;
+              
+              controller.estimatedPrice.km_price_fuel = controller.kilometerEstimate * parseFloat($scope.booking.resource.price.fuelPerKilometer);
+    
+              var paidKms = Math.max(0, controller.kilometerEstimate - price.free_km_total);
+              controller.estimatedPrice.km_price_rate = paidKms * (parseFloat($scope.booking.resource.price.kilometerRate) - (price.discount_per_km || 0));
+    
+              controller.estimatedPrice.discount_km_points_included = Math.min(controller.estimatedPrice.km_price_rate, price.discount_km_points_remaining || 0);
+              controller.estimatedPrice.km_price_rate -= controller.estimatedPrice.discount_km_points_included;
+            },
+          };
+
           return bookingObject;
         }).then(function () {
           $scope.priceCalculated = true;
