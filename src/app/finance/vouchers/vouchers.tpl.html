@@ -89,24 +89,24 @@
         <!-- credit -->
         <div style="margin-bottom: 15px;">
 
-            <table class="table">
+            <table class="financial">
                 <tr>
                     <td style="width:100%">Benodigd voor je ritten</td>
                     <td class="text-right">{{ requiredValue.sub_total | currency }}</td>
                 </tr>
-                <tr ng-if="requiredValue.debt > 0">
+                <tr class="bt" ng-if="requiredValue.debt > 0">
                     <td>Openstaande facturen</td>
                     <td class="text-right">{{ requiredValue.debt | currency }}</td>
                 </tr>
-                <tr>
+                <tr class="bt">
                     <td>Af: je huidige rijtegoed</td>
                     <td class="text-right">{{ requiredValue.credit | currency }}</td>
                 </tr>
-                <tr ng-if="requiredValue.credit_limit > 0">
+                <tr class="bt" ng-if="requiredValue.credit_limit > 0">
                     <td>Af: je kredietlimiet <info-icon tooltip-placement="bottom" tooltip-html="'Je betaalt ritten achteraf per automatische incasso, je kredietlimiet is het maximale bedrag dat je achteraf kunt betalen.'"></info-icon></td>
                     <td class="text-right">{{ requiredValue.credit_limit | currency }}</td>
                 </tr>
-                <tr>
+                <tr class="bt">
                     <td ng-if="requiredValue.total >= 0"><b>Te betalen</b></td>
                     <td ng-if="requiredValue.total < 0"><b>Resterend rijtegoed</b></td>
                     <td class="text-right"><b>{{ requiredValue.total | currency }}</b></td>
