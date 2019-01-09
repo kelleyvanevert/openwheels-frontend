@@ -1,5 +1,5 @@
 <div class="voucher">
-    <table>
+    <table class="financial">
         <tbody>
             <tr>
                 <td style="width:100%">
@@ -12,7 +12,7 @@
                 </td>
                 <td class="text-right">{{ booking.details.booking_price.rent | currency }}</td>
             </tr>
-            <tr>
+            <tr class="bt">
                 <td>
                     Boekingskosten
                     <div class="discount-line" ng-if="booking.details && booking.details.booking_price.discount_booking_fee">
@@ -115,7 +115,7 @@
                 <td class="text-right">{{ booking.details.booking_price.km_price_rate | currency }}</td>
             </tr>
 
-            <tr>
+            <tr class="bt">
                 <td>
                     <div>
                         Brandstof
@@ -133,9 +133,9 @@
                 <td class="text-right">{{ booking.details.booking_price.km_price_fuel | currency }}</td>
             </tr>
 
-            <tr><td colspan="2"><div class="line"></div></td></tr>
+            <!--<tr><td colspan="2"><div class="line"></div></td></tr>-->
 
-            <tr>
+            <tr class="bt">
                 <td>
                     <strong>{{ (booking.details.discount > 0 || booking.details.friend_invite_discount > 0) ? 'Totale huurkosten' : 'Totaal te betalen' }}</strong>
                     <ng-md-icon size="20" icon="info_italic" class="info-icon bg" info-dialog="schattingKilometerkosten" info-dialog-params="{ resource: booking.resource, title: (booking.details.discount > 0 || booking.details.friend_invite_discount > 0) ? 'Totale huurkosten' : 'Totaal te betalen' }"></ng-md-icon>
@@ -145,19 +145,19 @@
                 </td>
             </tr>
 
-            <tr ng-if="booking.details.discount > 0">
+            <tr class="bt" ng-if="booking.details.discount > 0">
                 <td style="padding-top:25px">Af: korting</td>
                 <td class="text-right" style="padding-top:25px">{{ booking.details.discount | currency }}</td>
             </tr>
 
-            <tr ng-if="booking.details.friend_invite_discount > 0">
+            <tr class="bt" ng-if="booking.details.friend_invite_discount > 0">
                 <td style="padding-top:25px">Af: korting van {{ me.invited.firstName | toTitleCase }}</td>
                 <td class="text-right" style="padding-top:25px">{{ booking.details.friend_invite_discount | currency }}</td>
             </tr>
 
-            <tr ng-if="booking.details.discount > 0 || booking.details.friend_invite_discount > 0"><td colspan="2"><div class="line"></div></td></tr>
+            <!--<tr ng-if="booking.details.discount > 0 || booking.details.friend_invite_discount > 0"><td colspan="2"><div class="line"></div></td></tr>-->
 
-            <tr ng-if="booking.details.discount > 0 || booking.details.friend_invite_discount > 0">
+            <tr class="bt" ng-if="booking.details.discount > 0 || booking.details.friend_invite_discount > 0">
                 <td>
                     <strong>Totaal te betalen</strong>
                 </td>
