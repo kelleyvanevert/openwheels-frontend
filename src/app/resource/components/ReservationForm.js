@@ -211,25 +211,22 @@ angular.module('owm.resource.reservationForm', [])
     var booking = $scope.booking;
     $scope.price = null;
 
-    return $q(function (resolve, reject) {
-      if (!availability || availability.no || !booking.beginRequested || !booking.endRequested) {
-        //$log.log(' (aborted)');
-        return resolve($scope.price);// reject();
-      }
+    if (!availability || availability.no || !booking.beginRequested || !booking.endRequested) {
+      //$log.log(' (aborted)');
+      return;// reject();
+    }
 
-      invoice2Service.calculatePrice({
-        resource: resource.id,
-        timeFrame: {
-          startDate: booking.beginRequested,
-          endDate: booking.endRequested
-        },
-        includeRedemption: booking.riskReduction,
-        contract: booking.contract ? booking.contract.id : undefined,
-      })
-      .then(function (price) {
-        $scope.price = price;
-        resolve(price);
-      });
+    invoice2Service.calculatePrice({
+      resource: resource.id,
+      timeFrame: {
+        startDate: booking.beginRequested,
+        endDate: booking.endRequested
+      },
+      includeRedemption: booking.riskReduction,
+      contract: booking.contract ? booking.contract.id : undefined,
+    })
+    .then(function (price) {
+      $scope.price = price;
     });
   }
 
