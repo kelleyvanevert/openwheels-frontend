@@ -58,17 +58,24 @@ angular.module('bootstrapDateTimePickerDirective', [])
           c.$setViewValue(viewVal); // ??
         }
       });
-      input.on('dp.show', function () {
+      input.on('dp.show', function (e) {
         $window.openDateTimePickers.push(input[0]);
       });
-      input.on('dp.hide', function () {
-        input[0].dispatchEvent(new CustomEvent('input'));
+      input.on('dp.hide', function (e) {
+        //input[0].dispatchEvent(new CustomEvent('input')); // didn't work
+        if (e.date) {
+          var c = angular.element(input).controller('ngModel');//.$setTouched(true);
+          var viewVal = (e.date ? e.date.format($scope.config.format) : '');
+          c.$setTouched(true);      // ??
+          c.$setViewValue(viewVal); // ??
+        }
+
         var i = $window.openDateTimePickers.indexOf(input[0]);
         if (i >= 0) {
           $window.openDateTimePickers.splice(i, 1);
         }
       });
-      input.on('dp.accept', function () {
+      input.on('dp.accept', function (e) {
         if ($scope.dtpBroadcastAccept) {
           //$log.log('I ('+$scope.config.format+') just broadcasted', $scope.dtpBroadcastAccept);
           $rootScope.$broadcast($scope.dtpBroadcastAccept);
