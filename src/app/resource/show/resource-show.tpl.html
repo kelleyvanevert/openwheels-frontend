@@ -130,15 +130,19 @@
                         <div ng-if="!unavailable">
                             <div class="text-center" ng-if="showBookingFormToggle">
                                 <p>
-                                    <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" ng-click="toggleBookingForm()">
+                                    <button
+                                        class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action" 
+                                        style="width: 100%;"
+                                        ng-click="toggleBookingForm()">
                                         {{ 'BOOK_A_CAR' | translate }}
                                     </button>
                                 </p>
-                                <p>
-                                    <a class="btn btn-link" ui-sref="owm.resource.calendar({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
-                                        <i class="fa fa-calendar"></i> {{ 'CALENDAR_BUTTON' | translate }}
+                                <div class="btn-group btn-group-justified">
+                                    <a class="calendar-link btn mywheels-btn mywheels-btn-secondary" ui-sref="owm.resource.calendar({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
+                                        <ng-md-icon icon="event"></ng-md-icon>
+                                        <span>Kalender</span>
                                     </a>
-                                </p>
+                                </div>
                             </div>
                             <div id="createBookingContainer" uib-collapse="!showBookingForm">
                                 <reservation-form person="me" resource="resource" booking="booking"></reservation-form>
