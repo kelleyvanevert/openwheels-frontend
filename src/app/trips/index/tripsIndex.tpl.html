@@ -1,13 +1,13 @@
 <div id="trips-page-container" class="container container-transitional">
-  <div class="no-row">
-    <div class="col-12">
+  <div class="row">
+    <div class="rpad col-12">
       <h1 class="page-title">
         {{ 'MY_TRIPS' | translate }}
       </h1>
     </div>
   </div>
-  <div class="no-row">
-    <div class="col-md-4">
+  <div class="row">
+    <div class="rpad col-md-4">
       <div class="card mw">
         <div class="card-body mywheels-form">
           <p><label>Periode</label></p>
@@ -49,7 +49,9 @@
               </div>
             </div>
           </div>
+
           <div ng-show="me.preference !== 'owner'">
+            <p><label>Opties</label></p>
             <div>
               <md-checkbox ng-model="showCancelled" ng-change="loadDate('asRenter', true)">
                 Geannuleerde en afgewezen ritten
@@ -69,7 +71,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-8">
+    <div class="rpad col-md-8">
       <div class="card mw" ng-if="(!totalBookings.asOwner && !totalBookings.asRenter) || renew">
         <div class="card-body">
           <div ng-if="showLoaderSpinner">

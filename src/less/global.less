@@ -29,6 +29,18 @@ html {
 }
 .container .row {
   max-width: ~"calc(100vw + 18px)";
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.rpad {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+@media (max-width: 480px) {
+  .rpad {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 .push {
     z-index: -1;
@@ -400,9 +412,15 @@ md-dialog.mw-red md-toolbar {
 
 h1.page-title {
     text-align: center;
-    margin: 1.4rem 0 1.6rem;
+    margin: 3rem 0 2rem;
     color: #555;
     font-size: 3.4rem;
+}
+
+@media (max-width: @screen-md-max) {
+    h1.page-title {
+        margin: 1.4rem 0 1.4rem;
+    }
 }
 
 @media (max-width: @screen-sm-max) {
