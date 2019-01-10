@@ -118,7 +118,7 @@
       </div>
     </div>
 
-    <p style="margin: 0;">
+    <p>
       <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action"
               style="width: 100%;"
               md-ink-ripple="#8f6700"
@@ -128,6 +128,12 @@
         {{ 'CREATE_BOOKING' | translate }}
       </button>
     </p>
+    <div class="btn-group btn-group-justified">
+      <a class="calendar-link btn mywheels-btn mywheels-btn-secondary" ui-sref="owm.resource.calendar({ city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
+        <ng-md-icon icon="event"></ng-md-icon>
+        <span>Beschikbaarheid</span>
+      </a>
+    </div>
 <!--
     <p>
       <a class="btn btn-link" ui-sref="owm.resource.calendar({ city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
