@@ -123,7 +123,7 @@ angular.module('owm.resource.reservationForm', [])
     $scope.booking.riskReduction = false;
   }
 
-  $scope.$watch('[booking.riskReduction]', function () {
+  $scope.$watch('booking.riskReduction', function () {
     $log.log('loadPrice after booking.riskReduction changed');
     loadPrice();
   });
