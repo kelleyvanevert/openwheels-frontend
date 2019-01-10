@@ -34,7 +34,15 @@
       </p>
       <p class="extra">
         <!-- TODO -->
-        <a href="/auto-huren" ui-sref="owm.resource.search.list">Probeer een van de andere auto's in de omgeving.</a>
+        <a href="/auto-huren"
+          ui-sref="owm.resource.search.list({
+            start: $root.moment(booking.beginRequested).format('YYMMDDHHmm'),
+            end: $root.moment(booking.endRequested).format('YYMMDDHHmm'),
+            lat: resource.latitude,
+            lng: resource.longitude,
+          })">Probeer een van de andere auto's in de omgeving.</a>
+          <!-- type: resource.resourceType, -->
+          <!-- text: resource.city, -->
       </p>
     </div>
 
