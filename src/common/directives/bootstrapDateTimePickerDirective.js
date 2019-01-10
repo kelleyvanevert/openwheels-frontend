@@ -62,6 +62,7 @@ angular.module('bootstrapDateTimePickerDirective', [])
         $window.openDateTimePickers.push(input[0]);
       });
       input.on('dp.hide', function (e) {
+        //input[0].dispatchEvent(new CustomEvent('input')); // didn't work
         if (e.date) {
           var c = angular.element(input).controller('ngModel');//.$setTouched(true);
           var viewVal = (e.date ? e.date.format($scope.config.format) : '');
@@ -69,7 +70,6 @@ angular.module('bootstrapDateTimePickerDirective', [])
           c.$setViewValue(viewVal); // ??
         }
 
-        //input[0].dispatchEvent(new CustomEvent('input'));
         var i = $window.openDateTimePickers.indexOf(input[0]);
         if (i >= 0) {
           $window.openDateTimePickers.splice(i, 1);
