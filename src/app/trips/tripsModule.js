@@ -11,7 +11,7 @@ angular.module('owm.trips', [
   .state('owm.trips', {
     url: '/trips?start&end&cancelled',
     views: {
-      'main@shell': {
+      'main-full@shell': {
         templateUrl: 'trips/index/tripsIndex.tpl.html',
         controller: 'TripsIndexController'
       }

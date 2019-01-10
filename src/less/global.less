@@ -398,7 +398,21 @@ md-dialog.mw-red md-toolbar {
     background: @mywheels-red;
 }
 
+h1.page-title {
+    text-align: center;
+    margin: 1.4rem 0 1.6rem;
+    color: #555;
+    font-size: 3.4rem;
+}
 
+@media (max-width: @screen-sm-max) {
+    h1.page-title {
+        margin: 0 0 1.4rem;
+        font-size: 2.8rem;
+    }
+}
+
+/* Apply to `.card`s */
 .mw {
     color: #333;
 
@@ -470,6 +484,10 @@ md-dialog.mw-red md-toolbar {
 
     p:last-child {
         margin-bottom: 0;
+
+        md-checkbox {
+            margin-bottom: 0;
+        }
     }
 
 /*    @media (max-width: 768px) {

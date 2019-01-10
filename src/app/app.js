@@ -369,6 +369,7 @@ angular.module('openwheels', [
       $state.includes('subscribe') ||
       $state.includes('invite') ||
       $state.includes('member') ||
+      $state.includes('owm.trips') ||
       $state.includes('owm.person.details') ||
       $state.includes('owmlanding')
     );
