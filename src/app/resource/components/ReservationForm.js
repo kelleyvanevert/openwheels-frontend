@@ -137,7 +137,7 @@ angular.module('owm.resource.reservationForm', [])
     return $q(function (resolve, reject) {
       if (!booking.beginRequested || !booking.endRequested) {
         //$log.log(' (aborted)');
-        return reject();
+        return;// reject();
       }
 
       resourceService.checkAvailability({
@@ -212,7 +212,7 @@ angular.module('owm.resource.reservationForm', [])
     return $q(function (resolve, reject) {
       if (!availability || availability.no || !booking.beginRequested || !booking.endRequested) {
         //$log.log(' (aborted)');
-        return reject();
+        return;// reject();
       }
 
       invoice2Service.calculatePrice({
