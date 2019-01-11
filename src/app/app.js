@@ -283,6 +283,8 @@ angular.module('openwheels', [
   AB,
   $analytics) {
 
+  
+  $rootScope.moment = moment;
 
   $rootScope.$state = $state;
   $rootScope.$stateParams = $stateParams;
