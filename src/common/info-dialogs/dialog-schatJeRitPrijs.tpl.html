@@ -67,11 +67,38 @@ params:
               <td class="description">
                 <div class="name">Ritkosten {{ params.controller.kilometerEstimate }} km</div>
               </td>
-              <td class="price">{{ params.price.total + params.controller.estimatedPrice.km_price_fuel + params.controller.estimatedPrice.km_price_rate | currency }}</td>
+              <td class="price">{{ params.controller.estimatedPrice.rit_totaal_estimate | currency }}</td>
+            </tr>
+            <tr class="total" ng-if="params.controller.estimatedPrice.rit_totaal_diff >= .01">
+              <td class="description" colspan="2">
+                <div class="name" style="text-align: center;">
+                  <span class="text-info" ng-if="params.controller.estimatedPrice.rit_totaal >= params.controller.estimatedPrice.rit_totaal_estimate">
+                    Achteraf krijg je {{ params.controller.estimatedPrice.rit_totaal_diff | currency }} terug.
+                  </span>
+                  <span class="text-info" ng-if="params.controller.estimatedPrice.rit_totaal < params.controller.estimatedPrice.rit_totaal_estimate">
+                    Achteraf moet je {{ params.controller.estimatedPrice.rit_totaal_diff | currency }} bijbetalen.
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <tr class="total" ng-if="params.controller.estimatedPrice.rit_totaal_diff < .01">
+              <td class="description" colspan="2">
+                <div class="name" style="text-align: center;">
+                  &nbsp;
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
+    </div>
+    <div class="dialog-buttons-right" style="margin: .5rem -.5rem -.5rem 0;">
+      <button class="mywheels-btn mywheels-btn-border"
+              md-ink-ripple="#4b702c"
+              ng-click="hide()"
+              style="white-space: nowrap;">
+        Sluiten
+      </button>
     </div>
   </md-dialog-content>
 </md-dialog>
