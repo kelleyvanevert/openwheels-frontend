@@ -1,6 +1,7 @@
 
 table.financial {
   margin-bottom: 2rem;
+  width: 100%;
 
   td {
     vertical-align: top;
@@ -15,6 +16,17 @@ table.financial {
     position: relative;
     margin: .2em 0;
     border-top: 1px solid #bbb;
+  }
+
+  &.table {
+    th:first-child,
+    td:first-child {
+      padding-left: 0;
+    }
+    th:last-child,
+    td:last-child {
+      padding-right: 0;
+    }
   }
 }
 

@@ -490,10 +490,15 @@ h1.page-title {
         margin-bottom: 0;
     }
 
+    table,
+    ul,
     p {
-        margin: 1.5rem 0;
         font-size: 1.1em;
         line-height: 1.5em;
+    }
+
+    p {
+        margin: 1.5rem 0;
     }
 
     p:first-child {
@@ -524,11 +529,88 @@ h1.page-title {
         }
     }*/
 
+    ul.sidebar-menu {
+        margin: 0 -2.2rem;
+        padding: 0;
+        display: block;
+
+        li {
+            display: block;
+            position: relative;
+            margin: 0;
+            padding: 1.1rem 2.2rem 1.1rem 5.7rem;
+
+            a.menu-item {
+                font-family: @headings-font-family;
+                font-size: 1.4em;
+                line-height: 1.4em;
+                color: #333;
+
+                ng-md-icon {
+                    margin-right: 1rem;
+                    position: relative;
+                    top: -1px;
+                }
+            }
+
+            &.active {
+                background: #e9eff2;
+            }
+
+            &.active:before {
+                content: " ";
+                display: block;
+
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 3px;
+                background: darken(@mywheels-blue, 4%);
+            }
+        }
+    }
+
+    ul.extra-links {
+        border-top: 1px solid #bbb;
+        margin-top: 1rem;
+        padding: 1rem 0 0;
+
+        li {
+            display: block;
+            margin: .3rem 0;
+        }
+    }
+
+    @media (min-width: 481px) {
+        ul.sidebar-menu {
+            li {
+                a.menu-item {
+                    ng-md-icon {
+                        margin: 0;
+
+                        position: absolute;
+                        left: 2.2rem;
+                        top: 1.4rem;
+                    }
+                }
+            }
+        }
+    }
+
     @media (max-width: 480px) {
 
         .card-heading,
         .card-body {
             padding: 1.2rem;
+        }
+
+        ul.sidebar-menu {
+            margin: 0 -1.2rem;
+
+            li {
+                padding: 1.1rem 1.2rem;
+            }
         }
 
         h1,

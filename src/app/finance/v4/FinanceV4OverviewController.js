@@ -3,20 +3,18 @@
 angular.module('owm.finance.v4', [])
 
 .controller('FinanceV4OverviewController', function ($scope, me, $stateParams, invoice2Service, paymentService, voucherService,
-  linksService, invoiceService, alertService, $state, $mdDialog, $q, appConfig, $window, metaInfoService, kmPointService) {
+  linksService, invoiceService, alertService, $state, $mdDialog, $q, appConfig, $window, metaInfoService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/finance'});
   metaInfoService.set({canonical: 'https://mywheels.nl/finance'});
   
   $scope.config = appConfig;
-  $scope.me = me;
   $scope.Math = $window.Math;
   $scope.provider = me.provider.id;
 
   $scope.loaded = {ungrouped: false, grouped: false};
   $scope.view = me.preference || 'both';
 
-  $scope.activeTab = {active: 0};
   $scope.vouchersPerPage = 15;
   $scope.groupedInvoicesPerPage = 15;
 
@@ -27,10 +25,6 @@ angular.module('owm.finance.v4', [])
   var limit = 10;
   var offset = 0;
   var openInvoicesRawCollector = [];
-
-  if ($stateParams.vouchers) {
-    $scope.activeTab.active = 1;
-  }
 
   // get ungrouped invoices
   function loadUngroupedInvoices() {
@@ -70,9 +64,6 @@ angular.module('owm.finance.v4', [])
   var vouchers = voucherService.search({person: me.id, minValue: 0.0})
   .then(function(vouchers) { $scope.vouchers = vouchers; return vouchers;});
 
-  var kmPoints = kmPointService.forPerson({person: me.id})
-  .then(function(kmPoints) { $scope.kmPoints = kmPoints; return kmPoints;});
-
   $q.all({newInvoices: newInvoices, oldInvoices: oldInvoices, requiredCredit: requiredCredit, vouchers: vouchers})
   .then(function(results) {
     var allInvoices = [];
@@ -101,16 +92,6 @@ angular.module('owm.finance.v4', [])
   ;
 
   // util function
-  function log(a) {
-    console.log(a);
-    return a;
-  }
-  function loglabel(label) {
-    return function(toLog) {
-      console.log(label, toLog);
-      return toLog;
-    };
-  }
 
   function handlePagination(results) {
     $scope.hasMoreToLoad = (results.length >= limit);
@@ -277,134 +258,5 @@ angular.module('owm.finance.v4', [])
     invoices.totals = totals;
     return invoices;
   }
-
-  $scope.renterPay = function() {
-    alertService.load();
-    invoice2Service.createRecipientInvoiceGroup({person: me.id, positiveOnly: false})
-    .then(function(invoiceGroup) {
-      if(invoiceGroup === null) {
-        throw new Error('Deze factuur kan niet worden gesloten. Deze factuur wordt met volgende facturen verrekend.');
-      }
-      alertService.add('success', 'Facturen succesvol gesloten', 3000);
-      $scope.activeTab.active = 1;
-      return invoiceGroup;
-    })
-    .catch(function(err) {
-      alertService.add('danger', err, 3000);
-    })
-    .finally(function() {
-      alertService.loaded();
-    })
-    ;
-  };
-  
-  $scope.ownerPayout = function() {
-    alertService.load();
-    invoice2Service.createSenderInvoiceGroup({person: me.id, closeReceived: true})
-    .then(function(invoiceGroup) {
-      if(invoiceGroup === null) {
-        throw new Error('Deze factuur kan niet worden gesloten. Deze factuur wordt met volgende facturen verrekend.');
-      }
-      return paymentService.payoutInvoiceGroup({invoiceGroup: invoiceGroup.id});
-    })
-    .then(function(payment) {
-      alertService.add('success', 'Facturen succesvol gesloten', 3000);
-      $state.reload();
-      return payment;
-    })
-    .catch(function(err) {
-      alertService.add('danger', err, 3000);
-    })
-    .finally(function() {
-      alertService.loaded();
-    })
-    ;
-  };
-
-  $scope.bothPay = function() {
-    $scope.renterPay();
-  };
-
-  $scope.bothPayout = function() {
-    $scope.ownerPayout();
-  };
-
-  $scope.buyVoucher = function() {
-    $state.go('owm.finance.vouchers');
-  };
-
-  $scope.payoutDialog = function() {
-    var dialog = {
-      templateUrl: 'finance/v4/payoutDialog.tpl.html',
-      controller: ['$scope', '$mdDialog', 'vouchers', function($scope, $mdDialog, vouchers) {
-        $scope.vouchers = vouchers;
-        $scope.selectedVouchers = [];
-
-        $scope.cancel = function() {
-          $mdDialog.hide(false);
-        };
-        $scope.close = function(x) {
-          if($scope.selectedVouchers.length) {
-            $mdDialog.hide($scope.selectedVouchers);
-          } else {
-            $scope.cancel();
-          }
-        };
-
-        $scope.toggle = function (item, list) {
-          var idx = list.indexOf(item);
-          if (idx > -1) {
-            list.splice(idx, 1);
-          }
-          else {
-            list.push(item);
-          }
-        };
-        $scope.exists = function (item, list) {
-          return list.indexOf(item) > -1;
-        };
-      }],
-      locals: {
-        vouchers: $scope.vouchers,
-      },
-    };
-
-    $mdDialog.show(dialog)
-    .then(function(vouchers) {
-      if(!vouchers) {
-        return;
-      }
-      var promises = [];
-      _.forEach(vouchers, function(voucher) {
-        promises.push(paymentService.payoutVoucher({voucher: voucher}));
-      });
-
-      return $q.all(promises)
-      .then(function(results) {
-        alertService.add('success', 'De aangevraagde uitbetalingen staan ingepland', 9000);
-        $state.reload();
-      });
-    })
-    .catch(function(err){
-      alertService.add('danger', err, 9000);
-    })
-    ;
-  };
-
-  $scope.payInvoiceGroup = function(id) {
-    alertService.load();
-
-    paymentService.payInvoiceGroup({invoiceGroup: id})
-    .then(function(result) {
-      $window.location.href = result.url;
-    })
-    .catch(function(err) {
-      alertService.add('danger', err, 3000);
-    })
-    .finally(function() {
-      alertService.loaded();
-    })
-    ;
-  };
 
 });
