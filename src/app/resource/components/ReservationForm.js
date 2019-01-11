@@ -98,16 +98,18 @@ angular.module('owm.resource.reservationForm', [])
       $scope.timeFrameError = false;
       availabilityCheckTimer = $timeout(function () {
         loadAvailability().then(function (availability) {
-          if (availability.yes) {
-            loadContractsOnce().then(function () {
+          if (availability) {
+            if (availability.yes) {
+              loadContractsOnce().then(function () {
+                validateDiscountCode();
+                $log.log('loadPrice after availability');
+                loadPrice();
+              });
+            } else {
               validateDiscountCode();
               $log.log('loadPrice after availability');
               loadPrice();
-            });
-          } else {
-            validateDiscountCode();
-            $log.log('loadPrice after availability');
-            loadPrice();
+            }
           }
         });
       }, 800);
@@ -121,7 +123,7 @@ angular.module('owm.resource.reservationForm', [])
     $scope.booking.riskReduction = false;
   }
 
-  $scope.$watch('[booking.riskReduction]', function () {
+  $scope.$watch('booking.riskReduction', function () {
     $log.log('loadPrice after booking.riskReduction changed');
     loadPrice();
   });
@@ -137,7 +139,7 @@ angular.module('owm.resource.reservationForm', [])
     return $q(function (resolve, reject) {
       if (!booking.beginRequested || !booking.endRequested) {
         //$log.log(' (aborted)');
-        return reject();
+        return resolve($scope.availability); // reject();
       }
 
       resourceService.checkAvailability({
@@ -209,25 +211,22 @@ angular.module('owm.resource.reservationForm', [])
     var booking = $scope.booking;
     $scope.price = null;
 
-    return $q(function (resolve, reject) {
-      if (!availability || availability.no || !booking.beginRequested || !booking.endRequested) {
-        //$log.log(' (aborted)');
-        return reject();
-      }
+    if (!availability || availability.no || !booking.beginRequested || !booking.endRequested) {
+      //$log.log(' (aborted)');
+      return;// reject();
+    }
 
-      invoice2Service.calculatePrice({
-        resource: resource.id,
-        timeFrame: {
-          startDate: booking.beginRequested,
-          endDate: booking.endRequested
-        },
-        includeRedemption: booking.riskReduction,
-        contract: booking.contract ? booking.contract.id : undefined,
-      })
-      .then(function (price) {
-        $scope.price = price;
-        resolve(price);
-      });
+    invoice2Service.calculatePrice({
+      resource: resource.id,
+      timeFrame: {
+        startDate: booking.beginRequested,
+        endDate: booking.endRequested
+      },
+      includeRedemption: booking.riskReduction,
+      contract: booking.contract ? booking.contract.id : undefined,
+    })
+    .then(function (price) {
+      $scope.price = price;
     });
   }
 
