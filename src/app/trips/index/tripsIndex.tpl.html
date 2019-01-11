@@ -2,7 +2,12 @@
   <div class="row">
     <div class="rpad col-12">
       <h1 class="page-title">
-        {{ 'MY_TRIPS' | translate }}
+        <!-- eigenaar/verhuurder van auto -->
+        <span ng-if="me.preference === 'owner'">Verhuringen</span>
+        <!-- verhuurder & huurder -->
+        <span ng-if="me.preference === 'both'">Ritten en verhuringen</span>
+        <!-- huurder / fallback -->
+        <span ng-if="me.preference !== 'owner' && me.preference !== 'both'">Ritten</span>
       </h1>
     </div>
   </div>
@@ -12,7 +17,7 @@
         <div class="card-body mywheels-form">
           <p><label>Periode</label></p>
           <div class="mw-timeframe-picker">
-            <div class="dt-line">
+            <div class="dt-line dt-line-a">
               <label for="fromDate">Van</label>
               <div class="dt-controls">
                 <div class="form-group mw-datepicker mw-icon"
@@ -30,7 +35,7 @@
                 </div>
               </div>
             </div>
-            <div class="dt-line">
+            <div class="dt-line dt-line-b">
               <label for="toDate">Tot</label>
               <div class="dt-controls">
                 <div class="form-group mw-datepicker mw-icon"
@@ -58,15 +63,17 @@
               </md-checkbox>
             </div>
             <div>
-              <md-checkbox>
+              <md-checkbox ng-model="otherOnContract" ng-change="loadDate('asRenter', true)">
                 Ritten van medebestuurders op jouw contract
               </md-checkbox>
             </div>
+            <!--
             <div>
               <md-checkbox>
                 Ritten waarbij je als medebestuurder staat
               </md-checkbox>
             </div>
+            -->
           </div>
         </div>
       </div>
@@ -97,7 +104,8 @@
 
           <!-- desktop view -->
           <div class="visible-lg-block">
-            <table class="table trips">
+            <table class="table trips"
+              ng-style="lastCallRenter ? { 'margin-bottom': 0 } : {}">
               <tbody>
                 <tr 
                   ng-class="{
@@ -147,7 +155,8 @@
           </div>
 
           <!-- mobile view -->
-          <table class="table trips hidden-lg">
+          <table class="table trips hidden-lg"
+            ng-style="lastCallRenter ? { 'margin-bottom': 0 } : {}">
             <tbody>
               <tr 
                 ng-class="{
@@ -221,7 +230,8 @@
 
           <!-- desktop view -->
           <div class="visible-lg-block">
-            <table class="table trips">
+            <table class="table trips"
+              ng-style="lastCallOwner ? { 'margin-bottom': 0 } : {}">
               <tbody>
                 <tr 
                   ng-class="{
@@ -276,7 +286,8 @@
           </div>
 
           <!-- mobile view -->
-          <table class="table trips hidden-lg">
+          <table class="table trips hidden-lg"
+            ng-style="lastCallOwner ? { 'margin-bottom': 0 } : {}">
             <tbody>
               <tr 
                 ng-class="{
