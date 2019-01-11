@@ -19,6 +19,24 @@ angular.module('owm.booking.show', [])
   var resource = $scope.resource = booking.resource;
   $scope.me = me;
 
+  $scope.readOnlyMode = ($scope.booking.person.id !== me.id);
+
+  // Is person the renter or the owner
+  $scope.userPerspective = (function () {
+    if (resource.owner.id === me.id) {
+      return 'owner';
+    } else {
+      return 'renter';
+    }
+    /*
+    if (booking.person.id === me.id) {
+      return 'renter';
+    } else {
+      return 'owner';
+    }
+    */
+  }());
+
   /*
   * Init booking times
   */
@@ -45,15 +63,6 @@ angular.module('owm.booking.show', [])
   $scope.userInput = {
     acceptRejectRemark: ''
   };
-
-  // Is person the renter of the owner
-  $scope.userPerspective = (function () {
-    if (booking.person.id === me.id) {
-      return 'renter';
-    } else {
-      return 'owner';
-    }
-  }());
 
   $scope.openDialog = function($event, declaration) {
     $mdDialog.show({

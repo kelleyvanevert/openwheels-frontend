@@ -230,7 +230,15 @@
 </div>
 
 <!-- Add kilometers -->
-<div class="card" ng-if="accepted && booking.ok && bookingStarted && (!booking.trip.odoBegin || !booking.trip.odoEnd) && !booking.resource.boardcomputer && !booking.trip.finalized" id="kilometerForm">
+<div class="card"
+    id="kilometerForm"
+    ng-if="!readOnlyMode &&
+            accepted &&
+            booking.ok &&
+            bookingStarted &&
+            (!booking.trip.odoBegin || !booking.trip.odoEnd) &&
+            !booking.resource.boardcomputer &&
+            !booking.trip.finalized">
   <div class="card-body card-inverse" style="background-color:#5faac8; color:white;" layout="row" layout-xs="column">
     <div flex="75" flex-xs="100">
       <h3 style="color:#fff; margin-bottom:10px;">Kilometerstanden doorgeven</h3>
@@ -246,7 +254,14 @@
 </div>
 
 <!-- Wait for finalizing trip by other -->
-<div class="card" ng-if="booking.ok && bookingStarted && booking.trip.odoBegin && booking.trip.odoEnd && booking.trip.updatedBy.id === me.id && !booking.resource.boardcomputer && !booking.trip.finalized" id="kilometerForm">
+<div class="card"
+    id="kilometerForm"
+    ng-if="booking.ok &&
+            bookingStarted &&
+            booking.trip.odoBegin && booking.trip.odoEnd &&
+            booking.trip.updatedBy.id === me.id &&
+            !booking.resource.boardcomputer &&
+            !booking.trip.finalized">
   <div class="card-body card-inverse" style="background-color:#5faac8; color:white;">
     <h3 style="color:#fff; margin-bottom:10px;">Controle kilometers</h3>
     <span ng-if="userPerspective==='owner'">Je hebt onderstaande kilometerstanden doorgegeven. We hebben {{ booking.person.firstName }} gevraagd om de kilometerstanden te controleren. Als {{ booking.person.firstName }} dit niet binnen zeven dagen doet, worden de kilometerstanden automatisch geaccordeerd.</span>
@@ -270,7 +285,15 @@
 </div>
 
 <!-- Finalize trip -->
-<div class="card" ng-if="booking.ok && bookingEnded && booking.trip.odoBegin && booking.trip.odoEnd && booking.trip.updatedBy.id !== me.id && !booking.resource.boardcomputer && !booking.trip.finalized" id="kilometerForm">
+<div class="card"
+    id="kilometerForm"
+    ng-if="!readOnlyMode &&
+            booking.ok &&
+            bookingEnded &&
+            booking.trip.odoBegin && booking.trip.odoEnd &&
+            booking.trip.updatedBy.id !== me.id &&
+            !booking.resource.boardcomputer &&
+            !booking.trip.finalized">
   <div class="card-body card-inverse" style="background-color:#5faac8; color:white;" layout="row" layout-xs="column">
     <div flex="70" flex-xs="100">
       <h3 style="color:#fff; margin-bottom:10px;">Controleer kilometers</h3>
@@ -304,7 +327,11 @@
 </div>
 
 <!-- Payment -->
-<div class="card" ng-if="userPerspective==='renter' && paymentInit && ((credit.value === 0 && debt.value === 0) || booking.approved === 'BUY_VOUCHER' || addExtraDriver)" id="bookingPayment">
+<div class="card"
+    id="bookingPayment"
+    ng-if="userPerspective === 'renter' &&
+            paymentInit &&
+            ((credit.value === 0 && debt.value === 0) || booking.approved === 'BUY_VOUCHER' || addExtraDriver)">
   <div class="card-heading">
     <h3 class="card-title">Reservering betalen</h3>
   </div>
@@ -376,7 +403,8 @@
 
 <!-- Open and close buttons -->
 <div class="board-computer-control"
-     ng-show="showBoardComputerButtons">
+     ng-show="!readOnlyMode &&
+              showBoardComputerButtons">
   <div class="card">
     <div class="card-heading">
       <h3 class="card-title">Openen en sluiten</h3>
@@ -412,7 +440,11 @@
 </div>
 
 <!-- Booking alterations for renter -->
-<div id="bookingFormContainer" ng-if="userPerspective === 'renter' && ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 && !bookingEndedRealy">
+<div id="bookingFormContainer"
+    ng-if="!readOnlyMode &&
+          userPerspective === 'renter' &&
+          ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 &&
+          !bookingEndedRealy">
   <div class="card">
     <div class="card-heading">
       <h3 class="card-title">Reservering wijzigen</h3>
@@ -517,7 +549,13 @@
 </div>
 
 <!-- Resource alternatives if booking is requested -->
-<div class="card" ng-if="userPerspective === 'renter' && requested && resourceAlternatives.length >= 1 && (!paymentInit || credit.value !== 0 || debt.value !== 0)" id="resourceAlternatives">
+<div class="card"
+    id="resourceAlternatives"
+    ng-if="!readOnlyMode &&
+            userPerspective === 'renter' &&
+            requested &&
+            resourceAlternatives.length >= 1 &&
+            (!paymentInit || credit.value !== 0 || debt.value !== 0)">
   <div class="card-heading">
     <h3 class="card-title">{{ 'ALTERNATIVE_RESOURCES' | translate }}</h3>
   </div>
@@ -541,7 +579,12 @@
 </div>
 
 <!-- Agreement -->
-<div class="card" ng-if="booking.ok && !requested && !bookingEnded && !booking.resource.boardcomputer">
+<div class="card"
+    ng-if="booking.ok &&
+            accepted &&
+            !requested &&
+            !bookingEnded &&
+            !booking.resource.boardcomputer">
   <div class="card-heading">
     <h3 class="card-title">
       <a href="{{ allowAgreementUrl }}" target="_blank" ng-href="{{ allowAgreementUrl }}">
@@ -553,7 +596,11 @@
 </div>
 
 <!-- Drive and fuel information -->
-<div class="card" ng-if="userPerspective==='renter' && ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 && !bookingEndedRealy" id="mywheelsOpenInfo">
+<div class="card"
+    id="mywheelsOpenInfo"
+    ng-if="userPerspective==='renter' &&
+          ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 &&
+          !bookingEndedRealy">
   <div class="card-heading">
     <h3 class="card-title" ng-if="resource.boardcomputer">MyWheels Open</h3>
     <h3 class="card-title" ng-if="!resource.boardcomputer">Sleuteloverdracht</h3>
@@ -569,7 +616,9 @@
 </div>
 
 <!-- Discount information for renter -->
-<div class="card" ng-if="userPerspective==='renter' && discount.length > 0">
+<div class="card"
+    ng-if="userPerspective==='renter' &&
+            discount.length > 0">
   <div class="card-heading">
     <h3 class="card-title">Kortingscode</h3>
   </div>
@@ -579,7 +628,12 @@
 </div>
 
 <!-- Booking alterations for owner -->
-<div class="card" ng-if="userPerspective==='owner' && ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 && !bookingRequestEndedRealy && !bookingEndedRealy && (allowAcceptReject || allowCancel)">
+<div class="card"
+    ng-if="userPerspective === 'owner' &&
+          ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 &&
+          !bookingRequestEndedRealy &&
+          !bookingEndedRealy &&
+          (allowAcceptReject || allowCancel)">
   <div class="card-heading">
     <h3 class="card-title">
       <span ng-if="userPerspective==='owner' && !hasAcceptedTimeframe(booking)">
@@ -647,7 +701,10 @@
 </div>
 
 <!-- Discount information for owner -->
-<div class="card" ng-if="userPerspective==='owner' && discount.length > 0 && discount[0].discount.sender.id === resource.owner.id">
+<div class="card"
+    ng-if="userPerspective === 'owner' &&
+          discount.length > 0 &&
+          discount[0].discount.sender.id === resource.owner.id">
   <div class="card-heading">
     <h3 class="card-title">Kortingscode</h3>
   </div>
@@ -657,7 +714,13 @@
 </div>
 
 <!-- MyWheels Open info -->
-<div class="card" ng-if="userPerspective==='owner' && !requested && !booking.resource.boardcomputer && ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 && !bookingEnded" id="mywheelsOpenInfo">
+<div class="card"
+    id="mywheelsOpenInfo"
+    ng-if="userPerspective === 'owner' &&
+          !requested &&
+          !booking.resource.boardcomputer &&
+          ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 &&
+          !bookingEnded">
   <div class="card-body" layout="row" layout-xs="column">
     <div flex="75" flex-xs="100">
       <h3 style="margin-bottom:10px;">Verhuur je auto altijd en overal</h3>
@@ -673,7 +736,9 @@
 </div>
 
 <!-- Received invoices -->
-<div class="card" ng-if="receivedInvoices.length > 0 && (sentInvoices.length === 0 || userPerspective === 'renter')">
+<div class="card"
+    ng-if="receivedInvoices.length > 0 &&
+          (sentInvoices.length === 0 || userPerspective === 'renter')">
   <div class="card-heading">
     <h3 class="card-title">
       {{ 'COSTS' | translate }}
@@ -710,7 +775,8 @@
 </div>
 
 <!-- Sent invoices -->
-<div class="card" ng-if="sentInvoices.length > 0">
+<div class="card"
+    ng-if="sentInvoices.length > 0">
   <div class="card-heading">
     <h3 class="card-title">
       {{ 'BOOKING_SENT_INVOICES_TITLE' | translate }}
@@ -748,7 +814,9 @@
 </div>
 
 <!-- Declarations -->
-<div class="card" ng-if="allowDeclarations">
+<div class="card"
+    ng-if="!readOnlyMode &&
+            allowDeclarations">
   <div class="card-heading">
     <h3 class="card-title">
       {{ 'DECLARATION_TITLE' | translate }}
@@ -778,7 +846,9 @@
 </div>
 
 <!-- Review -->
-<div class="card" ng-if="showReviewTeaser">
+<div class="card"
+    ng-if="!readOnlyMode &&
+            showReviewTeaser">
   <div class="card-heading">
     <h3 class="card-title">
       {{ (userPerspective === 'renter') ? 'Beoordeel de rit' : 'Beoordeel de huurder' }}
@@ -805,7 +875,9 @@
 </div>
 
 <!-- Tips and rules for renter of MyWheels Open -->
-<div class="card"  ng-if="userPerspective === 'renter' && !bookingEndedRealy">
+<div class="card"
+    ng-if="userPerspective === 'renter' &&
+            !bookingEndedRealy">
   <div class="card-heading">
     <h3 class="card-title">
       Tips
@@ -845,7 +917,9 @@
 </div>
 
 <!-- Remarks -->
-<div class="card" ng-if="booking.remarkRequester || booking.remarkAuthorizer">
+<div class="card"
+    ng-if="!readOnlyMode &&
+            (booking.remarkRequester || booking.remarkAuthorizer)">
   <div class="card-heading">
     <h3 class="card-title">Opmerkingen</h3>
   </div>
@@ -867,7 +941,8 @@
 </div>
 
 <!-- Owner information -->
-<div class="card"  ng-if="userPerspective === 'renter'">
+<div class="card"
+    ng-if="userPerspective === 'renter'">
   <div class="card-heading">
     <h3 class="card-title">
       Gegevens van {{ resource.owner.firstName }}
@@ -914,7 +989,8 @@
 </div>
 
 <!-- Renter information -->
-<div class="card" ng-if="userPerspective === 'owner'">
+<div class="card"
+    ng-if="userPerspective === 'owner'">
   <div class="card-heading">
     <h3 class="card-title">
         Gegevens van {{ booking.person.firstName }}
@@ -964,7 +1040,10 @@
 </div>
 
 <!-- Contact person information -->
-<div class="card" ng-if="userPerspective==='renter' && resource.contactPerson && (resource.contactPerson.id !== resource.owner.id)">
+<div class="card"
+    ng-if="userPerspective === 'renter' &&
+          resource.contactPerson &&
+          (resource.contactPerson.id !== resource.owner.id)">
   <div class="card-heading">
     <h3 class="card-title">
       Gegevens van de beheerder
@@ -996,7 +1075,8 @@
 </div>
 
 <!-- Map -->
-<div class="card" ng-if="resource.location || resource.city">
+<div class="card"
+    ng-if="resource.location || resource.city">
   <div class="card-heading">
     <h3 class="card-title">{{ resource.location }} {{ resource.streetNumber }} <small>{{ resource.city }}</small></h3>
   </div>
