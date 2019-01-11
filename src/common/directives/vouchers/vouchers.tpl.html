@@ -21,7 +21,23 @@
                 </td>
                 <td class="text-right">{{ booking.details.booking_price.booking_fee | currency }}</td>
             </tr>
-            <tr>
+            <tr class="bt"
+                ng-if="readOnlyMode">
+                <td>
+                    <span ng-if="booking.details.riskReduction">Eigen risico verlaagd</span>
+                    <span ng-if="!booking.details.riskReduction">Eigen risico niet verlaagd</span>
+                </td>
+                <td class="text-right">{{ booking.details.booking_price.redemption | currency }}</td>
+            </tr>
+            <tr class="bt"
+                ng-if="readOnlyMode &&
+                       booking.details.contract_type === 60">
+                <td>
+                    Extra bestuurders
+                </td>
+                <td class="text-right">{{ extraDrivers.check ? (extraDrivers.price * (booking.details.drivers_count + extraDrivers.drivers.length)) : 0 | currency }}</td>
+            </tr>
+            <tr ng-if="!readOnlyMode">
                 <td style="padding: 0;" colspan="2">
                     <div class="pricing-options">
                         <table>
@@ -49,7 +65,7 @@
                             </tr>
                 
                             <!-- Extra driver -->
-                            <tr ng-if="booking.details.contract_type === 60 && features.extraDriverGo">
+                            <tr ng-if="booking.details.contract_type === 60">
                                 <td>
                                     <div class="media">
                                         <div class="media-object pull-left">
@@ -90,7 +106,7 @@
                 </td>
             </tr>
 
-            <tr>
+            <tr ng-class="{ bt: readOnlyMode }">
                 <td>
                     <div>
                         Kilometerkosten
