@@ -27,8 +27,8 @@
                   <span class="credit"
                     ng-class="{ positive: requiredCredit.voucher <= 0 }">{{ requiredCredit.credit | currency }}</span>
                   <a href="#"
-                      style="margin-left: .5rem;"
-                      ng-click="payoutDialog()"
+                      style="margin-left: .5rem; position: relative;"
+                      ng-click="payoutDialog($event)"
                       ng-if="true || requiredCredit.voucher <= 0 && requiredCredit.credit > 0">
                     <span class="underline">uitbetalen</span>
                   </a>

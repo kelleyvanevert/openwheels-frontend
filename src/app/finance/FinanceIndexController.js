@@ -13,7 +13,10 @@ angular.module('owm.finance.index', [])
     .map(function (o) { return +(o.amount); })
     .reduce(function (a,b) { return a+b; });
 
-  $scope.payoutDialog = function() {
+  $scope.payoutDialog = function($event) {
+    $event.stopPropagation();
+    $event.preventDefault();
+
     var dialog = {
       templateUrl: 'finance/v4/payoutDialog.tpl.html',
       controller: ['$scope', 'vouchers', function ($scope, vouchers) {
@@ -71,6 +74,8 @@ angular.module('owm.finance.index', [])
       alertService.add('danger', err, 9000);
     })
     ;
+
+    return false;
   };
 
 });
