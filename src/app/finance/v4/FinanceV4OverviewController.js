@@ -2,7 +2,7 @@
 
 angular.module('owm.finance.v4', [])
 
-.controller('FinanceV4OverviewController', function ($scope, me, $stateParams, invoice2Service, paymentService, voucherService,
+.controller('FinanceV4OverviewController', function ($scope, me, $stateParams, invoice2Service, paymentService,
   linksService, invoiceService, alertService, $state, $mdDialog, $q, appConfig, $window, metaInfoService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/finance'});
@@ -15,7 +15,6 @@ angular.module('owm.finance.v4', [])
   $scope.loaded = {ungrouped: false, grouped: false};
   $scope.view = me.preference || 'both';
 
-  $scope.vouchersPerPage = 15;
   $scope.groupedInvoicesPerPage = 15;
 
   $scope.hasMoreToLoad = false;
@@ -56,15 +55,7 @@ angular.module('owm.finance.v4', [])
   .then(addExtraInformationOldInvoices)
   .then(function(results) { $scope.groupedInvoicesOld = results; return results;});
   
-  // get credit
-  var requiredCredit = voucherService.calculateRequiredCredit({person: me.id})
-  .then(function(results) { $scope.requiredCredit = results; return results;});
-
-  // get vouchers
-  var vouchers = voucherService.search({person: me.id, minValue: 0.0})
-  .then(function(vouchers) { $scope.vouchers = vouchers; return vouchers;});
-
-  $q.all({newInvoices: newInvoices, oldInvoices: oldInvoices, requiredCredit: requiredCredit, vouchers: vouchers})
+  $q.all({newInvoices: newInvoices, oldInvoices: oldInvoices})
   .then(function(results) {
     var allInvoices = [];
 
