@@ -34,7 +34,7 @@ angular.module('owm.resource.parkingpermit', ['alertService'])
       }, {
         resource: $scope.resource,
         members: members,
-        cities: ['Den Haag', 'Rijswijk', 'Gooise Meren', 'Groningen', 'Haarlem', 'Leiden', 'Nijmegen', 'Utrecht'],
+        cities: ['Den Haag', 'Rijswijk', 'Gooise Meren', 'Groningen', 'Haarlem', 'Leiden', 'Nijmegen', 'Tilburg', 'Utrecht'],
         closeButtonText: $translate.instant('CANCEL'),
         actionButtonText: 'Aanvragen'
       });
