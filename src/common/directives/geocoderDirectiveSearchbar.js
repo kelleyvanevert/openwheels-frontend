@@ -188,9 +188,32 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
       $scope.options = {
 				componentRestrictions: { country: $filter('translateOrDefault')('SEARCH_COUNTRY', 'nl') },
         types   : ['geocode'],
+        fields : [
+          'formatted_address',
+          'address_component',
+          'geometry',
+          'icon',
+          'id',
+          'place_id',
+        ],
       };
-
+      
     },
   };
 })
 ;
+
+/*
+
+1sni: 
+4snl: 
+7scountry:nl: 
+9sgeocode: 
+15e3: 
+21m1: 
+2e1: 
+callback: _xdc_._xcy475
+key: AIzaSyAo1K2Hn24_rsLBS6pi-x6o28QRqcrN1lE
+token: 107235
+
+*/
