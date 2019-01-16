@@ -176,7 +176,17 @@ angular.module('google.places', [])
 												 });
 											 });
 										 } else {
-											 placesService.getDetails({ placeId: prediction.place_id }, function (place, status) {
+											 placesService.getDetails({
+												 placeId: prediction.place_id,
+												 fields: [
+													 'formatted_address',
+													 'address_component',
+													 'geometry',
+													 'icon',
+													 'id',
+													 'place_id',
+												 ],
+											 }, function (place, status) {
 												 if (status === google.maps.places.PlacesServiceStatus.OK) {
 													 $scope.$apply(function () {
 														 $scope.model = place;
