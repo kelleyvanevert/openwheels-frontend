@@ -399,7 +399,7 @@ angular.module('owm.booking.show', [])
         draggable: true,
         markers: [{
           idKey: 1,
-          icon: ($scope.resource.locktypes.indexOf('chipcard') >= 0 || $scope.resource.locktypes.indexOf('smartphone') >= 0) ? 'assets/img/mywheels-open-marker-40.png' : 'assets/img/mywheels-key-marker-40.png',
+          icon: ($scope.resource.locktypes.indexOf('chipcard') >= 0 || $scope.resource.locktypes.indexOf('smartphone') >= 0) ? 'assets/img/mywheels-open-marker-v2-80.png' : 'assets/img/mywheels-key-marker-v2-80.png',
           latitude: latitude,
           longitude: longitude,
           title: $scope.resource.alias
