@@ -95,6 +95,8 @@ angular.module('openwheels', [
   'autoResize',
   'infoDialogDirective',
 
+  'mwResourceLocationMap',
+
   'angular-owl-carousel-2',
   'hl.sticky',
   
@@ -216,8 +218,10 @@ angular.module('openwheels', [
 })
 
 .config(function (appConfig, uiGmapGoogleMapApiProvider) {
+  appConfig.gmaps_js_api_key = appConfig.test.gmaps_js_api_key || 'AIzaSyC1QrtfmsYNsJAfx9OOl5QX0oNpMVo3fbw';
+  
   uiGmapGoogleMapApiProvider.configure({
-    key: appConfig.test.gmaps_js_api_key || 'AIzaSyC1QrtfmsYNsJAfx9OOl5QX0oNpMVo3fbw',
+    key: appConfig.gmaps_js_api_key,
     v: '3.34.0',
     libraries: 'places',
     language: 'nl'

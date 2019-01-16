@@ -1000,16 +1000,7 @@
   <div class="card-heading">
     <h3 class="card-title">{{ resource.location }} {{ resource.streetNumber }} <small>{{ resource.city }}</small></h3>
   </div>
-  <ui-gmap-google-map
-       center="map.center"
-       zoom="map.zoom"
-       draggable="false"
-       dragging="map.dragging"
-       bounds="map.bounds"
-       events="map.events"
-       options="map.options">
-       <ui-gmap-marker ng-repeat="m in map.markers" idKey="m.idKey" coords="m" icon="m.icon"></ui-gmap-marker>
-  </ui-gmap-google-map>
+  <mw-resource-location-map map="map"></mw-resource-location-map>
   <div class="card-heading" ng-if="locationError">
     <span>{{ locationError }}</span>
   </div>
