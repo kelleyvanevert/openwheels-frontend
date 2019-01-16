@@ -32,14 +32,45 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
         markers: $scope.markers,
         windows: windows,
         fitMarkers: true,
+        clickableIcons: false,
         control: {},
         options: {
           minZoom: 12,
           fullscreenControl: false,
           mapTypeControl: false,
           streetViewControl: false,
-          gestureHandling: 'greedy'
-        }
+          gestureHandling: 'greedy',
+          // https://snazzymaps.com/editor/customize/120165
+          styles: [/*
+            {
+              featureType: 'transit',
+              elementType: 'labels',
+              stylers: [
+                {
+                  visibility: 'off',
+                },
+              ],
+            },*/
+            {
+              featureType: 'poi',
+              elementType: 'labels',
+              stylers: [
+                {
+                  visibility: 'off',
+                },
+              ],
+            },
+            {
+              featureType: 'landscape',
+              elementType: 'labels',
+              stylers: [
+                {
+                  visibility: 'off',
+                },
+              ],
+            },
+          ],
+        },
       }
     });
 
