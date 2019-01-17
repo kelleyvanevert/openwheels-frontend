@@ -29,6 +29,18 @@ html {
 }
 .container .row {
   max-width: ~"calc(100vw + 18px)";
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.rpad {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+@media (max-width: 480px) {
+  .rpad {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 .push {
     z-index: -1;
@@ -398,7 +410,27 @@ md-dialog.mw-red md-toolbar {
     background: @mywheels-red;
 }
 
+h1.page-title {
+    text-align: center;
+    margin: 3rem 0 2rem;
+    color: #555;
+    font-size: 3.4rem;
+}
 
+@media (max-width: @screen-md-max) {
+    h1.page-title {
+        margin: 1.4rem 0 1.4rem;
+    }
+}
+
+@media (max-width: @screen-sm-max) {
+    h1.page-title {
+        margin: 0 0 1.4rem;
+        font-size: 2.8rem;
+    }
+}
+
+/* Apply to `.card`s */
 .mw {
     color: #333;
 
@@ -458,10 +490,15 @@ md-dialog.mw-red md-toolbar {
         margin-bottom: 0;
     }
 
+    table,
+    ul,
     p {
-        margin: 1.5rem 0;
         font-size: 1.1em;
         line-height: 1.5em;
+    }
+
+    p {
+        margin: 1.5rem 0;
     }
 
     p:first-child {
@@ -470,6 +507,10 @@ md-dialog.mw-red md-toolbar {
 
     p:last-child {
         margin-bottom: 0;
+
+        md-checkbox {
+            margin-bottom: 0;
+        }
     }
 
 /*    @media (max-width: 768px) {
@@ -488,11 +529,98 @@ md-dialog.mw-red md-toolbar {
         }
     }*/
 
+    ul.sidebar-menu {
+        margin: 0 -2.2rem;
+        padding: 0;
+        display: block;
+
+        li {
+            display: block;
+            position: relative;
+            margin: 0;
+            padding: 1.1rem 2.2rem 1.1rem 5.7rem;
+
+            a.menu-item {
+                font-family: @headings-font-family;
+                font-size: 1.2em;
+                line-height: 1.4em;
+                color: #333;
+
+                ng-md-icon {
+                    margin-right: 1rem;
+                    position: relative;
+                    top: -1px;
+                }
+            }
+
+            &.active {
+                background: #e9eff2;
+            }
+
+            &.active:before {
+                content: " ";
+                display: block;
+
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 3px;
+                background: darken(@mywheels-blue, 4%);
+            }
+
+            .feature {
+                margin: .3rem 0;
+            }
+        }
+    }
+
+    ul.extra-links {
+        border-top: 1px solid #bbb;
+        margin-top: 1rem;
+        padding: 1rem 0 0;
+
+        li {
+            display: block;
+            margin: .3rem 0;
+        }
+    }
+
+    @media (min-width: 481px) {
+        ul.sidebar-menu {
+            li {
+                a.menu-item {
+                    font-size: 1.3em;
+
+                    ng-md-icon {
+                        margin: 0;
+
+                        position: absolute;
+                        left: 2.2rem;
+                        top: 1.4rem;
+                    }
+                }
+
+                .feature {
+                    font-size: 1.1em;
+                }
+            }
+        }
+    }
+
     @media (max-width: 480px) {
 
         .card-heading,
         .card-body {
             padding: 1.2rem;
+        }
+
+        ul.sidebar-menu {
+            margin: 0 -1.2rem;
+
+            li {
+                padding: 1.1rem 1.2rem;
+            }
         }
 
         h1,

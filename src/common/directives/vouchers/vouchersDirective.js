@@ -22,6 +22,8 @@ angular.module('vouchersDirective', [])
         message: ''
       };
 
+      $scope.readOnlyMode = ($scope.booking.person.id !== $scope.me.id);
+
       // update required credit on discount change
       $scope.$watch('discount', function(newValue, oldValue) {
         if (newValue !== oldValue && $rootScope.discountAdded) {
