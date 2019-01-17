@@ -19,22 +19,18 @@ angular.module('owm.booking.show', [])
   var resource = $scope.resource = booking.resource;
   $scope.me = me;
 
-  $scope.readOnlyMode = ($scope.booking.person.id !== me.id);
-
   // Is person the renter or the owner
   $scope.userPerspective = (function () {
-    if (resource.owner.id === me.id) {
-      return 'owner';
-    } else {
-      return 'renter';
-    }
-    /*
     if (booking.person.id === me.id) {
       return 'renter';
-    } else {
+    }
+    else if (resource.owner.id === me.id) {
       return 'owner';
     }
-    */
+    else if (contract.contractor.id === me.id) {
+      // het gaat hier om een rit van een contractant
+      return 'contract_holder';
+    }
   }());
 
   /*
