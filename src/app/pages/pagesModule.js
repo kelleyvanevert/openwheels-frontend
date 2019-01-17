@@ -23,11 +23,6 @@ angular.module('owm.pages', [
         controller: 'HomeController'
       }
     },
-    resolve: {
-      user: ['authService', function (authService) {
-        return authService.userPromise();
-      }],
-    },
 //    data: {
 //      access: {
 //        deny: {

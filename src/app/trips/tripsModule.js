@@ -9,9 +9,9 @@ angular.module('owm.trips', [
   $stateProvider
 
   .state('owm.trips', {
-    url: '/trips?start&end&cancelled',
+    url: '/trips?start&end&cancelled&otherOnContract',
     views: {
-      'main@shell': {
+      'main-full@shell': {
         templateUrl: 'trips/index/tripsIndex.tpl.html',
         controller: 'TripsIndexController'
       }

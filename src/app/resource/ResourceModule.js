@@ -66,7 +66,10 @@ angular.module('owm.resource', [
         return authService.userPromise().then(function (user) {
           return user.isAuthenticated ? user.identity : null;
         });
-      }]
+      }],
+      homeAddressPrefill: ['me', 'makeHomeAddressPrefill', function (me, makeHomeAddressPrefill) {
+        return makeHomeAddressPrefill(me);
+      }],
     }
   });
 
@@ -287,6 +290,9 @@ angular.module('owm.resource', [
         return authService.userPromise().then(function (user) {
           return user.isAuthenticated ? user.identity : null;
         });
+      }],
+      homeAddressPrefill: ['me', 'makeHomeAddressPrefill', function (me, makeHomeAddressPrefill) {
+        return makeHomeAddressPrefill(me);
       }],
       metaInfo: ['$state', '$translate', '$filter', 'resource', 'metaInfoService', 'appConfig',
         function ($state, $translate, $filter, resource, metaInfoService, appConfig) {

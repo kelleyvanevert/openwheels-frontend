@@ -6,6 +6,7 @@ angular.module('owm.resource.search', [
   ])
   .controller('ResourceSearchController', function ($location, me, $scope, $state, $stateParams, $uibModal, $mdMedia, $mdDialog,
     $filter, $anchorScroll, appConfig, Geocoder, alertService, resourceService, resourceQueryService, user, place, Analytics,
+    makeHomeAddressPrefill,
     $cookieStore, preloader, metaInfoService, $rootScope, API_DATE_FORMAT) {
 
     if (place) {
@@ -98,7 +99,7 @@ angular.module('owm.resource.search', [
         }
       }
 
-      $scope.searchText = query.text;
+      $scope.searchText = query.text || makeHomeAddressPrefill(me);
       doSearch(true, query.page, undefined, true);
     }
 
