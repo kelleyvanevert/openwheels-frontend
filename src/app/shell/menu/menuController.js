@@ -3,11 +3,14 @@
 angular.module('owm.shell')
 
 .controller('MenuController', function ($window, $rootScope, $scope, $state, $translate, authService, $localStorage,
+  resourceQueryService,
   makeHomeAddressPrefill
 ) {
 
+  var query = resourceQueryService.data;
+
   $rootScope.$watch(function isAuthenticated () {
-    $scope.homeAddressPrefill = makeHomeAddressPrefill(authService.user.identity);
+    $scope.homeAddressPrefill = query.text || makeHomeAddressPrefill(authService.user.identity);
     //return authService.user.isAuthenticated;
   }); // end $watch
 
