@@ -8,7 +8,7 @@ angular.module('owm.person', [
   'owm.person.details',
   'owm.person.aboutme',
   'owm.person.action.payinvoicegroup',
-  'owm.person.inviterequest',
+  'owm.person.invite-requests',
   'owm.person.license',
   'owm.person.anwbId',
   'owm.person.account',
@@ -281,20 +281,27 @@ angular.module('owm.person', [
   /**
    * dashboard/requests
    */
-  $stateProvider.state('owm.person.inviterequest', {
-    url: '/extra-driver-request/:bookingRequestId',
+  $stateProvider.state('owm.person.invite-requests', {
+    url: '/invite-requests',
     views: {
       'main@shell': {
-        templateUrl: 'person/action/request/person-action-booking-request.tpl.html',
-        controller: 'PersonActionBookingRequestController'
+        templateUrl: 'person/action/requests/action-invite-requests.tpl.html',
+        controller: 'ActionInviteRequestsController'
       }
     },
     resolve: {
-      request: ['$stateParams', 'authService', 'extraDriverService', function ($stateParams, authService, extraDriverService) {
-        return extraDriverService.getRequest({
-          id: $stateParams.bookingRequestId
+      inviteRequestsBooking: ['me', 'extraDriverService', function (me, extraDriverService) {
+        return extraDriverService.getRequestsForPerson({
+          person: me.id,
+          type: 'booking',
         });
-      }]
+      }],
+      inviteRequestsContract: ['me', 'extraDriverService', function (me, extraDriverService) {
+        return extraDriverService.getRequestsForPerson({
+          person: me.id,
+          type: 'contract',
+        });
+      }],
     }
   });
 

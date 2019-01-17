@@ -1,0 +1,71 @@
+<div class="card" ng-if="inviteRequestsBooking.total === 0 && inviteRequestsContract.total === 0">
+    <div class="card-heading">
+        <h3 class="card-title">
+            Uitnodigingen
+        </h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <span>Je hebt op dit moment geen uitnodigingen, zodra je toegevoegd wordt aan een contract en/of boeking vragen we je eerst om toestemming.</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bookings for renter -->
+<div class="card" ng-if="inviteRequestsBooking.total > 0">
+
+    <div class="card-heading">
+        <h3 class="card-title">
+            Uitnodigingen voor boekingen <small style="font-size:14px;">(totaal: {{inviteRequestsBooking.total}} )</small>
+        </h3>
+    </div>
+
+    <div class="card-body">
+
+        <!-- desktop view -->
+        <table class="table trips" hide-xs>
+            <tbody>
+            <tr ng-repeat="inviteRequest in inviteRequestsBooking.result">
+                <td width="60%" class="media">
+                    <span>Uitnodiging om als extra bestuurder mee te rijden met {{ inviteRequest.sender.firstName }}</span>
+                </td>
+                <td class="text-right">
+                    <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-success" ng-click="acceptBookingRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_ACCEPT' | translate"></button>
+                    <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-danger" ng-click="declineBookingRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_DECLINED' | translate"></button>
+                    <button type="button" ng-show="inviteRequest.status === 'accepted'" class="btn btn-danger" ng-click="revokeBookingRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_REVOKE' | translate"></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card" ng-if="inviteRequestsContract.total > 0">
+
+    <div class="card-heading">
+        <h3 class="card-title">
+            Uitnodigingen voor contracten <small style="font-size:14px;">(totaal: {{inviteRequestsContract.total}} )</small>
+        </h3>
+    </div>
+
+    <div class="card-body">
+
+        <!-- desktop view -->
+        <table class="table trips" hide-xs>
+            <tbody>
+            <tr ng-repeat="inviteRequest in inviteRequestsContract.result">
+                <td width="60%" class="media">
+                    <span>Uitnodiging om kostenloos te rijden op het contract van {{ inviteRequest.sender.firstName }}</span>
+                </td>
+                <td class="text-right">
+                    <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-success" ng-click="acceptContractRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_ACCEPT' | translate"></button>
+                    <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-danger" ng-click="declineContractRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_DECLINED' | translate"></button>
+                    <button type="button" ng-show="inviteRequest.status === 'accepted'" class="btn btn-danger" ng-click="revokeContractRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_REVOKE' | translate"></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
