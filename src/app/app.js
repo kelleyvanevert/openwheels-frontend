@@ -57,6 +57,7 @@ angular.module('openwheels', [
   'owm.meHelperService',
   // 'angular-google-analytics', // this is `angular-track`, and is being phased out
   'mobileDetectService',
+  'mw.simpleCache',
 
   'Cookies',
   'AB',
@@ -276,6 +277,24 @@ angular.module('openwheels', [
       });
     }
   };
+})
+
+.value('makeHomeAddressPrefill', function (me) {
+  if (!me) {
+    return '';
+  }
+  else if (me.streetName && me.streetNumber && me.city) {
+    return me.streetName + ' ' + me.streetNumber + ', ' + me.city;
+  }
+  else if (me.streetName && me.city) {
+    return me.streetName + ' ' + me.city;
+  }
+  else if (me.city) {
+    return me.city;
+  }
+  else {
+    return '';
+  }
 })
 
 .run(function (windowSizeService, oAuth2MessageListener, stateAuthorizer, authService, featuresService) {

@@ -2,10 +2,13 @@
 
 angular.module('owm.shell')
 
-.controller('MenuController', function ($window, $log, $rootScope, $scope, $state, $translate, authService, featuresService, contractService, $localStorage) {
+.controller('MenuController', function ($window, $rootScope, $scope, $state, $translate, authService, $localStorage,
+  makeHomeAddressPrefill
+) {
 
   $rootScope.$watch(function isAuthenticated () {
-    return authService.user.isAuthenticated;
+    $scope.homeAddressPrefill = makeHomeAddressPrefill(authService.user.identity);
+    //return authService.user.isAuthenticated;
   }); // end $watch
 
   if($localStorage.invitedBySlug) {

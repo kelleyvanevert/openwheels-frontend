@@ -2,18 +2,11 @@
 
 angular.module('owm.person.dashboard.v1', [])
 
-.controller('PersonDashboardHeroController', function ($q, $scope, $sce, $state, me, authService, resourceService, resourceQueryService, blogItems) {
+.controller('PersonDashboardHeroController', function ($scope, $sce, $state, resourceQueryService, homeAddressPrefill) {
 
   $scope.search = { text: '' };
   
-  if(me.streetName && me.streetNumber && me.city) {
-    $scope.homeAddress = me.streetName + ' ' + me.streetNumber + ', ' + me.city;
-  } else if (me.streetName && me.city) {
-    $scope.homeAddress = me.streetName + ' ' + me.city;
-  } else if (me.city) {
-    $scope.homeAddress = me.city;
-  }
-
+  $scope.homeAddressPrefill = homeAddressPrefill;
 
   $scope.renderHtml = function(html_code) {
     return $sce.trustAsHtml(html_code);

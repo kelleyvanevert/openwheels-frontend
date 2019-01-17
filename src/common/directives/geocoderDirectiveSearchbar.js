@@ -33,6 +33,11 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
       } else {
         $scope.search.text = resourceQueryService.data.text;
       }
+
+      $scope.$watch('searchtext', function () {
+        $scope.search.text = $scope.searchtext;
+      });
+
       $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
         if (toState.name.match(/^owm\.resource\.search/) && toParams.text && $scope.search.text !== toParams.text) {
           $scope.search.text = toParams.text;
