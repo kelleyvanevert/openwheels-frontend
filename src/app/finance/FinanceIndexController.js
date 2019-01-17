@@ -18,10 +18,21 @@ angular.module('owm.finance.index', [])
     $event.preventDefault();
 
     var dialog = {
-      templateUrl: 'finance/v4/payoutDialog.tpl.html',
-      controller: ['$scope', 'vouchers', function ($scope, vouchers) {
-        $scope.vouchers = vouchers; // ??
+      templateUrl: 'finance/payoutDialog.tpl.html',
+      controller: ['$scope', 'voucherService', function ($scope, voucherService) {
+
+        $scope.loading = true;
+        $scope.vouchers = [];
         $scope.selectedVouchers = [];
+
+        voucherService.search({
+          person: me.id,
+          minValue: 0.0,
+        })
+          .then(function(vouchers) {
+            $scope.loading = false;
+            $scope.vouchers = vouchers;
+          });
 
         $scope.cancel = function() {
           $mdDialog.hide(false);
