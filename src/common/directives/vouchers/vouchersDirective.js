@@ -13,7 +13,7 @@ angular.module('vouchersDirective', [])
       discount: '='
     },
     controller: function ($scope, voucherService, alertService, bookingService, $rootScope, paymentService, appConfig, $state,
-      $window, contractService, $mdDialog) {
+      $window, contractService, $mdDialog, extraDriverService) {
       $scope.features = $rootScope.features;
 
       $scope.extraDrivers = {price: 1.25, check: false, drivers: [], new: ''};
@@ -38,7 +38,7 @@ angular.module('vouchersDirective', [])
         .then(function(contract) {
           _booking.contract = contract;
           if(contract.type.id === 60) {
-            return bookingService.driversForBooking({booking: _booking.id});
+            return extraDriverService.driversForBooking({booking: _booking.id});
           } else {
             return [];
           }
@@ -176,7 +176,7 @@ angular.module('vouchersDirective', [])
 
             $mdDialog.show(confirm)
             .then(function(res) {
-              return bookingService.clearDrivers({booking: $scope.booking.id});
+              return extraDriverService.clearDrivers({booking: $scope.booking.id});
             })
             .then(function() {
               $scope.extraDrivers.check = false;
@@ -212,7 +212,7 @@ angular.module('vouchersDirective', [])
           alertService.closeAll();
           alertService.load();
 
-          bookingService.addDriver({booking: $scope.booking.id, email: $scope.extraDrivers.new})
+          extraDriverService.addDriver({booking: $scope.booking.id, email: $scope.extraDrivers.new})
           .then(function(booking) {
             $scope.extraDrivers.drivers.push($scope.extraDrivers.new);
             $scope.booking.details.booking_price.total += $scope.extraDrivers.price;
@@ -237,7 +237,7 @@ angular.module('vouchersDirective', [])
         alertService.load();
         var index = $scope.extraDrivers.drivers.indexOf(driver);
         if(index >= 0) {
-          bookingService.removeDriver({booking: $scope.booking.id, email: $scope.extraDrivers.drivers[index]})
+          extraDriverService.removeDriver({booking: $scope.booking.id, email: $scope.extraDrivers.drivers[index]})
           .then(function(booking) {
             $scope.extraDrivers.drivers.splice(index, 1);
             $scope.booking.details.extra_drivers_price = $scope.extraDrivers.check ? ($scope.extraDrivers.drivers.length + $scope.booking.details.drivers_count) * $scope.extraDrivers.price : 0;
