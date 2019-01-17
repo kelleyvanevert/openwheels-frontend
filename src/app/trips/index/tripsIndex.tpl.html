@@ -133,6 +133,10 @@
                     van {{ booking.resource.owner | fullname }}
                   </td>
                   <td width="20%">
+                    <div class="medebestuurder" ng-if="booking.person.id !== me.id">
+                      Rit van {{ booking.person.firstName }}
+                    </div>
+
                     <span ng-if="booking.status === 'accepted' && (booking.approved === 'OK' || !booking.approved) && (now < booking.beginBooking || booking.trip.odoBegin || booking.trip.finalized || booking.resource.boardcomputer)">
                       Geaccepteerd
                     </span>
@@ -142,7 +146,10 @@
                     <span ng-if="booking.status === 'accepted' && booking.approved === 'BUY_VOUCHER'" class="text-danger">
                       <md-button class="md-raised md-primary red">Betaal rit</md-button>
                     </span>
-                    <span ng-if="booking.status === 'accepted' && now > booking.beginBooking && !booking.resource.boardcomputer && (booking.approved === 'OK' || !booking.approved) && !booking.trip.odoBegin && !booking.trip.finalized">
+                    <!-- De conditie (booking.person.id === me.id) checkt of je de daadwerkelijke huurder bent,
+                          of dat de verhuring door een contractant is gedaan. -->
+                    <span ng-if="booking.person.id === me.id &&
+                      booking.status === 'accepted' && now > booking.beginBooking && !booking.resource.boardcomputer && (booking.approved === 'OK' || !booking.approved) && !booking.trip.odoBegin && !booking.trip.finalized">
                       <md-button class="md-raised md-primary">Rit administreren</md-button>
                     </span>
                   </td>
@@ -173,6 +180,10 @@
                     <tr>
                       <td>
                         <h4>{{ booking.resource.alias | limitTo: 30}}{{booking.resource.alias.length > 30 ? '...' : ''}}</h4>
+
+                        <div class="medebestuurder" ng-if="booking.person.id !== me.id">
+                          Rit van {{ booking.person.firstName }}
+                        </div>
                       </td>
                     </tr>
                     <tr layout="row" class="align-middle">
@@ -180,16 +191,20 @@
                         <ow-resource-picture class="media-object img-resource-small pull-left align-middle" resource="booking.resource" size="small"></ow-resource-picture>
                       </td>
                       <td flex="70">
-                        <strong>{{ (booking.beginBooking | amDateFormat:'DD-MM-YYYY') || (booking.beginRequested | amDateFormat:'DD-MM-YYYY') }}</strong>
-                        {{ (booking.beginBooking | amDateFormat:'HH:mm') || (booking.beginRequested | amDateFormat:'HH:mm') }}
-                        <br/>
-                        <strong>{{ (booking.endBooking | amDateFormat:'DD-MM-YYYY') || (booking.endRequested | amDateFormat:'DD-MM-YYYY') }}</strong>
-                        {{ (booking.endBooking | amDateFormat:'HH:mm') || (booking.endRequested | amDateFormat:'HH:mm') }}
-                        <br/>
-                        <span ng-if="booking.status === 'accepted'">Geaccepteerd</span>
-                        <span ng-if="booking.status === 'requested'">In aanvraag</span>
-                        <span ng-if="booking.status === 'rejected'">Afgewezen</span>
-                        <span ng-if="['cancelled', 'owner_cancelled'].indexOf(booking.status) >= 0">Geannuleerd</span>
+                        <div>
+                          <strong>{{ (booking.beginBooking | amDateFormat:'DD-MM-YYYY') || (booking.beginRequested | amDateFormat:'DD-MM-YYYY') }}</strong>
+                          {{ (booking.beginBooking | amDateFormat:'HH:mm') || (booking.beginRequested | amDateFormat:'HH:mm') }}
+                          <br/>
+                          <strong>{{ (booking.endBooking | amDateFormat:'DD-MM-YYYY') || (booking.endRequested | amDateFormat:'DD-MM-YYYY') }}</strong>
+                          {{ (booking.endBooking | amDateFormat:'HH:mm') || (booking.endRequested | amDateFormat:'HH:mm') }}
+                        </div>
+                        
+                        <div>
+                          <span ng-if="booking.status === 'accepted'">Geaccepteerd</span>
+                          <span ng-if="booking.status === 'requested'">In aanvraag</span>
+                          <span ng-if="booking.status === 'rejected'">Afgewezen</span>
+                          <span ng-if="['cancelled', 'owner_cancelled'].indexOf(booking.status) >= 0">Geannuleerd</span>
+                        </div>
                       </td>
                     </tr>
                     <tr>
@@ -197,7 +212,10 @@
                         <span ng-if="booking.status === 'accepted' && booking.approved === 'BUY_VOUCHER'" class="text-danger">
                           <md-button class="md-raised md-primary red">Betaal rit</md-button>
                         </span>
-                        <span ng-if="booking.status === 'accepted' && now > booking.beginBooking && !booking.resource.boardcomputer && (booking.approved === 'OK' || !booking.approved) && !booking.trip.odoBegin && !booking.trip.finalized">
+                        <!-- De conditie (booking.person.id === me.id) checkt of je de daadwerkelijke huurder bent,
+                              of dat de verhuring door een contractant is gedaan. -->
+                        <span ng-if="booking.person.id === me.id &&
+                          booking.status === 'accepted' && now > booking.beginBooking && !booking.resource.boardcomputer && (booking.approved === 'OK' || !booking.approved) && !booking.trip.odoBegin && !booking.trip.finalized">
                           <md-button class="md-raised md-primary">Rit administreren</md-button>
                         </span>
                       </td>
