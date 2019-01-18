@@ -183,6 +183,7 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
             longitude: map.getCenter().lng()
           });
 
+          //$state.go($state.$current, resourceQueryService.createStateParams());
           $location.search(resourceQueryService.createStateParams());
 
           var params = [];

@@ -1,5 +1,10 @@
 <div class="container" ng-class="{ 'container-transitional': features.filtersSidebar }">
 
+    <!--
+    <div>Instance: {{ instance }}</div>
+    <div>{{ searching ? 'Laden...' : 'KLAAR' }}</div>
+    -->
+    
     <div ng-if="place">
         <div class="col-xs-12 place-padding">
             <div class="card">
@@ -77,10 +82,10 @@
             <div class="card">
                 <div class="card-heading text-center">
                     <button type="button" class="btn btn-link" ng-click="toggleMap()" ng-if="!($state.includes('owm.resource.search.map') || $state.includes('owm.resource.place.map'))">
-                        <i class="fa fa-map-marker"></i> {{ 'SHOW_ON_MAP' | translate }}
+                        <ng-md-icon icon="map"></ng-md-icon> {{ 'SHOW_ON_MAP' | translate }}
                     </button>
                     <button type="button" class="btn btn-link" ng-click="toggleMap()" ng-if="$state.includes('owm.resource.search.map') || $state.includes('owm.resource.place.map')">
-                        <i class="fa fa-th-list"></i> {{ 'SHOW_AS_LIST' | translate }}
+                        <ng-md-icon icon="view_list"></ng-md-icon> {{ 'SHOW_AS_LIST' | translate }}
                     </button>
                 </div>
             </div>
@@ -101,18 +106,15 @@
                 <i class="fa fa-clock-o"></i> Beschikbare auto's voor <span class="text-success">{{ booking.beginRequested | amCalendar }}</span> tot <span class="text-success">{{ booking.endRequested  | amCalendar }}</span>
             </uib-alert>
 
-
             <div class="card" ng-if="!searching && !(resources.length >= 1)">
                 <div class="card-body">
                     Er zijn geen beschikbare auto's gevonden
                 </div>
             </div>
 
+            <ui-view />
+
             <div ng-if="resources.length >= 1">
-               <div style="position: relative">
-                 <div ng-show="searching" style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: rgba(255, 255, 255, .5); z-index: 400"></div>
-                 <ui-view />
-               </div>
 
                 <div ng-if="page === last_page && page !== 1" class="card">
                   <p style="padding: .7em; text-align: center; color: #727377;">
