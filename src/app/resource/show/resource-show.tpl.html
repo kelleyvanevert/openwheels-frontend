@@ -20,7 +20,7 @@
     <div class="return-toolbar-container container container-transitional hidden-xs">
         <div class="return-toolbar">
             <button type="button"
-                    ui-sref="owm.resource.search.list"
+                    ui-sref="{{ prevState.name }}({{ prevState.params }})"
                     class="btn btn-link return">
                 <ng-md-icon size="32" icon="arrow_back"></ng-md-icon>
                 <md-tooltip md-direction="top">{{ 'RESOURCE_BACK_TO_LIST' | translate }}</md-tooltip>
@@ -252,7 +252,7 @@
                 <mw-resource-location-map map="map"></mw-resource-location-map>
 
                 <div class="card-body" ng-show="resource.city">
-                    {{ 'RESOURCE_MORE_IN_CITY' | translate }} <a ui-sref="owm.resource.place.list({ city: (resource.city | replaceSpaceToDash | lowercase) })">{{ resource.city }}</a>
+                    {{ 'RESOURCE_MORE_IN_CITY' | translate }} <a ui-sref="owm.resource.place({ city: (resource.city | replaceSpaceToDash | lowercase) })">{{ resource.city }}</a>
                 </div>
             </div>
 

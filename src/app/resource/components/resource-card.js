@@ -6,6 +6,7 @@ angular.module('owm.resource')
   return {
     restrict: 'E',
     scope: {
+      lightweight: '=',
       resource: '=',
       onSelect: '&'
     },

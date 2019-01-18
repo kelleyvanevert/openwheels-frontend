@@ -1,0 +1,68 @@
+<div id="place-page" class="home landing" style="background: none;">
+
+  <div class="hero thinner inverted text-center"
+      ng-style="{ 'background-image': 'url(' + place.picture + ')' }">
+    <div class="hero-overlay"></div>
+    <div class="landing-title">
+      <h1><span class="highlight">{{ metaInfo.title }}</span></h1>
+      <p class="sub" ng-if="place.lead"><span class="highlight">{{ place.lead }}</span></p>
+    </div>
+  </div>
+
+  <div id="place-page-container" class="container container-transitional">
+    <div class="row">
+      <div class="rpad col-md-offset-2 col-md-8 col-xs-12">
+        <div class="card mw">
+          <div class="card-body">
+            <div ng-bind-html="place.body"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row resources-for-category"
+        ng-repeat="box in searchBoxes.show">
+      <div class="rpad col-xs-12">
+        <h2 class="without-card">{{ box.title }}</h2>
+        <p class="sub" ng-if="box.description">{{ box.description }}</p>
+      </div>
+      <div class="rpad col-xs-12 col-sm-4 col-md-3" ng-repeat="resource in box.data.results">
+        <ow-resource-card
+          class="vertical"
+          lightweight="true"
+          resource="resource"
+          on-select="selectResource(resource)">
+        </ow-resource-card>
+      </div>
+    </div>
+  </div>
+
+  <div class="full-gmaps">
+    <ui-gmap-google-map class="google-map"
+                        center="map.center"
+                        zoom="map.zoom"
+                        draggable="map.draggable"
+                        dragging="map.dragging"
+                        bounds="map.bounds"
+                        events="map.events"
+                        options="map.options"
+                        control="map.control">
+
+        <ui-gmap-markers
+                models="map.markers"
+                idKey="'id'"
+                icon="'icon'"
+                coords="'coords'"
+                click="'onClick'"
+                >
+        </ui-gmap-markers>
+
+        <!--
+        <ui-gmap-window coords="selectedMarker.coords" show="selectedMarker.showWindow" closeClick="closeWindow()" templateUrl="'resource/search/map/resource-marker-window.tpl.html'" templateParameter="selectedMarker">
+        </ui-gmap-window>
+        -->
+
+    </ui-gmap-google-map>
+  </div>
+
+</div>

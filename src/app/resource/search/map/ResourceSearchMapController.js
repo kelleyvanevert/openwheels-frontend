@@ -3,6 +3,7 @@
 angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
 
   .controller('ResourceSearchMapController', function ($scope, uiGmapGoogleMapApi, uiGmapIsReady, $stateParams, appConfig,
+    $log,
     metaInfoService, resourceService, resourceQueryService, $state, $location, $rootScope, $timeout, $filter) {
 
     metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/kaart'});
@@ -178,6 +179,8 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
 
         //update resources
         $scope.updateResources = function() {
+
+          $log.debug(map.getCenter().lat(), map.getCenter().lng());
           resourceQueryService.setLocation({
             latitude: map.getCenter().lat(),
             longitude: map.getCenter().lng()

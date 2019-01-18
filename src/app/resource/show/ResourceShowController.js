@@ -5,6 +5,7 @@ angular.module('owm.resource.show', [])
 .controller('ResourceShowController', function ($window, $log, $q, $timeout, $location, $mdDialog, $mdMedia, $scope,
   $state, $filter, authService, resourceService, bookingService, invoice2Service, alertService,
   chatPopupService, ratingService, API_DATE_FORMAT, resource, me, resourceQueryService, featuresService, $stateParams,
+  prevState,
   linksService, Analytics, metaInfoService, $localStorage, $translate, appConfig, $anchorScroll) {
   Analytics.trackEvent('discovery', 'show_car', resource.id, undefined, true);
 
@@ -15,6 +16,7 @@ angular.module('owm.resource.show', [])
   if(resource.removed === undefined) {
     resource.removed = false;
   }
+  
 
   // The car is not visible to the world,
   //  either because it is removed by owner (removed),
@@ -29,6 +31,10 @@ angular.module('owm.resource.show', [])
     resourceQueryService.setText(resource.location);
     resourceQueryService.setLocation({latitude: resource.latitude, longitude: resource.longitude});
   }
+
+
+  $scope.prevState = prevState;
+  
 
   /**
    * Warning: 'me' will be null for anonymous users
