@@ -155,7 +155,7 @@ angular.module('owm.resource.place', [])
         data.results = data.results.slice(0, 4);
 
         // TODO remove true
-        if (true || data.results.length >= 4) {
+        if (data.results.length >= 4) {
           box.data = data;
           $scope.searchBoxes.show = $scope.searchBoxes
             .filter(function (box) {
