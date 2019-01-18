@@ -17,6 +17,10 @@ angular.module('owm.resource.search', [
       metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren'});
     }
 
+
+    $scope.instance = Math.random();
+
+
     $scope.me = me;
 
     var DEFAULT_LOCATION = {
