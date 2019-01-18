@@ -6,6 +6,9 @@ angular.module('owm.resource.place', [])
   // angular
   $scope, $state, $stateParams, $log,
 
+  // lib
+  uiGmapGoogleMapApi,
+
   // mywheels
   appConfig,
   resourceQueryService,
@@ -44,6 +47,8 @@ angular.module('owm.resource.place', [])
   };
 
 
+  $scope.markers = [];
+
   angular.extend($scope, {
     map: {
       center: {
@@ -51,7 +56,7 @@ angular.module('owm.resource.place', [])
         longitude: $scope.place.longitude
       },
       draggable: true,
-      markers: [], // an array of markers,
+      markers: $scope.markers,
       zoom: 14,
       options: {
         scrollwheel: false,
@@ -163,6 +168,55 @@ angular.module('owm.resource.place', [])
         }
       });
   });
+
+  uiGmapGoogleMapApi.then(function(maps) {
+    $scope.closeWindow = function () {
+      $scope.$apply(function(){
+        $scope.selectedMarker.showWindow = false;
+        $scope.selectedMarker = null;
+      });
+    };
+    
+    resourceService
+      .searchV3(makeParams())
+      .then(function (data) {
+        data.results.forEach(function (resource) {
+          var coords = {
+            latitude: resource.latitude,
+            longitude: resource.longitude
+          };
+
+          var marker = {
+            id: resource.id,
+            coords: coords,
+            title: resource.alias,
+            animation: maps.Animation.DROP,
+            resource: resource,
+            icon: (resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0) ? 'assets/img/mywheels-open-marker-v2-40.png' : 'assets/img/mywheels-key-marker-v2-40.png',
+            showWindow: false,
+          };
+
+          marker.onClick = function(){
+            $scope.$apply(function(){
+              $scope.selectedMarker = null;
+            });
+            $scope.$apply(function(){
+              $scope.selectedMarker = marker;
+              $scope.selectedMarker.imgUrl = resource.pictures && resource.pictures.length > 0 ? (resource.pictures[0].large || resource.pictures[0].normal || resource.pictures[0].small) : 'assets/img/resource-avatar-large.jpg';
+              if ($scope.selectedMarker.imgUrl && !$scope.selectedMarker.imgUrl.match(/^http/)) {
+                $scope.selectedMarker.imgUrl = appConfig.serverUrl + '/' + $scope.selectedMarker.imgUrl;
+              }
+              $scope.selectedMarker.showWindow = true;
+            });
+          };
+
+          $scope.markers.push(new google.maps.Marker(marker));
+        });
+      });
+
+  });
+
+  // TODO map move refresh
 
 });
 
