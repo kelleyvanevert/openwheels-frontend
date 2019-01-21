@@ -302,6 +302,11 @@ angular.module('rpcServices', [])
   this.clearDrivers = m('clearDrivers');
   this.acceptRequest = m('acceptRequest');
   this.declineRequest = m('declineRequest');
+  this.getRequestsForPerson = m('getRequestsForPerson');
+  this.acceptContractRequest = m('acceptContractRequest');
+  this.declineContractRequest = m('declineContractRequest');
+  this.revokeContractRequest = m('revokeContractRequest');
+  this.revokeBookingRequest = m('revokeBookingRequest');
 })
 
 .service('kmPointService', function (api) {
