@@ -8,6 +8,7 @@ angular.module('owm.person', [
   'owm.person.details',
   'owm.person.aboutme',
   'owm.person.action.payinvoicegroup',
+  'owm.person.inviterequest',
   'owm.person.license',
   'owm.person.anwbId',
   'owm.person.account',
@@ -278,6 +279,26 @@ angular.module('owm.person', [
       }]
     }
 
+  });
+
+  /**
+   * dashboard/requests
+   */
+  $stateProvider.state('owm.person.inviterequest', {
+    url: '/extra-driver-request/:bookingRequestId',
+    views: {
+      'main@shell': {
+        templateUrl: 'person/action/request/person-action-booking-request.tpl.html',
+        controller: 'PersonActionBookingRequestController'
+      }
+    },
+    resolve: {
+      request: ['$stateParams', 'authService', 'extraDriverService', function ($stateParams, authService, extraDriverService) {
+        return extraDriverService.getRequest({
+          id: $stateParams.bookingRequestId
+        });
+      }]
+    }
   });
 
   /**

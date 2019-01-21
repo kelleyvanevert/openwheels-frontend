@@ -1,0 +1,29 @@
+<div class="card">
+    <div class="card-heading">
+        <h2 class="card-title" translate="BOOKING.INVITE_EXTRA_DRIVER" translate-values="{sender: sender, resource: resource}"></h2>
+    </div>
+
+    <div class="card-body">
+        <p translate="BOOKING.INVITE_EXTRA_DRIVER_INFO" translate-values="{sender: sender, resource: resource}"></p>
+
+        <form name="form" ng-show="showForm && request.status === 'invited'">
+            <button type="button" class="btn btn-success" ng-disabled="!form.$valid || isBusy" ng-click="acceptRequest()" ng-bind="'BOOKING.INVITE_EXTRA_STATUS_ACCEPT' | translate"></button>
+            <button type="button" class="btn btn-danger" ng-disabled="!form.$valid || isBusy" ng-click="declineRequest()" ng-bind="'BOOKING.INVITE_EXTRA_STATUS_DECLINED' | translate"></button>
+
+        </form>
+
+        <div ng-if="!showForm || request.status !== 'invited'">
+
+            <div class="alert alert-success" ng-show="isSaved || request.status === 'accepted'">
+                <i class="fa fa-info-circle"></i>&nbsp;Je hebt het verzoek geaccepteerd.
+            </div>
+
+            <div class="alert alert-danger" ng-show="isDeclined || request.status === 'declined'">
+                <i class="fa fa-info-circle"></i>&nbsp;Je hebt het verzoek geweigerd.
+            </div>
+
+            <a class="btn btn-primary" ui-sref="owm.person.dashboard">Terug naar dashboard</a>
+        </div>
+
+    </div>
+</div>
