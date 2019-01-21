@@ -9,9 +9,14 @@ angular.module('owm.finance.index', [])
   $scope.me = me;
   $scope.requiredCredit = requiredCredit;
   $scope.kmPoints = kmPoints;
-  $scope.kmPoints.total = $scope.kmPoints
-    .map(function (o) { return +(o.amount); })
-    .reduce(function (a,b) { return a+b; });
+
+  if ($scope.kmPoints.length > 0) {
+    $scope.kmPoints.total = $scope.kmPoints
+      .map(function (o) { return +(o.amount); })
+      .reduce(function (a,b) { return a+b; });
+  } else {
+    $scope.kmPoints.total = 0;
+  }
 
   $scope.payoutDialog = function($event) {
     $event.stopPropagation();
