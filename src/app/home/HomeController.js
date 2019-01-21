@@ -5,10 +5,13 @@ angular.module('owm.home', ['owm.resource', 'slick'])
 //Module in app/pages/pagesModule.js
 .controller('HomeController', function ($scope, $translate, $location, resourceQueryService,
   $window, $timeout, $state, resourceService, $localStorage, $http, metaInfoService, appConfig,
+  makeHomeAddressPrefill,
   authService, tokenSilentRefreshService) {
 
   metaInfoService.set({url: appConfig.serverUrl});
   metaInfoService.set({canonical: 'https://mywheels.nl'});
+
+  $scope.homeAddressPrefill = '';
 
   $scope.$watch(function () {
     return $translate.use();
@@ -90,6 +93,8 @@ angular.module('owm.home', ['owm.resource', 'slick'])
       //  the root scope's user variable is changed,
       //  triggering a re-render of the toolbar and menu)
       authService.notifyFreshToken(token, true);
+
+      $scope.homeAddressPrefill = makeHomeAddressPrefill(authService.user.identity);
     });
   }
 

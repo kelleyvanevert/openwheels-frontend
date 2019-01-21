@@ -408,3 +408,44 @@ label[for=mywheelsOpen] {
         }
     }
 }
+
+
+.s-resource-list {
+    .s-resource-card {
+        margin-bottom: 1.5rem;
+        height: 200px;
+        
+        background: #ddd;
+        
+        background: linear-gradient(to right, #ddd 40%, #fff, #ddd 55%);
+        background-position: 150% 0%;
+        background-size: 200% 100%;
+
+	    -webkit-animation: shine 2s infinite;
+	    animation: shine 2s infinite;
+    }
+}
+
+@-o-keyframes shine {
+    to {
+        background-position: -50% 0%;
+    }
+}
+
+@-webkit-keyframes shine {
+    to {
+        background-position: -50% 0%;
+    }
+}
+
+@-moz-keyframes shine {
+    to {
+        background-position: -50% 0%;
+    }
+}
+
+@keyframes shine {
+    to {
+        background-position: -50% 0%;
+    }
+}

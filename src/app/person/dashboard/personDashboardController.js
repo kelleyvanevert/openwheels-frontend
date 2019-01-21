@@ -31,10 +31,10 @@ angular.module('owm.person.dashboard', [])
       .then(redirect);
     }
   } else {
-    if(me.status === 'new' && !me.preference) {
+    if(me.status === 'new' && !me.preference && !me.extraDriver) {
       showModal()
       .then(redirect);
-    } else if(me.status === 'new' && me.preference !== 'owner') {
+    } else if(me.status === 'new' && me.preference !== 'owner' && !me.extraDriver) {
       $state.go('owm.person.intro');
     }
   }

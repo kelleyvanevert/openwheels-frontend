@@ -1,43 +1,45 @@
+
+<div class="card mw" ng-if="busy">
+    <div class="card-body">
+        <div style="text-align: center; font-size: 2.4rem; color: #444; margin: 1rem 0;">
+            <i class="fa fa-spinner fa-spin fa-fw"></i>
+        </div>
+    </div>
+</div>
+
 <div class="card" ng-if="!busy && !requiredValue">
     <div class="card-heading">
         <h2 class="card-title">
-      <p>
-        <i class="fa fa-fw fa-frown-o"></i>
-      </p>
-    </h2> We kunnen op dit moment helaas niet zien of je voldoende rijtegoed hebt voor jouw reserveringen. Probeer het later nog eens, of neem contact met ons op.
+            <p>
+                <i class="fa fa-fw fa-frown-o"></i>
+            </p>
+        </h2>
+        We kunnen op dit moment helaas niet zien of je voldoende rijtegoed hebt voor jouw reserveringen. Probeer het later nog eens, of neem contact met ons op.
     </div>
 </div>
 
-
-<div class="card" ng-if="!busy && requiredValue && requiredValue.voucher && (!accountDisapproved || accountApproved)">
+<div class="card" ng-if="!busy && requiredValue && (!accountDisapproved || accountApproved)" ng-repeat="booking in requiredValue.bookings" ng-init="booking.isOpen = $index <= 1">
     <div class="card-heading">
-        <h2 class="card-title">
-      Bijna klaar! Alleen nog rijtegoed kopen
-    </h2>
-    </div>
-</div>
-<div class="card" ng-if="!busy && requiredValue && (!accountDisapproved || accountApproved)" ng-repeat="booking in requiredValue.bookings" ng-init="isOpen['_' + $index] = $index <= 1">
-    <div class="card-heading">
-      <span class="pull-right" ng-if="booking.isOpen">
+    <span class="pull-right" ng-if="booking.isOpen">
         <small hide-xs style="padding-left: 1em" ng-if="booking.cancelAfter && booking.approved !== 'OK'">Betaal voor {{booking.cancelAfter|amDateFormat:'D MMMM YYYY HH:mm'}} om annulering te voorkomen</small>
         <ng-md-icon icon="check" ng-show="booking.statusValue" ng-class="{'text-success': booking.statusValue}"></ng-md-icon>
         <b ng-class="{'text-success': booking.statusValue}" ng-if="booking.details.discount">{{ booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount | currency }}</b>
         <b ng-class="{'text-success': booking.statusValue}" ng-if="!booking.details.discount">{{ booking.details.booking_price.total + booking.details.km_price - booking.details.friend_invite_discount | currency }}</b>
-      </span>
-      <h3 class="card-title">
+    </span>
+    <h3 class="card-title">
         <a ng-click="toggleBookingCards($index)" ng-if="booking.person.id === me.id">
-          <i class="fa fa-fw" ng-class="{ 'fa-chevron-right': !isOpen['_' + $index], 'fa-chevron-down': isOpen['_' + $index] }"></i>
-          Rit op {{ booking.beginBooking | amDateFormat:'DD-MM-YYYY' }} 
+        <i class="fa fa-fw" ng-class="{ 'fa-chevron-right': !booking.isOpen, 'fa-chevron-down': booking.isOpen }"></i>
+        Rit op {{ booking.beginBooking | amDateFormat:'DD-MM-YYYY' }} 
         </a>
         <a ng-click="toggleBookingCards($index)" ng-if="booking.person.id !== me.id">
-          <i class="fa fa-fw" ng-class="{ 'fa-chevron-right': !isOpen['_' + $index], 'fa-chevron-down': isOpen['_' + $index] }"></i>
-          Rit van {{ booking.person.firstName | toTitleCase }} op {{ booking.beginBooking | amDateFormat:'DD-MM-YYYY' }} 
+        <i class="fa fa-fw" ng-class="{ 'fa-chevron-right': !booking.isOpen, 'fa-chevron-down': booking.isOpen }"></i>
+        Rit van {{ booking.person.firstName | toTitleCase }} op {{ booking.beginBooking | amDateFormat:'DD-MM-YYYY' }} 
         </a>
         <small hide-gt-xs style="padding-top: 1em;" ng-if="booking.isOpen && booking.cancelAfter && booking.approved != 'OK'"><br>Betaal voor {{booking.cancelAfter|amDateFormat:'D MMMM YYYY HH:mm '}} om annulering te voorkomen</small>
-      </h3>
+    </h3>
     </div>
 
-    <div uib-collapse="booking.isOpen">
+    <div uib-collapse="!booking.isOpen">
         <div class="card-body">
             <div class="media media--small" style="margin-bottom: 15px">
                 <a class="media-object pull-left" ui-sref="owm.booking.show({ bookingId: booking.id })">
@@ -141,9 +143,9 @@
                 <a href="" ng-click="toggleVoucherOptions(false)">Annuleren</a>
             </div>
             <div ng-if="!accountApproved">
-              <p class="mywheels-btn-margin-top">
+            <p class="mywheels-btn-margin-top">
                 <b>Let op:</b> om de betaling te kunnen verwerken, moet de tenaamstelling van de rekening overeenkomen met je accountnaam.
-              </p>
+            </p>
             </div>
         </div>
     </div>
@@ -154,7 +156,7 @@
         <h2 class="card-title">
         <ng-md-icon icon="error" class="text-danger"></ng-md-icon>
         {{ 'PAYMENT_NOT_APROVED_TITLE' | translate }}
-      </h2>
+    </h2>
         <p translate="PAYMENT_NOT_APROVED_BODY" translate-values="{name: name, surname: person.surname}"></p>
 
         <button ng-if="!afterPayment" type="button" class="mywheels-btn mywheels-btn-default" ng-click="buyVoucher('0.01')" md-ink-ripple="#3a6d81">
@@ -170,27 +172,47 @@
         <h2 class="card-title">
         <ng-md-icon icon="error" class="text-danger"></ng-md-icon>
         {{ 'PAYMENT_NOT_APROVED_TITLE' | translate }}
-      </h2>
+    </h2>
         <p translate="PAYMENT_NOT_APROVED_SECOND_BODY" translate-values="{name: name, surname: person.surname}"></p>
 
         <button ui-sref="owm.person.dashboard" class="btn btn-primary">{{ 'MY_DASHBOARD' | translate }}</button>
     </div>
 </div>
 
-<div class="card" ng-if="!busy && me.provider.id === 1">
-    <div class="card-heading">
-        <h3 class="card-title">
-      <a ui-sref="invite">{{ 'INVITE_EXTRA_VOUCHERS' | translate }}</a>
-      </h3>
-    </div>
-</div>
-
-<div class="card" ng-if="!busy && requiredValue && me.numberOfBookings > 3">
-    <div class="card-heading">
-        <h3 class="card-title">
-      <a ui-sref="contractchoice">{{ 'PERSON.CONTRACT.CHANGE_CONTRACT' | translate }}</a>
-      </h3>
-    </div>
-</div>
 <!-- </div> -->
 <!-- /card -->
+
+
+<div class="card" ng-if="!busy && me.provider.id !== 5">
+  <div class="card-heading">
+    <h3 class="card-title">
+      <a href="" ng-click="isCollapsed = !isCollapsed" ng-init="isCollapsed = false;">
+        <i class="fa fa-fw" ng-class="{ 'fa-chevron-right': !isCollapsed, 'fa-chevron-down': isCollapsed }"></i>
+        Rijtegoed aankoopgeschiedenis
+      </a>
+    </h3>
+  </div>
+  <div class="card-body" uib-collapse="!isCollapsed">
+    <table class="table table-condensed" ng-show="vouchers && vouchers.length > 0">
+      <tbody>
+        <tr ng-class="{'text-muted': voucher.value < 0.001}" ng-repeat="voucher in vouchers | limitTo:vouchersPerPage:vouchersPerPage*(currentVoucherPage-1)">
+          <td style="width: 20%"><strong>{{voucher.initialValue | currency}}</strong></td>
+          <td>waarvan {{voucher.value | currency}} resterend</td>
+          <td ng-if="voucher.payoutRequest && voucher.payoutRequest.paid === null" style="width: 40%">uitbetaling aangevraagd op  {{voucher.payoutRequest.created | amDateFormat:'DD-MM-YYYY'}}</td>
+          <td ng-if="voucher.payoutRequest && voucher.payoutRequest.paid !== null" style="width: 40%">uitbetaald op  {{voucher.payoutRequest.paid | amDateFormat:'DD-MM-YYYY'}}</td>
+          <td ng-if="!voucher.payoutRequest" style="width: 40%">gekocht op {{voucher.paid | amDateFormat:'DD-MM-YYYY'}}</td>
+        </tr>
+      </tbody>
+      <tbody ng-hide="vouchers.length <= vouchersPerPage" style="border-top-width: 1px">
+        <tr>
+          <td colspan="3">
+            <ul uib-pagination items-per-page="vouchersPerPage" ng-init="currentVoucherPage=1" direction-links="0" total-items="vouchers.length" ng-model="currentVoucherPage"></ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p ng-if="!vouchers || vouchers.length === 0">
+      Je hebt nog geen rijtegoed aangeschaft.
+    </p>
+  </div>
+</div>
