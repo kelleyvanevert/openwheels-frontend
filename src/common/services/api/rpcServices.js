@@ -307,6 +307,9 @@ angular.module('rpcServices', [])
   this.declineContractRequest = m('declineContractRequest');
   this.revokeContractRequest = m('revokeContractRequest');
   this.revokeBookingRequest = m('revokeBookingRequest');
+  this.getRequestsForContract = m('getRequestsForContract');
+  this.invitePersonForContract = m('invitePersonForContract');
+  this.removePersonFromContract = m('removePersonFromContract');
 })
 
 .service('kmPointService', function (api) {

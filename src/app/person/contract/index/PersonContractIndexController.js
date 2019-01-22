@@ -2,7 +2,7 @@
 angular.module('owm.person')
 
 .controller('PersonContractIndexController', function ($q, $filter, $uibModal, $translate, $scope,
-  authService, dialogService, alertService, personService, contractService, me, Analytics, metaInfoService, appConfig) {
+  authService, dialogService, alertService, personService, contractService, me, Analytics, metaInfoService, appConfig, extraDriverService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard/contracts'});
   metaInfoService.set({canonical: 'https://mywheels.nl/dashboard/contracts'});
@@ -12,6 +12,7 @@ angular.module('owm.person')
   $scope.ownContracts = [];
   $scope.ownContractsCopy = [];
   $scope.otherContracts = [];
+  $scope.personsOnContracts = [];
 
   $scope.age = -1;
   if(authService.user.isAuthenticated && authService.user.identity.dateOfBirth) {
@@ -45,6 +46,27 @@ angular.module('owm.person')
   $scope.getContractPersons = function (contract) {
     return $filter('filter')(contract.persons, function (person) {
       return person.id !== me.id;
+    });
+  };
+
+  $scope.getExtraDriverRequestsForContract = function(contract) {
+    extraDriverService.getRequestsForContract({
+      contract : contract.id,
+      limit: 10,
+      offset: 0
+    })
+    .then(function (data) {
+
+      angular.forEach(data.result, function(val, key) {
+        $scope.personsOnContracts.push(val);
+      });
+
+      return $scope.personsOnContracts;
+    })
+    .catch(function (err) {
+      return $scope.personsOnContracts;
+    })
+    .finally(function () {
     });
   };
 
@@ -134,13 +156,17 @@ angular.module('owm.person')
     var email = contract.emailToAdd;
 
     alertService.load();
-    findSinglePerson(email).then(function (person) {
-      contractService.addPerson({
-        id: contract.id,
-        person: person.id
-      })
-      .then(function () {
-        contract.persons.push(person);
+    extraDriverService.invitePersonForContract({
+      contract: contract.id,
+      email: email
+    })
+      .then(function (person) {
+
+        $scope.personsOnContracts.push({
+          'status' : 'invited',
+          'recipient' : person
+        });
+
         contract.emailToAdd = null;
       })
       .catch(function (err) {
@@ -149,12 +175,6 @@ angular.module('owm.person')
       .finally(function () {
         alertService.loaded();
       });
-    })
-    .catch(function () {
-      alertService.loaded();
-      invite(contract, email);
-    })
-    ;
   };
 
   $scope.removePerson = function (contract, person) {
@@ -168,15 +188,15 @@ angular.module('owm.person')
       bodyText: 'Weet je zeker dat je deze persoon van je contract wilt verwijderen?'
     }).then(function (result) {
       alertService.load();
-      contractService.removePerson({
-        id    : contractId,
+      extraDriverService.removePersonFromContract({
+        contract: contractId,
         person: personId
       })
       .then(function () {
         // on success, remove from list
-        angular.forEach(contract.persons, function (person, index) {
-          if (person.id === personId) {
-            contract.persons.splice(index, 1);
+        angular.forEach($scope.personsOnContracts, function (request, index) {
+          if (request.recipient.id === personId) {
+            $scope.personsOnContracts.splice(index, 1);
           }
         });
       })
@@ -185,22 +205,5 @@ angular.module('owm.person')
       });
     });
   };
-
-  function invite (contract, email) {
-    alertService.load();
-    contractService.invitePerson({
-      contract: contract.id,
-      email   : email
-    })
-    .then(function () {
-      alertService.loaded();
-      loadContracts();
-      alertService.add('success', 'Er is een uitnodiging verstuurd aan ' + email, 5000);
-    })
-    .catch(function (err) {
-      alertService.loaded();
-      alertService.addError(err);
-    });
-  }
-
+  
 });
