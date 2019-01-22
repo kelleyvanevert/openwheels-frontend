@@ -13,6 +13,9 @@ angular.module('owm.person')
   $scope.ownContractsCopy = [];
   $scope.otherContracts = [];
   $scope.personsOnContracts = [];
+  $scope.hasMoreToLoad = false;
+  $scope.isLoadingMore = false;
+  $scope.showLoaderSpinner = false;
 
   $scope.age = -1;
   if(authService.user.isAuthenticated && authService.user.identity.dateOfBirth) {
@@ -49,17 +52,31 @@ angular.module('owm.person')
     });
   };
 
+  var limit = 25;
+  var offset = 0;
+
+  $scope.loadMoreExtraDriverRequestsForContract = function(contract) {
+
+    $scope.showLoaderSpinner = true;
+    offset += limit;
+    $scope.getExtraDriverRequestsForContract(contract);
+
+  };
+
   $scope.getExtraDriverRequestsForContract = function(contract) {
     extraDriverService.getRequestsForContract({
       contract : contract.id,
-      limit: 10,
-      offset: 0
+      limit: limit,
+      offset: offset
     })
     .then(function (data) {
 
       angular.forEach(data.result, function(val, key) {
         $scope.personsOnContracts.push(val);
       });
+
+      $scope.hasMoreToLoad = (data.result.length >= limit);
+      $scope.showLoaderSpinner = false;
 
       return $scope.personsOnContracts;
     })
@@ -205,5 +222,5 @@ angular.module('owm.person')
       });
     });
   };
-  
+
 });
