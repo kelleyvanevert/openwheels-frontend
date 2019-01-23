@@ -58,7 +58,7 @@
     </div>
   </div>
 
-  <div class="full-gmaps">
+  <div class="full-gmaps" ng-if="map">
     <ui-gmap-google-map class="google-map"
                         center="map.center"
                         zoom="map.zoom"
@@ -81,7 +81,13 @@
                 click="'onClick'">
         </ui-gmap-markers>
 
-        <ui-gmap-window coords="selectedMarker.coords" show="selectedMarker.showWindow" closeClick="closeWindow()" templateUrl="'resource/search/map/resource-marker-window.tpl.html'" templateParameter="selectedMarker">
+        <ui-gmap-window
+          coords="selectedMarker.coords"
+          show="selectedMarker.showWindow"
+          closeClick="closeWindow()"
+          templateUrl="'resource/search/map/resource-marker-window.tpl.html'"
+          templateParameter="selectedMarker"
+          options="map.windowOptions">
         </ui-gmap-window>
 
     </ui-gmap-google-map>

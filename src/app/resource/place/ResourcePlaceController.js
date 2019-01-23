@@ -237,82 +237,102 @@ angular.module('owm.resource.place', [])
 
   $scope.markers = [];
 
-  angular.extend($scope, {
-    map: {
-      center: {
-        latitude: $scope.place.latitude,
-        longitude: $scope.place.longitude
-      },
-      draggable: true,
-      markers: $scope.markers,
-      zoom: 14,
-      gestureHandling: 'cooperative',
-      clickableIcons: false,
-      options: {
-        scrollwheel: false,
-        fullscreenControl: false,
-        mapTypeControl: false,
-        streetViewControl: false,
-        styles: [/*
-          {
-            featureType: 'transit',
-            elementType: 'labels',
-            stylers: [
-              {
-                visibility: 'off',
-              },
-            ],
-          },*/
-          {
-            featureType: 'poi',
-            elementType: 'labels',
-            stylers: [
-              {
-                visibility: 'off',
-              },
-            ],
-          },
-          {
-            featureType: 'landscape',
-            elementType: 'labels',
-            stylers: [
-              {
-                visibility: 'off',
-              },
-            ],
-          },
-        ],
-      },
-      clusterOptions: {
-        imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-      },
-      events: {
-        // This event is also triggered when the map is
-        //  rendered for the first time
-        bounds_changed: function (map) {
-          var mapbounds = map.getBounds();
-          // latitude = "y coordinate" (52-ish)
-          // longitude = "x coordinate" (4-6)
 
-          reloadMapResources({
-            latitude_min: mapbounds.getSouthWest().lat(),
-            longitude_min: mapbounds.getSouthWest().lng(),
-
-            latitude_max: mapbounds.getNorthEast().lat(),
-            longitude_max: mapbounds.getNorthEast().lng(),
-          }, map);
-        },
-      },
-    }
-  });
-
-  uiGmapGoogleMapApi.then(function(maps) {
+  uiGmapGoogleMapApi.then(function (google_maps) {
     $scope.closeWindow = function () {
       $scope.$apply(function(){
         $scope.selectedMarker.showWindow = false;
         $scope.selectedMarker = null;
       });
     };
+
+    angular.extend($scope, {
+      map: {
+        center: {
+          latitude: $scope.place.latitude,
+          longitude: $scope.place.longitude
+        },
+        draggable: true,
+        markers: $scope.markers,
+        zoom: 14,
+        gestureHandling: 'cooperative',
+        clickableIcons: false,
+        options: {
+          scrollwheel: false,
+          fullscreenControl: false,
+          mapTypeControl: false,
+          streetViewControl: false,
+          styles: [/*
+            {
+              featureType: 'transit',
+              elementType: 'labels',
+              stylers: [
+                {
+                  visibility: 'off',
+                },
+              ],
+            },*/
+            {
+              featureType: 'poi',
+              elementType: 'labels',
+              stylers: [
+                {
+                  visibility: 'off',
+                },
+              ],
+            },
+            {
+              featureType: 'landscape',
+              elementType: 'labels',
+              stylers: [
+                {
+                  visibility: 'off',
+                },
+              ],
+            },
+          ],
+        },
+        clusterOptions: {
+          imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
+        },
+        windowOptions: {
+          boxClass: 'mw-gmap-window',
+          boxStyle: {
+            width: '280px',
+            padding: '0px',
+          },
+
+          disableAutoPan: false,
+          maxWidth: 0,
+          pixelOffset: new google_maps.Size(-140, 0),
+          zIndex: null,
+
+          // https://yoksel.github.io/url-encoder/
+          closeBoxURL: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath d="M0 0h24v24H0z" fill="white"/%3E%3Cpath d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="black"/%3E%3C/svg%3E',
+          infoBoxClearance: new google.maps.Size(1, 1),
+          isHidden: false,
+          pane: 'floatPane',
+          enableEventPropagation: false,
+        },
+        events: {
+          // This event is also triggered when the map is
+          //  rendered for the first time
+          bounds_changed: function (map) {
+            var mapbounds = map.getBounds();
+            // latitude = "y coordinate" (52-ish)
+            // longitude = "x coordinate" (4-6)
+
+            reloadMapResources({
+              latitude_min: mapbounds.getSouthWest().lat(),
+              longitude_min: mapbounds.getSouthWest().lng(),
+
+              latitude_max: mapbounds.getNorthEast().lat(),
+              longitude_max: mapbounds.getNorthEast().lng(),
+            }, map);
+          },
+        },
+      }
+    });
   });
 
 });
