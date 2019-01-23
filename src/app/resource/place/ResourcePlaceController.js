@@ -183,10 +183,10 @@ angular.module('owm.resource.place', [])
   // ID => new google.maps.Marker
   var mapResourceCache = {};
 
-  var mapInitialized = false;
+  $scope.mapLoading = false;
 
-  var reloadMapResources = _.debounce(function (bounds) {
-    $log.log('reloading resources on map for bounds:', bounds);
+  var reloadMapResourcesDebounced = _.debounce(function (bounds) {
+    //$log.log('reloading resources on map for bounds:', bounds);
     
     resourceService
       .searchMapV1({ locationPoint: bounds })
@@ -219,7 +219,7 @@ angular.module('owm.resource.place', [])
                 $scope.selectedMarker = marker;
                 $scope.selectedMarker.imgUrl = resourcePreview.pictures && resourcePreview.pictures.length > 0 ? (resourcePreview.pictures[0].large || resourcePreview.pictures[0].normal || resourcePreview.pictures[0].small) : 'assets/img/resource-avatar-large.jpg';
                 if ($scope.selectedMarker.imgUrl && !$scope.selectedMarker.imgUrl.match(/^http/)) {
-                  $scope.selectedMarker.imgUrl = appConfig.serverUrl + '/' + $scope.selectedMarker.imgUrl;
+                  $scope.selectedMarker.imgUrl = appConfig.appUrl + '/' + $scope.selectedMarker.imgUrl;
                 }
                 $scope.selectedMarker.showWindow = true;
               });
@@ -229,14 +229,14 @@ angular.module('owm.resource.place', [])
           }
         });
 
-//        if (!mapInitialized) {
-//          mapInitialized = true;
-//          var markerCluster = new MarkerClusterer(map, $scope.markers, {
-//            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-//          });
-//        }
+        $scope.mapLoading = false;
       });
   }, 500);
+
+  var reloadMapResources = function (bounds) {
+    $scope.mapLoading = true;
+    reloadMapResourcesDebounced(bounds);
+  };
 
   $scope.markers = [];
 

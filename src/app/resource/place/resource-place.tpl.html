@@ -59,6 +59,9 @@
   </div>
 
   <div class="full-gmaps" ng-if="map">
+    <div style="height: 5px;">
+      <md-progress-linear ng-show="mapLoading" md-mode="indeterminate"></md-progress-linear>
+    </div>
     <ui-gmap-google-map class="google-map"
                         center="map.center"
                         zoom="map.zoom"
