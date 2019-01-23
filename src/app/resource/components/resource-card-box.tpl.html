@@ -1,5 +1,4 @@
-<md-card class="ow-card"
-        ng-click="select()">
+<md-card class="ow-card resource-card-box">
     <div class="md-card-image" style="position: relative">
         <ow-resource-picture resource="resource" size="large"></ow-resource-picture>
         <div ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0" class="mywheelsOpenBar">
@@ -89,15 +88,6 @@
                     <div flex>
                         {{ resource.owner.firstName }}
                         <span rating-thumb="{ value : resource.rating.satisfaction, senders: resource.rating.senders }"></span>
-                    </div>
-                </md-list-item>
-                <md-list-item ng-if="!lightweight">
-                    <!-- number of bookings -->
-                    <ng-md-icon icon="check" alt="Icoon" aria-label="Icoon"></ng-md-icon>
-                    <div flex>
-                        <span>
-                    {{ resource.numberOfBookings | wasBookedTimes }}
-                </span>
                     </div>
                 </md-list-item>
             </md-list>

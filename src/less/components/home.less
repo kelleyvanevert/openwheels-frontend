@@ -108,6 +108,10 @@
     height: @hero-height;
     position: relative;
     z-index: 0;
+
+    &.thinner {
+        height: 25rem;
+    }
 }
 .hero-overlay {
     width: 100%;
@@ -158,6 +162,10 @@
 @media (min-width:1024px) {
     .home .hero {
         height: 55rem;
+
+        &.thinner {
+            height: 40rem;
+        }
     }
     .homepage-baseline-header {
         margin: auto;

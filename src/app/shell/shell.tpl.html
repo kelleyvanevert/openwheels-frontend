@@ -6,7 +6,7 @@
             <a class="app-logo">
                 <img ng-src="branding/img/logo.png" />
             </a>
-            <md-button id="shellHidemenu" class="md-icon-button" ng-click="closeMenu()">
+            <md-button aria-label="Close" id="shellHidemenu" class="md-icon-button" ng-click="closeMenu()">
                 <ng-md-icon icon="keyboard_arrow_left"></ng-md-icon>
             </md-button>
         </div>
@@ -21,7 +21,7 @@
     <div class="cookiebar cookiebar" ng-if="$root.cookieBar !== 'false'">
         <div class="cookiebar--content">
             <span translate="COOKIES_TERMS"></span>
-            <md-button class="md-raised md-primary" ng-click="acceptCookie()">{{'COOKIES_ACCEPT' | translate}}</md-button>
+            <md-button aria-label="Accept" class="md-raised md-primary" ng-click="acceptCookie()">{{'COOKIES_ACCEPT' | translate}}</md-button>
             <ng-md-icon icon="close" ng-click="acceptCookie()"><ng-md-icon>
 
         </div>

@@ -3,6 +3,7 @@
 angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
 
   .controller('ResourceSearchMapController', function ($scope, uiGmapGoogleMapApi, uiGmapIsReady, $stateParams, appConfig,
+    $log,
     metaInfoService, resourceService, resourceQueryService, $state, $location, $rootScope, $timeout, $filter) {
 
     metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/kaart'});
@@ -23,59 +24,79 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
     var windows = [];
     $scope.markers = [];
 
-    //Google Maps options
-    angular.extend($scope, {
-      map: {
-        draggable: false,
-        center: center,
-        zoom: zoom,
-        markers: $scope.markers,
-        windows: windows,
-        fitMarkers: true,
-        clickableIcons: false,
-        control: {},
-        options: {
-          minZoom: 12,
-          fullscreenControl: false,
-          mapTypeControl: false,
-          streetViewControl: false,
-          gestureHandling: 'greedy',
-          // https://snazzymaps.com/editor/customize/120165
-          styles: [/*
-            {
-              featureType: 'transit',
-              elementType: 'labels',
-              stylers: [
-                {
-                  visibility: 'off',
-                },
-              ],
-            },*/
-            {
-              featureType: 'poi',
-              elementType: 'labels',
-              stylers: [
-                {
-                  visibility: 'off',
-                },
-              ],
-            },
-            {
-              featureType: 'landscape',
-              elementType: 'labels',
-              stylers: [
-                {
-                  visibility: 'off',
-                },
-              ],
-            },
-          ],
-        },
-      }
-    });
-
     uiGmapGoogleMapApi.then(function(maps) {
       var boundsFromSearch;
+      var google_maps = maps;
+
+      //Google Maps options
+      angular.extend($scope, {
+        map: {
+          draggable: false,
+          center: center,
+          zoom: zoom,
+          markers: $scope.markers,
+          windows: windows,
+          fitMarkers: true,
+          clickableIcons: false,
+          control: {},
+          options: {
+            minZoom: 12,
+            fullscreenControl: false,
+            mapTypeControl: false,
+            streetViewControl: false,
+            gestureHandling: 'greedy',
+            // https://snazzymaps.com/editor/customize/120165
+            styles: [/*
+              {
+                featureType: 'transit',
+                elementType: 'labels',
+                stylers: [
+                  {
+                    visibility: 'off',
+                  },
+                ],
+              },*/
+              {
+                featureType: 'poi',
+                elementType: 'labels',
+                stylers: [
+                  {
+                    visibility: 'off',
+                  },
+                ],
+              },
+              {
+                featureType: 'landscape',
+                elementType: 'labels',
+                stylers: [
+                  {
+                    visibility: 'off',
+                  },
+                ],
+              },
+            ],
+          },
+          windowOptions: {
+            boxClass: 'mw-gmap-window',
+            boxStyle: {
+              width: '280px',
+              padding: '0px',
+            },
+
+            disableAutoPan: false,
+            maxWidth: 0,
+            pixelOffset: new google_maps.Size(-140, 0),
+            zIndex: null,
+
+            // https://yoksel.github.io/url-encoder/
+            closeBoxURL: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath d="M0 0h24v24H0z" fill="white"/%3E%3Cpath d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="black"/%3E%3C/svg%3E',
+            infoBoxClearance: new google.maps.Size(1, 1),
+            isHidden: false,
+            pane: 'floatPane',
+            enableEventPropagation: false,
+          },
+        }
+      });
 
       $scope.$watch(function(){
         if($scope.map.control && $scope.map.control.getGMap){
@@ -178,6 +199,8 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
 
         //update resources
         $scope.updateResources = function() {
+
+          $log.debug(map.getCenter().lat(), map.getCenter().lng());
           resourceQueryService.setLocation({
             latitude: map.getCenter().lat(),
             longitude: map.getCenter().lng()

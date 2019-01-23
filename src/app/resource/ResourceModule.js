@@ -7,6 +7,7 @@ angular.module('owm.resource', [
   'owm.resource.show',
   'owm.resource.show.calendar',
   'owm.resource.edit',
+  'owm.resource.place',
   'owm.resource.search',
   'owm.resource.filter',
   'owm.resource.filterDirective',
@@ -89,12 +90,10 @@ angular.module('owm.resource', [
 
   $stateProvider.state('owm.resource.place', {
     url: '/auto-huren/:city',
-    abstract: true,
-    reloadOnSearch: false,
     views: {
       'main-full@shell': {
-        controller: 'ResourceSearchController',
-        templateUrl: 'resource/search/resource-search.tpl.html'
+        controller: 'ResourcePlaceController',
+        templateUrl: 'resource/place/resource-place.tpl.html'
       }
     },
     resolve: {
@@ -103,34 +102,43 @@ angular.module('owm.resource', [
           return placeService.search({
             place: $stateParams.city
           }).catch(angular.noop); // ignore errors
-        }
+        },
       ],
       me: ['authService', function (authService) {
         return authService.userPromise().then(function (user) {
           return user.isAuthenticated ? user.identity : null;
         });
       }],
-      metaInfo: ['$translate', 'place', 'metaInfoService', '$filter',
-        function ($translate, place, metaInfoService, $filter) {
+      metaInfo: ['$translate', 'place', 'metaInfoService', '$filter', '$q',
+        function ($translate, place, metaInfoService, $filter, $q) {
           if (!place) {
             return;
           }
-          return $translate('SITE_NAME').then(function () {
-            var city = $filter('replaceDashToSpace')(place.name || '');
-            metaInfoService.set({
-              title: $translate.instant('META_CITYPAGE_TITLE', {
-                city: $filter('toTitleCase')(city)
-              }),
-              description: $translate.instant('META_CITYPAGE_DESCRIPTION', {
-                city: $filter('toTitleCase')(city)
-              })
+
+          return $q(function (resolve) {
+            $translate('SITE_NAME').then(function () {
+              var city = $filter('toTitleCase')($filter('replaceDashToSpace')(place.name || ''));
+              var title = $translate.instant('META_CITYPAGE_TITLE', { city: city });
+              var description = $translate.instant('META_CITYPAGE_DESCRIPTION', { city: city });
+              //$log.log('city =', city, 'title =', title, 'description =', description);
+
+              metaInfoService.set({
+                title: title,
+                description: description,
+              });
+
+              resolve({
+                title: title,
+                description: description,
+              });
             });
           });
-        }
-      ]
-    }
+        },
+      ],
+    },
   });
 
+/*
   $stateProvider.state('owm.resource.place.list', {
     url: '',
     reloadOnSearch: false,
@@ -154,6 +162,8 @@ angular.module('owm.resource', [
       }
     }
   });
+  */
+ 
   /**
    * resource/own
    */
@@ -317,7 +327,14 @@ angular.module('owm.resource', [
             });
           });
         }
-      ]
+      ],
+      prevState: ['$state', function ($state) {
+        return {
+          name: $state.current.name,
+          params: $state.params,
+          url: $state.href($state.current.name, $state.params)
+        };
+      }],
     }
   });
 
