@@ -85,6 +85,7 @@ angular.module('rpcServices', [])
   this.search = m('search');
   this.searchV2 = m('searchV2');
   this.searchV3 = m('searchV3');
+  this.searchMapV1 = m('searchMapV1');
   this.create = m('create');
   this.getMembers = m('getMembers');
   this.addMember = m('addMember');

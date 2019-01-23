@@ -185,26 +185,29 @@ angular.module('owm.resource.place', [])
 
   var mapInitialized = false;
 
-  var reloadMapResources = _.debounce(function (bounds, map) {
+  var reloadMapResources = _.debounce(function (bounds) {
     $log.log('reloading resources on map for bounds:', bounds);
     
     resourceService
-      .searchV3(makeParams())
-      .then(function (data) {
-        data.results.forEach(function (resource) {
+      .searchMapV1({ locationPoint: bounds })
+      .then(function (resourcesInArea) {
+        resourcesInArea.forEach(function (resourcePreview) {
+          // `resourcePreview` is a subset of
+          //  what is usually a `resource`:
+          // { id, latitude, longitude, alias, boardcomputer, brand, model, newScoreCar, pictures, price }
           var coords = {
-            latitude: resource.latitude,
-            longitude: resource.longitude
+            latitude: resourcePreview.latitude,
+            longitude: resourcePreview.longitude
           };
 
-          if (!mapResourceCache[resource.id]) {
+          if (!mapResourceCache[resourcePreview.id]) {
             var marker = {
-              id: resource.id,
+              id: resourcePreview.id,
               //position: { lat: coords.latitude, lng: coords.longitude },
               coords: coords,
-              title: resource.alias,
-              resource: resource,
-              icon: (resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0) ? 'assets/img/mywheels-open-marker-v2-40.png' : 'assets/img/mywheels-key-marker-v2-40.png',
+              title: resourcePreview.alias,
+              resource: resourcePreview,
+              icon: resourcePreview.boardcomputer ? 'assets/img/mywheels-open-marker-v2-40.png' : 'assets/img/mywheels-key-marker-v2-40.png',
               showWindow: false,
             };
 
@@ -214,7 +217,7 @@ angular.module('owm.resource.place', [])
               });
               $scope.$apply(function(){
                 $scope.selectedMarker = marker;
-                $scope.selectedMarker.imgUrl = resource.pictures && resource.pictures.length > 0 ? (resource.pictures[0].large || resource.pictures[0].normal || resource.pictures[0].small) : 'assets/img/resource-avatar-large.jpg';
+                $scope.selectedMarker.imgUrl = resourcePreview.pictures && resourcePreview.pictures.length > 0 ? (resourcePreview.pictures[0].large || resourcePreview.pictures[0].normal || resourcePreview.pictures[0].small) : 'assets/img/resource-avatar-large.jpg';
                 if ($scope.selectedMarker.imgUrl && !$scope.selectedMarker.imgUrl.match(/^http/)) {
                   $scope.selectedMarker.imgUrl = appConfig.serverUrl + '/' + $scope.selectedMarker.imgUrl;
                 }
@@ -222,7 +225,7 @@ angular.module('owm.resource.place', [])
               });
             };
 
-            $scope.markers.push(mapResourceCache[resource.id] = new google.maps.Marker(marker));
+            $scope.markers.push(mapResourceCache[resourcePreview.id] = new google.maps.Marker(marker));
           }
         });
 
@@ -323,12 +326,12 @@ angular.module('owm.resource.place', [])
             // longitude = "x coordinate" (4-6)
 
             reloadMapResources({
-              latitude_min: mapbounds.getSouthWest().lat(),
-              longitude_min: mapbounds.getSouthWest().lng(),
+              latitudeMin: mapbounds.getSouthWest().lat(),
+              longitudeMin: mapbounds.getSouthWest().lng(),
 
-              latitude_max: mapbounds.getNorthEast().lat(),
-              longitude_max: mapbounds.getNorthEast().lng(),
-            }, map);
+              latitudeMax: mapbounds.getNorthEast().lat(),
+              longitudeMax: mapbounds.getNorthEast().lng(),
+            });
           },
         },
       }
