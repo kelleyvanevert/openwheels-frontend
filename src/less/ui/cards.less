@@ -76,8 +76,14 @@
     }
 }
 
-.vertical .ow-card {
+.resource-card-box.ow-card {
     flex-direction: column;
+    .price h2 {
+        font-size: 2.4rem;
+    }
+    .md-card-image {
+        max-width: 99em !important;
+    }
 }
 
 .mywheelsOpenBar {
@@ -97,6 +103,10 @@
         height: auto;
         max-width: 20px;
     }
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .alias {
     position: absolute;

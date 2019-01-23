@@ -20,19 +20,40 @@
       </div>
     </div>
     
-    <div class="row resources-for-category"
+    <div class="resources-for-category"
         ng-repeat="box in searchBoxes.show">
-      <div class="rpad col-xs-12">
-        <h2 class="without-card">{{ box.title }}</h2>
-        <p class="sub" ng-if="box.description">{{ box.description }}</p>
+      <div class="row">
+        <div class="rpad col-xs-12">
+          <h2 class="without-card">{{ box.title }}</h2>
+          <p class="sub" ng-if="box.description">{{ box.description }}</p>
+        </div>
       </div>
-      <div class="rpad col-xs-12 col-sm-4 col-md-3" ng-repeat="resource in box.data.results">
-        <ow-resource-card
-          class="vertical"
-          lightweight="true"
-          resource="resource"
-          on-select="selectResource(resource)">
-        </ow-resource-card>
+      <div class="row is-flex">
+        <div class="rpad col-xs-12 col-sm-6 col-md-3" ng-repeat="resource in box.data.results">
+          <ow-resource-card-box
+            resource="resource"
+            style="flex: 1;">
+          </ow-resource-card-box>
+          <!--
+          <ow-resource-card
+            class="vertical"
+            lightweight="true"
+            resource="resource"
+            on-select="selectResource(resource)">
+          </ow-resource-card>
+          -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="rpad col-xs-12">
+          <p style="text-align: center;">
+            <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action mywheels-btn-margin-top"
+                    ui-sref="{{ box.sref }}"
+                    md-ink-ripple="#9a3d26">
+              Bekijk alle {{ box.data.totalResults }} resultaten <ng-md-icon icon="arrow_forward"></ng-md-icon>
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -52,9 +73,12 @@
                 models="map.markers"
                 idKey="'id'"
                 icon="'icon'"
+                
+                doCluster=""
+                clusterOptions="map.clusterOptions"
+
                 coords="'coords'"
-                click="'onClick'"
-                >
+                click="'onClick'">
         </ui-gmap-markers>
 
         <ui-gmap-window coords="selectedMarker.coords" show="selectedMarker.showWindow" closeClick="closeWindow()" templateUrl="'resource/search/map/resource-marker-window.tpl.html'" templateParameter="selectedMarker">
