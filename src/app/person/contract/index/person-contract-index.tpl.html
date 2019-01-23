@@ -71,6 +71,13 @@
             </li>
           </ul>
 
+          <div class="text-center" style="margin-bottom: 20px;" ng-if="hasMoreToLoad">
+            <button ng-click="loadMoreExtraDriverRequestsForContract(contract)" class="mywheels-btn mywheels-btn-normal mywheels-btn-big">
+              <span ng-if="!showLoaderSpinner">Laad meer</span>
+              <span ng-if="showLoaderSpinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+
           <form name="form">
             <div class="input-group" ng-class="{ 'has-error' : form.email.$error.email }">
               <input type="email" required name="email" class="form-control" placeholder="{{ 'EMAIL' | translate }}" ng-model="contract.emailToAdd" />
