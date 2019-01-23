@@ -325,13 +325,23 @@ angular.module('owm.resource.place', [])
             // latitude = "y coordinate" (52-ish)
             // longitude = "x coordinate" (4-6)
 
-            reloadMapResources({
+            var bounds = {
               latitudeMin: mapbounds.getSouthWest().lat(),
               longitudeMin: mapbounds.getSouthWest().lng(),
 
               latitudeMax: mapbounds.getNorthEast().lat(),
               longitudeMax: mapbounds.getNorthEast().lng(),
-            });
+            };
+
+            var pad_Lng = (bounds.longitudeMax - bounds.longitudeMin) / 3;
+            var pad_Lat = (bounds.latitudeMax - bounds.latitudeMin) / 3;
+
+            bounds.latitudeMax += pad_Lat;
+            bounds.latitudeMin -= pad_Lat;
+            bounds.longitudeMax += pad_Lng;
+            bounds.longitudeMin -= pad_Lng;
+
+            reloadMapResources(bounds);
           },
         },
       }
