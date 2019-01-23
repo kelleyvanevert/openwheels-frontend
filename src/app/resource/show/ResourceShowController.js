@@ -34,7 +34,7 @@ angular.module('owm.resource.show', [])
 
 
   $scope.prevState = prevState;
-  
+
 
   /**
    * Warning: 'me' will be null for anonymous users
@@ -58,9 +58,6 @@ angular.module('owm.resource.show', [])
 
   $scope.shareUrl = featuresService.get('serverSideShare') ? linksService.resourceUrl(resource.id, (resource.city || '').toLowerCase().replace(/ /g, '-')) : $window.location.href;
   $log.debug('Share url = ' + $scope.shareUrl);
-
-  var ageInDays = moment().diff($scope.resource.created, 'days');
-  $scope.resource.isNew = ageInDays < 180;
 
   setResourceType(resource);
 
@@ -92,9 +89,6 @@ angular.module('owm.resource.show', [])
     $scope.towbar = resource.properties.map(function(o) { return o.id;}).indexOf('trekhaak');
     $scope.winterTires = resource.properties.map(function(o) { return o.id;}).indexOf('winterbanden');
   }
-
-  //get age of resource on platform
-  $scope.ageInDays = moment().diff($scope.resource.created, 'days');
 
   /**
    * Init

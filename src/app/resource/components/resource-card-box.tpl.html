@@ -38,12 +38,12 @@
                             <md-tooltip class="multiline" md-direction="bottom" ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0">
                                 {{ 'MYWHEELS_OPEN_INFO' | translate }}
                             </md-tooltip></span>
-                            <span class="tag tag-success" ng-if="resource.isNew" flex="none"> {{ 'NEW_TIP' | translate }} </span>
+                            <span class="tag tag-success" ng-if="resource.newScoreCar" flex="none"> {{ 'NEW_TIP' | translate }} </span>
                         </span>
                     </div>
                 </md-list-item>
                 <md-list-item 
-                    ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0 || resource.isNew"
+                    ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0 || resource.newScoreCar"
                     style="margin-top:-10px; margin-bottom:-10px;"
                     hide-gt-xs>
                     <!-- tags -->
@@ -58,14 +58,14 @@
                             <md-tooltip md-direction="bottom" class="multiline">{{ 'MYWHEELS_OPEN_INFO' | translate }}</md-tooltip>
                         </span>
                         <span 
-                            ng-if="resource.isNew && ['smartphone', 'chipcard'].indexOf(resource.locktype) < 0"
+                            ng-if="resource.newScoreCar && ['smartphone', 'chipcard'].indexOf(resource.locktype) < 0"
                             class="tag tag-success"
                             style="margin-left: 0px;"
                         >
                             {{ 'NEW_TIP' | translate }}
                         </span>
                         <span 
-                            ng-if="resource.isNew && ['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0"
+                            ng-if="resource.newScoreCar && ['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0"
                             class="tag tag-success"
                             style="margin-left: 0px;"
                         >

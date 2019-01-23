@@ -9,10 +9,6 @@ angular.module('owm.resource')
     scope: {
       resource: '=',
     },
-    templateUrl: 'resource/components/resource-card-box.tpl.html',
-    controller: function ($scope) {
-      var ageInDays = moment().diff($scope.resource.created, 'days');
-      $scope.resource.isNew = ageInDays < 180;
-    }
+    templateUrl: 'resource/components/resource-card-box.tpl.html'
   };
 });

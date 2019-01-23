@@ -26,14 +26,14 @@
                                             <md-tooltip md-direction="bottom" class="multiline">{{ 'MYWHEELS_OPEN_INFO' | translate }}</md-tooltip>
                                         </span>
                                         <span 
-                                            ng-if="resource.isNew && ['smartphone', 'chipcard'].indexOf(resource.locktype) < 0"
+                                            ng-if="resource.newScoreCar && ['smartphone', 'chipcard'].indexOf(resource.locktype) < 0"
                                             class="tag tag-success"
                                             style="margin-top: 8px; margin-bottom: 8px; margin-left: 0px;"
                                         >
                                             {{ 'NEW_TIP' | translate }}
                                         </span>
                                         <span 
-                                            ng-if="resource.isNew && ['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0"
+                                            ng-if="resource.newScoreCar && ['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0"
                                             class="tag tag-success"
                                             style="margin-left: 0px;"
                                         >
