@@ -23,7 +23,7 @@
     <div class="card-body">
 
         <!-- desktop view -->
-        <table class="table trips" hide-xs>
+        <table class="table trips">
             <tbody>
             <tr ng-repeat="inviteRequest in inviteRequestsBooking.result">
                 <td width="60%" class="media">
@@ -51,11 +51,12 @@
     <div class="card-body">
 
         <!-- desktop view -->
-        <table class="table trips" hide-xs>
+        <table class="table trips">
             <tbody>
             <tr ng-repeat="inviteRequest in inviteRequestsContract.result">
                 <td width="60%" class="media">
-                    <span>Uitnodiging om kostenloos te rijden op het contract van {{ inviteRequest.sender.firstName }}</span>
+                    <span ng-if="inviteRequest.status !== 'accepted'">Uitnodiging om te rijden op het contract van {{ inviteRequest.sender.firstName }}</span>
+                    <span ng-if="inviteRequest.status === 'accepted'">Machtiging om te rijden op het contract van {{ inviteRequest.sender.firstName }}</span>
                 </td>
                 <td class="text-right">
                     <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-success" ng-click="acceptContractRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_ACCEPT' | translate"></button>
