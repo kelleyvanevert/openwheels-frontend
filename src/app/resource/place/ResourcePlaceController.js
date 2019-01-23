@@ -22,6 +22,7 @@ angular.module('owm.resource.place', [])
 ) {
 
   if (!place) {
+    $log.log('this place does not exist??');
     return $state.go('owm.resource.search.list');
   }
 
