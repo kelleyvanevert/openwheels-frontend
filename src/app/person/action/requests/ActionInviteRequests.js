@@ -32,7 +32,6 @@ angular.module('owm.person.invite-requests', [])
       extraDriverService.acceptRequest({ id: request.id }).then(function (result) {
       })
         .then(function () {
-          alertService.add('success', $translate.instant('BOOKING.INVITE_EXTRA_ACCEPTED'), 8000);
           $scope.loadRequestsBooking();
         })
         .catch(function (err) {
@@ -50,7 +49,6 @@ angular.module('owm.person.invite-requests', [])
       extraDriverService.declineRequest({ id: request.id }).then(function (result) {
       })
         .then(function () {
-          alertService.add('danger', $translate.instant('BOOKING.INVITE_EXTRA_DECLINED'), 8000);
           $scope.loadRequestsBooking();
         })
         .catch(function (err) {
@@ -68,7 +66,6 @@ angular.module('owm.person.invite-requests', [])
       extraDriverService.revokeBookingRequest({ id: request.id }).then(function (result) {
       })
         .then(function () {
-          alertService.add('danger', $translate.instant('INVITE_EXTRA_PERSON_REVOKE'), 8000);
           $scope.loadRequestsBooking();
         })
         .catch(function (err) {
@@ -86,7 +83,6 @@ angular.module('owm.person.invite-requests', [])
       extraDriverService.acceptContractRequest({ id: request.id }).then(function (result) {
       })
         .then(function () {
-          alertService.add('success', $translate.instant('BOOKING.INVITE_EXTRA_ACCEPTED'), 8000);
           $scope.loadRequestsContract();
         })
         .catch(function (err) {
@@ -104,7 +100,6 @@ angular.module('owm.person.invite-requests', [])
       extraDriverService.declineContractRequest({ id: request.id }).then(function (result) {
       })
         .then(function () {
-          alertService.add('danger', $translate.instant('BOOKING.INVITE_EXTRA_DECLINED'), 8000);
           $scope.loadRequestsContract();
         })
         .catch(function (err) {
@@ -122,7 +117,6 @@ angular.module('owm.person.invite-requests', [])
       extraDriverService.revokeContractRequest({ id: request.id }).then(function (result) {
       })
         .then(function () {
-          alertService.add('danger', $translate.instant('INVITE_EXTRA_PERSON_REVOKE'), 8000);
           $scope.loadRequestsContract();
         })
         .catch(function (err) {
