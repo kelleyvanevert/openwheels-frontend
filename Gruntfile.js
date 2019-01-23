@@ -339,7 +339,7 @@ module.exports = function (grunt) {
           middleware: function (connect) {
             return [
               require('connect-modrewrite')([
-                '!\\.html|\\.js|\\.css|\\.svg|\\.jp(e?)g|\\.png|\\.gif|\\.ttf$ /'
+                '!\\.html|\\.woff(2?)|\\.otf|\\.js|\\.css|\\.svg|\\.jp(e?)g|\\.png|\\.gif|\\.ttf$ /'
               ]),
               function (req, res, next) {
                 if (req.url === '/assets/img/resource-avatar-large.jpg') {

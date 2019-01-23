@@ -1,0 +1,132 @@
+<div id="place-page" class="home landing" style="background: none;">
+
+  <div class="hero thinner inverted text-center"
+      ng-style="{ 'background-image': 'url(' + place.picture + ')' }">
+    <div class="hero-overlay"></div>
+    <div class="landing-title">
+      <h1><span class="highlight">{{ metaInfo.title }}</span></h1>
+      <p class="sub" ng-if="place.lead"><span class="highlight">{{ place.lead }}</span></p>
+    </div>
+  </div>
+
+  <div id="place-page-container" class="container container-transitional">
+    <div class="row">
+      <div class="rpad col-md-offset-2 col-md-8 col-xs-12">
+        <div class="card mw">
+          <div class="card-body">
+            <div ng-bind-html="place.body"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="resources-for-category"
+        ng-repeat="box in searchBoxes.show">
+      <div class="row">
+        <div class="rpad col-xs-12">
+          <h2 class="without-card">{{ box.title }}</h2>
+          <p class="sub" ng-if="box.description">{{ box.description }}</p>
+        </div>
+      </div>
+      <div class="row is-flex">
+        <div class="rpad col-xs-12 col-sm-6 col-md-3" ng-repeat="resource in box.data.results">
+          <ow-resource-card-box
+            resource="resource"
+            style="flex: 1;">
+          </ow-resource-card-box>
+          <!--
+          <ow-resource-card
+            class="vertical"
+            lightweight="true"
+            resource="resource"
+            on-select="selectResource(resource)">
+          </ow-resource-card>
+          -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="rpad col-xs-12">
+          <p style="text-align: center;">
+            <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action mywheels-btn-margin-top"
+                    ui-sref="{{ box.sref }}"
+                    md-ink-ripple="#9a3d26">
+              Bekijk alle {{ box.data.totalResults }} resultaten <ng-md-icon icon="arrow_forward"></ng-md-icon>
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="full-gmaps" ng-if="map">
+    <div style="height: 5px;">
+      <md-progress-linear ng-show="mapLoading" md-mode="indeterminate"></md-progress-linear>
+    </div>
+    <ui-gmap-google-map class="google-map"
+                        center="map.center"
+                        zoom="map.zoom"
+                        draggable="map.draggable"
+                        dragging="map.dragging"
+                        bounds="map.bounds"
+                        events="map.events"
+                        options="map.options"
+                        control="map.control">
+
+        <ui-gmap-markers
+                models="map.markers"
+                idKey="'id'"
+                icon="'icon'"
+                
+                doCluster=""
+                clusterOptions="map.clusterOptions"
+
+                coords="'coords'"
+                click="'onClick'">
+        </ui-gmap-markers>
+
+        <ui-gmap-window
+          coords="selectedMarker.coords"
+          show="selectedMarker.showWindow"
+          closeClick="closeWindow()"
+          templateUrl="'resource/search/map/resource-marker-window.tpl.html'"
+          templateParameter="selectedMarker"
+          options="map.windowOptions">
+        </ui-gmap-window>
+
+    </ui-gmap-google-map>
+  </div>
+
+  <!-- WIL JE MEEDOEN? -->
+  <div class="container-fluid
+              container-home
+              mywheels-open-meedoen">
+    <div class="rpad col-md-12">
+      <h2>Zo makkelijk is een auto huren bij MyWheels:</h2>
+
+      <div class="open-steps">
+        <div class="step">
+          <div class="circle"><ng-md-icon size="50" icon="create"></ng-md-icon></div>
+          <div class="step-label">Zoek een auto</div>
+          <p>Vind een auto in jouw buurt door op postcode of plaats te zoeken.<br /><br />
+          Over heel Nederland verspreid delen mensen hun auto's via het platform. Ook biedt MyWheels eigen
+           auto's aan, die extra gemakkelijk te huren zijn.</p>
+        </div>
+        <div class="line"></div>
+        <div class="step">
+          <div class="circle"><ng-md-icon size="50" icon="directions_car"></ng-md-icon></div>
+          <div class="step-label">Reserveren</div>
+          <p>Vul de tijden in dat je de auto wilt huren. Heb je nog geen account? Dan vragen we je om je gegevens in te vullen. Daarna versturen we je verzoek naar de verhuurder van de auto. Ook kun je kiezen op welk soort contract je wilt rijden.</p>
+        </div>
+        <div class="line"></div>
+        <div class="step">
+          <div class="circle"><ng-md-icon size="50" icon="euro_symbol"></ng-md-icon></div>
+          <div class="step-label">Op pad</div>
+          <p>Zodra je huurverzoek is geaccepteerd, kun je de auto ophalen en op pad. MyWheels Open auto's worden direct geaccepteerd en kun je opnenen met je smartphone of OV-chipkaart. Bij een auto van een particulier moet je nog even afspreken om de sleutel op te halen.<br /><br />
+          Breng de auto na de rit weer terug naar dezelfde plek, en vergeet niet de kilometerstanden door te geven indien dit nodig is.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /WIL JE MEEDOEN? -->
+
+</div>

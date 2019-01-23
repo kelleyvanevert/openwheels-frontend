@@ -409,6 +409,39 @@ label[for=mywheelsOpen] {
     }
 }
 
+#place-page {
+    .full-gmaps {
+        margin: 4rem 0;
+    }
+}
+
+#place-page-container {
+    margin-top: -80px;
+    z-index: 1;
+    position: relative;
+
+    .h-resource-card {
+        overflow: hidden;
+
+        img.resource-picture {
+            max-width: 100%;
+            display: block;
+        }
+    }
+}
+
+@media all and (max-width: 480px) {
+    #place-page-container {
+        margin-top: 0px;
+    }
+}
+
+@media all and (min-width: 480px) and (max-width: 1020px) {
+    #place-page-container {
+        margin-top: -40px;
+    }
+}
+
 
 .s-resource-list {
     .s-resource-card {

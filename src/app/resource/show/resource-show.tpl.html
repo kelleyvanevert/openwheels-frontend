@@ -19,12 +19,22 @@
 
     <div class="return-toolbar-container container container-transitional hidden-xs">
         <div class="return-toolbar">
-            <button type="button"
-                    ui-sref="owm.resource.search.list"
-                    class="btn btn-link return">
-                <ng-md-icon size="32" icon="arrow_back"></ng-md-icon>
-                <md-tooltip md-direction="top">{{ 'RESOURCE_BACK_TO_LIST' | translate }}</md-tooltip>
-            </button>
+            <div ng-if="prevState && prevState.name">
+                <button type="button"
+                        ui-sref="{{ prevState.name }}({{ prevState.params }})"
+                        class="btn btn-link return">
+                    <ng-md-icon size="32" icon="arrow_back"></ng-md-icon>
+                    <md-tooltip md-direction="top">{{ 'RESOURCE_BACK_TO_LIST' | translate }}</md-tooltip>
+                </button>
+            </div>
+            <div ng-if="!(prevState && prevState.name)">
+                <button type="button"
+                        ui-sref="owm.resource.search.list"
+                        class="btn btn-link return">
+                    <ng-md-icon size="32" icon="arrow_back"></ng-md-icon>
+                    <md-tooltip md-direction="top">{{ 'RESOURCE_BACK_TO_LIST' | translate }}</md-tooltip>
+                </button>
+            </div>
 
             <button ng-if="(me && (resource.owner.id === me.id || resource.contactPerson.id === me.id))"
                     ui-sref="owm.resource.edit({ resourceId: resource.id })"
@@ -58,7 +68,7 @@
                             <span class="tag tag-warning mw-badge mw-badge-open">MyWheels Open</span>
                             <span class="bullet"></span>
                         </span>
-                        <span ng-if="resource.isNew">
+                        <span ng-if="resource.newScoreCar">
                             <span class="tag tag-warning mw-badge mw-badge-new">Nieuw</span>
                             <span class="bullet"></span>
                         </span>
@@ -249,10 +259,12 @@
                 <div class="card-heading" ng-if="resource.location">
                     <h3>{{ resource.location }} <small ng-if="resource.city">{{ resource.city }}</small></h3>
                 </div>
-                <mw-resource-location-map map="map"></mw-resource-location-map>
+                <div class="decrease-max-gmaps-height">
+                    <mw-resource-location-map map="map"></mw-resource-location-map>
+                </div>
 
                 <div class="card-body" ng-show="resource.city">
-                    {{ 'RESOURCE_MORE_IN_CITY' | translate }} <a ui-sref="owm.resource.place.list({ city: (resource.city | replaceSpaceToDash | lowercase) })">{{ resource.city }}</a>
+                    {{ 'RESOURCE_MORE_IN_CITY' | translate }} <a ui-sref="owm.resource.place({ city: (resource.city | replaceSpaceToDash | lowercase) })">{{ resource.city }}</a>
                 </div>
             </div>
 
