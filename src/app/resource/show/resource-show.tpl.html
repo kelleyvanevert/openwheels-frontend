@@ -249,7 +249,9 @@
                 <div class="card-heading" ng-if="resource.location">
                     <h3>{{ resource.location }} <small ng-if="resource.city">{{ resource.city }}</small></h3>
                 </div>
-                <mw-resource-location-map map="map"></mw-resource-location-map>
+                <div class="decrease-max-gmaps-height">
+                    <mw-resource-location-map map="map"></mw-resource-location-map>
+                </div>
 
                 <div class="card-body" ng-show="resource.city">
                     {{ 'RESOURCE_MORE_IN_CITY' | translate }} <a ui-sref="owm.resource.place({ city: (resource.city | replaceSpaceToDash | lowercase) })">{{ resource.city }}</a>
