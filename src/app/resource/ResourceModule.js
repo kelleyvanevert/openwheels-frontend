@@ -97,20 +97,23 @@ angular.module('owm.resource', [
       }
     },
     resolve: {
-      place: ['$q', '$stateParams', 'placeService',
-        function ($q, $stateParams, placeService) {
+      place: ['$q', '$stateParams', 'placeService', '$log',
+        function ($q, $stateParams, placeService, $log) {
+          $log.log('resolve/place');
           return placeService.search({
             place: $stateParams.city
           }).catch(angular.noop); // ignore errors
         },
       ],
-      me: ['authService', function (authService) {
+      me: ['authService', '$log', function (authService, $log) {
         return authService.userPromise().then(function (user) {
+          $log.log('resolve/me');
           return user.isAuthenticated ? user.identity : null;
         });
       }],
-      metaInfo: ['$translate', 'place', 'metaInfoService', '$filter', '$q',
-        function ($translate, place, metaInfoService, $filter, $q) {
+      metaInfo: ['$translate', 'place', 'metaInfoService', '$filter', '$q', '$log',
+        function ($translate, place, metaInfoService, $filter, $q, $log) {
+          $log.log('resolve/metaInfo');
           if (!place) {
             return;
           }
