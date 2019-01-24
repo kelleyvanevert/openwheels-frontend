@@ -14,6 +14,7 @@ angular.module('owm.resource.place', [])
   resourceQueryService,
 
   // api
+  api,
   metaInfoService,
   resourceService,
 
@@ -143,34 +144,47 @@ angular.module('owm.resource.place', [])
         //'sort: "relevance"' +
       '})';
 
-    resourceService
-      .searchV3(box.params)
-      .then(function (data) {
-        // data :: { results :: [Resource], totalResults :: int, ... }
-        
-        // only use results with photos
-        data.results = data.results.filter(function (resource) {
-          return resource.pictures.length > 0;
-        });
-
-        //$log.log('box', box, data.results.length, data.results);
-
-        // only show the first 3 results
-        data.results = data.results.slice(0, 4);
-
-        // TODO remove true
-        if (data.results.length >= 4) {
-          box.data = data;
-          $scope.searchBoxes.show = $scope.searchBoxes
-            .filter(function (box) {
-              return !!box.data;
-            })
-            .slice(0, 3)
-            .sort(function (a, b) {
-              return $scope.searchBoxes.indexOf(a) < $scope.searchBoxes.indexOf(b);
+    var promise = appConfig.test ?
+      api.invokeRpcMethod('resource.searchV3', box.params, undefined, true, {
+        url: 'https://openwheels.nl/api/',
+      })
+        .then(function (data) {
+          data.results.forEach(function (resource) {
+            resource.pictures.forEach(function (picture) {
+              picture.large = 'https://openwheels.nl/' + picture.large;
             });
-        }
+          });
+          return data;
+        }) :
+      resourceService
+        .searchV3(box.params);
+    
+    promise.then(function (data) {
+      // data :: { results :: [Resource], totalResults :: int, ... }
+      
+      // only use results with photos
+      data.results = data.results.filter(function (resource) {
+        return resource.pictures.length > 0;
       });
+
+      //$log.log('box', box, data.results.length, data.results);
+
+      // only show the first 3 results
+      data.results = data.results.slice(0, 4);
+
+      // TODO remove true
+      if (data.results.length >= 4) {
+        box.data = data;
+        $scope.searchBoxes.show = $scope.searchBoxes
+          .filter(function (box) {
+            return !!box.data;
+          })
+          .slice(0, 3)
+          .sort(function (a, b) {
+            return $scope.searchBoxes.indexOf(a) < $scope.searchBoxes.indexOf(b);
+          });
+      }
+    });
   });
 
 
@@ -312,7 +326,7 @@ angular.module('owm.resource.place', [])
           zIndex: null,
 
           // https://yoksel.github.io/url-encoder/
-          closeBoxURL: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath d="M0 0h24v24H0z" fill="white"/%3E%3Cpath d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="black"/%3E%3C/svg%3E',
+          closeBoxURL: 'data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath d="M0 0h24v24H0z" fill="white"/%3E%3Cpath d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="black"/%3E%3C/svg%3E',
           infoBoxClearance: new google.maps.Size(1, 1),
           isHidden: false,
           pane: 'floatPane',
