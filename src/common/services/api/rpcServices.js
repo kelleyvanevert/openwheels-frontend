@@ -292,6 +292,27 @@ angular.module('rpcServices', [])
   this.inviteFriend = m('inviteFriend');
 })
 
+.service('extraDriverService', function (api) {
+  var m = function (name) {
+    return api.createRpcMethod('extra_driver.' + name);
+  };
+  this.addDriver = m('addDriver');
+  this.removeDriver = m('removeDriver');
+  this.getRequest = m('getRequest');
+  this.driversForBooking = m('driversForBooking');
+  this.clearDrivers = m('clearDrivers');
+  this.acceptRequest = m('acceptRequest');
+  this.declineRequest = m('declineRequest');
+  this.getRequestsForPerson = m('getRequestsForPerson');
+  this.acceptContractRequest = m('acceptContractRequest');
+  this.declineContractRequest = m('declineContractRequest');
+  this.revokeContractRequest = m('revokeContractRequest');
+  this.revokeBookingRequest = m('revokeBookingRequest');
+  this.getRequestsForContract = m('getRequestsForContract');
+  this.invitePersonForContract = m('invitePersonForContract');
+  this.removePersonFromContract = m('removePersonFromContract');
+})
+
 .service('kmPointService', function (api) {
   var m = function (name) {
     return api.createRpcMethod('kmpoint.' + name);
