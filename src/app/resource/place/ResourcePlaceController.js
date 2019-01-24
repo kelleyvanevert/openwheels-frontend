@@ -234,8 +234,13 @@ angular.module('owm.resource.place', [])
     reloadMapResourcesDebounced(bounds);
   };
 
-  $scope.markers = [];
 
+  $scope.loadMap = false;
+  $scope.loadMapNow = function () {
+    $scope.loadMap = true;
+  };
+
+  $scope.markers = [];
 
   uiGmapGoogleMapApi.then(function (google_maps) {
     $scope.closeWindow = function () {

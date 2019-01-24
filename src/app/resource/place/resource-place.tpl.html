@@ -62,26 +62,37 @@
     <div style="height: 5px;">
       <md-progress-linear ng-show="mapLoading" md-mode="indeterminate"></md-progress-linear>
     </div>
-    <ui-gmap-google-map class="google-map"
-                        center="map.center"
-                        zoom="map.zoom"
-                        draggable="map.draggable"
-                        dragging="map.dragging"
-                        bounds="map.bounds"
-                        events="map.events"
-                        options="map.options"
-                        control="map.control">
+    <div ng-if="!loadMap"
+        class="map-skeleton"
+        ng-click="loadMapNow()">
+      <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action"
+              ng-click="loadMapNow()"
+              md-ink-ripple="#9a3d26">
+        Kaart laden <ng-md-icon icon="arrow_forward"></ng-md-icon>
+      </button>
+    </div>
+    <div ng-if="loadMap">
+      <ui-gmap-google-map
+        class="google-map"
+        center="map.center"
+        zoom="map.zoom"
+        draggable="map.draggable"
+        dragging="map.dragging"
+        bounds="map.bounds"
+        events="map.events"
+        options="map.options"
+        control="map.control">
 
         <ui-gmap-markers
-                models="map.markers"
-                idKey="'id'"
-                icon="'icon'"
-                
-                doCluster=""
-                clusterOptions="map.clusterOptions"
+          models="map.markers"
+          idKey="'id'"
+          icon="'icon'"
+          
+          doCluster=""
+          clusterOptions="map.clusterOptions"
 
-                coords="'coords'"
-                click="'onClick'">
+          coords="'coords'"
+          click="'onClick'">
         </ui-gmap-markers>
 
         <ui-gmap-window
@@ -93,7 +104,8 @@
           options="map.windowOptions">
         </ui-gmap-window>
 
-    </ui-gmap-google-map>
+      </ui-gmap-google-map>
+    </div>
   </div>
 
   <!-- WIL JE MEEDOEN? -->
