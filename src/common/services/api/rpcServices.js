@@ -310,6 +310,7 @@ angular.module('rpcServices', [])
   this.getRequestsForContract = m('getRequestsForContract');
   this.invitePersonForContract = m('invitePersonForContract');
   this.removePersonFromContract = m('removePersonFromContract');
+  this.getExtraDriverBookingList = m('getExtraDriverBookingList');
 })
 
 .service('kmPointService', function (api) {
