@@ -11,7 +11,7 @@ angular.module('owm.finance.index', [])
   $scope.kmPoints = kmPoints;
   $scope.kmPoints.total = $scope.kmPoints
     .map(function (o) { return +(o.amount); })
-    .reduce(function (a,b) { return a+b; });
+    .reduce(function (a,b) { return a+b; }, 0);
 
   $scope.payoutDialog = function($event) {
     $event.stopPropagation();

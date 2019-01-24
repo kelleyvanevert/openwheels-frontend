@@ -78,6 +78,9 @@ angular.module('owm.finance', [
   .state('owm.finance.deposit', {
     url: '/deposit',
     views: {
+      'main-full@shell': {
+        templateUrl: 'empty.tpl.html'
+      },
       'main@shell': {
         templateUrl: 'finance/deposit/deposit.tpl.html',
         controller: 'DepositController'
@@ -101,6 +104,9 @@ angular.module('owm.finance', [
   .state('owm.finance.contributie', {
     url: '/contributie',
     views: {
+      'main-full@shell': {
+        templateUrl: 'empty.tpl.html'
+      },
       'main@shell': {
         templateUrl: 'finance/deposit/deelauto.tpl.html',
         controller: 'DepositController'
@@ -124,6 +130,9 @@ angular.module('owm.finance', [
   .state('owm.finance.payment-result', {
     url: '/payment-result?orderStatusId',
     views: {
+      'main-full@shell': {
+        templateUrl: 'empty.tpl.html'
+      },
       'main@shell': {
         templateUrl: 'finance/paymentResult/paymentResult.tpl.html',
         controller: 'PaymentResultController'
