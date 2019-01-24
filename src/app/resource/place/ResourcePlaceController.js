@@ -126,8 +126,24 @@ angular.module('owm.resource.place', [])
       options: undefined,
       filters: { resourceType: 'station' },
     },
+    {
+      id: 'aanbevolen',
+      title: 'Populaire auto\'s',
+      description: undefined,
+      options: undefined,
+      filters: undefined,
+    },
   ];
-  $scope.searchBoxes.show = [];
+  function recomputeShownBoxes () {
+    $scope.searchBoxes.show = $scope.searchBoxes
+      .filter(function (box) {
+        return !!box.data;
+      })
+      .slice(0, 3)
+      .sort(function (a, b) {
+        return $scope.searchBoxes.indexOf(a) < $scope.searchBoxes.indexOf(b);
+      });
+  }
   
   $scope.searchBoxes.forEach(function (box) {
     box.params = makeParams(box.options, box.filters);
@@ -167,22 +183,12 @@ angular.module('owm.resource.place', [])
         return resource.pictures.length > 0;
       });
 
-      //$log.log('box', box, data.results.length, data.results);
-
       // only show the first 3 results
       data.results = data.results.slice(0, 4);
 
-      // TODO remove true
       if (data.results.length >= 4) {
         box.data = data;
-        $scope.searchBoxes.show = $scope.searchBoxes
-          .filter(function (box) {
-            return !!box.data;
-          })
-          .slice(0, 3)
-          .sort(function (a, b) {
-            return $scope.searchBoxes.indexOf(a) < $scope.searchBoxes.indexOf(b);
-          });
+        recomputeShownBoxes();
       }
     });
   });
@@ -249,7 +255,7 @@ angular.module('owm.resource.place', [])
   };
 
 
-  $scope.loadMap = false;
+  $scope.loadMap = true; // false;
   $scope.loadMapNow = function () {
     $scope.loadMap = true;
   };

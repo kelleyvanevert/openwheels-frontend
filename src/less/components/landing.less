@@ -115,6 +115,10 @@
     background-image: url('../assets/img/bg/ijsjes.jpg');
     position: relative;
 
+    &.thinner .landing-title {
+      top: 35%;
+    }
+
     .landing-title {
       text-shadow: 0.07rem 0.14rem 0.21rem rgba(0, 0, 0, .5);
       position: absolute;
@@ -460,5 +464,22 @@
         }
       }
     }
+  }
+}
+
+.landing-lead {
+  background: #cfd3d4;
+  color: #406370;
+
+  ow-geocoder-searchbar {
+    font-size: 1.2em;
+  }
+
+  p {
+    font-size: 1.4em;
+    line-height: 1.7em;
+    text-align: center;
+
+    font-family: @headings-font-family;
   }
 }

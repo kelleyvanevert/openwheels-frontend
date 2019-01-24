@@ -725,3 +725,47 @@ input.ng-touched {
     font-weight: bold;
 }
 */
+
+
+.skel {
+    background: #ddd;
+    
+    background: linear-gradient(to right, #ddd 25%, #ccc, #ddd 55%);
+    background-position: 150% 0%;
+    background-size: 200% 100%;
+
+    -webkit-animation: skel 2s infinite;
+    animation: skel 2s infinite;
+    
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+
+    &.inline {
+        display: inline-block;
+    }
+}
+
+@-o-keyframes skel {
+    to {
+        background-position: -50% 0%;
+    }
+}
+
+@-webkit-keyframes skel {
+    to {
+        background-position: -50% 0%;
+    }
+}
+
+@-moz-keyframes skel {
+    to {
+        background-position: -50% 0%;
+    }
+}
+
+@keyframes skel {
+    to {
+        background-position: -50% 0%;
+    }
+}
+
