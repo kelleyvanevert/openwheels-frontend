@@ -371,7 +371,7 @@
   <div class="card-body" ng-if="(!requested || requiredValue.value.total > 0) && ((requiredValue.value.total | number:2) != ((booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount) | number:2))" ng-show="!$root.isPaymentLoading">
     <h3>Rijtegoed</h3>
     <div style="margin-bottom: 15px;">
-      <table class="table">
+      <table class="table financial">
         <tr>
         <tr>
           <td style="width:100%">Benodigd voor je ritten</td>
@@ -756,7 +756,7 @@
   </div>
   <div uib-collapse="isInvoicesCollapsed">
     <div class="card-body">
-      <table class="table">
+      <table class="table financial">
         <tr>
           <th>Omschrijving</th>
           <th class="text-right xs-collapse">Aantal</th>
@@ -794,7 +794,7 @@
   </div>
   <div uib-collapse="isSentInvoicesCollapsed">
     <div class="card-body">
-      <table class="table">
+      <table class="table financial">
         <tr>
           <th>Omschrijving</th>
           <th class="text-right xs-collapse">Aantal</th>
