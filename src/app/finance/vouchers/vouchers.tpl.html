@@ -18,13 +18,6 @@
     </div>
 </div>
 
-<div class="card" ng-if="!busy && requiredValue && requiredValue.voucher && (!accountDisapproved || accountApproved)">
-    <div class="card-heading">
-        <h2 class="card-title">
-    Bijna klaar! Alleen nog rijtegoed kopen
-    </h2>
-    </div>
-</div>
 <div class="card" ng-if="!busy && requiredValue && (!accountDisapproved || accountApproved)" ng-repeat="booking in requiredValue.bookings" ng-init="booking.isOpen = $index <= 1">
     <div class="card-heading">
     <span class="pull-right" ng-if="booking.isOpen">
