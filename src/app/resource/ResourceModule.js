@@ -97,11 +97,25 @@ angular.module('owm.resource', [
       }
     },
     resolve: {
-      place: ['$q', '$stateParams', 'placeService',
-        function ($q, $stateParams, placeService) {
-          return placeService.search({
-            place: $stateParams.city
-          }).catch(angular.noop); // ignore errors
+      place: ['$q', '$state', '$stateParams', 'placeService', '$log',
+        function ($q, $state, $stateParams, placeService, $log) {
+          return $q(function (resolve, reject) {
+            placeService.search({
+              place: $stateParams.city,
+            })
+              .then(function (place) {
+                if (!place) {
+                  throw 'place not found (null returned by API)';
+                } else {
+                  resolve(place);
+                }
+              })
+              .catch(function (e) {
+                $log.log('place not found:', $stateParams.city);
+                $state.go('owm.resource.search.list');
+                reject(e);
+              });
+          });
         },
       ],
       me: ['authService', function (authService) {

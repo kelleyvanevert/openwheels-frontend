@@ -21,10 +21,6 @@ angular.module('owm.resource.place', [])
   place, me, metaInfo
 ) {
 
-  if (!place) {
-    return $state.go('owm.resource.search.list');
-  }
-
   metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/' + (place.name || '').toLowerCase().replace(/ /g, '-')});
   metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/' + (place.name || '').toLowerCase().replace(/ /g, '-')});
   
