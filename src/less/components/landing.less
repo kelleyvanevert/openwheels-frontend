@@ -9,6 +9,12 @@
 
 .home.landing {
 
+  @media screen and (min-width: 640px) {
+    .vpad {
+      padding: 4rem 0;
+    }
+  }
+
   .discount-action-badges {
     position: relative;
 
@@ -198,9 +204,16 @@
   }
 
   .landing-text {
-    font-size: 1.8rem;
-    line-height: 2.7rem;
+    font-size: 1.6rem;
+    line-height: 2.4rem;
     color: #444;
+  }
+
+  @media all and (min-width: 768px) {
+    .landing-text {
+      font-size: 1.8rem;
+      line-height: 2.7rem;
+    }
   }
 
   .infobox ng-md-icon {
@@ -241,7 +254,7 @@
 
     @media (max-width: 480px) {
       h2 {
-        font-size: 2em;
+        font-size: 2.2em;
       }
       .subtitle {
         font-size: 1.2em;
@@ -361,7 +374,7 @@
 
     @media (max-width: 480px) {
       h2 {
-        font-size: 2em;
+        font-size: 2.2em;
       }
     }
   }

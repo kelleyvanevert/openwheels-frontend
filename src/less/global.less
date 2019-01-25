@@ -448,6 +448,15 @@ h2.without-card + .sub {
     color: #777;
 }
 
+@media (max-width: @screen-xs-max) {
+    h2.without-card {
+        font-size: 2em !important;
+    }
+    h2.without-card + .sub {
+        font-size: 1.6rem;
+    }
+}
+
 
 .row.is-flex {
     display: flex;

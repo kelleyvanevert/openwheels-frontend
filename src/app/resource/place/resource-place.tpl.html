@@ -126,7 +126,7 @@
     </div>
   </div>
 
-  <div class="full-gmaps" ng-if="map" style="padding-top: 4rem;">
+  <div class="full-gmaps vpad" ng-if="map" style="padding-bottom: 0;">
     <div style="height: 5px;">
       <md-progress-linear ng-show="mapLoading" md-mode="indeterminate"></md-progress-linear>
     </div>
@@ -139,7 +139,8 @@
         Kaart laden <ng-md-icon icon="arrow_forward"></ng-md-icon>
       </button>
     </div>
-    <div ng-if="loadMap">
+    <div ng-if="loadMap"
+        style="border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;">
       <ui-gmap-google-map
         class="google-map"
         center="map.center"
@@ -177,7 +178,7 @@
   </div>
 
   <!-- WIL JE MEEDOEN? -->
-  <div class="container-fluid" style="background: white; padding: 6rem 0 4rem 0;">
+  <div class="container-fluid vpad" style="background: white;">
     <div class="container-home
                 landing-section">
       <div class="row">
@@ -216,7 +217,7 @@
 
 
   <!-- ONZE IDEALEN -->
-  <div class="container-fluid" style="padding: 4rem 0 0 0;">
+  <div class="container-fluid vpad" style="padding-bottom: 0;">
     <div class="container-home
                 landing-section
                 section-idealen" style="margin-bottom: 0;">
