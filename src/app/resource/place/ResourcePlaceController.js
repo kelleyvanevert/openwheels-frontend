@@ -305,14 +305,16 @@ angular.module('owm.resource.place', [])
     $scope.loadMap = true;
   };
 
+  function loadMapIfInViewport () {
+    if (!$scope.loadMap && $('.full-gmaps').visible(true)) {
+      $scope.$apply(function () {
+        $scope.loadMap = true;
+      });
+    }
+  }
   $scope.mapLoadOnScroll = function () {
-    $($window).on('scroll', function () {
-      if (!$scope.loadMap && $('.full-gmaps').visible(true)) {
-        $scope.$apply(function () {
-          $scope.loadMap = true;
-        });
-      }
-    });
+    $($window).on('scroll', loadMapIfInViewport);
+    loadMapIfInViewport();
   };
 
   $scope.markers = [];
