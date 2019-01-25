@@ -5,11 +5,49 @@
     <div class="hero-overlay"></div>
     <div class="landing-title">
       <h1><span class="highlight">{{ metaInfo.title }}</span></h1>
-      <p class="sub" ng-if="place.lead"><span class="highlight">{{ place.lead }}</span></p>
+      <!--<p class="sub" ng-if="place.lead"><span class="highlight">{{ place.lead }}</span></p>-->
     </div>
   </div>
 
-  <div id="place-page-container" class="container container-transitional">
+  <div style="padding-top: 0; margin-top: -2.6rem;" class="landing-lead">
+    <div class="container container-transitional" style="padding-top: 0;">
+      <div class="row">
+        <div class="rpad col-md-offset-1 col-md-10 col-xs-12">
+          <ow-geocoder-searchbar searchtext="place.nicename" shadow="true"></ow-geocoder-searchbar>
+        </div>
+      </div>
+      <div class="row is-flex" style="padding: 3.2rem 0 2rem 0;">
+        <div class="rpad" ng-class="{
+              'col-lg-7 col-sm-6': place.coordinator,
+              'col-md-offset-1 col-md-10': !place.coordinator,
+            }" style="text-align: left; justify-content: center;">
+          <p ng-if="place.lead">{{ place.lead }}</p>
+          <p ng-if="!place.lead">Huur gemakkelijk en voordelig een auto in {{ place.nicename }}. Je kunt MyWheels Open deelauto’s huren die je opent met je smartphone en/of chipkaart. Of een van de vele auto’s van particuliere autobezitters. Je hoeft daardoor nooit mis te grijpen als je een auto direct nodig hebt.</p>
+        </div>
+        <div class="rpad col-lg-5 col-sm-6" ng-if="place.coordinator" style="
+    position: relative;
+    justify-content: center;">
+          <div class="divider hidden-xs" style="
+    position: absolute;
+    top: 0;
+    left: -1px;
+    bottom: 0;
+    width: 2px;
+    background: rgba(0, 0, 0, 0.1);"></div>
+          <div class="media coordinator" style="padding-left: 1rem;">
+            <img ui-sref="member({ personId: place.coordinator.id })" class="media-object pull-left img-user-mid" person-profile-image="{ person: place.coordinator, size: 'large' }" />
+            <div class="media-body text-left" style="padding-top: 0;">
+              <h4 style="color: black;">Coördinator {{ place.nicename }}</h4>
+              <div ng-bind-html="place.coordinatorBody"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container container-transitional place-page-container">
+    <!--
     <div class="row">
       <div class="rpad col-md-offset-2 col-md-8 col-xs-12">
         <div class="card mw">
@@ -19,9 +57,133 @@
         </div>
       </div>
     </div>
+    -->
+
+    <div class="resources-for-category"
+        ng-if="!searchBoxes.show">
+      <div class="row">
+        <div class="rpad col-xs-12">
+          <h2 class="without-card">
+            <span class="skel inline" style="width: 30rem; height: 4rem;"></span>
+          </h2>
+          <p class="sub">
+            <span class="skel inline" style="width: 70rem; height: 2.6rem;"></span>
+          </p>
+        </div>
+      </div>
+      <div class="row is-flex">
+        <div class="rpad col-xs-12 col-sm-6 col-md-3" ng-repeat="i in [0,1,2,3]">
+          <div class="skel"
+            style="height: 34rem;"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="rpad col-xs-12">
+          <p style="text-align: center;">
+            <span class="skel inline" style="margin-top: 3rem; width: 24rem; height: 4rem;"></span>
+          </p>
+        </div>
+      </div>
+    </div>
     
     <div class="resources-for-category"
-        ng-repeat="box in searchBoxes.show">
+        ng-if="searchBoxes.show[0]">
+      <div class="row">
+        <div class="rpad col-xs-12">
+          <h2 class="without-card">{{ searchBoxes.show[0].title }}</h2>
+          <p class="sub" ng-if="box.description">{{ searchBoxes.show[0].description }}</p>
+        </div>
+      </div>
+      <div class="row is-flex">
+        <div class="rpad col-xs-12 col-sm-6 col-md-3" ng-repeat="resource in searchBoxes.show[0].data.results">
+          <ow-resource-card-box
+            resource="resource"
+            on-select="selectResource(resource)"
+            style="flex: 1;">
+          </ow-resource-card-box>
+          <!--
+          <ow-resource-card
+            class="vertical"
+            lightweight="true"
+            resource="resource"
+            on-select="selectResource(resource)">
+          </ow-resource-card>
+          -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="rpad col-xs-12">
+          <p style="text-align: center;">
+            <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action mywheels-btn-margin-top"
+                    ui-sref="{{ searchBoxes.show[0].sref }}"
+                    md-ink-ripple="#9a3d26">
+              Bekijk alle {{ searchBoxes.show[0].data.totalResults }} resultaten <ng-md-icon icon="arrow_forward"></ng-md-icon>
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="full-gmaps vpad"
+      ng-if="map"
+      ng-init="mapLoadOnScroll()"
+      style="padding-bottom: 0;">
+    <div style="height: 5px;">
+      <md-progress-linear ng-show="mapLoading" md-mode="indeterminate" class="md-warn"></md-progress-linear>
+    </div>
+    <div ng-if="!loadMap"
+        class="map-skeleton"
+        ng-click="loadMapNow()">
+      <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action"
+              ng-click="loadMapNow()"
+              md-ink-ripple="#9a3d26">
+        Kaart laden <ng-md-icon icon="arrow_forward"></ng-md-icon>
+      </button>
+    </div>
+    <div ng-if="loadMap"
+        style="border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;">
+      <ui-gmap-google-map
+        class="google-map"
+        center="map.center"
+        zoom="map.zoom"
+        draggable="map.draggable"
+        dragging="map.dragging"
+        bounds="map.bounds"
+        events="map.events"
+        options="map.options"
+        control="map.control">
+
+        <ui-gmap-markers
+          models="map.markers"
+          idKey="'id'"
+          icon="'icon'"
+          
+          doCluster=""
+          clusterOptions="map.clusterOptions"
+
+          coords="'coords'"
+          click="'onClick'">
+        </ui-gmap-markers>
+
+        <ui-gmap-window
+          coords="selectedMarker.coords"
+          show="selectedMarker.showWindow"
+          closeClick="closeWindow()"
+          templateUrl="'resource/search/map/resource-marker-window.tpl.html'"
+          templateParameter="selectedMarker"
+          options="map.windowOptions">
+        </ui-gmap-window>
+
+      </ui-gmap-google-map>
+    </div>
+  </div>
+
+  <div class="container container-transitional place-page-container"
+      style="padding-bottom: 3rem;">
+    <div class="resources-for-category"
+        ng-if="searchBoxes.show.length > 1"
+        ng-repeat="box in searchBoxes.show.slice(1)">
       <div class="row">
         <div class="rpad col-xs-12">
           <h2 class="without-card">{{ box.title }}</h2>
@@ -32,6 +194,7 @@
         <div class="rpad col-xs-12 col-sm-6 col-md-3" ng-repeat="resource in box.data.results">
           <ow-resource-card-box
             resource="resource"
+            on-select="selectResource(resource)"
             style="flex: 1;">
           </ow-resource-card-box>
           <!--
@@ -58,75 +221,249 @@
     </div>
   </div>
 
-  <div class="full-gmaps" ng-if="map">
-    <div style="height: 5px;">
-      <md-progress-linear ng-show="mapLoading" md-mode="indeterminate"></md-progress-linear>
-    </div>
-    <ui-gmap-google-map class="google-map"
-                        center="map.center"
-                        zoom="map.zoom"
-                        draggable="map.draggable"
-                        dragging="map.dragging"
-                        bounds="map.bounds"
-                        events="map.events"
-                        options="map.options"
-                        control="map.control">
-
-        <ui-gmap-markers
-                models="map.markers"
-                idKey="'id'"
-                icon="'icon'"
-                
-                doCluster=""
-                clusterOptions="map.clusterOptions"
-
-                coords="'coords'"
-                click="'onClick'">
-        </ui-gmap-markers>
-
-        <ui-gmap-window
-          coords="selectedMarker.coords"
-          show="selectedMarker.showWindow"
-          closeClick="closeWindow()"
-          templateUrl="'resource/search/map/resource-marker-window.tpl.html'"
-          templateParameter="selectedMarker"
-          options="map.windowOptions">
-        </ui-gmap-window>
-
-    </ui-gmap-google-map>
-  </div>
-
   <!-- WIL JE MEEDOEN? -->
-  <div class="container-fluid
-              container-home
-              mywheels-open-meedoen">
-    <div class="rpad col-md-12">
-      <h2>Zo makkelijk is een auto huren bij MyWheels:</h2>
+  <div class="container-fluid vpad" style="background: white;">
+    <div class="container-home
+                landing-section">
+      <div class="row">
+        <div class="rpad col-md-offset-1 col-md-10">
+          <h2>Hoe werkt autodelen in {{ place.nicename }}?</h2>
 
-      <div class="open-steps">
-        <div class="step">
-          <div class="circle"><ng-md-icon size="50" icon="create"></ng-md-icon></div>
-          <div class="step-label">Zoek een auto</div>
-          <p>Vind een auto in jouw buurt door op postcode of plaats te zoeken.<br /><br />
-          Over heel Nederland verspreid delen mensen hun auto's via het platform. Ook biedt MyWheels eigen
-           auto's aan, die extra gemakkelijk te huren zijn.</p>
+          <p ng-if="place.body" class="landing-text" ng-bind-html="place.body"></p>
         </div>
-        <div class="line"></div>
-        <div class="step">
-          <div class="circle"><ng-md-icon size="50" icon="directions_car"></ng-md-icon></div>
-          <div class="step-label">Reserveren</div>
-          <p>Vul de tijden in dat je de auto wilt huren. Heb je nog geen account? Dan vragen we je om je gegevens in te vullen. Daarna versturen we je verzoek naar de verhuurder van de auto. Ook kun je kiezen op welk soort contract je wilt rijden.</p>
+      </div>
+      <div class="row">
+        <div class="rpad col-xs-12">
+          <div class="open-steps">
+            <div class="step">
+              <div class="circle"><ng-md-icon size="50" icon="create"></ng-md-icon></div>
+              <div class="step-label">Zoek een auto</div>
+              <p class="landing-text">Zoek op je adres en je krijgt een lijst met auto’s in jouw buurt te zien. Klik in het overzicht op een geschikte auto maak een reservering.</p>
+            </div>
+            <div class="line"></div>
+            <div class="step">
+              <div class="circle"><ng-md-icon size="50" icon="directions_car"></ng-md-icon></div>
+              <div class="step-label">Reserveren</div>
+              <p class="landing-text">De MyWheels deelauto's open je met je smartphone of OV-chipkaart. Voor het huren van een particuliere auto kun je het best even contact opnemen met de verhuurder om af te spreken wanneer je de sleutel ophaalt.</p>
+            </div>
+            <div class="line"></div>
+            <div class="step">
+              <div class="circle"><ng-md-icon size="50" icon="euro_symbol"></ng-md-icon></div>
+              <div class="step-label">Op pad</div>
+              <p class="landing-text">Breng de auto na afloop van de rit weer terug naar de plek waar je hem hebt opgehaald. Zorg dat je bij particuliere auto’s zowel de begin- als de eindstand van de kilometerteller noteert en dit na afloop van de rit aan ons doorgeeft.</p>
+            </div>
+          </div>
         </div>
-        <div class="line"></div>
-        <div class="step">
-          <div class="circle"><ng-md-icon size="50" icon="euro_symbol"></ng-md-icon></div>
-          <div class="step-label">Op pad</div>
-          <p>Zodra je huurverzoek is geaccepteerd, kun je de auto ophalen en op pad. MyWheels Open auto's worden direct geaccepteerd en kun je opnenen met je smartphone of OV-chipkaart. Bij een auto van een particulier moet je nog even afspreken om de sleutel op te halen.<br /><br />
-          Breng de auto na de rit weer terug naar dezelfde plek, en vergeet niet de kilometerstanden door te geven indien dit nodig is.</p>
+      </div>
+      <div class="row">
+        <div class="rpad col-xs-12">
+          <h3 style="margin-bottom: 3rem;">Veelgestelde vragen</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="rpad col-sm-6 col-xs-12">
+
+          <div class="card mw faq" ng-repeat="faq in FAQ.left">
+            <div class="card-heading" ng-click="faq.open = !faq.open;">
+              <h4 class="card-title">{{ faq.question }}</h4>
+            </div>
+            <div class="panel-body" uib-collapse="!faq.open">
+              <div ng-bind-html="faq.answer"></div>
+            </div>
+          </div>
+
+        </div>
+        <div class="rpad col-sm-6 col-xs-12">
+
+          <div class="card mw faq" ng-repeat="faq in FAQ.right">
+            <div class="card-heading" ng-click="faq.open = !faq.open;">
+              <h4 class="card-title">{{ faq.question }}</h4>
+            </div>
+            <div class="panel-body" uib-collapse="!faq.open">
+              <div ng-bind-html="faq.answer"></div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
   <!-- /WIL JE MEEDOEN? -->
+
+
+  <!-- ONZE IDEALEN -->
+  <div class="container-fluid vpad" style="padding-bottom: 0;">
+    <div class="container-home
+                landing-section
+                section-idealen" style="margin-bottom: 0;">
+      <div class="row">
+        <div class="rpad col-md-offset-1 col-md-10">
+          <h2>Onze idealen</h2>
+        </div>
+      </div>
+      <div class="row is-flex">
+        <div class="col-md-8 col-sm-7 col-xs-12" style="text-align: left;">
+          <p class="landing-text">Hoe meer mensen een auto delen, des te minder auto’s er op de weg rijden of in de wijken staan. Met minder auto’s slaan we dus twee vliegen in één klap: minder CO2-uitstoot én leefbaardere buurten.</p>
+          <p class="landing-text">Bovendien is autodelen financieel aantrekkelijk. Wie per jaar minder dan 10.000 kilometer rijdt, is met een deelauto veel goedkoper uit dan met een eigen auto.</p>
+          <p class="landing-text">MyWheels is in de afgelopen vijfentwintig jaar uitgegroeid tot een van de grootste en voordeligste autodeelplatforms van Nederland. Anno 2019 verbinden we ruim 60.000 huurders en verhuurders van deelauto’s met elkaar.</p>
+        </div>
+        <div class="rpad col-md-4 col-sm-5 col-sm-offset-0 col-xs-offset-1 col-xs-10" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end;">
+          <svg style="
+    display: block;
+    max-width: 400px;" class="tree" viewBox="0 0 1800 1550" xmlns="http://www.w3.org/2000/svg">
+              <g fill="#81b855">
+                  <path class="tree-trunk" d="M523.18 1602H342.63c-3 0-5.5-6-5.5-13.27l51.33-684.27c0-7.3 2.47-13.27 5.49-13.27h80.65c3 0 5.5 6 5.5 13.27l48.58 684.27c0 7.27-2.48 13.27-5.5 13.27z" fill="#837260"/>
+                  <path class="tree-trunk" d="M1447.65 1591.52H1267.1c-3 0-5.5-6-5.5-13.27L1312.93 894c0-7.3 2.47-13.27 5.49-13.27h80.65c3 0 5.5 6 5.5 13.27l48.58 684.27c0 7.28-2.48 13.25-5.5 13.25z" fill="#837260"/>
+                  <path class="tree-trunk" d="M982.88 1591.52H802.34c-3 0-5.5-6-5.5-13.27L848.16 894c0-7.3 2.47-13.27 5.5-13.27h80.65c3 0 5.5 6 5.5 13.27l48.57 684.27c0 7.28-2.47 13.25-5.5 13.25z" fill="#837260"/>
+                  <g transform="translate(283 844)"><circle r="120" /></g>
+                  <g transform="translate(422 724)"><circle r="120" /></g>
+                  <g transform="translate(593 809)"><circle r="120" /></g>
+                  <g transform="translate(512 969)"><circle r="120" /></g>
+                  <g transform="translate(344 969)"><circle r="120" /></g>
+                  <g transform="translate(301 518)"><circle r="120" /></g>
+                  <g transform="translate(433 545)"><circle r="120" /></g>
+                  <g transform="translate(265 638)"><circle r="120" /></g>
+                  <g transform="translate(422 878)"><circle r="120" /></g>
+                  <g transform="translate(637 693)"><circle r="120" /></g>
+                  <g transform="translate(622 569)"><circle r="120" /></g>
+                  <g transform="translate(386 397)"><circle r="120" /></g>
+                  <g transform="translate(559 448)"><circle r="120" /></g>
+                  <g transform="translate(543 628)"><circle r="120" /></g>
+                  <g transform="translate(180 693)"><circle r="120" /></g>
+                  <g transform="translate(265 448)"><circle r="120" /></g>
+                  <g transform="translate(714 545)"><circle r="120" /></g>
+                  <g transform="translate(627 891)"><circle r="120" /></g>
+                  <g transform="translate(696 736)"><circle r="120" /></g>
+                  <g transform="translate(180 545)"><circle r="120" /></g>
+                  <g transform="translate(1208 834)"><circle r="120" /></g>
+                  <g transform="translate(1346 714)"><circle r="120" /></g>
+                  <g transform="translate(1518 798)"><circle r="120" /></g>
+                  <g transform="translate(1436 958)"><circle r="120" /></g>
+                  <g transform="translate(1268 958)"><circle r="120" /></g>
+                  <g transform="translate(1225 507)"><circle r="120" /></g>
+                  <g transform="translate(1357 534)"><circle r="120" /></g>
+                  <g transform="translate(1190 627)"><circle r="120" /></g>
+                  <g transform="translate(1346 867)"><circle r="120" /></g>
+                  <g transform="translate(1562 683)"><circle r="120" /></g>
+                  <g transform="translate(1546 558)"><circle r="120" /></g>
+                  <g transform="translate(1311 387)"><circle r="120" /></g>
+                  <g transform="translate(1484 438)"><circle r="120" /></g>
+                  <g transform="translate(1467 617)"><circle r="120" /></g>
+                  <g transform="translate(1104 683)"><circle r="120" /></g>
+                  <g transform="translate(1190 438)"><circle r="120" /></g>
+                  <g transform="translate(1639 534)"><circle r="120" /></g>
+                  <g transform="translate(1552 880)"><circle r="120" /></g>
+                  <g transform="translate(1620 725)"><circle r="120" /></g>
+                  <g transform="translate(1104 534)"><circle r="120" /></g>
+                  <g transform="translate(743 834)"><circle r="120" /></g>
+                  <g transform="translate(882 714)"><circle r="120" /></g>
+                  <g transform="translate(1053 798)"><circle r="120" /></g>
+                  <g transform="translate(971 958)"><circle r="120" /></g>
+                  <g transform="translate(804 958)"><circle r="120" /></g>
+                  <g transform="translate(761 507)"><circle r="120" /></g>
+                  <g transform="translate(893 534)"><circle r="120" /></g>
+                  <g transform="translate(725 627)"><circle r="120" /></g>
+                  <g transform="translate(882 867)"><circle r="120" /></g>
+                  <g transform="translate(1097 683)"><circle r="120" /></g>
+                  <g transform="translate(1081 558)"><circle r="120" /></g>
+                  <g transform="translate(846 387)"><circle r="120" /></g>
+                  <g transform="translate(1019 438)"><circle r="120" /></g>
+                  <g transform="translate(1003 617)"><circle r="120" /></g>
+                  <g transform="translate(640 683)"><circle r="120" /></g>
+                  <g transform="translate(725 438)"><circle r="120" /></g>
+                  <g transform="translate(1174 534)"><circle r="120" /></g>
+                  <g transform="translate(1087 880)"><circle r="120" /></g>
+                  <g transform="translate(1156 725)"><circle r="120" /></g>
+                  <g transform="translate(640 534)"><circle r="120" /></g>
+                  <g fill="white">
+                      <path d="M152.75 551.79v-86a5.53 5.53 0 0 1 5.41-5.54h60.34a5 5 0 0 1 0 10h-54.79v33.15h48.55a5.06 5.06 0 0 1 5 5 5 5 0 0 1-5 5h-48.55v34h55.48a5 5 0 1 1 0 10h-61a5.54 5.54 0 0 1-5.44-5.61zm32.32-101.53a3.71 3.71 0 0 1 .7-2.08l8.32-12.62c1.38-2.08 2.91-3.19 5-3.19 3.33 0 7.49 2.22 7.49 4.16 0 1.11-.83 2.08-1.94 3.19l-10.4 9.85a7.85 7.85 0 0 1-6.52 2.63c-1.54 0-2.65-.83-2.65-1.94zM273.84 559c-19.69 0-35.78-15.12-35.78-37.31v-.28c0-20.66 14.56-37.31 34.4-37.31 21.22 0 33.28 17.34 33.28 36.34a5 5 0 0 1-5 5h-51.86c1.52 15.53 12.48 24.27 25.24 24.27a29.33 29.33 0 0 0 20.67-8.32 4.57 4.57 0 1 1 6.1 6.79c-6.8 6.52-14.84 10.82-27.05 10.82zm21.22-41.47c-1.11-13-8.6-24.41-22.88-24.41-12.49 0-21.92 10.4-23.3 24.41zm-25.66-44.11a3.74 3.74 0 0 1 .7-2.08l8.32-12.62c1.39-2.08 2.91-3.19 5-3.19 3.33 0 7.49 2.22 7.49 4.16 0 1.11-.83 2.08-1.94 3.19l-10.4 9.85a7.85 7.85 0 0 1-6.52 2.63c-1.54 0-2.65-.83-2.65-1.94zM324.61 490.34a5.34 5.34 0 1 1 10.68 0v7.77c4.71-7.77 12.2-14 24.55-14 17.34 0 27.46 11.65 27.46 28.71v39.81a5.34 5.34 0 1 1-10.68 0v-37.18c0-13.32-7.21-21.64-19.83-21.64-12.35 0-21.5 9-21.5 22.47v36.34A5.22 5.22 0 0 1 330 558a5.33 5.33 0 0 1-5.41-5.41zM519.9 552.62a5.34 5.34 0 1 1-10.68 0v-9.71c-5.83 8.6-14.29 16-27.46 16-17.2 0-34.26-13.59-34.26-37.17v-.28c0-23.44 17.06-37.31 34.26-37.31 13.31 0 21.91 7.22 27.46 15.26V460.8a5.22 5.22 0 0 1 5.27-5.41 5.33 5.33 0 0 1 5.41 5.41zm-61.45-31.34v.27c0 16.92 11.79 27.74 25.25 27.74s25.93-11.23 25.93-27.74v-.27c0-16.51-12.62-27.61-25.93-27.61-13.87 0-25.25 10.27-25.25 27.61zM575.1 559c-19.7 0-35.78-15.12-35.78-37.31v-.28c0-20.66 14.56-37.31 34.39-37.31 21.23 0 33.29 17.34 33.29 36.34a5 5 0 0 1-5 5h-51.87c1.53 15.53 12.49 24.27 25.25 24.27a29.3 29.3 0 0 0 20.62-8.32 4.61 4.61 0 0 1 7.77 3.33 4.59 4.59 0 0 1-1.66 3.46c-6.76 6.52-14.8 10.82-27.01 10.82zm21.22-41.47c-1.11-13-8.6-24.41-22.88-24.41-12.49 0-21.92 10.4-23.31 24.41zM657.21 559c-19.69 0-35.78-15.12-35.78-37.31v-.28c0-20.66 14.56-37.31 34.4-37.31 21.22 0 33.28 17.34 33.28 36.34a5 5 0 0 1-5 5h-51.86c1.52 15.53 12.48 24.27 25.24 24.27a29.33 29.33 0 0 0 20.67-8.32 4.57 4.57 0 1 1 6.1 6.79c-6.8 6.52-14.84 10.82-27.05 10.82zm21.22-41.47c-1.11-13-8.6-24.41-22.88-24.41-12.49 0-21.92 10.4-23.3 24.41zM709 460.8a5.34 5.34 0 1 1 10.68 0v91.82a5.22 5.22 0 0 1-5.27 5.41 5.33 5.33 0 0 1-5.41-5.41zM739 536.53v-.27c0-15.12 12.49-23.17 30.66-23.17a76.25 76.25 0 0 1 22 3v-2.49c0-12.9-7.9-19.56-21.36-19.56a44.8 44.8 0 0 0-18.59 4 5.36 5.36 0 0 1-1.94.42 4.74 4.74 0 0 1-4.71-4.58 4.89 4.89 0 0 1 2.91-4.44 56.57 56.57 0 0 1 23.44-4.85c10.13 0 17.89 2.63 23.16 7.9 4.86 4.86 7.36 11.79 7.36 20.95v39.25a5.07 5.07 0 0 1-5.14 5.27 4.92 4.92 0 0 1-5.13-5v-6.52c-5 6.52-13.31 12.34-25.94 12.34-13.22.08-26.72-7.54-26.72-22.25zm52.89-5.53v-6.93a74.62 74.62 0 0 0-21.08-3c-13.46 0-20.95 5.82-20.95 14.84v.28c0 9 8.33 14.28 18 14.28 13.21-.07 24.03-8.11 24.03-19.47zM886.21 552.62a5.27 5.27 0 1 1-10.54 0v-7.76c-4.86 7.76-12.21 14-24.55 14-17.34 0-27.47-11.65-27.47-28.71v-39.81a5.21 5.21 0 0 1 5.27-5.4 5.4 5.4 0 0 1 5.41 5.4v37.18c0 13.31 7.22 21.64 19.84 21.64 12.2 0 21.5-9 21.5-22.47v-36.35a5.21 5.21 0 0 1 5.27-5.4 5.29 5.29 0 0 1 5.27 5.4zM914 538.34v-43.28h-5.83a4.86 4.86 0 0 1-4.71-4.72 4.76 4.76 0 0 1 4.71-4.71H914v-16.92a5.29 5.29 0 0 1 5.27-5.41 5.51 5.51 0 0 1 5.41 5.41v16.92h18.58a4.89 4.89 0 0 1 4.86 4.71 4.8 4.8 0 0 1-4.86 4.72h-18.63V537c0 8.74 4.85 11.93 12.07 11.93 3.74 0 5.68-1 6.51-1a4.62 4.62 0 0 1 4.58 4.57 4.45 4.45 0 0 1-3 4.16 26.93 26.93 0 0 1-10.54 2c-11.56-.07-20.25-5.76-20.25-20.32zM959.72 521.83v-.28a37.38 37.38 0 0 1 74.76-.27v.27A37.23 37.23 0 0 1 996.89 559c-21.5 0-37.17-16.92-37.17-37.17zm63.8 0v-.28c0-15.39-11.51-28-26.63-28-15.53 0-26.21 12.63-26.21 27.75v.27c0 15.4 11.37 27.88 26.49 27.88 15.53-.02 26.35-12.45 26.35-27.62zM1095.37 460.8a5.34 5.34 0 1 1 10.68 0v39.25c5.82-8.6 14.28-15.95 27.46-15.95 17.2 0 34.26 13.6 34.26 37.18v.27c0 23.44-16.92 37.31-34.26 37.31-13.31 0-21.91-7.21-27.46-15.25v9a5.29 5.29 0 0 1-5.27 5.41 5.41 5.41 0 0 1-5.41-5.41zm61.44 60.89v-.28c0-16.92-11.65-27.74-25.24-27.74-13.32 0-25.94 11.24-25.94 27.61v.27c0 16.65 12.62 27.74 25.94 27.74 13.87 0 25.24-10.29 25.24-27.6zM1218.81 559c-19.69 0-35.78-15.12-35.78-37.31v-.28c0-20.66 14.56-37.31 34.39-37.31 21.23 0 33.29 17.34 33.29 36.34a5 5 0 0 1-5 5h-51.87c1.52 15.53 12.48 24.27 25.24 24.27a29.33 29.33 0 0 0 20.67-8.32 4.57 4.57 0 1 1 6.1 6.79c-6.79 6.52-14.85 10.82-27.04 10.82zm21.19-41.47c-1.11-13-8.6-24.41-22.88-24.41-12.49 0-21.92 10.4-23.3 24.41zM1265.69 549.71a4.82 4.82 0 0 1-1.94-3.88 4.65 4.65 0 0 1 4.72-4.58 4.28 4.28 0 0 1 2.63.83c7.35 5 15 7.63 22.75 7.63 8.6 0 14.84-4.44 14.84-11.37v-.28c0-7.21-8.46-10-17.89-12.62-11.24-3.19-23.72-7.08-23.72-20.25v-.28c0-12.35 10.26-20.53 24.41-20.53a50 50 0 0 1 22.89 6.1 5.21 5.21 0 0 1 2.63 4.44 4.65 4.65 0 0 1-4.71 4.58 5.32 5.32 0 0 1-2.36-.56c-6.1-3.46-12.62-5.54-18.73-5.54-8.46 0-13.87 4.43-13.87 10.4v.28c0 6.79 8.88 9.43 18.45 12.34 11.1 3.33 23 7.63 23 20.53v.28c0 13.59-11.24 21.5-25.53 21.5a49.61 49.61 0 0 1-27.57-9.02zM1338.65 490.34a5.34 5.34 0 1 1 10.68 0v9.71c5.82-8.6 14.29-15.95 27.46-15.95 17.2 0 34.26 13.6 34.26 37.18v.27c0 23.44-16.92 37.31-34.26 37.31-13.31 0-21.91-7.21-27.46-15.25v31.21a5.21 5.21 0 0 1-5.27 5.4 5.32 5.32 0 0 1-5.41-5.4zm61.44 31.35v-.28c0-16.92-11.65-27.74-25.24-27.74-13.32 0-25.94 11.24-25.94 27.61v.27c0 16.65 12.62 27.74 25.94 27.74 13.87 0 25.24-10.29 25.24-27.6zM1425.34 536.53v-.27c0-15.12 12.48-23.17 30.65-23.17a76.25 76.25 0 0 1 22 3v-2.49c0-12.9-7.9-19.56-21.36-19.56a44.72 44.72 0 0 0-18.58 4 5.44 5.44 0 0 1-1.94.42 4.74 4.74 0 0 1-4.72-4.58 4.91 4.91 0 0 1 2.91-4.44 56.6 56.6 0 0 1 23.44-4.85c10.13 0 17.9 2.63 23.17 7.9 4.85 4.86 7.35 11.79 7.35 20.95v39.25a5.07 5.07 0 0 1-5.13 5.27 4.92 4.92 0 0 1-5.14-5v-6.52c-5 6.52-13.31 12.34-25.93 12.34-13.27.08-26.72-7.54-26.72-22.25zm52.84-5.55v-6.93a74.62 74.62 0 0 0-21.08-3c-13.45 0-20.94 5.82-20.94 14.84v.28c0 9 8.32 14.28 18 14.28 13.2-.05 24.02-8.09 24.02-19.45zM1505.64 536.53v-.27c0-15.12 12.49-23.17 30.66-23.17a76.25 76.25 0 0 1 22 3v-2.49c0-12.9-7.9-19.56-21.36-19.56a44.72 44.72 0 0 0-18.58 4 5.45 5.45 0 0 1-2 .42 4.74 4.74 0 0 1-4.71-4.58 4.89 4.89 0 0 1 2.91-4.44 56.57 56.57 0 0 1 23.44-4.85c10.13 0 17.89 2.63 23.16 7.9 4.86 4.86 7.36 11.79 7.36 20.95v39.25a5.07 5.07 0 0 1-5.14 5.27 4.92 4.92 0 0 1-5.13-5v-6.52c-5 6.52-13.31 12.34-25.94 12.34-13.21.08-26.67-7.54-26.67-22.25zm52.85-5.55v-6.93a74.62 74.62 0 0 0-21.08-3c-13.46 0-21 5.82-21 14.84v.28c0 9 8.33 14.28 18 14.28 13.26-.05 24.08-8.09 24.08-19.45zM1591.36 490.34a5.38 5.38 0 0 1 5.27-5.4 5.32 5.32 0 0 1 5.41 5.4v13.46c5.27-11.93 15.68-19.14 24.69-19.14a5.14 5.14 0 0 1 5.27 5.41 5.3 5.3 0 0 1-4.71 5.41c-13.87 1.66-25.25 12.06-25.25 32.73v24.41a5.34 5.34 0 1 1-10.68 0zM1651.28 538.34v-43.28h-5.82a4.86 4.86 0 0 1-4.72-4.72 4.77 4.77 0 0 1 4.72-4.71h5.82v-16.92a5.29 5.29 0 0 1 5.27-5.41 5.5 5.5 0 0 1 5.41 5.41v16.92h18.59a4.89 4.89 0 0 1 4.85 4.71 4.8 4.8 0 0 1-4.85 4.72H1662V537c0 8.74 4.86 11.93 12.07 11.93 3.74 0 5.69-1 6.52-1a4.62 4.62 0 0 1 4.58 4.57 4.45 4.45 0 0 1-3.06 4.16 26.93 26.93 0 0 1-10.54 2c-11.57-.07-20.29-5.76-20.29-20.32zM353.52 744h-81.69c-5.4 0-9.39-3.76-9.39-8.92 0-3.29 1.18-5.87 3.52-8.92l85.45-104.22c2.81-3.52 5.39-5.63 10.32-5.63a9.57 9.57 0 0 1 9.86 9.62v102.58h18.55a8.07 8.07 0 0 1 8 8c0 4.22-3.76 7.51-8 7.51h-18.55v31.22a9 9 0 0 1-18.07 0zm0-15.49v-84.74l-69 84.74zM424.4 765.59l56.1-49.52c25.35-22.54 34.27-35.21 34.27-51.64 0-19.25-15.25-31.46-33.09-31.46-17.37 0-29.11 8.45-40.85 23.94a8.31 8.31 0 0 1-6.8 3.29 8.41 8.41 0 0 1-8.45-8.45 8.14 8.14 0 0 1 1.88-5.16c13.61-19 28.63-30.28 55.63-30.28 29.57 0 50.93 19.71 50.93 46.47v.47c0 23.94-12.67 38.73-41.55 63.85l-43.89 39h79.57a8.45 8.45 0 1 1 0 16.9h-98.82c-5.4 0-9.39-3.52-9.39-8.68 0-3.56 1.41-6.15 4.46-8.73zM568.06 764.42a9.25 9.25 0 0 1-3.76-7.75 9 9 0 0 1 8.92-8.68 10 10 0 0 1 6.34 2.35c12.91 11.73 27 18.54 42.25 18.54 23 0 39.43-15 39.43-36.38v-.5c0-20.66-16.9-34.51-40.84-34.51-19.25 0-29.1 8-33.33 8-3.52 0-6.1-1.41-9.39-3.52-3-2.11-4.22-5.87-4-10.09l3.76-64.32c.23-5.63 4.22-8.92 8.92-8.92h78.86a8.57 8.57 0 0 1 0 17.14h-70.87l-3.52 52.58c9.62-4.23 18.77-7.28 32.39-7.28 31.92 0 56.8 18.78 56.8 50.23v.47c0 31.69-24.41 54-58.45 54-21.36 0-40.13-9.39-53.51-21.36zM784.47 619.59a9 9 0 1 1 18.08 0V686c9.86-14.55 24.17-27 46.47-27 29.11 0 58 23 58 62.9v.47c0 39.67-28.64 63.14-58 63.14-22.53 0-37.08-12.2-46.47-25.82V775a9 9 0 0 1-8.92 9.16 9.17 9.17 0 0 1-9.16-9.16zm104 103v-.47c0-28.64-19.72-46.95-42.72-46.95-22.54 0-43.9 19-43.9 46.71v.47c0 28.17 21.36 47 43.9 47 23.46 0 42.71-17.35 42.71-46.71zM932.82 722.87v-.47c0-34.27 26.76-63.37 63.37-63.37 36.39 0 63.15 28.63 63.15 62.9v.47a63 63 0 0 1-63.61 63.38c-36.39 0-62.91-28.64-62.91-62.91zm108 0v-.47c0-26-19.48-47.41-45.06-47.41-26.29 0-44.37 21.36-44.37 46.94v.47c0 26.06 19.25 47.18 44.83 47.18 26.26 0 44.57-21.12 44.57-46.71zM1092 669.59a9.12 9.12 0 0 1 8.92-9.16 9 9 0 0 1 9.16 9.16V682c8-12 18.78-23 39.2-23 19.71 0 32.39 10.56 39 24.17 8.69-13.38 21.6-24.17 42.72-24.17 27.93 0 45.07 18.77 45.07 48.82V775a9 9 0 1 1-18.07 0v-62.93c0-23.47-11.74-36.61-31.46-36.61-18.31 0-33.33 13.61-33.33 37.55v62a9 9 0 1 1-18.07 0v-63.4c0-22.77-12-36.15-31.22-36.15s-33.8 16-33.8 38.26V775a8.83 8.83 0 0 1-8.92 9.16 9 9 0 0 1-9.2-9.16zM1368.24 785.78c-33.34 0-60.56-25.59-60.56-63.14v-.47c0-35 24.64-63.14 58.21-63.14 35.91 0 56.33 29.34 56.33 61.49a8.42 8.42 0 0 1-8.45 8.46H1326c2.59 26.28 21.13 41.07 42.72 41.07 15 0 26.06-5.87 35-14.08a7.8 7.8 0 0 1 13.14 5.63 7.78 7.78 0 0 1-2.81 5.87c-11.54 11.03-25.16 18.31-45.81 18.31zm35.91-70.18c-1.88-22.07-14.55-41.32-38.73-41.32-21.13 0-37.09 17.61-39.44 41.32zM1454.15 669.59a9.12 9.12 0 0 1 8.91-9.16 9 9 0 0 1 9.16 9.16v13.14c8-13.14 20.65-23.7 41.55-23.7 29.34 0 46.47 19.71 46.47 48.58V775a9 9 0 1 1-18.07 0v-62.93c0-22.53-12.21-36.61-33.57-36.61-20.89 0-36.38 15.25-36.38 38V775a8.83 8.83 0 0 1-8.92 9.16 9 9 0 0 1-9.15-9.16zM306.2 890.06a5.75 5.75 0 1 1 11.5 0v10.46c6.28-9.26 15.39-17.18 29.58-17.18 18.52 0 36.89 14.64 36.89 40v.3c0 25.25-18.22 40.18-36.89 40.18-14.34 0-23.6-7.76-29.58-16.43V981a5.62 5.62 0 0 1-5.67 5.83 5.74 5.74 0 0 1-5.83-5.83zm66.17 33.76v-.3c0-18.22-12.54-29.87-27.18-29.87-14.34 0-27.94 12.1-27.94 29.72v.3c0 17.93 13.6 29.88 27.94 29.88 14.93 0 27.18-11.06 27.18-29.73zM439.14 964c-21.21 0-38.54-16.28-38.54-40.18v-.3c0-22.26 15.69-40.18 37-40.18 22.85 0 35.85 18.67 35.85 39.14a5.35 5.35 0 0 1-5.38 5.37h-55.82C413.9 944.58 425.7 954 439.44 954c9.56 0 16.58-3.73 22.25-9a5 5 0 0 1 8.37 3.59 5 5 0 0 1-1.79 3.73C461 959.37 452.28 964 439.14 964zM462 919.34c-1.19-14-9.26-26.29-24.64-26.29-13.45 0-23.6 11.2-25.1 26.29zM493.81 890.06a5.8 5.8 0 0 1 5.68-5.82 5.74 5.74 0 0 1 5.82 5.82v14.49c5.68-12.85 16.88-20.61 26.59-20.61a5.54 5.54 0 0 1 5.68 5.82 5.72 5.72 0 0 1-5.08 5.83c-14.94 1.79-27.19 13-27.19 35.25v26.29a5.75 5.75 0 1 1-11.5 0zM590.6 986.41c-3.29-.15-5.83-1.79-5.83-4.93a4.82 4.82 0 0 1 4.78-4.78c.9 0 1.8.15 2.54.15 4.78 0 8.07-3.14 8.07-9.86v-76.93a5.8 5.8 0 0 1 5.68-5.82 5.74 5.74 0 0 1 5.82 5.82v76.63c0 13.59-7.17 19.87-18.37 19.87a14.47 14.47 0 0 1-2.69-.15zm8.51-125.63c0-3.73 3-6.12 6.73-6.12s6.87 2.39 6.87 6.12v2c0 3.58-3 6.12-6.87 6.12s-6.73-2.54-6.73-6.12zM632.57 939.8v-.3c0-16.28 13.45-24.94 33-24.94a81.69 81.69 0 0 1 23.75 3.29v-2.69c0-13.9-8.51-21.07-23-21.07a48.23 48.23 0 0 0-20 4.34 5.77 5.77 0 0 1-2.09.44 5.1 5.1 0 0 1-5.08-4.92 5.27 5.27 0 0 1 3.14-4.78 60.87 60.87 0 0 1 25.25-5.23c10.9 0 19.26 2.84 24.94 8.51 5.23 5.23 7.92 12.7 7.92 22.56v42.27a5.46 5.46 0 0 1-5.53 5.68 5.3 5.3 0 0 1-5.53-5.38v-7c-5.37 7-14.34 13.29-27.93 13.29-14.35-.02-28.84-8.23-28.84-24.07zm56.91-6v-7.47a80.58 80.58 0 0 0-22.7-3.29c-14.49 0-22.56 6.28-22.56 16v.3c0 9.7 9 15.38 19.42 15.38 14.19.02 25.84-8.64 25.84-20.89zM719.06 939.8v-.3c0-16.28 13.44-24.94 33-24.94a81.69 81.69 0 0 1 23.75 3.29v-2.69c0-13.9-8.51-21.07-23-21.07a48.23 48.23 0 0 0-20 4.34 5.81 5.81 0 0 1-2.09.44 5.1 5.1 0 0 1-5.08-4.92 5.25 5.25 0 0 1 3.14-4.78 60.79 60.79 0 0 1 25.22-5.23c10.91 0 19.27 2.84 25 8.51 5.22 5.23 7.91 12.7 7.91 22.56v42.27a5.46 5.46 0 0 1-5.52 5.68 5.3 5.3 0 0 1-5.53-5.38v-7c-5.38 7-14.34 13.29-27.93 13.29-14.38-.02-28.87-8.23-28.87-24.07zm56.91-6v-7.47a80.72 80.72 0 0 0-22.71-3.29c-14.49 0-22.55 6.28-22.55 16v.3c0 9.7 9 15.38 19.42 15.38 14.19.02 25.87-8.64 25.87-20.89zM811.37 890.06a5.8 5.8 0 0 1 5.68-5.82 5.74 5.74 0 0 1 5.82 5.82v14.49c5.68-12.85 16.88-20.61 26.59-20.61a5.54 5.54 0 0 1 5.68 5.82 5.72 5.72 0 0 1-5.08 5.83c-14.94 1.79-27.19 13-27.19 35.25v26.29a5.75 5.75 0 1 1-11.5 0zM910.85 939.8v-.3c0-16.28 13.44-24.94 33-24.94a81.69 81.69 0 0 1 23.75 3.29v-2.69c0-13.9-8.51-21.07-23-21.07a48.23 48.23 0 0 0-20 4.34 5.81 5.81 0 0 1-2.09.44 5.1 5.1 0 0 1-5.08-4.92 5.25 5.25 0 0 1 3.14-4.78 60.82 60.82 0 0 1 25.24-5.23c10.91 0 19.27 2.84 25 8.51 5.23 5.23 7.91 12.7 7.91 22.56v42.27a5.46 5.46 0 0 1-5.52 5.68 5.3 5.3 0 0 1-5.53-5.38v-7c-5.38 7-14.34 13.29-27.93 13.29-14.4-.02-28.89-8.23-28.89-24.07zm56.91-6v-7.47a80.64 80.64 0 0 0-22.7-3.29c-14.49 0-22.56 6.28-22.56 16v.3c0 9.7 9 15.38 19.42 15.38 14.19.02 25.84-8.64 25.84-20.89zM997.33 939.8v-.3c0-16.28 13.45-24.94 33-24.94a81.69 81.69 0 0 1 23.75 3.29v-2.69c0-13.9-8.52-21.07-23-21.07a48.18 48.18 0 0 0-20 4.34 5.85 5.85 0 0 1-2.09.44 5.1 5.1 0 0 1-5.08-4.92 5.26 5.26 0 0 1 3.13-4.78 60.87 60.87 0 0 1 25.25-5.23c10.9 0 19.27 2.84 24.94 8.51 5.23 5.23 7.92 12.7 7.92 22.56v42.27a5.46 5.46 0 0 1-5.53 5.68 5.3 5.3 0 0 1-5.52-5.38v-7c-5.38 7-14.34 13.29-27.94 13.29-14.34-.02-28.83-8.23-28.83-24.07zm56.92-6v-7.47a80.72 80.72 0 0 0-22.71-3.29c-14.49 0-22.55 6.28-22.55 16v.3c0 9.7 9 15.38 19.41 15.38 14.2.02 25.85-8.64 25.85-20.89zM1089.65 890.06a5.75 5.75 0 1 1 11.5 0v8.37c5.08-8.37 13.14-15.09 26.44-15.09 18.67 0 29.57 12.55 29.57 30.92v42.87a5.75 5.75 0 1 1-11.5 0v-40c0-14.34-7.77-23.3-21.36-23.3-13.29 0-23.15 9.71-23.15 24.19v39.14a5.62 5.62 0 0 1-5.68 5.83 5.74 5.74 0 0 1-5.82-5.83zM1223.78 910.23v-.3c0-29.58 22.11-54.08 52.88-54.08 16.88 0 27.63 5.53 37.34 13.6a6.44 6.44 0 0 1 2.39 4.78 6.06 6.06 0 0 1-6 5.82 7 7 0 0 1-3.89-1.34c-8.06-7.17-17.17-12-30-12-23.15 0-40.48 18.82-40.48 42.87v.3c0 24.2 17.48 43.17 40.48 43.17 13 0 22.11-4.48 31.07-12.7a5.41 5.41 0 0 1 3.73-1.64 5.88 5.88 0 0 1 5.68 5.67 5.61 5.61 0 0 1-1.94 4.19c-10.3 9.43-21.65 15.43-38.83 15.43-30.21 0-52.43-23.75-52.43-53.77zM1331 910.23v-.3c0-28.83 21.66-54.08 53.48-54.08s53.17 24.95 53.17 53.78v.3c0 28.83-21.66 54.07-53.47 54.07S1331 939.06 1331 910.23zm94.41 0v-.3c0-23.75-17.33-43.17-41.23-43.17s-40.93 19.12-40.93 42.87v.3c0 23.75 17.33 43.17 41.23 43.17s40.96-19.1 40.96-42.87zM1457.25 951.16l35.7-31.52c16.13-14.34 21.81-22.41 21.81-32.86 0-12.25-9.71-20-21.06-20-11.06 0-18.53 5.38-26 15.24a5.43 5.43 0 0 1-9.71-3.29 5.21 5.21 0 0 1 1.19-3.29c8.66-12.1 18.22-19.27 35.4-19.27 18.82 0 32.42 12.55 32.42 29.58v.3c0 15.23-8.07 24.65-26.44 40.63l-27.94 24.79h50.64a5.38 5.38 0 1 1 0 10.76h-62.88c-3.44 0-6-2.24-6-5.53a6.79 6.79 0 0 1 2.87-5.54z"/>
+                  </g>
+              </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /ONZE IDEALEN -->
+
+
+  <!-- RATINGS -->
+  <div class="container-fluid slider">
+    <div class="ratings-mywheels container-home">
+      
+      <div class="rpad col-xs-12">
+        <h2 class="ratings--heading">Sluit je aan bij 60.000 autodelers</h2>
+      </div>
+
+      <div class="ratings--average text-center">
+        <span class="ratings--average--stars">
+          <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+          <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+          <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+          <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+          <ng-md-icon icon="star_half" aria-hidden="true" class="rating--title--icon grey-star"></ng-md-icon>
+          <span class="ratings--average--text"><strong>7.8</strong><small> / 10</small></span>
+          <br/>
+          Gebaseerd op 68 beoordelingen bij <a href="https://kiyoh.nl/mywheels/" target="_blank">Kiyoh</a>
+        </span>
+      </div>
+
+      <div class="ratings">
+        <div class="rating">
+          <div layout="row">
+            <span class="rating--title--stars">
+              <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+              <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+              <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+              <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+              <ng-md-icon icon="star_half" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+            </span>
+            <span class="rating--title--text">
+              <h3>9</h3>
+            </span>
+          </div>
+          <p class="rating--content">Duidelijke instructies via de mail. Informatie is helder. Erg handig in het gebruik. Was de eerste keer, en zeker voor herhaling vatbaar!</p>
+          <p class="rating--sender"><strong>Marlies</strong> uit Utrecht op 12 februari 2018</p>
+        </div>
+
+        <div class="rating">
+          <div layout="row">
+            <span class="rating--title--stars">
+              <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+              <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+              <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+              <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+              <ng-md-icon icon="star" aria-hidden="true" class="rating--title--icon"></ng-md-icon>
+            </span>
+            <span class="rating--title--text">
+              <h3>10</h3>
+            </span>
+          </div>
+          <p class="rating--content">Al jaren lid en alleen maar positieve ervaringen gehad! Groot aanbod van auto's met MyWheels Open in mijn woonplaats, heel behulpzame medewerkers en ook nog erg voordelig geprijsd. Laatste jaar veel van particulieren gehuurd, ook dit werkt vlekkeloos. Dankzij MyWheels hebben we geen eigen auto nodig.</p>
+          <p class="rating--sender"><strong>Marcel</strong> uit Houten op 7 oktober 2017</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- /RATINGS -->
+
+  <!-- TRIANGLE BAR HOME -->
+  <div class="triangle--bar--home triangle--bar--home-lightgray"></div>
+  <!-- /TRIANGLE BAR -->
+
+  <div class="footer-logo-row text-center">
+    <div class="container-home">
+      <h2 class="footer-logo-row-header">In de media</h2>
+      <div class="row no-margin">
+        <div class="col-xs-6 col-md-2"><img src="assets/img/media/de_volkskrant_logo.png" /></div>
+        <div class="col-xs-6 col-md-2"><img src="assets/img/media/nos_logo.png" /></div>
+        <div class="col-xs-6 col-md-2"><img src="assets/img/media/de_telegraaf_logo.png" /></div>
+        <div class="col-xs-6 col-md-2"><img src="assets/img/media/financieel_dagblad_logo.png" /></div>
+        <div class="col-xs-6 col-md-2"><img src="assets/img/media/bnr_nieuwsradio_logo.png" /></div>
+        <div class="col-xs-6 col-md-2"><img src="assets/img/media/het_parool_logo.png" /></div>
+      </div>
+    </div>
+  </div>
 
 </div>

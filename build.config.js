@@ -27,6 +27,8 @@ module.exports = {
 
       'vendor/jquery/dist/jquery.js',
 
+      'vendor_custom/jquery.visible.js',
+
       'vendor/mobile-detect/mobile-detect.min.js',
 
       'vendor/angular/angular.js',
