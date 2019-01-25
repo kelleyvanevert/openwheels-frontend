@@ -4,7 +4,7 @@ angular.module('owm.resource.place', [])
 
 .controller('ResourcePlaceController', function (
   // angular
-  $scope, $state, $stateParams, $log,
+  $scope, $state, $stateParams, $log, $window,
 
   // lib
   uiGmapGoogleMapApi,
@@ -123,7 +123,7 @@ angular.module('owm.resource.place', [])
     {
       id: 'openwheels',
       title: 'MyWheels Open',
-      description: 'MyWheels Open auto\'s kun je openen met je smartphone en met de MyWheels app. Zo kun je direct op pad.',
+      description: 'MyWheels Open auto\'s open je met je smartphone of OV-chipkaart. Zo kun je direct op pad.',
       options: undefined,
       filters: { smartwheels: true },
     },
@@ -137,7 +137,7 @@ angular.module('owm.resource.place', [])
     {
       id: 'veel_zitplaatsen',
       title: 'Auto\'s met veel zitplaatsen',
-      description: 'Ideaal voor een uitstapje met het hele gezin',
+      description: 'Ideaal voor een uitstapje met het hele gezin.',
       options: undefined,
       filters: { minSeats: 5 },
     },
@@ -151,7 +151,7 @@ angular.module('owm.resource.place', [])
     {
       id: 'station',
       title: 'Stationwagens',
-      description: 'Met een stationwagen hoef je je in ieder gevaal zorgen te maken over ruimte',
+      description: 'In een stationwagen heb je altijd genoeg ruimte.',
       options: undefined,
       filters: { resourceType: 'station' },
     },
@@ -174,52 +174,54 @@ angular.module('owm.resource.place', [])
       });
   }
   
-  $scope.searchBoxes.forEach(function (box) {
-    box.params = makeParams(box.options, box.filters);
-    box.sref = 'owm.resource.search.list({' +
-        'lat: ' + $scope.place.latitude + ',' +
-        'lng: ' + $scope.place.longitude + ',' +
-        'text: "' + $scope.place.name + '",' +
-        'radius: 5000,' +
-        'options: "' + (box.options || []).join(',') + '",' +
-        ((box.filters && box.filters.fuelType) ? ('fuel: "' + box.filters.fuelType + '",') : '') +
-        ((box.filters && box.filters.minSeats) ? ('seats: "' + box.filters.minSeats + '",') : '') +
-        ((box.filters && box.filters.resourceType) ? ('type: "' + box.filters.resourceType + '",') : '') +
-        ((box.filters && box.filters.smartwheels) ? ('smartwheels: true,') : '') +
-        //'sort: "relevance"' +
-      '})';
+  $scope.searchBoxes.forEach(function (box, i) {
+    setTimeout(function () {
+      box.params = makeParams(box.options, box.filters);
+      box.sref = 'owm.resource.search.list({' +
+          'lat: ' + $scope.place.latitude + ',' +
+          'lng: ' + $scope.place.longitude + ',' +
+          'text: "' + $scope.place.name + '",' +
+          'radius: 5000,' +
+          'options: "' + (box.options || []).join(',') + '",' +
+          ((box.filters && box.filters.fuelType) ? ('fuel: "' + box.filters.fuelType + '",') : '') +
+          ((box.filters && box.filters.minSeats) ? ('seats: "' + box.filters.minSeats + '",') : '') +
+          ((box.filters && box.filters.resourceType) ? ('type: "' + box.filters.resourceType + '",') : '') +
+          ((box.filters && box.filters.smartwheels) ? ('smartwheels: true,') : '') +
+          //'sort: "relevance"' +
+        '})';
 
-    var promise = appConfig.test ?
-      api.invokeRpcMethod('resource.searchV3', box.params, undefined, true, {
-        url: 'https://openwheels.nl/api/',
-      })
-        .then(function (data) {
-          data.results.forEach(function (resource) {
-            resource.pictures.forEach(function (picture) {
-              picture.large = 'https://openwheels.nl/' + picture.large;
+      var promise = appConfig.test ?
+        api.invokeRpcMethod('resource.searchV3', box.params, undefined, true, {
+          url: 'https://openwheels.nl/api/',
+        })
+          .then(function (data) {
+            data.results.forEach(function (resource) {
+              resource.pictures.forEach(function (picture) {
+                picture.large = 'https://openwheels.nl/' + picture.large;
+              });
             });
-          });
-          return data;
-        }) :
-      resourceService
-        .searchV3(box.params);
-    
-    promise.then(function (data) {
-      // data :: { results :: [Resource], totalResults :: int, ... }
+            return data;
+          }) :
+        resourceService
+          .searchV3(box.params);
       
-      // only use results with photos
-      data.results = data.results.filter(function (resource) {
-        return resource.pictures.length > 0;
+      promise.then(function (data) {
+        // data :: { results :: [Resource], totalResults :: int, ... }
+        
+        // only use results with photos
+        data.results = data.results.filter(function (resource) {
+          return resource.pictures.length > 0;
+        });
+
+        // only show the first 3 results
+        data.results = data.results.slice(0, 4);
+
+        if (data.results.length >= 4) {
+          box.data = data;
+          recomputeShownBoxes();
+        }
       });
-
-      // only show the first 3 results
-      data.results = data.results.slice(0, 4);
-
-      if (data.results.length >= 4) {
-        box.data = data;
-        recomputeShownBoxes();
-      }
-    });
+    }, i * 500);
   });
 
 
@@ -294,9 +296,19 @@ angular.module('owm.resource.place', [])
   };
 
 
-  $scope.loadMap = true; // false;
+  $scope.loadMap = false;
   $scope.loadMapNow = function () {
     $scope.loadMap = true;
+  };
+
+  $scope.mapLoadOnScroll = function () {
+    $($window).on('scroll', function () {
+      if (!$scope.loadMap && $('.full-gmaps').visible(true)) {
+        $scope.$apply(function () {
+          $scope.loadMap = true;
+        });
+      }
+    });
   };
 
   $scope.markers = [];

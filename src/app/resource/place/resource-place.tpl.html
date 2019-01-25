@@ -18,13 +18,13 @@
       </div>
       <div class="row is-flex" style="padding: 3.2rem 0 2rem 0;">
         <div class="rpad" ng-class="{
-              'col-lg-8 col-md-7 col-sm-6': place.coordinator,
+              'col-lg-7 col-sm-6': place.coordinator,
               'col-md-offset-1 col-md-10': !place.coordinator,
             }" style="text-align: left; justify-content: center;">
           <p ng-if="place.lead">{{ place.lead }}</p>
           <p ng-if="!place.lead">Huur gemakkelijk en voordelig een auto in {{ place.nicename }}. Je kunt MyWheels Open deelauto’s huren die je opent met je smartphone en/of chipkaart. Of een van de vele auto’s van particuliere autobezitters. Je hoeft daardoor nooit mis te grijpen als je een auto direct nodig hebt.</p>
         </div>
-        <div class="rpad col-lg-4 col-md-5 col-sm-6" ng-if="place.coordinator" style="
+        <div class="rpad col-lg-5 col-sm-6" ng-if="place.coordinator" style="
     position: relative;
     justify-content: center;">
           <div class="divider hidden-xs" style="
@@ -35,11 +35,10 @@
     width: 2px;
     background: rgba(0, 0, 0, 0.1);"></div>
           <div class="media coordinator" style="padding-left: 1rem;">
-            <img class="media-object pull-left img-user-mid" person-profile-image="{ person: place.coordinator, size: 'large' }" />
+            <img ui-sref="member({ personId: place.coordinator.id })" class="media-object pull-left img-user-mid" person-profile-image="{ person: place.coordinator, size: 'large' }" />
             <div class="media-body text-left" style="padding-top: 0;">
               <h4 style="color: black;">Coördinator {{ place.nicename }}</h4>
               <div ng-bind-html="place.coordinatorBody"></div>
-              <div style="margin-top: .3rem;"><a style="font-weight: bold;" ui-sref="member({ personId: place.coordinator.id })">{{ place.coordinator | fullname }}</a></div>
             </div>
           </div>
         </div>
@@ -47,7 +46,7 @@
     </div>
   </div>
 
-  <div id="place-page-container" class="container container-transitional">
+  <div class="container container-transitional place-page-container">
     <!--
     <div class="row">
       <div class="rpad col-md-offset-2 col-md-8 col-xs-12">
@@ -88,15 +87,15 @@
     </div>
     
     <div class="resources-for-category"
-        ng-repeat="box in searchBoxes.show">
+        ng-if="searchBoxes.show[0]">
       <div class="row">
         <div class="rpad col-xs-12">
-          <h2 class="without-card">{{ box.title }}</h2>
-          <p class="sub" ng-if="box.description">{{ box.description }}</p>
+          <h2 class="without-card">{{ searchBoxes.show[0].title }}</h2>
+          <p class="sub" ng-if="box.description">{{ searchBoxes.show[0].description }}</p>
         </div>
       </div>
       <div class="row is-flex">
-        <div class="rpad col-xs-12 col-sm-6 col-md-3" ng-repeat="resource in box.data.results">
+        <div class="rpad col-xs-12 col-sm-6 col-md-3" ng-repeat="resource in searchBoxes.show[0].data.results">
           <ow-resource-card-box
             resource="resource"
             on-select="selectResource(resource)"
@@ -116,9 +115,9 @@
         <div class="rpad col-xs-12">
           <p style="text-align: center;">
             <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action mywheels-btn-margin-top"
-                    ui-sref="{{ box.sref }}"
+                    ui-sref="{{ searchBoxes.show[0].sref }}"
                     md-ink-ripple="#9a3d26">
-              Bekijk alle {{ box.data.totalResults }} resultaten <ng-md-icon icon="arrow_forward"></ng-md-icon>
+              Bekijk alle {{ searchBoxes.show[0].data.totalResults }} resultaten <ng-md-icon icon="arrow_forward"></ng-md-icon>
             </button>
           </p>
         </div>
@@ -126,9 +125,12 @@
     </div>
   </div>
 
-  <div class="full-gmaps vpad" ng-if="map" style="padding-bottom: 0;">
+  <div class="full-gmaps vpad"
+      ng-if="map"
+      ng-init="mapLoadOnScroll()"
+      style="padding-bottom: 0;">
     <div style="height: 5px;">
-      <md-progress-linear ng-show="mapLoading" md-mode="indeterminate"></md-progress-linear>
+      <md-progress-linear ng-show="mapLoading" md-mode="indeterminate" class="md-warn"></md-progress-linear>
     </div>
     <div ng-if="!loadMap"
         class="map-skeleton"
@@ -174,6 +176,48 @@
         </ui-gmap-window>
 
       </ui-gmap-google-map>
+    </div>
+  </div>
+
+  <div class="container container-transitional place-page-container"
+      style="padding-bottom: 3rem;">
+    <div class="resources-for-category"
+        ng-if="searchBoxes.show.length > 1"
+        ng-repeat="box in searchBoxes.show.slice(1)">
+      <div class="row">
+        <div class="rpad col-xs-12">
+          <h2 class="without-card">{{ box.title }}</h2>
+          <p class="sub" ng-if="box.description">{{ box.description }}</p>
+        </div>
+      </div>
+      <div class="row is-flex">
+        <div class="rpad col-xs-12 col-sm-6 col-md-3" ng-repeat="resource in box.data.results">
+          <ow-resource-card-box
+            resource="resource"
+            on-select="selectResource(resource)"
+            style="flex: 1;">
+          </ow-resource-card-box>
+          <!--
+          <ow-resource-card
+            class="vertical"
+            lightweight="true"
+            resource="resource"
+            on-select="selectResource(resource)">
+          </ow-resource-card>
+          -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="rpad col-xs-12">
+          <p style="text-align: center;">
+            <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action mywheels-btn-margin-top"
+                    ui-sref="{{ box.sref }}"
+                    md-ink-ripple="#9a3d26">
+              Bekijk alle {{ box.data.totalResults }} resultaten <ng-md-icon icon="arrow_forward"></ng-md-icon>
+            </button>
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 
