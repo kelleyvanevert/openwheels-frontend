@@ -4,7 +4,7 @@ angular.module('owm.resource.place', [])
 
 .controller('ResourcePlaceController', function (
   // angular
-  $scope, $state, $stateParams, $log,
+  $scope, $state, $stateParams, $log, $window,
 
   // lib
   uiGmapGoogleMapApi,
@@ -14,16 +14,13 @@ angular.module('owm.resource.place', [])
   resourceQueryService,
 
   // api
+  api,
   metaInfoService,
   resourceService,
 
   // resolves
   place, me, metaInfo
 ) {
-
-  if (!place) {
-    return $state.go('owm.resource.search.list');
-  }
 
   metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/' + (place.name || '').toLowerCase().replace(/ /g, '-')});
   metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/' + (place.name || '').toLowerCase().replace(/ /g, '-')});
@@ -45,6 +42,35 @@ angular.module('owm.resource.place', [])
     params.city = (resource.city || '').toLowerCase().replace(/ /g, '-');
     $state.go('owm.resource.show', params);
   };
+
+
+
+  // Veelgestelde vragen
+
+  $scope.FAQ = [
+    {
+      question: 'Wat is autodelen?',
+      answer: '<p>Bij autodelen maak je niet meer alleen gebruik van een auto, maar deel je hem met anderen. Je kunt kiezen om je eigen auto te delen of gebruik te maken van de auto van een ander. Zo bespaar je niet alleen op je autokosten, maar krijg je ook meer <a href="https://mywheels.nl/autodelen/community/onze-idealen/">contact met de buurt en worden buurten weer leefbaar</a>.</p><p>Je vindt op MyWheels auto’s met een boordcomputer en auto’s die je met&nbsp;de sleutel opent. Auto’s met het label MyWheels Open hebben een boordcomputer en open je met een <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-ik-een-auto-met-mijn-chipkaart/">OV-chipkaart</a> of met je <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-auto-smartphone/">smartphone</a>. Auto’s zonder het label MyWheels Open open je gewoon met de sleutel, je spreekt dan samen met de verhuurder af hoe je in het bezit komt van de sleutel.</p>',
+    },
+    {
+      question: 'Wat zijn de voordelen van autodelen?',
+      answer: '<p><!--:nl--><strong>Een auto huren</strong><br>Met autodelen zit je niet meer vast aan één en dezelfde auto, maar je kunt per keer de auto nemen die je wilt.&nbsp;Zuinige auto’s, ruime auto’s, goedkope auto’s, mooie auto’s: bij MyWheels kun je ze huren of verhuren.</p><p><strong>Lage bemiddelingskosten</strong><br>MyWheels is not-for-profit en daar profiteer jij van mee.</p><p><strong>Duizenden mensen delen honderden auto’s</strong><br>MyWheels is het not-for-profit platform voor het delen van auto’s.</p><p><strong>MyWheels zit boordevol idealen</strong><br>Zo streven we naar leefbare buurten in plaats van winst. Als mensen auto’s delen hoeven er veel minder auto’s in de wijk geparkeerd te staan.</p><p><strong>Reserveer tot 1 minuut van tevoren</strong><br>Via internet of smartphone reserveer je eenvoudig de auto die je wilt.</p><p><strong>Lid worden is makkelijk en gratis</strong><br>Je betaalt alleen als je rijdt. Je kunt na aanmelding meteen gaan huren of je eigen auto gratis te huur zetten. Lees meer over de tarieven bij <a href="https://mywheels.nl/autodelen/hoe-huren-werkt/tarieven-huren/">tarieven</a>.</p><p><strong>24/7 bereikbaar</strong><br>De supportafdeling van MyWheels is 24 uur per dag en 7 dagen per week telefonisch bereikbaar.<!--:--></p>',
+    },
+    {
+      question: 'Op welke manieren kan ik een auto openen?',
+      answer: '<p>Je vindt op MyWheels auto’s met een boordcomputer en auto’s die je met&nbsp;de sleutel opent. Auto’s met het label <a href="https://mywheels.nl/auto-huren?smartwheels=true">MyWheels Open</a> hebben een boordcomputer en open je met een <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-ik-een-auto-met-mijn-chipkaart/">OV-chipkaart</a> of met je <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-auto-smartphone/">smartphone</a>.</p><p>Auto’s zonder het label MyWheels Open open je gewoon met de sleutel, je spreekt dan samen met de verhuurder af hoe je in het bezit komt van de sleutel.<!--:--></p>',
+    },
+    {
+      question: 'Wat betekent het label MyWheels Open?',
+      answer: '<p>Auto’s met het label MyWheels Open hebben een boordcomputer en open je met je <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-ik-een-auto-met-mijn-chipkaart/">OV-chipkaart</a> en <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-auto-smartphone/">smartphone</a>. De auto’s zijn 24 uur per dag te huur. Daarnaast hoef je bij een auto met MyWheels Open geen kilometerstanden te noteren, de boordcomputer registreert de gereden kilometers&nbsp;automatisch. In het <a href="https://mywheels.nl/auto-huren" target="_blank" rel="noopener">huuroverzicht</a>&nbsp;zie je dit label staan.</p>',
+    },
+    {
+      question: 'Hoe betaal ik met een tankpas?',
+      answer: '<p>De meeste auto’s met MyWheels Open hebben een tankpas van Multi Tank Card. Omdat je per gereden kilometer een brandstofprijs betaalt, hoef je niet op eigen kosten te tanken. Je kunt een tankbeurt daarom met de tankkaart betalen. Je vindt de tankkaart in het dashboardkastje. De viercijferige pincode van de tankkaart staat in de bevestigingsmail en vind je in de MyWheels app. Je hoeft de tankbon niet te bewaren als je met de tankpas betaalt.</p><p>Je kunt met de tankkaart alleen goedkope Euro 95 betalen, niet de duurdere premium brandstoffen (zoals Shell V-Power). We houden samen de kosten laag door niet langs&nbsp;snelwegen te tanken, maar langs binnenwegen. De tankkosten vallen dan vaak circa 10 cent goedkoper uit.</p><p>Let op: met een tankpas kun je niet in het buitenland betalen. Moet je in het buitenland toch tanken, dan kun je het tankbonnetje naar <a href="http://support@mywheels.nl" target="_blank">support@mywheels.nl</a> opsturen.</p>',
+    },
+  ];
+  $scope.FAQ.left = $scope.FAQ.slice(0, Math.floor($scope.FAQ.length/2));
+  $scope.FAQ.right = $scope.FAQ.slice(Math.floor($scope.FAQ.length/2));
   
 
   // The place page should show a number of "interesting categories"
@@ -97,7 +123,7 @@ angular.module('owm.resource.place', [])
     {
       id: 'openwheels',
       title: 'MyWheels Open',
-      description: 'MyWheels Open auto\'s kun je openen met je smartphone en met de MyWheels app. Zo kun je direct op pad.',
+      description: 'MyWheels Open auto\'s open je met je smartphone of OV-chipkaart. Zo kun je direct op pad.',
       options: undefined,
       filters: { smartwheels: true },
     },
@@ -111,7 +137,7 @@ angular.module('owm.resource.place', [])
     {
       id: 'veel_zitplaatsen',
       title: 'Auto\'s met veel zitplaatsen',
-      description: 'Ideaal voor een uitstapje met het hele gezin',
+      description: 'Ideaal voor een uitstapje met het hele gezin.',
       options: undefined,
       filters: { minSeats: 5 },
     },
@@ -125,31 +151,61 @@ angular.module('owm.resource.place', [])
     {
       id: 'station',
       title: 'Stationwagens',
-      description: 'Met een stationwagen hoef je je in ieder gevaal zorgen te maken over ruimte',
+      description: 'In een stationwagen heb je altijd genoeg ruimte.',
       options: undefined,
       filters: { resourceType: 'station' },
     },
+    {
+      id: 'aanbevolen',
+      title: 'Populaire auto\'s',
+      description: undefined,
+      options: undefined,
+      filters: undefined,
+    },
   ];
-  $scope.searchBoxes.show = [];
+  function recomputeShownBoxes () {
+    $scope.searchBoxes.show = $scope.searchBoxes
+      .filter(function (box) {
+        return !!box.data;
+      })
+      .slice(0, 3)
+      .sort(function (a, b) {
+        return $scope.searchBoxes.indexOf(a) < $scope.searchBoxes.indexOf(b);
+      });
+  }
   
-  $scope.searchBoxes.forEach(function (box) {
-    box.params = makeParams(box.options, box.filters);
-    box.sref = 'owm.resource.search.list({' +
-        'lat: ' + $scope.place.latitude + ',' +
-        'lng: ' + $scope.place.longitude + ',' +
-        'text: "' + $scope.place.name + '",' +
-        'radius: 5000,' +
-        'options: "' + (box.options || []).join(',') + '",' +
-        ((box.filters && box.filters.fuelType) ? ('fuel: "' + box.filters.fuelType + '",') : '') +
-        ((box.filters && box.filters.minSeats) ? ('seats: "' + box.filters.minSeats + '",') : '') +
-        ((box.filters && box.filters.resourceType) ? ('type: "' + box.filters.resourceType + '",') : '') +
-        ((box.filters && box.filters.smartwheels) ? ('smartwheels: true,') : '') +
-        //'sort: "relevance"' +
-      '})';
+  $scope.searchBoxes.forEach(function (box, i) {
+    setTimeout(function () {
+      box.params = makeParams(box.options, box.filters);
+      box.sref = 'owm.resource.search.list({' +
+          'lat: ' + $scope.place.latitude + ',' +
+          'lng: ' + $scope.place.longitude + ',' +
+          'text: "' + $scope.place.name + '",' +
+          'radius: 5000,' +
+          'options: "' + (box.options || []).join(',') + '",' +
+          ((box.filters && box.filters.fuelType) ? ('fuel: "' + box.filters.fuelType + '",') : '') +
+          ((box.filters && box.filters.minSeats) ? ('seats: "' + box.filters.minSeats + '",') : '') +
+          ((box.filters && box.filters.resourceType) ? ('type: "' + box.filters.resourceType + '",') : '') +
+          ((box.filters && box.filters.smartwheels) ? ('smartwheels: true,') : '') +
+          //'sort: "relevance"' +
+        '})';
 
-    resourceService
-      .searchV3(box.params)
-      .then(function (data) {
+      var promise = (appConfig.test && appConfig.test.searchV3FromOpenWheels) ?
+        api.invokeRpcMethod('resource.searchV3', box.params, undefined, true, {
+          url: 'https://openwheels.nl/api/',
+        })
+          .then(function (data) {
+            data.results.forEach(function (resource) {
+              resource.pictures.forEach(function (picture) {
+                picture.large = 'https://openwheels.nl/' + picture.large;
+              });
+            });
+            return data;
+          }) :
+        resourceService
+          .searchV3(box.params);
+      
+      promise.then(function (data) {
         // data :: { results :: [Resource], totalResults :: int, ... }
         
         // only use results with photos
@@ -157,24 +213,15 @@ angular.module('owm.resource.place', [])
           return resource.pictures.length > 0;
         });
 
-        //$log.log('box', box, data.results.length, data.results);
-
         // only show the first 3 results
         data.results = data.results.slice(0, 4);
 
-        // TODO remove true
         if (data.results.length >= 4) {
           box.data = data;
-          $scope.searchBoxes.show = $scope.searchBoxes
-            .filter(function (box) {
-              return !!box.data;
-            })
-            .slice(0, 3)
-            .sort(function (a, b) {
-              return $scope.searchBoxes.indexOf(a) < $scope.searchBoxes.indexOf(b);
-            });
+          recomputeShownBoxes();
         }
       });
+    }, i * 500);
   });
 
 
@@ -185,12 +232,21 @@ angular.module('owm.resource.place', [])
 
   $scope.mapLoading = false;
 
+  var boundsFetched;
+
   var reloadMapResourcesDebounced = _.debounce(function (bounds) {
     //$log.log('reloading resources on map for bounds:', bounds);
     
     resourceService
       .searchMapV1({ locationPoint: bounds })
       .then(function (resourcesInArea) {
+        boundsFetched = boundsFetched ? {
+          latitudeMin: Math.min(boundsFetched.latitudeMin, bounds.latitudeMin),
+          longitudeMin: Math.min(boundsFetched.longitudeMin, bounds.longitudeMin),
+          latitudeMax: Math.max(boundsFetched.latitudeMax, bounds.latitudeMax),
+          longitudeMax: Math.max(boundsFetched.longitudeMax, bounds.longitudeMax),
+        } : angular.extend({}, bounds);
+
         resourcesInArea.forEach(function (resourcePreview) {
           // `resourcePreview` is a subset of
           //  what is usually a `resource`:
@@ -233,13 +289,29 @@ angular.module('owm.resource.place', [])
       });
   }, 500);
 
+  
   var reloadMapResources = function (bounds) {
     $scope.mapLoading = true;
     reloadMapResourcesDebounced(bounds);
   };
 
-  $scope.markers = [];
 
+  $scope.loadMap = false;
+  $scope.loadMapNow = function () {
+    $scope.loadMap = true;
+  };
+
+  $scope.mapLoadOnScroll = function () {
+    $($window).on('scroll', function () {
+      if (!$scope.loadMap && $('.full-gmaps').visible(true)) {
+        $scope.$apply(function () {
+          $scope.loadMap = true;
+        });
+      }
+    });
+  };
+
+  $scope.markers = [];
 
   uiGmapGoogleMapApi.then(function (google_maps) {
     $scope.closeWindow = function () {
@@ -311,7 +383,7 @@ angular.module('owm.resource.place', [])
           zIndex: null,
 
           // https://yoksel.github.io/url-encoder/
-          closeBoxURL: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath d="M0 0h24v24H0z" fill="white"/%3E%3Cpath d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="black"/%3E%3C/svg%3E',
+          closeBoxURL: 'data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath d="M0 0h24v24H0z" fill="white"/%3E%3Cpath d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="black"/%3E%3C/svg%3E',
           infoBoxClearance: new google.maps.Size(1, 1),
           isHidden: false,
           pane: 'floatPane',
@@ -325,7 +397,7 @@ angular.module('owm.resource.place', [])
             // latitude = "y coordinate" (52-ish)
             // longitude = "x coordinate" (4-6)
 
-            var bounds = {
+            var requestedBounds = {
               latitudeMin: mapbounds.getSouthWest().lat(),
               longitudeMin: mapbounds.getSouthWest().lng(),
 
@@ -333,15 +405,29 @@ angular.module('owm.resource.place', [])
               longitudeMax: mapbounds.getNorthEast().lng(),
             };
 
-            var pad_Lng = (bounds.longitudeMax - bounds.longitudeMin) / 3;
-            var pad_Lat = (bounds.latitudeMax - bounds.latitudeMin) / 3;
+            if (!boundsFetched || (
+              (requestedBounds.latitudeMin < boundsFetched.latitudeMin) ||
+                (requestedBounds.longitudeMin < boundsFetched.longitudeMin) ||
+                (requestedBounds.latitudeMax > boundsFetched.latitudeMax) ||
+                (requestedBounds.longitudeMax > boundsFetched.longitudeMax)
+              )
+            ) {
+              //$log.log('out of bounds or initial load', boundsFetched);
+              var d_Lng = (requestedBounds.longitudeMax - requestedBounds.longitudeMin) / 10;
+              var d_Lat = (requestedBounds.latitudeMax - requestedBounds.latitudeMin) / 10;
 
-            bounds.latitudeMax += pad_Lat;
-            bounds.latitudeMin -= pad_Lat;
-            bounds.longitudeMax += pad_Lng;
-            bounds.longitudeMin -= pad_Lng;
+              requestedBounds.latitudeMax += d_Lat * 2;
+              requestedBounds.latitudeMin -= d_Lat * 5; // bottom
+              requestedBounds.longitudeMax += d_Lng * 2;
+              requestedBounds.longitudeMin -= d_Lng * 2;
 
-            reloadMapResources(bounds);
+              reloadMapResources(boundsFetched ? {
+                latitudeMax: Math.max(requestedBounds.latitudeMax, boundsFetched.latitudeMax),
+                latitudeMin: Math.min(requestedBounds.latitudeMin, boundsFetched.latitudeMin),
+                longitudeMax: Math.max(requestedBounds.longitudeMax, boundsFetched.longitudeMax),
+                longitudeMin: Math.min(requestedBounds.longitudeMin, boundsFetched.longitudeMin),
+              } : requestedBounds);
+            }
           },
         },
       }

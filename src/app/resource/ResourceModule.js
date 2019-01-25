@@ -97,11 +97,27 @@ angular.module('owm.resource', [
       }
     },
     resolve: {
-      place: ['$q', '$stateParams', 'placeService',
-        function ($q, $stateParams, placeService) {
-          return placeService.search({
-            place: $stateParams.city
-          }).catch(angular.noop); // ignore errors
+      place: ['$q', '$state', '$stateParams', 'placeService', '$log', '$filter',
+        function ($q, $state, $stateParams, placeService, $log, $filter) {
+          return $q(function (resolve, reject) {
+            placeService.search({
+              place: $stateParams.city,
+            })
+              .then(function (place) {
+                if (!place) {
+                  throw 'place not found (null returned by API)';
+                } else {
+                  place.nicename = $filter('toTitleCase')($filter('replaceDashToSpace')(place.name || ''));
+                  place.picture = place.picture || 'https://mywheels.nl/autodelen/wp-content/uploads/2019/01/stads2.jpg';
+                  resolve(place);
+                }
+              })
+              .catch(function (e) {
+                $log.log('place not found:', $stateParams.city);
+                $state.go('owm.resource.search.list');
+                reject(e);
+              });
+          });
         },
       ],
       me: ['authService', function (authService) {
@@ -111,16 +127,11 @@ angular.module('owm.resource', [
       }],
       metaInfo: ['$translate', 'place', 'metaInfoService', '$filter', '$q',
         function ($translate, place, metaInfoService, $filter, $q) {
-          if (!place) {
-            return;
-          }
-
           return $q(function (resolve) {
             $translate('SITE_NAME').then(function () {
               var city = $filter('toTitleCase')($filter('replaceDashToSpace')(place.name || ''));
               var title = $translate.instant('META_CITYPAGE_TITLE', { city: city });
-              var description = $translate.instant('META_CITYPAGE_DESCRIPTION', { city: city });
-              //$log.log('city =', city, 'title =', title, 'description =', description);
+              var description = place.lead || $translate.instant('META_CITYPAGE_DESCRIPTION', { city: city });
 
               metaInfoService.set({
                 title: title,
