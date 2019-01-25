@@ -99,6 +99,7 @@
         <div class="rpad col-xs-12 col-sm-6 col-md-3" ng-repeat="resource in box.data.results">
           <ow-resource-card-box
             resource="resource"
+            on-select="selectResource(resource)"
             style="flex: 1;">
           </ow-resource-card-box>
           <!--

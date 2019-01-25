@@ -8,7 +8,15 @@ angular.module('owm.resource')
     replace: true,
     scope: {
       resource: '=',
+      onSelect: '&',
     },
-    templateUrl: 'resource/components/resource-card-box.tpl.html'
+    templateUrl: 'resource/components/resource-card-box.tpl.html',
+    controller: function ($scope) {
+      $scope.select = function () {
+        if ($scope.onSelect) {
+          $scope.onSelect($scope.resource);
+        }
+      };
+    },
   };
 });
