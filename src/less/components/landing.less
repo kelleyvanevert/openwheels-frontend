@@ -182,7 +182,6 @@
     p {
       font-size: 1.2em;
       line-height: 1.7em;
-      text-align: center;
 
       font-family: @headings-font-family;
     }
@@ -316,9 +315,12 @@
   }
 
   &#place-page {
-    .step {
-      width: 35rem;
+    @media (min-width: 40rem) {
+      .step {
+        width: 35rem;
+      }
     }
+    
     .step-label {
       color: darken(@mywheels-green, 5%);
     }
@@ -527,7 +529,8 @@
 
 .media.coordinator {
   font-size: 1.6rem;
-  color: #555;
+  line-height: 2.3rem;
+  font-family: @headings-font-family;
 
   a {
     color: darken(@mywheels-blue, 10%);

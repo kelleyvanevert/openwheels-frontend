@@ -16,25 +16,32 @@
           <ow-geocoder-searchbar searchtext="place.nicename" shadow="true"></ow-geocoder-searchbar>
         </div>
       </div>
-      <div class="row" ng-style="{
-          padding: place.coordinator ? '3.2rem 0 5rem 0' : '3.2rem 0 2rem 0',
-        }">
-        <div class="rpad col-md-offset-1 col-md-10">
+      <div class="row is-flex" style="padding: 3.2rem 0 2rem 0;">
+        <div class="rpad" ng-class="{
+              'col-lg-8 col-md-7 col-sm-6': place.coordinator,
+              'col-md-offset-1 col-md-10': !place.coordinator,
+            }" style="text-align: left; justify-content: center;">
           <p ng-if="place.lead">{{ place.lead }}</p>
           <p ng-if="!place.lead">Huur gemakkelijk en voordelig een auto in {{ place.nicename }}. Je kunt MyWheels Open deelauto’s huren die je opent met je smartphone en/of chipkaart. Of een van de vele auto’s van particuliere autobezitters. Je hoeft daardoor nooit mis te grijpen als je een auto direct nodig hebt.</p>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="container container-transitional" ng-if="place.coordinator" style="margin-top: -4rem;">
-    <div class="row">
-      <div class="rpad col-md-offset-3 col-md-6">
-        <div class="card" style="margin: 0;"><div class="card-body">
-        <div class="media coordinator">
-          <img class="media-object pull-left img-user-mid" person-profile-image="{ person: place.coordinator, size: 'large' }" />
-          <div class="media-body text-left" ng-bind-html="place.coordinatorBody"></div>
-          <div><a style="font-weight: bold;" ui-sref="member({ personId: place.coordinator.id })">{{ place.coordinator | fullname }}</a></div>
+        <div class="rpad col-lg-4 col-md-5 col-sm-6" ng-if="place.coordinator" style="
+    position: relative;
+    justify-content: center;">
+          <div class="divider hidden-xs" style="
+    position: absolute;
+    top: 0;
+    left: -1px;
+    bottom: 0;
+    width: 2px;
+    background: rgba(0, 0, 0, 0.1);"></div>
+          <div class="media coordinator" style="padding-left: 1rem;">
+            <img class="media-object pull-left img-user-mid" person-profile-image="{ person: place.coordinator, size: 'large' }" />
+            <div class="media-body text-left" style="padding-top: 0;">
+              <h4 style="color: black;">Coördinator {{ place.nicename }}</h4>
+              <div ng-bind-html="place.coordinatorBody"></div>
+              <div style="margin-top: .3rem;"><a style="font-weight: bold;" ui-sref="member({ personId: place.coordinator.id })">{{ place.coordinator | fullname }}</a></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
