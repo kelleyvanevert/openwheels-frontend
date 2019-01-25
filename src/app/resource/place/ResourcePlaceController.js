@@ -201,12 +201,21 @@ angular.module('owm.resource.place', [])
 
   $scope.mapLoading = false;
 
+  var boundsFetched;
+
   var reloadMapResourcesDebounced = _.debounce(function (bounds) {
     //$log.log('reloading resources on map for bounds:', bounds);
     
     resourceService
       .searchMapV1({ locationPoint: bounds })
       .then(function (resourcesInArea) {
+        boundsFetched = boundsFetched ? {
+          latitudeMin: Math.min(boundsFetched.latitudeMin, bounds.latitudeMin),
+          longitudeMin: Math.min(boundsFetched.longitudeMin, bounds.longitudeMin),
+          latitudeMax: Math.max(boundsFetched.latitudeMax, bounds.latitudeMax),
+          longitudeMax: Math.max(boundsFetched.longitudeMax, bounds.longitudeMax),
+        } : angular.extend({}, bounds);
+
         resourcesInArea.forEach(function (resourcePreview) {
           // `resourcePreview` is a subset of
           //  what is usually a `resource`:
@@ -249,6 +258,7 @@ angular.module('owm.resource.place', [])
       });
   }, 500);
 
+  
   var reloadMapResources = function (bounds) {
     $scope.mapLoading = true;
     reloadMapResourcesDebounced(bounds);
@@ -346,7 +356,7 @@ angular.module('owm.resource.place', [])
             // latitude = "y coordinate" (52-ish)
             // longitude = "x coordinate" (4-6)
 
-            var bounds = {
+            var requestedBounds = {
               latitudeMin: mapbounds.getSouthWest().lat(),
               longitudeMin: mapbounds.getSouthWest().lng(),
 
@@ -354,15 +364,24 @@ angular.module('owm.resource.place', [])
               longitudeMax: mapbounds.getNorthEast().lng(),
             };
 
-            var pad_Lng = (bounds.longitudeMax - bounds.longitudeMin) / 3;
-            var pad_Lat = (bounds.latitudeMax - bounds.latitudeMin) / 3;
+            if (!boundsFetched || (
+              (requestedBounds.latitudeMin < boundsFetched.latitudeMin) ||
+                (requestedBounds.longitudeMin < boundsFetched.longitudeMin) ||
+                (requestedBounds.latitudeMax > boundsFetched.latitudeMax) ||
+                (requestedBounds.longitudeMax > boundsFetched.longitudeMax)
+              )
+            ) {
+              //$log.log('out of bounds or initial load', boundsFetched);
+              var d_Lng = (requestedBounds.longitudeMax - requestedBounds.longitudeMin) / 10;
+              var d_Lat = (requestedBounds.latitudeMax - requestedBounds.latitudeMin) / 10;
 
-            bounds.latitudeMax += pad_Lat;
-            bounds.latitudeMin -= pad_Lat;
-            bounds.longitudeMax += pad_Lng;
-            bounds.longitudeMin -= pad_Lng;
+              requestedBounds.latitudeMax += d_Lat * 2;
+              requestedBounds.latitudeMin -= d_Lat * 5; // bottom
+              requestedBounds.longitudeMax += d_Lng * 2;
+              requestedBounds.longitudeMin -= d_Lng * 2;
 
-            reloadMapResources(bounds);
+              reloadMapResources(requestedBounds);
+            }
           },
         },
       }

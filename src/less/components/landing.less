@@ -1,7 +1,7 @@
 
 @media (max-width: 40em) {
   .home.landing {
-    .mywheels-open-meedoen {
+    .landing-section {
       font-size: 80%;
     }
   }
@@ -346,11 +346,17 @@
     }
   }
 
-  .mywheels-open-meedoen {
+  .landing-section {
     text-align: center;
 
     h2 {
-      color: @mywheels-green;
+      color: darken(@mywheels-green, 5%);
+    }
+
+    &.section-idealen {
+      h2 {
+        color: darken(@mywheels-brown, 5%);
+      }
     }
 
     @media (max-width: 480px) {
@@ -361,7 +367,7 @@
   }
 
   @media (max-width: 40em) {
-    .mywheels-open-meedoen {
+    .landing-section {
       margin: 2em 0;
     }
   }
