@@ -220,6 +220,10 @@ angular.module('owm.resource.place', [])
           box.data = data;
           recomputeShownBoxes();
         }
+
+        if (!$scope.searchBoxes.show) {
+          $scope.searchBoxes.show = [];
+        }
       });
     }, i * 500);
   });
