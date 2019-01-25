@@ -16,10 +16,25 @@
           <ow-geocoder-searchbar searchtext="place.nicename" shadow="true"></ow-geocoder-searchbar>
         </div>
       </div>
-      <div class="row" style="padding: 3rem 0 2rem 0;">
+      <div class="row" ng-style="{
+          padding: place.coordinator ? '3.2rem 0 5rem 0' : '3.2rem 0 2rem 0',
+        }">
         <div class="rpad col-md-offset-1 col-md-10">
           <p ng-if="place.lead">{{ place.lead }}</p>
           <p ng-if="!place.lead">Huur gemakkelijk en voordelig een auto in {{ place.nicename }}. Je kunt MyWheels Open deelauto’s huren die je opent met je smartphone en/of chipkaart. Of een van de vele auto’s van particuliere autobezitters. Je hoeft daardoor nooit mis te grijpen als je een auto direct nodig hebt.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container container-transitional" ng-if="place.coordinator" style="margin-top: -4rem;">
+    <div class="row">
+      <div class="rpad col-md-offset-3 col-md-6">
+        <div class="card" style="margin: 0;"><div class="card-body">
+        <div class="media coordinator">
+          <img class="media-object pull-left img-user-mid" person-profile-image="{ person: place.coordinator, size: 'large' }" />
+          <div class="media-body text-left" ng-bind-html="place.coordinatorBody"></div>
+          <div><a style="font-weight: bold;" ui-sref="member({ personId: place.coordinator.id })">{{ place.coordinator | fullname }}</a></div>
         </div>
       </div>
     </div>
@@ -204,9 +219,9 @@
       </div>
       <div class="row is-flex">
         <div class="rpad col-md-8 col-sm-7" style="text-align: left;">
-          <p class="landing-text">Hoe meer mensen een auto delen, des te minder auto’s er op de weg rijden of in de wijken staan. In 2017 heeft het Centraal Bureau voor de Statistiek gepubliceerd dat alleen in de stad Groningen al 70.415 personenauto’s staan.</p>
-          <p class="landing-text">Met minder auto’s slaan we dus twee vliegen in één klap: minder CO2-uitstoot én leefbaardere buurten. Bovendien is autodelen financieel aantrekkelijk. Wie per jaar minder dan 10.000 kilometer rijdt, is met een deelauto veel goedkoper uit dan met een eigen auto.</p>
-          <p class="landing-text">MyWheels is in de afgelopen vijfentwintig jaar uitgegroeid tot een van de grootste en voordeligste autodeelplatforms van Nederland. Anno 2018 verbinden we ruim 60.000 huurders en verhuurders van deelauto’s met elkaar.</p>
+          <p class="landing-text">Hoe meer mensen een auto delen, des te minder auto’s er op de weg rijden of in de wijken staan. Met minder auto’s slaan we dus twee vliegen in één klap: minder CO2-uitstoot én leefbaardere buurten.</p>
+          <p class="landing-text">Bovendien is autodelen financieel aantrekkelijk. Wie per jaar minder dan 10.000 kilometer rijdt, is met een deelauto veel goedkoper uit dan met een eigen auto.</p>
+          <p class="landing-text">MyWheels is in de afgelopen vijfentwintig jaar uitgegroeid tot een van de grootste en voordeligste autodeelplatforms van Nederland. Anno 2019 verbinden we ruim 60.000 huurders en verhuurders van deelauto’s met elkaar.</p>
         </div>
         <div class="rpad col-md-4 col-sm-5" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end;">
           <svg style="
