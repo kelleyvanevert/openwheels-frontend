@@ -45,7 +45,7 @@ angular.module('api', [])
     };
   };
 
-  api.invokeRpcMethod = function (rpcMethod, rpcParams, multiPartParams, isAnonymousMethod) {
+  api.invokeRpcMethod = function (rpcMethod, rpcParams, multiPartParams, isAnonymousMethod, overrideOptions) {
     // for debugging purposes
     if (appConfig.test.mock_api) {
       var rule = appConfig.test.mock_api.find(function (rule) {
@@ -63,6 +63,7 @@ angular.module('api', [])
     var http;
     var token;
     var config = angular.copy(defaultConfig);
+    angular.extend(config, overrideOptions || {});
     config.isAnonymousMethod = !!isAnonymousMethod;
     config.method = 'POST';
     config.data = {

@@ -16,6 +16,7 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
       'filters': '=',
       'searchtext': '=',
       'lightweight': '=',
+      'shadow': '=',
     },
     link: function($scope, element) {
       $scope.geolocation = false;

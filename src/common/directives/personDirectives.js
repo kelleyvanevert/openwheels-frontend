@@ -36,7 +36,7 @@ angular.module('personDirectives', [])
             w = 50;
             h = 50;
         }
-        src = appConfig.serverUrl + '/person' +
+        src = (appConfig.test && appConfig.test.appUrlForProfilePic ? appConfig.appUrl : appConfig.serverUrl) + '/person' +
           '/' + person.id +
           '/' + w +
           '/' + h +

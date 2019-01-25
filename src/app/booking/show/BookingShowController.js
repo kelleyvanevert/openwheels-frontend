@@ -834,7 +834,7 @@ angular.module('owm.booking.show', [])
   $scope.sentInvoices = null;
   $scope.sentInvoicesTotalAmount = 0;
 
-  if ($scope.userPerspective === 'renter' && !$scope.requested && $scope.booking.approved === 'OK') {
+  if (($scope.userPerspective === 'renter' || $scope.userPerspective === 'contract_holder') && !$scope.requested && $scope.booking.approved === 'OK') {
     $q.all({received: loadReceivedInvoices()})
     .then(injectInvoiceLines);
   }
