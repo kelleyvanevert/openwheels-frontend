@@ -380,7 +380,12 @@ angular.module('owm.resource.place', [])
               requestedBounds.longitudeMax += d_Lng * 2;
               requestedBounds.longitudeMin -= d_Lng * 2;
 
-              reloadMapResources(requestedBounds);
+              reloadMapResources(boundsFetched ? {
+                latitudeMax: Math.max(requestedBounds.latitudeMax, boundsFetched.latitudeMax),
+                latitudeMin: Math.min(requestedBounds.latitudeMin, boundsFetched.latitudeMin),
+                longitudeMax: Math.max(requestedBounds.longitudeMax, boundsFetched.longitudeMax),
+                longitudeMin: Math.min(requestedBounds.longitudeMin, boundsFetched.longitudeMin),
+              } : requestedBounds);
             }
           },
         },
