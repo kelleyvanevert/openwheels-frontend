@@ -97,8 +97,8 @@ angular.module('owm.resource', [
       }
     },
     resolve: {
-      place: ['$q', '$state', '$stateParams', 'placeService', '$log',
-        function ($q, $state, $stateParams, placeService, $log) {
+      place: ['$q', '$state', '$stateParams', 'placeService', '$log', '$filter',
+        function ($q, $state, $stateParams, placeService, $log, $filter) {
           return $q(function (resolve, reject) {
             placeService.search({
               place: $stateParams.city,
@@ -107,6 +107,7 @@ angular.module('owm.resource', [
                 if (!place) {
                   throw 'place not found (null returned by API)';
                 } else {
+                  place.nicename = $filter('toTitleCase')($filter('replaceDashToSpace')(place.name || ''));
                   resolve(place);
                 }
               })

@@ -13,12 +13,13 @@
     <div class="container container-transitional" style="padding-top: 0;">
       <div class="row">
         <div class="rpad col-md-offset-1 col-md-10 col-xs-12">
-          <ow-geocoder-searchbar searchtext="place.name" shadow="true"></ow-geocoder-searchbar>
+          <ow-geocoder-searchbar searchtext="place.nicename" shadow="true"></ow-geocoder-searchbar>
         </div>
       </div>
       <div class="row" style="padding: 3rem 0 2rem 0;">
         <div class="rpad col-md-offset-1 col-md-10">
-          <p>{{ place.lead }}</p>
+          <p ng-if="place.lead">{{ place.lead }}</p>
+          <p ng-if="!place.lead">Huur gemakkelijk en voordelig een auto in {{ place.nicename }}. Je kunt MyWheels Open deelauto’s huren die je opent met je smartphone en/of chipkaart. Of een van de vele auto’s van particuliere autobezitters. Je hoeft daardoor nooit mis te grijpen als je een auto direct nodig hebt.</p>
         </div>
       </div>
     </div>
@@ -102,7 +103,7 @@
     </div>
   </div>
 
-  <div class="full-gmaps" ng-if="map">
+  <div class="full-gmaps" ng-if="map" style="padding-top: 4rem;">
     <div style="height: 5px;">
       <md-progress-linear ng-show="mapLoading" md-mode="indeterminate"></md-progress-linear>
     </div>
@@ -153,32 +154,37 @@
   </div>
 
   <!-- WIL JE MEEDOEN? -->
-  <div class="container-fluid
-              container-home
-              mywheels-open-meedoen">
-    <div class="rpad col-xs-12">
-      <h2>Zo makkelijk is een auto huren bij MyWheels:</h2>
+  <div class="container-fluid" style="background: white; padding: 6rem 0 4rem 0;">
+    <div class="container-home
+                mywheels-open-meedoen">
+      <div class="row">
+        <div class="rpad col-md-offset-1 col-md-10">
+          <h2>Hoe werkt autodelen in {{ place.nicename }}?</h2>
 
-      <div class="open-steps">
-        <div class="step">
-          <div class="circle"><ng-md-icon size="50" icon="create"></ng-md-icon></div>
-          <div class="step-label">Zoek een auto</div>
-          <p>Vind een auto in jouw buurt door op postcode of plaats te zoeken.<br /><br />
-          Over heel Nederland verspreid delen mensen hun auto's via het platform. Ook biedt MyWheels eigen
-           auto's aan, die extra gemakkelijk te huren zijn.</p>
+          <p class="landing-text">In 2004 zijn we in Utrecht met een MyWheels Open deelauto begonnen. Deze stond in de Kersentuin in Leidsche Rijn. Inmiddels is dit aantal uitgegroeid tot 200 auto’s in Utrecht. De auto’s staan door de stad verspreid in woonwijken maar ook centrale plekken zoals op het Predikherenkerkhof en Korte Nieuwstraat. Grote kans dat er dus een deelauto bij jou in de buurt staat.</p>
         </div>
-        <div class="line"></div>
-        <div class="step">
-          <div class="circle"><ng-md-icon size="50" icon="directions_car"></ng-md-icon></div>
-          <div class="step-label">Reserveren</div>
-          <p>Vul de tijden in dat je de auto wilt huren. Heb je nog geen account? Dan vragen we je om je gegevens in te vullen. Daarna versturen we je verzoek naar de verhuurder van de auto. Ook kun je kiezen op welk soort contract je wilt rijden.</p>
-        </div>
-        <div class="line"></div>
-        <div class="step">
-          <div class="circle"><ng-md-icon size="50" icon="euro_symbol"></ng-md-icon></div>
-          <div class="step-label">Op pad</div>
-          <p>Zodra je huurverzoek is geaccepteerd, kun je de auto ophalen en op pad. MyWheels Open auto's worden direct geaccepteerd en kun je opnenen met je smartphone of OV-chipkaart. Bij een auto van een particulier moet je nog even afspreken om de sleutel op te halen.<br /><br />
-          Breng de auto na de rit weer terug naar dezelfde plek, en vergeet niet de kilometerstanden door te geven indien dit nodig is.</p>
+      </div>
+      <div class="row">
+        <div class="rpad col-xs-12">
+          <div class="open-steps">
+            <div class="step">
+              <div class="circle"><ng-md-icon size="50" icon="create"></ng-md-icon></div>
+              <div class="step-label">Zoek een auto</div>
+              <p class="landing-text">Zoek op je adres en je krijgt een lijst met auto’s in jouw buurt te zien. Klik in het overzicht op een geschikte auto maak een reservering.</p>
+            </div>
+            <div class="line"></div>
+            <div class="step">
+              <div class="circle"><ng-md-icon size="50" icon="directions_car"></ng-md-icon></div>
+              <div class="step-label">Reserveren</div>
+              <p class="landing-text">De MyWheels deelauto's open je met je smartphone of OV-chipkaart. Voor het huren van een particuliere auto kun je het best even contact opnemen met de verhuurder om af te spreken wanneer je de sleutel ophaalt.</p>
+            </div>
+            <div class="line"></div>
+            <div class="step">
+              <div class="circle"><ng-md-icon size="50" icon="euro_symbol"></ng-md-icon></div>
+              <div class="step-label">Op pad</div>
+              <p class="landing-text">Breng de auto na afloop van de rit weer terug naar de plek waar je hem hebt opgehaald. Zorg dat je bij particuliere auto’s zowel de begin- als de eindstand van de kilometerteller noteert en dit na afloop van de rit aan ons doorgeeft.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -187,7 +193,7 @@
 
 
   <!-- ONZE IDEALEN -->
-  <div class="container-fluid" style="background: white; padding: 4rem 0; min-height: 60vh;">
+  <div class="container-fluid">
     <div class="container container-home">
       <div class="row">
         <div class="rpad col-xs-12">
