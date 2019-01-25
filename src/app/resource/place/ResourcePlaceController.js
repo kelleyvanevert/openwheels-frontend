@@ -190,7 +190,7 @@ angular.module('owm.resource.place', [])
           //'sort: "relevance"' +
         '})';
 
-      var promise = appConfig.test ?
+      var promise = (appConfig.test && appConfig.test.searchV3FromOpenWheels) ?
         api.invokeRpcMethod('resource.searchV3', box.params, undefined, true, {
           url: 'https://openwheels.nl/api/',
         })
