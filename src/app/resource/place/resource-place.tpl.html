@@ -185,7 +185,7 @@
         <div class="rpad col-md-offset-1 col-md-10">
           <h2>Hoe werkt autodelen in {{ place.nicename }}?</h2>
 
-          <p class="landing-text">In 2004 zijn we in Utrecht met een MyWheels Open deelauto begonnen. Deze stond in de Kersentuin in Leidsche Rijn. Inmiddels is dit aantal uitgegroeid tot 200 auto’s in Utrecht. De auto’s staan door de stad verspreid in woonwijken maar ook centrale plekken zoals op het Predikherenkerkhof en Korte Nieuwstraat. Grote kans dat er dus een deelauto bij jou in de buurt staat.</p>
+          <p ng-if="place.body" class="landing-text" ng-bind-html="place.body"></p>
         </div>
       </div>
       <div class="row">
@@ -209,6 +209,37 @@
               <p class="landing-text">Breng de auto na afloop van de rit weer terug naar de plek waar je hem hebt opgehaald. Zorg dat je bij particuliere auto’s zowel de begin- als de eindstand van de kilometerteller noteert en dit na afloop van de rit aan ons doorgeeft.</p>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="rpad col-xs-12">
+          <h3 style="margin-bottom: 3rem;">Veelgestelde vragen</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="rpad col-sm-6 col-xs-12">
+
+          <div class="card mw faq" ng-repeat="faq in FAQ.left">
+            <div class="card-heading" ng-click="faq.open = !faq.open;">
+              <h4 class="card-title">{{ faq.question }}</h4>
+            </div>
+            <div class="panel-body" uib-collapse="!faq.open">
+              <div ng-bind-html="faq.answer"></div>
+            </div>
+          </div>
+
+        </div>
+        <div class="rpad col-sm-6 col-xs-12">
+
+          <div class="card mw faq" ng-repeat="faq in FAQ.right">
+            <div class="card-heading" ng-click="faq.open = !faq.open;">
+              <h4 class="card-title">{{ faq.question }}</h4>
+            </div>
+            <div class="panel-body" uib-collapse="!faq.open">
+              <div ng-bind-html="faq.answer"></div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

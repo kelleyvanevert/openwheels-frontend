@@ -377,6 +377,17 @@
         font-size: 2.2em;
       }
     }
+
+    h3 {
+      font-size: 2.8rem;
+      color: #999;
+    }
+
+    @media (max-width: 480px) {
+      h3 {
+        font-size: 2.4rem;
+      }
+    }
   }
 
   @media (max-width: 40em) {
@@ -550,5 +561,18 @@
   a {
     color: darken(@mywheels-blue, 10%);
     text-decoration: underline;
+  }
+}
+
+.card.mw.faq {
+  border: 1px solid #aaa;
+
+  .card-heading {
+    padding-top: 1.4rem;
+    padding-bottom: 1.4rem;
+
+    h4 {
+      color: black;
+    }
   }
 }
