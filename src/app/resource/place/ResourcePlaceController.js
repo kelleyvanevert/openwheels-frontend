@@ -223,7 +223,7 @@ angular.module('owm.resource.place', [])
 
         if (!$scope.searchBoxes.show) {
           $scope.searchBoxes.show = [];
-          setTimeout(loadMapIfInViewport, 100);
+          $scope.loadMap = true;
         }
       });
     }, i * 500);
