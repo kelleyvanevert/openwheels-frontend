@@ -297,6 +297,10 @@ angular.module('openwheels', [
   }
 })
 
+.filter('homeAddress', function (makeHomeAddressPrefill) {
+  return makeHomeAddressPrefill;
+})
+
 .run(function (windowSizeService, oAuth2MessageListener, stateAuthorizer, authService, featuresService) {
   /* Intentionally left blank */
 })
@@ -336,6 +340,24 @@ angular.module('openwheels', [
     }
   }
 
+  function setAnalyticsUserStats () {
+    if (authService.user.isAuthenticated) {
+      setAnalyticsUser();
+
+      var userStatus = authService.user.identity.status;
+      var numberBookings = authService.user.identity.numberOfBookings;
+      var userPreference = authService.user.identity.preference;
+
+      var dataLayer = window.dataLayer = window.dataLayer || [];
+      dataLayer.push({
+        'mywheels user status': userStatus,
+        'mywheels number of bookings': numberBookings,
+        'mywheels user preference': userPreference,
+      });
+    }
+  }
+  $rootScope.setAnalyticsUserStats = setAnalyticsUserStats;
+
   $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState) {
     // show spinner
     alertService.load();
@@ -351,18 +373,7 @@ angular.module('openwheels', [
     alertService.loaded();
 
     if (authService.user.isAuthenticated) {
-      setAnalyticsUser();
-
-      var userStatus = authService.user.identity.status;
-      var numberBookings = authService.user.identity.numberOfBookings;
-      var userPreference = authService.user.identity.preference;
-
-      var dataLayer = window.dataLayer = window.dataLayer || [];
-      dataLayer.push({
-        'mywheels user status': userStatus,
-        'mywheels number of bookings': numberBookings,
-        'mywheels user preference': userPreference,
-      });
+      setAnalyticsUserStats();
     }
 
     $localStorage.discountCode = ($location.search().discountCode || $localStorage.discountCode);

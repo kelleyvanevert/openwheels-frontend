@@ -23,6 +23,21 @@ angular.module('owm.pages', [
         controller: 'HomeController'
       }
     },
+    resolve: {
+      me: ['authService', 'tokenSilentRefreshService', function (authService, tokenSilentRefreshService) {
+        return authService.userPromise().then(function (user) {
+          if (!user.isAuthenticated) {
+            tokenSilentRefreshService.silentRefresh().then(function (token) {
+              // this does the rest of the magic
+              // (on successful login, `authService.user` is (internally) changed in-place,
+              //  which is noticed in the shell/toolbar template)
+              authService.notifyFreshToken(token, true);
+            });
+          }
+          return user.isAuthenticated ? user.identity : null;
+        });
+      }],
+    },
 //    data: {
 //      access: {
 //        deny: {
