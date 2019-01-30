@@ -12,7 +12,7 @@
   <div style="padding-top: 0; margin-top: -2.6rem;" class="landing-lead">
     <div class="container container-transitional" style="padding-top: 0;">
       <div class="row">
-        <div class="rpad col-md-offset-1 col-md-10 col-xs-12">
+        <div class="rpad col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8 col-xs-12">
           <ow-geocoder-searchbar searchtext="place.nicename" shadow="true"></ow-geocoder-searchbar>
         </div>
       </div>
@@ -46,7 +46,8 @@
     </div>
   </div>
 
-  <div class="container container-transitional place-page-container">
+  <div class="container container-transitional place-page-container"
+       ng-if="!searchBoxes.show || searchBoxes.show[0]">
     <!--
     <div class="row">
       <div class="rpad col-md-offset-2 col-md-8 col-xs-12">
@@ -125,18 +126,19 @@
     </div>
   </div>
 
-  <div class="full-gmaps vpad"
+  <div class="full-gmaps"
       ng-if="map"
       ng-init="mapLoadOnScroll()"
-      style="padding-bottom: 0;">
-    <div style="height: 5px;">
+      style="position: relative;"
+      ng-style="(searchBoxes.show && searchBoxes.show.length === 0) ? { 'margin-top': 0 } : {}">
+    <div style="height: 5px; position: absolute; top: -5px; left: 0; right: 0;">
       <md-progress-linear ng-show="mapLoading" md-mode="indeterminate" class="md-warn"></md-progress-linear>
     </div>
     <div ng-if="!loadMap"
         class="map-skeleton"
         ng-click="loadMapNow()">
       <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action"
-              ng-click="loadMapNow()"
+              ng-click="loadMapNow()
               md-ink-ripple="#9a3d26">
         Kaart laden <ng-md-icon icon="arrow_forward"></ng-md-icon>
       </button>
@@ -180,9 +182,9 @@
   </div>
 
   <div class="container container-transitional place-page-container"
-      style="padding-bottom: 3rem;">
+      style="padding-bottom: 3rem;"
+      ng-if="searchBoxes.show.length > 1">
     <div class="resources-for-category"
-        ng-if="searchBoxes.show.length > 1"
         ng-repeat="box in searchBoxes.show.slice(1)">
       <div class="row">
         <div class="rpad col-xs-12">
