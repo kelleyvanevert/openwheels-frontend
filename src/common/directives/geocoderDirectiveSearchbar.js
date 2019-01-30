@@ -70,7 +70,7 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
           $scope.onBlur();
         }
       };
-
+      
       $scope.setSort = function(sort) {
         $scope.sort = sort;
         resourceQueryService.setSort(sort);
