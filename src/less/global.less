@@ -61,7 +61,8 @@ html,
 input,
 select,
 textarea {
-    font-family: Arial;
+    font-family: @font-family-sans-serif;
+    color: #333;
 }
 
 
@@ -70,7 +71,7 @@ textarea {
 md-input-container label,
 md-input-container.md-default-theme .md-placeholder,
 md-input-container .md-placeholder {
-    font-family: Arial;
+    font-family: @font-family-sans-serif;
     color: #888;
 /*    font-weight: bold;*/
 }
@@ -148,7 +149,7 @@ md-icon {
 
 
 .lead {
-    font-size: 1.2em;
+    font-size: 18px;
     color: #333;
     line-height: 1.5;
 }
@@ -558,7 +559,6 @@ h2.without-card + .sub {
     table,
     ul,
     p {
-        font-size: 1.1em;
         line-height: 1.5em;
     }
 

@@ -2,7 +2,7 @@
 
 angular.module('owm.shell')
 
-.controller('ToolbarController', function ($scope, $state, $rootScope, $localStorage, $timeout) {
+.controller('ToolbarController', function ($scope, $state, me, $rootScope, $localStorage, $timeout, $filter) {
 
 	//if visitor is on the signup page, don't show the buttons in the toolbar because of distraction reasons
 	$scope.onSignUpPage = $rootScope.$state.current.name === 'owm.auth.signup' ? true : false;
@@ -12,6 +12,10 @@ angular.module('owm.shell')
 		$scope.onSignUpPage = toState.name === 'owm.auth.signup' ? true : false;
 		$scope.onListYourCarPage = toState.name === 'list-your-car' ? true : false;
 	});
+
+	if (me) {
+		$scope.profileImageUrl = $filter('profileImageUrl')(me);
+	}
 
 	$timeout(function () {
 		if($localStorage.invitedBySlug) {

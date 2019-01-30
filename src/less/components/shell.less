@@ -32,8 +32,8 @@
   }
 
   .md-toolbar-tools {
-    font-family: @headings-font-family;
     font-size: 16px;
+    /*font-family: @headings-font-family;*/
   }
 
   .md-button {
@@ -81,8 +81,8 @@
 
 .app-menu {
   margin-top: 9px;
-  font-family: @headings-font-family;
   font-size: 16px;
+  /*font-family: @headings-font-family;*/
 
   md-list {
     padding-top: 0;
@@ -90,12 +90,13 @@
   }
 
   md-list-item p {
-    color: @mywheels-gray;
+    color: #333;
   }
   md-list-item > ng-md-icon:first-child,
   md-list-item .md-list-item-inner > ng-md-icon:first-child {
     margin-top: 10px;
     margin-right: 16px;
+    margin-bottom: 10px;
   }
 
   md-divider {
@@ -115,7 +116,7 @@
     input {
       border: none !important;
       box-shadow: none !important;
-      font-family: @headings-font-family;
+      font-family: @font-family-sans-serif;
       font-size: 16px !important;
 
       padding-left: calc(16px + 24px + 16px) !important;

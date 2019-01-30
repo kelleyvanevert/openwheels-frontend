@@ -16,6 +16,25 @@
         <span>Menu</span>
       </md-button>
 
+      <!--<span flex></span>-->
+
+      <!-- geo searchbar -->
+      <div class="mywheels-form hidden-xs" style="flex-grow: 1;">
+        <div class="form-group mw-icon searchbar searchbar--no-opacity" style="margin: 0;">
+          <ng-md-icon icon="search" aria-hidden="true" style="top: 11px;"></ng-md-icon>
+          <input class="hoverstyle"
+                type="text"
+                placeholder="Waar zoek je een auto?"
+                style="font-weight: normal; font-size: 16px;" />
+        </div>
+      </div>
+      <!--
+      <md-button id="toolbarMenu" hide-xs ng-click="openMenu()">
+        <ng-md-icon icon="search" alt="Icoon" aria-label="Icoon"></ng-md-icon>
+        <span>Zoek een auto</span>
+      </md-button>
+      -->
+
       <span flex></span>
 
       <!-- help button -->
@@ -23,7 +42,7 @@
         <ng-md-icon icon="help_outline" alt="Icoon" aria-label="Icoon"></ng-md-icon>
       </md-button>
       <md-button id="toolbarHelp" hide-xs ng-if="user.isAuthenticated" href="{{ 'NAVBAR.HOW_IT_WORKS_URL' | translate }}">
-        <ng-md-icon icon="help_outline" alt="Icoon" aria-label="Icoon"></ng-md-icon>
+        <!--<ng-md-icon icon="help_outline" alt="Icoon" aria-label="Icoon"></ng-md-icon>-->
         <span>Help</span>
       </md-button>
 
@@ -35,7 +54,7 @@
 
       <!-- add resource -->
       <md-button id="toolbarListyourcar" hide-xs hide-sm ng-if="!user.isAuthenticated && !onSignUpPage && !onListYourCarPage" ui-sref="list-your-car">
-        <ng-md-icon icon="directions_car" alt="Icoon" aria-label="Icoon"></ng-md-icon>
+        <!--<ng-md-icon icon="directions_car" alt="Icoon" aria-label="Icoon"></ng-md-icon>-->
         <span>{{ 'LIST_YOUR_CAR' | translate }}</span>
       </md-button>
 
@@ -46,36 +65,35 @@
 
       <!-- signup -->
       <md-button id="toolbarSignup" ng-if="!user.isPending && !user.isAuthenticated && !onSignUpPage" class="btn-green app--toolbar--button--text" ui-sref="owm.auth.signup" ng-show="!invitedBySlug">
-        <ng-md-icon icon="person_outline" alt="Icoon" aria-label="Icoon" hide-xs></ng-md-icon>
         <span>{{ 'SIGNUP' | translate }}</span>
       </md-button>
 
       <!-- signup -->
       <md-button id="toolbarSignup" ng-if="!user.isPending && !user.isAuthenticated && !onSignUpPage" class="btn-green app--toolbar--button--text" ui-sref="subscribe({ slug: invitedBySlug })" ng-show="invitedBySlug">
-        <ng-md-icon icon="person_outline" alt="Icoon" aria-label="Icoon" hide-xs></ng-md-icon>
         <span>{{ 'SIGNUP' | translate }}</span>
       </md-button>
 
       <!-- login -->
       <md-button id="toolbarLogin" ng-if="isWindowSizeSM && !user.isPending && !user.isAuthenticated && !centralb" ng-click="login()">
-        <ng-md-icon icon="person" alt="Icoon" aria-label="Icoon"></ng-md-icon>
+        <!--<ng-md-icon icon="account_circle" alt="Icoon" aria-label="Icoon"></ng-md-icon>-->
         <span>{{ 'LOGIN' | translate }}</span>
       </md-button>
 
       <!-- user menu -->
-      <md-menu md-position-mode="target-right target" ng-if="user.isAuthenticated" ng-class="{ 'user-name-visible': isWindowSizeSM }">
+      <md-menu style="margin-right: 4px;" md-position-mode="target-right target" ng-if="user.isAuthenticated" ng-class="{ 'user-name-visible': isWindowSizeSM }">
 
-        <md-button id="toolbarPersonmenu" class="user-menu-button" ng-class="{ 'md-icon-button': !isWindowSizeSM }" ng-click="$mdOpenMenu($event)">
-          <ng-md-icon icon="person" alt="Icoon" aria-label="Icoon" md-menu-origin></ng-md-icon>
-          <span ng-if="isWindowSizeSM" class="user-name">{{ user.identity.firstName }}</span>
-        </md-button>
-
+        <a href="#"
+          md-menu-origin
+          ng-click="$mdOpenMenu($event)"
+          style="display: block; width: 32px; height: 32px; border-radius: 50%; background: #ddd url(/assets/img/profile.png); background-size: cover; background-position: 50% 50%;"
+          ng-style="{ 'background-image': 'url(' + profileImageUrl + ')' }"></a>
+        
         <md-menu-content width="4">
-          <md-menu-item md-menu-align-target>
+          <md-menu-item>
             <md-button id="toolbarPersonmenuDashboard" ui-sref="owm.person.dashboard">
               <ng-md-icon icon="home" alt="Icoon" aria-label="Icoon"></ng-md-icon>
               <span>{{ 'MY_DASHBOARD' | translate }}</span>
-              <span md-menu-align-target></span>
+              <span></span>
             </md-button>
           </md-menu-item>
 
