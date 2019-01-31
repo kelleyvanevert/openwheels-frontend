@@ -10,6 +10,7 @@
     <label for="radius">{{ 'SEARCH_RADIUS' | translate }}</label>
     <div class="filter-items">
       <div class="filter-item"
+           md-ink-ripple="#60a9c5"
           ng-class="{ selected: props.radius === radius.value }"
           ng-repeat="radius in radiusOptions"
           ng-click="selectRadius(radius.value)">
@@ -29,6 +30,7 @@
     <label for="fuelType">{{ 'FUEL_TYPE' | translate }}</label>
     <div class="filter-items">
       <div class="filter-item"
+           md-ink-ripple="#60a9c5"
           ng-class="{ selected: filters.fuelType === fuelType.value }"
           ng-repeat="fuelType in fuelTypeOptions"
           ng-click="selectFuelType(fuelType.value)">
@@ -46,6 +48,7 @@
     <label for="resourceType">{{ 'RESOURCE_TYPE' | translate }}</label>
     <div class="filter-items">
       <div class="filter-item"
+           md-ink-ripple="#60a9c5"
           ng-class="{ selected: filters.resourceType === resourceType.value }"
           ng-repeat="resourceType in resourceTypeOptions"
           ng-click="selectResourceType(resourceType.value)">
@@ -63,6 +66,7 @@
     <label for="minSeats">Aantal zitplaatsen</label>
     <div class="filter-items">
       <div class="filter-item half"
+           md-ink-ripple="#60a9c5"
           ng-class="{ selected: filters.minSeats === minSeats.value }"
           ng-repeat="minSeats in minSeatOptions"
           ng-click="selectMinSeats(minSeats.value)">
@@ -80,6 +84,7 @@
     <label>{{ 'RESOURCE_PROPERTIES' | translate }}</label>
     <div class="filter-items">
       <div class="checkbox-item"
+           md-ink-ripple="#60a9c5"
            ng-repeat="(key, value) in optionsLabels">
         <md-checkbox ng-model="options[key]"
                      class="md-primary">
