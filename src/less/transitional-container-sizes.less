@@ -6,6 +6,23 @@
  * USAGE (inside a full-width parent): <div class="container container-transitional"></div>;
  */
 
+/*
+
+.container-home {
+    width: 100%;
+}
+@media (min-width:80em) {
+    .container-home {
+        width: 80em;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+*/
+
+
+.container-home,
 .container-transitional {
   padding-top: @material-padding;
   padding-left: .5em;
@@ -23,18 +40,21 @@
 }
 
 @media (min-width: 768px) {
+  .container-home,
   .container-transitional {
     width: 750px;
   }
 }
 
 @media (min-width: 992px) {
+  .container-home,
   .container-transitional {
     width: 970px;
   }
 }
 
 @media (min-width: 1200px) {
+  .container-home,
   .container-transitional {
     width: 1170px;
   }

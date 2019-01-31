@@ -2,19 +2,21 @@
 
   <div class="form-group" id="mywheelsOpen">
     <label for="mywheelsOpen">{{ 'MYWHEELS_OPEN_TIP' | translate }}</label>
-    <md-switch name="mywheelsOpen" ng-model="filters.smartwheels" aria-label="mywheelsOpen" ng-true-value="'true'" ga-track-event="['interaction', 'mywheelsOpenToggle', 'auto-huren']"></md-switch>
-    <p class="mywheels-open-tip-search">{{ 'MYWHEELS_OPEN_INFO' | translate }}</p>
+    <md-switch class="md-accent" name="mywheelsOpen" ng-model="filters.smartwheels" aria-label="mywheelsOpen" ng-true-value="'true'" ga-track-event="['interaction', 'mywheelsOpenToggle', 'auto-huren']"></md-switch>
+    <p style="color: #777;">{{ 'MYWHEELS_OPEN_INFO' | translate }}</p>
   </div>
 
   <div class="form-group">
-    <label for="radius">{{ 'SEARCH_RADIUS' | translate }}</label><hr>
-    <div ng-repeat="radius in radiusOptions">
-      <div class="filter-item" ng-if="props.radius !== radius.value">
-        <span ng-click="selectRadius(radius.value)">{{ radius.label }}</span>
-      </div>
-      <div class="filter-item tag-selected" ng-if="props.radius === radius.value">
-        <span class="pull-left">{{ radius.label }}</span>
-        <span class="pull-right" ng-click="resetRadius()">
+    <label for="radius">{{ 'SEARCH_RADIUS' | translate }}</label>
+    <div class="filter-items">
+      <div class="filter-item"
+          ng-class="{ selected: props.radius === radius.value }"
+          ng-repeat="radius in radiusOptions"
+          ng-click="selectRadius(radius.value)">
+        {{ radius.label }}
+        <span class="pull-right"
+              ng-click="resetRadius(); $event.stopPropagation();"
+              ng-if="props.radius === radius.value">
           <ng-md-icon icon="close"></ng-md-icon>
         </span>
       </div>
@@ -22,14 +24,16 @@
   </div>
 
   <div class="form-group">
-    <label for="fuelType">{{ 'FUEL_TYPE' | translate }}</label><hr>
-    <div ng-repeat="fuelType in fuelTypeOptions">
-      <div class="filter-item" ng-if="filters.fuelType !== fuelType.value">
-        <span ng-click="selectFuelType(fuelType.value)">{{ fuelType.label }}</span>
-      </div>
-      <div class="filter-item tag-selected" ng-if="filters.fuelType === fuelType.value">
-        <span class="pull-left">{{ fuelType.label }}</span>
-        <span class="pull-right" ng-click="resetFuelType()">
+    <label for="fuelType">{{ 'FUEL_TYPE' | translate }}</label>
+    <div class="filter-items">
+      <div class="filter-item"
+          ng-class="{ selected: filters.fuelType === fuelType.value }"
+          ng-repeat="fuelType in fuelTypeOptions"
+          ng-click="selectFuelType(fuelType.value)">
+        {{ fuelType.label }}
+        <span class="pull-right"
+              ng-click="resetFuelType(); $event.stopPropagation();"
+              ng-if="filters.fuelType === fuelType.value">
           <ng-md-icon icon="close"></ng-md-icon>
         </span>
       </div>
@@ -37,14 +41,16 @@
   </div>
 
   <div class="form-group">
-    <label for="resourceType">{{ 'RESOURCE_TYPE' | translate }}</label><hr>
-    <div ng-repeat="resourceType in resourceTypeOptions">
-      <div class="filter-item" ng-if="filters.resourceType !== resourceType.value">
-        <span ng-click="selectResourceType(resourceType.value)">{{ resourceType.label }}</span>
-      </div>
-      <div class="filter-item tag-selected" ng-if="filters.resourceType === resourceType.value">
-        <span class="pull-left">{{ resourceType.label }}</span>
-        <span class="pull-right" ng-click="resetResourceType()">
+    <label for="resourceType">{{ 'RESOURCE_TYPE' | translate }}</label>
+    <div class="filter-items">
+      <div class="filter-item"
+          ng-class="{ selected: filters.resourceType === resourceType.value }"
+          ng-repeat="resourceType in resourceTypeOptions"
+          ng-click="selectResourceType(resourceType.value)">
+        {{ resourceType.label }}
+        <span class="pull-right"
+              ng-click="resetResourceType(); $event.stopPropagation();"
+              ng-if="filters.resourceType === resourceType.value">
           <ng-md-icon icon="close"></ng-md-icon>
         </span>
       </div>
@@ -52,14 +58,16 @@
   </div>
 
   <div class="form-group">
-    <label for="minSeats">{{ 'MIN_SEATS' | translate }}</label><hr>
-    <div ng-repeat="minSeats in minSeatOptions">
-      <div class="filter-item" ng-if="filters.minSeats !== minSeats.value">
-        <span ng-click="selectMinSeats(minSeats.value)">{{ minSeats.label }}</span>
-      </div>
-      <div class="filter-item tag-selected" ng-if="filters.minSeats === minSeats.value">
-        <span class="pull-left">{{ minSeats.label }}</span>
-        <span class="pull-right" ng-click="resetMinSeats()">
+    <label for="minSeats">Aantal zitplaatsen</label>
+    <div class="filter-items">
+      <div class="filter-item half"
+          ng-class="{ selected: filters.minSeats === minSeats.value }"
+          ng-repeat="minSeats in minSeatOptions"
+          ng-click="selectMinSeats(minSeats.value)">
+        {{ minSeats.label }} of meer
+        <span class="pull-right"
+              ng-click="resetMinSeats(); $event.stopPropagation();"
+              ng-if="filters.minSeats === minSeats.value">
           <ng-md-icon icon="close"></ng-md-icon>
         </span>
       </div>
@@ -67,13 +75,16 @@
   </div>
 
   <div class="form-group">
-      <label>{{ 'RESOURCE_PROPERTIES' | translate }}</label><hr>
-      <div class="checkbox" ng-repeat="(key, value) in optionsLabels">
-          <input type="checkbox" ng-model="options[key]" id="{{key}}" />
-          <label for="{{key}}">
-            {{optionsLabels[key]}}
-          </label>
+    <label>{{ 'RESOURCE_PROPERTIES' | translate }}</label>
+    <div class="filter-items">
+      <div class="checkbox-item"
+           ng-repeat="(key, value) in optionsLabels">
+        <md-checkbox ng-model="options[key]"
+                     class="md-primary">
+          {{ value }}
+        </md-checkbox>
       </div>
+    </div>
   </div>
 
 </form>
