@@ -14,11 +14,13 @@
           ng-repeat="radius in radiusOptions"
           ng-click="selectRadius(radius.value)">
         {{ radius.label }}
+        <!--
         <span class="pull-right"
               ng-click="resetRadius(); $event.stopPropagation();"
               ng-if="props.radius === radius.value">
           <ng-md-icon icon="close"></ng-md-icon>
         </span>
+        -->
       </div>
     </div>
   </div>
