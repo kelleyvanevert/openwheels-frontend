@@ -38,9 +38,6 @@
       <span flex></span>
 
       <!-- help button -->
-      <md-button id="toolbarHelp" hide-gt-xs ng-if="user.isAuthenticated" class="md-icon-button" href="{{ 'NAVBAR.HOW_IT_WORKS_URL' | translate }}">
-        <ng-md-icon icon="help_outline" alt="Icoon" aria-label="Icoon"></ng-md-icon>
-      </md-button>
       <md-button id="toolbarHelp" hide-xs ng-if="user.isAuthenticated" href="{{ 'NAVBAR.HOW_IT_WORKS_URL' | translate }}">
         <!--<ng-md-icon icon="help_outline" alt="Icoon" aria-label="Icoon"></ng-md-icon>-->
         <span>Help</span>
@@ -115,6 +112,13 @@
             <md-button id="toolbarPersonmenuInvite" ui-sref="invite">
               <ng-md-icon icon="share" alt="Icoon" aria-label="Icoon"></ng-md-icon>
               <span>{{ 'INVITE_FRIENDS_MENU' | translate }}</span>
+            </md-button>
+          </md-menu-item>
+
+          <md-menu-item hide-gt-xs ng-if="user.isAuthenticated">
+            <md-button id="toolbarHelpMenuItem" href="{{ 'NAVBAR.HOW_IT_WORKS_URL' | translate }}">
+              <ng-md-icon icon="share" alt="Icoon" aria-label="Icoon"></ng-md-icon>
+              <span>Help</span>
             </md-button>
           </md-menu-item>
 

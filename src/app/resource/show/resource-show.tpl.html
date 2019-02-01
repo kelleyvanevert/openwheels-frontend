@@ -53,7 +53,9 @@
                 <div class="card-body">
                     <div flex layout="row">
                         <h1 class="single-line" flex>
-                            Huur {{ resource.alias || ('RESOURCE_NO_NAME' | translate) }} {{ resource.city ? 'in ' + resource.city : '' }}
+                            Huur
+                            {{ resource.alias || ('RESOURCE_NO_NAME' | translate) }}
+                            <span ng-if="resource.city">in {{ resource.city | replaceDashToSpace | toTitleCase }}</span>
                         </h1>
                         <md-button ng-if="me" class="is-favorite-button md-icon-button md-accent" aria-label="Favorite"
                                                 ng-class="{ 'is-favorite': isFavorite, 'loading': !isFavoriteResolved }">
@@ -79,7 +81,7 @@
                         <span ng-if="resource.city">
                             <span class="bullet"></span>
                             <span class="subtitle-feature">
-                                {{ resource.city | toTitleCase }}
+                                {{ resource.city | replaceDashToSpace | toTitleCase }}
                             </span>
                         </span>
                     </div>
@@ -191,9 +193,7 @@
                             </button>
                         </div>
                     </div>
-                    <div ng-if="resource.owner.about">
-                        <p style="white-space:pre-line">{{ resource.owner.about}}</p>
-                    </div>
+                    <p ng-if="resource.owner.about" style="white-space: pre-line;">{{ resource.owner.about}}</p>
                 </div>
             </div>
 
@@ -257,14 +257,14 @@
             <!-- location -->
             <div class="card mw mb0">
                 <div class="card-heading" ng-if="resource.location">
-                    <h3>{{ resource.location }} <small ng-if="resource.city">{{ resource.city }}</small></h3>
+                    <h3>{{ resource.location }} <small ng-if="resource.city">{{ resource.city | replaceDashToSpace | toTitleCase }}</small></h3>
                 </div>
                 <div class="decrease-max-gmaps-height">
                     <mw-resource-location-map map="map"></mw-resource-location-map>
                 </div>
 
                 <div class="card-body" ng-show="resource.city">
-                    {{ 'RESOURCE_MORE_IN_CITY' | translate }} <a ui-sref="owm.resource.place({ city: (resource.city | replaceSpaceToDash | lowercase) })">{{ resource.city }}</a>
+                    {{ 'RESOURCE_MORE_IN_CITY' | translate }} <a ui-sref="owm.resource.place({ city: (resource.city | replaceSpaceToDash | lowercase) })">{{ resource.city | replaceDashToSpace | toTitleCase }}</a>
                 </div>
             </div>
 

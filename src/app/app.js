@@ -96,6 +96,7 @@ angular.module('openwheels', [
   'autoResize',
   'infoDialogDirective',
   'huurkostenLineDirective',
+  'userStatusLine',
 
   'mwResourceLocationMap',
 

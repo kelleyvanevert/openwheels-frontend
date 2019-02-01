@@ -67,6 +67,76 @@ span.action-button:last-child a.btn {
     }
 }
 
+
+.dashboard-menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: top;
+
+    margin: 0 -8px;
+    margin-bottom: 16px;
+}
+
+.dashboard-link-col {
+    flex-grow: 1;
+    min-width: 160px;
+    max-width: 180px;
+
+    margin: 8px;
+}
+
+.dashboard-link {
+    display: block;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 0;
+    color: #555;
+    background: rgba(255, 255, 255, 0.6);
+    position: relative;
+    transition: transform .1s ease, background-color .1s ease;
+
+    width: 100%;
+    height: 0;
+    padding-bottom: 90%;
+
+    &:hover {
+        background: white;
+        transform: scale(1.03);
+        color: #222;
+
+        ng-md-icon.chevron {
+            color: #222;
+            right: 4px;
+        }
+    }
+
+    ng-md-icon.chevron {
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        margin-top: -18px;
+
+        width: 36px;
+        height: 36px;
+
+        color: #bbb;
+
+        transition: right .1s ease, color .1s ease;
+    }
+
+    .title {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        padding: 16px;
+    }
+}
+
+
 /* ---------------------- SEARCHBAR  ------------------- */
 .dashboard-searchbar-frontpage {
     background: rgba(0, 0, 0, 0.2);

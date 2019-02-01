@@ -2,12 +2,110 @@
 
 angular.module('owm.person.dashboard', [])
 
-.controller('PersonDashboardController', function ($q, $scope, $sce, $state, me, bookingList, rentalList, actions,
+.controller('PersonDashboardController', function ($q, $scope, $sce, $state, me, bookingList, rentalList, actions, person,
+  homeAddressPrefill, $filter,
   authService, bookingService, alertService, boardcomputerService, actionService, resourceService, resourceQueryService,
   blogItems, $localStorage, personService, dialogService, $translate, $timeout, Analytics, metaInfoService, appConfig, $window) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard'});
   metaInfoService.set({canonical: 'https://mywheels.nl/dashboard'});
+
+  $scope.person = person;
+
+  // if the user has any succesful bookings in the past, or any (open) booking (requests) in the future
+  $scope.hasBooked = ($scope.person.numberOfBookings + bookingList.totalBookings) > 0;
+  
+  $scope.homeAddressPrefill = homeAddressPrefill;
+
+/*
+  $scope.dashboardLinks = [];
+  if (me.provider.id === 1 && me.preference) {
+    if (me.preference !== 'owner') {
+      $scope.dashboardLinks = [
+        { sref: 'owm.trips', title: $filter('translate')('MY_TRIPS') },
+        { sref: 'owm.finance.v4', title: $filter('translate')('MY_FINANCE') },
+        { sref: 'owm.message', title: $filter('translate')('MY_MESSAGES') },
+        { sref: 'invite', title: $filter('translate')('INVITE_FRIENDS_MENU') },
+        { sref: 'owm.person.aboutme', title: $filter('translate')('MY_MEMBER_PAGE') },
+      ];
+    }
+    else if (me.preference === 'owner' && resource.length > 0) {
+      $scope.dashboardLinks = [
+        { sref: 'owm.trips', title: $filter('translate')('TRIPS_BOOKINGS_FOR_OWNER') },
+        { sref: '' },
+        { sref: 'owm.resource.own', title: $filter('translate')('RESOURCE_EDIT_CALENDAR') },
+        { sref: 'owm.resource.own', title: $filter('translate')('MY_RESOURCES') },
+        { sref: 'invite', title: $filter('translate')('INVITE_FRIENDS_MENU') },
+        { sref: 'owm.finance.v4', title: $filter('translate')('MY_FINANCE') },
+      ];
+    }
+  }
+            <md-tab ng-if="resources.length === 1"><md-tab-label>
+              <a ng-href="{{ $state.href('owm.resource.calendar', { city: resources[0].city, resourceId: resources[0].id }) }}">{{ 'RESOURCE_EDIT_CALENDAR' | translate }}</a>
+            </md-tab-label></md-tab>
+
+
+          <md-tabs class="shortcut" ng-if="me.preference === 'owner' && resources.length === 0">
+            <md-tab><md-tab-label>
+              <a ui-sref="list-your-car">{{ 'CREATE_RESOURCE_BUTTON' | translate }}</a>
+            </md-tab-label></md-tab>
+            <md-tab><md-tab-label>
+              <a ui-sref="owm.trips">{{ 'TRIPS_BOOKINGS_FOR_OWNER' | translate }}</a>
+            </md-tab-label></md-tab>
+            <md-tab><md-tab-label>
+              <a ui-sref="owm.finance.v4">{{ 'MY_FINANCE' | translate }}</a>
+            </md-tab-label></md-tab>
+            <md-tab><md-tab-label>
+              <a ui-sref="invite">{{ 'INVITE_FRIENDS_MENU' | translate }}</a>
+            </md-tab-label></md-tab>
+          </md-tabs>
+
+        </div>
+      </div>
+
+      <!-- SHORTCUT DEELAUTO -->
+      <div class="card" ng-if="me.provider.id === 5 && me.preference">
+        <div class="card-body no-padding">
+
+          <md-tabs class="shortcut" ng-if="me.preference === 'owner' && resources.length === 0">
+            <md-tab><md-tab-label>
+              <a ui-sref="owm.resource.own">{{ 'CREATE_RESOURCE_BUTTON' | translate }}</a>
+            </md-tab-label></md-tab>
+            <md-tab><md-tab-label>
+              <a ui-sref="owm.person.profile">{{ 'ADD_PROFILE_PERSONAL' | translate }}</a>
+            </md-tab-label></md-tab>
+            <md-tab><md-tab-label>
+              <a ui-sref="owm.finance.contributie">{{ 'PAY_SUBSCRIPTION' | translate }}</a>
+            </md-tab-label></md-tab>
+          </md-tabs>
+
+          <md-tabs class="shortcut" ng-if="me.preference === 'owner' && resources.length > 0">
+            <md-tab><md-tab-label>
+              <a ui-sref="owm.resource.own">{{ 'ADD_PARKING_PERMIT' | translate }}</a>
+            </md-tab-label></md-tab>
+            <md-tab><md-tab-label>
+              <a ui-sref="owm.resource.own">{{ 'ADD_MEMBERS' | translate }}</a>
+            </md-tab-label></md-tab>
+            <md-tab><md-tab-label>
+              <a ui-sref="owm.person.profile">{{ 'ADD_PROFILE_PERSONAL' | translate }}</a>
+            </md-tab-label></md-tab>
+            <md-tab><md-tab-label>
+              <a ui-sref="owm.finance.contributie">{{ 'PAY_SUBSCRIPTION' | translate }}</a>
+            </md-tab-label></md-tab>
+          </md-tabs>
+
+          <md-tabs class="shortcut" ng-if="me.preference !== 'owner'">
+            <md-tab><md-tab-label>
+              <a ui-sref="owm.person.profile">{{ 'ADD_PROFILE_PERSONAL' | translate }}</a>
+            </md-tab-label></md-tab>
+            <md-tab><md-tab-label>
+              <a ui-sref="owm.finance.contributie">{{ 'PAY_SUBSCRIPTION' | translate }}</a>
+            </md-tab-label></md-tab>
+            <md-tab><md-tab-label>
+              <a href="{{ 'NAVBAR.HOW_IT_WORKS_URL' | translate }}">{{ 'NAVBAR.HOW_IT_WORKS' | translate }}</a>
+            </md-tab-label></md-tab>
+          </md-tabs>
+*/
 
   // If booking_before_signup in local storage exists that means we have been redirected to this page after facebook signup
   // decide where to go next and try to guess user preference. If we do not know what flow to redirect
@@ -146,45 +244,6 @@ angular.module('owm.person.dashboard', [])
     $state.go('owm.resource.search.list', resourceQueryService.createStateParams());
   };
 
-  $scope.openDoor = function (resource, booking) {
-    alertService.load();
-    boardcomputerService.control({
-        action: 'OpenDoorStartEnable',
-        resource: resource.id,
-        booking: booking ? booking.id : undefined
-      })
-      .then(function (result) {
-        if (result === 'error') {
-          return alertService.add('danger', result, 5000);
-        }
-        alertService.add('success', 'De auto opent binnen 15 seconden.', 3000);
-      }, function (error) {
-        alertService.add('danger', error.message, 5000);
-      })
-      .finally(function () {
-        alertService.loaded();
-      });
-  };
-
-  $scope.closeDoor = function (resource, booking) {
-    alertService.load();
-    boardcomputerService.control({
-        action: 'CloseDoorStartDisable',
-        resource: resource.id,
-        booking: booking ? booking.id : undefined
-      })
-      .then(function (result) {
-        if (result === 'error') {
-          return alertService.add('danger', result, 5000);
-        }
-        alertService.add('success', 'De auto sluit binnen 15 seconden.', 3000);
-      }, function (error) {
-        alertService.add('danger', error.message, 5000);
-      })
-      .finally(function () {
-        alertService.loaded();
-      });
-  };
 
   $scope.deleteAction = function (action) {
     alertService.load();

@@ -3,7 +3,6 @@
 angular.module('owm.person', [
   'owm.person.dashboard',
   'owm.person.intro',
-  'owm.person.dashboard.v1',
   'owm.person.profile',
   'owm.person.details',
   'owm.person.aboutme',
@@ -35,6 +34,11 @@ angular.module('owm.person', [
       }],
       homeAddressPrefill: ['me', 'makeHomeAddressPrefill', function (me, makeHomeAddressPrefill) {
         return makeHomeAddressPrefill(me);
+      }],
+      person: ['personService', function (personService) {
+        return personService.me({
+          version: 2
+        });
       }],
     }
   });
@@ -69,13 +73,7 @@ angular.module('owm.person', [
         controller: 'aboutMeController'
       }
     },
-    resolve: {
-      person: ['personService', function (personService) {
-        return personService.me({
-          version: 2
-        });
-      }]
-    }
+    // person
   });
   /**
    * dashboard/details
@@ -88,13 +86,7 @@ angular.module('owm.person', [
         controller: 'DetailsProfileController'
       }
     },
-    resolve: {
-      person: ['personService', function (personService) {
-        return personService.me({
-          version: 2
-        });
-      }]
-    }
+    // person
   });
 
   /**
@@ -103,13 +95,9 @@ angular.module('owm.person', [
   $stateProvider.state('owm.person.dashboard', {
     url: '',
     views: {
-      'main@shell': {
-        templateUrl: 'person/dashboard/person-dashboard.tpl.html',
-        controller: 'PersonDashboardController'
-      },
       'main-full@shell': {
         templateUrl: 'person/dashboard/person-dashboard-hero.tpl.html',
-        controller: 'PersonDashboardHeroController'
+        controller: 'PersonDashboardController'
       }
     },
     resolve: {
@@ -213,20 +201,14 @@ angular.module('owm.person', [
    * dashboard/profile
    */
   $stateProvider.state('owm.person.profile', {
-    url: '/profile',
+    url: '/profile?highlight',
     views: {
       'main@shell': {
         templateUrl: 'person/profile/person-profile.tpl.html',
         controller: 'PersonProfileController'
       }
     },
-    resolve: {
-      person: ['personService', function (personService) {
-        return personService.me({
-          version: 2
-        });
-      }]
-    }
+    // person
   });
 
 
@@ -363,13 +345,7 @@ angular.module('owm.person', [
         controller: 'PersonLicenseController'
       }
     },
-    resolve: {
-      person: ['personService', function (personService) {
-        return personService.me({
-          version: 2
-        });
-      }]
-    }
+    // person
   });
 
 });
