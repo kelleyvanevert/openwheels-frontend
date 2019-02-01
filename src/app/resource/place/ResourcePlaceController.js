@@ -46,29 +46,34 @@ angular.module('owm.resource.place', [])
 
 
   // Veelgestelde vragen
-
   $scope.FAQ = [
     {
-      question: 'Wat is autodelen?',
-      answer: '<p>Bij autodelen maak je niet meer alleen gebruik van een auto, maar deel je hem met anderen. Je kunt kiezen om je eigen auto te delen of gebruik te maken van de auto van een ander. Zo bespaar je niet alleen op je autokosten, maar krijg je ook meer <a href="https://mywheels.nl/autodelen/community/onze-idealen/">contact met de buurt en worden buurten weer leefbaar</a>.</p><p>Je vindt op MyWheels auto’s met een boordcomputer en auto’s die je met&nbsp;de sleutel opent. Auto’s met het label MyWheels Open hebben een boordcomputer en open je met een <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-ik-een-auto-met-mijn-chipkaart/">OV-chipkaart</a> of met je <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-auto-smartphone/">smartphone</a>. Auto’s zonder het label MyWheels Open open je gewoon met de sleutel, je spreekt dan samen met de verhuurder af hoe je in het bezit komt van de sleutel.</p>',
-    },
-    {
-      question: 'Wat zijn de voordelen van autodelen?',
-      answer: '<p><!--:nl--><strong>Een auto huren</strong><br>Met autodelen zit je niet meer vast aan één en dezelfde auto, maar je kunt per keer de auto nemen die je wilt.&nbsp;Zuinige auto’s, ruime auto’s, goedkope auto’s, mooie auto’s: bij MyWheels kun je ze huren of verhuren.</p><p><strong>Lage bemiddelingskosten</strong><br>MyWheels is not-for-profit en daar profiteer jij van mee.</p><p><strong>Duizenden mensen delen honderden auto’s</strong><br>MyWheels is het not-for-profit platform voor het delen van auto’s.</p><p><strong>MyWheels zit boordevol idealen</strong><br>Zo streven we naar leefbare buurten in plaats van winst. Als mensen auto’s delen hoeven er veel minder auto’s in de wijk geparkeerd te staan.</p><p><strong>Reserveer tot 1 minuut van tevoren</strong><br>Via internet of smartphone reserveer je eenvoudig de auto die je wilt.</p><p><strong>Lid worden is makkelijk en gratis</strong><br>Je betaalt alleen als je rijdt. Je kunt na aanmelding meteen gaan huren of je eigen auto gratis te huur zetten. Lees meer over de tarieven bij <a href="https://mywheels.nl/autodelen/hoe-huren-werkt/tarieven-huren/">tarieven</a>.</p><p><strong>24/7 bereikbaar</strong><br>De supportafdeling van MyWheels is 24 uur per dag en 7 dagen per week telefonisch bereikbaar.<!--:--></p>',
-    },
-    {
-      question: 'Op welke manieren kan ik een auto openen?',
-      answer: '<p>Je vindt op MyWheels auto’s met een boordcomputer en auto’s die je met&nbsp;de sleutel opent. Auto’s met het label <a href="https://mywheels.nl/auto-huren?smartwheels=true">MyWheels Open</a> hebben een boordcomputer en open je met een <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-ik-een-auto-met-mijn-chipkaart/">OV-chipkaart</a> of met je <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-auto-smartphone/">smartphone</a>.</p><p>Auto’s zonder het label MyWheels Open open je gewoon met de sleutel, je spreekt dan samen met de verhuurder af hoe je in het bezit komt van de sleutel.<!--:--></p>',
-    },
-    {
+      question: 'Kan ik huren zonder borg?',
+      answer: 'Je hoeft bij MyWheels geen borg te betalen en geen machtiging voor automatische incasso af te geven. Je betaalt een rit vooraf veilig en snel met iDEAL.',
+    }, {
+      question: 'Hoe open ik een auto?',
+      answer: 'Je kunt bij ons MyWheels Open auto\'s huren die je opent met je smartphone en/of chipkaart. Of een van de vele auto\'s van particuliere autobezitters, die open je gewoon met de sleutel. Je spreekt dan samen met de verhuurder af hoe je in het bezit komt van de sleutel.',
+    }, {
+      question: 'Hoe open ik een auto met mijn smartphone?',
+      answer: 'Om een MyWheels Open auto te openen en sluiten, klik je op MyWheels.nl of in de MyWheels app op de lopende rit. Vervolgens zie je een groene en een rode knop staan met een sleutelicoon. Met de groene knop open je de auto, met de rode knop sluit je hem.',
+    }, {
+      question: 'Hoe huur ik een auto?',
+      answer: 'Zoek een auto in de buurt die je wilt huren, vul de datum en tijd in dat je de auto nodig hebt en klik op \'Maak reservering\' om de auto te reserveren. Als je nog geen account hebt, kun je deze in drie stappen aanmaken.',
+    }, {
+      question: 'Wat kost huren via MyWheels?',
+      answer: 'Een MyWheels account aanmaken is gratis, je betaalt alleen als je een auto huurt. Het tarief van een auto is een combinatie van een huur- en kilometerprijs. De tarieven van een auto vind je op de autopagina.',
+    }, {
+      question: 'Wanneer wordt mijn account gecontroleerd?',
+      answer: 'Om te mogen rijden, heb je een geactiveerd MyWheels account nodig. De meeste accounts activeren we automatisch, je kunt dan direct op weg!',
+    }, {
+      question: 'Hoe ben ik verzekerd als ik huur?',
+      answer: 'De auto die je via MyWheels huurt, is automatisch goed verzekerd tegen schade, vernieling en diefstal. We sluiten namelijk voor elke rit een all-risk verzekering af. Zo loop jij geen risico als je in een deelauto rijdt. De tarieven van een auto zijn altijd inclusief verzekeringskosten.',
+    }, {
       question: 'Wat betekent het label MyWheels Open?',
-      answer: '<p>Auto’s met het label MyWheels Open hebben een boordcomputer en open je met je <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-ik-een-auto-met-mijn-chipkaart/">OV-chipkaart</a> en <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/hoe-open-auto-smartphone/">smartphone</a>. De auto’s zijn 24 uur per dag te huur. Daarnaast hoef je bij een auto met MyWheels Open geen kilometerstanden te noteren, de boordcomputer registreert de gereden kilometers&nbsp;automatisch. In het <a href="https://mywheels.nl/auto-huren" target="_blank" rel="noopener">huuroverzicht</a>&nbsp;zie je dit label staan.</p>',
-    },
-    {
-      question: 'Hoe betaal ik met een tankpas?',
-      answer: '<p>De meeste auto’s met MyWheels Open hebben een tankpas van Multi Tank Card. Omdat je per gereden kilometer een brandstofprijs betaalt, hoef je niet op eigen kosten te tanken. Je kunt een tankbeurt daarom met de tankkaart betalen. Je vindt de tankkaart in het dashboardkastje. De viercijferige pincode van de tankkaart staat in de bevestigingsmail en vind je in de MyWheels app. Je hoeft de tankbon niet te bewaren als je met de tankpas betaalt.</p><p>Je kunt met de tankkaart alleen goedkope Euro 95 betalen, niet de duurdere premium brandstoffen (zoals Shell V-Power). We houden samen de kosten laag door niet langs&nbsp;snelwegen te tanken, maar langs binnenwegen. De tankkosten vallen dan vaak circa 10 cent goedkoper uit.</p><p>Let op: met een tankpas kun je niet in het buitenland betalen. Moet je in het buitenland toch tanken, dan kun je het tankbonnetje naar <a href="http://support@mywheels.nl" target="_blank">support@mywheels.nl</a> opsturen.</p>',
+      answer: 'MyWheels Open auto’s open je met je smartphone en/of chipkaart. De auto\'s zijn direct te boeken. Daarnaast hoef je bij een MyWheels Open auto geen kilometerstanden te noteren, de gereden kilometers registreren we automatisch.',
     },
   ];
+
   $scope.FAQ.left = $scope.FAQ.slice(0, Math.floor($scope.FAQ.length/2));
   $scope.FAQ.right = $scope.FAQ.slice(Math.floor($scope.FAQ.length/2));
   

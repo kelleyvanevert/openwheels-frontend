@@ -96,6 +96,7 @@ angular.module('openwheels', [
   'autoResize',
   'infoDialogDirective',
   'huurkostenLineDirective',
+  'userStatusLine',
 
   'mwResourceLocationMap',
 
@@ -172,6 +173,7 @@ angular.module('openwheels', [
 
 .config(function (ngMdIconServiceProvider) {
   ngMdIconServiceProvider.addShape('info_italic', '<path d="m 12.861328,4.5846655 c -0.496,0 -0.923297,0.1640937 -1.279297,0.4960937 -0.353,0.331 -0.533203,0.7322656 -0.533203,1.1972655 0,0.466 0.179203,0.86536 0.533203,1.19336 0.356,0.327999 0.783297,0.492187 1.279297,0.492187 0.497,0 0.922391,-0.164188 1.275391,-0.492187 0.353,-0.328 0.53125,-0.72636 0.53125,-1.19336 0,-0.4649999 -0.17825,-0.8662655 -0.53125,-1.1972655 -0.352,-0.332 -0.778391,-0.4960937 -1.275391,-0.4960937 z" /><path d="m 11.179688,9.4909157 c -0.405001,0 -0.834063,0.07275 -1.289063,0.21875 -0.455,0.144 -0.9316875,0.3165313 -1.4296875,0.5195313 l -0.2011719,0.828125 c 0.146,-0.056 0.3223438,-0.112781 0.5273438,-0.175781 0.207,-0.061 0.4094687,-0.08984 0.6054687,-0.08984 0.401,0 0.6694999,0.06617 0.8124999,0.201172 0.141,0.135 0.212891,0.374797 0.212891,0.716797 0,0.192 -0.02236,0.402812 -0.06836,0.632812 -0.046,0.228 -0.102921,0.472469 -0.169921,0.730469 l -0.7617192,2.689453 c -0.067,0.283 -0.1154844,0.533813 -0.1464844,0.757813 -0.03,0.224 -0.044922,0.445156 -0.044922,0.660156 0,0.553 0.2033281,1.008187 0.6113281,1.367187 0.4080005,0.359 0.9807965,0.539063 1.7167975,0.539063 0.479,0 0.899718,-0.06345 1.261718,-0.189453 0.363,-0.126 0.847078,-0.308828 1.455078,-0.548828 l 0.203125,-0.826172 c -0.106,0.049 -0.273859,0.105922 -0.505859,0.169922 -0.234,0.064 -0.441953,0.0957 -0.626953,0.0957 -0.392,0 -0.668172,-0.06436 -0.826172,-0.19336 -0.16,-0.129 -0.240234,-0.372515 -0.240234,-0.728515 0,-0.141 0.02522,-0.35 0.07422,-0.625 0.05,-0.275 0.104016,-0.521328 0.166016,-0.736328 l 0.757813,-2.679688 c 0.074,-0.247 0.125343,-0.515547 0.152343,-0.810547 0.027,-0.294 0.04102,-0.500187 0.04102,-0.617187 0,-0.564 -0.200703,-1.023953 -0.595703,-1.376953 -0.397,-0.3520003 -0.960407,-0.5292973 -1.691406,-0.5292973 z" />');
+  ngMdIconServiceProvider.addShape('table_chart', '<path d="M10 10.02h5V21h-5zM17 21h3c1.1 0 2-.9 2-2v-9h-5v11zm3-18H5c-1.1 0-2 .9-2 2v3h19V5c0-1.1-.9-2-2-2zM3 19c0 1.1.9 2 2 2h3V10H3v9z"/>');
 })
 
 .config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
@@ -279,6 +281,21 @@ angular.module('openwheels', [
   };
 })
 
+.factory('autocompleteOptions', function ($filter) {
+  return {
+    componentRestrictions: { country: $filter('translateOrDefault')('SEARCH_COUNTRY', 'nl') },
+    types   : ['geocode'],
+    fields : [
+      'formatted_address',
+      'address_component',
+      'geometry',
+      'icon',
+      'id',
+      'place_id',
+    ],
+  };
+})
+
 .value('makeHomeAddressPrefill', function (me) {
   if (!me) {
     return '';
@@ -295,6 +312,10 @@ angular.module('openwheels', [
   else {
     return '';
   }
+})
+
+.filter('homeAddress', function (makeHomeAddressPrefill) {
+  return makeHomeAddressPrefill;
 })
 
 .run(function (windowSizeService, oAuth2MessageListener, stateAuthorizer, authService, featuresService) {
@@ -336,20 +357,7 @@ angular.module('openwheels', [
     }
   }
 
-  $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState) {
-    // show spinner
-    alertService.load();
-    setAnalyticsUser();
-  });
-
-  $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-    $state.previous = fromState;
-
-    $rootScope.previousState = fromState;
-    $rootScope.previousStateParams = fromParams;
-    // hide spinner
-    alertService.loaded();
-
+  function setAnalyticsUserStats () {
     if (authService.user.isAuthenticated) {
       setAnalyticsUser();
 
@@ -363,6 +371,33 @@ angular.module('openwheels', [
         'mywheels number of bookings': numberBookings,
         'mywheels user preference': userPreference,
       });
+    }
+  }
+  $rootScope.setAnalyticsUserStats = setAnalyticsUserStats;
+
+  $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState) {
+    // show spinner
+    if (toParams.loader !== false) {
+      alertService.load();
+    }
+    setAnalyticsUser();
+
+    if (toState.redirectTo) {
+      e.preventDefault();
+      $state.go(toState.redirectTo, angular.merge(toParams, toState.redirectToParams || {}), { location: 'replace' });
+    }
+  });
+
+  $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+    $state.previous = fromState;
+
+    $rootScope.previousState = fromState;
+    $rootScope.previousStateParams = fromParams;
+    // hide spinner
+    alertService.loaded();
+
+    if (authService.user.isAuthenticated) {
+      setAnalyticsUserStats();
     }
 
     $localStorage.discountCode = ($location.search().discountCode || $localStorage.discountCode);
@@ -399,6 +434,8 @@ angular.module('openwheels', [
       $state.includes('owm.finance.v4') ||
       $state.includes('owm.finance.kmpoints') ||
       $state.includes('owm.person.details') ||
+      $state.includes('owm.person.profile') ||
+      $state.includes('owm.person.dashboard') ||
       $state.includes('owmlanding')
     );
     $rootScope.containerHome = (

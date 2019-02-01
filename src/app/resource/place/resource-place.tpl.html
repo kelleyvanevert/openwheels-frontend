@@ -21,26 +21,33 @@
               'col-lg-7 col-sm-6': place.coordinator,
               'col-md-offset-1 col-md-10': !place.coordinator,
             }" style="text-align: left; justify-content: center;">
-          <p ng-if="place.lead">{{ place.lead }}</p>
-          <p ng-if="!place.lead">Huur gemakkelijk en voordelig een auto in {{ place.nicename }}. Je kunt MyWheels Open deelauto’s huren die je opent met je smartphone en/of chipkaart. Of een van de vele auto’s van particuliere autobezitters. Je hoeft daardoor nooit mis te grijpen als je een auto direct nodig hebt.</p>
+          <div class="size-4">
+            <p ng-if="place.lead">{{ place.lead }}</p>
+            <p ng-if="!place.lead">Huur gemakkelijk en voordelig een auto in {{ place.nicename }}. Je kunt MyWheels Open deelauto’s huren die je opent met je smartphone en/of chipkaart. Of een van de vele auto’s van particuliere autobezitters. Je hoeft daardoor nooit mis te grijpen als je een auto direct nodig hebt.</p>
+          </div>
         </div>
-        <div class="rpad col-lg-5 col-sm-6" ng-if="place.coordinator" style="
-    position: relative;
-    justify-content: center;">
-          <div class="divider hidden-xs" style="
-    position: absolute;
-    top: 0;
-    left: -1px;
-    bottom: 0;
-    width: 2px;
-    background: rgba(0, 0, 0, 0.1);"></div>
-          <div class="media coordinator" style="padding-left: 1rem;">
+        <div class="rpad col-lg-5 col-sm-6"
+            ng-if="place.coordinator"
+            style="position: relative; justify-content: center;">
+          
+          <div class="divider hidden-xs"
+              style="
+                position: absolute;
+                top: 0;
+                left: -1px;
+                bottom: 0;
+                width: 2px;
+                background: rgba(0, 0, 0, 0.1);">
+          </div>
+          
+          <div class="media coordinator size-2" style="padding-left: 1rem; margin-top: 0;">
             <img ui-sref="member({ personId: place.coordinator.id })" class="media-object pull-left img-user-mid" person-profile-image="{ person: place.coordinator, size: 'large' }" />
             <div class="media-body text-left" style="padding-top: 0;">
               <h4 style="color: black;">Coördinator {{ place.nicename }}</h4>
               <div ng-bind-html="place.coordinatorBody"></div>
             </div>
           </div>
+          
         </div>
       </div>
     </div>
@@ -138,7 +145,7 @@
         class="map-skeleton"
         ng-click="loadMapNow()">
       <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action"
-              ng-click="loadMapNow()
+              ng-click="loadMapNow()"
               md-ink-ripple="#9a3d26">
         Kaart laden <ng-md-icon icon="arrow_forward"></ng-md-icon>
       </button>
@@ -231,7 +238,7 @@
         <div class="rpad col-md-offset-1 col-md-10">
           <h2>Hoe werkt autodelen in {{ place.nicename }}?</h2>
 
-          <p ng-if="place.body" class="landing-text" ng-bind-html="place.body"></p>
+          <p ng-if="place.body" class="size-3" ng-bind-html="place.body"></p>
         </div>
       </div>
       <div class="row">
@@ -240,19 +247,19 @@
             <div class="step">
               <div class="circle"><ng-md-icon size="50" icon="create"></ng-md-icon></div>
               <div class="step-label">Zoek een auto</div>
-              <p class="landing-text">Zoek op je adres en je krijgt een lijst met auto’s in jouw buurt te zien. Klik in het overzicht op een geschikte auto maak een reservering.</p>
+              <p class="size-2">Zoek op je adres en je krijgt een lijst met auto’s in jouw buurt te zien. Klik in het overzicht op een geschikte auto maak een reservering.</p>
             </div>
             <div class="line"></div>
             <div class="step">
               <div class="circle"><ng-md-icon size="50" icon="directions_car"></ng-md-icon></div>
               <div class="step-label">Reserveren</div>
-              <p class="landing-text">De MyWheels deelauto's open je met je smartphone of OV-chipkaart. Voor het huren van een particuliere auto kun je het best even contact opnemen met de verhuurder om af te spreken wanneer je de sleutel ophaalt.</p>
+              <p class="size-2">De MyWheels deelauto's open je met je smartphone of OV-chipkaart. Voor het huren van een particuliere auto kun je het best even contact opnemen met de verhuurder om af te spreken wanneer je de sleutel ophaalt.</p>
             </div>
             <div class="line"></div>
             <div class="step">
               <div class="circle"><ng-md-icon size="50" icon="euro_symbol"></ng-md-icon></div>
               <div class="step-label">Op pad</div>
-              <p class="landing-text">Breng de auto na afloop van de rit weer terug naar de plek waar je hem hebt opgehaald. Zorg dat je bij particuliere auto’s zowel de begin- als de eindstand van de kilometerteller noteert en dit na afloop van de rit aan ons doorgeeft.</p>
+              <p class="size-2">Breng de auto na afloop van de rit weer terug naar de plek waar je hem hebt opgehaald. Zorg dat je bij particuliere auto’s zowel de begin- als de eindstand van de kilometerteller noteert en dit na afloop van de rit aan ons doorgeeft.</p>
             </div>
           </div>
         </div>
@@ -270,7 +277,7 @@
               <h4 class="card-title">{{ faq.question }}</h4>
             </div>
             <div class="panel-body" uib-collapse="!faq.open">
-              <div ng-bind-html="faq.answer"></div>
+              <p>{{ faq.answer }}</p>
             </div>
           </div>
 
@@ -282,7 +289,7 @@
               <h4 class="card-title">{{ faq.question }}</h4>
             </div>
             <div class="panel-body" uib-collapse="!faq.open">
-              <div ng-bind-html="faq.answer"></div>
+              <p>{{ faq.answer }}</p>
             </div>
           </div>
 
@@ -305,9 +312,11 @@
       </div>
       <div class="row is-flex">
         <div class="col-md-8 col-sm-7 col-xs-12" style="text-align: left;">
-          <p class="landing-text">Hoe meer mensen een auto delen, des te minder auto’s er op de weg rijden of in de wijken staan. Met minder auto’s slaan we dus twee vliegen in één klap: minder CO2-uitstoot én leefbaardere buurten.</p>
-          <p class="landing-text">Bovendien is autodelen financieel aantrekkelijk. Wie per jaar minder dan 10.000 kilometer rijdt, is met een deelauto veel goedkoper uit dan met een eigen auto.</p>
-          <p class="landing-text">MyWheels is in de afgelopen vijfentwintig jaar uitgegroeid tot een van de grootste en voordeligste autodeelplatforms van Nederland. Anno 2019 verbinden we ruim 60.000 huurders en verhuurders van deelauto’s met elkaar.</p>
+          <div class="size-3">
+            <p>Hoe meer mensen een auto delen, des te minder auto’s er op de weg rijden of in de wijken staan. Met minder auto’s slaan we dus twee vliegen in één klap: minder CO2-uitstoot én leefbaardere buurten.</p>
+            <p>Bovendien is autodelen financieel aantrekkelijk. Wie per jaar minder dan 10.000 kilometer rijdt, is met een deelauto veel goedkoper uit dan met een eigen auto.</p>
+            <p>MyWheels is in de afgelopen vijfentwintig jaar uitgegroeid tot een van de grootste en voordeligste autodeelplatforms van Nederland. Anno 2019 verbinden we ruim 60.000 huurders en verhuurders van deelauto’s met elkaar.</p>
+          </div>
         </div>
         <div class="rpad col-md-4 col-sm-5 col-sm-offset-0 col-xs-offset-1 col-xs-10" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end;">
           <svg style="

@@ -48,7 +48,7 @@
         padding: 1em;
 
         .gratis {
-          font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+          font-family: @headings-font-family;
           font-size: 2em;
           margin-top: -5px;
         }
@@ -109,7 +109,7 @@
     position: relative;
     top: 0;
     left: 0;
-    font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+    font-family: @headings-font-family;
     transition: top .1s ease, left .1s ease, box-shadow .1s ease;
     box-shadow: 1px 3px 5px rgba(0,0,0,.2);
 
@@ -134,14 +134,12 @@
       a {
         margin-top: 3.5em;
         padding: .4em;
-        font-size: 1.7em;
       }
 
       @media (max-width: 480px) {
         a {
           margin-top: 1em;
           padding: .4em;
-          font-size: 1.7em;
         }
       }
 
@@ -189,9 +187,6 @@
     }
 
     p {
-      font-size: 1.2em;
-      line-height: 1.7em;
-
       font-family: @headings-font-family;
     }
 
@@ -199,23 +194,6 @@
       ow-geocoder-searchbar {
         font-size: 1.2em;
       }
-
-      p {
-        font-size: 1.4em;
-      }
-    }
-  }
-
-  .landing-text {
-    font-size: 1.6rem;
-    line-height: 2.4rem;
-    color: #444;
-  }
-
-  @media all and (min-width: 768px) {
-    .landing-text {
-      font-size: 1.8rem;
-      line-height: 2.7rem;
     }
   }
 
@@ -247,7 +225,7 @@
     }
 
     .subtitle {
-      font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+      font-family: @headings-font-family;
       font-size: 1.6em;
       color: #555;
 
@@ -296,7 +274,7 @@
       }
 
       .step-label {
-        font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+        font-family: @headings-font-family;
         font-size: 1.8em;
         color: @mywheels-blue;
         margin: 2rem 0px;
@@ -557,14 +535,16 @@
 }
 
 .media.coordinator {
-  font-size: 1.6rem;
-  line-height: 2.3rem;
   font-family: @headings-font-family;
 
   a {
     color: darken(@mywheels-blue, 10%);
     text-decoration: underline;
   }
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .card.mw.faq {

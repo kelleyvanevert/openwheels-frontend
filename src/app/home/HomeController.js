@@ -11,7 +11,8 @@ angular.module('owm.home', ['owm.resource', 'slick'])
   metaInfoService.set({url: appConfig.serverUrl});
   metaInfoService.set({canonical: 'https://mywheels.nl'});
 
-  $scope.homeAddressPrefill = '';
+  $scope.user = authService.user;
+  $scope.makeHomeAddressPrefill = makeHomeAddressPrefill;
 
   $scope.$watch(function () {
     return $translate.use();
@@ -85,6 +86,7 @@ angular.module('owm.home', ['owm.resource', 'slick'])
     $state.go('owm.resource.search.list', resourceQueryService.createStateParams());
   };
 
+/*
   // Automatically log in, if possible
   if (!authService.user.isAuthenticated) {
     tokenSilentRefreshService.silentRefresh().then(function (token) {
@@ -97,5 +99,5 @@ angular.module('owm.home', ['owm.resource', 'slick'])
       $scope.homeAddressPrefill = makeHomeAddressPrefill(authService.user.identity);
     });
   }
-
+*/
 });

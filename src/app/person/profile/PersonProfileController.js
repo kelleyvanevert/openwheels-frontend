@@ -3,10 +3,27 @@
 angular.module('owm.person.profile', [])
 
 .controller('PersonProfileController', function ($scope, $filter, $timeout, $translate, person, alertService,
+  hasBooked, $state,
   personService, authService, dutchZipcodeService, metaInfoService, appConfig) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard/profile'});
   metaInfoService.set({canonical: 'https://mywheels.nl/dashboard/profile'});
+
+  $scope.hasBooked = hasBooked;
+
+  $scope.sections = [
+    { id: 'personal', title: 'Persoonsgegevens', icon: 'person' },
+    { id: 'contact', title: 'Contactgegevens', icon: 'home' },
+    { id: 'profiel', title: 'Profiel / instellingen', icon: 'account_circle' },
+    (person.preference !== 'renter' || person.status === 'active') ?
+      { id: 'bank', title: 'Bankrekening', icon: 'account_balance_wallet' } :
+      undefined,
+    { sref: 'owm.person.profile.contract', title: 'Contract(en)', icon: 'table_chart' },
+    { sref: 'owm.person.profile.chipcard', title: 'Chipkaart(en)', icon: 'credit_card' },
+    { sref: 'owm.person.profile.invite-requests', title: 'Machtigingen', icon: 'person_add' },
+  ].filter(function (b) { return !!b; });
+
+  $scope.defaultHighlight = ($state.is('owm.person.profile') ? 'profiel' : undefined);
 
   var masterPerson = null;
   $scope.person = null;
@@ -50,6 +67,15 @@ angular.module('owm.person.profile', [])
     $scope.alerts = alerts;
   }
 
+  function onSuccesfulFormSave (buggyPersonWithoutPhoneNumbers) {
+    // reload person to get updated phone numbers, because backend returns a person without phoneNumbers
+    authService.me(!!'forceReload').then(function (me) {
+      alertService.addSaveSuccess();
+      angular.merge(masterPerson, me);
+      initPerson(me);
+    });
+  }
+
   // PERSONAL DATA
   $scope.submitPersonalDataForm = function() {
     alertService.closeAll();
@@ -59,10 +85,7 @@ angular.module('owm.person.profile', [])
       id: person.id,
       newProps: newProps
     })
-    .then(function (buggyPersonWithoutPhoneNumbers) {
-      alertService.addSaveSuccess();
-      initPerson($scope.person);
-    })
+    .then(onSuccesfulFormSave)
     .catch(function (err) {
       alertService.addError(err);
     })
@@ -111,13 +134,7 @@ angular.module('owm.person.profile', [])
       id: person.id,
       newProps: newProps
     })
-    .then(function (buggyPersonWithoutPhoneNumbers) {
-      // reload person to get updated phone numbers, because backend returns a person without phoneNumbers
-      return authService.me(!!'forceReload').then(function (me) {
-        alertService.addSaveSuccess();
-        initPerson(me);
-      });
-    })
+    .then(onSuccesfulFormSave)
     .catch(function (err) {
       alertService.addError(err);
     })
@@ -138,10 +155,7 @@ angular.module('owm.person.profile', [])
       id: person.id,
       newProps: newProps
     })
-    .then(function (buggyPersonWithoutPhoneNumbers) {
-      alertService.addSaveSuccess();
-      initPerson($scope.person);
-    })
+    .then(onSuccesfulFormSave)
     .catch(function (err) {
       alertService.addError(err);
     })

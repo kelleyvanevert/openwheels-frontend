@@ -67,6 +67,95 @@ span.action-button:last-child a.btn {
     }
 }
 
+
+.dashboard-link {
+    display: block;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 0;
+    color: #555;
+    background: rgba(255, 255, 255, 0.6);
+    position: relative;
+    transition: transform .15s ease, background-color .15s ease;
+
+    &:hover,
+    &:focus {
+        background: white;
+        transform: scale(1.02);
+        color: #222;
+
+        ng-md-icon.chevron {
+            color: #222;
+            right: 4px;
+        }
+    }
+
+    ng-md-icon.chevron {
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        margin-top: -18px;
+
+        width: 36px;
+        height: 36px;
+
+        color: #bbb;
+
+        transition: right .15s ease, color .15s ease;
+    }
+
+    .title {
+        padding: 16px;
+    }
+
+    @media all and (min-width: @screen-sm) {
+
+        @easeOutBack: cubic-bezier(0.175, 0.885, 0.320, 1.275);
+
+        .u {
+            position: relative;
+            padding-bottom: 3px;
+
+            &:before,
+            &:after {
+                content: '';
+                position: absolute;
+                bottom: 2px;
+                left: 0; right: 0;
+                height: 2px;
+                background: #555;
+            }
+            &:before {
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: transform 0s @easeOutBack, opacity 0s;
+            }
+            &:after {
+                opacity: 0;
+                transform: translateY(10px/2);
+                transition: transform .15s @easeOutBack, opacity .15s;
+            }
+        }
+        &:hover,
+        &:focus {
+            .u {
+                &:before,
+                &:after {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                &:before {
+                    transition: transform .15s @easeOutBack, opacity .15s;
+                }
+                &:after {
+                    transition: transform 0s .15s @easeOutBack, opacity 0s .15s;
+                }
+            }
+        }
+    }
+}
+
+
 /* ---------------------- SEARCHBAR  ------------------- */
 .dashboard-searchbar-frontpage {
     background: rgba(0, 0, 0, 0.2);
@@ -97,7 +186,7 @@ span.action-button:last-child a.btn {
         font-size: 1.2em;
         border-bottom: 1px solid #efefef;
         p {
-            font-family: Arial;
+            font-family: @font-family-sans-serif;
             font-size: 14px;
             line-height: 1.42857143;
             color: rgba(0, 0, 0, 0.87);
