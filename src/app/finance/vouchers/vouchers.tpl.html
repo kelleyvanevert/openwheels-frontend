@@ -18,7 +18,7 @@
     </div>
 </div>
 
-<div class="card" ng-if="!busy && requiredValue && (!accountDisapproved || accountApproved)" ng-repeat="booking in requiredValue.bookings" ng-init="booking.isOpen = $index <= 1">
+<div class="card mw" ng-if="!busy && requiredValue && (!accountDisapproved || accountApproved)" ng-repeat="booking in requiredValue.bookings" ng-init="booking.isOpen = $index <= 1">
     <div class="card-heading">
     <span class="pull-right" ng-if="booking.isOpen">
         <small hide-xs style="padding-left: 1em" ng-if="booking.cancelAfter && booking.approved !== 'OK'">Betaal voor {{booking.cancelAfter|amDateFormat:'D MMMM YYYY HH:mm'}} om annulering te voorkomen</small>
@@ -82,7 +82,7 @@
 </div>
 <!-- /card -->
 
-<div class="card" ng-if="!busy && requiredValue && (!accountDisapproved || accountApproved)">
+<div class="card mw" ng-if="!busy && requiredValue && (!accountDisapproved || accountApproved)">
     <div class="card-heading">
         <h2 class="card-title">Rijtegoed</h2>
     </div>
@@ -151,7 +151,7 @@
     </div>
 </div>
 
-<div class="card" ng-if="!busy && requiredValue && (accountDisapproved && !accountApproved && accounts.length === 1)">
+<div class="card mw" ng-if="!busy && requiredValue && (accountDisapproved && !accountApproved && accounts.length === 1)">
     <div class="card-body">
         <h2 class="card-title">
         <ng-md-icon icon="error" class="text-danger"></ng-md-icon>
@@ -167,7 +167,7 @@
     </div>
 </div>
 
-<div class="card" ng-if="!busy && requiredValue && (accountDisapproved && !accountApproved && accounts.length > 1)">
+<div class="card mw" ng-if="!busy && requiredValue && (accountDisapproved && !accountApproved && accounts.length > 1)">
     <div class="card-body">
         <h2 class="card-title">
         <ng-md-icon icon="error" class="text-danger"></ng-md-icon>
@@ -183,12 +183,12 @@
 <!-- /card -->
 
 
-<div class="card" ng-if="!busy && me.provider.id !== 5">
+<div class="mw card" ng-if="!busy && me.provider.id !== 5">
   <div class="card-heading">
     <h3 class="card-title">
       <a href="" ng-click="isCollapsed = !isCollapsed" ng-init="isCollapsed = false;">
         <i class="fa fa-fw" ng-class="{ 'fa-chevron-right': !isCollapsed, 'fa-chevron-down': isCollapsed }"></i>
-        Rijtegoed aankoopgeschiedenis
+        Aankoopgeschiedenis
       </a>
     </h3>
   </div>

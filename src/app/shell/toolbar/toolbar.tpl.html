@@ -75,7 +75,8 @@
       </md-button>
 
       <!-- login -->
-      <md-button id="toolbarLogin" ng-if="isWindowSizeSM && !user.isPending && !user.isAuthenticated && !centralb" ng-click="login()">
+      <md-button id="toolbarLogin" ng-if="isWindowSizeSM && !user.isPending && !user.isAuthenticated && !centralb" ng-click="login()"
+          style="min-width: 60px;">
         <!--<ng-md-icon icon="account_circle" alt="Icoon" aria-label="Icoon"></ng-md-icon>-->
         <span>{{ 'LOGIN' | translate }}</span>
       </md-button>

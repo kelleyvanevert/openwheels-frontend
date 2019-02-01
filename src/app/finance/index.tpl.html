@@ -73,10 +73,10 @@
 
           <ul class="extra-links">
             <li ng-if="me.provider.id === 1">
-              <a target="_blank" ui-sref="invite">{{ 'INVITE_EXTRA_VOUCHERS' | translate }} ›</a>
+              <a ui-sref="invite">{{ 'INVITE_EXTRA_VOUCHERS' | translate }} ›</a>
             </li>
             <li ng-if="requiredValue && me.numberOfBookings > 3">
-              <a target="_blank" ui-sref="contractchoice">{{ 'PERSON.CONTRACT.CHANGE_CONTRACT' | translate }} ›</a>
+              <a ui-sref="contractchoice">{{ 'PERSON.CONTRACT.CHANGE_CONTRACT' | translate }} ›</a>
             </li>
           </ul>
         </div>
