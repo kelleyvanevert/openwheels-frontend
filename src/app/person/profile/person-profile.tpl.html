@@ -12,7 +12,7 @@
       <div class="sidebar card mw">
         <div class="card-body">
 
-          <div class="media" style="margin-bottom: 10px;">
+          <div class="media hidden-xs" style="margin-bottom: 10px;">
             <a class="pull-left" ui-sref="member({ personId: person.id })">
               <img class="media-object img-user-normal" ng-if="!refreshProfileImage" person-profile-image="{ person: person, size: 'normal', noCache: true }" />
               <div class="media-object img-user-normal" ng-if="refreshProfileImage" />
@@ -59,12 +59,12 @@
 
       <!-- PERSONAL DATA  -->
       <div class="mw card" id="personal-data" ng-show="$state.params.highlight === 'personal'">
-        <div class="card-heading">
+        <!--<div class="card-heading">
           <h3>
             {{ 'MY_PROFILE_PERSONAL' | translate }}
             &nbsp;<i class="text-danger fa fa-exclamation-triangle" ng-show="alerts.personalData" uib-tooltip="Vul je gegevens aan"></i>
           </h3>
-        </div>
+        </div>-->
         
         <div class="card-body">
           <form name="personalDataForm">
@@ -163,12 +163,12 @@
       <!-- CONTACT DATA  -->
 
       <div class="mw card" id="contact-data" ng-show="$state.params.highlight === 'contact'">
-        <div class="card-heading">
+        <!--<div class="card-heading">
           <h3>
             {{ 'MY_PROFILE_CONTACT' | translate }}
             &nbsp;<i class="text-danger fa fa-exclamation-triangle" ng-show="alerts.contactData" uib-tooltip="Vul je gegevens aan"></i>
           </h3>
-        </div>
+        </div>-->
 
         <div class="card-body">
           <form name="contactDataForm">
@@ -263,11 +263,6 @@
       <!-- PROFILE DATA  -->
 
       <div class="mw card" id="profile-data" ng-show="($state.params.highlight || defaultHighlight) === 'profiel'">
-        <div class="card-heading">
-          <h3>
-            {{ 'MY_PROFILE_SETTINGS' | translate }}
-          </h3>
-        </div>
         <div class="card-body">
           <form name="settingsForm">
 
@@ -394,11 +389,6 @@
       <!-- ACCOUNT -->
 
       <div class="mw card" id="bank-data" ng-show="$state.params.highlight === 'bank'" ng-if="person.preference !== 'renter' || person.status === 'active'">
-        <div class="card-heading">
-          <h3 class="card-title">
-            {{ 'MY_PROFILE_ACCOUNT' | translate }}
-          </h3>
-        </div>
         <div class="card-body">
           <div ng-include="'person/account/person-account.tpl.html'"></div>
         </div><!--/ card-body -->

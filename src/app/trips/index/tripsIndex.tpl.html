@@ -85,9 +85,9 @@
             <md-progress-circular md-mode="indeterminate" md-diameter="96"
               style="margin: 0 auto;"></md-progress-circular>
           </div>
-          <div ng-if="!showLoaderSpinner && !renew">
-            {{ 'NO_TRIPS' | translate }}
-          </div>
+          <p ng-if="!showLoaderSpinner && !renew">
+            Je hebt nog geen ritten gemaakt.
+          </p>
         </div>
       </div>
 

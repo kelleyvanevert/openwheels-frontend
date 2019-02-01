@@ -77,59 +77,7 @@
   </div>
 
   <div class="row">
-    <div class="rpad col-md-4">
-      <div class="sidebar card mw">
-        <div class="card-body">
-
-          <div class="media" style="margin-bottom: 10px;">
-            <a class="pull-left" ui-sref="member({ personId: person.id })">
-              <img class="media-object img-user-normal" ng-if="!refreshProfileImage" person-profile-image="{ person: person, size: 'normal', noCache: true }" />
-              <div class="media-object img-user-normal" ng-if="refreshProfileImage" />
-            </a>
-            <div class="media-body">
-              <h4 class="media-heading"><a ui-sref="member({ personId: person.id })">{{ person | fullname }}</a></h4>
-              <div><small>{{ person.created | memberSince }}</small></div>
-              <div><span badge-list="person.badges"></span></div>
-            </div>
-          </div>
-          
-          <user-status-line person="person" has-booked="hasBooked"></user-status-line>
-
-          <p ng-if="person.about" class="about-me">{{ person.about }}</p>
-          <p ng-if="!person.about" class="about-me-placeholder" ui-sref="owm.person.profile({ highlight: 'profiel' })">Voeg een kleine introductie toe om jezelf voor te stellen</p>
-
-          <ul class="list-unstyled list-spaced">
-            <li ng-if="person.city">
-              <ng-md-icon icon="place"></ng-md-icon>
-              {{ person.city }}
-            </li>
-            <li ng-if="person.email">
-              <ng-md-icon icon="email"></ng-md-icon>
-              {{ person.email }}
-            </li>
-            <li ng-repeat="phoneNumber in person.phoneNumbers">
-              <ng-md-icon icon="phone"></ng-md-icon>
-              {{ phoneNumber.number }}
-            </li>
-            <li ng-if="person.facebookUid"><i class="fa fa-li fa-facebook"></i>
-              <a target="_blank" ng-href="https://facebook.com/{{ person.facebookUid }}">Facebook</a>
-            </li>
-            <li ng-if="person.twitterUid"><i class="fa fa-li fa-twitter"></i>
-              <a target="_blank" ng-href="https://twitter.com/{{ person.twitterUid }}">Twitter</a>
-            </li>
-            <li ng-if="person.linkedinUid"><i class="fa fa-li fa-linkedin"></i>
-              <a target="_blank" ng-href="https://www.linkedin.com/profile/view?id={{ person.linkedinUid }}">LinkedIn</a>
-            </li>
-          </ul>
-
-          <hr />
-
-          <p><a ui-sref="member({ personId: person.id })">Bekijk profiel &raquo;</a></p>
-
-        </div>
-      </div>
-    </div>
-    <div class="rpad col-md-8">
+    <div class="rpad col-md-8 col-md-push-4">
 
       <!-- ACTIONS -->
       <div class="mw card" ng-if="actions.length">
@@ -347,5 +295,66 @@
 
 
     </div><!-- /col-8 -->
+
+    <div class="rpad col-md-4 col-md-pull-8">
+      <div class="sidebar card mw">
+        <div class="card-body">
+
+          <div class="media" style="margin-bottom: 10px;">
+            <a class="pull-left" ui-sref="member({ personId: person.id })">
+              <img class="media-object img-user-normal" ng-if="!refreshProfileImage" person-profile-image="{ person: person, size: 'normal', noCache: true }" />
+              <div class="media-object img-user-normal" ng-if="refreshProfileImage" />
+            </a>
+            <div class="media-body">
+              <h4 class="media-heading"><a ui-sref="member({ personId: person.id })">{{ person | fullname }}</a></h4>
+              <div><small>{{ person.created | memberSince }}</small></div>
+              <div><span badge-list="person.badges"></span></div>
+            </div>
+          </div>
+          
+          <user-status-line person="person" has-booked="hasBooked"></user-status-line>
+
+          <p ng-if="person.about" class="about-me">{{ person.about }}</p>
+          <p ng-if="!person.about" class="about-me-placeholder" ui-sref="owm.person.profile({ highlight: 'profiel' })">Voeg een kleine introductie toe om jezelf voor te stellen</p>
+
+          <p class="statistic" ng-if="me.preference !== 'owner'">
+            <span class="stat">{{ person.numberOfBookings }}</span><br />
+            keer geboekt
+          </p>
+
+          <ul class="list-unstyled list-spaced with-icons">
+            <li ng-if="person.city">
+              <ng-md-icon icon="place"></ng-md-icon>
+              {{ person.city }}
+            </li>
+            <li ng-if="person.email">
+              <ng-md-icon icon="email"></ng-md-icon>
+              {{ person.email }}
+            </li>
+            <li ng-repeat="phoneNumber in person.phoneNumbers">
+              <ng-md-icon icon="phone"></ng-md-icon>
+              {{ phoneNumber.number }}
+            </li>
+            <li ng-if="person.facebookUid">
+              <ng-md-icon icon="facebook"></ng-md-icon>
+              <a target="_blank" ng-href="https://facebook.com/{{ person.facebookUid }}">Facebook</a>
+            </li>
+            <li ng-if="person.twitterUid">
+              <ng-md-icon icon="twitter"></ng-md-icon>
+              <a target="_blank" ng-href="https://twitter.com/{{ person.twitterUid }}">Twitter</a>
+            </li>
+            <li ng-if="person.linkedinUid">
+              <ng-md-icon icon="linkedin"></ng-md-icon>
+              <a target="_blank" ng-href="https://www.linkedin.com/profile/view?id={{ person.linkedinUid }}">LinkedIn</a>
+            </li>
+          </ul>
+
+          <hr />
+
+          <p><a ui-sref="member({ personId: person.id })">Bekijk profiel &raquo;</a></p>
+
+        </div>
+      </div>
+    </div>
   </div>
 </div>
