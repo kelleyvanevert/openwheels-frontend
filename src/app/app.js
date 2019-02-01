@@ -367,7 +367,7 @@ angular.module('openwheels', [
 
     if (toState.redirectTo) {
       e.preventDefault();
-      $state.go(toState.redirectTo, toParams, { location: 'replace' });
+      $state.go(toState.redirectTo, angular.merge(toParams, toState.redirectToParams || {}), { location: 'replace' });
     }
   });
 

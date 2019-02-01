@@ -108,14 +108,20 @@ angular.module('owm.person', [
    */
   $stateProvider.state('owm.person.aboutme', {
     url: '/aboutme',
+    redirectTo: 'owm.person.profile',
+    redirectToParams: {
+      highlight: 'profiel',
+    },
+    /*
     views: {
       'main@shell': {
         templateUrl: 'person/aboutme/about-me.tpl.html',
         controller: 'aboutMeController'
       }
-    },
+    },*/
     // person
   });
+
   /**
    * dashboard/details
    */
