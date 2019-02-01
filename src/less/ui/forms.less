@@ -96,7 +96,6 @@
     border: 1px solid rgb(189, 197, 199);
     border-radius: @border-raduis !important;
     background-color: #fff;
-    font-size: 1.1em;
     box-shadow: inset 0 0.0625em 0.0625em rgba(0, 0, 0, 0.08);
 }
 .mywheels-form input[type="date"]:focus,
@@ -111,6 +110,20 @@
     outline: none;
     box-shadow: 0 0 0.3125em rgba(0, 156, 144, 0.2);
 }
+
+.mywheels-form .form-group.mw-icon > input.hoverstyle,
+.mywheels-form input.hoverstyle {
+    border: none;
+    box-shadow: none;
+    padding: 1.2rem;
+}
+.mywheels-form .form-group.mw-icon > input.hoverstyle:focus,
+.mywheels-form input.hoverstyle:focus {
+    box-shadow: none;
+    border: none;
+    background: rgba(0, 0, 0, .05);
+}
+
 .mywheels-form input[type="checkbox"] {
     display: inline-block;
 }
@@ -313,23 +326,23 @@
 .mywheels-form .input-addon small {
     position: absolute;
     top: 0;
-    min-width: 11em;
+    min-width: 152px;
     height: 100%;
     text-align: right;
-    padding: 1em 0.5em 0 3em;
+    padding: 10px 5px 0 0;
     border: 1px solid rgb(189, 197, 199);
     border-radius: @border-raduis 0 0 @border-raduis;
     color: rgb(110, 119, 121);
     z-index: 1;
 }
 .mywheels-form .input-addon input[type="text"] {
-    padding-left: 9em !important;
+    padding-left: 160px !important;
 }
 // icons
 .mywheels-form .icon:before {
     position: absolute;
-    top: 0.3em;
-    left: 0.3em;
+    top: 0.2em;
+    left: 0.2em;
     width: 1em;
     margin: 0.2em;
     color: #bdc5c7;

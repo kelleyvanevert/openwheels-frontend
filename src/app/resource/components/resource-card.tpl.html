@@ -1,4 +1,4 @@
-<md-card class="ow-card"
+<md-card class="ow-card elevate-on-hover"
         ng-click="select()">
     <div class="md-card-image" style="position: relative">
         <ow-resource-picture resource="resource" size="large"></ow-resource-picture>
@@ -107,5 +107,8 @@
                 </a>
             </div>
         </md-card-body>
+    </div>
+    <div class="card-overlay" ng-if="showLoadOverlay">
+        <md-progress-circular md-mode="indeterminate" md-diameter="96"></md-progress-circular>
     </div>
 </md-card>

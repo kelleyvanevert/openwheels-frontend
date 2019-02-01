@@ -23,6 +23,9 @@ angular.module('owm.resource', [
   $stateProvider.state('owm.resource', {
     abstract: true,
     url: '?lat&lng&start&end&text&radius&options&fuel&lock&seats&type&smartwheels&page&sort',
+    params: {
+      loader: null,
+    },
     views: {
       'main@shell': {
         template: '<div ui-view></div>'
@@ -79,6 +82,13 @@ angular.module('owm.resource', [
     controller: 'ResourceSearchListController',
     templateUrl: 'resource/search/list/resource-search-list.tpl.html',
     reloadOnSearch: false,
+  });
+
+  $stateProvider.state('owm.resource.search.list.reloadable', {
+    url: '',
+    controller: 'ResourceSearchListController',
+    templateUrl: 'resource/search/list/resource-search-list.tpl.html',
+    reloadOnSearch: true,
   });
 
   $stateProvider.state('owm.resource.search.map', {

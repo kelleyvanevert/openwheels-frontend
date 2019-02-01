@@ -1,7 +1,10 @@
 <section class="homepage-searchbar"> 
 
   <form class="mywheels-form searchbar searchbar--no-opacity"
-      ng-class="{ shadow: shadow }">
+      ng-class="{ shadow: shadow }"
+      ng-submit="doSearch()">
+    <!-- Note: the `ng-submit` is only used when you use the [Enter] key on desktop,
+          when it is not caught by `g-places-autocomplete` first (after some typing). -->
     <div class="form-group mw-icon searchbar searchbar--no-opacity">
       <ng-md-icon icon="location_on" aria-hidden="true"></ng-md-icon>
       <input type="text"
@@ -10,7 +13,7 @@
              force-selection="true"
              ng-model="search.text"
              class="form-control"
-             placeholder="Waar wil je huren?"
+             placeholder="Waar zoek je een auto?"
              style="font-weight: normal;"
              ng-focus="handleFocus()"
              ng-blur="handleBlur()" />

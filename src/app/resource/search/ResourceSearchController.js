@@ -367,7 +367,7 @@ angular.module('owm.resource.search', [
       var params = resourceQueryService.createStateParams();
       params.resourceId = resource.id;
       params.city = (resource.city || '').toLowerCase().replace(/ /g, '-');
-      $state.go('owm.resource.show', params);
+      $state.go('owm.resource.show', angular.extend(params, { loader: false }));
     };
 
     $scope.sortChange = function(sort) {

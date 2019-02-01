@@ -4,7 +4,7 @@
     max-width: 100vw;
     label {
         color: #fff;
-        font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+        font-family: @headings-font-family;
         font-size: 1.2em;
     }
     .copyLink {
@@ -16,7 +16,7 @@
             height: 100%;
             padding: 10px;
             min-width: 22em;
-            font-size: 16px;
+            font-size: @font-size-base;
             border: 0;
             border-radius: 3px;
             -webkit-box-sizing: border-box;
@@ -107,8 +107,8 @@
         margin-top: 1.5em;
         padding: 0.5em 2em 0.5em 2em;
         font-size: 1.3em;
-        font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
-        font-size: 16px;
+        font-family: @headings-font-family;
+        font-size: @font-size-base;
     }
 }
 .share-buttons {
@@ -170,7 +170,7 @@
     }
     .read-more {
         padding: 50px 16px 0 16px;
-        font-size: 16px;
+        font-size: @font-size-base;
     }
 }
 .resource-of-inviter {
@@ -210,7 +210,7 @@
             }
             h3 {
                 font-weight: normal;
-                font-size: 16px;
+                font-size: @font-size-base;
                 padding-top: 5px;
             }
         }
@@ -246,7 +246,7 @@
 @media (min-width: 996px) {
     .invite-image {
         margin: 0.5em auto;
-        min-height: 180px;
+        min-height: 150px;
     }
     .invite--heading {
         p {

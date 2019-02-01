@@ -2,7 +2,12 @@
 
 angular.module('owm.person.invite-requests', [])
 
-  .controller('ActionInviteRequestsController', function ($scope, me, inviteRequestsBooking, inviteRequestsContract, extraDriverService, alertService, $translate) {
+  .controller('ActionInviteRequestsController', function ($scope, me,
+    inviteRequestsBooking, inviteRequestsContract, extraDriverService, alertService,
+    $translate, metaInfoService, appConfig) {
+
+    metaInfoService.set({url: appConfig.serverUrl + '/dashboard/profile/invite-requests'});
+    metaInfoService.set({canonical: 'https://mywheels.nl/dashboard/profile/invite-requests'});
 
     $scope.inviteRequestsBooking = inviteRequestsBooking;
     $scope.inviteRequestsContract = inviteRequestsContract;

@@ -42,7 +42,14 @@ angular.module('owm.shell', [])
         templateUrl: 'shell/footer/footer.tpl.html',
         controller: 'FooterController'
       }
-    }
+    },
+    resolve: {
+      me: ['authService', function (authService) {
+        return authService.userPromise().then(function (user) {
+          return user.isAuthenticated ? user.identity : null;
+        });
+      }],
+    },
   });
 
   /**
@@ -63,6 +70,13 @@ angular.module('owm.shell', [])
         templateUrl: 'shell/footer/footer.tpl.html',
         controller: 'FooterController'
       },
+    },
+    resolve: {
+      me: ['authService', function (authService) {
+        return authService.userPromise().then(function (user) {
+          return user.isAuthenticated ? user.identity : null;
+        });
+      }],
     },
   });
 
