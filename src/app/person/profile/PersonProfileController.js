@@ -67,6 +67,15 @@ angular.module('owm.person.profile', [])
     $scope.alerts = alerts;
   }
 
+  function onSuccesfulFormSave (buggyPersonWithoutPhoneNumbers) {
+    // reload person to get updated phone numbers, because backend returns a person without phoneNumbers
+    authService.me(!!'forceReload').then(function (me) {
+      alertService.addSaveSuccess();
+      angular.merge(masterPerson, me);
+      initPerson(me);
+    });
+  }
+
   // PERSONAL DATA
   $scope.submitPersonalDataForm = function() {
     alertService.closeAll();
@@ -76,10 +85,7 @@ angular.module('owm.person.profile', [])
       id: person.id,
       newProps: newProps
     })
-    .then(function (buggyPersonWithoutPhoneNumbers) {
-      alertService.addSaveSuccess();
-      initPerson($scope.person);
-    })
+    .then(onSuccesfulFormSave)
     .catch(function (err) {
       alertService.addError(err);
     })
@@ -128,13 +134,7 @@ angular.module('owm.person.profile', [])
       id: person.id,
       newProps: newProps
     })
-    .then(function (buggyPersonWithoutPhoneNumbers) {
-      // reload person to get updated phone numbers, because backend returns a person without phoneNumbers
-      return authService.me(!!'forceReload').then(function (me) {
-        alertService.addSaveSuccess();
-        initPerson(me);
-      });
-    })
+    .then(onSuccesfulFormSave)
     .catch(function (err) {
       alertService.addError(err);
     })
@@ -155,10 +155,7 @@ angular.module('owm.person.profile', [])
       id: person.id,
       newProps: newProps
     })
-    .then(function (buggyPersonWithoutPhoneNumbers) {
-      alertService.addSaveSuccess();
-      initPerson($scope.person);
-    })
+    .then(onSuccesfulFormSave)
     .catch(function (err) {
       alertService.addError(err);
     })
