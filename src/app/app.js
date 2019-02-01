@@ -362,7 +362,9 @@ angular.module('openwheels', [
 
   $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState) {
     // show spinner
-    alertService.load();
+    if (toParams.loader !== false) {
+      alertService.load();
+    }
     setAnalyticsUser();
 
     if (toState.redirectTo) {
