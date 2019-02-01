@@ -15,19 +15,20 @@
         <p ng-if="codeIsResend" class="text-success">Er is een nieuwe code naar je gestuurd.</p>
         <p ng-if="verificationCodeError" class="text-danger">De ingevoerde code is onjuist.</p>
 
-        <div flex style="min-height: 8em;">
+        <form flex style="min-height: 8em;"
+              ng-submig="verifyPhoneNumber(id, number, person)">
             <!-- enter verification code -->
             <div id="enter_verification_code">
-                <input type="text" pattern="[0-9]*" name="verificationCode" class="form-control" ng-model="verificationCode" placeholder="Code" maxlength="4" max="9999" min="0">
+                <input type="text" pattern="[0-9]*" name="verificationCode" class="form-control" ng-model="verificationCode" placeholder="...." maxlength="4" max="9999" min="0" />
             </div>
 
             <!-- send verification code -->
             <div id="send_verification_code">
-                <button class="mywheels-btn mywheels-btn-default" ng-click="verifyPhoneNumber(id, number, person)">Bevestigen</button>
+                <button type="submit" class="mywheels-btn mywheels-btn-default" ng-click="verifyPhoneNumber(id, number, person)">Bevestigen</button>
                 <br/><br/>
                 <a ng-click="sendVerificationCode(id, number, person, true)">Nogmaals verzenden</a>
             </div>
-        </div>
+        </form>
 
     </md-dialog-content>
 </md-dialog>
