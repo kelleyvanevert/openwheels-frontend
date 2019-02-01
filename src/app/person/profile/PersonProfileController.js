@@ -3,7 +3,7 @@
 angular.module('owm.person.profile', [])
 
 .controller('PersonProfileController', function ($scope, $filter, $timeout, $translate, person, alertService,
-  hasBooked, $state,
+  hasBooked, $state, $log,
   personService, authService, dutchZipcodeService, metaInfoService, appConfig) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard/profile'});
@@ -13,17 +13,17 @@ angular.module('owm.person.profile', [])
 
   $scope.sections = [
     { id: 'personal', title: 'Persoonsgegevens', icon: 'person' },
-    { id: 'contact', title: 'Contactgegevens', icon: 'home' },
-    { id: 'profiel', title: 'Profiel / instellingen', icon: 'account_circle' },
+    { id: 'contact', title: 'Contactgegevens', icon: 'phone_android' },
+    { id: 'profiel', title: 'Profiel', icon: 'account_circle' },
     (person.preference !== 'renter' || person.status === 'active') ?
       { id: 'bank', title: 'Bankrekening', icon: 'account_balance_wallet' } :
       undefined,
-    { sref: 'owm.person.profile.contract', title: 'Contract(en)', icon: 'table_chart' },
-    { sref: 'owm.person.profile.chipcard', title: 'Chipkaart(en)', icon: 'credit_card' },
+    { sref: 'owm.person.profile.contract', title: 'Contracten', icon: 'content_paste' },
+    { sref: 'owm.person.profile.chipcard', title: 'Chipkaarten', icon: 'train' },
     { sref: 'owm.person.profile.invite-requests', title: 'Machtigingen', icon: 'person_add' },
   ].filter(function (b) { return !!b; });
 
-  $scope.defaultHighlight = ($state.is('owm.person.profile') ? 'profiel' : undefined);
+  $scope.defaultHighlight = ($state.$current.name === 'owm.person.profile') ? 'profiel' : undefined;
 
   var masterPerson = null;
   $scope.person = null;

@@ -98,7 +98,12 @@
           <p ng-if="person.about" class="about-me">{{ person.about }}</p>
           <p ng-if="!person.about" class="about-me-placeholder" ui-sref="owm.person.profile({ highlight: 'profiel' })">Voeg een kleine introductie toe om jezelf voor te stellen</p>
 
-          <ul class="list-unstyled list-spaced">
+          <p class="statistic" ng-if="me.preference !== 'owner'">
+            <span class="stat">{{ person.numberOfBookings }}</span><br />
+            keer geboekt
+          </p>
+
+          <ul class="list-unstyled list-spaced with-icons">
             <li ng-if="person.city">
               <ng-md-icon icon="place"></ng-md-icon>
               {{ person.city }}
@@ -111,13 +116,16 @@
               <ng-md-icon icon="phone"></ng-md-icon>
               {{ phoneNumber.number }}
             </li>
-            <li ng-if="person.facebookUid"><i class="fa fa-li fa-facebook"></i>
+            <li ng-if="person.facebookUid">
+              <ng-md-icon icon="facebook"></ng-md-icon>
               <a target="_blank" ng-href="https://facebook.com/{{ person.facebookUid }}">Facebook</a>
             </li>
-            <li ng-if="person.twitterUid"><i class="fa fa-li fa-twitter"></i>
+            <li ng-if="person.twitterUid">
+              <ng-md-icon icon="twitter"></ng-md-icon>
               <a target="_blank" ng-href="https://twitter.com/{{ person.twitterUid }}">Twitter</a>
             </li>
-            <li ng-if="person.linkedinUid"><i class="fa fa-li fa-linkedin"></i>
+            <li ng-if="person.linkedinUid">
+              <ng-md-icon icon="linkedin"></ng-md-icon>
               <a target="_blank" ng-href="https://www.linkedin.com/profile/view?id={{ person.linkedinUid }}">LinkedIn</a>
             </li>
           </ul>
