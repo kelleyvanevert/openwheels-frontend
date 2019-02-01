@@ -1,0 +1,67 @@
+<md-card class="ow-card no-shadow" style="align-items: unset; flex-direction: column;">
+    <div class="md-card-image" style="position: relative; max-width: 100%;">
+        <ow-resource-picture resource="extraDriverBooking.resource" size="large"></ow-resource-picture>
+        <div class="alias">
+            <h2 class="no-margin" style="color:#fff;">{{ extraDriverBooking.resource.alias | limitTo: 30}}{{extraDriverBooking.resource.alias.length > 30 ? '...' : ''}}</h2>
+            <h3 class="no-margin" style="color:#fff" ng-if="extraDriverBooking.resource.streetNumber">{{ extraDriverBooking.resource.location }} {{ extraDriverBooking.resource.streetNumber }}, {{ extraDriverBooking.resource.city }}</h3>
+            <h3 class="no-margin" style="color:#fff" ng-if="!extraDriverBooking.resource.streetNumber">{{ extraDriverBooking.resource.location }}, {{ extraDriverBooking.resource.city }}</h3>
+        </div>
+    </div>
+    <div style="position: relative">
+        <md-card-body class="ow-list-compact">
+            <md-list role="list" style="padding-top:0px;">
+
+                <md-list-item ng-if="extraDriverBooking.booking.beginBooking" class="bookingDate">
+                    <div layout="row" layout-wrap class="bookingDateRow">
+                        <div flex="50" class="bookingBeginDate" ng-class="{ 'accepted': extraDriverBooking.booking.status === 'accepted', 'cancelled': (extraDriverBooking.booking.status === 'cancelled' || extraDriverBooking.booking.status === 'owner_cancelled'), 'rejected': extraDriverBooking.booking.status === 'rejected', 'requested': extraDriverBooking.booking.status === 'requested' }">
+                            <ng-md-icon icon="access_time"></ng-md-icon>
+                            <span>
+                  <strong>{{ extraDriverBooking.booking.beginBooking | amDateFormat:'DD-MM-YYYY' }}</strong>
+                  <br/>
+                  {{ extraDriverBooking.booking.beginBooking | amDateFormat:'HH:mm' }}
+                </span>
+                        </div>
+                        <div flex="50" class="bookingEndDate" ng-class="{ 'accepted': extraDriverBooking.booking.status === 'accepted', 'cancelled': (extraDriverBooking.booking.status === 'cancelled' || extraDriverBooking.booking.status === 'owner_cancelled'), 'rejected': extraDriverBooking.booking.status === 'rejected', 'requested': extraDriverBooking.booking.status === 'requested' }">
+                <span>
+                  <strong>{{ extraDriverBooking.booking.endBooking | amDateFormat:'DD-MM-YYYY' }}</strong>
+                  <br/>
+                  {{ extraDriverBooking.booking.endBooking | amDateFormat:'HH:mm' }}
+                </span>
+                        </div>
+                    </div>
+                </md-list-item>
+
+                <md-list-item ng-if="extraDriverBooking.booking.beginRequested && !extraDriverBooking.booking.beginBooking" class="bookingDate">
+                    <div layout="row" layout-wrap class="bookingDateRow">
+                        <div flex="50" class="bookingBeginDate" ng-class="{ 'accepted': extraDriverBooking.booking.status === 'accepted', 'cancelled': (extraDriverBooking.booking.status === 'cancelled' || extraDriverBooking.booking.status === 'owner_cancelled'), 'rejected': extraDriverBooking.booking.status === 'rejected', 'requested': extraDriverBooking.booking.status === 'requested' }">
+                            <ng-md-icon icon="access_time"></ng-md-icon>
+                            <span>
+                  <strong>{{ extraDriverBooking.booking.beginRequested | amDateFormat:'DD-MM-YYYY' }}</strong>
+                  <br/>
+                  {{ extraDriverBooking.booking.beginRequested | amDateFormat:'HH:mm' }}
+                </span>
+                        </div>
+                        <div flex="50" class="bookingEndDate" ng-class="{ 'accepted': extraDriverBooking.booking.status === 'accepted', 'cancelled': (extraDriverBooking.booking.status === 'cancelled' || extraDriverBooking.booking.status === 'owner_cancelled'), 'rejected': extraDriverBooking.booking.status === 'rejected', 'requested': extraDriverBooking.booking.status === 'requested' }">
+                <span>
+                  <strong>{{ extraDriverBooking.booking.endRequested | amDateFormat:'DD-MM-YYYY' }}</strong>
+                  <br/>
+                  {{ extraDriverBooking.booking.endRequested | amDateFormat:'HH:mm' }}
+                </span>
+                        </div>
+                    </div>
+                </md-list-item>
+
+                <md-list-item role="listitem" class="md-no-proxy">
+                    <div layout="row" style="width:100%; padding-top:20px;padding-bottom:10px;">
+                        <div flex="50">
+                            <center style="width: 100%;">
+                                <ng-md-icon icon="edit" class="text-info"></ng-md-icon>
+                                <a ui-sref="owm.person.invite-requests" class="text-info">Machtigingen</a>
+                            </center>
+                        </div>
+                </md-list-item>
+
+            </md-list>
+        </md-card-body>
+    </div>
+</md-card>

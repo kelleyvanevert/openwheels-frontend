@@ -5,7 +5,7 @@ angular.module('owm.person.dashboard', [])
 .controller('PersonDashboardController', function ($q, $scope, $sce, $state, me, bookingList, rentalList, actions, person,
   homeAddressPrefill, $filter, hasBooked,
   authService, bookingService, alertService, boardcomputerService, actionService, resourceService, resourceQueryService,
-  blogItems, $localStorage, personService, dialogService, $translate, $timeout, Analytics, metaInfoService, appConfig, $window) {
+  blogItems, $localStorage, personService, extraDriverService, dialogService, $translate, $timeout, Analytics, metaInfoService, appConfig, $window) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard'});
   metaInfoService.set({canonical: 'https://mywheels.nl/dashboard'});
@@ -140,6 +140,7 @@ angular.module('owm.person.dashboard', [])
   $scope.totalBookings = bookingList.totalBookings;
   $scope.rentals = rentalList.bookings;
   $scope.totalRentals = rentalList.totalBookings;
+  $scope.extraDriverBookings = null;
   $scope.actions = actions;
   $scope.favoriteResources = null;
   $scope.membersResources = null;
@@ -265,6 +266,20 @@ angular.module('owm.person.dashboard', [])
     $state.go('owm.resource.show', {
       resourceId: resource.id,
       city: (resource.city || '').toLowerCase().replace(/ /g, '-')
+    });
+  };
+
+  $scope.getBookingListAsExtraDriver = function () {
+    extraDriverService.getExtraDriverBookingList({
+      person: $scope.me.id,
+      limit: 2,
+      offset: 0
+    })
+    .then(function (data) {
+      $scope.extraDriverBookings = data.result;
+    })
+    .catch(function () {
+      $scope.extraDriverBookings = [];
     });
   };
 
