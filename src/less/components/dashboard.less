@@ -76,7 +76,7 @@ span.action-button:last-child a.btn {
     color: #555;
     background: rgba(255, 255, 255, 0.6);
     position: relative;
-    transition: transform .1s ease, background-color .1s ease;
+    transition: transform .15s ease, background-color .15s ease;
 
     &:hover,
     &:focus {
@@ -101,11 +101,57 @@ span.action-button:last-child a.btn {
 
         color: #bbb;
 
-        transition: right .1s ease, color .1s ease;
+        transition: right .15s ease, color .15s ease;
     }
 
     .title {
         padding: 16px;
+    }
+
+    @media all and (min-width: @screen-sm) {
+
+        @easeOutBack: cubic-bezier(0.175, 0.885, 0.320, 1.275);
+
+        .u {
+            position: relative;
+            padding-bottom: 3px;
+
+            &:before,
+            &:after {
+                content: '';
+                position: absolute;
+                bottom: 2px;
+                left: 0; right: 0;
+                height: 2px;
+                background: #555;
+            }
+            &:before {
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: transform 0s @easeOutBack, opacity 0s;
+            }
+            &:after {
+                opacity: 0;
+                transform: translateY(10px/2);
+                transition: transform .15s @easeOutBack, opacity .15s;
+            }
+        }
+        &:hover,
+        &:focus {
+            .u {
+                &:before,
+                &:after {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                &:before {
+                    transition: transform .15s @easeOutBack, opacity .15s;
+                }
+                &:after {
+                    transition: transform 0s .15s @easeOutBack, opacity 0s .15s;
+                }
+            }
+        }
     }
 }
 

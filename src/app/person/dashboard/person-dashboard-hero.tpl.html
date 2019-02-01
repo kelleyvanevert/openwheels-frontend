@@ -70,7 +70,7 @@
          ng-repeat="menuLink in dashboardLinks">
       
       <a class="dashboard-link" href="#" ui-sref="{{ menuLink.sref }}">
-        <div class="title">{{ menuLink.title }}</div>
+        <div class="title"><span class="u">{{ menuLink.title }}</span></div>
         <ng-md-icon class="chevron" icon="keyboard_arrow_right" size="36"></ng-md-icon>
       </a>
     </div>
@@ -132,9 +132,9 @@
     <div class="rpad col-md-8">
 
       <!-- ACTIONS -->
-      <div class="card" ng-if="actions.length">
+      <div class="mw card" ng-if="actions.length">
         <div class="card-heading">
-          <h2 class="card-title" ng-if="actions.length">{{ 'MY_ACTIONS' | translate }}</h2>
+          <h2 ng-if="actions.length">{{ 'MY_ACTIONS' | translate }}</h2>
         </div>
 
         <div class="card-body" ng-if="actions.length">
@@ -155,7 +155,7 @@
       </div>
 
       <!-- CURRENT BOOKINGS -->
-      <div id="current_bookings" class="card" ng-if="bookings.length > 0">
+      <div id="current_bookings" class="mw card" ng-if="bookings.length > 0">
         <div class="card-heading">
           <h2 class="card-title">{{ 'CURRENT_BOOKINGS' | translate }}</h2>
         </div>
@@ -173,7 +173,7 @@
       </div>
 
       <!-- CURRENT RENTALS -->
-      <div id="current_rentals" class="card" ng-if="rentals.length > 0">
+      <div id="current_rentals" class="mw card" ng-if="rentals.length > 0">
         <div class="card-heading">
           <h2 class="card-title">{{ 'CURRENT_RENTALS' | translate }}
             <span class="pull-right" hide-xs>
@@ -274,7 +274,7 @@
       </div>
 
       <!-- MEMBER RESOURCES -->
-      <div id="members_resource_buttons" class="card" ng-if="membersResources.length >= 1">
+      <div id="members_resource_buttons" class="mw card" ng-if="membersResources.length >= 1">
 
         <div class="card-heading">
           <h2 class="card-title">{{ 'MEMBERS_RESOURCES' | translate }}<info-icon tooltip-html="'INFO_MEMBERS_RESOURCES' | translate"></info-icon></h2>
@@ -292,7 +292,7 @@
       </div>
 
       <!-- FAVORITES -->
-      <div id="dashboard_buttons" class="card" ng-if="favoriteResources.length >= 1 && membersResources.length === 0">
+      <div id="dashboard_buttons" class="mw card" ng-if="favoriteResources.length >= 1 && membersResources.length === 0">
 
         <div class="card-heading">
           <h2 class="card-title">{{ 'FAVORITE_RESOURCES' | translate }}<info-icon tooltip-html="'INFO_FAVORITES' | translate"></info-icon></h2>
@@ -326,7 +326,7 @@
       </div>
 
       <!-- BLOG ITEMS -->   
-      <div class="card" ng-if="me.provider.id === 1">
+      <div class="mw card" ng-if="me.provider.id === 1">
         <div class="card-heading">
           <h2 class="card-title">{{ 'LAST_BLOG_ITEMS' | translate }}</h2>
         </div>

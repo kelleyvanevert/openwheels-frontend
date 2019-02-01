@@ -8,11 +8,18 @@ angular.module('owm.resource')
     scope: {
       lightweight: '=',
       resource: '=',
-      onSelect: '&'
+      onSelect: '&',
+      onSelectLoadOverlay: '=',
     },
     templateUrl: 'resource/components/resource-card.tpl.html',
     controller: function ($scope) {
+      $scope.showLoadOverlay = false;
+
       $scope.select = function () {
+        if ($scope.onSelectLoadOverlay) {
+          $scope.showLoadOverlay = true;
+        }
+
         if ($scope.onSelect) {
           $scope.onSelect($scope.resource);
         }

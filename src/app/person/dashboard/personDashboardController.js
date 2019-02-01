@@ -24,7 +24,7 @@ angular.module('owm.person.dashboard', [])
         { sref: 'owm.trips', title: 'Ritten' },
         { sref: 'owm.finance.v4', title: 'Financiën' },
         { sref: 'owm.message', title: 'Berichten' },
-        { sref: 'owm.person.profile({ highlight: "profile" })', title: 'Profiel en gegevens' },
+        { sref: 'owm.person.profile({ highlight: "profiel" })', title: 'Profiel en gegevens' },
       ];
     }
     else /*if (me.preference === 'owner' && resource.length > 0) */ {
