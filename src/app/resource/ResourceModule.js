@@ -84,6 +84,13 @@ angular.module('owm.resource', [
     reloadOnSearch: false,
   });
 
+  $stateProvider.state('owm.resource.search.list.reloadable', {
+    url: '',
+    controller: 'ResourceSearchListController',
+    templateUrl: 'resource/search/list/resource-search-list.tpl.html',
+    reloadOnSearch: true,
+  });
+
   $stateProvider.state('owm.resource.search.map', {
     url: '/kaart',
     controller: 'ResourceSearchMapController',

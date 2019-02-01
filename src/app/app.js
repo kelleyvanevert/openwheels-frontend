@@ -281,6 +281,21 @@ angular.module('openwheels', [
   };
 })
 
+.factory('autocompleteOptions', function ($filter) {
+  return {
+    componentRestrictions: { country: $filter('translateOrDefault')('SEARCH_COUNTRY', 'nl') },
+    types   : ['geocode'],
+    fields : [
+      'formatted_address',
+      'address_component',
+      'geometry',
+      'icon',
+      'id',
+      'place_id',
+    ],
+  };
+})
+
 .value('makeHomeAddressPrefill', function (me) {
   if (!me) {
     return '';

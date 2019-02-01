@@ -2,7 +2,9 @@
 
 angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMaterial'])
  
-.directive('owGeocoderSearchbar', function ($rootScope, $log, $filter, Geocoder, resourceQueryService, $state, $mdMenu, $window, alertService, $location) {
+.directive('owGeocoderSearchbar', function ($rootScope, $log, $filter, Geocoder, resourceQueryService,
+    autocompleteOptions,
+    $state, $mdMenu, $window, alertService, $location) {
   return {
     restrict: 'E',
     templateUrl: 'directives/geocoderDirectiveSearchbar.tpl.html',
@@ -42,7 +44,7 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
       $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
         if (toState.name.match(/^owm\.resource\.search/) && toParams.text && $scope.search.text !== toParams.text) {
           $scope.search.text = toParams.text;
-          $log.log('$scope.search.text changed');
+          //$log.log('$scope.search.text changed');
         }
       });
 
@@ -191,18 +193,7 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
         }
       }
 
-      $scope.options = {
-				componentRestrictions: { country: $filter('translateOrDefault')('SEARCH_COUNTRY', 'nl') },
-        types   : ['geocode'],
-        fields : [
-          'formatted_address',
-          'address_component',
-          'geometry',
-          'icon',
-          'id',
-          'place_id',
-        ],
-      };
+      $scope.options = autocompleteOptions;
       
     },
   };
