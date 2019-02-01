@@ -3,7 +3,7 @@
 angular.module('owm.person.dashboard', [])
 
 .controller('PersonDashboardController', function ($q, $scope, $sce, $state, me, bookingList, rentalList, actions, person,
-  homeAddressPrefill, $filter,
+  homeAddressPrefill, $filter, hasBooked,
   authService, bookingService, alertService, boardcomputerService, actionService, resourceService, resourceQueryService,
   blogItems, $localStorage, personService, dialogService, $translate, $timeout, Analytics, metaInfoService, appConfig, $window) {
 
@@ -12,100 +12,39 @@ angular.module('owm.person.dashboard', [])
 
   $scope.person = person;
 
-  // if the user has any succesful bookings in the past, or any (open) booking (requests) in the future
-  $scope.hasBooked = ($scope.person.numberOfBookings + bookingList.totalBookings) > 0;
+  $scope.hasBooked = hasBooked;
   
   $scope.homeAddressPrefill = homeAddressPrefill;
 
-/*
-  $scope.dashboardLinks = [];
   if (me.provider.id === 1 && me.preference) {
+    // = MyWheels
+
     if (me.preference !== 'owner') {
       $scope.dashboardLinks = [
-        { sref: 'owm.trips', title: $filter('translate')('MY_TRIPS') },
-        { sref: 'owm.finance.v4', title: $filter('translate')('MY_FINANCE') },
-        { sref: 'owm.message', title: $filter('translate')('MY_MESSAGES') },
-        { sref: 'invite', title: $filter('translate')('INVITE_FRIENDS_MENU') },
-        { sref: 'owm.person.aboutme', title: $filter('translate')('MY_MEMBER_PAGE') },
+        { sref: 'owm.trips', title: 'Ritten' },
+        { sref: 'owm.finance.v4', title: 'Financiën' },
+        { sref: 'owm.message', title: 'Berichten' },
+        { sref: 'owm.person.profile({ highlight: "profile" })', title: 'Profiel en gegevens' },
       ];
     }
-    else if (me.preference === 'owner' && resource.length > 0) {
+    else /*if (me.preference === 'owner' && resource.length > 0) */ {
       $scope.dashboardLinks = [
-        { sref: 'owm.trips', title: $filter('translate')('TRIPS_BOOKINGS_FOR_OWNER') },
-        { sref: '' },
-        { sref: 'owm.resource.own', title: $filter('translate')('RESOURCE_EDIT_CALENDAR') },
-        { sref: 'owm.resource.own', title: $filter('translate')('MY_RESOURCES') },
-        { sref: 'invite', title: $filter('translate')('INVITE_FRIENDS_MENU') },
-        { sref: 'owm.finance.v4', title: $filter('translate')('MY_FINANCE') },
+        { sref: 'owm.trips', title: 'Verhuringen' },
+        { sref: 'owm.finance.v4', title: 'Financiën' },
+        { sref: 'owm.message', title: 'Berichten' },
+        { sref: 'owm.resource.own', title: 'Mijn auto\'s' },
       ];
-    }
+    }/*
+    else if (me.preference === 'owner' && resource.length === 0) {
+      $scope.dashboardLinks = [
+        { sref: 'list-your-car', title: 'Auto toevoegen' },
+        { sref: 'owm.trips', title: 'Verhuringen' },
+        { sref: 'owm.finance.v4', title: 'Financiën' },
+        { sref: 'owm.message', title: 'Berichten' },
+      ];
+    }*/
   }
-            <md-tab ng-if="resources.length === 1"><md-tab-label>
-              <a ng-href="{{ $state.href('owm.resource.calendar', { city: resources[0].city, resourceId: resources[0].id }) }}">{{ 'RESOURCE_EDIT_CALENDAR' | translate }}</a>
-            </md-tab-label></md-tab>
 
-
-          <md-tabs class="shortcut" ng-if="me.preference === 'owner' && resources.length === 0">
-            <md-tab><md-tab-label>
-              <a ui-sref="list-your-car">{{ 'CREATE_RESOURCE_BUTTON' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.trips">{{ 'TRIPS_BOOKINGS_FOR_OWNER' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.finance.v4">{{ 'MY_FINANCE' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="invite">{{ 'INVITE_FRIENDS_MENU' | translate }}</a>
-            </md-tab-label></md-tab>
-          </md-tabs>
-
-        </div>
-      </div>
-
-      <!-- SHORTCUT DEELAUTO -->
-      <div class="card" ng-if="me.provider.id === 5 && me.preference">
-        <div class="card-body no-padding">
-
-          <md-tabs class="shortcut" ng-if="me.preference === 'owner' && resources.length === 0">
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.resource.own">{{ 'CREATE_RESOURCE_BUTTON' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.person.profile">{{ 'ADD_PROFILE_PERSONAL' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.finance.contributie">{{ 'PAY_SUBSCRIPTION' | translate }}</a>
-            </md-tab-label></md-tab>
-          </md-tabs>
-
-          <md-tabs class="shortcut" ng-if="me.preference === 'owner' && resources.length > 0">
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.resource.own">{{ 'ADD_PARKING_PERMIT' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.resource.own">{{ 'ADD_MEMBERS' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.person.profile">{{ 'ADD_PROFILE_PERSONAL' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.finance.contributie">{{ 'PAY_SUBSCRIPTION' | translate }}</a>
-            </md-tab-label></md-tab>
-          </md-tabs>
-
-          <md-tabs class="shortcut" ng-if="me.preference !== 'owner'">
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.person.profile">{{ 'ADD_PROFILE_PERSONAL' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.finance.contributie">{{ 'PAY_SUBSCRIPTION' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a href="{{ 'NAVBAR.HOW_IT_WORKS_URL' | translate }}">{{ 'NAVBAR.HOW_IT_WORKS' | translate }}</a>
-            </md-tab-label></md-tab>
-          </md-tabs>
-*/
 
   // If booking_before_signup in local storage exists that means we have been redirected to this page after facebook signup
   // decide where to go next and try to guess user preference. If we do not know what flow to redirect

@@ -5,6 +5,7 @@ angular.module('userStatusLine', [])
 .directive('userStatusLine', function () {
   return {
     restrict: 'E',
+    replace: true,
     scope: {
       person: '=',
       hasBooked: '=',

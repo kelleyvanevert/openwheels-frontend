@@ -4,6 +4,7 @@ angular.module('owm.person', [
   'owm.person.dashboard',
   'owm.person.intro',
   'owm.person.profile',
+  'owm.person.contractchoice',
   'owm.person.details',
   'owm.person.aboutme',
   'owm.person.action.payinvoicegroup',
@@ -40,6 +41,46 @@ angular.module('owm.person', [
           version: 2
         });
       }],
+
+      bookingList: ['$stateParams', 'me', 'authService', 'bookingService', 'API_DATE_FORMAT', function ($stateParams, me, authService, bookingService, API_DATE_FORMAT) {
+        var timeFrame = {
+          startDate: moment().add(-1, 'day').format(API_DATE_FORMAT),
+          endDate: moment().startOf('day').add(1, 'years').format(API_DATE_FORMAT)
+        };
+        if (me.preference === 'owner') {
+          return {
+            bookings: null,
+            timeFrame: timeFrame
+          };
+        }
+        return bookingService.getBookingList({
+            person: me.id,
+            timeFrame: timeFrame,
+            cancelled: true,
+            limit: 10
+          })
+          .then(function (bookings) {
+            var tempCount = 0;
+
+            if(bookings){
+              if(bookings[0]){
+                tempCount = bookings[0].count;
+              }
+            }
+
+            return {
+              bookings: bookings,
+              totalBookings: tempCount,
+              timeFrame: timeFrame
+            };
+          });
+      }],
+
+      hasBooked: ['person', 'bookingList', function (person, bookingList) {
+        // if the user has any succesful bookings in the past, or any (open) booking (requests) in the future
+        return (person.numberOfBookings + bookingList.totalBookings) > 0;
+      }],
+
     }
   });
   /**
@@ -121,40 +162,6 @@ angular.module('owm.person', [
           });
       }],
 
-      bookingList: ['$stateParams', 'me', 'authService', 'bookingService', 'API_DATE_FORMAT', function ($stateParams, me, authService, bookingService, API_DATE_FORMAT) {
-        var timeFrame = {
-          startDate: moment().add(-1, 'day').format(API_DATE_FORMAT),
-          endDate: moment().startOf('day').add(1, 'years').format(API_DATE_FORMAT)
-        };
-        if (me.preference === 'owner') {
-          return {
-            bookings: null,
-            timeFrame: timeFrame
-          };
-        }
-        return bookingService.getBookingList({
-            person: me.id,
-            timeFrame: timeFrame,
-            cancelled: true,
-            limit: 10
-          })
-          .then(function (bookings) {
-            var tempCount = 0;
-
-            if(bookings){
-              if(bookings[0]){
-                tempCount = bookings[0].count;
-              }
-            }
-
-            return {
-              bookings: bookings,
-              totalBookings: tempCount,
-              timeFrame: timeFrame
-            };
-          });
-      }],
-
       rentalList: ['$stateParams', 'me', 'authService', 'bookingService', 'API_DATE_FORMAT', function ($stateParams, me, authService, bookingService, API_DATE_FORMAT) {
         var timeFrame = {
           startDate: moment().startOf('day').add(-1, 'weeks').format(API_DATE_FORMAT),
@@ -193,7 +200,7 @@ angular.module('owm.person', [
         return actionService.all({
           person: me.id
         });
-      }]
+      }],
     }
   });
 
@@ -203,7 +210,7 @@ angular.module('owm.person', [
   $stateProvider.state('owm.person.profile', {
     url: '/profile?highlight',
     views: {
-      'main@shell': {
+      'main-full@shell': {
         templateUrl: 'person/profile/person-profile.tpl.html',
         controller: 'PersonProfileController'
       }
@@ -268,8 +275,12 @@ angular.module('owm.person', [
    */
   $stateProvider.state('owm.person.invite-requests', {
     url: '/invite-requests',
+    redirectTo: 'owm.person.profile.invite-requests',
+  });
+  $stateProvider.state('owm.person.profile.invite-requests', {
+    url: '/invite-requests',
     views: {
-      'main@shell': {
+      '@owm.person.profile': {
         templateUrl: 'person/action/requests/action-invite-requests.tpl.html',
         controller: 'ActionInviteRequestsController'
       }
@@ -294,9 +305,13 @@ angular.module('owm.person', [
    * dashboard/chipcards
    */
   $stateProvider.state('owm.person.chipcard', {
+    url: '/chipcard',
+    redirectTo: 'owm.person.profile.chipcard',
+  });
+  $stateProvider.state('owm.person.profile.chipcard', {
     url: '/chipcards',
     views: {
-      'main@shell': {
+      '@owm.person.profile': {
         templateUrl: 'person/chipcard/list/person-chipcards.tpl.html',
         controller: 'PersonChipcardsController'
       }
@@ -318,13 +333,41 @@ angular.module('owm.person', [
   // dashboard/contracts
   $stateProvider.state('owm.person.contract', {
     url: '/contracts',
+    redirectTo: 'owm.person.profile.contract',
+  });
+  $stateProvider.state('owm.person.profile.contract', {
+    url: '/contracts',
     views: {
-      'main@shell': {
+      '@owm.person.profile': {
         templateUrl: 'person/contract/index/person-contract-index.tpl.html',
         controller: 'PersonContractIndexController'
       }
     }
   });
+
+  $stateProvider.state('owm.person.profile.contractchoice', {
+    url: '/contractkeuze',
+    views: {
+      '@owm.person.profile': {
+        templateUrl: 'person/contractchoice/contractchoice.tpl.html',
+        controller: 'ContractChoiceController'
+      }
+    },
+    data: {
+      denyAnonymous: true
+    },
+    resolve: {
+      person: ['authService', function (authService) {
+        return authService.me();
+      }],
+      contracts: ['$stateParams', 'person', 'contractService', function ($stateParams, person, contractService) {
+        return contractService.forContractor({
+          person: person.id
+        });
+      }]
+    }
+  });
+
 
   $stateProvider.state('owm.person.anwbId', {
     url: '/anwb-id',

@@ -11,71 +11,10 @@
 
 <div class="container container-transitional">
 
-  <div class="row" ng-if="false">
+  <div class="row" ng-if="me.provider.id === 5 && me.preference">
     <div class="rpad col-xs-12">
-      <!-- SHORTCUT MYWHEELS -->
-      <div class="card" ng-if="me.provider.id === 1 && me.preference">
-        <div class="card-body no-padding">
-
-          <md-tabs class="shortcut" ng-if="me.preference !== 'owner'">
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.trips">{{ 'MY_TRIPS' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.finance.v4">{{ 'MY_FINANCE' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.message">{{ 'MY_MESSAGES' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="invite">{{ 'INVITE_FRIENDS_MENU' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.person.aboutme">{{ 'MY_MEMBER_PAGE' | translate }}</a>
-            </md-tab-label></md-tab>
-          </md-tabs>
-
-          <md-tabs class="shortcut" ng-if="me.preference === 'owner' && resources.length > 0">
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.trips">{{ 'TRIPS_BOOKINGS_FOR_OWNER' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab ng-if="resources.length === 1"><md-tab-label>
-              <a ng-href="{{ $state.href('owm.resource.calendar', { city: resources[0].city, resourceId: resources[0].id }) }}">{{ 'RESOURCE_EDIT_CALENDAR' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab ng-if="resources.length > 1"><md-tab-label>
-              <a ui-sref="owm.resource.own">{{ 'RESOURCE_EDIT_CALENDAR' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.resource.own">{{ 'MY_RESOURCES' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="invite">{{ 'INVITE_FRIENDS_MENU' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.finance.v4">{{ 'MY_FINANCE' | translate }}</a>
-            </md-tab-label></md-tab>
-          </md-tabs>
-
-          <md-tabs class="shortcut" ng-if="me.preference === 'owner' && resources.length === 0">
-            <md-tab><md-tab-label>
-              <a ui-sref="list-your-car">{{ 'CREATE_RESOURCE_BUTTON' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.trips">{{ 'TRIPS_BOOKINGS_FOR_OWNER' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="owm.finance.v4">{{ 'MY_FINANCE' | translate }}</a>
-            </md-tab-label></md-tab>
-            <md-tab><md-tab-label>
-              <a ui-sref="invite">{{ 'INVITE_FRIENDS_MENU' | translate }}</a>
-            </md-tab-label></md-tab>
-          </md-tabs>
-
-        </div>
-      </div>
-
       <!-- SHORTCUT DEELAUTO -->
-      <div class="card" ng-if="me.provider.id === 5 && me.preference">
+      <div class="card">
         <div class="card-body no-padding">
 
           <md-tabs class="shortcut" ng-if="me.preference === 'owner' && resources.length === 0">
@@ -123,77 +62,19 @@
     </div>
   </div>
   
-  <div class="row">
-    <div class="rpad col-xs-12">
-      <div class="dashboard-menu">
-        <div class="dashboard-link-col">
-          <a class="dashboard-link" href="#" ui-sref="owm.person.profile">
-            <div class="title">Mijn profiel, gegevens, contracten</div>
-            <ng-md-icon class="chevron" icon="keyboard_arrow_right" size="36"></ng-md-icon>
-          </a>
-        </div>
-        <div class="dashboard-link-col">
-          <a class="dashboard-link" href="#" ui-sref="owm.finance.vouchers">
-            <div class="title">Financiën &amp; rijtegoed</div>
-            <ng-md-icon class="chevron" icon="keyboard_arrow_right" size="36"></ng-md-icon>
-          </a>
-        </div>
-        <div class="dashboard-link-col">
-          <a class="dashboard-link" href="#" ui-sref="owm.trips">
-            <div class="title">Reserveringen, ritten en boekingen</div>
-            <ng-md-icon class="chevron" icon="keyboard_arrow_right" size="36"></ng-md-icon>
-          </a>
-        </div>
-        <div class="dashboard-link-col">
-          <a class="dashboard-link" href="#" ui-sref="owm.resource.own">
-            <div class="title">Mijn auto's</div>
-            <ng-md-icon class="chevron" icon="keyboard_arrow_right" size="36"></ng-md-icon>
-          </a>
-        </div>
-        <div class="dashboard-link-col">
-          <a class="dashboard-link" href="#" ui-sref="owm.message">
-            <div class="title">Berichten</div>
-            <ng-md-icon class="chevron" icon="keyboard_arrow_right" size="36"></ng-md-icon>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!--
-  <div class="row is-flex">
-    <div class="rpad col-md-2">
-      <a class="dashboard-link" href="#" ui-sref="owm.person.profile">
-        <div class="title">Mijn profiel, gegevens, contracten</div>
-        <ng-md-icon class="chevron" icon="keyboard_arrow_right" size="36"></ng-md-icon>
-      </a>
-    </div>
-    <div class="rpad col-md-2">
-      <a class="dashboard-link" href="#" ui-sref="owm.finance.vouchers">
-        <div class="title">Financiën &amp; rijtegoed</div>
-        <ng-md-icon class="chevron" icon="keyboard_arrow_right" size="36"></ng-md-icon>
-      </a>
-    </div>
-    <div class="rpad col-md-2">
-      <a class="dashboard-link" href="#" ui-sref="owm.trips">
-        <div class="title">Reserveringen, ritten en boekingen</div>
-        <ng-md-icon class="chevron" icon="keyboard_arrow_right" size="36"></ng-md-icon>
-      </a>
-    </div>
-    <div class="rpad col-md-2">
-      <a class="dashboard-link" href="#" ui-sref="owm.resource.own">
-        <div class="title">Mijn auto's</div>
-        <ng-md-icon class="chevron" icon="keyboard_arrow_right" size="36"></ng-md-icon>
-      </a>
-    </div>
-    <div class="rpad col-md-2">
-      <a class="dashboard-link" href="#" ui-sref="owm.message">
-        <div class="title">Berichten</div>
+  <div class="row is-flex"
+       style="margin-bottom: 16px;"
+       ng-if="me.provider.id === 1 && me.preference">
+    
+    <div class="rpad col-md-3 col-sm-6 col-xs-12"
+         ng-repeat="menuLink in dashboardLinks">
+      
+      <a class="dashboard-link" href="#" ui-sref="{{ menuLink.sref }}">
+        <div class="title">{{ menuLink.title }}</div>
         <ng-md-icon class="chevron" icon="keyboard_arrow_right" size="36"></ng-md-icon>
       </a>
     </div>
   </div>
-  -->
 
   <div class="row">
     <div class="rpad col-md-4">

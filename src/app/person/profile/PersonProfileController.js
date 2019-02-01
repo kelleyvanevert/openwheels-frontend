@@ -3,10 +3,25 @@
 angular.module('owm.person.profile', [])
 
 .controller('PersonProfileController', function ($scope, $filter, $timeout, $translate, person, alertService,
+  hasBooked,
   personService, authService, dutchZipcodeService, metaInfoService, appConfig) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard/profile'});
   metaInfoService.set({canonical: 'https://mywheels.nl/dashboard/profile'});
+
+  $scope.hasBooked = hasBooked;
+
+  $scope.sections = [
+    { id: 'personal', title: 'Persoonsgegevens', icon: 'person' },
+    { id: 'contact', title: 'Contactgegevens', icon: 'home' },
+    { id: 'profiel', title: 'Profiel / instellingen', icon: 'account_circle' },
+    (person.preference !== 'renter' || person.status === 'active') ?
+      { id: 'bank', title: 'Bankrekening', icon: 'account_balance_wallet' } :
+      undefined,
+    { sref: 'owm.person.profile.contract', title: 'Contract(en)', icon: 'table_chart' },
+    { sref: 'owm.person.profile.chipcard', title: 'Chipkaart(en)', icon: 'credit_card' },
+    { sref: 'owm.person.profile.invite-requests', title: 'Machtigingen', icon: 'person_add' },
+  ].filter(function (b) { return !!b; });
 
   var masterPerson = null;
   $scope.person = null;
