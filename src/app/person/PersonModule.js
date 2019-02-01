@@ -215,11 +215,11 @@ angular.module('owm.person', [
    */
   $stateProvider.state('owm.person.profile', {
     url: '/profile?highlight',
-    params: {
+    /*params: {
       highlight: {
         value: 'profiel',
       },
-    },
+    },*/
     views: {
       'main-full@shell': {
         templateUrl: 'person/profile/person-profile.tpl.html',

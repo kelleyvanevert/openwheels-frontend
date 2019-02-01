@@ -3,7 +3,7 @@
 angular.module('owm.person.profile', [])
 
 .controller('PersonProfileController', function ($scope, $filter, $timeout, $translate, person, alertService,
-  hasBooked,
+  hasBooked, $state,
   personService, authService, dutchZipcodeService, metaInfoService, appConfig) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard/profile'});
@@ -22,6 +22,8 @@ angular.module('owm.person.profile', [])
     { sref: 'owm.person.profile.chipcard', title: 'Chipkaart(en)', icon: 'credit_card' },
     { sref: 'owm.person.profile.invite-requests', title: 'Machtigingen', icon: 'person_add' },
   ].filter(function (b) { return !!b; });
+
+  $scope.defaultHighlight = ($state.is('owm.person.profile') ? 'profiel' : undefined);
 
   var masterPerson = null;
   $scope.person = null;

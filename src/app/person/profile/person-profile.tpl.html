@@ -29,7 +29,7 @@
           <ul class="sidebar-menu">
             <li ui-sref="{{ section.sref || 'owm.person.profile({ highlight: \'' + section.id + '\' })' }}"
                 ui-sref-opts="{ inherit: false }"
-                ng-class="{ active: section.sref ? $state.includes(section.sref) : $state.params.highlight === section.id }"
+                ng-class="{ active: section.sref ? $state.includes(section.sref) : ($state.params.highlight || defaultHighlight) === section.id }"
                 md-ink-ripple="#50a2c3"
                 ng-repeat="section in sections">
               <a class="menu-item" href="#">
@@ -262,7 +262,7 @@
 
       <!-- PROFILE DATA  -->
 
-      <div class="mw card" id="profile-data" ng-show="$state.params.highlight === 'profiel'">
+      <div class="mw card" id="profile-data" ng-show="($state.params.highlight || defaultHighlight) === 'profiel'">
         <div class="card-heading">
           <h3>
             {{ 'MY_PROFILE_SETTINGS' | translate }}
