@@ -54,7 +54,10 @@ angular.module('owm.shell')
 	// Om een edge-case op te lossen waarbij een <enter> op een andere pagina om
 	//  een of andere reden de bovenstaande regel invalideert...
   $rootScope.$on('$stateChangeSuccess', function () {
-		$scope.geoSearch = '';
+		setTimeout(function () {
+			$scope.geoSearch = '';
+			$scope.$apply();
+		}, 100);
 	});
 
 });
