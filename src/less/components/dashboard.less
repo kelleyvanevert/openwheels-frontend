@@ -68,9 +68,9 @@ span.action-button:last-child a.btn {
 }
 
 
+
 .dashboard-link {
     display: block;
-    font-size: 22px;
     font-weight: bold;
     padding: 0;
     color: #555;
@@ -105,10 +105,16 @@ span.action-button:last-child a.btn {
     }
 
     .title {
-        padding: 16px;
+        padding: 10px;
+        font-size: 18px;
     }
 
     @media all and (min-width: @screen-sm) {
+
+        .title {
+            padding: 16px;
+            font-size: 22px;
+        }
 
         @easeOutBack: cubic-bezier(0.175, 0.885, 0.320, 1.275);
 
