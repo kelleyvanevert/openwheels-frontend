@@ -5,6 +5,7 @@ angular.module('owm.resource.show', [])
 .controller('ResourceShowController', function ($window, $log, $q, $timeout, $location, $mdDialog, $mdMedia, $scope,
   $state, $filter, authService, resourceService, bookingService, invoice2Service, alertService,
   chatPopupService, ratingService, API_DATE_FORMAT, resource, me, resourceQueryService, featuresService, $stateParams,
+  prevState,
   linksService, Analytics, metaInfoService, $localStorage, $translate, appConfig, $anchorScroll) {
   Analytics.trackEvent('discovery', 'show_car', resource.id, undefined, true);
 
@@ -15,6 +16,7 @@ angular.module('owm.resource.show', [])
   if(resource.removed === undefined) {
     resource.removed = false;
   }
+  
 
   // The car is not visible to the world,
   //  either because it is removed by owner (removed),
@@ -29,6 +31,10 @@ angular.module('owm.resource.show', [])
     resourceQueryService.setText(resource.location);
     resourceQueryService.setLocation({latitude: resource.latitude, longitude: resource.longitude});
   }
+
+
+  $scope.prevState = prevState;
+
 
   /**
    * Warning: 'me' will be null for anonymous users
@@ -52,9 +58,6 @@ angular.module('owm.resource.show', [])
 
   $scope.shareUrl = featuresService.get('serverSideShare') ? linksService.resourceUrl(resource.id, (resource.city || '').toLowerCase().replace(/ /g, '-')) : $window.location.href;
   $log.debug('Share url = ' + $scope.shareUrl);
-
-  var ageInDays = moment().diff($scope.resource.created, 'days');
-  $scope.resource.isNew = ageInDays < 180;
 
   setResourceType(resource);
 
@@ -86,9 +89,6 @@ angular.module('owm.resource.show', [])
     $scope.towbar = resource.properties.map(function(o) { return o.id;}).indexOf('trekhaak');
     $scope.winterTires = resource.properties.map(function(o) { return o.id;}).indexOf('winterbanden');
   }
-
-  //get age of resource on platform
-  $scope.ageInDays = moment().diff($scope.resource.created, 'days');
 
   /**
    * Init
@@ -266,7 +266,7 @@ angular.module('owm.resource.show', [])
         draggable: true,
         markers: [{
           idKey: 1,
-          icon: (resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0) ? 'assets/img/mywheels-open-marker-40.png' : 'assets/img/mywheels-key-marker-40.png',
+          icon: (resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0) ? 'assets/img/mywheels-open-marker-v2-80.png' : 'assets/img/mywheels-key-marker-v2-80.png',
           latitude: resource.latitude,
           longitude: resource.longitude,
           title: resource.alias

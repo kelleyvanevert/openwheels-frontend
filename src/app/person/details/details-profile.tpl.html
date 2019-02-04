@@ -3,7 +3,7 @@
     <div ng-if="isBlocked">
         <div class="container container-transitional">
             <div class="row">
-                <div class="col-md-8 col-md-offset-2 col-xs-12">
+                <div class="rpad col-md-8 col-md-offset-2 col-xs-12">
                     <div class="card inverted-heading mw-error" style="margin-top: 4rem; ">
                         <div class="card-heading main-heading">
                             <div class="row">
@@ -68,7 +68,7 @@
 
         <div class="container container-transitional">
             <div class="row">
-                <div :ng-class="{
+                <div class="rpad" :ng-class="{
                     'col-md-8 col-xs-12': withSidebar,
                     'col-md-8 col-md-offset-2 col-xs-12': !withSidebar,
                 }">
@@ -399,7 +399,7 @@
                     </div>
                     <!--/ card -->
                 </div>
-                <div class="col-md-4 col-xs-12" ng-show="withSidebar">
+                <div class="rpad col-md-4 col-xs-12" ng-show="withSidebar">
                     <div class="card" ng-if="!booking.ok && booking.person.status === 'book-only'">
                         <div class="card-body card-inverse mw-warning">
                             <h2 class="text-white">Je account is nog niet actief</h2>

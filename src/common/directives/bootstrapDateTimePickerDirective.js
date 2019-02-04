@@ -21,6 +21,20 @@ angular.module('bootstrapDateTimePickerDirective', [])
       //$log.log('hello from bootstrapDateTimePicker', '$scope', $scope, '$element', $element, 'attrs', attrs);
       $window.openDateTimePickers = $window.openDateTimePickers || [];
 
+      if (typeof $scope.config.widgetParent === 'string') {
+        var a = $element.find($scope.config.widgetParent);
+        if (a.length) {
+          $scope.config.widgetParent = a;
+        } else {
+          var b = $element.closest($scope.config.widgetParent);
+          if (b.length) {
+            $scope.config.widgetParent = b;
+          } else {
+            delete $scope.config.widgetParent;
+          }
+        }
+      }
+
       var input = $element.find('input');
 
       if ($scope.dtpAutoshow) {

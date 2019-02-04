@@ -1,9 +1,3 @@
-.mywheels-open-tip-search {
-    padding-bottom: 5px;
-    font-size: 14px;
-    margin: 4px 5px 5px 5px;
-    text-align: center;
-}
 .resource__thumb {
     height: 72px;
 }
@@ -32,7 +26,7 @@
     }
 }
 .resource_price-list__unit {
-    font-size: 12px;
+    font-size: 14px;
     color: @gray-light;
 }
 .resource-location-searchbar {
@@ -231,7 +225,6 @@ label[for=mywheelsOpen] {
 .specifics-table {
     border-top: 1px solid #ddd;
     margin-bottom: 1.4em;
-    font-size: 1.1em;
 
     .item {
         .title {
@@ -270,7 +263,6 @@ label[for=mywheelsOpen] {
 }
 
 .resource-key-features {
-    font-size: 1.1em;
     color: #333;
 
     padding: 0 2rem;
@@ -303,7 +295,6 @@ label[for=mywheelsOpen] {
 @media all and (max-width: 480px) {
     .resource-key-features {
         padding: 0;
-        font-size: 1.1em;
         .key-features-row .item {
             margin: .8rem 0;
         }
@@ -406,5 +397,60 @@ label[for=mywheelsOpen] {
         .form-group {
             margin-bottom: 0;
         }
+    }
+}
+
+.place-page-container {
+//    margin-top: -80px;
+    z-index: 1;
+    position: relative;
+
+    .h-resource-card {
+        overflow: hidden;
+
+        img.resource-picture {
+            max-width: 100%;
+            display: block;
+        }
+    }
+}
+
+.s-resource-list {
+    .s-resource-card {
+        margin-bottom: 1.5rem;
+        height: 200px;
+        
+        background: #ddd;
+        
+        background: linear-gradient(to right, #ddd 40%, #fff, #ddd 55%);
+        background-position: 150% 0%;
+        background-size: 200% 100%;
+
+	    -webkit-animation: shine 2s infinite;
+	    animation: shine 2s infinite;
+    }
+}
+
+@-o-keyframes shine {
+    to {
+        background-position: -50% 0%;
+    }
+}
+
+@-webkit-keyframes shine {
+    to {
+        background-position: -50% 0%;
+    }
+}
+
+@-moz-keyframes shine {
+    to {
+        background-position: -50% 0%;
+    }
+}
+
+@keyframes shine {
+    to {
+        background-position: -50% 0%;
     }
 }

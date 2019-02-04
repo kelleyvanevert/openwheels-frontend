@@ -4,8 +4,8 @@ angular.module('owm.person')
 
 .controller('PersonChipcardsController', function ($log, $window, $state, $uibModal, $scope, chipcards, metaInfoService, appConfig) {
 
-  metaInfoService.set({url: appConfig.serverUrl + '/chipcards'});
-  metaInfoService.set({canonical: 'https://mywheels.nl/chipcards'});
+  metaInfoService.set({url: appConfig.serverUrl + '/dashboard/profile/chipcards'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/dashboard/profile/chipcards'});
 
   $scope.chipcards = chipcards;
 

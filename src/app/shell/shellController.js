@@ -10,6 +10,10 @@ angular.module('owm.shell')
   $rootScope.cookieBar = $cookies.get('cookieBar');
   $rootScope.ctaBar = $cookies.get('ctaBar');
 
+  $scope.$watch('user.identity', function () {
+    $rootScope.setAnalyticsUserStats();
+  });
+
   $scope.openMenu = function () {
     $mdSidenav(id).open();
   };

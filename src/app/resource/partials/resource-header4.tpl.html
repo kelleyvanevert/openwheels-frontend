@@ -33,7 +33,7 @@
                     <md-tooltip class="multiline" md-direction="bottom" ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0">
                         {{ 'MYWHEELS_OPEN_INFO' | translate }}
                     </md-tooltip></span>
-                    <span class="tag tag-success" ng-if="resource.isNew" flex="none"> {{ 'NEW_TIP' | translate }} </span>
+                    <span class="tag tag-success" ng-if="resource.newScoreCar" flex="none"> {{ 'NEW_TIP' | translate }} </span>
                 </div>
               </md-list-item>
               <md-list-item>

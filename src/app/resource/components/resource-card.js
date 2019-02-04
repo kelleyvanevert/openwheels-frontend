@@ -6,15 +6,20 @@ angular.module('owm.resource')
   return {
     restrict: 'E',
     scope: {
+      lightweight: '=',
       resource: '=',
-      onSelect: '&'
+      onSelect: '&',
+      onSelectLoadOverlay: '=',
     },
     templateUrl: 'resource/components/resource-card.tpl.html',
     controller: function ($scope) {
-      var ageInDays = moment().diff($scope.resource.created, 'days');
-      $scope.resource.isNew = ageInDays < 180;
+      $scope.showLoadOverlay = false;
 
       $scope.select = function () {
+        if ($scope.onSelectLoadOverlay) {
+          $scope.showLoadOverlay = true;
+        }
+
         if ($scope.onSelect) {
           $scope.onSelect($scope.resource);
         }
