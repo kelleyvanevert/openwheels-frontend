@@ -172,9 +172,9 @@ span.action-button:last-child a.btn {
     right: 0;
 
     & form {
-        max-width: ~"calc(100% - 32px)";
-        margin-left: 16px;
-        margin-right: 16px;
+        max-width: ~"calc(100% - 1em)";
+        margin-left: .5em;
+        margin-right: .5em;
     }
 }
 
@@ -193,7 +193,7 @@ span.action-button:last-child a.btn {
         border-bottom: 1px solid #efefef;
         p {
             font-family: @font-family-sans-serif;
-            font-size: 14px;
+            font-size: 16px;
             line-height: 1.42857143;
             color: rgba(0, 0, 0, 0.87);
         }
@@ -252,6 +252,7 @@ span.action-button:last-child a.btn {
 .bookingDate {
     margin: 0 -16px 0 -16px;
     padding-bottom: 10px !important;
+    line-height: 1.42857143;
     .bookingDateRow {
         width: 100%;
         padding:0px;
@@ -260,12 +261,12 @@ span.action-button:last-child a.btn {
     ng-md-icon {
         margin-left: 6px;
         float: left;
+        padding-top: 10px;
         margin-right: 16px;
-        line-height: 40px;
     }
     .bookingBeginDate {
         opacity: 1;
-        padding:10px;
+        padding: 7.5px 10px;
         height: 60px;
         &.accepted {
             background-color: @mywheels-green;
@@ -316,7 +317,7 @@ span.action-button:last-child a.btn {
         }
     }
     .bookingEndDate span {
-        padding:10px;
+        padding: 7.5px 10px;
         float: left;
     }
 }
