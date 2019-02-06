@@ -1,0 +1,96 @@
+<md-card class="ow-card resource-card-box"
+        ng-click="select()">
+    <div class="md-card-image" style="position: relative; flex-grow: 0;">
+        <ow-resource-picture resource="resource" size="large"></ow-resource-picture>
+        <div ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0" class="mywheelsOpenBar">
+            <ng-md-icon icon="lock_open" alt="Icoon" aria-label="Icoon"></ng-md-icon>
+            <span ng-if="resource.locktypes.indexOf('chipcard') >= 0 && resource.locktypes.indexOf('smartphone') >= 0">Openen met smartphone en OV-chipkaart</span>
+            <span ng-if="resource.locktypes.indexOf('chipcard') < 0 && resource.locktypes.indexOf('smartphone') >= 0">Openen met smartphone</span>
+            <span ng-if="resource.locktypes.indexOf('chipcard') >= 0 && resource.locktypes.indexOf('smartphone') < 0">Openen met OV-chipkaart</span>
+        </div>
+        <div class="price">
+            <h2 class="no-margin" style="color:#fff">
+          {{ resource.price.dayRateTotal | currency }}
+          </h2>
+            <div ng-if="resource.price.kmFree" class="">
+                <small>{{ 'FREE_KM_DAY' | translate }}</small>
+            </div>
+        </div>
+    </div>
+    <div style="position: relative; width: 100%;">
+        <md-card-title>
+            <md-card-title-text style="max-width: 100%;">
+              <a ui-sref="owm.resource.show({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
+                <h3 class="no-margin" style="font-size: 2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  <span>{{ resource.alias | limitTo: 50 || ('RESOURCE_NO_NAME' | translate)}}{{resource.alias.length > 50 ? '...' : ''}} </span>
+                </h3>
+              </a>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-body class="ow-list-compact">
+            <md-list>
+                <md-list-item>
+                    <!-- location -->
+                    <ng-md-icon icon="directions_car" alt="Icoon" aria-label="Icoon"></ng-md-icon>
+                    <div flex>
+                        <span ng-if="resource.brand || resource.model" flex="none">{{ (resource.brand + ' ' + resource.model) | toTitleCase }}</span>
+                    </div>
+                </md-list-item>
+                <md-list-item 
+                    ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0 || resource.newScoreCar"
+                    style="margin-top:-10px; margin-bottom:-10px;"
+                    hide-gt-xs>
+                    <!-- tags -->
+                    <div style="width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        <span 
+                            ng-if="['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0" 
+                            class="tag tag-warning" 
+                            style="margin-left: 0px;"
+                            id="mywheels-open-tip-label"
+                        >
+                            {{ 'MYWHEELS_OPEN_TIP' | translate }}
+                            <md-tooltip md-direction="bottom" class="multiline">{{ 'MYWHEELS_OPEN_INFO' | translate }}</md-tooltip>
+                        </span>
+                        <span 
+                            ng-if="resource.newScoreCar && ['smartphone', 'chipcard'].indexOf(resource.locktype) < 0"
+                            class="tag tag-success"
+                            style="margin-left: 0px;"
+                        >
+                            {{ 'NEW_TIP' | translate }}
+                        </span>
+                        <span 
+                            ng-if="resource.newScoreCar && ['smartphone', 'chipcard'].indexOf(resource.locktype) >= 0"
+                            class="tag tag-success"
+                            style="margin-left: 0px;"
+                        >
+                            {{ 'NEW_TIP' | translate }}
+                        </span>
+                    </div>
+                </md-list-item>
+                <md-list-item>
+                    <!-- location -->
+                    <ng-md-icon icon="location_on" alt="Icoon" aria-label="Icoon"></ng-md-icon>
+                    <div style="width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        {{ resource.location }}, {{ resource.city }}
+                        <div style="font-size: .9em; color: #888;" ng-if="resource.distance_to"> ({{ resource.distance_to | formatKilometers }})</div>
+                    </div>
+                </md-list-item>
+                <md-list-item>
+                    <!-- person -->
+                    <ng-md-icon icon="person" alt="Icoon" aria-label="Icoon"></ng-md-icon>
+                    <div style="width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        {{ resource.owner.firstName }}
+                        <span rating-thumb="{ value : resource.rating.satisfaction, senders: resource.rating.senders }"></span>
+                    </div>
+                </md-list-item>
+            </md-list>
+            <!--
+            <div class="next-icon">
+                <a ui-sref="owm.resource.show({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">
+                    <ng-md-icon icon="navigate_next" alt="Icoon" aria-label="Icoon"></ng-md-icon>
+                </a>
+            </div>
+            -->
+        </md-card-body>
+    </div>
+</md-card>

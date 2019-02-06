@@ -7,6 +7,7 @@ angular.module('owm.resource', [
   'owm.resource.show',
   'owm.resource.show.calendar',
   'owm.resource.edit',
+  'owm.resource.place',
   'owm.resource.search',
   'owm.resource.filter',
   'owm.resource.filterDirective',
@@ -22,6 +23,9 @@ angular.module('owm.resource', [
   $stateProvider.state('owm.resource', {
     abstract: true,
     url: '?lat&lng&start&end&text&radius&options&fuel&lock&seats&type&smartwheels&page&sort',
+    params: {
+      loader: null,
+    },
     views: {
       'main@shell': {
         template: '<div ui-view></div>'
@@ -31,14 +35,14 @@ angular.module('owm.resource', [
      * WORKAROUND FOR UI ROUTER ISSUE: $stateParams not updating after $location.search()
      * https://github.com/angular-ui/ui-router/issues/1546
      */
-//    onEnter: ['$stateParams', 'resourceQueryService', function ($stateParams, resourceQueryService) {
-//      resourceQueryService.parseStateParams($stateParams);
-//    }],
+    onEnter: ['$stateParams', 'resourceQueryService', function ($stateParams, resourceQueryService) {
+      resourceQueryService.parseStateParams($stateParams);
+    }],
     resolve: {
-      query: ['$stateParams', 'resourceQueryService', function ($stateParams, resourceQueryService) {
-        resourceQueryService.parseStateParams($stateParams);
-        return 'ok, done';
-      }],
+//      query: ['$stateParams', 'resourceQueryService', function ($stateParams, resourceQueryService) {
+//        resourceQueryService.parseStateParams($stateParams);
+//        return 'ok, done';
+//      }],
       user: ['authService', function (authService) {
         return authService.userPromise();
       }]
@@ -66,66 +70,96 @@ angular.module('owm.resource', [
         return authService.userPromise().then(function (user) {
           return user.isAuthenticated ? user.identity : null;
         });
-      }]
+      }],
+      homeAddressPrefill: ['me', 'makeHomeAddressPrefill', function (me, makeHomeAddressPrefill) {
+        return makeHomeAddressPrefill(me);
+      }],
     }
   });
 
   $stateProvider.state('owm.resource.search.list', {
     url: '',
     controller: 'ResourceSearchListController',
-    templateUrl: 'resource/search/list/resource-search-list.tpl.html'
+    templateUrl: 'resource/search/list/resource-search-list.tpl.html',
+    reloadOnSearch: false,
+  });
+
+  $stateProvider.state('owm.resource.search.list.reloadable', {
+    url: '',
+    controller: 'ResourceSearchListController',
+    templateUrl: 'resource/search/list/resource-search-list.tpl.html',
+    reloadOnSearch: true,
   });
 
   $stateProvider.state('owm.resource.search.map', {
     url: '/kaart',
     controller: 'ResourceSearchMapController',
-    templateUrl: 'resource/search/map/resource-search-map.tpl.html'
+    templateUrl: 'resource/search/map/resource-search-map.tpl.html',
+    reloadOnSearch: false,
   });
 
   $stateProvider.state('owm.resource.place', {
     url: '/auto-huren/:city',
-    abstract: true,
-    reloadOnSearch: false,
     views: {
       'main-full@shell': {
-        controller: 'ResourceSearchController',
-        templateUrl: 'resource/search/resource-search.tpl.html'
+        controller: 'ResourcePlaceController',
+        templateUrl: 'resource/place/resource-place.tpl.html'
       }
     },
     resolve: {
-      place: ['$q', '$stateParams', 'placeService',
-        function ($q, $stateParams, placeService) {
-          return placeService.search({
-            place: $stateParams.city
-          }).catch(angular.noop); // ignore errors
-        }
+      place: ['$q', '$state', '$stateParams', 'placeService', '$log', '$filter',
+        function ($q, $state, $stateParams, placeService, $log, $filter) {
+          return $q(function (resolve, reject) {
+            placeService.search({
+              place: $stateParams.city,
+            })
+              .then(function (place) {
+                if (!place) {
+                  throw 'place not found (null returned by API)';
+                } else {
+                  place.nicename = $filter('toTitleCase')($filter('replaceDashToSpace')(place.name || ''));
+                  place.picture = place.picture || 'https://mywheels.nl/autodelen/wp-content/uploads/2019/01/stads2.jpg';
+                  resolve(place);
+                }
+              })
+              .catch(function (e) {
+                $log.log('place not found:', $stateParams.city);
+                $state.go('owm.resource.search.list');
+                reject(e);
+              });
+          });
+        },
       ],
       me: ['authService', function (authService) {
         return authService.userPromise().then(function (user) {
           return user.isAuthenticated ? user.identity : null;
         });
       }],
-      metaInfo: ['$translate', 'place', 'metaInfoService', '$filter',
-        function ($translate, place, metaInfoService, $filter) {
-          if (!place) {
-            return;
-          }
-          return $translate('SITE_NAME').then(function () {
-            var city = $filter('replaceDashToSpace')(place.name || '');
-            metaInfoService.set({
-              title: $translate.instant('META_CITYPAGE_TITLE', {
-                city: $filter('toTitleCase')(city)
-              }),
-              description: $translate.instant('META_CITYPAGE_DESCRIPTION', {
-                city: $filter('toTitleCase')(city)
-              })
+      metaInfo: ['$translate', 'place', 'metaInfoService', '$filter', '$q',
+        function ($translate, place, metaInfoService, $filter, $q) {
+          return $q(function (resolve) {
+            $translate('SITE_NAME').then(function () {
+              var city = $filter('toTitleCase')($filter('replaceDashToSpace')(place.name || ''));
+              var title = $translate.instant('META_CITYPAGE_TITLE', { city: city });
+              var description = place.lead || $translate.instant('META_CITYPAGE_DESCRIPTION', { city: city });
+
+              metaInfoService.set({
+                title: title,
+                description: description,
+              });
+
+              resolve({
+                title: title,
+                description: description,
+              });
             });
           });
-        }
-      ]
-    }
+        },
+      ],
+    },
   });
 
+/*
   $stateProvider.state('owm.resource.place.list', {
     url: '',
     reloadOnSearch: false,
@@ -149,6 +183,8 @@ angular.module('owm.resource', [
       }
     }
   });
+  */
+ 
   /**
    * resource/own
    */
@@ -288,6 +324,9 @@ angular.module('owm.resource', [
           return user.isAuthenticated ? user.identity : null;
         });
       }],
+      homeAddressPrefill: ['me', 'makeHomeAddressPrefill', function (me, makeHomeAddressPrefill) {
+        return makeHomeAddressPrefill(me);
+      }],
       metaInfo: ['$state', '$translate', '$filter', 'resource', 'metaInfoService', 'appConfig',
         function ($state, $translate, $filter, resource, metaInfoService, appConfig) {
           if(resource.removed) {
@@ -309,7 +348,14 @@ angular.module('owm.resource', [
             });
           });
         }
-      ]
+      ],
+      prevState: ['$state', function ($state) {
+        return {
+          name: $state.current.name,
+          params: $state.params,
+          url: $state.href($state.current.name, $state.params)
+        };
+      }],
     }
   });
 

@@ -34,6 +34,95 @@ angular.module('google.places', [])
 					 [ '$parse', '$compile', '$timeout', '$document', 'googlePlacesApi',
 						 function ($parse, $compile, $timeout, $document, googlePromise) {
 
+								if (!Object.entries) {
+									Object.entries = function( obj ){
+										var ownProps = Object.keys( obj ),
+												i = ownProps.length,
+												resArray = new Array(i); // preallocate the Array
+										while (i--)
+											resArray[i] = [ownProps[i], obj[ownProps[i]]];
+										
+										return resArray;
+									};
+								}
+
+							 var cache;
+							 try {
+								 cache = JSON.parse(window.localStorage.getItem('cache_places_autocomplete'));
+								 if (!cache) {
+									 window.localStorage.setItem('cache_places_autocomplete', '{}');
+									 cache = {};
+								 }
+							 } catch (e) {
+								 try {
+									 window.localStorage.setItem('cache_places_autocomplete', '{}');
+									 cache = {};
+								 } catch (e) {} // no localstorage
+							 } // no localstorage or json parse error
+
+							 var cacheSaveTimeoutID;
+
+							 function saveCache () {
+								 if (cache && window.localStorage) {
+									
+									// first, prune the cache to only include the 500 most recent autocomplete api results
+									var entries = Object.entries(cache);
+									var num_remove = Math.max(0, entries.length - 500);
+									if (num_remove) {
+										entries
+											.sort(function (a,b) { return a.timestamp < b.timestamp; })
+											.slice(0, num_remove)
+											.forEach(function (entry) {
+												delete cache[entry[0]];
+											});
+									}
+
+									try {
+										window.localStorage.setItem('cache_places_autocomplete', JSON.stringify(cache));
+									} catch (e) {} // no localstorage or storage limit reached
+								 }
+
+								 cacheSaveTimeoutID = undefined;
+							 }
+
+							 function scheduleCacheSave () {
+								 if (!cacheSaveTimeoutID) {
+									 cacheSaveTimeoutID = setTimeout(saveCache, 1000);
+								 }
+							 }
+
+							 function tryGetCachedPredictions (input) {
+									if (cache && cache[input]) {
+										var dt_seconds = (Math.round(Date.now() / 1000) - cache[input].timestamp);
+										if (dt_seconds / (60 * 60 * 24 * 30) > 1) {
+											// don't keep/use longer than 1 month
+											delete cache[input];
+											scheduleCacheSave();
+											return false;
+										}
+
+										return cache[input].predictions;
+									}
+
+									// if anything goes wrong
+								 return false;
+							 }
+
+							 function cachePredictions (input, predictions) {
+								 if (cache) {
+									cache[input] = {
+										timestamp: Math.round(Date.now() / 1000),
+										predictions: predictions.map(function (prediction) {
+											delete prediction.structured_formatting;
+											delete prediction.reference;
+											delete prediction.types;
+											return prediction;
+										}),
+									};
+									scheduleCacheSave();
+								 }
+							 }
+
 							 return {
 								 restrict: 'A',
 								 require: '^ngModel',
@@ -176,7 +265,17 @@ angular.module('google.places', [])
 												 });
 											 });
 										 } else {
-											 placesService.getDetails({ placeId: prediction.place_id }, function (place, status) {
+											 placesService.getDetails({
+												 placeId: prediction.place_id,
+												 fields: [
+													 'formatted_address',
+													 'address_component',
+													 'geometry',
+													 'icon',
+													 'id',
+													 'place_id',
+												 ],
+											 }, function (place, status) {
 												 if (status === google.maps.places.PlacesServiceStatus.OK) {
 													 $scope.$apply(function () {
 														 $scope.model = place;
@@ -199,27 +298,39 @@ angular.module('google.places', [])
 
 										 $scope.query = viewValue;
 
-										 request = angular.extend({ input: viewValue }, $scope.options);
-										 autocompleteService.getPlacePredictions(request, function (predictions, status) {
-											 $scope.$apply(function () {
-												 var customPlacePredictions;
+										 var cachedPredictions = tryGetCachedPredictions(viewValue);
+										 if (cachedPredictions) {
+											
+											 clearPredictions();
+											 $scope.predictions.push.apply($scope.predictions, cachedPredictions);
 
-												 clearPredictions();
+										 } else {
+											
+											request = angular.extend({ input: viewValue }, $scope.options);
+											autocompleteService.getPlacePredictions(request, function (predictions, status) {
+												$scope.$apply(function () {
+													var customPlacePredictions;
 
-												 if ($scope.customPlaces) {
-													 customPlacePredictions = getCustomPlacePredictions($scope.query);
-													 $scope.predictions.push.apply($scope.predictions, customPlacePredictions);
-												 }
+													clearPredictions();
 
-												 if (status === google.maps.places.PlacesServiceStatus.OK) {
-													 $scope.predictions.push.apply($scope.predictions, predictions);
-												 }
+													if ($scope.customPlaces) {
+														customPlacePredictions = getCustomPlacePredictions($scope.query);
+														$scope.predictions.push.apply($scope.predictions, customPlacePredictions);
+													}
 
-												 if ($scope.predictions.length > 5) {
-													 $scope.predictions.length = 5;  // trim predictions down to size
-												 }
-											 });
-										 });
+													if (status === google.maps.places.PlacesServiceStatus.OK) {
+														$scope.predictions.push.apply($scope.predictions, predictions);
+													}
+
+													if ($scope.predictions.length > 5) {
+														$scope.predictions.length = 5;  // trim predictions down to size
+													}
+
+													cachePredictions(request.input, $scope.predictions);
+												});
+											});
+
+										 }
 
 										 if ($scope.forceSelection) {
 											 return controller.$modelValue;

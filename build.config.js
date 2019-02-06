@@ -27,6 +27,8 @@ module.exports = {
 
       'vendor/jquery/dist/jquery.js',
 
+      'vendor_custom/jquery.visible.js',
+
       'vendor/mobile-detect/mobile-detect.min.js',
 
       'vendor/angular/angular.js',
@@ -44,6 +46,7 @@ module.exports = {
 
       'vendor/angular-google-maps/dist/angular-google-maps.js',
       'vendor/lodash/dist/lodash.js', // required by angular-google-maps
+      //'vendor_custom/markerclusterer.js',
 
       'vendor/angular-sticky/dist/angular-sticky.js',
       //'vendor/ngSticky/lib/sticky.js',

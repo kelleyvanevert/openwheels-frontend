@@ -338,13 +338,17 @@ module.exports = function (grunt) {
           ],
           middleware: function (connect) {
             return [
-              require('connect-modrewrite')(['!(\\..+)$ / [L]']),
+              require('connect-modrewrite')([
+                '!\\.html|\\.woff(2?)|\\.otf|\\.js|\\.css|\\.svg|\\.jp(e?)g|\\.png|\\.gif|\\.ttf$ /'
+              ]),
               function (req, res, next) {
+                var m;
+
                 if (req.url === '/assets/img/resource-avatar-large.jpg') {
                   fs.readdir(__dirname + '/src/assets/scaffold', function (err, files) {
                     if (!err) {
                       var acceptable = files.filter(function (filename) {
-                        return filename.match(/\.(png|jpg)$/);
+                        return filename.match(/^resource.*\.(png|jpg)$/);
                       });
                       if (acceptable.length > 0) {
                         req.url = '/assets/scaffold/' + acceptable[Math.floor(Math.random() * acceptable.length)];
@@ -352,6 +356,9 @@ module.exports = function (grunt) {
                     }
                     next();
                   });
+                } else if (m = req.url.match('/person/([0-9]+)/[0-9]+/[0-9]+/profile.png')) {
+                  req.url = '/assets/scaffold/profile.png';
+                  next();
                 } else {
                   next();
                 }

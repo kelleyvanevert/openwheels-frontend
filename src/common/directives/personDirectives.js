@@ -2,6 +2,25 @@
 
 angular.module('personDirectives', [])
 
+.filter('profileImageUrl', function (appConfig) {
+  return function (userId, noCache) {
+    if (userId === null) {
+      return false;
+    }
+    
+    if (typeof userId === 'object' && userId.id) {
+      userId = userId.id;
+    }
+
+    return (appConfig.test && appConfig.test.appUrlForProfilePic ? appConfig.appUrl : appConfig.serverUrl) + '/person' +
+      '/' + userId +
+      '/' + 150 +
+      '/' + 150 +
+      '/profile.png' +
+      (noCache ? '?nocache=' + Math.random() : '');
+  };
+})
+
 .directive('personProfileImage', ['$log', 'appConfig', function ($log, appConfig) {
 
   var cacheId = 0;
@@ -36,7 +55,7 @@ angular.module('personDirectives', [])
             w = 50;
             h = 50;
         }
-        src = appConfig.serverUrl + '/person' +
+        src = (appConfig.test && appConfig.test.appUrlForProfilePic ? appConfig.appUrl : appConfig.serverUrl) + '/person' +
           '/' + person.id +
           '/' + w +
           '/' + h +

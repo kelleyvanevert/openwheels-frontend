@@ -2,12 +2,49 @@
 
 angular.module('owm.person.dashboard', [])
 
-.controller('PersonDashboardController', function ($q, $scope, $sce, $state, me, bookingList, rentalList, actions,
+.controller('PersonDashboardController', function ($q, $scope, $sce, $state, me, bookingList, rentalList, actions, person,
+  homeAddressPrefill, $filter, hasBooked,
   authService, bookingService, alertService, boardcomputerService, actionService, resourceService, resourceQueryService,
-  blogItems, $localStorage, personService, dialogService, $translate, $timeout, Analytics, metaInfoService, appConfig, $window) {
+  blogItems, $localStorage, personService, extraDriverService, dialogService, $translate, $timeout, Analytics, metaInfoService, appConfig, $window) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard'});
   metaInfoService.set({canonical: 'https://mywheels.nl/dashboard'});
+
+  $scope.person = person;
+
+  $scope.hasBooked = hasBooked;
+  
+  $scope.homeAddressPrefill = homeAddressPrefill;
+
+  if (me.provider.id === 1 && me.preference) {
+    // = MyWheels
+
+    if (me.preference !== 'owner') {
+      $scope.dashboardLinks = [
+        { sref: 'owm.trips', title: 'Ritten' },
+        { sref: 'owm.finance.v4', title: 'Financiën' },
+        { sref: 'owm.message', title: 'Berichten' },
+        { sref: 'owm.person.profile({ highlight: "profiel" })', title: 'Mijn gegevens' },
+      ];
+    }
+    else /*if (me.preference === 'owner' && resource.length > 0) */ {
+      $scope.dashboardLinks = [
+        { sref: 'owm.trips', title: 'Verhuringen' },
+        { sref: 'owm.finance.v4', title: 'Financiën' },
+        { sref: 'owm.message', title: 'Berichten' },
+        { sref: 'owm.resource.own', title: 'Mijn auto\'s' },
+      ];
+    }/*
+    else if (me.preference === 'owner' && resource.length === 0) {
+      $scope.dashboardLinks = [
+        { sref: 'list-your-car', title: 'Auto toevoegen' },
+        { sref: 'owm.trips', title: 'Verhuringen' },
+        { sref: 'owm.finance.v4', title: 'Financiën' },
+        { sref: 'owm.message', title: 'Berichten' },
+      ];
+    }*/
+  }
+
 
   // If booking_before_signup in local storage exists that means we have been redirected to this page after facebook signup
   // decide where to go next and try to guess user preference. If we do not know what flow to redirect
@@ -31,10 +68,10 @@ angular.module('owm.person.dashboard', [])
       .then(redirect);
     }
   } else {
-    if(me.status === 'new' && !me.preference) {
+    if(me.status === 'new' && !me.preference && !me.extraDriver) {
       showModal()
       .then(redirect);
-    } else if(me.status === 'new' && me.preference !== 'owner') {
+    } else if(me.status === 'new' && me.preference !== 'owner' && !me.extraDriver) {
       $state.go('owm.person.intro');
     }
   }
@@ -103,6 +140,7 @@ angular.module('owm.person.dashboard', [])
   $scope.totalBookings = bookingList.totalBookings;
   $scope.rentals = rentalList.bookings;
   $scope.totalRentals = rentalList.totalBookings;
+  $scope.extraDriverBookings = null;
   $scope.actions = actions;
   $scope.favoriteResources = null;
   $scope.membersResources = null;
@@ -146,45 +184,6 @@ angular.module('owm.person.dashboard', [])
     $state.go('owm.resource.search.list', resourceQueryService.createStateParams());
   };
 
-  $scope.openDoor = function (resource, booking) {
-    alertService.load();
-    boardcomputerService.control({
-        action: 'OpenDoorStartEnable',
-        resource: resource.id,
-        booking: booking ? booking.id : undefined
-      })
-      .then(function (result) {
-        if (result === 'error') {
-          return alertService.add('danger', result, 5000);
-        }
-        alertService.add('success', 'De auto opent binnen 15 seconden.', 3000);
-      }, function (error) {
-        alertService.add('danger', error.message, 5000);
-      })
-      .finally(function () {
-        alertService.loaded();
-      });
-  };
-
-  $scope.closeDoor = function (resource, booking) {
-    alertService.load();
-    boardcomputerService.control({
-        action: 'CloseDoorStartDisable',
-        resource: resource.id,
-        booking: booking ? booking.id : undefined
-      })
-      .then(function (result) {
-        if (result === 'error') {
-          return alertService.add('danger', result, 5000);
-        }
-        alertService.add('success', 'De auto sluit binnen 15 seconden.', 3000);
-      }, function (error) {
-        alertService.add('danger', error.message, 5000);
-      })
-      .finally(function () {
-        alertService.loaded();
-      });
-  };
 
   $scope.deleteAction = function (action) {
     alertService.load();
@@ -267,6 +266,20 @@ angular.module('owm.person.dashboard', [])
     $state.go('owm.resource.show', {
       resourceId: resource.id,
       city: (resource.city || '').toLowerCase().replace(/ /g, '-')
+    });
+  };
+
+  $scope.getBookingListAsExtraDriver = function () {
+    extraDriverService.getExtraDriverBookingList({
+      person: $scope.me.id,
+      limit: 2,
+      offset: 0
+    })
+    .then(function (data) {
+      $scope.extraDriverBookings = data.result;
+    })
+    .catch(function () {
+      $scope.extraDriverBookings = [];
     });
   };
 

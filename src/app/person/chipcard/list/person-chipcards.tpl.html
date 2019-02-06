@@ -1,16 +1,16 @@
-<div class="card">
+<div class="mw card">
+  <!--
   <div class="card-heading">
-    <h2 class="card-title">
+    <h3>
       {{ 'MY_CHIPCARDS' | translate }} ({{ chipcards.length }})
-    </h2>
+    </h3>
   </div>
+  -->
 
   <div class="card-body">
-    <div class="alert alert-warning" ng-show="!chipcards.length">
-      {{ 'PERSON.CHIPCARD.LIST.NO_ITEMS' | translate }}
-    </div>
+    <p ng-show="chipcards.length == 0">Je hebt nog geen chipkaarten gekoppeld.</p>
 
-    <ul class="list-group" ng-show="chipcards.length">
+    <ul class="list-group" ng-show="chipcards.length > 0">
       <li class="list-group-item" ng-repeat="chipcard in chipcards">
 
         <div class="pull-right">

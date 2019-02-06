@@ -5,7 +5,7 @@
         <div class="landing-title">
             <h1><span class="highlight">Verhuur je auto, ook als je niet thuis bent</span></h1>
             <!--<p class="sub">Dus geen gedoe met sleutels. Makkelijk toch?</p>-->
-            <a class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action"
+            <a class="mywheels-btn mywheels-btn-bigger mywheels-btn-call-to-action"
                     md-ink-ripple="#8f6700"
                     href="#aanmeldformulier"
                     ng-click="$anchorScroll('aanmeldformulier')">
@@ -56,7 +56,7 @@
         <div class="renter--action">
             <section>
                 <h2>Wat heb je er aan?</h2>
-                <div class="lead">
+                <div class="size-2">
                     <ul>
                         <li>
                             <ng-md-icon size="32" icon="check" aria-hidden="true"></ng-md-icon>
@@ -83,7 +83,7 @@
         <div class="owner--action">
             <section>
                 <h2>Hoe werkt het precies?</h2>
-                <div class="lead">
+                <div class="size-2">
                     <p>Aansluiten bij MyWheels Open gaat heel makkelijk:</p>
                     <ul>
                         <li>
@@ -114,7 +114,7 @@
     <!-- WIL JE MEEDOEN? -->
     <div class="container-fluid
                 container-home
-                mywheels-open-meedoen">
+                landing-section">
         <div class="col-md-12">
             <h2>Wil jij ook meedoen? Zo meld je je aan</h2>
 
@@ -122,19 +122,19 @@
                 <div class="step">
                     <div class="circle"><ng-md-icon size="50" icon="create"></ng-md-icon></div>
                     <div class="step-label">Aanmelden</div>
-                    <p>Is je auto jonger dan 10 jaar? Meld je dan aan via deze website.</p>
+                    <p class="size-2">Is je auto jonger dan 10 jaar? Meld je dan aan via deze website.</p>
                 </div>
                 <div class="line"></div>
                 <div class="step">
                     <div class="circle"><ng-md-icon size="50" icon="directions_car"></ng-md-icon></div>
                     <div class="step-label">Installeren</div>
-                    <p>We kijken of je auto geschikt is. Vervolgens maken we een afspraak om MyWheels Open te installeren.</p>
+                    <p class="size-2">We kijken of je auto geschikt is. Vervolgens maken we een afspraak om MyWheels Open te installeren.</p>
                 </div>
                 <div class="line"></div>
                 <div class="step">
                     <div class="circle"><ng-md-icon size="50" icon="euro_symbol"></ng-md-icon></div>
                     <div class="step-label">Verdienen</div>
-                    <p>Begin met verhuren en krijg je opbrengsten uitbetaald.</p>
+                    <p class="size-2">Begin met verhuren en krijg je opbrengsten uitbetaald.</p>
                 </div>
             </div>
         </div>
@@ -150,7 +150,7 @@
                 <div class="aanmeldformulier">
                     <h2>Meld je nu aan</h2>
                     <div class="form-surround">
-                        <p class="lead">
+                        <p class="size-2">
                             Geen zorgen. Je zit nergens aan vast. We checken eerst of je auto geschikt is. Daarna nemen we contact met je op.
                         </p>
                         <form name="form" class="mywheels-form">
@@ -225,6 +225,15 @@
                                   <div class="text-danger" ng-show="form.phone_number.$error.validPhoneNumber">Dit lijkt niet een valide telefoonnummer te zijn. Graag een telefoonnummer invoeren met enkel nummers, spaties en streepjes en haakjes, dat tussen de 5 en 20 tekens lang is.</div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <input type="text"
+                                       name="km_stand"
+                                       ng-model="formEntry.kmStand"
+                                       md-select-on-focus
+                                       required="true"
+                                       valid-phone-number
+                                       placeholder="Huidge KM stand auto" />
+                            </div>
 
                             <p class="w-submit-button">
                                 <button type="submit"
@@ -234,7 +243,7 @@
                                     Ja, ik doe mee <span style="position: relative; bottom: -.1em; right: -.4em;">〉</span>
                                 </button>
                             </p>
-                            <p class="lead" style="text-align: center; font-style: italic;">
+                            <p class="size-2" style="text-align: center; font-style: italic;">
                                 <a target="_blank" href="/signup" ui-sref="owm.auth.signup">Of meld je aan zonder MyWheels Open</a>
                             </p>
                             <p class="voorwaarden-akkoord">Wil je meer weten? Neem dan ook alvast even de <a target="_blank" href="https://mywheels.nl/autodelen/hoe-autodelen-werkt/voorwaarden-mywheels-open/">voorwaarden van MyWheels Open</a> door.</p>
@@ -243,14 +252,14 @@
                             <md-progress-circular md-mode="indeterminate" md-diameter="96"></md-progress-circular>
                         </div>
                         <div class="form-overlay form-submitted" ng-if="formSendStatus === 'success'">
-                            <div class="lead" style="font-weight: bold;">
+                            <div class="size-2" style="font-weight: bold;">
                                 <p><ng-md-icon icon="check" size="40" style="width: 20px; height: 40px;"></ng-md-icon></p>
                                 <p>Bedankt voor de interesse!</p>
                                 <p>We nemen spoedig contact met je op.</p>
                             </div>
                         </div>
                         <div class="form-overlay form-error" ng-if="formSendStatus === 'error'">
-                            <div class="lead">
+                            <div class="size-2">
                                 <p><ng-md-icon icon="error" size="40" style="width: 20px; height: 40px;"></ng-md-icon></p>
                                 <p>
                                     Het spijt ons heel erg, maar er is iets misgegaan bij het versturen van het formulier.
@@ -266,7 +275,7 @@
             <div id="gratisjaar" style="padding-top: 1em;">
                 <div class="gratisjaar">
                     <h2>1 jaar gratis</h2>
-                    <div class="lead">
+                    <div class="size-2">
                         <p>Woon je in de provincie Utrecht of de gemeente Den Haag? Dan kost dit je het eerste jaar niks!</p>
                         <p><a target="_blank" href="https://mywheels.nl/autodelen/wp-content/uploads/2018/11/MyWheelsOpenvoorwaardenActie.pdf">Lees de actievoorwaarden</a></p>
                     </div>
@@ -288,8 +297,8 @@
                     <ng-md-icon size="32" icon="directions_car" aria-hidden="true"></ng-md-icon>
                     <h3 class="infobox--title--text">Zo kan je veilig verhuren</h3>
                 </div>
-                <div class="lead">
-                    <p>Wij regelen een Allrisk verzekering bij Centraal Beheer voor de duur van de huur. Zo kan je met een gerust hart je auto verhuren.</p>
+                <div class="size-2">
+                    <p>Wij regelen een all-risk verzekering bij Centraal Beheer voor de duur van de huur. Zo kan je met een gerust hart je auto verhuren.</p>
                     <p>Dit verzekering vervangt jouw eigen autoverzekering en beschermt je no-claim. De verzekering heeft ook een inzittendendekking.</p>
                 </div>
             </div>
@@ -298,7 +307,7 @@
                     <ng-md-icon size="32" icon="security" aria-hidden="true"></ng-md-icon>
                     <h3 class="infobox--title--text">Wat kost het jou?</h3>
                 </div>
-                <div class="lead">
+                <div class="size-2">
                     <p>Je auto aanbieden is gratis. Je betaalt geen vaste (abonnements)kosten.</p>
                     <p>Ga je voor MyWheels Open, dan plaatsen we een boardcomputer. Dat kost €29 per maand.</p>
                     <p>Voor autobezitters in de provincie Utrecht en de gemeente Den Haag is het tijdelijk 1 jaar gratis.</p>
@@ -309,8 +318,8 @@
                     <ng-md-icon size="32" icon="contact_phone" aria-hidden="true"></ng-md-icon>
                     <h3 class="infobox--title--text">Wat verdienen wij eraan?</h3>
                 </div>
-                <div class="lead">
-                    <p>Bij verhuring van je auto vragen we een vergoeding van 2,50 euro per etmaal. Daarnaast betaal je 20% van de verhuuropbrengst voor de Allrisk verzekering. De 20% geldt niet voor de brandstofkosten die huurder betaalt.</p>
+                <div class="size-2">
+                    <p>Bij verhuring van je auto vragen we een vergoeding van 2,50 euro per etmaal. Daarnaast betaal je 20% van de verhuuropbrengst voor de all-risk verzekering. De 20% geldt niet voor de brandstofkosten die huurder betaalt.</p>
                 </div>
             </div>
             <div class="infobox">
@@ -318,7 +327,7 @@
                     <ng-md-icon size="32" icon="call_split" aria-hidden="true"></ng-md-icon>
                     <h3 class="infobox--title--text">Dag en nacht hulp bij pech</h3>
                 </div>
-                <div class="lead">
+                <div class="size-2">
                     <p>Gebeurt er iets onderweg? 24 uur per dag staat er iemand voor je klaar om je uit de brand te helpen. Een telefoontje is genoeg, en als de auto niet meer verder kan, regelt de verzekering vervangend vervoer.</p>
                 </div>
             </div>

@@ -27,8 +27,26 @@ html {
 .row {
   max-width: 100vw;
 }
-.container .row {
+.container .row,
+.container-fluid .row {
   max-width: ~"calc(100vw + 18px)";
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.panel-body .row,
+.card-body .row {
+    margin-left: -16px !important;
+    margin-right: -16px !important;
+}
+.rpad {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+@media (max-width: 480px) {
+  .rpad {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 .push {
     z-index: -1;
@@ -43,7 +61,8 @@ html,
 input,
 select,
 textarea {
-    font-family: Arial;
+    font-family: @font-family-sans-serif;
+    color: #333;
 }
 
 
@@ -52,7 +71,7 @@ textarea {
 md-input-container label,
 md-input-container.md-default-theme .md-placeholder,
 md-input-container .md-placeholder {
-    font-family: Arial;
+    font-family: @font-family-sans-serif;
     color: #888;
 /*    font-weight: bold;*/
 }
@@ -128,11 +147,32 @@ md-icon {
     user-select: none;
 }
 
+.md-button {
+    font-size: 16px;
+    text-transform: none;
+}
 
 .lead {
-    font-size: 1.2em;
+    font-size: @font-size-base * 1.15;
     color: #333;
     line-height: 1.5;
+}
+
+.size-1 {
+    font-size: @font-size-base;
+    line-height: 1.5;
+}
+.size-2 {
+    font-size: @font-size-base * 1.07;
+    line-height: 1.55;
+}
+.size-3 {
+    font-size: @font-size-base * 1.15;
+    line-height: 1.6;
+}
+.size-4 {
+    font-size: @font-size-base * 1.23;
+    line-height: 1.7;
 }
 
 
@@ -398,7 +438,95 @@ md-dialog.mw-red md-toolbar {
     background: @mywheels-red;
 }
 
+h1.page-title {
+    text-align: center;
+    margin: 3rem 0 2rem;
+    color: #555;
+    font-size: 3.4rem;
+}
 
+@media (max-width: @screen-md-max) {
+    h1.page-title {
+        margin: 1.4rem 0 1.4rem;
+    }
+}
+
+@media (max-width: @screen-sm-max) {
+    h1.page-title {
+        margin: 0 0 1.4rem;
+        font-size: 2.8rem;
+    }
+}
+
+
+h2.without-card {
+    margin: 4rem 0 2rem 0;
+    color: #444;
+}
+
+h2.without-card + .sub {
+    font-size: 1.8rem;
+    margin: -1rem 0 2rem 0;
+    color: #777;
+}
+
+@media (max-width: @screen-xs-max) {
+    h2.without-card {
+        font-size: 2em !important;
+    }
+    h2.without-card + .sub {
+        font-size: 1.6rem;
+    }
+}
+
+
+.row.is-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+.row.is-flex > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
+}
+
+/*
+* And with max cross-browser enabled.
+* Nobody should ever write this by hand. 
+* Use a preprocesser with autoprefixing.
+*/
+.row.is-flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.row.is-flex > [class*='col-'] {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+
+.statistic {
+    text-align: center;
+
+    .stat {
+        font-size: 30px;
+    }
+}
+
+
+/* Apply to `.card`s */
 .mw {
     color: #333;
 
@@ -411,11 +539,11 @@ md-dialog.mw-red md-toolbar {
     .is-1 {
         font-family: @headings-font-family;
         color: black;
-        font-size: 2em;
+        font-size: 1.8em;
         line-height: 1.2em;
     }
     .subtitle {
-        font-size: 1.1em;
+        font-size: 1em;
         color: #777;
         position: relative;
         top: -.6rem;
@@ -437,7 +565,7 @@ md-dialog.mw-red md-toolbar {
     h2, h3 {
         color: black;
         margin: 3.5rem 0 2rem 0;
-        font-size: 1.4em;
+        font-size: 1.3em;
     }
 
     .card-heading > h1:first-child,
@@ -458,10 +586,14 @@ md-dialog.mw-red md-toolbar {
         margin-bottom: 0;
     }
 
+    table,
+    ul,
+    p {
+        line-height: 1.5em;
+    }
+
     p {
         margin: 1.5rem 0;
-        font-size: 1.1em;
-        line-height: 1.5em;
     }
 
     p:first-child {
@@ -470,6 +602,10 @@ md-dialog.mw-red md-toolbar {
 
     p:last-child {
         margin-bottom: 0;
+
+        md-checkbox {
+            margin-bottom: 0;
+        }
     }
 
 /*    @media (max-width: 768px) {
@@ -488,11 +624,98 @@ md-dialog.mw-red md-toolbar {
         }
     }*/
 
+    ul.sidebar-menu {
+        margin: 0 -2.2rem;
+        padding: 0;
+        display: block;
+
+        li {
+            display: block;
+            position: relative;
+            margin: 0;
+            padding: 1.1rem 2.2rem 1.1rem 5.7rem;
+
+            a.menu-item {
+                font-family: @headings-font-family;
+                font-size: 1.2em;
+                line-height: 1.4em;
+                color: #333;
+
+                ng-md-icon {
+                    margin-right: 1rem;
+                    position: relative;
+                    top: -1px;
+                }
+            }
+
+            &.active {
+                background: #e9eff2;
+            }
+
+            &.active:before {
+                content: " ";
+                display: block;
+
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 3px;
+                background: darken(@mywheels-blue, 4%);
+            }
+
+            .feature {
+                margin: .3rem 0;
+            }
+        }
+    }
+
+    ul.extra-links {
+        border-top: 1px solid #bbb;
+        margin-top: 1rem;
+        padding: 1rem 0 0;
+
+        li {
+            display: block;
+            margin: .3rem 0;
+        }
+    }
+
+    @media (min-width: 481px) {
+        ul.sidebar-menu {
+            li {
+                a.menu-item {
+                    font-size: 1.3em;
+
+                    ng-md-icon {
+                        margin: 0;
+
+                        position: absolute;
+                        left: 2.2rem;
+                        top: 1.4rem;
+                    }
+                }
+
+                .feature {
+                    font-size: 1.1em;
+                }
+            }
+        }
+    }
+
     @media (max-width: 480px) {
 
         .card-heading,
         .card-body {
             padding: 1.2rem;
+        }
+
+        ul.sidebar-menu {
+            margin: 0 -1.2rem;
+
+            li {
+                padding: 1.1rem 1.2rem;
+            }
         }
 
         h1,
@@ -542,3 +765,47 @@ input.ng-touched {
     font-weight: bold;
 }
 */
+
+
+.skel {
+    background: #ddd;
+    
+    background: linear-gradient(to right, #ddd 25%, #ccc, #ddd 55%);
+    background-position: 150% 0%;
+    background-size: 200% 100%;
+
+    -webkit-animation: skel 2s infinite;
+    animation: skel 2s infinite;
+    
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+
+    &.inline {
+        display: inline-block;
+    }
+}
+
+@-o-keyframes skel {
+    to {
+        background-position: -50% 0%;
+    }
+}
+
+@-webkit-keyframes skel {
+    to {
+        background-position: -50% 0%;
+    }
+}
+
+@-moz-keyframes skel {
+    to {
+        background-position: -50% 0%;
+    }
+}
+
+@keyframes skel {
+    to {
+        background-position: -50% 0%;
+    }
+}
+

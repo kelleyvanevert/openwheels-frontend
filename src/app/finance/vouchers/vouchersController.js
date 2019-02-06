@@ -8,8 +8,6 @@ angular.module('owm.finance.vouchers', [])
   metaInfoService.set({url: appConfig.serverUrl + '/vouchers'});
   metaInfoService.set({canonical: 'https://mywheels.nl/vouchers'});
 
-  $scope.me = me;
-
   var cachedBookings = {};
   $scope.busy = true;
   $scope.requiredValue = null;
@@ -32,6 +30,17 @@ angular.module('owm.finance.vouchers', [])
       }
     }
   });
+
+  // get vouchers // from finance v4 controller
+  $scope.vouchersPerPage = 15;
+  $scope.vouchers = [];
+  voucherService.search({
+    person: me.id,
+    minValue: 0.0,
+  })
+    .then(function(vouchers) {
+      $scope.vouchers = vouchers;
+    });
 
   // when one of the bookings has been changed we need to fetch the new total we need to pay
   // we make sure we don't update the bookings because it will glitch and is not nescessary
