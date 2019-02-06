@@ -41,7 +41,7 @@
           </div>
           
           <div class="media coordinator size-2" style="padding-left: 1rem; margin-top: 0;">
-            <img ui-sref="member({ personId: place.coordinator.id })" class="media-object pull-left img-user-mid" person-profile-image="{ person: place.coordinator, size: 'large' }" />
+            <img ui-sref="member({ personId: place.coordinator.id })" class="media-object pull-left img-user-mid" person-profile-image="{ person: place.coordinator, size: 'large' }" style="height: auto;" />
             <div class="media-body text-left" style="padding-top: 0;">
               <h4 style="color: black;">Coördinator {{ place.nicename }}</h4>
               <div ng-bind-html="place.coordinatorBody"></div>
