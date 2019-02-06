@@ -1,9 +1,12 @@
 
 <div id="profile-page-container" class="container container-transitional">
   <div class="row">
-    <div class="rpad col-12">
-      <h1 class="page-title">
-        {{ 'MY_PROFILE' | translate }}
+    <div class="rpad col-md-4">
+    </div>
+    <div class="rpad col-md-8">
+      <h1 class="page-title card-pad-left" style="text-align: left;">
+        <span ng-if="!currentSection">{{ 'MY_PROFILE' | translate }}</span>
+        <span ng-if="currentSection">{{ currentSection.title }}</span>
       </h1>
     </div>
   </div>
