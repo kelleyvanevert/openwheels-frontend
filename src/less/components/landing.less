@@ -169,6 +169,14 @@
     }
   }
 
+  &.landing-lease .hero {
+    background-image: url('../assets/img/bg/in_straatbeeld3.jpg');
+  }
+
+  &.landing-lease .hero-overlay {
+    background-color: rgba(56, 132, 163, 0.27);
+  }
+
   .landing-lead {
     background: #cfd3d4;
     color: #406370;
@@ -204,13 +212,14 @@
       color: @mywheels-blue;
 
       img {
-        height: 1.7em;
+        height: auto;
+        max-height: 45px;
+        max-width: 90%;
+
         position: relative;
         vertical-align: text-bottom;
-        bottom: -.29em;
-        margin: 0 -.3em 0 -.5em;
-        user-select: none;
-
+        bottom: -2px;
+        margin: 0 .6rem 0 .4rem;
         user-select: none;
       }
     }
@@ -520,6 +529,25 @@
         ng-md-icon {
           color: darken(@mywheels-red, 2%);
         }
+      }
+    }
+  }
+
+  .lease-auto {
+    h2,
+    .price {
+      margin: 0;
+
+      font-family: @font-family-sans-serif;
+      color: black;
+      .size-5();
+
+      .eur {
+        font-size: 46px;
+        font-weight: bold;
+
+        display: inline-block;
+        margin: -10px 10px 0 0;
       }
     }
   }
