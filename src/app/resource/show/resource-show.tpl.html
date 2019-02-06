@@ -19,12 +19,22 @@
 
     <div class="return-toolbar-container container container-transitional hidden-xs">
         <div class="return-toolbar">
-            <button type="button"
-                    ui-sref="owm.resource.search.list"
-                    class="btn btn-link return">
-                <ng-md-icon size="32" icon="arrow_back"></ng-md-icon>
-                <md-tooltip md-direction="top">{{ 'RESOURCE_BACK_TO_LIST' | translate }}</md-tooltip>
-            </button>
+            <div ng-if="prevState && prevState.name">
+                <button type="button"
+                        ui-sref="{{ prevState.name }}({{ prevState.params }})"
+                        class="btn btn-link return">
+                    <ng-md-icon size="32" icon="arrow_back"></ng-md-icon>
+                    <md-tooltip md-direction="top">{{ 'RESOURCE_BACK_TO_LIST' | translate }}</md-tooltip>
+                </button>
+            </div>
+            <div ng-if="!(prevState && prevState.name)">
+                <button type="button"
+                        ui-sref="owm.resource.search.list"
+                        class="btn btn-link return">
+                    <ng-md-icon size="32" icon="arrow_back"></ng-md-icon>
+                    <md-tooltip md-direction="top">{{ 'RESOURCE_BACK_TO_LIST' | translate }}</md-tooltip>
+                </button>
+            </div>
 
             <button ng-if="(me && (resource.owner.id === me.id || resource.contactPerson.id === me.id))"
                     ui-sref="owm.resource.edit({ resourceId: resource.id })"
@@ -43,7 +53,9 @@
                 <div class="card-body">
                     <div flex layout="row">
                         <h1 class="single-line" flex>
-                            Huur {{ resource.alias || ('RESOURCE_NO_NAME' | translate) }} {{ resource.city ? 'in ' + resource.city : '' }}
+                            Huur
+                            {{ resource.alias || ('RESOURCE_NO_NAME' | translate) }}
+                            <span ng-if="resource.city">in {{ resource.city | replaceDashToSpace | toTitleCase }}</span>
                         </h1>
                         <md-button ng-if="me" class="is-favorite-button md-icon-button md-accent" aria-label="Favorite"
                                                 ng-class="{ 'is-favorite': isFavorite, 'loading': !isFavoriteResolved }">
@@ -58,7 +70,7 @@
                             <span class="tag tag-warning mw-badge mw-badge-open">MyWheels Open</span>
                             <span class="bullet"></span>
                         </span>
-                        <span ng-if="resource.isNew">
+                        <span ng-if="resource.newScoreCar">
                             <span class="tag tag-warning mw-badge mw-badge-new">Nieuw</span>
                             <span class="bullet"></span>
                         </span>
@@ -69,7 +81,7 @@
                         <span ng-if="resource.city">
                             <span class="bullet"></span>
                             <span class="subtitle-feature">
-                                {{ resource.city | toTitleCase }}
+                                {{ resource.city | replaceDashToSpace | toTitleCase }}
                             </span>
                         </span>
                     </div>
@@ -181,9 +193,7 @@
                             </button>
                         </div>
                     </div>
-                    <div ng-if="resource.owner.about">
-                        <p style="white-space:pre-line">{{ resource.owner.about}}</p>
-                    </div>
+                    <p ng-if="resource.owner.about" style="white-space: pre-line;">{{ resource.owner.about}}</p>
                 </div>
             </div>
 
@@ -247,19 +257,14 @@
             <!-- location -->
             <div class="card mw mb0">
                 <div class="card-heading" ng-if="resource.location">
-                    <h3>{{ resource.location }} <small ng-if="resource.city">{{ resource.city }}</small></h3>
+                    <h3>{{ resource.location }} <small ng-if="resource.city">{{ resource.city | replaceDashToSpace | toTitleCase }}</small></h3>
                 </div>
-                <ui-gmap-google-map class="google-map" center="map.center" zoom="map.zoom" draggable="false" dragging="map.dragging" bounds="map.bounds" events="map.events" options="map.options">
-                    <!-- prefedined markers -->
-                    <!-- rendering via ng-repear, HIGH OVERHEAD via DOM Manipulation -->
-                    <ui-gmap-marker idKey="$index" ng-repeat="m in map.markers" coords="m" icon="m.icon" click="onMarkerClicked(m)">
-                        <ui-gmap-window show="m.showWindow" closeClick="m.closeClick()">
-                        </ui-gmap-window>
-                    </ui-gmap-marker>
-                </ui-gmap-google-map>
+                <div class="decrease-max-gmaps-height">
+                    <mw-resource-location-map map="map"></mw-resource-location-map>
+                </div>
 
                 <div class="card-body" ng-show="resource.city">
-                    {{ 'RESOURCE_MORE_IN_CITY' | translate }} <a ui-sref="owm.resource.place.list({ city: (resource.city | replaceSpaceToDash | lowercase) })">{{ resource.city }}</a>
+                    {{ 'RESOURCE_MORE_IN_CITY' | translate }} <a ui-sref="owm.resource.place({ city: (resource.city | replaceSpaceToDash | lowercase) })">{{ resource.city | replaceDashToSpace | toTitleCase }}</a>
                 </div>
             </div>
 
@@ -308,12 +313,12 @@
             <md-card-title>
               <md-card-title-text>
                 <span class="md-headline">Deze auto is helaas niet meer beschikbaar</span>
-                <span class="md-subhead">Vind een andere auto bij jou in de buurt die wel beschikbaar is.</span>
+                <span class="md-subhead">Vind een andere auto in de buurt die wel beschikbaar is.</span>
               </md-card-title-text>
             </md-card-title>
             <md-card-content>
               <section>
-                <ow-geocoder-searchbar></ow-geocoder-searchbar>
+                <ow-geocoder-searchbar searchtext="removedResourceAddress"></ow-geocoder-searchbar>
               </section>
             </md-card-content>
         </md-card>

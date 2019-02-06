@@ -82,7 +82,7 @@
                         </div>
                         </md-list-item>
 
-                        <md-list-item ng-if="!hasAcceptedTimeframe(b)" class="bookingDate" style="padding-bottom: 0px !important;">
+                        <md-list-item ng-if="!hasAcceptedTimeframe(booking)" class="bookingDate" style="padding-bottom: 0px !important;">
                         <div layout="row" layout-wrap class="bookingDateRow">
                           <div flex="50" class="bookingBeginDate" ng-class="{ 'accepted': booking.status === 'accepted', 'cancelled': (booking.status === 'cancelled' || booking.status === 'owner_cancelled'), 'rejected': booking.status === 'rejected', 'requested': booking.status === 'requested' }">
                             <ng-md-icon icon="access_time"></ng-md-icon>

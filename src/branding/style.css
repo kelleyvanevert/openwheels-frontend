@@ -26,8 +26,9 @@
     }
 }
 @media (max-width: 768px) {
+    .home .landing-title h1,
     .home .intro h1 {
-        font-size: 32px;
+        font-size: 30px;
     }
     .home .hero {
         background-position: 50% 50%;

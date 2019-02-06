@@ -42,13 +42,13 @@
     }
 
     .mission-statement {
+        padding: 10px 0;
+
         h4 {
             font-size: 2.1rem;
         }
-        .lead {
-            font-size: 1.6rem;
+        p {
             color: #bbb;
-            line-height: 1.6;
         }
     }
 
@@ -58,22 +58,14 @@
     }
 }
 
-/* A bit confusing, but: `.footerbox` is just for horizontal breathing space,
-    and `.menubox` for vertical bottom spacing.  */
+/* `.menubox` is for vertical bottom spacing.  */
 @media (max-width: @screen-xs-max) {
-    .page-footer .footerbox {
-        padding: 0 2rem;
-    }
-    .page-footer .footerbox.kiyoh-rating {
-        padding: 0;
+    .page-footer .kiyoh-rating {
         .text-center();
     }
 }
 
 @media (max-width: 400px) {
-    .page-footer .footerbox {
-        padding: 0 0 !important;
-    }
 }
 
 .footer-logo-row {
@@ -83,7 +75,4 @@
         margin-top: 1em;
         height: 59px;
     }
-}
-
-.footer-social {
 }

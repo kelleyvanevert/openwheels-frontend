@@ -1,11 +1,17 @@
-<div class="map__window" ui-sref="owm.resource.show({ resourceId: parameter.resource.id, city: (parameter.resource.city | replaceSpaceToDash | lowercase) })">
-    <img ng-src="{{ parameter.imgUrl }}" />
-    <h4>{{ parameter.resource.alias }}</h4>
-    <h5>{{ parameter.resource.brand }} {{ parameter.resource.model }}</h5>
-    <p>{{ parameter.resource.price.dayRateTotal | currency }} per dag</p>
-    <div ng-if="['smartphone', 'chipcard'].indexOf(parameter.resource.locktype) >= 0">
-        <p ng-if="parameter.resource.locktypes.indexOf('chipcard') >= 0 && parameter.resource.locktypes.indexOf('smartphone') >= 0">Openen met smartphone en OV-chipkaart</p>
-        <p ng-if="parameter.resource.locktypes.indexOf('chipcard') < 0 && parameter.resource.locktypes.indexOf('smartphone') >= 0">Openen met smartphone</p>
-        <p ng-if="parameter.resource.locktypes.indexOf('chipcard') >= 0 && parameter.resource.locktypes.indexOf('smartphone') < 0">Openen met OV-chipkaart</p>
+
+<div class="mw-gmap-window-content"
+    ui-sref="owm.resource.show({ resourceId: parameter.resource.id, city: (parameter.resource.city | replaceSpaceToDash | lowercase) })">
+    <div class="im" ng-style="{
+        'background-image': 'url(' + parameter.imgUrl + ')'
+    }"></div>
+    <div class="pad">
+        <h4>{{ parameter.resource.alias }}</h4>
+        <h5>{{ parameter.resource.brand }} {{ parameter.resource.model }}</h5>
+        <p>{{ parameter.resource.price.dayRateTotal | currency }} per dag</p>
+        <div ng-if="['smartphone', 'chipcard'].indexOf(parameter.resource.locktype) >= 0">
+            <p ng-if="parameter.resource.locktypes.indexOf('chipcard') >= 0 && parameter.resource.locktypes.indexOf('smartphone') >= 0">Openen met smartphone en OV-chipkaart</p>
+            <p ng-if="parameter.resource.locktypes.indexOf('chipcard') < 0 && parameter.resource.locktypes.indexOf('smartphone') >= 0">Openen met smartphone</p>
+            <p ng-if="parameter.resource.locktypes.indexOf('chipcard') >= 0 && parameter.resource.locktypes.indexOf('smartphone') < 0">Openen met OV-chipkaart</p>
+        </div>
     </div>
 </div>

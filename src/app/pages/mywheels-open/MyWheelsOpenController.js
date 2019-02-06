@@ -52,6 +52,7 @@ angular.module('owmlanding.mywheels-open', ['slick'])
         phoneNumber: $scope.formEntry.phoneNumber,
         extraInfo: {
           registrationPlate: $scope.formEntry.registrationPlate,
+          kmStand: $scope.formEntry.kmStand,
         },
       })
       .then(function (r) {

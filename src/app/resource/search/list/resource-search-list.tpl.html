@@ -1,5 +1,15 @@
-<ow-resource-card
-  ng-repeat="resource in resources"
-  resource="resource"
-  on-select="selectResource(resource)">
-</ow-resource-card>
+<div>
+  <div ng-show="searching" class="s-resource-list">
+      <div class="s-resource-card"></div>
+      <div class="s-resource-card"></div>
+      <div class="s-resource-card"></div>
+  </div>
+  <div ng-show="!searching && resources.length > 0">
+    <ow-resource-card
+      ng-repeat="resource in resources"
+      resource="resource"
+      on-select="selectResource(resource)"
+      on-select-load-overlay="true">
+    </ow-resource-card>
+  </div>
+</div>

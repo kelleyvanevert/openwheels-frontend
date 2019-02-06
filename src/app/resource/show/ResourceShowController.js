@@ -5,6 +5,7 @@ angular.module('owm.resource.show', [])
 .controller('ResourceShowController', function ($window, $log, $q, $timeout, $location, $mdDialog, $mdMedia, $scope,
   $state, $filter, authService, resourceService, bookingService, invoice2Service, alertService,
   chatPopupService, ratingService, API_DATE_FORMAT, resource, me, resourceQueryService, featuresService, $stateParams,
+  prevState,
   linksService, Analytics, metaInfoService, $localStorage, $translate, appConfig, $anchorScroll) {
   Analytics.trackEvent('discovery', 'show_car', resource.id, undefined, true);
 
@@ -15,6 +16,7 @@ angular.module('owm.resource.show', [])
   if(resource.removed === undefined) {
     resource.removed = false;
   }
+  
 
   // The car is not visible to the world,
   //  either because it is removed by owner (removed),
@@ -28,7 +30,10 @@ angular.module('owm.resource.show', [])
   if($scope.removed) {
     resourceQueryService.setText(resource.location);
     resourceQueryService.setLocation({latitude: resource.latitude, longitude: resource.longitude});
+    $scope.removedResourceAddress = resource.location;
   }
+
+  $scope.prevState = prevState;
 
   /**
    * Warning: 'me' will be null for anonymous users
@@ -52,9 +57,6 @@ angular.module('owm.resource.show', [])
 
   $scope.shareUrl = featuresService.get('serverSideShare') ? linksService.resourceUrl(resource.id, (resource.city || '').toLowerCase().replace(/ /g, '-')) : $window.location.href;
   $log.debug('Share url = ' + $scope.shareUrl);
-
-  var ageInDays = moment().diff($scope.resource.created, 'days');
-  $scope.resource.isNew = ageInDays < 180;
 
   setResourceType(resource);
 
@@ -87,9 +89,6 @@ angular.module('owm.resource.show', [])
     $scope.winterTires = resource.properties.map(function(o) { return o.id;}).indexOf('winterbanden');
   }
 
-  //get age of resource on platform
-  $scope.ageInDays = moment().diff($scope.resource.created, 'days');
-
   /**
    * Init
    */
@@ -100,57 +99,60 @@ angular.module('owm.resource.show', [])
     loadRatings();
   }
 
-  $scope.images = resource.pictures
-    .map(function (picture) {
-      var path = (picture.large || picture.normal || picture.small || '');
-      if (path && !path.match(/^http/)) {
-        path = appConfig.serverUrl + '/' + path;
+
+  if(!$scope.removed) {
+    $scope.images = resource.pictures
+      .map(function (picture) {
+        var path = (picture.large || picture.normal || picture.small || '');
+        if (path && !path.match(/^http/)) {
+          path = appConfig.serverUrl + '/' + path;
+        }
+        return path;
+      })
+      .filter(function (url) { return url; });
+
+    if ($scope.images.length === 0) {
+      $scope.images.push('assets/img/resource-avatar-large.jpg');
+    }
+
+    $scope.carouselBackgroundImage = {
+      backgroundImage: 'url("' + $scope.images[0] + '")',
+    };
+
+    //  - aspect ratio of photos is 3:2
+    //  - formula: (2 * screen width) / (3 * height) = #items
+    //  - screen width + desired height => #items
+    $scope.owlProperties = {
+      loop: ($scope.images.length > 2),
+      center: true,
+      nav: true,
+      dots: false,
+      responsive: {},
+    };
+    for (var screenWidth = 0; screenWidth < 3000; screenWidth += 100) {
+      var desiredHeight = Math.max(250, Math.min(330, screenWidth * (400 / 1800)));
+      $scope.owlProperties.responsive[screenWidth] = {
+        items: Math.max(1, (2 * screenWidth) / (3 * desiredHeight)),
+      };
+    }
+
+    $scope.owlApi = null;
+    $scope.owlReady = function ($api) {
+      $scope.owlApi = $api;
+    };
+    $scope.owlGoto = function (i) {
+      if ($scope.owlApi) {
+        $scope.owlApi.trigger('to.owl.carousel', i);
       }
-      return path;
-    })
-    .filter(function (url) { return url; });
-
-  if ($scope.images.length === 0) {
-    $scope.images.push('assets/img/resource-avatar-large.jpg');
-  }
-
-  $scope.carouselBackgroundImage = {
-    backgroundImage: 'url("' + $scope.images[0] + '")',
-  };
-
-  //  - aspect ratio of photos is 3:2
-  //  - formula: (2 * screen width) / (3 * height) = #items
-  //  - screen width + desired height => #items
-  $scope.owlProperties = {
-    loop: ($scope.images.length > 2),
-    center: true,
-    nav: true,
-    dots: false,
-    responsive: {},
-  };
-  for (var screenWidth = 0; screenWidth < 3000; screenWidth += 100) {
-    var desiredHeight = Math.max(250, Math.min(330, screenWidth * (400 / 1800)));
-    $scope.owlProperties.responsive[screenWidth] = {
-      items: Math.max(1, (2 * screenWidth) / (3 * desiredHeight)),
+    };
+    $scope.owlClick = function ($event) {
+      var item = $($event.target).closest('.item');
+      if (item.length) {
+        var i = parseInt(item.attr('index'));
+        $scope.owlApi.trigger('to.owl.carousel', i);
+      }
     };
   }
-
-  $scope.owlApi = null;
-  $scope.owlReady = function ($api) {
-    $scope.owlApi = $api;
-  };
-  $scope.owlGoto = function (i) {
-    if ($scope.owlApi) {
-      $scope.owlApi.trigger('to.owl.carousel', i);
-    }
-  };
-  $scope.owlClick = function ($event) {
-    var item = $($event.target).closest('.item');
-    if (item.length) {
-      var i = parseInt(item.attr('index'));
-      $scope.owlApi.trigger('to.owl.carousel', i);
-    }
-  };
 
   function openChatWith (otherPerson) {
     var otherPersonName = $filter('fullname')(otherPerson);
@@ -266,7 +268,7 @@ angular.module('owm.resource.show', [])
         draggable: true,
         markers: [{
           idKey: 1,
-          icon: (resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0) ? 'assets/img/mywheels-open-marker-40.png' : 'assets/img/mywheels-key-marker-40.png',
+          icon: (resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0) ? 'assets/img/mywheels-open-marker-v2-80.png' : 'assets/img/mywheels-key-marker-v2-80.png',
           latitude: resource.latitude,
           longitude: resource.longitude,
           title: resource.alias

@@ -36,6 +36,7 @@
     "spyOn": false,
     "EventSource": false,
     "google": false,
+    "MarkerClusterer" : false,
     "mw": false
   }
 }

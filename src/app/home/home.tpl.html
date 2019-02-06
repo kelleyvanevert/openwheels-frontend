@@ -1,4 +1,4 @@
-<div class="home">
+<div class="home landing">
     <!-- SEARCHBAR -->
     <div ng-if="!features.homeCarousel" class="hero inverted text-center">
         <div class="hero-overlay"></div>
@@ -9,7 +9,7 @@
             </div>
         </section>
         <section ng-if="features.homePage" class="homepage-searchbar-frontpage">
-          <ow-geocoder-searchbar></ow-geocoder-searchbar>
+          <ow-geocoder-searchbar searchtext="makeHomeAddressPrefill(user.identity)"></ow-geocoder-searchbar>
         </section>
     </div>
     <!-- /SEARCHBAR -->
@@ -56,7 +56,7 @@
         <div class="renter--action">
             <section>
                 <h2>Huur in de buurt</h2>
-                <p>Met auto's in meer dan 500 plaatsen, vind je altijd wel een auto bij jou in de buurt. Geen vaste abonnementskosten en voordelige tarieven, bij ons betaal je alleen wanneer je een auto gebruikt.</p>
+                <p class="size-2">Met auto's in meer dan 500 plaatsen, vind je altijd wel een auto bij jou in de buurt. Geen vaste abonnementskosten en voordelige tarieven, bij ons betaal je alleen wanneer je een auto gebruikt.</p>
                 <a type="button" name="button" class="mywheels-btn mywheels-btn-default mywheels-btn-margin-top mywheels-btn-big" href="/auto-huren?page=1" md-ink-ripple="#3a6d81">
                     Bekijk het aanbod
                 </a>
@@ -71,8 +71,10 @@
         <div class="owner--action">
             <section>
                 <h2>Verhuur en verdien</h2>
-                <p>Je auto aanbieden is gratis. Vul je kenteken in, plaats een paar mooie foto's en je kunt beginnen. Zo verdien jij iets extra's aan je auto en kunnen jouw buren op pad.</p>
-                <p>Met <a href="/open" ui-sref="owmlanding.mywheels-open" target="_blank">MyWheels Open</a> kan je nog makkelijker en vaker je auto delen.</p>
+                <div class="size-2">
+                    <p>Je auto aanbieden is gratis. Vul je kenteken in, plaats een paar mooie foto's en je kunt beginnen. Zo verdien jij iets extra's aan je auto en kunnen jouw buren op pad.</p>
+                    <p>Met <a href="/open" ui-sref="owmlanding.mywheels-open" target="_blank">MyWheels Open</a> kan je nog makkelijker en vaker je auto delen.</p>
+                </div>
                 <button type="button" name="button" class="mywheels-btn mywheels-btn-default mywheels-btn-margin-top mywheels-btn-big" ui-sref="list-your-car" md-ink-ripple="#3a6d81">
                     Meld je auto aan
                 </button>
@@ -188,62 +190,74 @@
             <div class="infoboxes">
                 <div class="infobox">
                     <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                        <ng-md-icon icon="directions_car" alt="Icoon" aria-label="Icoon" class="infobox--title--icon"></ng-md-icon>
+                        <ng-md-icon size="32" icon="directions_car" alt="Icoon" aria-label="Icoon"></ng-md-icon>
                         <h3 class="infobox--title--text">Voordelig autodelen</h3>
                     </div>
-                    <p class="infobox--content">MyWheels is het voordeligste autodeelplatform van Nederland. Onze tarieven zijn zo laag omdat we een not-­for-profit­organisatie zijn. Wij vinden leefbare buurten belangrijker dan winstmaximalisatie. Vanwege onze idealen heeft MyWheels al
-                        meer dan 60.000 autodelers. Sluit je aan!</p>
-                    <a href="https://mywheels.nl/autodelen/community/onze-idealen/" class="infobox--link">Lees meer</a>
+                    <div class="size-2">
+                        <p class="infobox--content">MyWheels is het voordeligste autodeelplatform van Nederland. Onze tarieven zijn zo laag omdat we een not-­for-profit­organisatie zijn. Wij vinden leefbare buurten belangrijker dan winstmaximalisatie. Vanwege onze idealen heeft MyWheels al meer dan 60.000 autodelers. Sluit je aan!</p>
+                        <a href="https://mywheels.nl/autodelen/community/onze-idealen/" class="infobox--link">Lees meer</a>
+                    </div>
                 </div>
                 <div class="infobox">
                     <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                        <ng-md-icon icon="security" alt="Icoon" aria-label="Icoon" class="infobox--title--icon"></ng-md-icon>
+                        <ng-md-icon size="32" icon="security" alt="Icoon" aria-label="Icoon"></ng-md-icon>
                         <h3 class="infobox--title--text">Geen abonnementskosten of verplichte borg</h3>
                     </div>
-                    <p class="infobox--content">Heb je af en toe een auto nodig? Dan kun je zonder borg direct huren via MyWheels Go. Maak je veel ritten? Dan is MyWheels Member iets voor jou. Je betaalt dan eenmalig een borg en profiteert van allerlei voordelen.</p>
-                    <a href="https://mywheels.nl/autodelen/hoe-huren-werkt/tarieven-huren/" class="infobox--link">Lees meer</a>
+                    <div class="size-2">
+                        <p class="infobox--content">Heb je af en toe een auto nodig? Dan kun je zonder borg direct huren via MyWheels Go. Maak je veel ritten? Dan is MyWheels Member iets voor jou. Je betaalt dan eenmalig een borg en profiteert van allerlei voordelen.</p>
+                        <a href="https://mywheels.nl/autodelen/hoe-huren-werkt/tarieven-huren/" class="infobox--link">Lees meer</a>
+                    </div>
                 </div>
                 <div class="infobox">
                     <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                        <ng-md-icon icon="contact_phone" alt="Icoon" aria-label="Icoon" class="infobox--title--icon"></ng-md-icon>
+                        <ng-md-icon size="32" icon="contact_phone" alt="Icoon" aria-label="Icoon"></ng-md-icon>
                         <h3 class="infobox--title--text">All­risk verzekerd</h3>
                     </div>
-                    <p class="infobox--content">Je bent via MyWheels altijd goed verzekerd bij Centraal Beheer. Wij regelen de verzekering voor de duur van de huur, waardoor je met een gerust hart op weg gaat.</p>
-                    <a href=" https://mywheels.nl/autodelen/hoe-huren-werkt/verzekering" class="infobox--link">Lees meer</a>
+                    <div class="size-2">
+                        <p class="infobox--content">Je bent via MyWheels altijd goed verzekerd bij Centraal Beheer. Wij regelen de verzekering voor de duur van de huur, waardoor je met een gerust hart op weg gaat.</p>
+                        <a href=" https://mywheels.nl/autodelen/hoe-huren-werkt/verzekering" class="infobox--link">Lees meer</a>
+                    </div>
                 </div>
 
                 <div class="infobox">
                     <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                        <ng-md-icon icon="call_split" alt="Icoon" aria-label="Icoon" class="infobox--title--icon"></ng-md-icon>
+                        <ng-md-icon size="32" icon="call_split" alt="Icoon" aria-label="Icoon"></ng-md-icon>
                         <h3 class="infobox--title--text">Dag en nacht hulp bij pech</h3>
                     </div>
-                    <p class="infobox--content">Gebeurt er iets onderweg? 24 uur per dag staat er iemand voor je klaar om je uit de brand te helpen. Een telefoontje is genoeg, en als de auto niet meer verder kan, regelt de verzekering vervangend vervoer.</p>
-                    <a href="https://mywheels.nl/autodelen/community/contact/" class="infobox--link">Lees meer</a>
+                    <div class="size-2">
+                        <p class="infobox--content">Gebeurt er iets onderweg? 24 uur per dag staat er iemand voor je klaar om je uit de brand te helpen. Een telefoontje is genoeg, en als de auto niet meer verder kan, regelt de verzekering vervangend vervoer.</p>
+                        <a href="https://mywheels.nl/autodelen/community/contact/" class="infobox--link">Lees meer</a>
+                    </div>
                 </div>
 
                 <div class="infobox disabled">
                     <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                        <ng-md-icon icon="done" alt="Icoon" aria-label="Icoon" class="infobox--title--icon"></ng-md-icon>
+                        <ng-md-icon size="32" icon="done" alt="Icoon" aria-label="Icoon"></ng-md-icon>
                         <h3 class="infobox--title--text">Flexibele opties voor verhuurders</h3>
                     </div>
-                    <p class="infobox--content">Eenmalig een vriendenprijsje instellen? Elke rit automatisch goedkeuren of liever zelf een rit beoordelen? Je auto delen met een besloten groep? Dat kan allemaal. Verhuren via MyWheels is flexibel en eenvoudig. Jij verhuurt je auto, MyWheels
-                        regelt de rest.</p>
+                    <div class="size-2">
+                        <p class="infobox--content">Eenmalig een vriendenprijsje instellen? Elke rit automatisch goedkeuren of liever zelf een rit beoordelen? Je auto delen met een besloten groep? Dat kan allemaal. Verhuren via MyWheels is flexibel en eenvoudig. Jij verhuurt je auto, MyWheels regelt de rest.</p>
+                    </div>
                 </div>
 
                 <div class="infobox disabled">
                     <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                        <ng-md-icon icon="verified_user" alt="Icoon" aria-label="Icoon" class="infobox--title--icon"></ng-md-icon>
+                        <ng-md-icon size="32" icon="verified_user" alt="Icoon" aria-label="Icoon"></ng-md-icon>
                         <h3 class="infobox--title--text">Veilig & Betrouwbaar</h3>
                     </div>
-                    <p class="infobox--content">Om ervoor te zorgen dat huurder en verhuurder elkaar kunnen vertrouwen, voert MyWheels meerdere veiligheidscontroles uit. Zo creëren we een veilige community en kun jij met een gerust hart een auto huren of verhuren.</p>
+                    <div class="size-2">
+                        <p class="infobox--content">Om ervoor te zorgen dat huurder en verhuurder elkaar kunnen vertrouwen, voert MyWheels meerdere veiligheidscontroles uit. Zo creëren we een veilige community en kun jij met een gerust hart een auto huren of verhuren.</p>
+                    </div>
                 </div>
 
                 <div class="infobox disabled">
                     <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                        <ng-md-icon icon="near_me" alt="Icoon" aria-label="Icoon" class="infobox--title--icon"></ng-md-icon>
+                        <ng-md-icon size="32" icon="near_me" alt="Icoon" aria-label="Icoon"></ng-md-icon>
                         <h3 class="infobox--title--text">Landelijk en lokaal</h3>
                     </div>
-                    <p class="infobox--content">MyWheels is een landelijk opererend platform, met stevige lokale wortels in de plaatsen waar onze auto’s staan. Onze coördinatoren helpen je op weg en zijn onze ogen en oren in het land.</p>
+                    <div class="size-2">
+                        <p class="infobox--content">MyWheels is een landelijk opererend platform, met stevige lokale wortels in de plaatsen waar onze auto’s staan. Onze coördinatoren helpen je op weg en zijn onze ogen en oren in het land.</p>
+                    </div>
                 </div>
             </div>
         </div>

@@ -4,8 +4,9 @@
     margin-bottom: 1em;
     margin-top: 0;
     position: relative;
+    
     md-card-title {
-        padding: 1em 1em 0;
+        padding: 14px 14px 0;
     }
     .md-headline {
         font-size: 2rem;
@@ -68,13 +69,70 @@
     @media all and (min-width: @screen-sm) {
         .md-card-image {
             overflow: hidden;
-            max-width: 23em;
+            max-width: 320px;
         }
         div {
             flex-grow: 1;
         }
     }
+
+    @media all and (min-width: @screen-sm) {
+        &.elevate-on-hover {
+            -webkit-box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+            transform: transform(0, 0) scale(1);
+            -webkit-transform: transform(0, 0) scale(1);
+
+            transition: transform .1s ease, box-shadow .1s ease;
+
+            &:hover {
+                -webkit-box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.2);
+                box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.2);
+                transform: translate(0, -2px) scale(1.005);
+                -webkit-transform: translate(0, -2px) scale(1.005);
+            }
+        }
+    }
+
+    .card-overlay {
+        background: rgba(255, 255, 255, .85);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 10;
+
+        padding: 10px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+    }
 }
+
+.resource-card-box.ow-card {
+    flex-direction: column;
+
+    .tag {
+        position: relative;
+        top: -2px;
+    }
+
+    .price h2 {
+        font-size: 2.4rem;
+    }
+    .md-card-image {
+        max-width: 99em !important;
+    }
+
+    ng-md-icon {
+        margin-right: .6rem !important;
+    }
+}
+
 .mywheelsOpenBar {
     position: absolute;
     top: 0;
@@ -92,6 +150,10 @@
         height: auto;
         max-width: 20px;
     }
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .alias {
     position: absolute;
@@ -106,7 +168,7 @@
     }
     h3 {
         font-weight: normal;
-        font-size: 16px;
+        font-size: @font-size-base;
         padding-top: 5px;
     }
 }
@@ -116,7 +178,7 @@
             font-size: 18px;
         }
         h3 {
-            font-size: 16px;
+            font-size: @font-size-base;
         }
     }
 }
@@ -154,7 +216,7 @@ md-card {
     md-card-header-text {
         .md-title {
             font-size: 17.5px;
-            font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+            font-family: @headings-font-family;
             font-weight: 700;
             line-height: 1.1;
         }
@@ -261,7 +323,7 @@ md-card {
     }
     .satisfaction {
         padding-bottom: 5px;
-        font-family: "OmnesMedium", Arial, Helvetica, sans-serif;
+        font-family: @headings-font-family;
         color: #000;
         font-size: 14px;
         text-align: center;

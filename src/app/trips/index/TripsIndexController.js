@@ -30,6 +30,7 @@ angular.module('owm.trips.index', [])
       vertical: 'bottom',
     },
     width: '20em',
+    widgetParent: '.dt-line',
   });
 
 
@@ -58,11 +59,8 @@ angular.module('owm.trips.index', [])
     untilDate: ($stateParams.end   ? moment($stateParams.end,   URL_DATE_TIME_FORMAT) : moment().endOf('day').add(1, 'years') ).format(dateConfig.format),
   };
  
-  if($stateParams.cancelled === 'true') {
-    $scope.showCancelled = true;
-  } else {
-    $scope.showCancelled = false;
-  }
+  $scope.showCancelled = ($stateParams.cancelled === 'true');
+  $scope.otherOnContract = ($stateParams.otherOnContract === 'true');
 
   // Load all bookings for this person in the role of either a renter or an owner with pagination
   $scope.loadBookings = function (role) {
@@ -86,6 +84,7 @@ angular.module('owm.trips.index', [])
 
     if(role === 'asRenter') {
       parameters.cancelled = $scope.showCancelled;
+      parameters.otherOnContract = $scope.otherOnContract;
       bookingsPromise = bookingService.getBookingList(parameters);
     }
 
@@ -139,7 +138,8 @@ angular.module('owm.trips.index', [])
     $state.go('owm.trips', {
       start: moment($scope.startDate).format(URL_DATE_TIME_FORMAT),
       end: moment($scope.endDate).format(URL_DATE_TIME_FORMAT),
-      cancelled: $scope.showCancelled
+      cancelled: $scope.showCancelled,
+      otherOnContract: $scope.otherOnContract,
     }, {
       reload: true,
       inherit: false,

@@ -67,6 +67,20 @@
         display: flex;
     }
 }
+
+ul.with-icons {
+    li {
+        position: relative;
+        padding-left: 40px;
+
+        > ng-md-icon {
+            position: absolute;
+            top: 6px;
+            left: 0;
+        }
+    }
+}
+
 @media only screen and (min-width: 557px) and (max-width: @screen-sm) {
     .list-responsive {
         li {

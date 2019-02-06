@@ -1,4 +1,4 @@
-<md-dialog aria-label="Mango (Fruit)">
+<md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="35" flex-xl="30">
   <form ng-cloak>
     <md-toolbar>
       <div class="md-toolbar-tools">
@@ -12,9 +12,12 @@
 
     <md-dialog-content>
       <div class="md-dialog-content">
-        <h2>Selecteer de vouchers die je wilt laten uitbetalen</h2>
+        <h3>Selecteer de vouchers die je wilt laten uitbetalen</h3>
         <form>
           <div layout="column">
+            <div ng-if="loading" style="text-align: center; font-size: 2.4rem; color: #444; margin: 1rem 0;">
+                <i class="fa fa-spinner fa-spin fa-fw"></i>
+            </div>
             <div ng-repeat="voucher in vouchers" ng-if="voucher.value > 0.001 && !voucher.payoutRequest">
               <md-checkbox ng-checked="exists(voucher.id, selectedVouchers)" ng-click="toggle(voucher.id, selectedVouchers)">
               <strong>{{voucher.initialValue | currency}}</strong> waarvan {{voucher.value | currency}} resterend</td>

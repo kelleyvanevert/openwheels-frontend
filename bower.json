@@ -1,5 +1,5 @@
 {
-  "name": "OpenWheels",
+  "name": "openwheels",
   "version": "2.46.0",
   "dependencies": {
     "angular": "1.4.8",

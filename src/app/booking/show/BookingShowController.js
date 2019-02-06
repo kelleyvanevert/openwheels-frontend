@@ -19,6 +19,20 @@ angular.module('owm.booking.show', [])
   var resource = $scope.resource = booking.resource;
   $scope.me = me;
 
+  // Is person the renter or the owner
+  $scope.userPerspective = (function () {
+    if (booking.person.id === me.id) {
+      return 'renter';
+    }
+    else if (resource.owner.id === me.id) {
+      return 'owner';
+    }
+    else if (contract.contractor.id === me.id) {
+      // het gaat hier om een rit van een contractant
+      return 'contract_holder';
+    }
+  }());
+
   /*
   * Init booking times
   */
@@ -45,15 +59,6 @@ angular.module('owm.booking.show', [])
   $scope.userInput = {
     acceptRejectRemark: ''
   };
-
-  // Is person the renter of the owner
-  $scope.userPerspective = (function () {
-    if (booking.person.id === me.id) {
-      return 'renter';
-    } else {
-      return 'owner';
-    }
-  }());
 
   $scope.openDialog = function($event, declaration) {
     $mdDialog.show({
@@ -399,7 +404,7 @@ angular.module('owm.booking.show', [])
         draggable: true,
         markers: [{
           idKey: 1,
-          icon: ($scope.resource.locktypes.indexOf('chipcard') >= 0 || $scope.resource.locktypes.indexOf('smartphone') >= 0) ? 'assets/img/mywheels-open-marker-40.png' : 'assets/img/mywheels-key-marker-40.png',
+          icon: ($scope.resource.locktypes.indexOf('chipcard') >= 0 || $scope.resource.locktypes.indexOf('smartphone') >= 0) ? 'assets/img/mywheels-open-marker-v2-80.png' : 'assets/img/mywheels-key-marker-v2-80.png',
           latitude: latitude,
           longitude: longitude,
           title: $scope.resource.alias
@@ -829,7 +834,7 @@ angular.module('owm.booking.show', [])
   $scope.sentInvoices = null;
   $scope.sentInvoicesTotalAmount = 0;
 
-  if ($scope.userPerspective === 'renter' && !$scope.requested && $scope.booking.approved === 'OK') {
+  if (($scope.userPerspective === 'renter' || $scope.userPerspective === 'contract_holder') && !$scope.requested && $scope.booking.approved === 'OK') {
     $q.all({received: loadReceivedInvoices()})
     .then(injectInvoiceLines);
   }
@@ -1003,7 +1008,7 @@ angular.module('owm.booking.show', [])
   $scope.initPayment();
 
   // check if person is renter and needs to pay the booking
-  if($scope.paymentInit && $scope.userPerspective === 'renter') {
+  if($scope.paymentInit && ($scope.userPerspective === 'renter' || $scope.userPerspective === 'contract_holder')) {
 
     // check if person has already approved bank accounts
     $scope.accountApproved = false;
@@ -1047,7 +1052,7 @@ angular.module('owm.booking.show', [])
   }
 
   function getVouchers() {
-    var promise = voucherService.search({ person: booking.person.id, minValue: 0 });
+    var promise = voucherService.search({ person: me.id, minValue: 0 });
     promise.then(function (vouchers) {
       $scope.vouchers = vouchers;
     })
@@ -1058,7 +1063,7 @@ angular.module('owm.booking.show', [])
   }
 
   function getRequiredValue() {
-    var promise = voucherService.calculateRequiredCredit({ person: booking.person.id });
+    var promise = voucherService.calculateRequiredCredit({ person: me.id });
     promise.then(function (value) {
       $scope.requiredValue = { value: value };
     })
@@ -1069,7 +1074,7 @@ angular.module('owm.booking.show', [])
   }
 
   function getCredit() {
-    var promise = voucherService.calculateCredit({ person: booking.person.id });
+    var promise = voucherService.calculateCredit({ person: me.id });
     promise.then(function (credit) {
       $scope.credit = { value: credit };
     })
@@ -1080,7 +1085,7 @@ angular.module('owm.booking.show', [])
   }
 
   function getDebt() {
-    var promise = voucherService.calculateDebt({ person: booking.person.id });
+    var promise = voucherService.calculateDebt({ person: me.id });
     promise.then(function (debt) {
       $scope.debt = { value: debt };
     })

@@ -2,7 +2,9 @@
 
 angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMaterial'])
  
-.directive('owGeocoderSearchbar', function ($rootScope, $log, $filter, Geocoder, resourceQueryService, $state, $mdMenu, $window, alertService, $location) {
+.directive('owGeocoderSearchbar', function ($rootScope, $log, $filter, Geocoder, resourceQueryService,
+    autocompleteOptions,
+    $state, $mdMenu, $window, alertService, $location) {
   return {
     restrict: 'E',
     templateUrl: 'directives/geocoderDirectiveSearchbar.tpl.html',
@@ -16,6 +18,7 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
       'filters': '=',
       'searchtext': '=',
       'lightweight': '=',
+      'shadow': '=',
     },
     link: function($scope, element) {
       $scope.geolocation = false;
@@ -33,10 +36,15 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
       } else {
         $scope.search.text = resourceQueryService.data.text;
       }
+
+      $scope.$watch('searchtext', function () {
+        $scope.search.text = $scope.searchtext;
+      });
+
       $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
         if (toState.name.match(/^owm\.resource\.search/) && toParams.text && $scope.search.text !== toParams.text) {
           $scope.search.text = toParams.text;
-          $log.log('$scope.search.text changed');
+          //$log.log('$scope.search.text changed');
         }
       });
 
@@ -64,7 +72,7 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
           $scope.onBlur();
         }
       };
-
+      
       $scope.setSort = function(sort) {
         $scope.sort = sort;
         resourceQueryService.setSort(sort);
@@ -185,12 +193,24 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
         }
       }
 
-      $scope.options = {
-				componentRestrictions: { country: $filter('translateOrDefault')('SEARCH_COUNTRY', 'nl') },
-        types   : ['geocode'],
-      };
-
+      $scope.options = autocompleteOptions;
+      
     },
   };
 })
 ;
+
+/*
+
+1sni: 
+4snl: 
+7scountry:nl: 
+9sgeocode: 
+15e3: 
+21m1: 
+2e1: 
+callback: _xdc_._xcy475
+key: AIzaSyAo1K2Hn24_rsLBS6pi-x6o28QRqcrN1lE
+token: 107235
+
+*/

@@ -1,6 +1,10 @@
 <section class="homepage-searchbar"> 
 
-  <form class="mywheels-form searchbar searchbar--no-opacity">
+  <form class="mywheels-form searchbar searchbar--no-opacity"
+      ng-class="{ shadow: shadow }"
+      ng-submit="doSearch()">
+    <!-- Note: the `ng-submit` is only used when you use the [Enter] key on desktop,
+          when it is not caught by `g-places-autocomplete` first (after some typing). -->
     <div class="form-group mw-icon searchbar searchbar--no-opacity">
       <ng-md-icon icon="location_on" aria-hidden="true"></ng-md-icon>
       <input type="text"
@@ -9,17 +13,17 @@
              force-selection="true"
              ng-model="search.text"
              class="form-control"
-             placeholder="Waar wil je huren?"
+             placeholder="Waar zoek je een auto?"
              style="font-weight: normal;"
              ng-focus="handleFocus()"
              ng-blur="handleBlur()" />
       <div class="clearbutton__flex" ng-show="search.text">
-        <md-button class="md-icon-button geo-button" style="width:24px !important;" ng-click="clear()" ga-track-event="['interaction', 'removeLocation', 'searchbar']">
+        <md-button aria-label="Leegmaken" class="md-icon-button geo-button" style="width:24px !important;" ng-click="clear()" ga-track-event="['interaction', 'removeLocation', 'searchbar']">
           <ng-md-icon icon="close"></ng-md-icon>
         </md-button>
       </div>
       <div class="clearbutton__flex" ng-show="!search.text && geolocation">
-        <md-button class="md-icon-button geo-button" style="width:24px !important;" ng-click="getLocation()" ga-track-event="['interaction', 'getGeolocation', 'searchbar']">
+        <md-button aria-label="Dichtbij" class="md-icon-button geo-button" style="width:24px !important;" ng-click="getLocation()" ga-track-event="['interaction', 'getGeolocation', 'searchbar']">
           <ng-md-icon icon="near_me"></ng-md-icon>
         </md-button>
       </div>
@@ -40,9 +44,9 @@
           <span> {{labelForSort(sort)}} </span><ng-md-icon icon="keyboard_arrow_down"></ng-md-icon>
         </button>
         <md-menu-content width="4">
-          <md-menu-item><md-button ng-class="{'sort-dropdown--active': sort=='relevance'}" ng-click="setSort('relevance')">{{labelForSort('relevance')}}</md-button></md-menu-item>
-          <md-menu-item><md-button ng-class="{'sort-dropdown--active': sort=='distance'}" ng-click="setSort('distance')">{{labelForSort('distance')}}</md-button></md-menu-item>
-          <md-menu-item><md-button ng-class="{'sort-dropdown--active': sort=='price'}" ng-click="setSort('price')">{{labelForSort('price')}}</md-button></md-menu-item>
+          <md-menu-item><md-button aria-label="Sorteren op relevantie" ng-class="{'sort-dropdown--active': sort=='relevance'}" ng-click="setSort('relevance')">{{labelForSort('relevance')}}</md-button></md-menu-item>
+          <md-menu-item><md-button aria-label="Sorteren op afstand" ng-class="{'sort-dropdown--active': sort=='distance'}" ng-click="setSort('distance')">{{labelForSort('distance')}}</md-button></md-menu-item>
+          <md-menu-item><md-button aria-label="Sorteren op prijs" ng-class="{'sort-dropdown--active': sort=='price'}" ng-click="setSort('price')">{{labelForSort('price')}}</md-button></md-menu-item>
         </md-menu-content>
       </md-menu>
     </div>
