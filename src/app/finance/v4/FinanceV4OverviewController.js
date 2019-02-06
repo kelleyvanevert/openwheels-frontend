@@ -7,7 +7,7 @@ angular.module('owm.finance.v4', [])
 
   metaInfoService.set({url: appConfig.serverUrl + '/finance'});
   metaInfoService.set({canonical: 'https://mywheels.nl/finance'});
-  
+
   $scope.config = appConfig;
   $scope.Math = $window.Math;
   $scope.provider = me.provider.id;
