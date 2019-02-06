@@ -1,8 +1,11 @@
 <div id="finance-page-container" class="container container-transitional">
   <div class="row">
-    <div class="rpad col-12">
-      <h1 class="page-title">
-        Financiën
+    <div class="rpad col-md-4">
+    </div>
+    <div class="rpad col-md-8">
+      <h1 class="page-title card-pad-left" style="text-align: left;">
+        <span ng-if="!sectionTitle">Financiën</span>
+        <span ng-if="sectionTitle">{{ sectionTitle }}</span>
       </h1>
     </div>
   </div>
