@@ -169,6 +169,7 @@ angular.module('owm.resource.place', [])
     },
   ];
   function recomputeShownBoxes () {
+    $log.log('recompute shown boxes');
     $scope.searchBoxes.show = $scope.searchBoxes
       .filter(function (box) {
         return !!box.data;
@@ -176,7 +177,12 @@ angular.module('owm.resource.place', [])
       .slice(0, 3)
       .sort(function (a, b) {
         return $scope.searchBoxes.indexOf(a) < $scope.searchBoxes.indexOf(b);
+      })
+      .map(function (box) {
+        $log.log(' - ' + box.id);
+        return box;
       });
+    $log.log('/recompute shown boxes');
   }
 
   function maybeLoadMapInstead () {
