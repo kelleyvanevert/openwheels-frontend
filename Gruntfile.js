@@ -636,7 +636,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('compile', [
-    'less:compile', 'copy:compileAssets', 'copy:compileBranding', 'copy:compileApp', 'ngmin', 'concat:compileJs', /*'uglify',*/ 'index:compile'
+    'less:compile', 'copy:compileAssets', 'copy:compileBranding', 'copy:compileApp', 'ngmin', 'concat:compileJs', 'uglify', 'index:compile'
   ]);
 
   grunt.registerMultiTask('index', 'Process index.html template', function () {
