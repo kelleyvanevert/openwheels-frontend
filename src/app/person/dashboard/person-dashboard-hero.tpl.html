@@ -282,7 +282,7 @@
             <ul>
                 <li class="blog--item" ng-repeat="item in blogItems | limitTo: 3">
                     <a target="_blank" href="{{ item.url }}" ng-bind="item.title"></a>
-                    <p data-ng-bind-html="(item.content_html | removeEntersFilter | limitTo: 200) + '...'"></p>
+                    <p data-ng-bind-html="(item.content_text | removeEntersFilter | limitTo: 200) + '...'"></p>
                 </li>
             </ul>
             <center>
