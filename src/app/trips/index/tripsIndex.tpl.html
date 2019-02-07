@@ -231,7 +231,7 @@
           <!-- load more bookings -->
           <center><button ng-click="loadDate('asRenter')" class="mywheels-btn mywheels-btn-normal mywheels-btn-big" ng-if="!lastCallRenter">
               <span ng-if="!showLoaderSpinner">Laad meer</span>
-              <span ng-if="showLoaderSpinner"><i class="fa fa-spinner fa-spin"></i></span>
+              <inline-spinner ng-if="showLoaderSpinner" />
           </button></center>
 
         </div>
@@ -364,7 +364,7 @@
           <!-- load more bookings -->
           <center><button ng-click="loadDate('asOwner')" class="mywheels-btn mywheels-btn-normal mywheels-btn-big" ng-if="!lastCallOwner">
               <span ng-if="!showLoaderSpinner">Laad meer</span>
-              <span ng-if="showLoaderSpinner"><i class="fa fa-spinner fa-spin"></i></span>
+              <inline-spinner ng-if="showLoaderSpinner"> />
           </button></center>
 
         </div>

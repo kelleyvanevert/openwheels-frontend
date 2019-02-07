@@ -190,7 +190,7 @@ angular.module('owm.resource.search', [
       // in that case we do not want to show the spinner.
       if (gotoStartPage) {
         // perform search
-        alertService.load();
+        //alertService.load();
         $scope.searching = true;
       }
 
@@ -202,10 +202,6 @@ angular.module('owm.resource.search', [
         $scope.last_page = Math.min(Math.ceil(parseInt(resources.totalResults) / results_per_page), max_pages);
         resources = resources.results;
         resources = _.map(resources, function(resource) {
-          resource.rating = {
-            satisfaction: resource.rating_totals.satisfaction,
-            senders: resource.rating_totals.senders
-          };
           delete resource.properties;
           return resource;
         });
@@ -240,7 +236,7 @@ angular.module('owm.resource.search', [
       })
       .finally(function () {
         $scope.searching = false;
-        alertService.loaded();
+        //alertService.loaded();
       });
     }
 
