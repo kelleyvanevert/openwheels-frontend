@@ -53,9 +53,9 @@
     <div class="button button--no-grow md-ink-ripple" md-ink-ripple="#232521" id="searchButton"
          ng-if="!lightweight">
       <button ng-if="!searcher.loading" hide-xs type="button" class="btn btn-success" ng-click="doSearch()">Zoek een auto</button>
-      <button ng-if="searcher.loading" hide-xs disabled type="button" class="btn btn-success"><i class="fa fa-fw fa-circle-o-notch fa-spin"></i></button>
+      <button ng-if="searcher.loading" hide-xs disabled type="button" class="btn btn-success"><inline-spinner /></button>
       <button ng-if="!searcher.loading" hide-gt-xs type="button" class="btn auto-width btn-success" ng-click="doSearch()"><ng-md-icon icon="search" class="text-white"></ng-md-icon></button>
-      <button ng-if="searcher.loading" hide-gt-xs disabled type="button" class="btn auto-width btn-success"><i class="fa fa-fw fa-circle-o-notch fa-spin"></i></button>
+      <button ng-if="searcher.loading" hide-gt-xs disabled type="button" class="btn auto-width btn-success"><inline-spinner /></button>
     </div>
   </form>
 

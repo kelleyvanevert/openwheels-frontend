@@ -227,15 +227,20 @@
             <div class="row">
               <div class="col-xs-8">
                 <div class="form-group">
-                  <label for="streetName">{{ 'STREET_NAME' | translate }} <i class="fa fa-spin fa-spinner"
-                                                                            ng-if="zipcodeAutocompleting"></i></label>
+                  <label for="streetName">
+                    {{ 'STREET_NAME' | translate }}
+                    <inline-spinner ng-if="zipcodeAutocompleting" />
+                  </label>
                   <input type="text" id="streetName" name="streetName" class="form-control" ng-model="person.streetName"
                         ng-readonly="person.country === 'Nederland'">
                   <p class="help-block" ng-if="!person.city"><span class="text-danger">{{ 'ENTER_ZIPCODE_STREET_NUMBER' | translate }}</span></p>
                 </div>
               </div>
               <div class="col-xs-4">
-                <label for="city">{{ 'CITY' | translate }} <i class="fa fa-spin fa-spinner" ng-if="zipcodeAutocompleting"></i></label>
+                <label for="city">
+                  {{ 'CITY' | translate }}
+                  <inline-spinner ng-if="zipcodeAutocompleting" />
+                </label>
                 <input type="text" id="city" name="city" class="form-control" ng-model="person.city"
                       ng-readonly="person.country === 'Nederland'">
               </div>

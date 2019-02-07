@@ -9,7 +9,16 @@
             </div>
         </section>
         <section ng-if="features.homePage" class="homepage-searchbar-frontpage">
-          <ow-geocoder-searchbar searchtext="makeHomeAddressPrefill(user.identity)"></ow-geocoder-searchbar>
+            <div class="container container-transitional">
+                <div class="row">
+                    <div class="rpad
+                        col-xs-12
+                        col-md-offset-1 col-md-10
+                        col-lg-offset-2 col-lg-8">
+                        <ow-geocoder-searchbar searchtext="makeHomeAddressPrefill(user.identity)"></ow-geocoder-searchbar>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
     <!-- /SEARCHBAR -->

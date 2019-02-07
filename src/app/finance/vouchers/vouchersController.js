@@ -57,9 +57,9 @@ angular.module('owm.finance.vouchers', [])
       });
   };
 
-  alertService.load($scope);
+  //alertService.load($scope);
   getRequiredValue().then(getBookings).finally(function () {
-    alertService.loaded($scope);
+    //alertService.loaded($scope);
     $scope.busy = false;
   });
   $scope.toggleBookingCards = function (index) {
