@@ -31,7 +31,7 @@ angular.module('owm.person')
     var ownContractsPromise = contractService.forContractor({ person: me.id });
     var otherContractsPromise = contractService.forDriver({ person: me.id });
 
-    alertService.load();
+    //alertService.load();
     return $q.all([ownContractsPromise, otherContractsPromise])
     .then(function (result) {
       $scope.ownContracts = result[0];
@@ -42,7 +42,7 @@ angular.module('owm.person')
       $scope.isLoadingContracts = false;
     })
     .finally(function () {
-      alertService.loaded();
+      //alertService.loaded();
     });
   }
 
