@@ -83,10 +83,7 @@
     <div class="rpad col-md-8">
       <div class="card mw" ng-if="(!totalBookings.asOwner && !totalBookings.asRenter) || renew">
         <div class="card-body">
-          <div ng-if="showLoaderSpinner">
-            <md-progress-circular md-mode="indeterminate" md-diameter="96"
-              style="margin: 0 auto;"></md-progress-circular>
-          </div>
+          <spinner ng-if="showLoaderSpinner" />
           <p ng-if="!showLoaderSpinner && !renew">
             Je hebt nog geen ritten gemaakt.
           </p>
