@@ -30,14 +30,12 @@
         style="margin-bottom: 0;"
         hide-gt-xs>
       <thead>
-        <td style="width: 25%"><strong>Omschrijving</strong></td>
         <td style="width: 25%"><strong>Maand</strong></td>
         <td style="width: 25%" class="text-right"><strong>Resterend</strong></td>
       </thead>
       <tbody>
-        <tr class="bt" ng-class="{'text-muted': kmPoints.amount < 0.001}" ng-repeat="kmPoint in kmPoints">
-          <td style="width: 25%">{{kmPoint.description | toTitleCase}}</td>
-          <td style="width: 25%">{{kmPoint.createdAt | amDateFormat:'MMMM'}}</td>
+        <tr class="bt" ng-class="{'text-muted': kmPoints.amount < 0.001}" ng-repeat="kmPoint in kmPoints | orderBy:'-createdAt'">
+          <td style="width: 25%">{{kmPoint.createdAt | amDateFormat:'MMMM YYYY'}}</td>
           <td style="width: 25%" class="text-right">{{kmPoint.amount | currency}}</td>
         </tr>
       </tbody>
