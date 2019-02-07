@@ -42,6 +42,7 @@ angular.module('owm.finance', [
 
   .state('owm.finance.v4', {
     url: '/finance',
+    noGlobalLoader: true,
     views: {
       '@owm.finance': {
         templateUrl: 'finance/v4/financeOverview.tpl.html',
@@ -52,6 +53,7 @@ angular.module('owm.finance', [
 
   .state('owm.finance.vouchers', {
     url: '/vouchers',
+    noGlobalLoader: true,
     views: {
       '@owm.finance': {
         templateUrl: 'finance/vouchers/vouchers.tpl.html',
@@ -62,6 +64,7 @@ angular.module('owm.finance', [
 
   .state('owm.finance.kmpoints', {
     url: '/beheerdersvergoeding',
+    noGlobalLoader: true,
     views: {
       '@owm.finance': {
         templateUrl: 'finance/kmpoints/kmpoints.tpl.html',
