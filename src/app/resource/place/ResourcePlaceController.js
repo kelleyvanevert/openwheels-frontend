@@ -175,10 +175,10 @@ angular.module('owm.resource.place', [])
       .filter(function (box) {
         return !!box.data;
       })
-      .slice(0, 3)
+      .slice(0, 3)/*
       .sort(function (a, b) {
         return $scope.searchBoxes.indexOf(a) < $scope.searchBoxes.indexOf(b);
-      })
+      })*/
       .map(function (box) {
         $scope.searchBoxes.log.push($scope.searchBoxes.log.length + '  - ' + box.id);
         return box;
