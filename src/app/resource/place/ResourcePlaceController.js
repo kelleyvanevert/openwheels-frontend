@@ -168,8 +168,9 @@ angular.module('owm.resource.place', [])
       filters: undefined,
     },
   ];
+  $scope.searchBoxes.log = [];
   function recomputeShownBoxes () {
-    $log.log('recompute shown boxes');
+    $scope.searchBoxes.log.push($scope.searchBoxes.log.length + ' recompute shown boxes');
     $scope.searchBoxes.show = $scope.searchBoxes
       .filter(function (box) {
         return !!box.data;
@@ -179,10 +180,10 @@ angular.module('owm.resource.place', [])
         return $scope.searchBoxes.indexOf(a) < $scope.searchBoxes.indexOf(b);
       })
       .map(function (box) {
-        $log.log(' - ' + box.id);
+        $scope.searchBoxes.log.push($scope.searchBoxes.log.length + '  - ' + box.id);
         return box;
       });
-    $log.log('/recompute shown boxes');
+    $scope.searchBoxes.log.push($scope.searchBoxes.log.length + ' /recompute shown boxes');
   }
 
   function maybeLoadMapInstead () {
