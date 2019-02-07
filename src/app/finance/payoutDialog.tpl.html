@@ -15,9 +15,7 @@
         <h3>Selecteer de vouchers die je wilt laten uitbetalen</h3>
         <form>
           <div layout="column">
-            <div ng-if="loading" style="text-align: center; font-size: 2.4rem; color: #444; margin: 1rem 0;">
-                <i class="fa fa-spinner fa-spin fa-fw"></i>
-            </div>
+            <spinner ng-if="loading" />
             <div ng-repeat="voucher in vouchers" ng-if="voucher.value > 0.001 && !voucher.payoutRequest">
               <md-checkbox ng-checked="exists(voucher.id, selectedVouchers)" ng-click="toggle(voucher.id, selectedVouchers)">
               <strong>{{voucher.initialValue | currency}}</strong> waarvan {{voucher.value | currency}} resterend</td>

@@ -3,7 +3,7 @@
     <div class="invite--heading large text-center">
         <section style="z-index:2">
             <img class="invite-image media-object img-user-large" ng-if="!refreshProfileImage" person-profile-image="{ person: me, size: 'large', noCache: true }" />
-            <div class="invite-image" ng-if="refreshProfileImage"><i class="fa fa-spin fa-2x fa-fw fa-spinner"></i></div>
+            <div class="invite-image" ng-if="refreshProfileImage"><inline-spinner /></div>
             <form class="mywheels-form" name="editProfileImage">
                 <label for="ProfileImage"><ng-md-icon icon="mode_edit"></ng-md-icon> Wijzig profielfoto
                     <input type="file" name="imageFile" for="ProfileImage" class="uploadfile-input" id="ProfileImage" accept="image/x-png, image/gif, image/jpeg, image/jpg, application/pdf">

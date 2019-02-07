@@ -59,7 +59,7 @@
                                 </td>
                 
                                 <td class="text-right">
-                                    <i ng-if="redemptionPending[booking.details.id]" class="fa fa-spinner fa-spin fa-fw"></i>
+                                    <inline-spinner ng-if="redemptionPending[booking.details.id]" />
                                     <span ng-if="!redemptionPending[booking.details.id]">{{ booking.details.booking_price.redemption | currency }}</span>
                                 </td>
                             </tr>

@@ -2,8 +2,15 @@
   <div class="hero-overlay" style="z-index:1"></div>
   <!-- SEARCHBAR -->
   <section class="dashboard-searchbar-frontpage" style="z-index:2">
-    <div class="container container-main">
-      <ow-geocoder-searchbar searchtext="homeAddressPrefill"></ow-geocoder-searchbar>
+    <div class="container container-transitional">
+      <div class="row">
+        <div class="rpad
+              col-xs-12
+              col-md-offset-1 col-md-10
+              col-lg-offset-2 col-lg-8">
+          <ow-geocoder-searchbar searchtext="homeAddressPrefill"></ow-geocoder-searchbar>
+        </div>
+      </div>
     </div>
   </section>
   <!-- /SEARCHBAR -->
@@ -282,7 +289,7 @@
             <ul>
                 <li class="blog--item" ng-repeat="item in blogItems | limitTo: 3">
                     <a target="_blank" href="{{ item.url }}" ng-bind="item.title"></a>
-                    <p data-ng-bind-html="(item.content_html | removeEntersFilter | limitTo: 200) + '...'"></p>
+                    <p data-ng-bind-html="(item.content_text | removeEntersFilter | limitTo: 200) + '...'"></p>
                 </li>
             </ul>
             <center>
