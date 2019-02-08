@@ -21,6 +21,7 @@ angular.module('owm.message.index', [])
 
   messageService.getMyConversations()
   .then(function (conversations) {
+    conversations = conversations.result;
     conversations.forEach(function (conversation) {
       conversation.other = (conversation.sender.id !== me.id) ? conversation.sender : conversation.recipient;
     });
