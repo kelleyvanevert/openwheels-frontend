@@ -14,65 +14,67 @@
       <div class="sidebar card mw">
         <div class="card-body">
 
-          <ul class="sidebar-menu">
-            <li ui-sref="owm.finance.vouchers"
-                ng-class="{ active: $state.includes('owm.finance.vouchers') }"
-                md-ink-ripple="#50a2c3">
-              <a class="menu-item" href="#">
-                <ng-md-icon icon="payment"></ng-md-icon>
-                Rijtegoed
-              </a>
-              <div ng-if="me.provider.id !== 5">
-                <!-- what does this condition mean? -->
-                <div class="feature">
-                  <span ng-if="requiredCredit.voucher > 0">nog te betalen</span>
-                  <span ng-if="requiredCredit.voucher <= 0">tegoed</span>
-                  <span class="credit"
-                    ng-class="{ positive: requiredCredit.voucher <= 0 }">{{ requiredCredit.credit | currency }}</span>
-                  <a href="#"
-                      style="margin-left: .5rem; position: relative;"
-                      ng-click="payoutDialog($event)"
-                      ng-if="requiredCredit.voucher <= 0 && requiredCredit.credit > 0">
-                    <span class="underline">uitbetalen</span>
-                  </a>
-                </div>
+          <div class="h-escape">
+            <ul class="sidebar-menu">
+              <li ui-sref="owm.finance.vouchers"
+                  ng-class="{ active: $state.includes('owm.finance.vouchers') }"
+                  md-ink-ripple="#50a2c3">
+                <a class="menu-item" href="#">
+                  <ng-md-icon icon="payment"></ng-md-icon>
+                  Rijtegoed
+                </a>
+                <div ng-if="me.provider.id !== 5">
+                  <!-- what does this condition mean? -->
+                  <div class="feature">
+                    <span ng-if="requiredCredit.voucher > 0">nog te betalen</span>
+                    <span ng-if="requiredCredit.voucher <= 0">tegoed</span>
+                    <span class="credit"
+                      ng-class="{ positive: requiredCredit.voucher <= 0 }">{{ requiredCredit.credit | currency }}</span>
+                    <a href="#"
+                        style="margin-left: .5rem; position: relative;"
+                        ng-click="payoutDialog($event)"
+                        ng-if="requiredCredit.voucher <= 0 && requiredCredit.credit > 0">
+                      <span class="underline">uitbetalen</span>
+                    </a>
+                  </div>
 
+                  <!--
+                  <div class="feature">
+                    <span>benodigd</span>
+                    <span class="credit positive">{{ requiredCredit.total_calc | currency }}</span>
+                  </div>
+                  -->
+                </div>
+              </li>
+
+              <li ui-sref="owm.finance.v4"
+                  ng-class="{ active: $state.includes('owm.finance.v4') }"
+                  md-ink-ripple="#50a2c3">
+                <a class="menu-item" href="#">
+                  <ng-md-icon icon="euro_symbol"></ng-md-icon>
+                  Facturen
+                </a>
                 <!--
                 <div class="feature">
-                  <span>benodigd</span>
-                  <span class="credit positive">{{ requiredCredit.total_calc | currency }}</span>
+                  <span>geen openstaand</span>
                 </div>
                 -->
-              </div>
-            </li>
+              </li>
 
-            <li ui-sref="owm.finance.v4"
-                ng-class="{ active: $state.includes('owm.finance.v4') }"
-                md-ink-ripple="#50a2c3">
-              <a class="menu-item" href="#">
-                <ng-md-icon icon="euro_symbol"></ng-md-icon>
-                Facturen
-              </a>
-              <!--
-              <div class="feature">
-                <span>geen openstaand</span>
-              </div>
-              -->
-            </li>
-
-            <li ng-if="me.provider.id === 1 && kmPoints.length > 0"
-                ui-sref="owm.finance.kmpoints"
-                ng-class="{ active: $state.includes('owm.finance.kmpoints') }"
-                md-ink-ripple="#50a2c3">
-              <a class="menu-item" href="#">
-                <ng-md-icon icon="grade"></ng-md-icon>
-                Beheerdersvergoeding
-              </a>
-              <div class="feature">
-                <span>{{ kmPoints.total | currency }} opgebouwd</span>
-              </div>
-            </li>
-          </ul>
+              <li ng-if="me.provider.id === 1 && kmPoints.length > 0"
+                  ui-sref="owm.finance.kmpoints"
+                  ng-class="{ active: $state.includes('owm.finance.kmpoints') }"
+                  md-ink-ripple="#50a2c3">
+                <a class="menu-item" href="#">
+                  <ng-md-icon icon="grade"></ng-md-icon>
+                  Beheerdersvergoeding
+                </a>
+                <div class="feature">
+                  <span>{{ kmPoints.total | currency }} opgebouwd</span>
+                </div>
+              </li>
+            </ul>
+          </div>
 
           <ul class="extra-links">
             <li ng-if="me.provider.id === 1">

@@ -33,6 +33,8 @@ angular.module('owm.person.profile', [])
       return (section.sref && section.sref === $state.$current.name) ||
              (section.id && section.id === ($state.params.highlight || $scope.defaultHighlight));
     });
+
+    $scope.hideMenu = true;
   }
 	$scope.$on('$stateChangeSuccess', onNav);
 
