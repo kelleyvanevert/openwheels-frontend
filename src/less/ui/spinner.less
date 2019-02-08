@@ -1,5 +1,10 @@
 
 
+/*
+  This is a 'reverse-engineerd' version of Angular-Material's circular progress.
+  Only used for pre-javascript startup time.
+*/
+
 .mw-md-progress-circular {
 
   width: 100px;
@@ -46,8 +51,8 @@
           border-top-style: solid;
           box-sizing: border-box;
 
-          border-top-color: #333;
-          border-bottom-color: #333;
+          border-top-color: darken(@mywheels-blue, 10%);
+          border-bottom-color: darken(@mywheels-blue, 10%);
         }
 
         .mw-md-left {
@@ -93,8 +98,8 @@
             border-bottom-color: transparent;
             border-radius: 50%;
 
-            border-right-color: #333;
-            border-top-color: #333;
+            border-right-color: darken(@mywheels-blue, 10%);
+            border-top-color: darken(@mywheels-blue, 10%);
           }
         }
       }

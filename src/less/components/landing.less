@@ -112,7 +112,7 @@
   }
 
   .hero {
-    background-image: url('../assets/img/bg/auto_aan_gracht.jpg');
+    /* voor headerfoto, zie onderaan `landing.less` */
     position: relative;
 
     .landing-title {
@@ -475,7 +475,6 @@
 
   @media (max-width: 40em) {
     .mywheels-ik-doe-mee {
-      padding: 0;
 
       .aanmeldformulier {
         padding: 1.4em;
@@ -523,6 +522,20 @@
       }
     }
   }
+}
+
+.home .hero {
+  /*background-image: url('../assets/img/bg/auto_aan_gracht.jpg');*/
+  background-image: url('../branding/img/bg.jpg');
+  background-position: 50% 50%;
+}
+
+.home.landing-open .hero {
+  background-image: url('../assets/img/bg/ijsjes.jpg');
+}
+
+.home.landing-lease .hero {
+  background-image: url('../assets/img/bg/in_straatbeeld3.jpg');
 }
 
 .media.coordinator {
