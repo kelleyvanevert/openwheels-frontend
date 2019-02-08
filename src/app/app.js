@@ -297,6 +297,20 @@ angular.module('openwheels', [
   };
 })
 
+.directive('smoothScrollToItem', function () {
+  return {
+    restrict: 'A',
+    scope: {
+      smoothScrollToItem: '@',
+    },
+    link: function (scope, element, attr) {
+      element.on('click', function() {
+        $('html,body').animate({ scrollTop: $(scope.smoothScrollToItem).offset().top }, 300);
+      });
+    },
+  };
+})
+
 .factory('autocompleteOptions', function ($filter) {
   return {
     componentRestrictions: { country: $filter('translateOrDefault')('SEARCH_COUNTRY', 'nl') },
@@ -445,6 +459,7 @@ angular.module('openwheels', [
       $state.includes('subscribe') ||
       $state.includes('invite') ||
       $state.includes('member') ||
+      $state.includes('owm.resource.edit') ||
       $state.includes('owm.resource.create') ||
       $state.includes('owm.message') ||
       $state.includes('owm.trips') ||

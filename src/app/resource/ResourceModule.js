@@ -469,8 +469,12 @@ angular.module('owm.resource', [
    */
   $stateProvider.state('owm.resource.edit', {
     url: '/auto/:resourceId/wijzigen',
-    controller: 'ResourceEditController',
-    templateUrl: 'resource/edit/resource-edit.tpl.html',
+    views: {
+      'main-full@shell': {
+        controller: 'ResourceEditController',
+        templateUrl: 'resource/edit/resource-edit.tpl.html'
+      }
+    },
     data: {
       access: {
         deny: {

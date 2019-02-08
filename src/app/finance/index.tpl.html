@@ -3,14 +3,19 @@
     <div class="rpad col-md-4">
     </div>
     <div class="rpad col-md-8">
-      <h1 class="page-title card-pad-left" style="text-align: left;">
+      <h1 class="page-title card-pad-left" style="text-align: left;" smooth-scroll-to-item=".card.sidebar">
         <span ng-if="!sectionTitle">Financiën</span>
         <span ng-if="sectionTitle">{{ sectionTitle }}</span>
+        <ng-md-icon icon="expand_more" ng-show="!$root.isWindowSizeMD"></ng-md-icon>
       </h1>
     </div>
   </div>
   <div class="row">
-    <div class="rpad col-md-4">
+    <div class="rpad col-md-8 col-md-push-4">
+      <div ui-view></div>
+    </div>
+
+    <div class="rpad col-md-4 col-md-pull-8">
       <div class="sidebar card mw">
         <div class="card-body">
 
@@ -86,9 +91,6 @@
           </ul>
         </div>
       </div>
-    </div>
-    <div class="rpad col-md-8">
-      <div ui-view></div>
     </div>
   </div>
 </div>
