@@ -24,7 +24,6 @@ angular.module('owm.message.index', [])
     conversations.forEach(function (conversation) {
       conversation.other = (conversation.sender.id !== me.id) ? conversation.sender : conversation.recipient;
     });
-    conversations = _.sortBy(conversations, 'date').reverse();
 
     $scope.conversations = conversations;
     if ($rootScope.isWindowSizeMD && $scope.conversations.length > 0) {
