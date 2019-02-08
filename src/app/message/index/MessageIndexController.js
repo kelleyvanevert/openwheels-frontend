@@ -43,38 +43,20 @@ angular.module('owm.message.index', [])
     $timeout(function () {
       $scope.selectedConversation = conversation;
     }, 100);
-
-    /*
-    // tmp
-    var otherPersonName = conversation.other.firstName;
-    var otherPersonId = conversation.other.id;
-    var resourceId = null;
-    var bookingId = null;
-
-    modalInstance = $uibModal.open({
-      templateUrl: 'chat/chatPopup.tpl.html',
-      controller : 'ChatPopupController',
-      windowClass: 'modal-chat',
-      resolve: {
-        popupTitle: function () { return 'Gesprek met ' + otherPersonName; },
-        me        : function () { return authService.user.identity; },
-        personId  : function () { return otherPersonId; },
-        resourceId: function () { return resourceId; },
-        bookingId : function () { return bookingId; }
-      }
-    });
-    */
-
-    /*
-    var otherPerson = conversation.sender.id === me.id ? conversation.recipient : conversation.sender;
-
-    chatPopupService.openPopup($filter('fullname')(otherPerson),
-      otherPerson.id,
-      null, // resourceId
-      null  // bookingId
-    );
-    */
   };
+
+  $scope.$on('chat_event', function (event, data) {
+    if (data.action === 'newer_messages_loaded') {
+      $scope.conversations.forEach(function (conversation) {
+        if (conversation.other.id === data.otherPersonId) {
+          conversation.date = data.most_recent_message.date;
+          conversation.text = data.most_recent_message.text;
+          conversation.sender = data.most_recent_message.sender;
+          conversation.recipient = data.most_recent_message.recipient;
+        }
+      });
+    }
+  });
 
 })
 ;

@@ -128,7 +128,13 @@ angular.module('owm.chat', [
             $scope.messages.push(message);
             count++;
           });
+          $scope.$emit('chat_event', {
+            action: 'newer_messages_loaded',
+            most_recent_message: $scope.messages[$scope.messages.length - 1],
+            otherPersonId: $scope.personId,
+          });
           $scope.lastUpdate = moment();
+          $timeout(scrollToBottom, 100);
 
           return count;
         });
@@ -147,8 +153,12 @@ angular.module('owm.chat', [
         messageService.sendMessageTo(params)
         .then(function () {
           Analytics.trackEvent('discovery', 'send_message', null, undefined, true);
+          $scope.$emit('chat_event', {
+            action: 'message_sent',
+            message_text: $scope.message,
+            otherPersonId: $scope.personId,
+          });
           $scope.message = '';
-          $timeout(scrollToBottom, 100);
           return getNewerMessages();
         })
         .catch(function (err) {
