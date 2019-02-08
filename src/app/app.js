@@ -445,6 +445,7 @@ angular.module('openwheels', [
       $state.includes('subscribe') ||
       $state.includes('invite') ||
       $state.includes('member') ||
+      $state.includes('owm.message') ||
       $state.includes('owm.trips') ||
       $state.includes('owm.finance.vouchers') ||
       $state.includes('owm.finance.v4') ||

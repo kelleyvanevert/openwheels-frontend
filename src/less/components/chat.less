@@ -1,7 +1,19 @@
 @chat-toolbar-height: 50px;
 @chat-footer-height: 140px;
 
-.modal-chat {
+.chat-in-page-height {
+  height: 600px;
+  height: 75vh;
+  max-height: 75vh;
+}
+
+.chat-in-page .chat-container {
+  position: relative;
+  .chat-in-page-height();
+}
+
+.modal-chat,
+.chat-container {
 
   .modal-dialog {
     position: absolute;
@@ -12,87 +24,88 @@
     overflow: auto;
 
     .modal-content {
-      background: #eee;
+      background: white;
       border: none;
       position: absolute;
       top: 0;
       bottom: 0;
       left: 0;
       right: 0;
-
-      .modal-title {
-        line-height: 1em;
-      }
     }
 
     .chat-header {
       z-index:1;
       position: absolute;
       width: 100%;
-      background: #fff;
+      background: @mywheels-blue;
       padding: 15px;
       .box-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+
+      h3,
+      ng-md-icon {
+        color: white;
+      }
     }
 
-    .chat-content {
-      position: absolute;
-      overflow: auto;
-      top: @chat-toolbar-height;
-      bottom: @chat-footer-height;
-      left: 0;
-      right: 0;
-      padding: 24px 8px 16px 8px;
+  }
+
+  .chat-content {
+    position: absolute;
+    overflow: auto;
+    top: 0;
+    bottom: @chat-footer-height;
+    left: 0;
+    right: 0;
+    padding: 24px 8px 16px 8px;
+  }
+
+  .chat-row {
+    &-left, &-right {
+      margin-bottom: 8px;
+      width: 75%;
+
+      /* Both left & right */
+      .chat-message {
+        background: #eee;
+        padding: 8px 16px;
+        margin: 0 8px 8px 8px;
+        /*.box-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));*/
+      }
+
+      /* Both left & right */
+      .chat-avatar {
+        width: 50px;
+        height: 50px;
+        background: #aaa;
+        .border-radius(50%);
+      }
+
     }
 
-    .chat-row {
-      &-left, &-right {
-        margin-bottom: 8px;
-        width: 75%;
+    &-left {
+      float: left;
+    }
 
-        /* Both left & right */
-        .chat-message {
-          background: white;
-          padding: 8px 16px;
-          margin: 0 8px 8px 8px;
-          .box-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
-        }
+    &-right {
+      float: right;
+    }
 
-        /* Both left & right */
-        .chat-avatar {
-          width: 50px;
-          height: 50px;
-          background: #aaa;
-          .border-radius(50%);
-        }
+    &-left .chat-avatar {
+      float: left;
+      margin-right: 8px;
+    }
 
-      }
+    &-left .chat-message {
+      .border-radius(0 16px 16px 16px);
+    }
 
-      &-left {
-        float: left;
-      }
+    &-right .chat-avatar {
+      float: right;
+      margin-left: 8px;
+    }
 
-      &-right {
-        float: right;
-      }
-
-      &-left .chat-avatar {
-        float: left;
-        margin-right: 8px;
-      }
-
-      &-left .chat-message {
-        .border-radius(0 16px 16px 16px);
-      }
-
-      &-right .chat-avatar {
-        float: right;
-        margin-left: 8px;
-      }
-
-      &-right .chat-message {
-        .border-radius(16px 0 16px 16px);
-      }
-
+    &-right .chat-message {
+      .border-radius(16px 0 16px 16px);
     }
 
   }
@@ -124,4 +137,8 @@
       .border-radius(0);
     }
   }
+}
+
+.modal-chat .chat-content {
+  top: @chat-toolbar-height;
 }

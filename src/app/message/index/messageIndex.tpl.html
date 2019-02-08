@@ -1,51 +1,96 @@
-<div class="card">
-  <div class="card-heading">
-    <h2 class="card-title">
-      {{ 'MY_MESSAGES_TITLE' | translate }}
-    </h2>
-  </div>
-
-  <div class="card-body" >
-    <div ng-if="!(conversations.length > 0)">
-      {{ 'MY_MESSAGES' | translate }}
+<div id="messages-page-container" class="container container-transitional">
+  <div class="row">
+    <div class="rpad col-md-4">
     </div>
+    <div class="rpad col-md-8">
+      <h1 class="page-title card-pad-left" style="text-align: left;">
+        {{ 'MY_MESSAGES_TITLE' | translate }}
+      </h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="rpad col-md-4">
+      <div class="sidebar card mw chat-in-page-height" style="overflow-y: auto;">
+        <div class="card-body">
+          
+          <ul class="list-unstyled list-row h-escape master-list"
+              ng-if="loading">
+            <li class="h-pad master-list-item"
+                style="padding-top: 10px; padding-bottom: 10px;"
+                ng-repeat="i in [0,1,2]">
+              <div class="media">
+                <div class="media-object img-user-small pull-left"
+                     style="margin-top: 0; margin-bottom: 0; border-radius: 999px; background: #ddd;">
+                </div>
 
-    <div ng-if="conversations.length > 0">
-      <ul class="list-row">
-        <li ng-repeat="conversation in conversations | orderBy:'date':true" ng-click="selectConversation(conversation)">
-
-          <div class="media">
-            <img ng-if="conversation.sender.id === me.id"
-              class="media-object img-user-normal pull-left" person-profile-image="{ person: conversation.recipient, size: 'normal' }" />
-            <img ng-if="conversation.sender.id !== me.id"
-              class="media-object img-user-normal pull-left" person-profile-image="{ person: conversation.sender, size: 'normal' }" />
-
-            <div class="media-body">
-              <span>
-                {{ conversation.text }}
-              </span>
-              <div class="text-muted">
-                <small>
-
-                  <span ng-if="conversation.sender.id === me.id">
-                    Verstuurd aan {{ conversation.recipient | fullname }}
-                  </span>
-                  <span ng-if="conversation.sender.id !== me.id">
-                    Ontvangen van {{ conversation.sender | fullname }}
-                  </span>
-
-                  <i class="fa fa-circle"></i>&nbsp;<span am-time-ago="conversation.date"></span>
-                </small>
+                <div class="media-body" style="padding-right: 0; padding-top: 0; padding-bottom: 0;">
+                  <div class="single-line">
+                    <span class="skel inline" style="width: 30%; height: 2rem;"></span>
+                  </div>
+                  <div class="single-line">
+                    <span class="skel inline" style="width: 80%; height: 2rem;"></span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </li>
+          </ul>
 
+          <ul class="list-unstyled list-row h-escape master-list"
+              ng-if="conversations && conversations.length > 0">
+            <li class="h-pad master-list-item"
+                ng-class="{ selected: conversation === selectedConversation }"
+                ng-click="selectConversation(conversation)"
+                ng-repeat="conversation in conversations"
+                style="padding-top: 10px; padding-bottom: 10px;">
 
-        </li>
-      </ul>
+              <div class="media">
+                <img style="margin-top: 0; margin-bottom: 0;"
+                     class="media-object img-user-small pull-left"
+                     person-profile-image="{ person: conversation.other, size: 'small' }" />
 
+                <div class="media-body" style="padding-right: 0; padding-top: 0; padding-bottom: 0;">
+                  <div class="single-line">
+                    <strong>{{ conversation.other.firstName }}</strong>
+                    <small style="margin-left: 5px;" class="text-muted">
+                      <i class="fa fa-circle"></i>&nbsp;<span am-time-ago="conversation.date"></span>
+                    </small>
+                  </div>
+                  <div class="single-line">
+                    {{ conversation.sender.id === me.id ? 'Jij: ' : '' }}
+                    {{ conversation.text }}
+                  </div>
+                </div>
+              </div>
+
+            </li>
+          </ul>
+        
+        </div>
+      </div>
     </div>
 
-  </div>
+    <div class="rpad col-md-8">
 
-</div><!-- /card -->
+      <div class="card mw chat-in-page-height">
+
+        <div class="card-body" ng-if="!loading && !error && conversations.length === 0">
+          <p class="size-2">Je hebt nog geen berichten verstuurd of gekregen.</p>
+        </div>
+
+        <div class="card-body" ng-if="!loading && error">
+          <p class="size-2 text-danger">Er is een fout opgetreden bij het ophalen van je berichten. Probeer het nog eens.</p>
+        </div>
+
+        <div class="chat-in-page"
+             ng-if="selectedConversation">
+          
+          <chat-container
+            person-id="selectedConversation.other.id"
+          />
+        </div>
+
+      </div>
+    
+    </div>
+  </div>
+</div>
