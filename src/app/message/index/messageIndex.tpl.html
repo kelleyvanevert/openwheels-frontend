@@ -4,12 +4,18 @@
     </div>
     <div class="rpad col-md-8">
       <h1 class="page-title card-pad-left" style="text-align: left;">
+        <a href="#"
+           ng-click="focusMaster()"
+           ng-show="!$root.isWindowSizeMD && detailFocus"
+        >
+          <ng-md-icon icon="arrow_back" aria-label="Terug naar overzicht berichten"></ng-md-icon>
+        </a>
         {{ 'MY_MESSAGES_TITLE' | translate }}
       </h1>
     </div>
   </div>
   <div class="row">
-    <div class="rpad col-md-4">
+    <div class="rpad col-md-4" ng-show="$root.isWindowSizeMD || !detailFocus">
       <div class="sidebar card mw chat-in-page-height" style="overflow-y: auto;">
         <div class="card-body">
           
@@ -69,7 +75,7 @@
       </div>
     </div>
 
-    <div class="rpad col-md-8">
+    <div class="rpad col-md-8" ng-show="$root.isWindowSizeMD || detailFocus">
 
       <div class="card mw chat-in-page-height">
 

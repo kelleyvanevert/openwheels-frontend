@@ -6,7 +6,7 @@ angular.module('owm.message.index', [])
   $log, $filter, $timeout,
   appConfig, me,
   messageService, chatPopupService, metaInfoService,
-  $scope
+  $scope, $rootScope
 ) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/messages'});
@@ -17,6 +17,7 @@ angular.module('owm.message.index', [])
   $scope.loading = true;
   $scope.error = false;
   $scope.conversations = [];
+  $scope.detailFocus = false; // for mobile
 
   messageService.getMyConversations()
   .then(function (conversations) {
@@ -26,8 +27,9 @@ angular.module('owm.message.index', [])
     conversations = _.sortBy(conversations, 'date').reverse();
 
     $scope.conversations = conversations;
-    if ($scope.conversations.length > 0) {
+    if ($rootScope.isWindowSizeMD && $scope.conversations.length > 0) {
       $scope.selectedConversation = $scope.conversations[0];
+      $scope.detailFocus = true;
     }
     $scope.loading = false;
   })
@@ -42,7 +44,13 @@ angular.module('owm.message.index', [])
     $scope.selectedConversation = null;
     $timeout(function () {
       $scope.selectedConversation = conversation;
+      $scope.detailFocus = true;
     }, 100);
+  };
+
+  $scope.focusMaster = function () {
+    $scope.detailFocus = false;
+    $scope.selectedConversation = null;
   };
 
   $scope.$on('chat_event', function (event, data) {
