@@ -128,7 +128,7 @@ angular.module('owm.resource.place', [])
     {
       id: 'openwheels',
       title: 'MyWheels Open',
-      description: 'MyWheels Open auto\'s open je met je smartphone of OV-chipkaart. Zo kun je direct op pad.',
+      description: 'Deze auto\'s open je met je smartphone of OV-chipkaart. Zo kun je direct op pad.',
       options: undefined,
       filters: { smartwheels: true },
     },
@@ -149,7 +149,7 @@ angular.module('owm.resource.place', [])
     {
       id: 'automaat',
       title: 'Automatisch geschakeld',
-      description: 'Ontspannen rijden in deze auto\'s',
+      description: 'Ontspannen rijden in deze auto\'s.',
       options: [ 'automaat' ],
       filters: undefined,
     },
