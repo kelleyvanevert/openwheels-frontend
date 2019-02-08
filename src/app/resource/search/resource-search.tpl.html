@@ -106,7 +106,7 @@
                 <i class="fa fa-clock-o"></i> Beschikbare auto's voor <span class="text-success">{{ booking.beginRequested | amCalendar }}</span> tot <span class="text-success">{{ booking.endRequested  | amCalendar }}</span>
             </uib-alert>
 
-            <div class="card" ng-if="!searching && !(resources.length >= 1)">
+            <div class="card" ng-if="!searching && !(resources.length >= 1) && !($state.$current.name === 'owm.resource.search.map')">
                 <div class="card-body">
                     Er zijn geen beschikbare auto's gevonden
                 </div>

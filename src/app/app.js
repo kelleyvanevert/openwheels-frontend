@@ -267,6 +267,22 @@ angular.module('openwheels', [
    // });
 })
 
+.directive('spinner', function () {
+  return {
+    restrict: 'E',
+    //replace: true,
+    template: '<md-progress-circular md-mode="indeterminate" md-diameter="60" class="mw-primary md-hue-2" style="margin: 0 auto;"></md-progress-circular>',
+  };
+})
+
+.directive('inlineSpinner', function () {
+  return {
+    restrict: 'E',
+    //replace: true,
+    template: '<span style="display: inline-block; margin: 0 2px; vertical-align: middle; width: 28px; height: 28px; position: relative;"><md-progress-circular md-mode="indeterminate" md-diameter="40" class="mw-primary md-hue-2" style="position: absolute; top: -6px; left: -6px;"></md-progress-circular></span>',
+  };
+})
+
 .directive('convertToNumber', function() {
   return {
     require: 'ngModel',
@@ -377,7 +393,7 @@ angular.module('openwheels', [
 
   $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState) {
     // show spinner
-    if (toParams.loader !== false) {
+    if (toParams.loader !== false && !toState.noGlobalLoader) {
       alertService.load();
     }
     setAnalyticsUser();

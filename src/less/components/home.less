@@ -2,7 +2,7 @@
 .home {
     background-color: #F8F8F8;
     h2 {
-        font-size: 2.5em;
+        font-size: 2.2em;
     }
 }
 
@@ -36,15 +36,11 @@
 }
 .homepage-searchbar-frontpage {
     background: rgba(0, 0, 0, 0.5);
-    padding: 2.5em 1em;
+    padding: 0 0 2em 0;
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-
-    & form {
-      max-width: 50em;
-    }
 }
 .homepage-searchbar {
     width: 100%;
@@ -98,7 +94,7 @@
     }
 }
 .home .hero {
-    background-image: url('../branding/img/bg.jpg');
+    /* voor headerfoto, zie onderaan `landing.less` */
     background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;
@@ -303,7 +299,7 @@
     display: flex;
     flex-direction: column;
     section {
-        padding: 1em;
+        padding: 1.5em .5em;
         display: inline-block;
     }
 }
@@ -376,12 +372,12 @@
     margin: 0.07rem 0.5em 0 0;
 }
 .content h2 {
-    font-size: 2.7rem;
+    font-size: 2.2em;
 }
-/* ---------------------- ADVATAGE ------------------- */
+/* ---------------------- ADVANTAGE ------------------- */
 .advantage-mywheels {
-    padding: 1em;
-    margin: 0 auto 3em auto;
+    padding: 1em 0;
+    margin: 0 auto 3rem auto;
     // max-width: 100vw;
 }
 /* ---------------------- RATINGS ------------------- */
@@ -492,7 +488,6 @@
 /* ---------------------- SLIDER ------------------- */
 .slider {
     max-width: 100vw;
-    overflow: hidden;
     padding: 3em 1em;
     background: @mywheels-green;
 }

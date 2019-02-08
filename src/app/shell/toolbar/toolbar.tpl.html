@@ -60,9 +60,7 @@
       </md-button>
 
       <!-- spinner -->
-      <div ng-if="user.isPending">
-        <i class="fa fa-spinner fa-spin text-muted"></i>
-      </div>
+      <spinner ng-if="user.isPending" />
 
       <!-- signup -->
       <md-button id="toolbarSignup" ng-if="!user.isPending && !user.isAuthenticated && !onSignUpPage" class="btn-green app--toolbar--button--text" ui-sref="owm.auth.signup" ng-show="!invitedBySlug">

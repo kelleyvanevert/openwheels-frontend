@@ -98,13 +98,13 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
         }
       });
 
-      $scope.$watch(function(){
-        if($scope.map.control && $scope.map.control.getGMap){
-          return $scope.map.control.getGMap();
+      $scope.$watch('map.control.getGMap', function () {
+        if (!$scope.map.control.getGMap) {
+          return;
         }
 
-        return null;
-      }, function(map){
+        var map = $scope.map.control.getGMap();
+
         //default map on relevance
         $scope.sort = 'distance';
 

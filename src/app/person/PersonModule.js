@@ -344,10 +344,12 @@ angular.module('owm.person', [
   // dashboard/contracts
   $stateProvider.state('owm.person.contract', {
     url: '/contracts',
+    noGlobalLoader: true,
     redirectTo: 'owm.person.profile.contract',
   });
   $stateProvider.state('owm.person.profile.contract', {
     url: '/contracts',
+    noGlobalLoader: true,
     views: {
       '@owm.person.profile': {
         templateUrl: 'person/contract/index/person-contract-index.tpl.html',
