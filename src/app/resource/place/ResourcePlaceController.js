@@ -163,7 +163,7 @@ angular.module('owm.resource.place', [])
     {
       id: 'aanbevolen',
       title: 'Populaire auto\'s',
-      description: 'Deze auto\'s doen het goed in ' + $scope.place.nicename,
+      description: 'Deze auto\'s doen het goed in ' + $scope.place.nicename + '.',
       options: undefined,
       filters: undefined,
     },
