@@ -468,7 +468,7 @@ angular.module('owm.resource', [
    * @resolve {promise} resource
    */
   $stateProvider.state('owm.resource.edit', {
-    url: '/auto/:resourceId/wijzigen',
+    url: '/auto/:resourceId/wijzigen/:section?',
     views: {
       'main-full@shell': {
         controller: 'ResourceEditController',
@@ -496,7 +496,10 @@ angular.module('owm.resource', [
         return resourceService.getMembers({
           resource: $stateParams.resourceId
         });
-      }]
+      }],
+      currentSectionId: ['$stateParams', function ($stateParams) {
+        return $stateParams.section;
+      }],
     }
   });
 });

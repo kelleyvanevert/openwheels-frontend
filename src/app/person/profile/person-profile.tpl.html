@@ -4,10 +4,16 @@
     <div class="rpad col-md-4">
     </div>
     <div class="rpad col-md-8">
-      <h1 class="page-title card-pad-left" style="text-align: left;" smooth-scroll-to-item=".card.sidebar">
+      <h1 class="page-title card-pad-left" style="text-align: left;" smooth-scroll-to-item=".card.sidebar"
+          ng-if="!$root.isWindowSizeMD">
         <span ng-if="!currentSection">{{ 'MY_PROFILE' | translate }}</span>
         <span ng-if="currentSection">{{ currentSection.title }}</span>
-        <ng-md-icon icon="expand_more" ng-show="!$root.isWindowSizeMD"></ng-md-icon>
+        <ng-md-icon icon="expand_more"></ng-md-icon>
+      </h1>
+      <h1 class="page-title card-pad-left" style="text-align: left;"
+          ng-if="$root.isWindowSizeMD">
+        <span ng-if="!currentSection">{{ 'MY_PROFILE' | translate }}</span>
+        <span ng-if="currentSection">{{ currentSection.title }}</span>
       </h1>
     </div>
   </div>
