@@ -466,6 +466,7 @@ angular.module('openwheels', [
       $state.includes('owm.finance.vouchers') ||
       $state.includes('owm.finance.v4') ||
       $state.includes('owm.finance.kmpoints') ||
+      $state.includes('owm.auth.signup') ||
       $state.includes('owm.person.details') ||
       $state.includes('owm.person.profile') ||
       $state.includes('owm.person.dashboard') ||

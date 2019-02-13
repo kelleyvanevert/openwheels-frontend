@@ -1,29 +1,40 @@
-<div class="signup-img"></div>
-<div class="row card signup-card" id="auth-signup">
-    <section class="signup-advantages">
-        <section class="logo">
-            <img src="branding/img/logo-wit-signup.png" alt="MyWheels">
-        </section>
-        <section class="heading">
-            <h1>{{ 'SIGNUP_HEADING' | translate }}</h1>
-        </section>
-        <section>
-            <h2>{{ 'SIGNUP_AVANGES' | translate }}</h2>
-            <ul class="list-responsive">
-                <li>
-                    <ng-md-icon icon="check"></ng-md-icon><span>{{ 'SIGNUP_AVANGES_NEARBY' | translate }}</span></li>
-                <li>
-                    <ng-md-icon icon="check"></ng-md-icon><span>{{ 'SIGNUP_AVANGES_RISK' | translate }}</span></li>
-                <li>
-                    <ng-md-icon icon="check"></ng-md-icon><span>{{ 'SIGNUP_AVANGES_SERVICE' | translate }}</span></li>
-            </ul>
-            <p ng-bind-html="'SIGNUP_AMOUNT_USERS' | translate " class="amount"></p>
-        </section>
-    </section>
-    <section>
-        <div class="card-body sign-up-form">
-            <h1 class="hide-gt-xs">{{ 'SIGNUP' | translate }}</h1>
-            <div signup-form booking="{{booking}}"></div>
+<div class="home landing signup">
+    <!-- SEARCHBAR -->
+    <div class="hero inverted text-center">
+    </div>
+</div>
+
+<div class="container container-transitional signup-card-container">
+    <div class="row">
+        <div class="rpad col-xs-12">
+            <div class="row card signup-card" id="auth-signup">
+                <section class="signup-advantages">
+                    <div class="logo">
+                        <img src="branding/img/logo-wit-signup.png" alt="MyWheels">
+                    </div>
+                    <div class="heading">
+                        <h1>{{ 'SIGNUP_HEADING' | translate }}</h1>
+                    </div>
+                    <div>
+                        <h2>{{ 'SIGNUP_AVANGES' | translate }}</h2>
+                        <ul>
+                            <li>
+                                <ng-md-icon icon="check"></ng-md-icon><span>{{ 'SIGNUP_AVANGES_NEARBY' | translate }}</span></li>
+                            <li>
+                                <ng-md-icon icon="check"></ng-md-icon><span>{{ 'SIGNUP_AVANGES_RISK' | translate }}</span></li>
+                            <li>
+                                <ng-md-icon icon="check"></ng-md-icon><span>{{ 'SIGNUP_AVANGES_SERVICE' | translate }}</span></li>
+                        </ul>
+                        <p ng-bind-html="'SIGNUP_AMOUNT_USERS' | translate " class="amount"></p>
+                    </div>
+                </section>
+                <section>
+                    <div class="card-body sign-up-form">
+                        <h1 class="hide-gt-xs">{{ 'SIGNUP' | translate }}</h1>
+                        <div signup-form booking="{{booking}}"></div>
+                    </div>
+                </section>
+            </div>
         </div>
-    </section>
+    </div>
 </div>
