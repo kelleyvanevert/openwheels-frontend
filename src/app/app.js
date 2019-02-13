@@ -461,6 +461,7 @@ angular.module('openwheels', [
       $state.includes('member') ||
       $state.includes('owm.resource.edit') ||
       $state.includes('owm.resource.create') ||
+      $state.includes('owm.resource.own') ||
       $state.includes('owm.message') ||
       $state.includes('owm.trips') ||
       $state.includes('owm.finance.vouchers') ||

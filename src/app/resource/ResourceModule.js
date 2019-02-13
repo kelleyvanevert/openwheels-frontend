@@ -190,8 +190,12 @@ angular.module('owm.resource', [
    */
   $stateProvider.state('owm.resource.own', {
     url: '/mijn-auto',
-    controller: 'ResourceOwnController',
-    templateUrl: 'resource/own/resource-own.tpl.html',
+    views: {
+      'main-full@shell': {
+        controller: 'ResourceOwnController',
+        templateUrl: 'resource/own/resource-own.tpl.html'
+      }
+    },
     data: {
       access: {
         deny: {
