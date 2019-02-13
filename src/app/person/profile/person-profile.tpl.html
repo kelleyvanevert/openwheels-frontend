@@ -15,7 +15,7 @@
     <div class="rpad col-md-8 col-md-push-4">
 
       <!-- PERSONAL DATA  -->
-      <div class="mw card" id="personal-data" ng-show="$state.params.highlight === 'personal'">
+      <div class="mw card" id="personal-data" ng-show="highlight === 'personal'">
         <!--<div class="card-heading">
           <h3>
             {{ 'MY_PROFILE_PERSONAL' | translate }}
@@ -119,7 +119,7 @@
 
       <!-- CONTACT DATA  -->
 
-      <div class="mw card" id="contact-data" ng-show="$state.params.highlight === 'contact'">
+      <div class="mw card" id="contact-data" ng-show="highlight === 'contact'">
         <!--<div class="card-heading">
           <h3>
             {{ 'MY_PROFILE_CONTACT' | translate }}
@@ -224,7 +224,7 @@
 
       <!-- PROFILE DATA  -->
 
-      <div class="mw card" id="profile-data" ng-show="($state.params.highlight || defaultHighlight) === 'profiel'">
+      <div class="mw card" id="profile-data" ng-show="highlight === 'profiel'">
         <div class="card-body">
           <form name="settingsForm">
 
@@ -350,7 +350,7 @@
 
       <!-- ACCOUNT -->
 
-      <div class="mw card" id="bank-data" ng-show="$state.params.highlight === 'bank'" ng-if="person.preference !== 'renter' || person.status === 'active'">
+      <div class="mw card" id="bank-data" ng-show="highlight === 'bank'" ng-if="person.preference !== 'renter' || person.status === 'active'">
         <div class="card-body">
           <div ng-include="'person/account/person-account.tpl.html'"></div>
         </div><!--/ card-body -->
@@ -391,7 +391,7 @@
             <ul class="sidebar-menu">
               <li ui-sref="{{ section.sref || 'owm.person.profile({ highlight: \'' + section.id + '\' })' }}"
                   ui-sref-opts="{ inherit: false }"
-                  ng-class="{ active: section.sref ? $state.includes(section.sref) : ($state.params.highlight || defaultHighlight) === section.id }"
+                  ng-class="{ active: section.sref ? $state.includes(section.sref) : highlight === section.id }"
                   md-ink-ripple="#50a2c3"
                   ng-repeat="section in sections">
                 <a class="menu-item" href="#">
