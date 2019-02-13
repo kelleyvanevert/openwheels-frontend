@@ -18,7 +18,11 @@
     </div>
   </div>
   <div class="row">
-    <div class="rpad col-md-8 col-md-push-4">
+    <div class="rpad"
+         ng-class="{
+           'col-md-8 col-md-push-4': withSidebar,
+           'col-xs-12': !withSidebar,
+         }">
 
       <!-- PERSONAL DATA  -->
       <div class="mw card" id="personal-data" ng-show="highlight === 'personal'">
@@ -367,7 +371,7 @@
 
     </div><!-- /col -->
 
-    <div class="rpad col-md-4 col-md-pull-8">
+    <div class="rpad col-md-4 col-md-pull-8" ng-show="withSidebar">
       <div class="sidebar card mw">
         <div class="card-body">
 

@@ -39,6 +39,8 @@ angular.module('owm.person.profile', [])
         return sect.id === $scope.highlight;
       });
     }
+
+    $scope.withSidebar = ($state.$current.name !== 'owm.person.profile.contractchoice');
   }
 	$scope.$on('$stateChangeSuccess', onNav);
 
