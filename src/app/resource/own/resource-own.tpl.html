@@ -4,14 +4,17 @@
     <div class="rpad col-xs-12">
       <h1 class="page-title card-pad-left">
         <span ng-if="resources.length == 1">Mijn auto</span>
-        <span ng-if="resources.length != 1">Mijn auto's ({{ resources.length }})</span>
+        <span ng-if="resources.length != 1">
+          Mijn auto's
+          <span ng-if="resources.length > 0">({{ resources.length }})</span>
+        </span>
       </h1>
     </div>
   </div>
   <div class="row">
     <div class="rpad col-xs-12">
 
-      <div class="card mw">
+      <div class="card mw" ng-show="resources.length > 0">
         <div class="card-body">
           <ul class="list-unstyled list-row">
             <li ng-repeat="resource in resources" >
@@ -134,17 +137,18 @@
         </div>
       </div>
 
-      <div class="card" ng-if="features.ownerFlow">
+      <div class="card mw" ng-if="features.ownerFlow">
         <div class="card-heading">
-          <div ng-show="!resources.length">
-            <h2 class="card-title">
-              Je hebt nog geen auto toegevoegd.
-            </h2>
-            <br/>
-          </div>
-          <button type="button" name="button" class="mywheels-btn mywheels-btn-default" ui-sref="list-your-car">
-            {{ 'CREATE_RESOURCE_BUTTON' | translate }}
-          </button>
+          <h2 class="card-title" ng-show="resources.length === 0">
+            Je hebt nog geen auto toegevoegd.
+          </h2>
+        </div>
+        <div class="card-body">
+          <p>
+            <button type="button" name="button" class="mywheels-btn mywheels-btn-default" ui-sref="list-your-car">
+              {{ 'CREATE_RESOURCE_BUTTON' | translate }}
+            </button>
+          </p>
         </div>
       </div>
 
