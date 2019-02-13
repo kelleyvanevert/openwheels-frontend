@@ -1,7 +1,7 @@
 'use strict';
 angular.module('owm.person')
 
-.controller('PersonContractIndexController', function ($q, $filter, $uibModal, $translate, $scope,
+.controller('PersonContractIndexController', function ($q, $filter, $uibModal, $translate, $scope, $log,
   authService, dialogService, alertService, personService, contractService, me, Analytics, metaInfoService, appConfig, extraDriverService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard/profile/contracts'});
@@ -171,6 +171,13 @@ angular.module('owm.person')
   $scope.addPerson = function (index) {
     var contract = $scope.ownContracts[index];
     var email = contract.emailToAdd;
+    
+    if (me.email === email) {
+      alertService.addError({
+        message: 'Je kunt jezelf niet toevoegen op je eigen contract',
+      });
+      return;
+    }
 
     alertService.load();
     extraDriverService.invitePersonForContract({

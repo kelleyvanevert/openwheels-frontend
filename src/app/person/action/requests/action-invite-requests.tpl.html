@@ -1,9 +1,4 @@
 <div class="mw card" ng-if="inviteRequestsBooking.total === 0 && inviteRequestsContract.total === 0">
-    <!--<div class="card-heading">
-        <h3 class="card-title">
-            Uitnodigingen
-        </h3>
-    </div>-->
     <div class="card-body">
         <span>Je hebt op dit moment geen uitnodigingen, we vragen je om toestemming zodra je toegevoegd wordt aan een contract of rit.</span>
     </div>
@@ -21,11 +16,12 @@
     <div class="card-body">
 
         <!-- desktop view -->
-        <table class="table trips">
+        <table class="table nice">
             <tbody>
             <tr ng-repeat="inviteRequest in inviteRequestsBooking.result">
                 <td width="60%" class="media">
-                    <span>Uitnodiging om als extra bestuurder mee te rijden met {{ inviteRequest.sender.firstName }}</span>
+                    <strong>{{ inviteRequest.sender.firstName }}</strong> ({{ inviteRequest.sender.email }})
+                    heeft je uitgenodigd om mee te rijden op zijn/haar rit van {{ inviteRequest.booking.beginBooking | amDateFormat : 'dddd DD MMMM' }} om {{ inviteRequest.booking.beginBooking | amDateFormat : 'HH:mm' }}.
                 </td>
                 <td class="text-right">
                     <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-success" ng-click="acceptBookingRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_ACCEPT' | translate"></button>
@@ -49,12 +45,18 @@
     <div class="card-body">
 
         <!-- desktop view -->
-        <table class="table trips">
+        <table class="table nice">
             <tbody>
             <tr ng-repeat="inviteRequest in inviteRequestsContract.result">
                 <td width="60%" class="media">
-                    <span ng-if="inviteRequest.status !== 'accepted'">Uitnodiging om te rijden op het contract van {{ inviteRequest.sender.firstName }}</span>
-                    <span ng-if="inviteRequest.status === 'accepted'">Machtiging om te rijden op het contract van {{ inviteRequest.sender.firstName }}</span>
+                    <span ng-if="inviteRequest.status !== 'accepted'">
+                        <strong>{{ inviteRequest.sender.firstName }}</strong> ({{ inviteRequest.sender.email }})
+                        heeft je uitgenodigd om mee te rijden op zijn/haar contract.
+                    </span>
+                    <span ng-if="inviteRequest.status === 'accepted'">
+                        <strong>{{ inviteRequest.sender.firstName }}</strong> ({{ inviteRequest.sender.email }})
+                        heeft je gemachtigd om mee te rijden op zijn/haar contract.
+                    </span>
                 </td>
                 <td class="text-right">
                     <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-success" ng-click="acceptContractRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_ACCEPT' | translate"></button>
