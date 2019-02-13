@@ -28,6 +28,7 @@ angular.module('owm.message.index', [])
 
     $scope.conversations = conversations;
     if ($rootScope.isWindowSizeMD && $scope.conversations.length > 0) {
+      // only automatically select the first conversation if on desktop
       $scope.selectedConversation = $scope.conversations[0];
       $scope.detailFocus = true;
     }

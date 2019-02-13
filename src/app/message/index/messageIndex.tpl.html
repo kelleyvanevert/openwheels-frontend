@@ -15,12 +15,12 @@
     </div>
   </div>
   <div class="row">
-    <div class="rpad col-md-4" ng-show="$root.isWindowSizeMD || !detailFocus">
+    <div class="rpad col-md-4" ng-show="($root.isWindowSizeMD || !detailFocus) && !(!$root.isWindowSizeMD && conversations.length === 0)">
       <div class="sidebar card mw chat-in-page-height" style="overflow-y: auto;">
         <div class="card-body">
           
           <ul class="list-unstyled list-row h-escape master-list"
-              ng-if="loading">
+              ng-if="loading || (!loading && !error && conversations.length === 0)">
             <li class="h-pad master-list-item"
                 style="padding-top: 10px; padding-bottom: 10px;"
                 ng-repeat="i in [0,1,2]">
@@ -31,10 +31,10 @@
 
                 <div class="media-body" style="padding-right: 0; padding-top: 0; padding-bottom: 0;">
                   <div class="single-line">
-                    <span class="skel inline" style="width: 30%; height: 2rem;"></span>
+                    <span class="skel inline" ng-class="{ noanim: conversations.length === 0 }" style="width: 30%; height: 2rem;"></span>
                   </div>
                   <div class="single-line">
-                    <span class="skel inline" style="width: 80%; height: 2rem;"></span>
+                    <span class="skel inline" ng-class="{ noanim: conversations.length === 0 }" style="width: 80%; height: 2rem;"></span>
                   </div>
                 </div>
               </div>
@@ -75,12 +75,14 @@
       </div>
     </div>
 
-    <div class="rpad col-md-8" ng-show="$root.isWindowSizeMD || detailFocus">
+    <div class="rpad col-md-8" ng-show="$root.isWindowSizeMD || detailFocus || (!$root.isWindowSizeMD && conversations.length === 0)">
 
       <div class="card mw chat-in-page-height">
 
-        <div class="card-body" ng-if="!loading && !error && conversations.length === 0">
-          <p class="size-2">Je hebt nog geen berichten verstuurd of gekregen.</p>
+        <div class="empty-state-overlay size-2 card-body" ng-if="!loading && !error && conversations.length === 0">
+          <p><ng-md-icon icon="message" size="64" style="width: 64px; height: 64px;"></ng-md-icon></p>
+          <p>Je hebt nog geen berichten verstuurd of gekregen.</p>
+          <!--<p>Bij het huren of verhuren van een auto word je in contact gesteld met de betreffende persoon. Ook kun je via de profielpagina van iemand, een bericht naar die persoon sturen.</p>-->
         </div>
 
         <div class="card-body" ng-if="!loading && error">
