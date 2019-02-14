@@ -26,7 +26,7 @@
                 <!-- what does this condition mean? -->
                 <div class="feature">
                   <span ng-if="requiredCredit.total > 0">nog te betalen</span>
-                  <span ng-if="requiredCredit.total <= 0">tegoed</span>
+                  <span ng-if="requiredCredit.total <= 0">resterend</span>
                   <span class="credit"
                     ng-class="{ positive: requiredCredit.total <= 0 }">{{ requiredCredit.total | currency }}</span>
                   <a href="#"
