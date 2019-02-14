@@ -1039,6 +1039,18 @@ angular.module('owm.booking.show', [])
       reload();
     };
 
+    $scope.bookingDriversChanged = function() {
+      reloadRequiredValue();
+    };
+
+  }
+
+  function reloadRequiredValue() {
+    alertService.load();
+
+    $q.all([ getRequiredValue() ]).finally(function () {
+      alertService.loaded();
+    });
   }
 
   function reload() {
