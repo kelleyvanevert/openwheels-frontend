@@ -1,70 +1,80 @@
-<div class="mw card" ng-if="inviteRequestsBooking.total === 0 && inviteRequestsContract.total === 0">
-    <div class="card-body">
-        <span>Je hebt op dit moment geen uitnodigingen, we vragen je om toestemming zodra je toegevoegd wordt aan een contract of rit.</span>
-    </div>
-</div>
-
-<!-- Bookings for renter -->
-<div class="mw card" ng-if="inviteRequestsBooking.total > 0">
-
+<div class="card mw">
     <div class="card-heading">
-        <h3 class="card-title">
-            Uitnodigingen voor ritten <small style="font-size:14px;">(totaal: {{inviteRequestsBooking.total}} )</small>
-        </h3>
+        <h2>Medebestuurder per rit</h2>
     </div>
-
     <div class="card-body">
+        <p ng-if="inviteRequestsBooking.total === 0">
+            Je hebt op dit moment geen uitnodigingen om mee te rijden.
+            <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/iemand-anders-contract-gebruik-maken/">Wat is dit?</a>
+        </p>
 
-        <!-- desktop view -->
-        <table class="table nice">
-            <tbody>
-            <tr ng-repeat="inviteRequest in inviteRequestsBooking.result">
-                <td width="60%" class="media">
-                    <strong>{{ inviteRequest.sender.firstName }}</strong> ({{ inviteRequest.sender.email }})
-                    heeft je uitgenodigd om mee te rijden op zijn/haar rit van {{ inviteRequest.booking.beginBooking | amDateFormat : 'dddd DD MMMM' }} om {{ inviteRequest.booking.beginBooking | amDateFormat : 'HH:mm' }}.
-                </td>
-                <td class="text-right">
-                    <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-success" ng-click="acceptBookingRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_ACCEPT' | translate"></button>
-                    <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-danger" ng-click="declineBookingRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_DECLINED' | translate"></button>
-                    <button type="button" ng-show="inviteRequest.status === 'accepted'" class="btn btn-danger" ng-click="revokeBookingRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_REVOKE' | translate"></button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div ng-if="inviteRequestsBooking.total > 0">
+            <table class="table nice" style="margin-bottom: 0;">
+                <tbody>
+                    <tr ng-repeat="inviteRequest in inviteRequestsBooking.result">
+                        <td class="media">
+                            <p>
+                                <strong>{{ inviteRequest.sender.firstName }}</strong> ({{ inviteRequest.sender.email }})
+                                heeft je uitgenodigd om mee te rijden op zijn/haar rit van {{ inviteRequest.booking.beginBooking | amDateFormat : 'dddd DD MMMM' }} om {{ inviteRequest.booking.beginBooking | amDateFormat : 'HH:mm' }}.
+                            </p>
+                            <div class="text-right visible-xs-block">
+                                <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-success" ng-click="acceptBookingRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_ACCEPT' | translate"></button>
+                                <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-danger" ng-click="declineBookingRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_DECLINED' | translate"></button>
+                                <button type="button" ng-show="inviteRequest.status === 'accepted'" class="btn" ng-click="revokeBookingRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_REVOKE' | translate"></button>
+                            </div>
+                        </td>
+                        <td class="text-right hidden-xs">
+                            <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-success" ng-click="acceptBookingRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_ACCEPT' | translate"></button>
+                            <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-danger" ng-click="declineBookingRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_DECLINED' | translate"></button>
+                            <button type="button" ng-show="inviteRequest.status === 'accepted'" class="btn" ng-click="revokeBookingRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_REVOKE' | translate"></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
-<div class="mw card" ng-if="inviteRequestsContract.total > 0">
 
+<div class="card mw">
     <div class="card-heading">
-        <h3 class="card-title">
-            Uitnodigingen voor contracten <small style="font-size:14px;">(totaal: {{inviteRequestsContract.total}} )</small>
-        </h3>
+        <h2>Medebestuurder op contract</h2>
     </div>
-
     <div class="card-body">
+        <p ng-if="inviteRequestsContract.total === 0">
+            Je bent op dit moment niet gemachtigd om te rijden op andere contracten.
+            <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/iemand-anders-contract-gebruik-maken/">Wat is dit?</a>
+        </p>
 
-        <!-- desktop view -->
-        <table class="table nice">
-            <tbody>
-            <tr ng-repeat="inviteRequest in inviteRequestsContract.result">
-                <td width="60%" class="media">
-                    <span ng-if="inviteRequest.status !== 'accepted'">
-                        <strong>{{ inviteRequest.sender.firstName }}</strong> ({{ inviteRequest.sender.email }})
-                        heeft je uitgenodigd om mee te rijden op zijn/haar contract.
-                    </span>
-                    <span ng-if="inviteRequest.status === 'accepted'">
-                        <strong>{{ inviteRequest.sender.firstName }}</strong> ({{ inviteRequest.sender.email }})
-                        heeft je gemachtigd om mee te rijden op zijn/haar contract.
-                    </span>
-                </td>
-                <td class="text-right">
-                    <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-success" ng-click="acceptContractRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_ACCEPT' | translate"></button>
-                    <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-danger" ng-click="declineContractRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_DECLINED' | translate"></button>
-                    <button type="button" ng-show="inviteRequest.status === 'accepted'" class="btn btn-danger" ng-click="revokeContractRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_REVOKE' | translate"></button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div ng-if="inviteRequestsContract.total > 0">
+            <table class="table nice" style="margin-bottom: 0;">
+                <tbody>
+                    <tr ng-repeat="inviteRequest in inviteRequestsContract.result">
+                        <td width="60%" class="media">
+                            <p ng-if="inviteRequest.status !== 'accepted'">
+                                <strong>{{ inviteRequest.sender.firstName }}</strong> ({{ inviteRequest.sender.email }})
+                                heeft je uitgenodigd om mee te rijden op zijn/haar contract.
+                            </p>
+                            <p ng-if="inviteRequest.status === 'accepted'">
+                                <strong>{{ inviteRequest.sender.firstName }}</strong> ({{ inviteRequest.sender.email }})
+                                heeft je gemachtigd om mee te rijden op zijn/haar contract.
+                            </p>
+                            <div class="text-right visible-xs-block">
+                                <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-success" ng-click="acceptContractRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_ACCEPT' | translate"></button>
+                                <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-danger" ng-click="declineContractRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_DECLINED' | translate"></button>
+                                <button type="button" ng-show="inviteRequest.status === 'accepted'" class="btn" ng-click="revokeContractRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_REVOKE' | translate"></button>
+                            </div>
+                        </td>
+                        <td class="text-right hidden-xs">
+                            <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-success" ng-click="acceptContractRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_ACCEPT' | translate"></button>
+                            <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-danger" ng-click="declineContractRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_DECLINED' | translate"></button>
+                            <button type="button" ng-show="inviteRequest.status === 'accepted'" class="btn" ng-click="revokeContractRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_REVOKE' | translate"></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 </div>
+
