@@ -12,10 +12,7 @@ angular.module('owm.person')
   $scope.ownContracts = [];
   $scope.ownContractsCopy = [];
   $scope.otherContracts = [];
-  $scope.personsOnContracts = [];
   $scope.hasMoreToLoad = false;
-  $scope.isLoadingMore = false;
-  $scope.showLoaderSpinner = false;
 
   $scope.age = -1;
   if(authService.user.isAuthenticated && authService.user.identity.dateOfBirth) {
@@ -27,6 +24,11 @@ angular.module('owm.person')
     $scope.isLoadingContracts = false;
   });
 
+  function addContractFields (contract) {
+    contract.personsOnContracts = [];
+    contract.showLoaderSpinner = false;
+  }
+
   function loadContracts () {
     var ownContractsPromise = contractService.forContractor({ person: me.id });
     var otherContractsPromise = contractService.forDriver({ person: me.id });
@@ -34,6 +36,9 @@ angular.module('owm.person')
     //alertService.load();
     return $q.all([ownContractsPromise, otherContractsPromise])
     .then(function (result) {
+      result[0].forEach(addContractFields);
+      result[1].forEach(addContractFields);
+      
       $scope.ownContracts = result[0];
       $scope.ownContractsCopy = angular.copy(result[0]);
       $scope.otherContracts = $filter('filter')(result[1], function (c) {
@@ -57,13 +62,15 @@ angular.module('owm.person')
 
   $scope.loadMoreExtraDriverRequestsForContract = function(contract) {
 
-    $scope.showLoaderSpinner = true;
+    contract.showLoaderSpinner = true;
     offset += limit;
     $scope.getExtraDriverRequestsForContract(contract);
 
   };
 
   $scope.getExtraDriverRequestsForContract = function(contract) {
+
+    contract.showLoaderSpinner = true;
     extraDriverService.getRequestsForContract({
       contract : contract.id,
       limit: limit,
@@ -72,18 +79,18 @@ angular.module('owm.person')
     .then(function (data) {
 
       angular.forEach(data.result, function(val, key) {
-        $scope.personsOnContracts.push(val);
+        contract.personsOnContracts.push(val);
       });
 
       $scope.hasMoreToLoad = (data.result.length >= limit);
-      $scope.showLoaderSpinner = false;
 
-      return $scope.personsOnContracts;
+      return contract.personsOnContracts;
     })
     .catch(function (err) {
-      return $scope.personsOnContracts;
+      return contract.personsOnContracts;
     })
     .finally(function () {
+      contract.showLoaderSpinner = false;
     });
   };
 
@@ -186,7 +193,7 @@ angular.module('owm.person')
     })
       .then(function (person) {
 
-        $scope.personsOnContracts.push({
+        contract.personsOnContracts.push({
           'status' : 'invited',
           'recipient' : person
         });
@@ -218,9 +225,9 @@ angular.module('owm.person')
       })
       .then(function () {
         // on success, remove from list
-        angular.forEach($scope.personsOnContracts, function (request, index) {
+        angular.forEach(contract.personsOnContracts, function (request, index) {
           if (request.recipient.id === personId) {
-            $scope.personsOnContracts.splice(index, 1);
+            contract.personsOnContracts.splice(index, 1);
           }
         });
       })
