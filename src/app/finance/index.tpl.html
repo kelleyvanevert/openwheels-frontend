@@ -25,10 +25,15 @@
               <div ng-if="me.provider.id !== 5">
                 <!-- what does this condition mean? -->
                 <div class="feature">
-                  <span ng-if="requiredCredit.total > 0">nog te betalen</span>
-                  <span ng-if="requiredCredit.total <= 0">tegoed</span>
-                  <span class="credit"
-                    ng-class="{ positive: requiredCredit.total <= 0 }">{{ requiredCredit.total | currency }}</span>
+                  <span ng-if="requiredCredit.total > 0">
+                    nog te betalen
+                    {{ requiredCredit.total | currency }}
+                  </span>
+                  <span ng-if="requiredCredit.total <= 0 && requiredCredit.credit > 0">
+                    resterend
+                    {{ requiredCredit.credit | currency }}
+                  </span>
+                  
                   <a href="#"
                       style="margin-left: .5rem; position: relative;"
                       ng-click="payoutDialog($event)"
