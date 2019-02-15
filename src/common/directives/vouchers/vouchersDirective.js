@@ -17,12 +17,12 @@ angular.module('vouchersDirective', [])
       $window, contractService, $mdDialog, extraDriverService, $log) {
       $scope.features = $rootScope.features;
 
-      $scope.onChanged = $scope.onChanged || function () {
-        $log.log('no callback for voucher/onChanged');
-      };
-      $scope.onExtraDriversChanged = $scope.onExtraDriversChanged || function () {
-        $log.log('no callback for voucher/onExtraDriversChanged');
-      };
+//      $scope.onChanged = $scope.onChanged || function () {
+//        $log.log('no callback for voucher/onChanged');
+//      };
+//      $scope.onExtraDriversChanged = $scope.onExtraDriversChanged || function () {
+//        $log.log('no callback for voucher/onExtraDriversChanged');
+//      };
 
       $scope.extraDrivers = {
         price: 1.25,
@@ -67,6 +67,7 @@ angular.module('vouchersDirective', [])
       function setExtraDrivers (extraDriverInviteRequests) {
         $scope.extraDrivers.drivers = extraDriverInviteRequests;
         getVoucherPrice($scope.booking);
+        $scope.onExtraDriversChanged($scope.booking);
       }
 
       function reloadExtraDrivers () {
@@ -204,17 +205,21 @@ angular.module('vouchersDirective', [])
             .cancel('Nee ');
 
             $mdDialog.show(confirm)
-            .then(function(res) {
+            .then(function (res) {
               return extraDriverService.clearDrivers({booking: $scope.booking.id});
             })
-            .then(function() {
+            .then(function () {
               $scope.extraDrivers.check = false;
               $scope.booking.details.booking_price.total -= $scope.extraDrivers.drivers.length * $scope.extraDrivers.price;
               $scope.extraDrivers.drivers = [];
               $scope.onChanged($scope.booking);
             })
-            .catch(function(err) {
+            .catch(function (e) {
               $scope.extraDrivers.check = true;
+              alertService.addError(e);
+            })
+            .finally(function () {
+              alertService.loaded();
             });
           }
         }
@@ -246,8 +251,6 @@ angular.module('vouchersDirective', [])
           })
           .then(setExtraDrivers)
           .then(function () {
-            //$rootScope.extraDriverAdded = true;
-            $scope.onExtraDriversChanged($scope.booking);
             $scope.extraDrivers.new = '';
             $scope.extraDrivers.check = true;
           })
@@ -261,21 +264,30 @@ angular.module('vouchersDirective', [])
       };
 
       $scope.removeExtraDriver = function (inviteRequest) {
-        alertService.closeAll();
-        alertService.load();
-        extraDriverService.removeDriver({
-          booking: $scope.booking.id,
-          email: inviteRequest.recipient.email,
-        })
-        .then(setExtraDrivers)
-          .then(function () {
-            $scope.onExtraDriversChanged($scope.booking);
+
+        var confirm = $mdDialog.confirm()
+              .title('Persoon van contract verwijderen?')
+              .textContent('Weet je zeker dat je deze persoon van je contract wilt verwijderen?')
+              .ariaLabel('Lucky day')
+              .ok('Akkoord')
+              .cancel('Annuleren');
+        
+        $mdDialog.show(confirm).then(function () {
+        
+          alertService.closeAll();
+          alertService.load();
+          extraDriverService.removeDriver({
+            booking: $scope.booking.id,
+            email: inviteRequest.recipient.email,
           })
-        .catch(function(e) {
-          alertService.addError(e);
-        })
-        .finally(function() {
-          alertService.loaded();
+          .then(setExtraDrivers)
+          .catch(function(e) {
+            alertService.addError(e);
+          })
+          .finally(function() {
+            alertService.loaded();
+          });
+        
         });
       };
 

@@ -100,12 +100,12 @@
                                                             <div ng-if="inviteRequest.status === 'accepted'">
                                                                 <div><strong class="text-success">Geaccepteerd</strong></div>
                                                                 <div><strong>{{ inviteRequest.recipient.firstName }} {{ inviteRequest.recipient.preposition }} {{ inviteRequest.recipient.surname }}</strong> &lt;{{ inviteRequest.recipient.email }}&gt;</div>
-                                                                <div><em>Mag meerijden en boekingen maken op dit contract.</em></div>
+                                                                <div><em>Mag meerijden op deze boeking.</em></div>
                                                             </div>
                                                             <div ng-if="inviteRequest.status === 'invited'">
                                                                 <div><strong class="text-warning">Uitgenodigd</strong></div>
                                                                 <div>&lt;{{ inviteRequest.recipient.email }}&gt;</div>
-                                                                <div><em>Let op: pas als de uitnodiging is geaccepteerd mag deze gebruiker meerijden op dit contract.</em></div>
+                                                                <div><em>Let op: pas als de uitnodiging is geaccepteerd mag deze gebruiker meerijden.</em></div>
                                                             </div>
                                                             <div class="visible-xs-block" style="text-align: right;">
                                                                 <a href="#" ng-if="inviteRequest.recipient.id" ng-click="removeExtraDriver(inviteRequest)">{{ 'REMOVE' | translate }}</a>

@@ -8,6 +8,7 @@ angular.module('owm.booking.show', [])
   authService, boardcomputerService, discountUsageService, chatPopupService, linksService,
   booking, me, declarationService, $mdDialog, contract, Analytics, paymentService, voucherService,
   $window, $mdMedia, discountService, account2Service, $rootScope, chipcardService, metaInfoService,
+  extraDriverService,
   damageService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/booking/' + booking.id});
@@ -20,15 +21,20 @@ angular.module('owm.booking.show', [])
   $scope.me = me;
 
   // Is person the renter or the owner
+  $scope.ownContract = (contract.contractor.id === me.id);
   $scope.userPerspective = (function () {
     if (booking.person.id === me.id) {
+      // het kan hier gaan om:
+      // - een boeking op je eigen contract
+      // - een boeking op iemand anders' contract [je bent contractant]
       return 'renter';
     }
     else if (resource.owner.id === me.id) {
       return 'owner';
     }
-    else if (contract.contractor.id === me.id) {
+    else if ($scope.ownContract) {
       // het gaat hier om een rit van een contractant
+      // [dit is niet jouw eigen boeking, maar die van een contractant]
       return 'contract_holder';
     }
   }());
@@ -622,6 +628,38 @@ angular.module('owm.booking.show', [])
     });
   };
 
+
+  /*
+  * Load extra drivers
+  */
+  $scope.extraDrivers = {
+    loading: false,
+    inviteRequests: [],
+    basis: ($scope.contract.type.id === 60) ? 'per_booking' : 'per_contract',
+    load: function () {
+      $scope.extraDrivers.loading = true;
+
+      var promise = ($scope.extraDrivers.basis === 'per_booking')  ?
+        extraDriverService.driversForBooking({ booking: $scope.booking.id }) :
+        extraDriverService.getRequestsForContract({ contract: $scope.contract.id });
+
+      promise
+      .then(function (inviteRequests) {
+        if (inviteRequests.result && _.isArray(inviteRequests.result)) {
+          inviteRequests = inviteRequests.result;
+        }
+        $scope.extraDrivers.inviteRequests = inviteRequests;
+      })
+      .catch(function (e) {
+        alertService.addError(e);
+      })
+      .finally(function () {
+        $scope.extraDrivers.loading = false;
+      });
+    },
+  };
+
+
   /*
   * Load availability
   */
@@ -981,7 +1019,9 @@ angular.module('owm.booking.show', [])
   $scope.addExtraDriverButton = function () {
     $scope.addExtraDriver = true;
     $scope.initPayment();
-    reload();
+    reload().then(function () {
+      $('html, body').stop().animate({ scrollTop: $('#bookingPayment').offset().top }, 300, 'swing');
+    });
   };
 
   $rootScope.$watch('extraDriverAdded', function(newValue, oldValue) {
@@ -1035,15 +1075,17 @@ angular.module('owm.booking.show', [])
 
     reload();
 
-    $scope.bookingChanged = function() {
-      reload();
-    };
-
-    $scope.bookingDriversChanged = function() {
-      reloadRequiredValue();
-    };
-
   }
+
+  $scope.bookingChanged = function() {
+    $log.log('bookingChanged');
+    reload();
+  };
+
+  $scope.bookingDriversChanged = function() {
+    $log.log('bookingDriversChanged');
+    reloadRequiredValue();
+  };
 
   function reloadRequiredValue() {
     alertService.load();
@@ -1057,7 +1099,7 @@ angular.module('owm.booking.show', [])
     $rootScope.isPaymentLoading = true;
     alertService.load();
 
-    $q.all([ getVouchers(), getRequiredValue(), getCredit(), getDebt() ]).finally(function () {
+    return $q.all([ getVouchers(), getRequiredValue(), getCredit(), getDebt() ]).finally(function () {
       alertService.loaded();
       $rootScope.isPaymentLoading = false;
     });

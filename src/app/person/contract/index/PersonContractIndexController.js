@@ -2,6 +2,7 @@
 angular.module('owm.person')
 
 .controller('PersonContractIndexController', function ($q, $filter, $uibModal, $translate, $scope, $log,
+  $mdDialog,
   authService, dialogService, alertService, personService, contractService, me, Analytics, metaInfoService, appConfig, extraDriverService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard/profile/contracts'});
@@ -212,12 +213,14 @@ angular.module('owm.person')
     var contractId = contract.id;
     var personId = person.id;
 
-    dialogService.showModal(null, {
-      closeButtonText: 'Annuleren',
-      actionButtonText: 'Akkoord',
-      headerText: 'Persoon van contract verwijderen',
-      bodyText: 'Weet je zeker dat je deze persoon van je contract wilt verwijderen?'
-    }).then(function (result) {
+    var confirm = $mdDialog.confirm()
+          .title('Persoon van contract verwijderen?')
+          .textContent('Weet je zeker dat je deze persoon van je contract wilt verwijderen?')
+          .ariaLabel('Lucky day')
+          .ok('Akkoord')
+          .cancel('Annuleren');
+    
+    $mdDialog.show(confirm).then(function () {
       alertService.load();
       extraDriverService.removePersonFromContract({
         contract: contractId,
