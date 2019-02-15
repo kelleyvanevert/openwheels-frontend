@@ -53,9 +53,14 @@ angular.module('vouchersDirective', [])
         contractService.forBooking({ booking: $scope.booking.id })
         .then(function(contract) {
           $scope.booking.contract = contract;
-          if (contract.type.id === 60) {
-            reloadExtraDrivers();
-          }
+
+          var promise = (contract.type.id === 60) ?
+            reloadExtraDrivers() :
+            getVoucherPrice($scope.booking);
+          
+          promise.then(function () {
+            alertService.loaded();
+          });
         });
       }
 
@@ -66,14 +71,13 @@ angular.module('vouchersDirective', [])
 
       function reloadExtraDrivers () {
         $scope.extraDrivers.loading = true;
-        alertService.load();
 
-        extraDriverService.driversForBooking({ booking: $scope.booking.id })
-        .then(setExtraDrivers)
-        .then(function (extraDriverInviteRequests) {
-          $scope.extraDrivers.loading = false;
-          alertService.loaded();
-        });
+        return extraDriverService
+          .driversForBooking({ booking: $scope.booking.id })
+          .then(setExtraDrivers)
+          .then(function (extraDriverInviteRequests) {
+            $scope.extraDrivers.loading = false;
+          });
       }
 
       function getVoucherPrice(booking) {
