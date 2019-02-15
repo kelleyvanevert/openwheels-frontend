@@ -349,7 +349,7 @@
 
 <!-- Medebestuurders -->
 <div class="card mw"
-  ng-if="(userPerspective === 'renter' || userPerspective === 'contract_holder') && !paymentInit && ownContract"
+  ng-if="((userPerspective === 'renter' || userPerspective === 'contract_holder') && !paymentInit && ownContract) || (userPerspective === 'owner')"
   ng-init="extraDrivers.load()"
   ng-show="extraDrivers.inviteRequests.length > 0"
 >
@@ -361,14 +361,17 @@
     <div ng-if="!extraDrivers.loading">
       <ul class="list-group" ng-if="extraDrivers.inviteRequests.length > 0">
         <!-- persons -->
-        <li class="list-group-item" ng-class="'status-' + inviteRequest.status" ng-repeat="inviteRequest in extraDrivers.inviteRequests">
+        <li class="list-group-item"
+            ng-class="'status-' + inviteRequest.status"
+            ng-repeat="inviteRequest in extraDrivers.inviteRequests"
+        >
           <div ng-if="inviteRequest.status === 'accepted'">
-            <div><strong class="text-success">Geaccepteerd</strong></div>
+            <div ng-if="userPerspective !== 'owner'"><strong class="text-success">Geaccepteerd</strong></div>
             <div><strong>{{ inviteRequest.recipient.firstName }} {{ inviteRequest.recipient.preposition }} {{ inviteRequest.recipient.surname }}</strong> &lt;{{ inviteRequest.recipient.email }}&gt;</div>
-            <div><em>Mag meerijden.</em></div>
+            <div><em>Deze gebruiker mag als bestuurder meerijden.</em></div>
           </div>
           <div ng-if="inviteRequest.status === 'invited'">
-            <div><strong class="text-warning">Uitgenodigd</strong></div>
+            <div ng-if="userPerspective !== 'owner'"><strong class="text-warning">Uitgenodigd</strong></div>
             <div>&lt;{{ inviteRequest.recipient.email }}&gt;</div>
             <div><em>Let op: pas als de uitnodiging is geaccepteerd mag deze gebruiker meerijden.</em></div>
           </div>
@@ -774,7 +777,7 @@
           !bookingEnded">
   <div class="card-body" layout="row" layout-xs="column">
     <div flex="75" flex-xs="100">
-      <h3 style="margin-bottom:10px;">Verhuur je auto altijd en overal</h3>
+      <h3 style="margin-bottom:10px; margin-top: 0;">Verhuur je auto altijd en overal</h3>
       Wil je verhuren zonder sleuteloverdracht? Meld je dan aan voor MyWheels Open.
     </div>
 

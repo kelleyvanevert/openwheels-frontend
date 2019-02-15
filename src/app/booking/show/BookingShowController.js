@@ -648,6 +648,11 @@ angular.module('owm.booking.show', [])
         if (inviteRequests.result && _.isArray(inviteRequests.result)) {
           inviteRequests = inviteRequests.result;
         }
+        if ($scope.userPerspective === 'owner') {
+          inviteRequests = inviteRequests.filter(function (request) {
+            return request.status === 'accepted';
+          });
+        }
         $scope.extraDrivers.inviteRequests = inviteRequests;
       })
       .catch(function (e) {
