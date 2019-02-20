@@ -471,7 +471,8 @@ angular.module('openwheels', [
       $state.includes('owm.person.details') ||
       $state.includes('owm.person.profile') ||
       $state.includes('owm.person.dashboard') ||
-      $state.includes('owmlanding')
+      $state.includes('owmlanding') ||
+      $state.includes('contractchoice')
     );
     $rootScope.containerHome = (
       ($state.includes('home')) || ($state.$current.self.url === '/auto-verhuren')
