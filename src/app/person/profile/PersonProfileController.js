@@ -33,8 +33,7 @@ angular.module('owm.person.profile', [])
       $scope.currentSection = _.find($scope.sections, function (sect) {
         return sect.sref === $state.$current.name;
       });
-    }
-    if ($state.$current.name === 'owm.person.profile' || !$scope.currentSection) {
+    } else {
       $scope.highlight = $state.params.highlight || 'profiel';
       $scope.currentSection = _.find($scope.sections, function (sect) {
         return sect.id === $scope.highlight;
