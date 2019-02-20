@@ -13,9 +13,9 @@
 
     <!-- own contracts -->
 
-    <div class="alert alert-warning" ng-show="!ownContracts.length && !otherContracts.length">
+    <p ng-show="!ownContracts.length && !otherContracts.length">
       {{ 'PERSON.CONTRACT.LIST.NO_OWN_CONTRACTS' | translate }}
-    </div>
+    </p>
 
     <div class="well" ng-show="ownContracts.length" ng-repeat="contract in ownContracts">
       <h4>{{ contract.type.name }}</h4>
@@ -63,7 +63,6 @@
             {{ 'SAVE' | translate }}
           </button>
         </form>
-        <br/>
       </div>
 
       <!-- edit_contract_button -->

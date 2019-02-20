@@ -6,7 +6,7 @@ angular.module('owm.chat.service', [])
 
   var modalInstance;
 
-  function openPopup (otherPersonName, otherPersonId, resourceId, bookingId) {
+  function openPopup (otherPersonName, otherPersonId) {
     if (!authService.user.isAuthenticated) {
       $log.debug('Login is required for chatting');
       return;
@@ -17,10 +17,7 @@ angular.module('owm.chat.service', [])
       windowClass: 'modal-chat',
       resolve: {
         popupTitle: function () { return 'Gesprek met ' + otherPersonName; },
-        me        : function () { return authService.user.identity; },
         personId  : function () { return otherPersonId; },
-        resourceId: function () { return resourceId; },
-        bookingId : function () { return bookingId; }
       }
     });
   }

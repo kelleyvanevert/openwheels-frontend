@@ -98,7 +98,7 @@
           </md-menu-item>
 
           <md-menu-item ng-if="user.identity.preference === 'owner' || user.identity.status !== 'new' || user.identity.provider.id !== 1">
-            <md-button id="toolbarPersonmenuGegevens" ui-sref="owm.person.profile">
+            <md-button id="toolbarPersonmenuGegevens" ui-sref="owm.person.profile({ highlight: 'profiel' })">
               <ng-md-icon icon="settings" alt="Icoon" aria-label="Icoon"></ng-md-icon>
               <span>{{ 'MY_PROFILE' | translate }}</span>
             </md-button>

@@ -1,14 +1,14 @@
 'use strict';
-angular.module('owm.contract', [])
+angular.module('owm.contract', [
+  'owm.contract.contractchoice'
+])
 
 .config(function($stateProvider) {
   $stateProvider.state('contractchoice', {
     url: '/contractkeuze',
     parent: 'owm',
-    redirectTo: 'owm.person.profile.contractchoice',
-    /*
     views: {
-      'main@shell': {
+      'main-full@shell': {
         templateUrl: 'contract/contractchoice.tpl.html',
         controller: 'ContractChoiceController'
       }
@@ -25,6 +25,6 @@ angular.module('owm.contract', [])
           person: person.id
         });
       }]
-    }*/
+    },
   });
 });
