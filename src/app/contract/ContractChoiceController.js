@@ -1,10 +1,10 @@
 'use strict';
-angular.module('owm.person.contractchoice', [])
+angular.module('owm.contract.contractchoice', [])
 
 .controller('ContractChoiceController', function ($scope, $state, alertService, depositService, person, contracts, $log, $mdMedia, metaInfoService, appConfig) {
 
-  metaInfoService.set({url: appConfig.serverUrl + '/dashboard/profile/contractkeuze'});
-  metaInfoService.set({canonical: 'https://mywheels.nl/dashboard/profile/contractkeuze'});
+  metaInfoService.set({url: appConfig.serverUrl + '/contractkeuze'});
+  metaInfoService.set({canonical: 'https://mywheels.nl/contractkeuze'});
 
   $scope.hasMember = contracts.some(function (c) { return c.type.id ===  62; });
   $scope.hasGo     = contracts.some(function (c) { return c.type.id ===  60; });
@@ -44,7 +44,7 @@ angular.module('owm.person.contractchoice', [])
     if(res === 'accept') {
       alertService.loaded();
       alertService.add('success', 'Contractwissel is geslaagd', 9000);
-      $state.go('owm.person.dashboard');
+      $state.go('owm.person.profile.contract');
     }
     else if(res === 'new') {
       $state.go('owm.finance.vouchers');
@@ -68,6 +68,21 @@ angular.module('owm.person.contractchoice', [])
     depositService.requestContractAndPay({
       person: person.id,
       contractType: 63,
+      contract: contracts[0].id
+    })
+    .then(goToNextPage)
+    .catch(handleError)
+    ;
+  };
+
+  $scope.createCompany = function () {
+    alertService.load();
+
+    $log.log('requesting 120 contract');
+
+    depositService.requestContractAndPay({
+      person: person.id,
+      contractType: 120,
       contract: contracts[0].id
     })
     .then(goToNextPage)
