@@ -25,11 +25,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="nopad"
-         ng-class="{
-             'col-md-3': person.isCompany,
-             'col-sm-4': !person.isCompany,
-         }">
+    <div class="nopad col-sm-4">
         <section class="contract-choice contract-choice--left">
             <h3 same-height="headercontract">MyWheels Go</h3>
             <section>
@@ -51,11 +47,7 @@
             </section>
         </section>
     </div>
-    <div class="nopad"
-         ng-class="{
-             'col-md-3': person.isCompany,
-             'col-sm-4': !person.isCompany,
-         }">
+    <div class="nopad col-sm-4">
         <section class="contract-choice contract-choice--middle" ng-class="{'contract-choice--middle--small': $mdMedia('xs')}">
             <h3 same-height="headercontract">MyWheels Member</h3>
             <section>
@@ -77,12 +69,9 @@
             </section>
         </section>
     </div>
-    <div class="nopad"
-         ng-class="{
-             'col-md-3': person.isCompany,
-             'col-sm-4': !person.isCompany,
-         }">
-        <section class="contract-choice contract-choice--right">
+    <div class="nopad col-sm-4">
+        <section class="contract-choice contract-choice--right"
+                ng-if="!person.isCompany">
             <h3 same-height="headercontract">MyWheels Premium</h3>
             <section>
                 <div class="pay" same-height="aa">Betaal achteraf per SEPA incasso <sup>*</sup></div>
@@ -103,11 +92,7 @@
             </section>
         </section>
     </div>
-    <div class="nopad"
-         ng-class="{
-             'col-md-3': person.isCompany,
-             'col-sm-4': !person.isCompany,
-         }">
+    <div class="nopad col-sm-4">
         <section class="contract-choice contract-choice--right"
                     ng-if="person.isCompany">
             <h3 same-height="headercontract">MyWheels Company</h3>
