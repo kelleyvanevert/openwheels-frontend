@@ -4,7 +4,6 @@ angular.module('owm.person', [
   'owm.person.dashboard',
   'owm.person.intro',
   'owm.person.profile',
-  'owm.person.contractchoice',
   'owm.person.details',
   'owm.person.aboutme',
   'owm.person.action.payinvoicegroup',
@@ -360,6 +359,8 @@ angular.module('owm.person', [
 
   $stateProvider.state('owm.person.profile.contractchoice', {
     url: '/contractkeuze',
+    redirectTo: 'contractchoice',
+    /*
     views: {
       '@owm.person.profile': {
         templateUrl: 'person/contractchoice/contractchoice.tpl.html',
@@ -378,7 +379,7 @@ angular.module('owm.person', [
           person: person.id
         });
       }]
-    }
+    }*/
   });
 
 

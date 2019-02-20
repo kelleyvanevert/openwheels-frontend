@@ -13,7 +13,7 @@ angular.module('owm.auth', [
     .state('owm.auth.signup', {
     url: '/signup?preference',
     views: {
-      'main@shell': {
+      'main-full@shell': {
         templateUrl: 'auth/signup/auth-signup.tpl.html',
         controller: 'AuthSignupController'
       }

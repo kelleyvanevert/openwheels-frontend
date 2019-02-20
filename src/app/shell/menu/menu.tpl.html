@@ -67,7 +67,7 @@
 
     <md-divider></md-divider>
 
-    <md-list-item id="menuGegevens" class="menu-item-profile" ng-click="navigate('owm.person.profile')" ng-if="user.identity.preference === 'owner' || user.identity.status !== 'new' || user.identity.provider.id !== 1">
+    <md-list-item id="menuGegevens" class="menu-item-profile" ng-click="navigate('owm.person.profile', { highlight: 'profiel' })" ng-if="user.identity.preference === 'owner' || user.identity.status !== 'new' || user.identity.provider.id !== 1">
       <ng-md-icon icon="settings" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_PROFILE' | translate }}</p>
     </md-list-item>
 

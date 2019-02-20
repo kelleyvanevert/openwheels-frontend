@@ -18,7 +18,7 @@
             <section ng-show="$root.personSubmitted || personSubmitted">
                 <p>Jouw {{ resource.brand | toTitleCase }} is nu beschikbaar voor meer dan 60.000 leden van MyWheels. Klik hieronder om te bekijken hoe zij jouw auto zien.</p>
 
-                <center><button type="button" name="button" class="mywheels-btn mywheels-btn-default mywheels-btn-big" ui-sref="owm.resource.show({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})">Bekijk voorbeeld</button></center>
+                <center><button type="button" name="button" class="mywheels-btn mywheels-btn-default mywheels-btn-big" ui-sref="owm.resource.show({city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id})" ui-sref-opts="{ inherit: false }">Bekijk autopagina</button></center>
 
                 <h3>Promoot je auto</h3>
                 <p ng-if="resource.pictures.length > 0">Wij sturen alle gebruikers in de buurt een mail om ze te laten weten dat jouw auto beschikbaar is. Op onze kosten krijgen zij 5 euro korting op een eerste rit in jouw auto.</p>

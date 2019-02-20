@@ -1,155 +1,114 @@
-<div ng-if="hasPermission">
-
-  <div class="card" ng-if="previousState.name == 'owm.resource.own'" id="bookingNavigation">
-    <div class="card-body card-inverse">
-      <a ui-sref="owm.resource.own"><i class="fa fa-fw fa-chevron-left"></i>Terug naar Mijn auto's</a>
+<div id="resource-edit-page-container" class="container container-transitional"
+     ng-if="hasPermission">
+  <div class="row">
+    <div class="rpad col-md-4">
+    </div>
+    <div class="rpad col-md-8">
+      <h1 class="page-title card-pad-left" style="text-align: left;" smooth-scroll-to-item=".card.sidebar"
+          ng-if="!$root.isWindowSizeMD">
+        <span ng-if="!currentSection">Mijn auto</span>
+        <span ng-if="currentSection">{{ currentSection.title }}</span>
+        <ng-md-icon icon="expand_more"></ng-md-icon>
+      </h1>
+      <h1 class="page-title card-pad-left" style="text-align: left;"
+          ng-if="$root.isWindowSizeMD">
+        <span ng-if="!currentSection">Mijn auto</span>
+        <span ng-if="currentSection">{{ currentSection.title }}</span>
+      </h1>
     </div>
   </div>
+  <div class="row">
+    <div class="rpad col-md-8 col-md-push-4">
+      
 
-  <md-card id="resourceEditHeader">
-    <md-card-header class="blue-header">
-      <md-card-header-text>
-        <span class="md-title">
-          Mijn auto
-        </span>
-      </md-card-header-text>
-    </md-card-header>
-    <md-card-content>
-      <div ng-include="'resource/partials/resource-header3.tpl.html'"></div>
-    </md-card-content>
-  </md-card>
+      <!-- data -->
+      <div class="mw card" ng-show="currentSection.id === 'specificaties'">
+        <div class="card-body">
+          <div ng-include="'resource/edit/data/resource-edit-data.tpl.html'"></div>
+        </div>
+      </div>
 
-  <!-- data -->
-  <md-card id="resourceEditData">
-    <md-card-header>
-      <md-card-header-text>
-        <span class="md-title">
-          <a href="" ng-init="isDataCollapsed = true" ng-click="isDataCollapsed = !isDataCollapsed">
-            <i class="fa fa-fw" ng-class="{ 'fa-chevron-right': isDataCollapsed, 'fa-chevron-down': !isDataCollapsed }"></i>
-            {{ 'DATA' | translate }}
-          </a>
-        </span>
-      </md-card-header-text>
-    </md-card-header>
-    <md-card-content uib-collapse="isDataCollapsed">
-      <div ng-include="'resource/edit/data/resource-edit-data.tpl.html'"></div>
-    </md-card-content>
-  </md-card>
+      <!-- sharing settings -->
+      <div class="mw card" ng-show="currentSection.id === 'instellingen'">
+        <div class="card-body">
+          <div ng-include="'resource/edit/sharing_settings/resource-edit-sharing_settings.tpl.html'"></div>
+        </div>
+      </div>
 
-  <!-- sharing settings -->
-  <md-card id="resourceEditSharingSettings">
-    <md-card-header>
-      <md-card-header-text>
-        <span class="md-title">
-          <a href="" ng-init="isSharingSettingsCollapsed = true" ng-click="isSharingSettingsCollapsed =!isSharingSettingsCollapsed">
-            <i class="fa fa-fw" ng-class="{ 'fa-chevron-right': isSharingSettingsCollapsed, 'fa-chevron-down': !isSharingSettingsCollapsed }"></i>
-            {{ 'SHARING_SETTINGS' | translate }}
-          </a>
-        </span>
-      </md-card-header-text>
-    </md-card-header>
-    <md-card-content uib-collapse="isSharingSettingsCollapsed">
-      <div ng-include="'resource/edit/sharing_settings/resource-edit-sharing_settings.tpl.html'"></div>
-    </md-card-content>
-  </md-card>
+      <!-- price -->
+      <!-- NOTE: MAY BE HIDDEN IN BRANDING CSS (based on id=price) -->
+      <div class="mw card" id="resourceEditPrice" ng-show="currentSection.id === 'prijs'">
+        <div class="card-body">
+          <div ng-include="'resource/edit/price/resource-edit-price.tpl.html'"></div>
+        </div>
+      </div>
 
-  <!-- price -->
-  <!-- NOTE: MAY BE HIDDEN IN BRANDING CSS (based on id=price) -->
-  <md-card id="resourceEditPrice">
-    <md-card-header>
-      <md-card-header-text>
-        <span class="md-title">
-          <a href="" ng-init="isPriceCollapsed = true" ng-click="isPriceCollapsed = !isPriceCollapsed">
-            <i class="fa fa-fw" ng-class="{ 'fa-chevron-right': isPriceCollapsed, 'fa-chevron-down': !isPriceCollapsed }"></i>
-            {{ 'RESOURCE_PRICE' | translate }}
-          </a>
-        </span>
-      </md-card-header-text>
-    </md-card-header>
-    <md-card-content uib-collapse="isPriceCollapsed">
-        <div ng-include="'resource/edit/price/resource-edit-price.tpl.html'"></div>
-    </md-card-content>
-  </md-card>
+      <!-- photos -->
+      <div class="mw card" ng-show="currentSection.id === 'fotos'">
+        <div class="card-body">
+          <div ng-include="'resource/edit/pictures/resource-edit-pictures.tpl.html'"></div>
+        </div>
+      </div>
 
-  <!-- photos -->
-  <md-card id="resourceEditPhotos">
-    <md-card-header>
-      <md-card-header-text>
-        <span class="md-title">
-        <a href="" ng-init="isPhotosCollapsed = true" ng-click="isPhotosCollapsed = !isPhotosCollapsed">
-          <i class="fa fa-fw" ng-class="{ 'fa-chevron-right': isPhotosCollapsed, 'fa-chevron-down': !isPhotosCollapsed }"></i>
-          {{ 'RESOURCE_PICTURES' | translate }}
-        </a>
-        </span>
-      </md-card-header-text>
-    </md-card-header>
-    <md-card-content uib-collapse="isPhotosCollapsed">
-      <div ng-include="'resource/edit/pictures/resource-edit-pictures.tpl.html'"></div>
-    </md-card-content>
-  </md-card>
+      <!-- location -->
+      <div class="mw card" ng-show="currentSection.id === 'locatie'">
+        <div class="card-body">
+          <div ng-include="'resource/edit/location/resource-edit-location.tpl.html'"></div>
+        </div>
+      </div>
 
-  <!-- location -->
-  <md-card id="resourceEditLocation">
-    <md-card-header>
-      <md-card-header-text>
-        <span class="md-title">
-        <a href="" ng-click="toggleLocation()">
-          <i class="fa fa-fw" ng-class="{ 'fa-chevron-right': isLocationCollapsed, 'fa-chevron-down': !isLocationCollapsed }"></i>
-          {{ 'LOCATION' | translate }}
-        </a>
-        </span>
-      </md-card-header-text>
-    </md-card-header>
-    <md-card-content uib-collapse="isLocationCollapsed">
-      <div ng-include="'resource/edit/location/resource-edit-location.tpl.html'"></div>
-    </md-card-content>
-  </md-card>
+      <!-- members -->
+      <div class="mw card" ng-show="currentSection.id === 'vrienden'">
+        <div class="card-body">
+          <div ng-include="'resource/edit/members/resource-edit-members.tpl.html'"></div>
+        </div>
+      </div>
 
-  <!-- members -->
-  <md-card id="resourceEditFriends">
-    <md-card-header>
-      <md-card-header-text>
-        <span class="md-title">
-        <a href="" ng-init="isMembersCollapsed = true" ng-click="isMembersCollapsed = !isMembersCollapsed">
-          <i class="fa fa-fw" ng-class="{ 'fa-chevron-right': isMembersCollapsed, 'fa-chevron-down': !isMembersCollapsed }"></i>
-          {{ 'RESOURCE_MEMBERS' | translate }}
-        </a>
-        </span>
-      </md-card-header-text>
-    </md-card-header>
-    <md-card-content uib-collapse="isMembersCollapsed">
-      <div ng-include="'resource/edit/members/resource-edit-members.tpl.html'"></div>
-    </md-card-content>
-  </md-card>
+      <!-- discounts -->
+      <div class="mw card" ng-show="currentSection.id === 'kortingscodes'">
+        <div class="card-body">
+          <discount-list me="me" resource="resource" />
+        </div>
+      </div>
 
-  <!-- discounts -->
-  <md-card id="resourceEditDiscounts" ng-if="features.discounts">
-    <md-card-header>
-      <md-card-header-text>
-        <span class="md-title">
-          <a href="" ng-init="isDiscountCollapsed = true" ng-click="isDiscountCollapsed = !isDiscountCollapsed">
-            <i class="fa fa-fw" ng-class="{ 'fa-chevron-right': isDiscountCollapsed, 'fa-chevron-down': !isDiscountCollapsed }"></i>
-            {{ 'RESOURCE_DISCOUNTS' | translate }}
-          </a>
-        </span>
-      </md-card-header-text>
-    </md-card-header>
-    <md-card-content uib-collapse="isDiscountCollapsed">
-      <discount-list me="me" resource="resource" />
-    </md-card-content>
-  </md-card>
+    </div>
+    <div class="rpad col-md-4 col-md-pull-8">
+      <div class="sidebar card mw">
+        <div class="card-body">
+          <div ng-include="'resource/partials/resource-header3.tpl.html'"></div>
 
-  <!-- calendar -->
-  <md-card id="resourceEditCalendar">
-    <md-card-header>
-      <md-card-header-text>
-        <span class="md-title">
-        <a ng-href="{{ $state.href('owm.resource.calendar', { city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id }) }}" ga-track-event="['interaction', 'updateAvailability', 'resourceEdit']">
-          {{ 'RESOURCE_EDIT_CALENDAR' | translate }}
-        </a>
-        </span>
-      </md-card-header-text>
-    </md-card-header>
-  </md-card>
+          <p style="text-align: center;">
+            <a ui-sref="owm.resource.own" href="#">
+              <ng-md-icon icon="chevron_left"></ng-md-icon>
+              Terug naar overzicht auto's
+            </a>
+          </p>
 
-</div><!-- /hasPermission -->
+          <div class="h-escape" style="margin-top: 1.5rem;">
+            <ul class="sidebar-menu">
+              <li ng-click="navToSection(section)"
+                  ng-class="{ active: currentSection.id === section.id }"
+                  md-ink-ripple="#50a2c3"
+                  ng-repeat="section in sections">
+                <a class="menu-item" href="#">
+                  <ng-md-icon icon="{{ section.icon }}"></ng-md-icon>
+                  {{ section.title }}
+                </a>
+              </li>
+            </ul>
+
+            <div class="h-pad">
+              <ul class="extra-links">
+                <li>
+                  <a ng-href="{{ $state.href('owm.resource.calendar', { city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id }) }}" ga-track-event="['interaction', 'updateAvailability', 'resourceEdit']">
+                    Pas beschikbaarheid aan ›
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

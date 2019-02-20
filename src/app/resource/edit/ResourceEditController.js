@@ -9,7 +9,9 @@ angular.module('owm.resource.edit', [
   'owm.resource.edit.pictures'
 ])
 
-.controller('ResourceEditController', function ($timeout, $state, $scope, me, resource, members, metaInfoService, appConfig) {
+.controller('ResourceEditController', function ($timeout, $state, $scope, me, resource, members, metaInfoService, appConfig,
+  currentSectionId
+) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/auto/' + resource.id + '/wijzigen'});
   metaInfoService.set({canonical: 'https://mywheels.nl/auto/' + resource.id + '/wijzigen'});
@@ -25,6 +27,29 @@ angular.module('owm.resource.edit', [
   } else {
     $scope.hasPermission = true;
   }
+
+  $scope.sections = [
+    { id: 'specificaties', title: 'Specificaties', icon: 'directions_car' },
+    { id: 'instellingen', title: 'Instellingen', icon: 'settings' },
+    { id: 'prijs', title: 'Huurprijs', icon: 'euro_symbol' },
+    { id: 'fotos', title: 'Foto\'s', icon: 'photo_library' },
+    { id: 'locatie', title: 'Locatie', icon: 'location_on' },
+    { id: 'vrienden', title: 'Vrienden van deze auto', icon: 'people' },
+    { id: 'kortingscodes', title: 'Kortingscodes', icon: 'local_offer' },
+  ];
+
+  function onNav () {
+    $scope.currentSection = _.find($scope.sections, function (sect) {
+      return sect.id === currentSectionId;
+    }) || $scope.sections[0];
+  }
+	$scope.$on('$stateChangeSuccess', onNav);
+
+  $scope.navToSection = function (section) {
+    $scope.currentSection = section;
+    $state.transitionTo('owm.resource.edit', { resourceId: resource.id, section: section.id }, { notify: false, reload: false });
+    $('html,body').scrollTop(0);
+  };
 
   $scope.me = me;
   $scope.resource = resource;
