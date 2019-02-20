@@ -153,22 +153,23 @@ angular.module('vouchersDirective', [])
         alertService.load($scope);
 
         /* checkbox is already checked, so new value is now: */
-        var newValue = $scope.booking.details.riskReduction;
         $scope.redemptionPending[$scope.booking.id] = true;
 
         bookingService.alter({
           booking: $scope.booking.id,
           newProps: {
-            riskReduction: newValue
+            riskReduction: $scope.booking.details.riskReduction
           }
         })
-        .then(function (value) {
-          /* recalculate amounts */
+        .then(function (updatedBooking) {
+          if ($scope.booking.details.riskReduction !== updatedBooking.riskReduction) {
+            // na begintijd oid
+          }
+          $scope.booking.riskReduction = $scope.booking.details.riskReduction = updatedBooking.riskReduction;
           return getVoucherPrice($scope.booking);
         })
         .then(function () {
           $scope.voucherError.show = false;
-          $scope.booking.details.riskReduction = newValue;
         })
         .catch(function (err) {
           if (err.message === 'Bij je huidige gebruiksvorm is verlaging van het eigen risico verplicht.') {
@@ -180,7 +181,7 @@ angular.module('vouchersDirective', [])
             alertService.addError(err);
           }
           /* revert */
-          $scope.booking.details.riskReduction = !!!$scope.booking.details.riskReduction;
+          $scope.booking.details.riskReduction = !$scope.booking.details.riskReduction;
 
         })
         .finally(function () {
