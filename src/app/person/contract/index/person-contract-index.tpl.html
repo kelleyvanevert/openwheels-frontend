@@ -66,25 +66,41 @@
       </div>
 
       <!-- edit_contract_button -->
-      <div id="add_person_to_contract" ng-if="contract.type.id !== 60" ng-init="getExtraDriverRequestsForContract(contract);">
-        <p><b>{{ 'PERSON.CONTRACT.OTHER_CONTRACTS_PERSONS' | translate }}:</b></p>
-        <ul class="list-group">
+      <div style="margin-top: 1.6rem;" id="add_person_to_contract" ng-if="contract.type.id !== 60" ng-init="getExtraDriverRequestsForContract(contract);">
+        <p>
+          <strong>{{ 'PERSON.CONTRACT.OTHER_CONTRACTS_PERSONS' | translate }}</strong>
+        </p>
+        <p style="text-align: center;" ng-if="contract.showLoaderSpinner">
+          <spinner />
+        </p>
+        <p ng-if="!contract.showLoaderSpinner && contract.personsOnContracts.length === 0">
+          Je hebt geen extra bestuurders uitgenodigd om mee te rijden op dit contract. Voer het email-adres in van een geregistreerde MyWheels lid om deze als medebestuurder uit te nodigen.
+          <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/iemand-anders-contract-gebruik-maken/">Wat is dit?</a>
+        </p>
+        <ul class="list-group" ng-if="contract.personsOnContracts.length > 0">
           <!-- persons -->
-          <li class="list-group-item" ng-repeat="result in personsOnContracts">
-            <a href="" class="pull-right" ng-if="result.recipient.id" ng-click="removePerson(contract, result.recipient)">{{ 'REMOVE' | translate }}</a>
-            <div ng-if="result.recipient.firstName && result.status === 'accepted'">
-              {{ result.recipient.firstName }} {{ result.recipient.preposition }} {{ result.recipient.surname }} {{ result.recipient.email | surroundWith : '&lt;' : '&gt;' }}
+          <li class="list-group-item" ng-class="'status-' + inviteRequest.status" ng-repeat="inviteRequest in contract.personsOnContracts">
+            <a href="#" class="pull-right hidden-xs" ng-if="inviteRequest.recipient.id" ng-click="removePerson(contract, inviteRequest.recipient)">{{ 'REMOVE' | translate }}</a>
+            <div ng-if="inviteRequest.status === 'accepted'">
+              <div><strong class="text-success">Geaccepteerd</strong></div>
+              <div><strong>{{ inviteRequest.recipient.firstName }} {{ inviteRequest.recipient.preposition }} {{ inviteRequest.recipient.surname }}</strong> &lt;{{ inviteRequest.recipient.email }}&gt;</div>
+              <div><em>Mag meerijden en boekingen maken op dit contract.</em></div>
             </div>
-            <div ng-if="!result.recipient.firstName || result.status === 'invited'">
-              {{ 'PERSON.CONTRACT.INVITED_PERSON' | translate }} {{ result.recipient.email | surroundWith : '&lt;' : '&gt;' }}
+            <div ng-if="inviteRequest.status === 'invited'">
+              <div><strong class="text-warning">Uitgenodigd</strong></div>
+              <div>&lt;{{ inviteRequest.recipient.email }}&gt;</div>
+              <div><em>Let op: pas als de uitnodiging is geaccepteerd mag deze gebruiker meerijden op dit contract.</em></div>
+            </div>
+            <div class="visible-xs-block" style="text-align: right;">
+              <a href="#" ng-if="inviteRequest.recipient.id" ng-click="removePerson(contract, inviteRequest.recipient)">{{ 'REMOVE' | translate }}</a>
             </div>
           </li>
         </ul>
 
         <div class="text-center" style="margin-bottom: 20px;" ng-if="hasMoreToLoad">
           <button ng-click="loadMoreExtraDriverRequestsForContract(contract)" class="mywheels-btn mywheels-btn-normal mywheels-btn-big">
-            <span ng-if="!showLoaderSpinner">Laad meer</span>
-            <inline-spinner ng-if="showLoaderSpinner" />
+            <span ng-if="!contract.showLoaderSpinner">Laad meer</span>
+            <inline-spinner ng-if="contract.showLoaderSpinner" />
           </button>
         </div>
 
