@@ -266,8 +266,8 @@ angular.module('vouchersDirective', [])
       $scope.removeExtraDriver = function (inviteRequest) {
 
         var confirm = $mdDialog.confirm()
-              .title('Persoon van contract verwijderen?')
-              .textContent('Weet je zeker dat je deze persoon van je contract wilt verwijderen?')
+              .title('Extra bestuurder van rit verwijderen?')
+              .textContent('Weet je zeker dat je deze persoon als extra bestuurder van de rit wilt verwijderen?')
               .ariaLabel('Lucky day')
               .ok('Akkoord')
               .cancel('Annuleren');

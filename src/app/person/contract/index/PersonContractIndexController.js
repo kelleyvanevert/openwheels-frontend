@@ -214,7 +214,7 @@ angular.module('owm.person')
     var personId = person.id;
 
     var confirm = $mdDialog.confirm()
-          .title('Persoon van contract verwijderen?')
+          .title('Extra bestuurder van contract verwijderen?')
           .textContent('Weet je zeker dat je deze persoon van je contract wilt verwijderen?')
           .ariaLabel('Lucky day')
           .ok('Akkoord')
