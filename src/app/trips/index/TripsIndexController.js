@@ -2,7 +2,7 @@
 
 angular.module('owm.trips.index', [])
 
-.controller('TripsIndexController', function ($log, $timeout, $q, API_DATE_FORMAT, alertService, bookingService, me, $scope, linksService,
+.controller('TripsIndexController', function ($log, $timeout, $q, $location, API_DATE_FORMAT, alertService, bookingService, me, $scope, linksService,
   metaInfoService, appConfig, $stateParams, $state, mobileDetectService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/trips'});
@@ -135,15 +135,11 @@ angular.module('owm.trips.index', [])
     $scope.endDate = moment($scope.currentTimeFrame.untilDate, dateConfig.format).format(API_DATE_FORMAT);
 
     //Update stateParams for reload
-    $state.go('owm.trips', {
+    $location.search({
       start: moment($scope.startDate).format(URL_DATE_TIME_FORMAT),
       end: moment($scope.endDate).format(URL_DATE_TIME_FORMAT),
       cancelled: $scope.showCancelled,
       otherOnContract: $scope.otherOnContract,
-    }, {
-      reload: true,
-      inherit: false,
-      notify: false
     });
 
     // Reset offset and bookings for specific role

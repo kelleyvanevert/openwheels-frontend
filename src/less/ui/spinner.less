@@ -1,0 +1,132 @@
+
+
+/*
+  This is a 'reverse-engineerd' version of Angular-Material's circular progress.
+  Only used for pre-javascript startup time.
+*/
+
+.mw-md-progress-circular {
+
+  width: 100px;
+  height: 100px;
+
+  display: block;
+  position: relative;
+  z-index: 2;
+
+  .mw-md-scale-wrapper {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scale(0.96);
+
+    .mw-md-spinner-wrapper {
+      -webkit-animation: outer-rotate 2.91667s linear infinite;
+      animation: outer-rotate 2.91667s linear infinite;
+
+      position: relative;
+
+      display: block;
+      position: absolute;
+      overflow: hidden;
+      top: 50%;
+      left: 50%;
+
+      .mw-md-inner {
+        -webkit-animation: sporadic-rotate 5.25s cubic-bezier(.35,0,.25,1) infinite;
+        animation: sporadic-rotate 5.25s cubic-bezier(.35,0,.25,1) infinite;
+
+        width: 100px;
+        height: 100px;
+        position: relative;
+
+        .mw-md-gap {
+          position: absolute;
+          left: 49px;
+          right: 49px;
+          top: 0;
+          bottom: 0;
+          border-top-width: 10px;
+          border-top-style: solid;
+          box-sizing: border-box;
+
+          border-top-color: darken(@mywheels-blue, 10%);
+          border-bottom-color: darken(@mywheels-blue, 10%);
+        }
+
+        .mw-md-left {
+          left: 0;
+          
+          position: absolute;
+          top: 0;
+          height: 100px;
+          width: 50px;
+          overflow: hidden;
+        }
+
+        .mw-md-right {
+          right: 0;
+
+          position: absolute;
+          top: 0;
+          height: 100px;
+          width: 50px;
+          overflow: hidden;
+
+          .mw-md-half-circle {
+            -webkit-animation-name: right-wobble;
+            animation-name: right-wobble;
+            
+            -webkit-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+            -webkit-animation-duration: 1.3125s;
+            animation-duration: 1.3125s;
+            -webkit-animation-timing-function: cubic-bezier(.35,0,.25,1);
+            animation-timing-function: cubic-bezier(.35,0,.25,1);
+
+            right: 0;
+            border-left-color: transparent;
+
+            position: absolute;
+            top: 0;
+            width: 100px;
+            height: 100px;
+            box-sizing: border-box;
+            border-width: 10px;
+            border-style: solid;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+
+            border-right-color: darken(@mywheels-blue, 10%);
+            border-top-color: darken(@mywheels-blue, 10%);
+          }
+        }
+      }
+    }
+  }
+
+  &.spinner-size-2 {
+    top: -40px;
+    left: -40px;
+
+    width: 140px;
+    height: 140px;
+
+    .mw-md-scale-wrapper {
+      transform: scale(1.34);
+    }
+  }
+
+  &.spinner-size-3 {
+    top: -50px;
+    left: -50px;
+
+    width: 200px;
+    height: 200px;
+
+    .mw-md-scale-wrapper {
+      transform: scale(1.92);
+    }
+  }
+}

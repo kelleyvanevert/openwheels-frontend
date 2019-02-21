@@ -23,7 +23,26 @@ angular.module('owm.person.profile', [])
     { sref: 'owm.person.profile.invite-requests', title: 'Machtigingen', icon: 'person_add' },
   ].filter(function (b) { return !!b; });
 
-  $scope.defaultHighlight = ($state.$current.name === 'owm.person.profile') ? 'profiel' : undefined;
+  // This is definitely a bit hacky, but
+  //  this controller is sometimes re-initialized, and sometimes not,
+  //  depending on how the user navigates between the (conceptual, not state-) sub-pages.
+  // Hence this way to making sure the the page structure is understood well on every nav action.
+  function onNav () {
+    if ($state.$current.name !== 'owm.person.profile') {
+      $scope.highlight = '';
+      $scope.currentSection = _.find($scope.sections, function (sect) {
+        return sect.sref === $state.$current.name;
+      });
+    } else {
+      $scope.highlight = $state.params.highlight || 'profiel';
+      $scope.currentSection = _.find($scope.sections, function (sect) {
+        return sect.id === $scope.highlight;
+      });
+    }
+
+    $scope.withSidebar = ($state.$current.name !== 'owm.person.profile.contractchoice');
+  }
+	$scope.$on('$stateChangeSuccess', onNav);
 
   var masterPerson = null;
   $scope.person = null;

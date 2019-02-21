@@ -2,8 +2,16 @@
   <div class="hero-overlay" style="z-index:1"></div>
   <!-- SEARCHBAR -->
   <section class="dashboard-searchbar-frontpage" style="z-index:2">
-    <div class="container container-main">
-      <ow-geocoder-searchbar searchtext="homeAddressPrefill"></ow-geocoder-searchbar>
+    <!-- the overflow rule is to prevent internal scrolling on mobile -->
+    <div class="container container-transitional" style="overflow: hidden;">
+      <div class="row">
+        <div class="rpad
+              col-xs-12
+              col-md-offset-1 col-md-10
+              col-lg-offset-2 col-lg-8">
+          <ow-geocoder-searchbar searchtext="homeAddressPrefill"></ow-geocoder-searchbar>
+        </div>
+      </div>
     </div>
   </section>
   <!-- /SEARCHBAR -->
@@ -148,6 +156,21 @@
         </div>
       </div>
 
+      <!-- CURRENT BOOKINGS AS EXTRA DRIVER -->
+      <div ng-if="me.extraDriver === true" ng-init="getBookingListAsExtraDriver();">
+        <div id="current_bookings_as_extra_driver" class="mw card" ng-if="extraDriverBookings.length > 0">
+          <div class="card-heading">
+            <h2 class="card-title">{{ 'CURRENT_BOOKINGS_AS_EXTRA_DRIVER' | translate }}</h2>
+          </div>
+          <div class="card-body">
+            <ul class="list-row booking-list booking-dashboard no-border" layout="row" layout-wrap>
+              <li ng-repeat="extraDriverBooking in extraDriverBookings | limitTo: 2" ng-include="'booking/list/partial/booking-list-item-extra-driver.tpl.html'" class="no-border" flex-gt-xs="50">
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
       <!-- MyWheels Open banner for owners with resource-->
       <div ng-if="me.provider.id === 1 && resources.length > 0">
         <div 
@@ -282,7 +305,7 @@
             <ul>
                 <li class="blog--item" ng-repeat="item in blogItems | limitTo: 3">
                     <a target="_blank" href="{{ item.url }}" ng-bind="item.title"></a>
-                    <p data-ng-bind-html="(item.content_html | removeEntersFilter | limitTo: 200) + '...'"></p>
+                    <p data-ng-bind-html="(item.content_text | removeEntersFilter | limitTo: 200) + '...'"></p>
                 </li>
             </ul>
             <center>

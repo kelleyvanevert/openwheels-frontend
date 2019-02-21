@@ -7,7 +7,7 @@ angular.module('owm.resource.favoriteIcon', [])
   var tpl = '' +
     '<i ng-click="toggle(false, $event)" ng-if="!busy && isFavorite" class="fa fa-fw fa-heart text-warning"></i>' +
     '<i ng-click="toggle(true, $event)" ng-if="!busy && !isFavorite" class="fa fa-fw fa-heart-o text-warning"></i>' +
-    '<i ng-if="busy" class="fa fa-fw fa-heart-o fa-spin text-mutes"></i>';
+    '<inline-spinner ng-if="busy" />';
 
   return {
     restrict: 'E',

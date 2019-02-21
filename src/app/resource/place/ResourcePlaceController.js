@@ -128,7 +128,7 @@ angular.module('owm.resource.place', [])
     {
       id: 'openwheels',
       title: 'MyWheels Open',
-      description: 'MyWheels Open auto\'s open je met je smartphone of OV-chipkaart. Zo kun je direct op pad.',
+      description: 'Deze auto\'s open je met je smartphone of OV-chipkaart. Zo kun je direct op pad.',
       options: undefined,
       filters: { smartwheels: true },
     },
@@ -148,8 +148,8 @@ angular.module('owm.resource.place', [])
     },
     {
       id: 'automaat',
-      title: 'Automatische geschakeld',
-      description: '',
+      title: 'Automatisch geschakeld',
+      description: 'Ontspannen rijden in deze auto\'s.',
       options: [ 'automaat' ],
       filters: undefined,
     },
@@ -163,7 +163,7 @@ angular.module('owm.resource.place', [])
     {
       id: 'aanbevolen',
       title: 'Populaire auto\'s',
-      description: undefined,
+      description: 'Deze auto\'s doen het goed in ' + $scope.place.nicename + '.',
       options: undefined,
       filters: undefined,
     },
@@ -173,10 +173,17 @@ angular.module('owm.resource.place', [])
       .filter(function (box) {
         return !!box.data;
       })
-      .slice(0, 3)
-      .sort(function (a, b) {
-        return $scope.searchBoxes.indexOf(a) < $scope.searchBoxes.indexOf(b);
-      });
+      .slice(0, 3);
+  }
+
+  function maybeLoadMapInstead () {
+    if ($scope.searchBoxes.filter(function (box) { return !box.done; }).length === 0) {
+      // all boxes have been tried
+      if (!$scope.searchBoxes.show) {
+        $scope.searchBoxes.show = [];
+        $scope.loadMap = true;
+      }
+    }
   }
   
   $scope.searchBoxes.forEach(function (box, i) {
@@ -214,9 +221,11 @@ angular.module('owm.resource.place', [])
         // data :: { results :: [Resource], totalResults :: int, ... }
         
         // only use results with photos
-        data.results = data.results.filter(function (resource) {
-          return resource.pictures.length > 0;
-        });
+        if (!(appConfig.test && appConfig.test.dontFilterWoImageOnPlacePage)) {
+          data.results = data.results.filter(function (resource) {
+            return resource.pictures.length > 0;
+          });
+        }
 
         // only show the first 3 results
         data.results = data.results.slice(0, 4);
@@ -226,12 +235,10 @@ angular.module('owm.resource.place', [])
           recomputeShownBoxes();
         }
 
-        if (!$scope.searchBoxes.show) {
-          $scope.searchBoxes.show = [];
-          $scope.loadMap = true;
-        }
+        box.done = true;
+        maybeLoadMapInstead();
       });
-    }, i * 500);
+    }, i * 200);
   });
 
 
