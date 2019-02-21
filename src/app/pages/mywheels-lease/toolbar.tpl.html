@@ -11,7 +11,7 @@
         hide-xs
         md-ink-ripple="#8f6700"
         href="#hoe_werkt_het"
-        ng-click="$anchorScroll('hoe_werkt_het')"  
+        smooth-scroll-to-item="#hoe_werkt_het"
       >
         <span>Hoe werkt het?</span>
       </md-button>
@@ -22,13 +22,16 @@
         class="mywheels-btn-call-to-action app--toolbar--button--text"
         md-ink-ripple="#8f6700"
         href="#aanmeldformulier"
-        ng-click="$anchorScroll('aanmeldformulier')"  
+        smooth-scroll-to-item="#aanmeldformulier"
       >
         <span>Meld je aan</span>
       </md-button>
 
-      <md-button hide-xs>
-        <span>Voorwaarden</span>
+      <md-button
+        hide-xs
+        ui-sref="home"
+      >
+        <span>Terug naar de site</span>
       </md-button>
 
       <!--
