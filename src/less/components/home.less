@@ -540,37 +540,21 @@
     font-size: 1.2em;
 }
 /* ---------------------- INFO BOX ------------------- */
-.infoboxes {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: flex-start;
-    flex-direction: column;
-    width: 100%;
-    box-sizing: border-box;
-}
 .infobox {
     background: #fff;
     box-sizing: border-box;
-    flex: 1;
-    flex-grow: 0;
-    flex-shrink: 0;
-    margin: 1rem 0;
-    width: 100%;
+    margin: 0 0 2rem 0;
     // flex-basis: 18em;
     display: block;
     padding: 1em;
     border: 0.1625rem solid @mywheels-green;
     box-shadow: 0 0 3.57rem 0 rgba(0, 0, 0, .1);
+
+    flex-grow: 1;
 }
 @media (min-width:500px) {
-    .infoboxes {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-    .infobox {
+    .infobox.fat {
         margin: 1rem;
-        flex-basis: 30em;
         padding: 2em;
     }
 }
@@ -619,21 +603,22 @@
     position: relative;
     padding: 5em 1em;
     z-index: 1;
-}
-.imageblock--content {
-    z-index: 10;
-    text-shadow: 0 0.07rem 0.21rem #444;
-    text-align: center;
-    padding: 5em 0;
-}
-.imageblock--heading {
-    text-shadow: 0.07rem 0.14rem 0.21rem rgba(0, 0, 0, .5);
-    color: #fff;
-    text-shadow: 0 0.07rem 0.21rem #444;
-    text-align: center;
-    font-size: 2em;
-    margin: 0 1rem;
-    z-index: 10;
+
+    .imageblock--content {
+        z-index: 10;
+        text-shadow: 0 0.07rem 0.21rem #444;
+        text-align: center;
+        padding: 5em 0;
+    }
+    .imageblock--heading {
+        text-shadow: 0.07rem 0.14rem 0.21rem rgba(0, 0, 0, .5);
+        color: #fff;
+        text-shadow: 0 0.07rem 0.21rem #444;
+        text-align: center;
+        font-size: 2em;
+        margin: 0 1rem;
+        z-index: 10;
+    }
 }
 /* cta-footer */
 .cta-footer {
