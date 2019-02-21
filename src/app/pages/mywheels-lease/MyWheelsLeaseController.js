@@ -1,21 +1,23 @@
 'use strict';
 
-angular.module('owmlanding.mywheels-open', ['slick'])
+angular.module('owmlanding.mywheels-lease', ['slick'])
 
-.controller('MyWheelsOpenController', function ($scope, $log, metaInfoService, appConfig, $anchorScroll, formSubmissionService, personService,
+.controller('MyWheelsLeaseController', function ($scope, $log, metaInfoService, appConfig, $anchorScroll, formSubmissionService, personService,
   Analytics) {
 
-  metaInfoService.set({url: appConfig.serverUrl + '/open'});
-  metaInfoService.set({canonical: 'https://mywheels.nl' + '/open'});
+  metaInfoService.set({url: appConfig.serverUrl + '/lease'});
+  metaInfoService.set({canonical: 'https://mywheels.nl' + '/lease'});
 
   metaInfoService.set({
-    title: 'MyWheels Open: Verhuur je auto altijd',
-    description: 'Laat buren, vrienden en anderen nog makkelijker jouw auto huren. Geen sleuteloverdracht, automatische kilometerregistratie en zorgeloos je auto verhuren waar je ook bent.',
+    title: 'MyWheels Lease',
+    description: 'Lease nu een auto, verhuur hem met MyWheels Open zonder sleuteloverdracht en verdien je maandlasten terug vanuit je luie stoel.',
   });
 
   $scope.$anchorScroll = $anchorScroll;
 
-  $scope.formEntry = {};
+  $scope.formEntry = {
+    model: '',
+  };
   $scope.formSendStatus = false;
 
   personService.meAnonymous().then(autoFill).catch(function () {});
@@ -25,7 +27,7 @@ angular.module('owmlanding.mywheels-open', ['slick'])
       $scope.formEntry.email = user.email;
       $scope.formEntry.firstName = user.firstName;
       $scope.formEntry.surname = (user.preposition ? (user.preposition + ' ') : '') + user.surname;
-      $scope.formEntry.city = user.city;
+      $scope.formEntry.zipcode = user.zipcode;
       if (user.phoneNumbers && user.phoneNumbers.length > 0) {
         var preferred = user.phoneNumbers[0].number;
         for (var i = 0; i < user.phoneNumbers.length; i++) {
@@ -44,24 +46,23 @@ angular.module('owmlanding.mywheels-open', ['slick'])
       $scope.formSendStatus = 'sending';
 
       formSubmissionService.send({
-        type: 'mw_open',
+        type: 'mw_lease',
         email: $scope.formEntry.email,
         firstName: $scope.formEntry.firstName,
         surname: $scope.formEntry.surname,
-        city: $scope.formEntry.city,
+        zipcode: $scope.formEntry.zipcode,
         phoneNumber: $scope.formEntry.phoneNumber,
         extraInfo: {
-          registrationPlate: $scope.formEntry.registrationPlate,
-          kmStand: $scope.formEntry.kmStand,
+          model: $scope.formEntry.model,
         },
       })
       .then(function (r) {
         $scope.formSendStatus = 'success';
-        Analytics.trackEvent('forms', 'mywheels_open_meedoen', undefined, undefined, true);
+        Analytics.trackEvent('forms', 'mywheels_lease_meedoen', undefined, undefined, true);
       })
       .catch(function (e) {
         $scope.formSendStatus = 'error';
-        Analytics.trackEvent('exceptions', 'mywheels_open_meedoen', undefined, undefined, true);
+        Analytics.trackEvent('exceptions', 'mywheels_lease_meedoen', undefined, undefined, true);
       })
       .finally(function () {
         // hi
