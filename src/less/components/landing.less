@@ -453,7 +453,7 @@
         margin: .4em 0 .7em;
 
         text-align: center;
-        font-size: 1.5em;
+        font-size: 1.2em;
       }
 
       .voorwaarden-akkoord {
@@ -532,6 +532,11 @@
   }
 
   .lease-auto {
+
+    .pm {
+      white-space: nowrap;
+    }
+    
     h2,
     .price {
       margin: 0;
@@ -539,15 +544,47 @@
       font-family: @font-family-sans-serif;
       color: black;
       .size-5();
+    }
 
+    .eur {
+      font-size: 46px;
+      font-weight: bold;
+
+      display: inline-block;
+      margin: -10px 10px 0 0;
+    }
+
+    @media screen and (max-width: 540px) {
+      .price {
+        .size-3();
+      }
       .eur {
-        font-size: 46px;
-        font-weight: bold;
-
-        display: inline-block;
-        margin: -10px 10px 0 0;
+        font-size: 30px;
       }
     }
+
+    &.as-frame {
+      padding: 1rem 0;
+      transition: box-shadow .1s ease, transform .1s ease;
+      -webkit-transition: box-shadow .1s ease, transform .1s ease;
+
+      .hoverable-img {
+        background-size: contain;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        height: 20rem;
+        margin: -0.5rem 0;
+      }
+
+      background: white;
+
+      box-shadow: 1px 1px 14px rgba(0,0,0,.1);
+      -webkit-box-shadow: 1px 1px 14px rgba(0,0,0,.1);
+    }
+  }
+
+  .lease-banner {
+    margin: 6rem 0;
   }
 }
 

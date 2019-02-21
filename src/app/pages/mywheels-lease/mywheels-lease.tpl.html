@@ -3,12 +3,14 @@
     <div class="hero inverted text-center">
         <div class="hero-overlay"></div>
         <div class="landing-title">
-            <h1><span class="highlight">Verhuur je auto, ook als je niet thuis bent</span></h1>
+            <h1><span class="highlight">De lease-auto die zichzelf terugverdient</span></h1>
             <!--<p class="sub">Dus geen gedoe met sleutels. Makkelijk toch?</p>-->
-            <a class="mywheels-btn mywheels-btn-bigger mywheels-btn-call-to-action"
-                    md-ink-ripple="#8f6700"
-                    href="#aanmeldformulier"
-                    ng-click="$anchorScroll('aanmeldformulier')">
+            <a
+                class="mywheels-btn mywheels-btn-bigger mywheels-btn-call-to-action"
+                md-ink-ripple="#8f6700"
+                href="#aanmeldformulier"
+                smooth-scroll-to-item="#aanmeldformulier"
+            >
                 Meld je nu aan
                 <span style="position: relative; bottom: -.1em; right: -.4em;">〉</span>
             </a>
@@ -25,7 +27,7 @@
     <div class="container-fluid
                 container-home
                 wat-is-mywheels-open">
-        <div class="col-md-12">
+        <div class="rpad col-md-12">
             <h2>Wat is <span style="white-space: nowrap;"><img title="MyWheels Lease" alt="MyWheels Lease" ng-src="assets/img/mywheels-lease.png" />?</span></h2>
             <p class="subtitle">
                 Lease je een auto bij MyWheels en verhuur de auto met MyWheels Open. Probleemloos zonder sleuteloverdracht. Zo verdien je je maandlasten terug vanuit je luie stoel.
@@ -76,23 +78,28 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="container container-transitional">
         <div class="row">
-            <div class="rpad col-md-offset-1 col-md-10">
-                <h2 id="hoe_werkt_het" style="padding-top: 3rem;">Hoe werkt private lease via MyWheels?</h2>
+            <div class="rpad col-xs-12">
+                <h2 id="hoe_werkt_het" style="padding: 3rem 0; text-align: center; color: #333;">Hoe werkt private lease via MyWheels?</h2>
+            </div>
+            <div class="rpad col-sm-6 size-3">
+                <p>Een nieuwe en zuinige private leaseauto via MyWheels en mijndomeinauto.nl biedt je het voordeel van een eigen auto en door deze te delen is het ook nog eens erg voordelig.</p>
+                
+                <p>De eerste 100 euro die wordt verdiend met de verhuur van je auto, ontvangt de leasemaatschappij. Verdien je meer, dan gaat dat rechtstreeks naar jou! </p>
+            </div>
+            <div class="rpad col-sm-6 size-3">
+                <p>Door de ingebouwde techniek in de auto kun jij de auto verhuren zonder sleuteloverdracht. Het enige dat je moet doen is de kalender bijhouden van je auto op MyWheels.nl. Het boeken en openen van de auto door de huurder gaat helemaal vanzelf!</p>
+                
+                <p>Via MyWheels kun je kiezen uit twee verschillende modellen die via een private leaseconstructie worden aangeboden: een brandstof Peugeot 108 en een elektrische Renault ZOE.</p>
 
-                <div class="size-3">
-                    <p>Een nieuwe en zuinige private leaseauto via MyWheels en mijndomeinauto.nl biedt je het voordeel van een eigen auto en door deze te delen is het ook nog eens erg voordelig. De eerste 100 euro die wordt verdiend met de verhuur van je auto, ontvangt de leasemaatschappij. Verdien je meer, dan gaat dat rechtstreeks naar jou! </p>
-
-                    <p>Door de ingebouwde techniek in de auto kun jij de auto verhuren zonder sleuteloverdracht. Het enige dat je moet doen is de kalender bijhouden van je auto op MyWheels.nl. Het boeken en openen van de auto door de huurder gaat helemaal vanzelf!</p>
-
-                    <p>Via MyWheels kun je kiezen uit twee verschillende modellen die via een private leaseconstructie worden aangeboden: een brandstof Peugeot 108 en een elektrische Renault ZOE.</p>
-
-                    <p>
-                        <a class="mywheels-btn mywheels-btn-default"
-                            md-ink-ripple="#3a6d81"
-                            href="https://mywheels.nl/autodelen/wp-content/uploads/2018/12/leaseanbod.pdf">Lees de voorwaarden</a>
-                    </p>
-                </div>
+                <p>
+                    <a href="https://mywheels.nl/autodelen/wp-content/uploads/2018/12/leaseanbod.pdf">
+                        Lees de voorwaarden &raquo;
+                    </a>
+                </p>
             </div>
         </div>
     </div>
@@ -102,7 +109,7 @@
                 container-home">
         <div class="row">
             <div class="rpad col-xs-12">
-                <h2 id="prijzen_specificaties" style="padding: 3rem 0;">Prijzen &amp; specificaties</h2>
+                <h2 id="prijzen_specificaties" style="padding: 5rem 0 3rem 0; color: #333; text-align: center;">Prijzen &amp; specificaties</h2>
             </div>
         </div>
         <div class="row">
@@ -126,17 +133,31 @@
                 </div>
             </div>
             <div class="rpad col-sm-6">
-                <div style="max-width: 500px; margin: 0 auto;">
+                <div
+                    style="max-width: 500px; margin: 0 auto 2rem 0; text-align: center;"
+                    info-dialog="leaseAutoSpecs"
+                    info-dialog-params="{
+                        auto: 'Peugeot 108',
+                        foto: '/assets/img/lease/peugeot.png',
+                        specs: [
+                            'Airconditioning',
+                            'Centrale deurvergrendeling',
+                            'Radio/MP3-speler',
+                            'Bluetooth carkit & audiostreaming ',
+                            'Elektrische ramen voor',
+                            'Zuinig in gebruik (1 op 26)',
+                            'Energielabel B (CO2 uitstoot van 88g per km)',
+                        ],
+                    }"
+                >
                     <img class="img-responsive" src="/assets/img/lease/peugeot.png" />
+                    <button class="mywheels-btn mywheels-btn-default">Toon autospecificaties</button>
                 </div>
-                <p style="text-align: center;">
-                    <a href="#" class="mywheels-btn mywheels-btn-default">Toon autospecificaties</a>
-                </p>
             </div>
         </div>
         <div class="row hidden-xs hidden-sm">
             <div class="rpad col-xs-12">
-                <hr />
+                <hr style="margin: 3rem 0; border-top: 2px solid #ddd;" />
             </div>
         </div>
         <div class="row">
@@ -160,33 +181,54 @@
                 </div>
             </div>
             <div class="rpad col-sm-6 col-sm-pull-6">
-                <div style="max-width: 500px; margin: 0 auto;">
+                <div
+                    style="max-width: 500px; margin: 0 auto 2rem 0; text-align: center;"
+                    info-dialog="leaseAutoSpecs"
+                    info-dialog-params="{
+                        auto: 'Renault ZOE',
+                        foto: '/assets/img/lease/zoe.png',
+                        specs: [
+                            'Airconditioning',
+                            'Automaat',
+                            'Centrale deurvergrendeling',
+                            'Cruise control',
+                            'Navigatie & bluetooth',
+                            'Rijbereik van 400km op een volle batterij',
+                            'Volledig elektrisch met een 41 kWh batterij',
+                        ],
+                    }"
+                >
                     <img class="img-responsive" src="/assets/img/lease/zoe.png" />
+                    <button class="mywheels-btn mywheels-btn-default">Toon autospecificaties</button>
                 </div>
-                <p style="text-align: center;">
-                    <a href="#" class="mywheels-btn mywheels-btn-default">Toon autospecificaties</a>
-                </p>
             </div>
         </div>
         <div class="row">
             <div class="rpad col-xs-12">
-                <p style="margin-top: 2rem;">*Bovenstaande prijzen gelden voor een looptijd van 48 maanden en 100 euro per maand opbrengst verhuur via MyWheels.</p>
+                <p style="margin-top: 3rem; text-align: center; color: #888;">*Bovenstaande prijzen gelden voor een looptijd van 48 maanden en 100 euro per maand opbrengst verhuur via MyWheels.</p>
             </div>
         </div>
     </div>
 
+
     <!-- IK DOE MEE! -->
-    <div class="container-fluid
-                container-home
-                mywheels-ik-doe-mee">
-        <div class="col-sm-8">
-            <div id="aanmeldformulier" style="padding-top: 1em;">
+    <div class="container container-transitional">
+        <div class="rpad col-xs-12" style="text-align: center;">
+            <h2 id="aanmeldformulier" style="color: #333; padding-top: 5rem;">Meld je nu aan</h2>
+            <p class="size-2">
+                Geïnteresseerd? Vul hieronder je gegevens in en we nemen vrijblijvend contact met je op.
+            </p>
+        </div>
+    </div>
+    <div
+        class="container container-transitional
+                mywheels-ik-doe-mee"
+        style="padding-top: 0;"
+    >
+        <div class="rpad col-sm-8 col-sm-offset-2">
+            <div style="padding-top: 1em;">
                 <div class="aanmeldformulier">
-                    <h2>Meld je nu aan</h2>
                     <div class="form-surround">
-                        <p class="size-2">
-                            Geïnteresseerd? Vul hieronder je gegevens in en we nemen vrijblijvend contact met je op.
-                        </p>
                         <form name="form" class="mywheels-form">
 
                             <div class="form-group">
@@ -255,7 +297,6 @@
                                             { label: '-- Voorkeur model --', value: '', disabled: true },
                                             { label: 'Peugeot 108', value: 'peugeot_108' },
                                             { label: 'Renault ZOE', value: 'renault_zoe' },
-                                            { label: 'Geen voorkeur', value: 'geen_voorkeur' },
                                         ]"
                                 />
                                 <div ng-show="form.$submitted || form.model.$touched">
@@ -295,64 +336,41 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-4">
-            <div id="gratisjaar" style="padding-top: 1em;">
-                <div class="gratisjaar">
-                    <h2>1 jaar gratis</h2>
-                    <div class="size-2">
-                        <p>Woon je in de provincie Utrecht of de gemeente Den Haag? Dan kost dit je het eerste jaar niks!</p>
-                        <p><a target="_blank" href="https://mywheels.nl/autodelen/wp-content/uploads/2018/11/MyWheelsOpenvoorwaardenActie.pdf">Lees de actievoorwaarden</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <!-- /IK DOE MEE! -->
 
     <!-- ADAVANTAGES -->
-    <div class="advantage-mywheels container-home">
-        <div class="col-md-12">
-            <h2 class="infoboxes--heading">Dit wil je misschien ook nog weten</h2>
-        </div>
+    <div class="advantage-mywheels">
+        <div class="container container-transitional">
+            <div class="row">
+                <div class="rpad col-xs-12">
+                    <h2 style="color: #333; text-align: center; padding: 1rem 0;">Veelgestelde vragen</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="rpad col-sm-6 col-xs-12">
 
-        <div class="infoboxes">
-            <div class="infobox">
-                <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                    <ng-md-icon size="32" icon="directions_car" aria-hidden="true"></ng-md-icon>
-                    <h3 class="infobox--title--text">Zo kan je veilig verhuren</h3>
+                <div class="card mw faq" ng-repeat="faq in FAQ.left">
+                    <div class="card-heading" ng-click="faq.open = !faq.open;">
+                    <h4 class="card-title">{{ faq.question }}</h4>
+                    </div>
+                    <div class="panel-body" uib-collapse="!faq.open">
+                    <p>{{ faq.answer }}</p>
+                    </div>
                 </div>
-                <div class="size-2">
-                    <p>Wij regelen een Allrisk verzekering bij Centraal Beheer voor de duur van de huur. Zo kan je met een gerust hart je auto verhuren.</p>
-                    <p>Dit verzekering vervangt jouw eigen autoverzekering en beschermt je no-claim. De verzekering heeft ook een inzittendendekking.</p>
+
                 </div>
-            </div>
-            <div class="infobox">
-                <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                    <ng-md-icon size="32" icon="security" aria-hidden="true"></ng-md-icon>
-                    <h3 class="infobox--title--text">Wat kost het jou?</h3>
+                <div class="rpad col-sm-6 col-xs-12">
+
+                <div class="card mw faq" ng-repeat="faq in FAQ.right">
+                    <div class="card-heading" ng-click="faq.open = !faq.open;">
+                    <h4 class="card-title">{{ faq.question }}</h4>
+                    </div>
+                    <div class="panel-body" uib-collapse="!faq.open">
+                    <p>{{ faq.answer }}</p>
+                    </div>
                 </div>
-                <div class="size-2">
-                    <p>Je auto aanbieden is gratis. Je betaalt geen vaste (abonnements)kosten.</p>
-                    <p>Ga je voor MyWheels Open, dan plaatsen we een boardcomputer. Dat kost €29 per maand.</p>
-                    <p>Voor autobezitters in de provincie Utrecht en de gemeente Den Haag is het tijdelijk 1 jaar gratis.</p>
-                </div>
-            </div>
-            <div class="infobox">
-                <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                    <ng-md-icon size="32" icon="contact_phone" aria-hidden="true"></ng-md-icon>
-                    <h3 class="infobox--title--text">Wat verdienen wij eraan?</h3>
-                </div>
-                <div class="size-2">
-                    <p>Bij verhuring van je auto vragen we een vergoeding van 2,50 euro per etmaal. Daarnaast betaal je 20% van de verhuuropbrengst voor de Allrisk verzekering. De 20% geldt niet voor de brandstofkosten die huurder betaalt.</p>
-                </div>
-            </div>
-            <div class="infobox">
-                <div layout="row" layout-align="start center" layout-margin class="infobox--title">
-                    <ng-md-icon size="32" icon="call_split" aria-hidden="true"></ng-md-icon>
-                    <h3 class="infobox--title--text">Dag en nacht hulp bij pech</h3>
-                </div>
-                <div class="size-2">
-                    <p>Gebeurt er iets onderweg? 24 uur per dag staat er iemand voor je klaar om je uit de brand te helpen. Een telefoontje is genoeg, en als de auto niet meer verder kan, regelt de verzekering vervangend vervoer.</p>
+
                 </div>
             </div>
         </div>
@@ -363,7 +381,7 @@
     <div class="container-fluid slider">
         <div class="ratings-mywheels container-home">
             
-            <div class="col-md-12">
+            <div class="rpad col-md-12">
                 <h2 class="ratings--heading">Sluit je aan bij 60.000 autodelers</h2>
             </div>
 
