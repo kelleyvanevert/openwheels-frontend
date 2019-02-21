@@ -1,0 +1,70 @@
+<div class="container container-transitional">
+  <md-toolbar class="app-toolbar">
+
+    <div class="md-toolbar-tools">
+
+      <img ng-src="assets/img/mywheels-lease.png" height="34" />
+
+      <span flex></span>
+
+      <md-button
+        hide-xs
+        md-ink-ripple="#8f6700"
+        href="#hoe_werkt_het"
+        ng-click="$anchorScroll('hoe_werkt_het')"  
+      >
+        <span>Hoe werkt het?</span>
+      </md-button>
+
+      <md-button
+        style="font-weight: bold;"
+        hide-xs
+        class="mywheels-btn-call-to-action app--toolbar--button--text"
+        md-ink-ripple="#8f6700"
+        href="#aanmeldformulier"
+        ng-click="$anchorScroll('aanmeldformulier')"  
+      >
+        <span>Meld je aan</span>
+      </md-button>
+
+      <md-button hide-xs>
+        <span>Voorwaarden</span>
+      </md-button>
+
+      <!--
+      <md-menu hide-gt-xs style="margin-right: 4px;" md-position-mode="target-right target" ng-if="user.isAuthenticated" ng-class="{ 'user-name-visible': isWindowSizeSM }">
+
+        <md-button
+          class="md-icon-button"
+          md-menu-origin
+          ng-click="$mdOpenMenu($event)"
+        >
+          <ng-md-icon icon="menu" alt="Icoon" aria-label="Icoon"></ng-md-icon>
+        </md-button>
+
+        <md-menu-content width="4">
+          <md-menu-item>
+            <md-button">
+              <span>Hoe werkt het?</span>
+            </md-button>
+          </md-menu-item>
+
+          <md-menu-item>
+            <md-button">
+              <span>Meld je aan</span>
+            </md-button>
+          </md-menu-item>
+
+          <md-menu-item>
+            <md-button">
+              <span>Voorwaarden</span>
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+      -->
+
+    </div>
+
+  </md-toolbar>
+</div>
