@@ -1,154 +1,218 @@
 
 <div id="own-resources-page-container" class="container container-transitional">
   <div class="row">
-    <div class="rpad col-xs-12">
-      <h1 class="page-title card-pad-left">
-        <span ng-if="resources.length == 1">Mijn auto</span>
-        <span ng-if="resources.length != 1">
-          Mijn auto's
-          <span ng-if="resources.length > 0">({{ resources.length }})</span>
-        </span>
+    <div class="rpad col-md-4">
+    </div>
+    <div class="rpad col-md-8">
+      <h1 class="page-title card-pad-left" style="text-align: left;">
+        Mijn auto's
+        <!--<button type="button" class="mywheels-btn mywheels-btn-call-to-action" ui-sref="list-your-car">
+          Voeg een auto toe
+        </button>-->
       </h1>
     </div>
   </div>
   <div class="row">
-    <div class="rpad col-xs-12">
+    <div class="rpad col-md-8 col-md-push-4">
 
-      <div class="card mw" ng-show="resources.length > 0">
+      <div class="card mw" ng-repeat="resource in resources">
         <div class="card-body">
-          <ul class="list-unstyled list-row">
-            <li ng-repeat="resource in resources" >
 
-              <div class="resourceOwnListDesktop" hide-xs>
+          <div class="resourceOwnListDesktop" hide-xs>
 
-                <img ui-sref="owm.resource.edit({ resourceId: resource.id })"
-                  class="media-object pull-left"
-                  ng-src="{{ resource.pictures[0] | resourceAvatar:'normal' }}" 
-                >
+            <img ui-sref="owm.resource.edit({ resourceId: resource.id })"
+              class="media-object pull-left"
+              ng-src="{{ resource.pictures[0] | resourceAvatar:'large' }}" 
+            >
 
-                <div class="pull-left text-left">
-                  <div class="truncate" ui-sref="owm.resource.edit({ resourceId: resource.id })">
-                    <ng-md-icon icon="directions_car"></ng-md-icon> {{ resource.alias }} {{ resource.registrationPlate | surroundWith : '(' : ')' }}
-                  </div>
-
-                  <div class="truncate">
-                    <ng-md-icon icon="location_on"></ng-md-icon> {{ resource.location }} {{ resource.streetNumber }}, {{ resource.city }}
-                  </div>
-
-                  <div class="truncate not-available" ng-if="!resource.isActive && me.provider.id !== 5">
-                    <ng-md-icon icon="warning" class="not-available"></ng-md-icon> {{ 'RESOURCE_INACTIVE_WARNING' | translate }}
-                  </div>
-
-                  <div class="truncate available" ng-if="(resource.isAvailableOthers || resource.isAvailableFriends) && resource.isActive && me.provider.id !== 5">
-                    <ng-md-icon icon="check" class="available"></ng-md-icon> {{ 'RESOURCE_AVAILABLE' | translate }}
-                  </div>
-
-                  <div class="truncate not-available" ng-if="!resource.isAvailableOthers && !resource.isAvailableFriends && resource.isActive && me.provider.id !== 5">
-                    <ng-md-icon icon="warning" class="not-available"></ng-md-icon> {{ 'RESOURCE_NOT_AVAILABLE_WARNING' | translate }}
-                  </div>
-                </div>
-
-                <div class="pull-right text-right">
-                  <div class="truncate">
-                    <ng-md-icon icon="settings"></ng-md-icon> <a ui-sref="owm.resource.edit({ resourceId: resource.id })">{{ 'EDIT_RESOURCE' | translate }}</a>
-                  </div>
-
-                  <div class="truncate" ng-if="(resource.isAvailableOthers || resource.isAvailableFriends) && resource.isActive && me.provider.id !== 5">
-                    <ng-md-icon icon="close"></ng-md-icon> <a ng-click="setResourceAvailability(resource, false)">{{ 'AVAILABLE_RESOURCE' | translate }}</a>
-                  </div>
-
-                  <div class="truncate" ng-if="!resource.isAvailableOthers && !resource.isAvailableFriends && resource.isActive && me.provider.id !== 5">
-                    <ng-md-icon icon="check"></ng-md-icon> <a ng-click="setResourceAvailability(resource, true)">{{ 'NOT_AVAILABLE_RESOURCE' | translate }}</a>
-                  </div>
-
-                  <div class="truncate" ng-if="resource.boardcomputer && resource.boardcomputer !== 'ccome' && resource.owner.id === me.id && me.provider.id !== 5">
-                    <ng-md-icon icon="place"></ng-md-icon> <a ng-click="location(resource)">{{ 'SHOW_LOCATION_ON_MAP' | translate }}</a>
-                  </div>
-
-                  <div class="truncate" ng-if="!resource.boardcomputer && resource.isActive && (resource.isAvailableOthers || resource.isAvailableFriends) && me.provider.id !== 5">
-                    <ng-md-icon icon="date_range"></ng-md-icon> <a ng-href="{{ $state.href('owm.resource.calendar', { city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id }) }}" ga-track-event="['interaction', 'updateAvailability', 'resourceOwn']">{{ 'RESOURCE_EDIT_CALENDAR' | translate }}</a>
-                  </div>
-
-                  <div class="truncate" ng-if="features.parkingpermit">
-                    <ng-md-icon icon="person"></ng-md-icon> <a ng-href="{{ $state.href('owm.resource.edit', { city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id }) }}">{{ 'ADD_MEMBERS' | translate }}</a>
-                  </div>
-
-                  <parkingpermit ng-if="features.parkingpermit" resource="resource" resource-list="resources"></parkingpermit>
-                </div>
+            <div class="pull-left text-left">
+              <div class="truncate" ui-sref="owm.resource.edit({ resourceId: resource.id })">
+                <ng-md-icon icon="directions_car"></ng-md-icon> {{ resource.alias }} {{ resource.registrationPlate | surroundWith : '(' : ')' }}
               </div>
 
-              <div class="resourceOwnListMobile" hide-gt-xs>
-
-                <img ui-sref="owm.resource.edit({ resourceId: resource.id })"
-                  class="media-object"
-                  ng-src="{{ resource.pictures[0] | resourceAvatar:'large' }}"
-                >
-
-                <div class="truncate" ui-sref="owm.resource.edit({ resourceId: resource.id })">
-                  <ng-md-icon icon="directions_car"></ng-md-icon> {{ resource.alias }}
-                </div>
-
-                <div class="truncate">
-                  <ng-md-icon icon="location_on"></ng-md-icon> {{ resource.location }} {{ resource.streetNumber }}, {{ resource.city }}
-                </div>
-
-                <div class="truncate not-available" ng-if="!resource.isActive && me.provider.id !== 5">
-                  <ng-md-icon icon="warning" class="not-available"></ng-md-icon> {{ 'RESOURCE_INACTIVE_WARNING' | translate }}
-                </div>
-
-                <div class="truncate available" ng-if="(resource.isAvailableOthers || resource.isAvailableFriends) && resource.isActive && me.provider.id !== 5">
-                  <ng-md-icon icon="check" class="available"></ng-md-icon> {{ 'RESOURCE_AVAILABLE' | translate }}
-                </div>
-
-                <div class="truncate not-available" ng-if="!resource.isAvailableOthers && !resource.isAvailableFriends && resource.isActive && me.provider.id !== 5">
-                  <ng-md-icon icon="warning" class="not-available"></ng-md-icon> {{ 'RESOURCE_NOT_AVAILABLE_WARNING' | translate }}
-                </div>
-
-                <h4>Acties</h4>
-                <div class="truncate">
-                  <ng-md-icon icon="settings"></ng-md-icon> <a ui-sref="owm.resource.edit({ resourceId: resource.id })">{{ 'EDIT_RESOURCE' | translate }}</a>
-                </div>
-
-                <div class="truncate" ng-if="(resource.isAvailableOthers || resource.isAvailableFriends) && resource.isActive && me.provider.id !== 5">
-                  <ng-md-icon icon="close"></ng-md-icon> <a ng-click="setResourceAvailability(resource, false)">{{ 'AVAILABLE_RESOURCE' | translate }}</a>
-                </div>
-
-                <div class="truncate" ng-if="!resource.isAvailableOthers && !resource.isAvailableFriends && resource.isActive && me.provider.id !== 5">
-                  <ng-md-icon icon="check"></ng-md-icon> <a ng-click="setResourceAvailability(resource, true)">{{ 'NOT_AVAILABLE_RESOURCE' | translate }}</a>
-                </div>
-
-                <div class="truncate" ng-if="resource.boardcomputer && resource.boardcomputer !== 'ccome' && resource.owner.id === me.id && me.provider.id !== 5">
-                  <ng-md-icon icon="place"></ng-md-icon> <a ng-click="location(resource)">{{ 'SHOW_LOCATION_ON_MAP' | translate }}</a>
-                </div>
-
-                <div class="truncate" ng-if="!resource.boardcomputer && resource.isActive && (resource.isAvailableOthers || resource.isAvailableFriends) && me.provider.id !== 5">
-                  <ng-md-icon icon="date_range"></ng-md-icon> <a ng-href="{{ $state.href('owm.resource.calendar', { city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id }) }}" ga-track-event="['interaction', 'updateAvailability', 'resourceOwn']">{{ 'RESOURCE_EDIT_CALENDAR' | translate }}</a>
-                </div>
-
-                <div class="truncate" ng-if="features.parkingpermit">
-                  <ng-md-icon icon="person"></ng-md-icon> <a ng-href="{{ $state.href('owm.resource.edit', { city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id }) }}">{{ 'ADD_MEMBERS' | translate }}</a>
-                </div>
-
-                <parkingpermit ng-if="features.parkingpermit" resource="resource" resource-list="resources"></parkingpermit>
+              <div class="truncate">
+                <ng-md-icon icon="location_on"></ng-md-icon> {{ resource.location }} {{ resource.streetNumber }}, {{ resource.city }}
               </div>
 
-            </li>
-          </ul>
-        </div>
-      </div>
+              <div class="truncate not-available" ng-if="!resource.isActive && me.provider.id !== 5">
+                <ng-md-icon icon="warning" class="not-available"></ng-md-icon> {{ 'RESOURCE_INACTIVE_WARNING' | translate }}
+              </div>
 
-      <div class="card mw" ng-if="features.ownerFlow">
-        <div class="card-heading">
-          <h2 class="card-title" ng-show="resources.length === 0">
-            Je hebt nog geen auto toegevoegd.
-          </h2>
+              <div class="truncate available" ng-if="(resource.isAvailableOthers || resource.isAvailableFriends) && resource.isActive && me.provider.id !== 5">
+                <ng-md-icon icon="check" class="available"></ng-md-icon> {{ 'RESOURCE_AVAILABLE' | translate }}
+              </div>
+
+              <div class="truncate not-available" ng-if="!resource.isAvailableOthers && !resource.isAvailableFriends && resource.isActive && me.provider.id !== 5">
+                <ng-md-icon icon="warning" class="not-available"></ng-md-icon> {{ 'RESOURCE_NOT_AVAILABLE_WARNING' | translate }}
+              </div>
+            </div>
+
+            <div class="pull-right text-right">
+              <div class="truncate">
+                <ng-md-icon icon="settings"></ng-md-icon> <a ui-sref="owm.resource.edit({ resourceId: resource.id })">{{ 'EDIT_RESOURCE' | translate }}</a>
+              </div>
+
+              <div class="truncate" ng-if="(resource.isAvailableOthers || resource.isAvailableFriends) && resource.isActive && me.provider.id !== 5">
+                <ng-md-icon icon="close"></ng-md-icon> <a ng-click="setResourceAvailability(resource, false)">{{ 'AVAILABLE_RESOURCE' | translate }}</a>
+              </div>
+
+              <div class="truncate" ng-if="!resource.isAvailableOthers && !resource.isAvailableFriends && resource.isActive && me.provider.id !== 5">
+                <ng-md-icon icon="check"></ng-md-icon> <a ng-click="setResourceAvailability(resource, true)">{{ 'NOT_AVAILABLE_RESOURCE' | translate }}</a>
+              </div>
+
+              <div class="truncate" ng-if="resource.boardcomputer && resource.boardcomputer !== 'ccome' && resource.owner.id === me.id && me.provider.id !== 5">
+                <ng-md-icon icon="place"></ng-md-icon> <a ng-click="location(resource)">{{ 'SHOW_LOCATION_ON_MAP' | translate }}</a>
+              </div>
+
+              <div class="truncate" ng-if="!resource.boardcomputer && resource.isActive && (resource.isAvailableOthers || resource.isAvailableFriends) && me.provider.id !== 5">
+                <ng-md-icon icon="date_range"></ng-md-icon> <a ng-href="{{ $state.href('owm.resource.calendar', { city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id }) }}" ga-track-event="['interaction', 'updateAvailability', 'resourceOwn']">{{ 'RESOURCE_EDIT_CALENDAR' | translate }}</a>
+              </div>
+
+              <div class="truncate" ng-if="features.parkingpermit">
+                <ng-md-icon icon="person"></ng-md-icon> <a ng-href="{{ $state.href('owm.resource.edit', { city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id }) }}">{{ 'ADD_MEMBERS' | translate }}</a>
+              </div>
+
+              <parkingpermit ng-if="features.parkingpermit" resource="resource" resource-list="resources"></parkingpermit>
+            </div>
+          </div>
+
+          <div class="resourceOwnListMobile" hide-gt-xs>
+
+            <img ui-sref="owm.resource.edit({ resourceId: resource.id })"
+              class="media-object"
+              ng-src="{{ resource.pictures[0] | resourceAvatar:'large' }}"
+            >
+
+            <div class="truncate" ui-sref="owm.resource.edit({ resourceId: resource.id })">
+              <ng-md-icon icon="directions_car"></ng-md-icon> {{ resource.alias }}
+            </div>
+
+            <div class="truncate">
+              <ng-md-icon icon="location_on"></ng-md-icon> {{ resource.location }} {{ resource.streetNumber }}, {{ resource.city }}
+            </div>
+
+            <div class="truncate not-available" ng-if="!resource.isActive && me.provider.id !== 5">
+              <ng-md-icon icon="warning" class="not-available"></ng-md-icon> {{ 'RESOURCE_INACTIVE_WARNING' | translate }}
+            </div>
+
+            <div class="truncate available" ng-if="(resource.isAvailableOthers || resource.isAvailableFriends) && resource.isActive && me.provider.id !== 5">
+              <ng-md-icon icon="check" class="available"></ng-md-icon> {{ 'RESOURCE_AVAILABLE' | translate }}
+            </div>
+
+            <div class="truncate not-available" ng-if="!resource.isAvailableOthers && !resource.isAvailableFriends && resource.isActive && me.provider.id !== 5">
+              <ng-md-icon icon="warning" class="not-available"></ng-md-icon> {{ 'RESOURCE_NOT_AVAILABLE_WARNING' | translate }}
+            </div>
+
+            <h4>Acties</h4>
+            <div class="truncate">
+              <ng-md-icon icon="settings"></ng-md-icon> <a ui-sref="owm.resource.edit({ resourceId: resource.id })">{{ 'EDIT_RESOURCE' | translate }}</a>
+            </div>
+
+            <div class="truncate" ng-if="(resource.isAvailableOthers || resource.isAvailableFriends) && resource.isActive && me.provider.id !== 5">
+              <ng-md-icon icon="close"></ng-md-icon> <a ng-click="setResourceAvailability(resource, false)">{{ 'AVAILABLE_RESOURCE' | translate }}</a>
+            </div>
+
+            <div class="truncate" ng-if="!resource.isAvailableOthers && !resource.isAvailableFriends && resource.isActive && me.provider.id !== 5">
+              <ng-md-icon icon="check"></ng-md-icon> <a ng-click="setResourceAvailability(resource, true)">{{ 'NOT_AVAILABLE_RESOURCE' | translate }}</a>
+            </div>
+
+            <div class="truncate" ng-if="resource.boardcomputer && resource.boardcomputer !== 'ccome' && resource.owner.id === me.id && me.provider.id !== 5">
+              <ng-md-icon icon="place"></ng-md-icon> <a ng-click="location(resource)">{{ 'SHOW_LOCATION_ON_MAP' | translate }}</a>
+            </div>
+
+            <div class="truncate" ng-if="!resource.boardcomputer && resource.isActive && (resource.isAvailableOthers || resource.isAvailableFriends) && me.provider.id !== 5">
+              <ng-md-icon icon="date_range"></ng-md-icon> <a ng-href="{{ $state.href('owm.resource.calendar', { city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id }) }}" ga-track-event="['interaction', 'updateAvailability', 'resourceOwn']">{{ 'RESOURCE_EDIT_CALENDAR' | translate }}</a>
+            </div>
+
+            <div class="truncate" ng-if="features.parkingpermit">
+              <ng-md-icon icon="person"></ng-md-icon> <a ng-href="{{ $state.href('owm.resource.edit', { city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id }) }}">{{ 'ADD_MEMBERS' | translate }}</a>
+            </div>
+
+            <parkingpermit ng-if="features.parkingpermit" resource="resource" resource-list="resources"></parkingpermit>
+          </div>
+          <div style="clear: both;"></div>
+
         </div>
+      </div><!-- /resource card -->
+
+      <div class="card mw">
         <div class="card-body">
-          <p>
-            <button type="button" name="button" class="mywheels-btn mywheels-btn-default" ui-sref="list-your-car">
-              {{ 'CREATE_RESOURCE_BUTTON' | translate }}
-            </button>
-          </p>
+          <h3>Voeg een nieuwe auto toe</h3>
+          <div ng-if="features.ownerFlow">
+            <div
+              ng-if="!licencePlate.data"
+              class="list-your-car--licenceplate"
+              style="padding-top: 2rem;"
+              license-plate-info
+            ></div>
+
+            <!-- list-your-car container -->
+            <section ng-show="licencePlate.data && licencePlate.data.teDureAuto">
+                <h2 class="list-your-car--container--error">Helaas, de catalogusprijs van jouw auto is te hoog.</h2>
+                <p class="text-center">
+                    Onze verzekering is alleen geschikt voor auto's met een catalogusprijs lager dan 50.000 euro.
+                    <br>
+                    Jouw auto heeft een catalogusprijs van {{ licencePlate.data.catalogusprijs | currency }} en kan daarom niet via MyWheels verhuurd worden.
+                </p>
+            </section>
+
+            <section ng-show="licencePlate.data && !licencePlate.data.teDureAuto && licencePlate.data.camper">
+                <h2 class="list-your-car--container--error">Helaas, je kunt via MyWheels geen campers verhuren.</h2>
+                <p class="text-center">
+                    Onze verzekering is niet geschikt voor het verhuren van campers, je kunt jouw camper daarom niet via MyWheels verhuren.
+                </p>
+            </section>
+
+            <section
+                ng-show="licencePlate.data && !licencePlate.data.teDureAuto && !licencePlate.data.camper"
+            >
+                <div class="list-your-car--car-info-list" style="min-height: 0; margin-bottom: 2rem;">
+                    <ul>
+                        <li class="list-your-car--car-info-list--item">
+                            <div class="list-your-car-item__icon">
+                                <ng-md-icon icon="directions_car"></ng-md-icon>
+                            </div>
+                            <div class="list-your-car-item__info">
+                                <h2>{{'BRAND' | translate}} / {{'MODEL' | translate}}</h2> <span>{{(licencePlate.data.merk | toTitleCase) || 'Onbekend' }} {{licencePlate.data.handelsbenaming | toTitleCase}}</span>
+                            </div>
+                        </li>
+                        <li class="list-your-car--car-info-list--item">
+                            <div class="list-your-car-item__icon">
+                                <ng-md-icon icon="local_gas_station"></ng-md-icon>
+                            </div>
+                            <div class="list-your-car-item__info">
+                                <h2>{{'RESOURCE_REFUEL_BY_RENTER_LABEL' | translate}}</h2><span> {{licencePlate.data.brandstof || 'Onbekend' }}</span>
+                            </div>
+                        </li>
+                        <li class="list-your-car--car-info-list--item">
+                            <div class="list-your-car-item__icon">
+                                <ng-md-icon icon="today"></ng-md-icon>
+                            </div>
+                            <div class="list-your-car-item__info">
+                                <h2>{{'TIME_OF_ORGIN' | translate}}</h2> <span>{{licencePlate.data.datum_eerste_toelating || 'Onbekend' }}</span>
+                            </div>
+                        </li>
+                        <li class="list-your-car--car-info-list--item">
+                            <div class="list-your-car-item__icon">
+                                <ng-md-icon icon="color_lens"></ng-md-icon>
+                            </div>
+                            <div class="list-your-car-item__info">
+                                <h2>{{'COLOR' | translate }}</h2> <span>{{ (licencePlate.data.kleur| toTitleCase) || 'Onbekend' }}</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <div layout="column" layout-align="center center" class="list-your-car--buttons layout-align-center-center layout-column">
+              <button type="button" name="button" class="mywheels-btn mywheels-btn-default mywheels-btn-big" ng-click="beginRentingOut()" ng-show="licencePlate.data && !licencePlate.data.teDureAuto && !licencePlate.data.camper" ng-disabled="!licencePlate.data">
+                Voeg deze auto toe
+              </button>
+              <button type="button" name="button" class="mywheels-btn mywheels-btn-light" ng-show="licencePlate.data" ng-click="licencePlate.data = licencePlate.content = ''">
+                Ander kenteken?
+              </button>
+            </div>
+            <!-- /list-your-car container -->
+          </div>
         </div>
       </div>
 
@@ -214,57 +278,6 @@
 
       </div>
 
-      <!-- MyWheels Open banner for owners with resource-->
-      <div ng-if="me.provider.id === 1 && resources.length > 0">
-        <div 
-          class="mywheels--open--card"
-          style="text-align: center;"
-          ng-click="goToMyWheelsOpen()"
-          ga-track-event="['interaction', 'mywheelsOpenUtrecht', 'dashboard']"
-          ng-if="MyWheelsOpenUtrecht"
-          hide-xs
-        >
-          <img src="../branding/img/mywheels_open_dashboard_utrecht.png" class="banner" style="max-width: 100%; width: auto;" />
-              <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary" style="right:0.5em; font-size:1.1em;padding:.5em 0.8em;">Meld je aan</a>
-        </div>
-
-        <div 
-          class="mywheels--open--card"
-          style="text-align: center;"
-          ng-click="goToMyWheelsOpen()"
-          ga-track-event="['interaction', 'mywheelsOpen', 'dashboard']"
-          ng-if="!MyWheelsOpenUtrecht"
-          hide-xs
-        >
-          <img src="../branding/img/mywheels_open_dashboard.png" class="banner" style="max-width: 100%; width: auto;" />
-              <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary">Meld je aan</a>
-        </div>
-
-        <div 
-          class="mywheels--open--card"
-          style="text-align: center;"
-          ng-click="goToMyWheelsOpen()"
-          ga-track-event="['interaction', 'mywheelsOpen', 'dashboard']"
-          ng-if="!MyWheelsOpenUtrecht"
-          hide-gt-xs
-        >
-          <img src="../branding/img/mywheels_open_mobiel.png" class="banner" style="max-width: 100%; width: auto;" />
-              <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary" style="font-size:1.1em;">Meld je aan</a>
-        </div>
-        
-        <div 
-          class="mywheels--open--card"
-          style="text-align: center;"
-          ng-click="goToMyWheelsOpen()"
-          ga-track-event="['interaction', 'mywheelsOpen', 'dashboard']"
-          ng-if="MyWheelsOpenUtrecht"
-          hide-gt-xs
-        >
-          <img src="../branding/img/mywheels_open_dashboard_utrecht_mobiel.png" class="banner" style="max-width: 100%; width: auto;" />
-              <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary" style="font-size:1.1em;">Meld je aan</a>
-        </div>
-      </div>
-
       <div class="card" ng-if="!features.ownerFlow && me.provider.id === 50">
 
         <div class="card-heading">
@@ -293,5 +306,36 @@
       </div>
 
     </div><!-- /col -->
+
+    <!-- sidebar column -->
+    <div class="rpad col-md-4 col-md-pull-8">
+
+      <!-- MyWheels Open banner for owners with resource-->
+      <div ng-if="me.provider.id === 1 && resources.length > 0">
+        <div 
+          class="mywheels--open--card"
+          style="text-align: center;"
+          ui-sref="owmlanding.mywheels-open"
+          ga-track-event="['interaction', 'mywheelsOpen', 'dashboard']"
+          ng-if="!MyWheelsOpenUtrecht"
+        >
+          <img src="../branding/img/mywheels_open_mobiel.png" class="banner" style="max-width: 100%; width: auto;" />
+              <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary" style="font-size:1.1em;">Meld je aan</a>
+        </div>
+        
+        <div 
+          class="mywheels--open--card"
+          style="text-align: center;"
+          ui-sref="owmlanding.mywheels-open"
+          ga-track-event="['interaction', 'mywheelsOpen', 'dashboard']"
+          ng-if="MyWheelsOpenUtrecht"
+        >
+          <img src="../branding/img/mywheels_open_dashboard_utrecht_mobiel.png" class="banner" style="max-width: 100%; width: auto;" />
+              <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary" style="font-size:1.1em;">Meld je aan</a>
+        </div>
+      </div>
+
+    </div><!-- /col -->
+
   </div>
 </div>

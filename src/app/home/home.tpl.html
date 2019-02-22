@@ -29,12 +29,12 @@
     <!-- /TRIANGLE BAR -->
 
     <!-- MYWHEELS OPEN -->
-    <div class="mywheels--open--card" ng-if="features.homePage" ng-click="goToMyWheelsOpen()" ga-track-event="['interaction', 'mywheelsOpen', 'home']" hide-xs>
+    <div class="mywheels--open--card" ng-if="features.homePage" ui-sref="owmlanding.mywheels-open" ga-track-event="['interaction', 'mywheelsOpen', 'home']" hide-xs>
        <img src="../branding/img/mywheels_open_desktop.png" class="banner" />
            <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary">Meld je aan</a>
     </div>
    
-    <div class="mywheels--open--card" ng-if="features.homePage" ng-click="goToMyWheelsOpen()" ga-track-event="['interaction', 'mywheelsOpen', 'home']" hide-gt-xs>
+    <div class="mywheels--open--card" ng-if="features.homePage" ui-sref="owmlanding.mywheels-open" ga-track-event="['interaction', 'mywheelsOpen', 'home']" hide-gt-xs>
        <img src="../branding/img/mywheels_open_mobiel.png" class="banner" />
            <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary">Meld je aan</a>
     </div>
@@ -83,7 +83,7 @@
                 <h2>Verhuur en verdien</h2>
                 <div class="size-2">
                     <p>Je auto aanbieden is gratis. Vul je kenteken in, plaats een paar mooie foto's en je kunt beginnen. Zo verdien jij iets extra's aan je auto en kunnen jouw buren op pad.</p>
-                    <p>Met <a href="/open" ui-sref="owmlanding.mywheels-open" target="_blank">MyWheels Open</a> kan je nog makkelijker en vaker je auto delen.</p>
+                    <p>Met <a href="/open" ui-sref="owmlanding.mywheels-open">MyWheels Open</a> kan je nog makkelijker en vaker je auto delen.</p>
                 </div>
                 <button type="button" name="button" class="mywheels-btn mywheels-btn-default mywheels-btn-margin-top mywheels-btn-big" ui-sref="list-your-car" md-ink-ripple="#3a6d81">
                     Meld je auto aan
@@ -210,7 +210,7 @@
             <div class="row">
                 <div class="rpad col-md-8 col-md-offset-2">
                     <p class="size-2">
-                        Lease je een auto bij MyWheels en verhuur de auto met MyWheels Open. Probleemloos zonder sleuteloverdracht. Zo verdien je je maandlasten terug vanuit je luie stoel.
+                        Lease een auto bij MyWheels en verhuur de auto met MyWheels Open. Probleemloos zonder sleuteloverdracht. Zo verdien je je maandlasten terug vanuit je luie stoel.
                         <a ui-sref="owmlanding.mywheels-lease">Ontdek MyWheels Lease &raquo;</a>
                     </p>
                 </div>

@@ -17,6 +17,20 @@ angular.module('owm.resource.own', [])
     showError: false,
     error: ''
   };
+
+  $scope.beginRentingOut = function () {
+    $state.go('owm.resource.create.carInfo', { // should fill in the details
+      licencePlate: $scope.licencePlate.content,
+      brand: $filter('toTitleCase')($scope.licencePlate.data.merk),
+      model: $filter('toTitleCase')($scope.licencePlate.data.handelsbenaming),
+      seats: $scope.licencePlate.data.zitplaatsen,
+      color: $filter('lowercase')($scope.licencePlate.data.kleur),
+      fuel: $filter('lowercase')($scope.licencePlate.data.brandstof),
+      type: $filter('lowercase')($scope.licencePlate.data.inrichting),
+      year: $scope.licencePlate.data.datum_eerste_toelating,
+      personSubmitted: false
+    });
+  };
   
   //Syntus Utrecht offer for MyWheels Open
   if ($scope.me.zipcode) {
@@ -25,10 +39,6 @@ angular.module('owm.resource.own', [])
   } else {
     $scope.MyWheelsOpenUtrecht = false;
   }
-
-  $scope.goToMyWheelsOpen = function() {
-    window.open('/open','_blank');
-  };
 
   $scope.saveOld = function (resource) {
     alertService.load();
