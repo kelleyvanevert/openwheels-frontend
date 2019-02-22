@@ -23,10 +23,6 @@ angular.module('owm.shell')
     $state.go(toState, toParams);
   };
 
-  $scope.goToMyWheelsOpen = function() {
-    window.open('/open','_blank');
-  };
-
   $scope.translateAndNavigate = function (translateKey) {
     var translated = $translate.instant(translateKey);
     $scope.closeMenu();

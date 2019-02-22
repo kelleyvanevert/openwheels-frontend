@@ -26,10 +26,6 @@ angular.module('owm.resource.own', [])
     $scope.MyWheelsOpenUtrecht = false;
   }
 
-  $scope.goToMyWheelsOpen = function() {
-    window.open('/open','_blank');
-  };
-
   $scope.saveOld = function (resource) {
     alertService.load();
     return authService.me()

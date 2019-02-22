@@ -63,12 +63,12 @@
       <spinner ng-if="user.isPending" />
 
       <!-- signup -->
-      <md-button id="toolbarSignup" ng-if="!user.isPending && !user.isAuthenticated && !onSignUpPage" class="btn-green app--toolbar--button--text" ui-sref="owm.auth.signup" ng-show="!invitedBySlug">
+      <md-button id="toolbarSignup" ng-if="!user.isPending && !user.isAuthenticated && !onSignUpPage" class="mywheels-btn-call-to-action app--toolbar--button--text" ui-sref="owm.auth.signup" ng-show="!invitedBySlug">
         <span>{{ 'SIGNUP' | translate }}</span>
       </md-button>
 
       <!-- signup -->
-      <md-button id="toolbarSignup" ng-if="!user.isPending && !user.isAuthenticated && !onSignUpPage" class="btn-green app--toolbar--button--text" ui-sref="subscribe({ slug: invitedBySlug })" ng-show="invitedBySlug">
+      <md-button id="toolbarSignup" ng-if="!user.isPending && !user.isAuthenticated && !onSignUpPage" class="mywheels-btn-call-to-action app--toolbar--button--text" ui-sref="subscribe({ slug: invitedBySlug })" ng-show="invitedBySlug">
         <span>{{ 'SIGNUP' | translate }}</span>
       </md-button>
 
