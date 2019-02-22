@@ -192,12 +192,9 @@ angular.module('owm.person')
       contract: contract.id,
       email: email
     })
-      .then(function (person) {
+      .then(function (newInviteRequest) {
 
-        contract.personsOnContracts.push({
-          'status' : 'invited',
-          'recipient' : person
-        });
+        contract.personsOnContracts.push(newInviteRequest);
 
         contract.emailToAdd = null;
       })

@@ -18,10 +18,10 @@ angular.module('vouchersDirective', [])
       $scope.features = $rootScope.features;
 
 //      $scope.onChanged = $scope.onChanged || function () {
-//        $log.log('no callback for voucher/onChanged');
+//        //$log.log('no callback for voucher/onChanged');
 //      };
 //      $scope.onExtraDriversChanged = $scope.onExtraDriversChanged || function () {
-//        $log.log('no callback for voucher/onExtraDriversChanged');
+//        //$log.log('no callback for voucher/onExtraDriversChanged');
 //      };
 
       $scope.extraDrivers = {
@@ -50,6 +50,7 @@ angular.module('vouchersDirective', [])
       function init() {
         alertService.closeAll();
         alertService.load();
+        //$log.log('-> voucher/init/load');
         contractService.forBooking({ booking: $scope.booking.id })
         .then(function(contract) {
           $scope.booking.contract = contract;
@@ -57,10 +58,9 @@ angular.module('vouchersDirective', [])
           var promise = (contract.type.id === 60) ?
             reloadExtraDrivers() :
             getVoucherPrice($scope.booking);
-          
-          promise.then(function () {
-            alertService.loaded();
-          });
+        }).finally(function () {
+          alertService.loaded();
+          //$log.log('<< voucher/init/loaded');
         });
       }
 
@@ -84,6 +84,7 @@ angular.module('vouchersDirective', [])
       function getVoucherPrice(booking) {
         alertService.closeAll();
         alertService.load();
+        //$log.log('-> voucher/getVoucherPrice/load');
 
         return voucherService.calculateRequiredCreditForBooking({
           booking: booking.id
@@ -138,11 +139,13 @@ angular.module('vouchersDirective', [])
           return bookingObject;
         }).then(function () {
           $scope.priceCalculated = true;
-          alertService.loaded();
           $scope.isBusy = false;
           $rootScope.isPaymentLoading = false;
         }).catch(function (err) {
           alertService.addError(err);
+        }).finally(function () {
+          alertService.loaded();
+          //$log.log('<< voucher/getVoucherPrice/loaded');
         });
       }
 
@@ -150,7 +153,8 @@ angular.module('vouchersDirective', [])
       $scope.toggleRedemption = function () {
         $scope.voucherError.show = false;
         alertService.closeAll();
-        alertService.load($scope);
+        alertService.load();
+        //$log.log('-> voucher/toggleRedemption/load');
 
         /* checkbox is already checked, so new value is now: */
         $scope.redemptionPending[$scope.booking.id] = true;
@@ -187,7 +191,8 @@ angular.module('vouchersDirective', [])
         .finally(function () {
           $scope.onChanged($scope.booking);
           $scope.redemptionPending = {};
-          alertService.loaded($scope);
+          alertService.loaded();
+          //$log.log('<< voucher/toggleRedemption/loaded');
           $scope.isBusy = false;
         });
       };
@@ -207,6 +212,8 @@ angular.module('vouchersDirective', [])
 
             $mdDialog.show(confirm)
             .then(function (res) {
+              alertService.load();
+              //$log.log('-> voucher/toggleExtraDrivers/load');
               return extraDriverService.clearDrivers({booking: $scope.booking.id});
             })
             .then(function () {
@@ -221,6 +228,7 @@ angular.module('vouchersDirective', [])
             })
             .finally(function () {
               alertService.loaded();
+              //$log.log('<< voucher/toggleExtraDrivers/loaded');
             });
           }
         }
@@ -245,12 +253,15 @@ angular.module('vouchersDirective', [])
         if ($scope.extraDrivers.drivers.indexOf($scope.extraDrivers.new) < 0) {
           alertService.closeAll();
           alertService.load();
+          //$log.log('-> voucher/addExtraDriver/load');
 
           extraDriverService.addDriver({
             booking: $scope.booking.id,
             email: $scope.extraDrivers.new,
           })
-          .then(setExtraDrivers)
+          .then(function (newInviteRequest) {
+            $scope.extraDrivers.drivers.push(newInviteRequest);
+          })
           .then(function () {
             $scope.extraDrivers.new = '';
             $scope.extraDrivers.check = true;
@@ -260,6 +271,7 @@ angular.module('vouchersDirective', [])
           })
           .finally(function() {
             alertService.loaded();
+            //$log.log('<< voucher/addExtraDriver/loaded');
           });
         }
       };
@@ -277,16 +289,21 @@ angular.module('vouchersDirective', [])
         
           alertService.closeAll();
           alertService.load();
+          //$log.log('-> voucher/removeExtraDriver/load');
           extraDriverService.removeDriver({
             booking: $scope.booking.id,
             email: inviteRequest.recipient.email,
           })
-          .then(setExtraDrivers)
+          .then(function () {
+            var i = $scope.extraDrivers.drivers.indexOf(inviteRequest);
+            $scope.extraDrivers.drivers.splice(i, 1);
+          })
           .catch(function(e) {
             alertService.addError(e);
           })
           .finally(function() {
             alertService.loaded();
+            //$log.log('<< voucher/removeExtraDriver/loaded');
           });
         
         });
