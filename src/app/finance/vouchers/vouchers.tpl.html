@@ -18,23 +18,24 @@
 
 <div class="card mw" ng-if="!busy && requiredValue && (!accountDisapproved || accountApproved)" ng-repeat="booking in requiredValue.bookings" ng-init="booking.isOpen = $index <= 1">
     <div class="card-heading">
-    <span class="pull-right" ng-if="booking.isOpen">
-        <small hide-xs style="padding-left: 1em" ng-if="booking.cancelAfter && booking.approved !== 'OK'">Betaal voor {{booking.cancelAfter|amDateFormat:'D MMMM YYYY HH:mm'}} om annulering te voorkomen</small>
-        <ng-md-icon icon="check" ng-show="booking.statusValue" ng-class="{'text-success': booking.statusValue}"></ng-md-icon>
-        <b ng-class="{'text-success': booking.statusValue}" ng-if="booking.details.discount">{{ booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount | currency }}</b>
-        <b ng-class="{'text-success': booking.statusValue}" ng-if="!booking.details.discount">{{ booking.details.booking_price.total + booking.details.km_price - booking.details.friend_invite_discount | currency }}</b>
-    </span>
-    <h3 class="card-title">
-        <a ng-click="toggleBookingCards($index)" ng-if="booking.person.id === me.id">
-        <i class="fa fa-fw" ng-class="{ 'fa-chevron-right': !booking.isOpen, 'fa-chevron-down': booking.isOpen }"></i>
-        Rit op {{ booking.beginBooking | amDateFormat:'DD-MM-YYYY' }} 
-        </a>
-        <a ng-click="toggleBookingCards($index)" ng-if="booking.person.id !== me.id">
-        <i class="fa fa-fw" ng-class="{ 'fa-chevron-right': !booking.isOpen, 'fa-chevron-down': booking.isOpen }"></i>
-        Rit van {{ booking.person.firstName | toTitleCase }} op {{ booking.beginBooking | amDateFormat:'DD-MM-YYYY' }} 
-        </a>
-        <small hide-gt-xs style="padding-top: 1em;" ng-if="booking.isOpen && booking.cancelAfter && booking.approved != 'OK'"><br>Betaal voor {{booking.cancelAfter|amDateFormat:'D MMMM YYYY HH:mm '}} om annulering te voorkomen</small>
-    </h3>
+        <h3 class="card-title">
+            <a ng-click="toggleBookingCards($index)" ng-if="booking.person.id === me.id">
+            <i class="fa fa-fw" ng-class="{ 'fa-chevron-right': !booking.isOpen, 'fa-chevron-down': booking.isOpen }"></i>
+            Rit op {{ booking.beginBooking | amDateFormat:'DD-MM-YYYY' }} 
+            </a>
+            <a ng-click="toggleBookingCards($index)" ng-if="booking.person.id !== me.id">
+            <i class="fa fa-fw" ng-class="{ 'fa-chevron-right': !booking.isOpen, 'fa-chevron-down': booking.isOpen }"></i>
+            Rit van {{ booking.person.firstName | toTitleCase }} op {{ booking.beginBooking | amDateFormat:'DD-MM-YYYY' }} 
+            </a>
+            <small hide-gt-xs style="padding-top: 1em;" ng-if="booking.isOpen && booking.cancelAfter && booking.approved != 'OK'"><br>Betaal voor {{booking.cancelAfter|amDateFormat:'D MMMM YYYY HH:mm '}} om annulering te voorkomen</small>
+
+            <span class="pull-right" ng-if="booking.isOpen" style="font-size: 1.6rem;">
+                <small hide-xs style="padding-left: 1em" ng-if="booking.cancelAfter && booking.approved !== 'OK'">Betaal voor {{booking.cancelAfter|amDateFormat:'D MMMM YYYY HH:mm'}} om annulering te voorkomen</small>
+                <ng-md-icon icon="check" ng-show="booking.statusValue" ng-class="{'text-success': booking.statusValue}"></ng-md-icon>
+                <b ng-class="{'text-success': booking.statusValue}" ng-if="booking.details.discount">{{ booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount | currency }}</b>
+                <b ng-class="{'text-success': booking.statusValue}" ng-if="!booking.details.discount">{{ booking.details.booking_price.total + booking.details.km_price - booking.details.friend_invite_discount | currency }}</b>
+            </span>
+        </h3>
     </div>
 
     <div uib-collapse="!booking.isOpen">
