@@ -14,12 +14,17 @@
         text-shadow: 0 0.07rem 0.21rem #444;
     }
     display: flex;
-    min-height: 15em;
+    min-height: 25em;
     background: #fff;
-    background: url('./img/background-car.jpeg');
-    background-position: 50% 80%;
+    background: url('/assets/img/bg/sleutel-closeup.jpg');
+    background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;
+}
+@media screen and (max-width: 768px) {
+    .list-your-car--heading {
+        min-height: 15em;
+    }
 }
 .list-your-car--container {
     display: flex;

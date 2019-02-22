@@ -10,7 +10,6 @@
   <div class="row">
     <div class="rpad col-xs-12">
 
-
         <div class="mw card">
             <div class="card-body">
                 <!-- header -->
@@ -21,17 +20,17 @@
             </div>
         </div>
 
-
     </div>
   </div>
-  <div class="row">
+  <div class="row rpad">
     <div class="nopad col-sm-4">
         <section class="contract-choice contract-choice--left">
             <h3 same-height="headercontract">MyWheels Go</h3>
             <section>
-            <div class="pay" same-height="aa">Betaal vooraf met iDEAL</div>
+            <div class="pay" same-height="aa">Betaal vooraf per iDEAL</div>
                 <ul>
-                <li same-height="a">Eigen risico verplicht <a target="_blank" href="https://mywheels.nl/autodelen/hoe-huren-werkt/verzekering/">verlaagd</a> <br><small>&euro;3,50 per rit per dag</small></li>
+                    <li same-height="a0">Facturatie per rit</li>
+                    <li same-height="a">Eigen risico verplicht <a target="_blank" href="https://mywheels.nl/autodelen/hoe-huren-werkt/verzekering/">verlaagd</a> <br><small>&euro;3,50 per rit per dag</small></li>
                     <li same-height="b">Annuleren binnen 24 uur:<br>volledige ritkosten</li>
                     <li same-height="c">Annuleren buiten 24 uur:<br>&euro;2,50</li>
                     <li same-height="d">Inkorten rit tot maximaal 1 uur</li>
@@ -51,8 +50,9 @@
         <section class="contract-choice contract-choice--middle" ng-class="{'contract-choice--middle--small': $mdMedia('xs')}">
             <h3 same-height="headercontract">MyWheels Member</h3>
             <section>
-                <div class="pay" same-height="aa">Betaal achteraf per SEPA incasso <sup>*</sup></div>
+                <div class="pay" same-height="aa">Betaal achteraf per SEPA incasso *</div>
                 <ul>
+                    <li same-height="a0">Wekelijkse facturatie</li>
                     <li same-height="a">Eigen risico optioneel <a target="_blank" href="https://mywheels.nl/autodelen/hoe-huren-werkt/verzekering/">te verlagen</a><br><small>&euro;3,50 per rit per dag</small></li>
                     <li same-height="b">Annuleren binnen 24 uur:<br>&euro;2,50</li>
                     <li same-height="c">Annuleren buiten 24 uur:<br>gratis</li>
@@ -74,8 +74,9 @@
                 ng-if="!person.isCompany">
             <h3 same-height="headercontract">MyWheels Premium</h3>
             <section>
-                <div class="pay" same-height="aa">Betaal achteraf per SEPA incasso <sup>*</sup></div>
+                <div class="pay" same-height="aa">Betaal achteraf per SEPA incasso *</div>
                 <ul>
+                    <li same-height="a0">Wekelijkse facturatie</li>
                     <li same-height="a">Eigen risico optioneel <a target="_blank" href="https://mywheels.nl/autodelen/hoe-huren-werkt/verzekering/">te verlagen</a><br><small>&euro;3,50 per rit per dag<br>of &euro;10 per maand</small></li>
                     <li same-height="b">Annuleren binnen 24 uur:<br>&euro; 2,50</li>
                     <li same-height="c">Annuleren buiten 24 uur:<br>gratis</li>
@@ -97,8 +98,9 @@
                     ng-if="person.isCompany">
             <h3 same-height="headercontract">MyWheels Company</h3>
             <section>
-                <div class="pay" same-height="aa">Gefactureerd aan het eind van elke maand</div>
+                <div class="pay" same-height="aa">Betaal achteraf per SEPA incasso of overboeking</div>
                 <ul>
+                    <li same-height="a0">Maandelijkse facturatie</li>
                     <li same-height="a">Eigen risico optioneel <a target="_blank" href="https://mywheels.nl/autodelen/hoe-huren-werkt/verzekering/">te verlagen</a><br><small>&euro;3,50 per rit per dag<br>of &euro;10 per maand</small></li>
                     <li same-height="b">Annuleren binnen 24 uur:<br>&euro; 2,50</li>
                     <li same-height="c">Annuleren buiten 24 uur:<br>gratis</li>

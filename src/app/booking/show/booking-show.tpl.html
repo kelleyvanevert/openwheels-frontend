@@ -349,7 +349,7 @@
 
 <!-- Medebestuurders -->
 <div class="card mw"
-  ng-if="((userPerspective === 'renter' || userPerspective === 'contract_holder') && !paymentInit && ownContract) || (userPerspective === 'owner')"
+  ng-if="((userPerspective === 'renter' || userPerspective === 'contract_holder') && !paymentInit && ownContract)"
   ng-init="extraDrivers.load()"
   ng-show="extraDrivers.inviteRequests.length > 0"
 >
@@ -784,7 +784,7 @@
     <p hide-gt-xs></p>
 
     <div flex="25" flex-xs="100" class="text-center">
-      <md-button class="md-raised" href="/open" ui-sref="owmlanding.mywheels-open" target="_blank">Lees meer</md-button>
+      <md-button class="md-raised" href="/open" ui-sref="owmlanding.mywheels-open">Lees meer</md-button>
     </div>
   </div>
 </div>
