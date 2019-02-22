@@ -637,30 +637,33 @@ angular.module('owm.booking.show', [])
     inviteRequests: [],
     basis: ($scope.contract.type.id === 60) ? 'per_booking' : 'per_contract',
     load: function () {
-      $scope.extraDrivers.loading = true;
+      if (userPerspective !== 'owner') { // to avoid permission problem for now
 
-      var promise = ($scope.extraDrivers.basis === 'per_booking')  ?
-        extraDriverService.driversForBooking({ booking: $scope.booking.id }) :
-        extraDriverService.getRequestsForContract({ contract: $scope.contract.id });
+        $scope.extraDrivers.loading = true;
 
-      promise
-      .then(function (inviteRequests) {
-        if (inviteRequests.result && _.isArray(inviteRequests.result)) {
-          inviteRequests = inviteRequests.result;
-        }
-        if ($scope.userPerspective === 'owner') {
-          inviteRequests = inviteRequests.filter(function (request) {
-            return request.status === 'accepted';
-          });
-        }
-        $scope.extraDrivers.inviteRequests = inviteRequests;
-      })
-      .catch(function (e) {
-        alertService.addError(e);
-      })
-      .finally(function () {
-        $scope.extraDrivers.loading = false;
-      });
+        var promise = ($scope.extraDrivers.basis === 'per_booking')  ?
+          extraDriverService.driversForBooking({ booking: $scope.booking.id }) :
+          extraDriverService.getRequestsForContract({ contract: $scope.contract.id });
+
+        promise
+        .then(function (inviteRequests) {
+          if (inviteRequests.result && _.isArray(inviteRequests.result)) {
+            inviteRequests = inviteRequests.result;
+          }
+          if ($scope.userPerspective === 'owner') {
+            inviteRequests = inviteRequests.filter(function (request) {
+              return request.status === 'accepted';
+            });
+          }
+          $scope.extraDrivers.inviteRequests = inviteRequests;
+        })
+        .catch(function (e) {
+          alertService.addError(e);
+        })
+        .finally(function () {
+          $scope.extraDrivers.loading = false;
+        });
+      }
     },
   };
 
