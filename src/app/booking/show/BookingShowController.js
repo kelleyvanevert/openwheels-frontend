@@ -637,7 +637,7 @@ angular.module('owm.booking.show', [])
     inviteRequests: [],
     basis: ($scope.contract.type.id === 60) ? 'per_booking' : 'per_contract',
     load: function () {
-      if (userPerspective !== 'owner') { // to avoid permission problem for now
+      if ($scope.userPerspective !== 'owner') { // to avoid permission problem for now
 
         $scope.extraDrivers.loading = true;
 
