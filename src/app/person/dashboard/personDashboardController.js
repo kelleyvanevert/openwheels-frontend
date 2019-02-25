@@ -91,10 +91,6 @@ angular.module('owm.person.dashboard', [])
     }
   }
 
-  $scope.goToMyWheelsOpen = function() {
-    window.open('/open','_blank');
-  };
-
   $scope.goToInviteFriends = function() {
     $state.go('invite');
   };

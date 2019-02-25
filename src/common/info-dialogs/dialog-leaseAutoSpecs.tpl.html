@@ -1,0 +1,26 @@
+
+<md-dialog flex-xs="90" flex-sm="90" flex-md="70" flex-lg="60" flex-xl="50"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3 style="text-align: center; padding: 1rem 0;">
+      <!--<ng-md-icon icon="info_italic" size="28"></ng-md-icon>-->
+      {{ params.auto }}
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+    <div layout-xs="column" layout="row" style="padding: 2rem 0;">
+      <div flex-xs="100" flex="50">
+        <p><strong>Autospecificaties</strong></p>
+        <ul>
+          <li ng-repeat="spec in params.specs" style="padding: 3px 0;">
+            {{ spec }}
+          </li>
+        </ul>
+      </div>
+      <div flex-xs="100" flex="50">
+        <img src="{{ params.foto }}" class="img-responsive" />
+      </div>
+    </div>
+  </md-dialog-content>
+</md-dialog>

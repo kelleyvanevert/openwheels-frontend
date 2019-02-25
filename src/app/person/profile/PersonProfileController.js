@@ -28,11 +28,19 @@ angular.module('owm.person.profile', [])
   //  depending on how the user navigates between the (conceptual, not state-) sub-pages.
   // Hence this way to making sure the the page structure is understood well on every nav action.
   function onNav () {
-    $scope.defaultHighlight = ($state.$current.name === 'owm.person.profile') ? 'profiel' : undefined;
-    $scope.currentSection = _.find($scope.sections, function (section) {
-      return (section.sref && section.sref === $state.$current.name) ||
-             (section.id && section.id === ($state.params.highlight || $scope.defaultHighlight));
-    });
+    if ($state.$current.name !== 'owm.person.profile') {
+      $scope.highlight = '';
+      $scope.currentSection = _.find($scope.sections, function (sect) {
+        return sect.sref === $state.$current.name;
+      });
+    } else {
+      $scope.highlight = $state.params.highlight || 'profiel';
+      $scope.currentSection = _.find($scope.sections, function (sect) {
+        return sect.id === $scope.highlight;
+      });
+    }
+
+    $scope.withSidebar = ($state.$current.name !== 'owm.person.profile.contractchoice');
   }
 	$scope.$on('$stateChangeSuccess', onNav);
 

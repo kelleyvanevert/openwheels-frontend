@@ -297,6 +297,20 @@ angular.module('openwheels', [
   };
 })
 
+.directive('smoothScrollToItem', function () {
+  return {
+    restrict: 'A',
+    scope: {
+      smoothScrollToItem: '@',
+    },
+    link: function (scope, element, attr) {
+      element.on('click', function() {
+        $('html,body').animate({ scrollTop: $(scope.smoothScrollToItem).offset().top }, 300);
+      });
+    },
+  };
+})
+
 .factory('autocompleteOptions', function ($filter) {
   return {
     componentRestrictions: { country: $filter('translateOrDefault')('SEARCH_COUNTRY', 'nl') },
@@ -445,14 +459,20 @@ angular.module('openwheels', [
       $state.includes('subscribe') ||
       $state.includes('invite') ||
       $state.includes('member') ||
+      $state.includes('owm.resource.edit') ||
+      $state.includes('owm.resource.create') ||
+      $state.includes('owm.resource.own') ||
+      $state.includes('owm.message') ||
       $state.includes('owm.trips') ||
       $state.includes('owm.finance.vouchers') ||
       $state.includes('owm.finance.v4') ||
       $state.includes('owm.finance.kmpoints') ||
+      $state.includes('owm.auth.signup') ||
       $state.includes('owm.person.details') ||
       $state.includes('owm.person.profile') ||
       $state.includes('owm.person.dashboard') ||
-      $state.includes('owmlanding')
+      $state.includes('owmlanding') ||
+      $state.includes('contractchoice')
     );
     $rootScope.containerHome = (
       ($state.includes('home')) || ($state.$current.self.url === '/auto-verhuren')

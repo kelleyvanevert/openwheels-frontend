@@ -8,6 +8,7 @@ angular.module('owm.pages', [
   'owm.pages.invite.subscribe',
 
   'owmlanding.mywheels-open',
+  'owmlanding.mywheels-lease',
 ])
 
 .config(function ($stateProvider) {
@@ -48,53 +49,29 @@ angular.module('owm.pages', [
   })
 
   .state('owmlanding.mywheels-open', {
-    //parent: 'owm-landing',
     url: '/open',
     views: {
+      'toolbar@shell': {
+        templateUrl: 'pages/mywheels-open/toolbar.tpl.html',
+      },
       'main-full@shell': {
         templateUrl: 'pages/mywheels-open/mywheels-open.tpl.html',
         controller: 'MyWheelsOpenController'
       }
-    },/*
-    data: {
-      access: {
-        deny: {
-          anonymous: false,
-        }
-      }
     },
-    resolve: {
-      me: ['personService', function (personService) {
-        return personService.me_opt({
-          version: 2,
-        });
-      }],
-    },*/
   })
 
-  .state('owm-landing.mywheels-open', {
-    parent: 'owm-landing',
-    url: '/open',
+  .state('owmlanding.mywheels-lease', {
+    url: '/lease',
     views: {
+      'toolbar@shell': {
+        templateUrl: 'pages/mywheels-lease/toolbar.tpl.html',
+      },
       'main-full@shell': {
-        templateUrl: 'pages/mywheels-open/mywheels-open.tpl.html',
-        controller: 'MyWheelsOpenController'
-      }
-    },/*
-    data: {
-      access: {
-        deny: {
-          anonymous: false,
-        }
-      }
+        templateUrl: 'pages/mywheels-lease/mywheels-lease.tpl.html',
+        controller: 'MyWheelsLeaseController'
+      },
     },
-    resolve: {
-      me: ['personService', function (personService) {
-        return personService.me_opt({
-          version: 2,
-        });
-      }],
-    },*/
   })
 
   .state('owm.pages', {

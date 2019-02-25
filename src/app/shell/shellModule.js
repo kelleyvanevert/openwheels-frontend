@@ -58,10 +58,6 @@ angular.module('owm.shell', [])
   $stateProvider.state('owmlanding', {
     parent: 'shell',
     views: {
-      'toolbar@shell': {
-        templateUrl: 'shell/landing/toolbar/toolbar.tpl.html',
-        controller: 'LandingToolbarController'
-      },
       'menu@shell': {
         templateUrl: 'shell/landing/menu/menu.tpl.html',
         controller: 'LandingMenuController'

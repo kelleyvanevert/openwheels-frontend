@@ -357,8 +357,17 @@ module.exports = function (grunt) {
                     next();
                   });
                 } else if (m = req.url.match('/person/([0-9]+)/[0-9]+/[0-9]+/profile.png')) {
-                  req.url = '/assets/scaffold/profile.png';
-                  next();
+                  fs.readdir(__dirname + '/src/assets/scaffold', function (err, files) {
+                    if (!err) {
+                      var acceptable = files.filter(function (filename) {
+                        return filename.match(/^profile.*\.(png|jpg)$/);
+                      });
+                      if (acceptable.length > 0) {
+                        req.url = '/assets/scaffold/' + acceptable[Math.floor(Math.random() * acceptable.length)];
+                      }
+                    }
+                    next();
+                  });
                 } else {
                   next();
                 }
