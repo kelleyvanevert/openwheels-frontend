@@ -73,29 +73,35 @@ angular.module('owmlanding.mywheels-lease', ['slick'])
   // Veelgestelde vragen
   $scope.FAQ = [
     {
-      question: 'Kan ik huren zonder borg?',
-      answer: 'Je hoeft bij MyWheels geen borg te betalen en geen machtiging voor automatische incasso af te geven. Je betaalt een rit vooraf veilig en snel met iDEAL.',
+      question: 'Hoeveel kilometer mag ik per jaar rijden?',
+      answer: 'De leaseprijs is inclusief 12.000 kilometer per jaar. De kilometerbundel is zowel voor je privé kilometers, als voor de kilometers van huurders in jouw leaseauto. Boven dit aantal kilometers per jaar is de meerprijs per kilometer 8 cent.',
     }, {
-      question: 'Hoe open ik een auto?',
-      answer: 'Je kunt bij ons MyWheels Open auto\'s huren die je opent met je smartphone en/of chipkaart. Of een van de vele auto\'s van particuliere autobezitters, die open je gewoon met de sleutel. Je spreekt dan samen met de verhuurder af hoe je in het bezit komt van de sleutel.',
+      question: 'Wat is de looptijd?',
+      answer: 'De looptijd is 48 maanden, een kortere looptijd is niet mogelijk. Wil je het contract eerder beëindigen? Dat kan door het contract eenmalig af te kopen voor 1.000 euro.',
     }, {
-      question: 'Hoe open ik een auto met mijn smartphone?',
-      answer: 'Om een MyWheels Open auto te openen en sluiten, klik je op MyWheels.nl of in de MyWheels app op de lopende rit. Vervolgens zie je een groene en een rode knop staan met een sleutelicoon. Met de groene knop open je de auto, met de rode knop sluit je hem.',
+      question: 'Krijg ik MyWheels bestickering op mijn auto?',
+      answer: 'Ja, we plakken MyWheels stickers op de auto. De buren zien dan dat ze jouw auto kunnen huren. Wil je geen bestickering? Dan betaal je 40 euro per maand extra.',
     }, {
-      question: 'Hoe huur ik een auto?',
-      answer: 'Zoek een auto in de buurt die je wilt huren, vul de datum en tijd in dat je de auto nodig hebt en klik op \'Maak reservering\' om de auto te reserveren. Als je nog geen account hebt, kun je deze in drie stappen aanmaken.',
+      question: 'Wat is inbegrepen in de leaseprijs?',
+      answer: 'De leaseprijs is inclusief: all-risk verzekering, schade verzekering inzittenden, wegenbelasting, afschrijving, reparatie, onderhoud, banden, ruitreparatie, pechhulp in binnen- en buitenland, vervangend vervoer bij schade en MyWheels Open technologie. Enkel de brandstof, verkeersboetes en de wasstraat vallen buiten de leaseprijs.',
     }, {
-      question: 'Wat kost huren via MyWheels?',
-      answer: 'Een MyWheels account aanmaken is gratis, je betaalt alleen als je een auto huurt. Het tarief van een auto is een combinatie van een huur- en kilometerprijs. De tarieven van een auto vind je op de autopagina.',
+      question: 'Hoe verhuur ik mijn leaseauto?',
+      answer: 'Verhuren is heel makkelijk: nieuwe huurverzoeken worden automatisch geaccepteerd. Door de MyWheels Open technologie opent een huurder jouw auto met zijn of haar smartphone. Het enige dat jij hoeft te doen, is het bijhouden van de kalender van je auto.',
     }, {
-      question: 'Wanneer wordt mijn account gecontroleerd?',
-      answer: 'Om te mogen rijden, heb je een geactiveerd MyWheels account nodig. De meeste accounts activeren we automatisch, je kunt dan direct op weg!',
+      question: 'Hoe veel dagen moet mijn auto beschikbaar zijn?',
+      answer: 'We verwachten dat jouw auto minimaal 10 dagen per beschikbaar is voor autodelen, waarvan 4 dagen in het weekeinde.',
     }, {
-      question: 'Hoe ben ik verzekerd als ik huur?',
-      answer: 'De auto die je via MyWheels huurt, is automatisch goed verzekerd tegen schade, vernieling en diefstal. We sluiten namelijk voor elke rit een all-risk verzekering af. Zo loop jij geen risico als je in een deelauto rijdt. De tarieven van een auto zijn altijd inclusief verzekeringskosten.',
+      question: 'Waarom is de leaseprijs zo voordelig?',
+      answer: 'De leaseprijs is voordeliger dan bij andere aanbieders omdat maandelijks de eerste 100 euro aan verhuuropbrengst naar de leasemaatschappij gaat. Verdien je meer? Dan ontvang jij de extra verhuuropbrengst.',
     }, {
-      question: 'Wat betekent het label MyWheels Open?',
-      answer: 'MyWheels Open auto’s open je met je smartphone en/of chipkaart. De auto\'s zijn direct te boeken. Daarnaast hoef je bij een MyWheels Open auto geen kilometerstanden te noteren, de gereden kilometers registreren we automatisch.',
+      question: 'Hoe is de auto verzekerd tijdens verhuur?',
+      answer: 'De auto is per verhuring aanvullend all-risk verzekerd met de ritverzekering van Centraal Beheer via het MyWheels platform.',
+    }, {
+      question: 'Hoe worden huurders gecontroleerd?',
+      answer: 'Een huurder moet in bezit zijn van een geldig rijbewijs en een geverifieerde bankrekening hebben. Daarnaast doen wij extra controles ter beoordeling van de betrouwbaarheid van de huurder.',
+    }, {
+      question: 'In welke steden geldt dit aanbod?',
+      answer: 'Dit private lease aanbod is geldig voor inwoners van de volgende gebieden: Amersfoort, Amstelveen, Amsterdam, Arnhem, Delft, Den Haag, Deventer, Eindhoven, Groningen, Haarlem, Hilversum, Leiden, Leeuwarden, Nijmegen, Rijswijk, Rotterdam, Utrecht, Wageningen, Zeist en Zwolle.',
     },
   ];
 
