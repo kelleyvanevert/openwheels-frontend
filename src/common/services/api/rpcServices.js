@@ -280,10 +280,10 @@ angular.module('rpcServices', [])
     return conversations;
   }
 
-  // `getMessages` is the updated `getMyConversations`
-  var _getMessages = m('getMessages');
+  // `getInbox` is the updated `getMyConversations`
+  var getInbox = m('getInbox');
   this.getMyConversations = function (params) {
-    return _getMessages(params).then(function (data) {
+    return getInbox(params).then(function (data) {
       if (data.length) {
         var arr = sortFilterConversations(data);
         return {
