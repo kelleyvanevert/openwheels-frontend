@@ -151,11 +151,13 @@
 </div>
 
 <div class="card mw" ng-if="!busy && requiredValue && (accountDisapproved && !accountApproved && accounts.length === 1)">
-    <div class="card-body">
+    <div class="card-heading">
         <h2 class="card-title">
-        <ng-md-icon icon="error" class="text-danger"></ng-md-icon>
-        {{ 'PAYMENT_NOT_APROVED_TITLE' | translate }}
-    </h2>
+            <ng-md-icon icon="error" class="text-danger"></ng-md-icon>
+            {{ 'PAYMENT_NOT_APROVED_TITLE' | translate }}
+        </h2>
+    </div>
+    <div class="card-body">
         <p translate="PAYMENT_NOT_APROVED_BODY" translate-values="{name: name, surname: person.surname}"></p>
 
         <button ng-if="!afterPayment" type="button" class="mywheels-btn mywheels-btn-default" ng-click="buyVoucher('0.01')" md-ink-ripple="#3a6d81">
@@ -167,11 +169,13 @@
 </div>
 
 <div class="card mw" ng-if="!busy && requiredValue && (accountDisapproved && !accountApproved && accounts.length > 1)">
-    <div class="card-body">
+    <div class="card-heading">
         <h2 class="card-title">
-        <ng-md-icon icon="error" class="text-danger"></ng-md-icon>
-        {{ 'PAYMENT_NOT_APROVED_TITLE' | translate }}
-    </h2>
+            <ng-md-icon icon="error" class="text-danger"></ng-md-icon>
+            {{ 'PAYMENT_NOT_APROVED_TITLE' | translate }}
+        </h2>
+    </div>
+    <div class="card-body">
         <p translate="PAYMENT_NOT_APROVED_SECOND_BODY" translate-values="{name: name, surname: person.surname}"></p>
 
         <button ui-sref="owm.person.dashboard" class="btn btn-primary">{{ 'MY_DASHBOARD' | translate }}</button>

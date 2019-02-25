@@ -258,10 +258,46 @@ angular.module('rpcServices', [])
     return api.createRpcMethod('message.' + name);
   };
   this.sendMessageTo = m('sendMessageTo');
-  this.getMyConversations = m('getMyConversations');
+  // this.getMyConversations = m('getMyConversations');
   this.getConversationWith = m('getConversationWith');
   this.getMessagesAfter = m('getMessagesAfter');
   this.getMessagesBefore = m('getMessagesBefore');
+
+  function sortFilterConversations (conversations) {
+    // In the unlikely situation that multiple messages were
+    //  sent in the same second in a particular conversation,
+    //  these messages will both show up in the API call result.
+    var had = {};
+    conversations = _.sortBy(conversations, 'date').reverse().filter(function (message) {
+      var between = [message.sender.id, message.recipient.id].join('-');
+      if (had[between]) {
+        return false;
+      }
+      had[between] = true;
+      return true;
+    });
+    
+    return conversations;
+  }
+
+  // `getMessages` is the updated `getMyConversations`
+  var _getMessages = m('getMessages');
+  this.getMyConversations = function (params) {
+    return _getMessages(params).then(function (data) {
+      if (data.length) {
+        var arr = sortFilterConversations(data);
+        return {
+          result: arr,
+          total: arr.length,
+        };
+      } else {
+        return {
+          result: sortFilterConversations(data.result),
+          total: data.total,
+        };
+      }
+    });
+  };
 })
 
 .service('discountService', function (api) {

@@ -28,10 +28,6 @@ angular.module('owm.home', ['owm.resource', 'slick'])
     }
   }, 1000);
 
-  $scope.goToMyWheelsOpen = function() {
-    window.open('/open','_blank');
-  };
-
   loadBlogItems();
 
   function loadBlogItems () {

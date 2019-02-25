@@ -190,8 +190,12 @@ angular.module('owm.resource', [
    */
   $stateProvider.state('owm.resource.own', {
     url: '/mijn-auto',
-    controller: 'ResourceOwnController',
-    templateUrl: 'resource/own/resource-own.tpl.html',
+    views: {
+      'main-full@shell': {
+        controller: 'ResourceOwnController',
+        templateUrl: 'resource/own/resource-own.tpl.html'
+      }
+    },
     data: {
       access: {
         deny: {
@@ -468,9 +472,13 @@ angular.module('owm.resource', [
    * @resolve {promise} resource
    */
   $stateProvider.state('owm.resource.edit', {
-    url: '/auto/:resourceId/wijzigen',
-    controller: 'ResourceEditController',
-    templateUrl: 'resource/edit/resource-edit.tpl.html',
+    url: '/auto/:resourceId/wijzigen/:section?',
+    views: {
+      'main-full@shell': {
+        controller: 'ResourceEditController',
+        templateUrl: 'resource/edit/resource-edit.tpl.html'
+      }
+    },
     data: {
       access: {
         deny: {
@@ -492,7 +500,10 @@ angular.module('owm.resource', [
         return resourceService.getMembers({
           resource: $stateParams.resourceId
         });
-      }]
+      }],
+      currentSectionId: ['$stateParams', function ($stateParams) {
+        return $stateParams.section;
+      }],
     }
   });
 });

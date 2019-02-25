@@ -10,8 +10,9 @@ angular.module('owm.message', [
 
   .state('owm.message', {
     url: '/messages',
+    noGlobalLoader: true,
     views: {
-      'main@shell': {
+      'main-full@shell': {
         templateUrl: 'message/index/messageIndex.tpl.html',
         controller: 'MessageIndexController'
       }
@@ -23,9 +24,6 @@ angular.module('owm.message', [
       me: ['authService', function (authService) {
         return authService.me();
       }],
-      conversations: ['messageService', function (messageService) {
-        return messageService.getMyConversations();
-      }]
     }
   });
 

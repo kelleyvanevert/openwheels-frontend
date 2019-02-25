@@ -1,51 +1,116 @@
-<div class="card">
-  <div class="card-heading">
-    <h2 class="card-title">
-      {{ 'MY_MESSAGES_TITLE' | translate }}
-    </h2>
-  </div>
-
-  <div class="card-body" >
-    <div ng-if="!(conversations.length > 0)">
-      {{ 'MY_MESSAGES' | translate }}
+<div id="messages-page-container" class="container container-transitional">
+  <div class="row">
+    <div class="rpad col-md-4">
     </div>
+    <div class="rpad col-md-8">
+      <h1 class="page-title card-pad-left" style="text-align: left;">
+        <a href="#"
+           ng-click="focusMaster()"
+           ng-show="!$root.isWindowSizeMD && detailFocus"
+        >
+          <ng-md-icon icon="arrow_back" aria-label="Terug naar overzicht berichten"></ng-md-icon>
+        </a>
+        {{ 'MY_MESSAGES_TITLE' | translate }}
+      </h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="rpad col-md-4" ng-show="($root.isWindowSizeMD || !detailFocus) && !(!$root.isWindowSizeMD && conversations.length === 0)">
+      <div class="sidebar card mw chat-in-page-height" style="overflow-y: auto;">
+        <div class="card-body">
+          
+          <ul class="list-unstyled list-row h-escape master-list"
+              ng-if="loading || (!loading && !error && conversations.length === 0)">
+            <li class="h-pad master-list-item"
+                style="padding-top: 10px; padding-bottom: 10px;"
+                ng-repeat="i in [0,1,2]">
+              <div class="media">
+                <div class="media-object img-user-small pull-left"
+                     style="margin-top: 0; margin-bottom: 0; border-radius: 999px; background: #ddd;">
+                </div>
 
-    <div ng-if="conversations.length > 0">
-      <ul class="list-row">
-        <li ng-repeat="conversation in conversations | orderBy:'date':true" ng-click="selectConversation(conversation)">
-
-          <div class="media">
-            <img ng-if="conversation.sender.id === me.id"
-              class="media-object img-user-normal pull-left" person-profile-image="{ person: conversation.recipient, size: 'normal' }" />
-            <img ng-if="conversation.sender.id !== me.id"
-              class="media-object img-user-normal pull-left" person-profile-image="{ person: conversation.sender, size: 'normal' }" />
-
-            <div class="media-body">
-              <span>
-                {{ conversation.text }}
-              </span>
-              <div class="text-muted">
-                <small>
-
-                  <span ng-if="conversation.sender.id === me.id">
-                    Verstuurd aan {{ conversation.recipient | fullname }}
-                  </span>
-                  <span ng-if="conversation.sender.id !== me.id">
-                    Ontvangen van {{ conversation.sender | fullname }}
-                  </span>
-
-                  <i class="fa fa-circle"></i>&nbsp;<span am-time-ago="conversation.date"></span>
-                </small>
+                <div class="media-body" style="padding-right: 0; padding-top: 0; padding-bottom: 0;">
+                  <div class="single-line">
+                    <span class="skel inline" ng-class="{ noanim: conversations.length === 0 }" style="width: 30%; height: 2rem;"></span>
+                  </div>
+                  <div class="single-line">
+                    <span class="skel inline" ng-class="{ noanim: conversations.length === 0 }" style="width: 80%; height: 2rem;"></span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </li>
+          </ul>
 
+          <ul class="list-unstyled list-row h-escape master-list"
+              ng-if="conversations && conversations.length > 0">
+            <li class="h-pad master-list-item"
+                ng-class="{ selected: conversation === selectedConversation }"
+                ng-click="selectConversation(conversation)"
+                ng-repeat="conversation in conversations"
+                style="padding-top: 10px; padding-bottom: 10px;">
 
-        </li>
-      </ul>
+              <div class="media">
+                <img style="margin-top: 0; margin-bottom: 0;"
+                     class="media-object img-user-small pull-left"
+                     person-profile-image="{ person: conversation.other, size: 'small' }" />
 
+                <div class="media-body" style="padding-right: 0; padding-top: 0; padding-bottom: 0;">
+                  <div class="single-line">
+                    <strong>{{ conversation.other.firstName }}</strong>
+                    <small style="margin-left: 5px;" class="text-muted">
+                      <i class="fa fa-circle"></i>&nbsp;<span am-time-ago="conversation.date"></span>
+                    </small>
+                  </div>
+                  <div class="single-line">
+                    {{ conversation.sender.id === me.id ? 'Jij: ' : '' }}
+                    {{ conversation.text }}
+                  </div>
+                </div>
+              </div>
+
+            </li>
+          </ul>
+        
+        </div>
+      </div>
     </div>
 
-  </div>
+    <div class="rpad col-md-8" ng-show="$root.isWindowSizeMD || detailFocus || (!$root.isWindowSizeMD && conversations.length === 0)">
 
-</div><!-- /card -->
+      <div class="card mw chat-in-page-height">
+
+        <div class="empty-state-overlay size-2 card-body" ng-if="!loading && !error && conversations.length === 0">
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" version="1" width="140" height="140" viewBox="0 0 300 300">
+              <g transform="matrix(.22745 0 0 .22745 -55 -26)">
+                <rect rx="67" height="787" width="1296" y="602" x="252" fill="#fff" stroke="#5faac8" stroke-width="23" stroke-miterlimit="10"/>
+                <path d="M281 613l586-443c19-14 46-14 65 0l587 443" fill="#eee" fill-rule="evenodd" stroke="#5faac8" stroke-width="23" stroke-miterlimit="10"/>
+                <path d="M271 614l589 403a71 71 0 0 0 80 0l590-403" fill="#eee" fill-rule="evenodd" stroke="#5faac8" stroke-width="23" stroke-miterlimit="10"/>
+                <path d="M1530 1365L940 962a71 71 0 0 0-80 0l-589 403" fill="#fff" fill-rule="evenodd" stroke="#5faac8" stroke-width="23" stroke-miterlimit="10"/>
+                <path d="M982 1135l-79 27a47 47 0 0 1-43-7l-67-50a47 47 0 0 1-18-45l11-71a47 47 0 0 1 32-37l79-27a47 47 0 0 1 43 7l67 51a47 47 0 0 1 18 45l-11 70a47 47 0 0 1-32 37z" fill="#fff" fill-rule="evenodd" stroke="#5faac8" stroke-width="22" stroke-miterlimit="10"/>
+                <path d="M995 1005c-8-4-15-1-20 8l-10-27c-4-10-11-15-22-15h-83c-16 0-20 3-26 18l-9 24c-5-8-12-11-20-8-6 3-6 7-2 10a33 33 0 0 0 10 5c6 2 8 5 8 11l-2 66c0 6 3 8 8 8h8c5 0 8-2 8-8v-14h114v14c-1 6 2 8 8 8h7c6 0 8-2 8-8l-1-64c0-7 1-12 8-14a33 33 0 0 0 10-4c4-4 4-7-2-10zm-149 55a13 13 0 0 1-13-12 12 12 0 0 1 13-13c7 0 12 5 12 12a12 12 0 0 1-12 13zm77 11h-46c-4 0-6-4-6-9 0-4 2-8 6-8h46c4 0 6 4 6 8 0 5-2 9-6 9zm-7-53h-79l11-28c1-3 6-6 9-6h85c4 0 8 3 10 6l11 30-15-1c-2-7-8-12-16-12s-14 5-16 11zm39 42a13 13 0 0 1-13-13 12 12 0 0 1 12-12c7 0 12 5 13 12a12 12 0 0 1-12 13z" fill="#5faac8" fill-rule="evenodd"/>
+                <rect rx="67" height="787" width="1296" y="602" x="252" fill="none" stroke="#5faac8" stroke-width="23" stroke-miterlimit="10"/>
+              </g>
+            </svg>
+          </div>
+          <p>Je hebt nog geen berichten verstuurd of gekregen.</p>
+          <!--<p>Bij het huren of verhuren van een auto word je in contact gesteld met de betreffende persoon. Ook kun je via de profielpagina van iemand, een bericht naar die persoon sturen.</p>-->
+        </div>
+
+        <div class="card-body" ng-if="!loading && error">
+          <p class="size-2 text-danger">Er is een fout opgetreden bij het ophalen van je berichten. Probeer het nog eens.</p>
+        </div>
+
+        <div class="chat-in-page"
+             ng-if="selectedConversation">
+          
+          <chat-container
+            person-id="selectedConversation.other.id"
+          />
+        </div>
+
+      </div>
+    
+    </div>
+  </div>
+</div>

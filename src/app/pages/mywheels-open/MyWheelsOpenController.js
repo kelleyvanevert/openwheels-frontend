@@ -5,8 +5,8 @@ angular.module('owmlanding.mywheels-open', ['slick'])
 .controller('MyWheelsOpenController', function ($scope, $log, metaInfoService, appConfig, $anchorScroll, formSubmissionService, personService,
   Analytics) {
 
-  metaInfoService.set({url: appConfig.serverUrl + '/mywheels-open'});
-  metaInfoService.set({canonical: 'https://mywheels.nl' + '/mywheels-open'});
+  metaInfoService.set({url: appConfig.serverUrl + '/open'});
+  metaInfoService.set({canonical: 'https://mywheels.nl' + '/open'});
 
   metaInfoService.set({
     title: 'MyWheels Open: Verhuur je auto altijd',

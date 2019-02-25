@@ -9,28 +9,32 @@
       <input type="text" id="alias" name="alias" class="form-control" ng-model="resource.alias">
     </div>
 
-    <div class="form-group">
-      <div class="row">
-        <div class="col-md-6 col-xs-12">
+    <div class="row">
+      <div class="col-md-6 col-xs-12">
+        <div class="form-group">
           <label for="resource_brand">{{ 'BRAND' | translate }}</label>
           <input type="text" id="brand" name="brand" class="form-control" ng-model="resource.brand" ng-disabled="disabledFields.brand">
         </div>
+      </div>
 
-        <div class="col-md-6 col-xs-12">
+      <div class="col-md-6 col-xs-12">
+        <div class="form-group">
           <label for="resource_model">{{ 'MODEL' | translate }}</label>
           <input type="text" id="model" name="model" class="form-control" ng-model="resource.model" ng-disabled="disabledFields.model">
         </div>
       </div>
     </div>
 
-    <div class="form-group">
-      <div class="row">
-        <div class="col-md-6 col-xs-12">
+    <div class="row">
+      <div class="col-md-6 col-xs-12">
+        <div class="form-group">
           <label for="resource_color">{{ 'COLOR' | translate }}</label>
           <input type="text" id="color" name="color" class="form-control" ng-model="resource.color" ng-disabled="disabledFields.color">
         </div>
+      </div>
 
-        <div class="col-md-6 col-xs-12">
+      <div class="col-md-6 col-xs-12">
+        <div class="form-group">
           <label for="resource_number_of_seats">{{ 'NUMBER_OF_SEATS' | translate }}</label>
           <select id="numberOfSeats" name="numberOfSeats" class="form-control" ng-model="resource.numberOfSeats"
             ng-options="option.value as option.label for option in numberOfSeatsOptions"  ng-disabled="disabledFields.numberOfSeats">

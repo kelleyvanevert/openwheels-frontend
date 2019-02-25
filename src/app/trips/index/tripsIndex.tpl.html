@@ -276,23 +276,23 @@
                     {{ booking.resource.alias | limitTo: 30}}{{booking.resource.alias.length > 30 ? '...' : ''}}
                   </td>
                   <td width="20%">
-                    <span ng-if="booking.status === 'accepted' && (booking.ok || booking.endBooking < now) && (now < booking.beginBooking || booking.trip.odoBegin || booking.trip.finalized || booking.resource.boardcomputer)">
+                    <div ng-if="booking.status === 'accepted' && (booking.ok || booking.endBooking < now) && (now < booking.beginBooking || booking.trip.odoBegin || booking.trip.finalized || booking.resource.boardcomputer)">
                       Geaccepteerd
-                    </span>
-                    <span ng-if="booking.status === 'accepted' && booking.approved === 'BUY_VOUCHER'" class="text-danger">
+                    </div>
+                    <div ng-if="booking.status === 'accepted' && booking.approved === 'BUY_VOUCHER'" class="text-danger">
                       Te betalen
-                    </span>
-                    <span ng-if="booking.status === 'accepted' && booking.approved !== 'BUY_VOUCHER' && !booking.ok && booking.endBooking > now" class="text-danger">
+                    </div>
+                    <div ng-if="booking.status === 'accepted' && booking.approved !== 'BUY_VOUCHER' && !booking.ok && booking.endBooking > now" class="text-danger">
                       De boeking is nog niet in orde
-                    </span>
-                    <span ng-if="booking.status === 'rejected'">Afgewezen</span>
-                    <span ng-if="['cancelled', 'owner_cancelled'].indexOf(booking.status) >= 0">Geannuleerd</span>
-                    <span ng-if="booking.status === 'requested'"">
+                    </div>
+                    <div ng-if="booking.status === 'rejected'">Afgewezen</div>
+                    <div ng-if="['cancelled', 'owner_cancelled'].indexOf(booking.status) >= 0">Geannuleerd</div>
+                    <div ng-if="booking.status === 'requested'"">
                       <md-button class="md-raised md-primary">Reageer</md-button>
-                    </span>
-                    <span ng-if="booking.status === 'accepted' && now > booking.beginBooking && !booking.resource.boardcomputer && (booking.approved === 'OK' || !booking.approved) && !booking.trip.odoBegin && !booking.trip.finalized">
+                    </div>
+                    <div ng-if="booking.status === 'accepted' && now > booking.beginBooking && !booking.resource.boardcomputer && (booking.approved === 'OK' || !booking.approved) && !booking.trip.odoBegin && !booking.trip.finalized">
                       <md-button class="md-raised md-primary">Rit administreren</md-button>
-                    </span>
+                    </div>
                   </td>
                   <td class="text-right" ng-if="me.provider.id === 50">
                     <a target="_blank" ng-href="{{ createTripDetailsLink(booking) }}"><i class="fa fa-fw fa-external-link-square"></i>PDF</a>

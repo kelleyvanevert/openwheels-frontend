@@ -4,64 +4,28 @@
     <div class="rpad col-md-4">
     </div>
     <div class="rpad col-md-8">
-      <h1 class="page-title card-pad-left" style="text-align: left;">
+      <h1 class="page-title card-pad-left" style="text-align: left;" smooth-scroll-to-item=".card.sidebar"
+          ng-if="!$root.isWindowSizeMD">
+        <span ng-if="!currentSection">{{ 'MY_PROFILE' | translate }}</span>
+        <span ng-if="currentSection">{{ currentSection.title }}</span>
+        <ng-md-icon icon="expand_more"></ng-md-icon>
+      </h1>
+      <h1 class="page-title card-pad-left" style="text-align: left;"
+          ng-if="$root.isWindowSizeMD">
         <span ng-if="!currentSection">{{ 'MY_PROFILE' | translate }}</span>
         <span ng-if="currentSection">{{ currentSection.title }}</span>
       </h1>
     </div>
   </div>
   <div class="row">
-    <div class="rpad col-md-4">
-      <div class="sidebar card mw">
-        <div class="card-body">
-
-          <div class="media hidden-xs" style="margin-bottom: 10px;">
-            <a class="pull-left" ui-sref="member({ personId: person.id })">
-              <img class="media-object img-user-normal" ng-if="!refreshProfileImage" person-profile-image="{ person: person, size: 'normal', noCache: true }" />
-              <div class="media-object img-user-normal" ng-if="refreshProfileImage" />
-            </a>
-            <div class="media-body">
-              <h4 class="media-heading"><a ui-sref="member({ personId: person.id })">{{ person | fullname }}</a></h4>
-              <div><small>{{ person.created | memberSince }}</small></div>
-              <div><span badge-list="person.badges"></span></div>
-            </div>
-          </div>
-          
-          <user-status-line person="person" has-booked="hasBooked"></user-status-line>
-
-          <ul class="sidebar-menu">
-            <li ui-sref="{{ section.sref || 'owm.person.profile({ highlight: \'' + section.id + '\' })' }}"
-                ui-sref-opts="{ inherit: false }"
-                ng-class="{ active: section.sref ? $state.includes(section.sref) : ($state.params.highlight || defaultHighlight) === section.id }"
-                md-ink-ripple="#50a2c3"
-                ng-repeat="section in sections">
-              <a class="menu-item" href="#">
-                <ng-md-icon icon="{{ section.icon }}"></ng-md-icon>
-                {{ section.title }}
-              </a>
-            </li>
-          </ul>
-
-          <ul class="extra-links">
-            <li>
-              <a ui-sref="owm.auth.changePassword">{{ 'AUTH_CHANGE_PWD_PAGE_TITLE' | translate }} ›</a>
-            </li>
-            <li ng-if="person.provider.id === 5">
-              <a ui-sref="owm.finance.contributie">{{ 'PAY_SUBSCRIPTION' | translate }} ›</a>
-            </li>
-            <li ng-if="person.preference !== 'renter'">
-              <a ui-sref="owm.resource.own">{{ 'CREATE_RESOURCE_BUTTON' | translate }} ›</a>
-            </li>
-          </ul>
-          
-        </div>
-      </div>
-    </div>
-
-    <div class="rpad col-md-8">
+    <div class="rpad"
+         ng-class="{
+           'col-md-8 col-md-push-4': withSidebar,
+           'col-xs-12': !withSidebar,
+         }">
 
       <!-- PERSONAL DATA  -->
-      <div class="mw card" id="personal-data" ng-show="$state.params.highlight === 'personal'">
+      <div class="mw card" id="personal-data" ng-show="highlight === 'personal'">
         <!--<div class="card-heading">
           <h3>
             {{ 'MY_PROFILE_PERSONAL' | translate }}
@@ -165,7 +129,7 @@
 
       <!-- CONTACT DATA  -->
 
-      <div class="mw card" id="contact-data" ng-show="$state.params.highlight === 'contact'">
+      <div class="mw card" id="contact-data" ng-show="highlight === 'contact'">
         <!--<div class="card-heading">
           <h3>
             {{ 'MY_PROFILE_CONTACT' | translate }}
@@ -270,7 +234,7 @@
 
       <!-- PROFILE DATA  -->
 
-      <div class="mw card" id="profile-data" ng-show="($state.params.highlight || defaultHighlight) === 'profiel'">
+      <div class="mw card" id="profile-data" ng-show="highlight === 'profiel'">
         <div class="card-body">
           <form name="settingsForm">
 
@@ -396,7 +360,7 @@
 
       <!-- ACCOUNT -->
 
-      <div class="mw card" id="bank-data" ng-show="$state.params.highlight === 'bank'" ng-if="person.preference !== 'renter' || person.status === 'active'">
+      <div class="mw card" id="bank-data" ng-show="highlight === 'bank'" ng-if="person.preference !== 'renter' || person.status === 'active'">
         <div class="card-body">
           <div ng-include="'person/account/person-account.tpl.html'"></div>
         </div><!--/ card-body -->
@@ -405,7 +369,67 @@
       <div ui-view></div>
 
 
-    </div>
+    </div><!-- /col -->
+
+    <div class="rpad col-md-4 col-md-pull-8" ng-show="withSidebar">
+      <div class="sidebar card mw">
+        <div class="card-body">
+
+          <div class="hidden-xs hidden-sm">
+            <div class="media" style="margin-bottom: 10px;">
+              <a class="pull-left" ui-sref="member({ personId: person.id })">
+                <img class="media-object img-user-normal" ng-if="!refreshProfileImage" person-profile-image="{ person: person, size: 'normal', noCache: true }" />
+                <div class="media-object img-user-normal" ng-if="refreshProfileImage" />
+              </a>
+              <div class="media-body">
+                <h4 class="media-heading"><a ui-sref="member({ personId: person.id })">{{ person | fullname }}</a></h4>
+                <div><small>{{ person.created | memberSince }}</small></div>
+                <div><span badge-list="person.badges"></span></div>
+              </div>
+            </div>
+            
+            <user-status-line person="person" has-booked="hasBooked"></user-status-line>
+          </div>
+
+          <!--
+          <div ng-show="!$root.isWindowSizeMD && hideMenu" ng-click="hideMenu = !hideMenu"
+              style="text-align: center; margin-top: -10px;">
+            <ng-md-icon style="color: black; height: 30px; width: 30px;" size="30" icon="expand_more"></ng-md-icon>
+          </div>
+          -->
+          <div class="h-escape">
+            <ul class="sidebar-menu">
+              <li ui-sref="{{ section.sref || 'owm.person.profile({ highlight: \'' + section.id + '\' })' }}"
+                  ui-sref-opts="{ inherit: false }"
+                  ng-class="{ active: section.sref ? $state.includes(section.sref) : highlight === section.id }"
+                  md-ink-ripple="#50a2c3"
+                  ng-repeat="section in sections">
+                <a class="menu-item" href="#">
+                  <ng-md-icon icon="{{ section.icon }}"></ng-md-icon>
+                  {{ section.title }}
+                </a>
+              </li>
+            </ul>
+
+            <div class="h-pad">
+              <ul class="extra-links">
+                <li>
+                  <a ui-sref="owm.auth.changePassword">{{ 'AUTH_CHANGE_PWD_PAGE_TITLE' | translate }} ›</a>
+                </li>
+                <li ng-if="person.provider.id === 5">
+                  <a ui-sref="owm.finance.contributie">{{ 'PAY_SUBSCRIPTION' | translate }} ›</a>
+                </li>
+                <li ng-if="person.preference !== 'renter'">
+                  <a ui-sref="owm.resource.own">{{ 'CREATE_RESOURCE_BUTTON' | translate }} ›</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div><!-- /col -->
+
   </div>
 </div>
 
