@@ -613,6 +613,7 @@
 }
 
 .home.landing-beheerders .hero {
+  /*background-image: url('https://mywheels.nl/autodelen/wp-content/uploads/2019/02/event12mei-s.jpg');*/
   background-image: url('https://mywheels.nl/autodelen/wp-content/uploads/2019/02/beheerders.jpg');
   background-position: 50% 35%;
 }
@@ -643,6 +644,52 @@
 
     h4 {
       color: black;
+    }
+  }
+}
+
+.ontmoet-beheerder {
+  display: block;
+
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+
+  background-size: cover;
+  background-position: 50% 50%;
+
+  border-radius: 9999px;
+
+  transition: transform .1s ease;
+
+  overflow: hidden;
+
+  .arr {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: rgba(84, 158, 188, 0.36);
+
+    transition: opacity .1s ease, transform .1s ease;
+    transform: translate(-10%, 0);
+    opacity: 0;
+
+    color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+
+    .arr {
+      opacity: 1;
+      transform: translate(0, 0);
     }
   }
 }
