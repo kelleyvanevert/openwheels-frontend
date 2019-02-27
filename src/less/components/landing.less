@@ -167,14 +167,20 @@
       }
 
     }
-  }
 
-  &.landing-lease .hero {
-    background-image: url('../assets/img/bg/in_straatbeeld3.jpg');
-  }
+    &.thinner {
+      .landing-title {
+        a {
+          margin-top: 2.5em;
+        }
 
-  &.landing-lease .hero-overlay {
-    background-color: rgba(56, 132, 163, 0.27);
+        @media (max-width: 480px) {
+          a {
+            margin-top: .5em;
+          }
+        }
+      }
+    }
   }
 
   .landing-lead {
@@ -600,6 +606,19 @@
 
 .home.landing-lease .hero {
   background-image: url('../assets/img/bg/in_straatbeeld3.jpg');
+}
+
+.home.landing-lease .hero-overlay {
+  background-color: rgba(56, 132, 163, 0.27);
+}
+
+.home.landing-beheerders .hero {
+  background-image: url('https://mywheels.nl/autodelen/wp-content/uploads/2019/02/beheerders.jpg');
+  background-position: 50% 35%;
+}
+
+.home.landing-beheerders .hero-overlay {
+  background-color: rgba(150, 142, 68, 0.09);
 }
 
 .media.coordinator {
