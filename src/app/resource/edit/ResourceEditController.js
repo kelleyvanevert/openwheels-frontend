@@ -29,6 +29,7 @@ angular.module('owm.resource.edit', [
     $scope.hasPermission = true;
   }
 
+  $scope.isBeheerder = isBeheerder;
   var beheer = isBeheerder(me, resource);
 
   $scope.sections = [
