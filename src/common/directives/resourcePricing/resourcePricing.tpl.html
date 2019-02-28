@@ -4,13 +4,13 @@
     <div class="pad">
       <span class="price is-1">{{ resource.price.dayRateTotal | currency }}</span>
       <span class="annotation">per dag <span class="hourly">/ {{ resource.price.hourRate | currency }} per uur</span></span>
-      <div class="sub-price-line" ng-if="$root.experiments.schattingKmKostenDropdown">
+      <div class="sub-price-line" ng-if="($root.experiments.kmSchatting !== 'no')">
         *excl. <span ng-if="resource.refuelByRenter">kilometerkosten</span>
                <span ng-if="!resource.refuelByRenter">kilometer- en brandstofkosten</span>
       </div>
     </div>
   </div>
-  <div class="secondary" ng-if="!$root.experiments.schattingKmKostenDropdown">
+  <div class="secondary" ng-if="($root.experiments.kmSchatting === 'no')">
 
     <!-- KILOMETERPRIJS -->
 
