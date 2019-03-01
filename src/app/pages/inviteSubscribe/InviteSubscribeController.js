@@ -1,7 +1,8 @@
 'use strict';
 angular.module('owm.pages.invite.subscribe', [])
 
-.controller('InviteSubscribeController', function ($scope, $state, $rootScope, inviter, $stateParams, $mdDialog, $mdMedia, $timeout, $localStorage, resourceService, metaInfoService, appConfig) {
+.controller('InviteSubscribeController', function ($scope, $state, $rootScope, inviter, $stateParams, $mdDialog,
+	$mdMedia, $timeout, $localStorage, resourceService, metaInfoService, appConfig, $filter) {
 
 	metaInfoService.set({robots: 'noindex'});
 	metaInfoService.set({url: appConfig.serverUrl + '/uitnodigen/' + inviter.slug});
@@ -36,7 +37,9 @@ angular.module('owm.pages.invite.subscribe', [])
 			perPage: 5
 		})
 		.then(function (resources) {
-			$scope.resources = resources || [];
+			$scope.resources  = $filter('filter')(resources || [], function (resource) {
+				return resource.isActive;
+			});
 		})
 		.catch(function () {
 			$scope.resources = [];
