@@ -353,12 +353,15 @@ angular.module('openwheels', [
 })
 
 .run(function ($window, $log, $timeout, $state, $stateParams, $rootScope, $anchorScroll,
+  appConfig,
   alertService, featuresService, linksService, metaInfoService, Analytics, authService, $location, $localStorage,
   AB,
   $analytics) {
 
   
   $rootScope.moment = moment;
+
+  $rootScope.appConfig = appConfig;
 
   $rootScope.$state = $state;
   $rootScope.$stateParams = $stateParams;
@@ -414,7 +417,9 @@ angular.module('openwheels', [
 
     if (toState.redirectTo) {
       e.preventDefault();
-      $state.go(toState.redirectTo, angular.merge(toParams, toState.redirectToParams || {}), { location: 'replace' });
+      var redirectTo = (typeof toState.redirectTo === 'function') ? toState.redirectTo() : toState.redirectTo;
+      var redirectToParams = (typeof toState.redirectToParams === 'function') ? toState.redirectToParams() : toState.redirectToParams;
+      $state.go(redirectTo, angular.merge(toParams, redirectToParams || {}), { location: 'replace' });
     }
   });
 
@@ -471,6 +476,7 @@ angular.module('openwheels', [
       $state.includes('owm.person.details') ||
       $state.includes('owm.person.profile') ||
       $state.includes('owm.person.dashboard') ||
+      $state.includes('owm.booking.show') ||
       $state.includes('owmlanding') ||
       $state.includes('contractchoice')
     );

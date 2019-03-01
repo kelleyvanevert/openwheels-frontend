@@ -1,0 +1,202 @@
+<div class="sidebar card mw">
+  <div class="card-body">
+    <h3>
+      {{ accepted ? 'Boeking' : 'Reservering' }}
+
+      <!-- Booking alterations for renter -->
+      <span class="pull-right" style="
+        font-size: 1.6rem;
+        font-family: 'Source Sans Pro', Helvetica, arial, sans-serif;
+        margin-top: -.3rem;
+      ">
+        <a
+          class="btn mywheels-btn mywheels-btn-default"
+          ng-if="perspective.isRenter &&
+                ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 &&
+                !bookingEndedRealy"
+          style="
+            padding: .2em .5em;
+            height: auto;
+          "
+        >
+          <ng-md-icon icon="edit"></ng-md-icon>
+          wijzigen
+        </a>
+      </span>
+    </h3>
+    
+    <!-- auto -->
+    <div
+      class="h-escape photo"
+      style="
+        height: 14rem;
+        background-size: cover;
+        background-color: #eee;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+      "
+      ng-style="{
+        'background-image': 'url(' + (resource.pictures[0] | resourceAvatar: 'large') + ')',
+      }"
+    ></div>
+
+    <p>
+      <a ui-sref="owm.resource.show({ resourceId: resource.id })" style="font-weight: 600;">{{ resource.alias }}</a><br />
+      {{ resource.brand }} {{ resource.model }}<br />
+      {{ resource.location }} {{ resource.streetNumber }} <small>{{ resource.city  | toTitleCase }}</small>
+    </p>
+
+    <!-- timeframe -->
+    <div class="h-escape">
+      <div class="mw-booking-timeframe">
+        <div class="pickup" ng-if="hasAcceptedTimeframe(booking)">
+          <div class="date">{{ booking.beginBooking | amDateFormat: 'ddd DD MMM' }}</div>
+          <div class="time">{{ booking.beginBooking | amDateFormat: 'HH:mm' }}</div>
+        </div>
+        <div class="return" ng-if="hasAcceptedTimeframe(booking)">
+          <div class="date">{{ booking.endBooking | amDateFormat: 'ddd DD MMM' }}</div>
+          <div class="time">{{ booking.endBooking | amDateFormat: 'HH:mm' }}</div>
+        </div>
+        <div class="pickup" ng-if="!hasAcceptedTimeframe(booking)">
+          <div class="date">{{ booking.beginRequested | amDateFormat: 'ddd DD MMM' }}</div>
+          <div class="time">{{ booking.beginRequested | amDateFormat: 'HH:mm' }}</div>
+        </div>
+        <div class="return" ng-if="!hasAcceptedTimeframe(booking)">
+          <div class="date">{{ booking.endRequested | amDateFormat: 'ddd DD MMM' }}</div>
+          <div class="time">{{ booking.endRequested | amDateFormat: 'HH:mm' }}</div>
+        </div>
+        <svg class="t" height="100%" width="20" viewBox="110 0 40 100" preserveAspectRatio="none" shape-rendering="geometricPrecision">
+          <path d="M0,0 h110 l40,50 l-40,50 h-110z"
+                stroke-width="2"
+                stroke-linejoin="round"
+                stroke-linecap="square" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- people -->
+
+    <!-- (1) owner -->
+    <div ng-if="perspective.isRenter && !perspective.isOwner">
+      <h3>
+        Eigenaar
+      </h3>
+      <div class="media">
+        <img class="media-object pull-left img-user-normal" person-profile-image="{ person: resource.owner, size: 'normal' }" hide-xs />
+        <div class="media-body">
+          <ul class="list-unstyled list-block list-spaced">
+            <li><ng-md-icon icon="person_outline" alt="Persoon icoon" aria-label="Persoon icoon"></ng-md-icon>
+              {{ resource.owner | fullname }}
+            </li>
+            <li ng-if="resource.owner.created"><ng-md-icon icon="perm_contact_calendar"></ng-md-icon> 
+              {{ resource.owner.created | memberSince }}
+            </li>
+            <li ng-if="resource.owner.streetName"><ng-md-icon icon="place"></ng-md-icon>
+              {{ resource.owner.streetName }} {{ resource.owner.streetNumber }}, {{ resource.owner.city }}
+            </li>
+            <li ng-if="resource.owner.phoneNumbers[0].number"><ng-md-icon icon="phone"></ng-md-icon>
+              <a href="tel:{{ resource.owner.phoneNumbers[0].number }}">{{ resource.owner.phoneNumbers[0].number }}</a>
+              <small ng-if="resource.owner.phoneNumbers[0].verified" class="text-success">(geverifieerd)</small>
+            </li>
+            <li><ng-md-icon icon="check"></ng-md-icon>
+              {{ resource.numberOfBookings | wasBookedTimes }}
+            </li>
+            <li ng-if="resource.owner.facebookUid"><ng-md-icon icon="share"></ng-md-icon>
+              <a target="_blank" ng-href="https://facebook.com/{{ resource.owner.facebookUid }}">Facebook</a>
+            </li>
+            <li ng-if="resource.owner.twitterUid"><ng-md-icon icon="share"></ng-md-icon>
+              <a target="_blank" ng-href="https://twitter.com/{{ resource.owner.twitterUid }}">Twitter</a>
+            </li>
+            <li ng-if="resource.owner.linkedinUid"><ng-md-icon icon="share"></ng-md-icon>
+              <a target="_blank" ng-href="https://www.linkedin.com/profile/view?id={{ resource.ownerbooking.person.linkedinUid }}">LinkedIn</a>
+            </li>
+            <li><ng-md-icon icon="comment"></ng-md-icon>
+              <a ng-click="openChatWith(resource.owner)">{{ 'SEND_MESSAGE' | translate }}</a>
+            </li>
+          </ul>
+          <div><span badge-list="booking.person.badges"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- (2) renter -->
+    <div ng-if="perspective.isOwner && !perspective.isRenter">
+      <h3>
+        Huurder
+      </h3>
+      <div class="media">
+        <img class="media-object pull-left img-user-normal" person-profile-image="{ person: booking.person, size: 'normal' }" hide-xs />
+        <div class="media-body">
+          <ul class="list-unstyled list-block list-spaced">
+            <li><ng-md-icon icon="person_outline"></ng-md-icon>
+              {{ booking.person | fullname }}
+            </li>
+            <li ng-if="booking.person.created"><ng-md-icon icon="perm_contact_calendar"></ng-md-icon> 
+              {{ booking.person.created | memberSince }}
+            </li>
+            <li ng-if="booking.person.streetName"><ng-md-icon icon="place"></ng-md-icon>
+              {{ booking.person.streetName }} {{ booking.person.streetNumber }}, {{ booking.person.city }}
+            </li>
+            <li ng-if="booking.person.phoneNumbers[0].number"><ng-md-icon icon="phone"></ng-md-icon>
+              {{ booking.person.phoneNumbers[0].number }}
+              <small ng-if="booking.person.phoneNumbers[0].verified" class="text-success">(geverifieerd)</small>
+            </li>
+            <li><ng-md-icon icon="check"></ng-md-icon>
+              {{ booking.person.numberOfBookings | hasBookedTimes }}
+            </li>
+            <li ng-if="booking.person.facebookUid"><ng-md-icon icon="share"></ng-md-icon>
+              <a target="_blank" ng-href="https://facebook.com/{{ booking.person.facebookUid }}">Facebook</a>
+            </li>
+            <li ng-if="booking.person.twitterUid"><md-ico>share</md-icon>
+              <a target="_blank" ng-href="https://twitter.com/{{ booking.person.twitterUid }}">Twitter</a>
+            </li>
+            <li ng-if="booking.person.linkedinUid"><ng-md-icon icon="share"></ng-md-icon>
+              <a target="_blank" ng-href="https://www.linkedin.com/profile/view?id={{ booking.person.linkedinUid }}">LinkedIn</a>
+            </li>
+            <li><ng-md-icon icon="comment"></ng-md-icon>
+              <a ng-click="openChatWith(booking.person)">{{ 'SEND_MESSAGE' | translate }}</a>
+            </li>
+          </ul>
+          <div>
+            <br>Bekijk het profiel van <a ui-sref="member({ personId: booking.person.id })">{{ booking.person.firstName }}</a> voor meer informatie en reviews.
+          </div>
+          <div><span badge-list="booking.person.badges"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- (3) contact person -->
+    <div ng-if="
+      perspective.isRenter &&
+      (resource.contactPerson && resource.contactPerson.id !== resource.owner.id)
+    ">
+      <h3>
+        Beheerder
+      </h3>
+      <div class="media">
+        <img class="media-object pull-left img-user-normal" person-profile-image="{ person: resource.contactPerson, size: 'normal' }" hide-xs />
+        <div class="media-body">
+          <ul class="list-unstyled list-block list-spaced">
+            <li><ng-md-icon icon="person_outline"></ng-md-icon>
+              {{ resource.contactPerson | fullname }}
+            </li>
+            <li ng-if="resource.contactPerson.created"><ng-md-icon icon="perm_contact_calendar"></ng-md-icon> 
+              {{ resource.contactPerson.created | memberSince }}
+            </li>
+            <li ng-if="resource.contactPerson.streetName"><ng-md-icon icon="place"></ng-md-icon>
+              {{ resource.contactPerson.streetName }} {{ resource.contactPerson.streetNumber }}, {{ resource.contactPerson.city }}
+            </li>
+            <li ng-if="resource.contactPerson.phoneNumbers[0].number"><ng-md-icon icon="phone"></ng-md-icon>
+              {{ resource.contactPerson.phoneNumbers[0].number }}
+              <small ng-if="resource.contactPerson.phoneNumbers[0].verified" class="text-success">(geverifieerd)</small>
+            </li>
+            <li><ng-md-icon icon="comment"></ng-md-icon>
+              <a ng-click="openChatWith(resource.contactPerson)">{{ 'SEND_MESSAGE' | translate }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

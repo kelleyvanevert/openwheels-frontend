@@ -1,0 +1,12 @@
+
+<div
+  ng-if="perspective.pageView === 'renting'"
+  ng-include="'booking/show/booking-show-renting.tpl.html'"
+  ng-controller="BookingShowRentingController"
+></div>
+
+<div
+  ng-if="perspective.pageView === 'rentingOut'"
+  ng-include="'booking/show/booking-show-rentingOut.tpl.html'"
+  ng-controller="BookingShowRentingOutController"
+></div>

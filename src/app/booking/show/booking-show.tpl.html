@@ -381,81 +381,8 @@
   </div>
 </div>
 
-<!-- Payment -->
-<div class="card mw"
-    id="bookingPayment"
-    ng-if="(userPerspective === 'renter' || userPerspective === 'contract_holder') &&
-            paymentInit &&
-            ((credit.value === 0 && debt.value === 0) || booking.approved === 'BUY_VOUCHER' || addExtraDriver)">
-  <div class="card-heading">
-    <h3 class="card-title">Reservering betalen</h3>
-  </div>
-
-  <div class="card-body text-center" ng-if="$root.isPaymentLoading">
-    <spinner />
-  </div>
-
-  <div class="card-body" ng-if="!$root.isPaymentLoading">
-    <voucher me="me" booking="booking" discount="discount" on-changed="bookingChanged(booking)"
-      on-extra-drivers-changed="bookingDriversChanged(booking)"></voucher>
-
-    <div ng-if="(requested && requiredValue.value.total === 0) || ((requiredValue.value.total | number:2) == ((booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount) | number:2))" class="text-center">
-      <button type="button" class="mywheels-btn-margin-top btn btn-success btn-lg" ng-click="buyVoucher(booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount)">
-        Koop {{ booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount | currency }} rijtegoed
-      </button>
-
-      <div ng-if="!accountApproved">
-        <p class="mywheels-btn-margin-top text-left">
-          <b>Let op:</b> om de betaling te kunnen verwerken, moet de tenaamstelling van de rekening overeenkomen met je accountnaam.
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <div class="card-body" ng-if="(!requested || requiredValue.value.total > 0) && ((requiredValue.value.total | number:2) != ((booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount) | number:2))" ng-show="!$root.isPaymentLoading">
-    <h3>Rijtegoed</h3>
-    <div style="margin-bottom: 15px;">
-      <table class="table financial">
-        <tr>
-        <tr>
-          <td style="width:100%">Benodigd voor je ritten</td>
-          <td class="text-right">{{ requiredValue.value.sub_total | currency }}</td>
-        </tr>
-        <tr ng-if="requiredValue.value.debt > 0">
-          <td>Openstaande facturen</td>
-          <td class="text-right">{{ requiredValue.value.debt | currency }}</td>
-        </tr>
-        <tr>
-          <td>Af: je huidige rijtegoed</td>
-          <td class="text-right">{{ requiredValue.value.credit | currency }}</td>
-        </tr>
-        <tr ng-if="requiredValue.value.credit_limit > 0">
-          <td>Af: je kredietlimiet <info-icon tooltip-placement="bottom" tooltip-html="'Je betaalt ritten achteraf per automatische incasso, je kredietlimiet is het maximale bedrag dat je achteraf kunt betalen.'"></info-icon></td>
-          <td class="text-right">{{ requiredValue.value.credit_limit | currency }}</td>
-        </tr>
-        <tr>
-          <td ng-if="requiredValue.value.total >= 0"><b>Te betalen</b></td>
-          <td ng-if="requiredValue.value.total < 0"><b>Resterend rijtegoed</b></td>
-          <td class="text-right"><b>{{ requiredValue.value.total | currency }}</b></td>
-        </tr>
-      </table>
-
-      <div ng-if="requiredValue.value.total > 0">
-        <p class="text-center">
-          <button type="button" class="btn btn-success btn-lg" ng-click="buyVoucher(requiredValue.value.voucher)">
-            Koop {{ requiredValue.value.total | currency }} rijtegoed
-          </button>
-        </p>
-
-        <div ng-if="!accountApproved">
-          <p class="mywheels-btn-margin-top text-left">
-            <b>Let op:</b> om de betaling te kunnen verwerken, moet de tenaamstelling van de rekening overeenkomen met je accountnaam.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- Payment-->
+<!-- [moved] -->
 
 <!-- Open and close buttons -->
 <div class="board-computer-control"

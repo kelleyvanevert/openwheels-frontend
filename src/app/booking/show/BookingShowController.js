@@ -2,9 +2,99 @@
 
 angular.module('owm.booking.show', [])
 
+.controller('BookingShowRentingOutController', function (
+  metaInfoService,
+  appConfig,
+
+  $log,
+  $scope
+) {
+  // $scope = { perspective, resource, booking, contract }
+})
+
+.controller('BookingShowRentingController', function (
+  metaInfoService,
+  appConfig,
+
+  $log,
+  $timeout,
+  $scope
+) {
+  // $scope = { perspective, resource, booking, contract }
+
+  var steps = {
+    accountCheck: {
+      checked: true,
+      stress: false,
+      text: 'Account gecontroleerd',
+    },
+    reservation: {
+      checked: true,
+      stress: false,
+      text: 'Reservering gemaakt',
+    },
+    accepted: {
+      stress: false,
+    },
+    payment: {},
+  };
+
+  function updatePaymentStep () {
+    steps.payment = {
+      checked: !$scope.paymentInit,
+      stress: $scope.paymentInit,
+      text: $scope.paymentInit ? 'Reservering betalen' : 'Reservering betaald',
+      scrollTo: $scope.paymentInit ? '#bookingPayment' : undefined,
+    };
+  }
+  $scope.$watch('paymentInit', updatePaymentStep);
+  updatePaymentStep();
+
+  if ($scope.accepted) {
+    steps.accepted.checked = true;
+    if ($scope.resource.isConfirmationRequiredOthers) {
+      steps.accepted.text = 'Geaccepteerd door eigenaar';
+    } else {
+      steps.accepted.text = 'Automatisch geaccepteerd';
+      //steps.accepted.tooltip = 'Deze auto hoeft niet handmatig geaccepteerd te worden door de eigenaar';
+    }
+  } else {
+    steps.accepted.checked = false;
+    steps.accepted.text ='Nog niet geaccepteerd door eigenaar';
+    if (steps.payment.checked) {
+      steps.accepted.tooltip = 'Je kunt voor de zekerheid een alternatief overwegen. Andere openstaande reserveringen worden automatisch geannuleerd bij acceptatie.';
+    } else {
+      steps.accepted.tooltip = 'Je kunt al wel betalen, zodat je direct op pad kunt zodra de reservering is geaccepteerd.';
+    }
+  }
+
+  $scope.progressList = [
+    steps.reservation,
+    steps.accepted,
+    steps.payment,
+  ];
+  
+  if ($scope.showBookOnlyNotice) {
+    $scope.progressList.splice(1, 0, steps.accountCheck);
+    steps.accountCheck.checked = false;
+    steps.accountCheck.stress = true;
+    steps.accountCheck.text = 'Handmatige account-check vereist';
+  } else if ($scope.firstTime) {
+    $scope.progressList.unshift(steps.accountCheck);
+  }
+
+  $scope.progressPercentage = 0;
+  $timeout(function () {
+    $scope.progressPercentage = 100 * ($scope.progressList.filter(function (step) {
+      return step.checked;
+    }).length / $scope.progressList.length);
+  }, 100);
+})
+
 .controller('BookingShowController', function (
   $q, $timeout, $log, $scope, $location, $filter, $translate, $state, $stateParams, appConfig, API_DATE_FORMAT,
   bookingService, resourceService, invoice2Service, alertService, dialogService,
+  perspective,
   authService, boardcomputerService, discountUsageService, chatPopupService, linksService,
   booking, me, declarationService, $mdDialog, contract, Analytics, paymentService, voucherService,
   $window, $mdMedia, discountService, account2Service, $rootScope, chipcardService, metaInfoService,
@@ -13,6 +103,8 @@ angular.module('owm.booking.show', [])
 
   metaInfoService.set({url: appConfig.serverUrl + '/booking/' + booking.id});
   metaInfoService.set({canonical: 'https://mywheels.nl/booking/' + booking.id});
+
+  $scope.perspective = perspective;
 
   $scope.appConfig = appConfig;
   $scope.contract = contract;
@@ -42,23 +134,23 @@ angular.module('owm.booking.show', [])
   /*
   * Init booking times
   */
-  initBookingRequestScope(booking);
-
-  function initBookingRequestScope(booking) {
+  $scope.initBookingRequestScope = function (booking) {
     $scope.bookingRequest = angular.copy(booking);
     $scope.bookingRequest.beginRequested = booking.beginRequested ? booking.beginRequested : booking.beginBooking;
     $scope.bookingRequest.endRequested   = booking.endRequested   ? booking.endRequested   : booking.endBooking;
-  }
+  };
+  $scope.initBookingRequestScope(booking);
 
   $scope.bookingStarted = moment().isAfter(moment(booking.beginBooking));
   $scope.bookingEnded = moment().isAfter(moment(booking.endBooking));
   $scope.bookingRequestEnded = moment().isAfter(moment(booking.endRequested));
   $scope.bookingStartsWithinOneHour = moment().isAfter(moment(booking.beginBooking).add(-1, 'hour'));
-  $scope.bookingEndedRealy = moment().isAfter(moment(booking.endBooking).add(1, 'hour'));
-  $scope.bookingRequestEndedRealy = moment().isAfter(moment(booking.endRequested).add(1, 'hour'));
-  $scope.showBookingForm = !$scope.bookingEndedRealy;
+  $scope.bookingEndedReally = moment().isAfter(moment(booking.endBooking).add(1, 'hour'));
+  $scope.bookingRequestEndedReally = moment().isAfter(moment(booking.endRequested).add(1, 'hour'));
+  $scope.showBookingForm = !$scope.bookingEndedReally;
   $scope.requested = ($scope.booking.status === 'requested');
   $scope.accepted = ($scope.booking.status === 'accepted');
+  $scope.firstTime = ($scope.booking.person.numberOfBookings === 0);
 
   $scope.showBookOnlyNotice = !booking.ok && (booking.person.status === 'book-only');
 
@@ -133,7 +225,7 @@ angular.module('owm.booking.show', [])
         return true;
       }());
 
-      $scope.showBoardComputerButtons = (booking.resource.locktypes.indexOf('smartphone') >= 0) && !$scope.bookingEndedRealy;
+      $scope.showBoardComputerButtons = (booking.resource.locktypes.indexOf('smartphone') >= 0) && !$scope.bookingEndedReally;
       if ($scope.showBoardComputerButtons) {
         $scope.enableBoardComputerButtons = true &&
           (booking.status === 'accepted') && booking.ok && // booking is definitely accepted and OK
@@ -426,7 +518,7 @@ angular.module('owm.booking.show', [])
     });
   };
 
-  if (booking.resource.locktypes.indexOf('smartphone') >= 0 && !$scope.bookingEndedRealy && $scope.accepted && booking.ok && $scope.bookingStartsWithinOneHour) {
+  if (booking.resource.locktypes.indexOf('smartphone') >= 0 && !$scope.bookingEndedReally && $scope.accepted && booking.ok && $scope.bookingStartsWithinOneHour) {
     boardcomputerService.currentLocation({
       resource: $scope.resource.id
     })
@@ -555,7 +647,7 @@ angular.module('owm.booking.show', [])
     .then(function (booking) {
       $scope.booking = booking;
       initPermissions();
-      initBookingRequestScope(booking);
+      $scope.initBookingRequestScope(booking);
       alertService.add('success', $filter('translate')('BOOKING_STOPPED'), 10000);
     })
     .catch(errorHandler)
@@ -1003,7 +1095,7 @@ angular.module('owm.booking.show', [])
       .then(function (booking) {
         Analytics.trackEvent('altered', 'success', booking.id, undefined, true);
         $scope.booking = booking;
-        initBookingRequestScope(booking);
+        $scope.initBookingRequestScope(booking);
         initPermissions();
         $scope.alteredAfterBuyVoucher = true;
         if (booking.beginRequested) {
@@ -1173,7 +1265,7 @@ angular.module('owm.booking.show', [])
       //alertService.addGenericError();
     }
     if(!err.message.match('onvoldoende')) {
-      initBookingRequestScope($scope.booking);
+      $scope.initBookingRequestScope($scope.booking);
     }
   }
 

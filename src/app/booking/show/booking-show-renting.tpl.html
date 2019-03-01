@@ -1,0 +1,196 @@
+<div class="container container-transitional">
+  <div class="row">
+    <div class="rpad col-md-4">
+    </div>
+    <div class="rpad col-md-8">
+      <h1 class="page-title card-pad-left" style="text-align: left;">
+        Jouw boeking
+      </h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="rpad col-md-8 col-md-push-4">
+
+      <!-- Payment -->
+      <div class="card mw"
+          id="bookingPayment"
+          ng-if="(userPerspective === 'renter' || userPerspective === 'contract_holder') &&
+                  paymentInit &&
+                  ((credit.value === 0 && debt.value === 0) || booking.approved === 'BUY_VOUCHER' || addExtraDriver)">
+        <div class="card-heading">
+          <h3 class="card-title">Reservering betalen</h3>
+        </div>
+
+        <div class="card-body text-center" ng-if="$root.isPaymentLoading">
+          <spinner />
+        </div>
+
+        <div class="card-body" ng-if="!$root.isPaymentLoading">
+          <voucher me="me" booking="booking" discount="discount" on-changed="bookingChanged(booking)"
+            on-extra-drivers-changed="bookingDriversChanged(booking)"></voucher>
+
+          <div ng-if="(requested && requiredValue.value.total === 0) || ((requiredValue.value.total | number:2) == ((booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount) | number:2))" class="text-center">
+            <button type="button" class="mywheels-btn-margin-top btn btn-success btn-lg" ng-click="buyVoucher(booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount)">
+              Koop {{ booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount | currency }} rijtegoed
+            </button>
+
+            <div ng-if="!accountApproved">
+              <p class="mywheels-btn-margin-top text-left">
+                <b>Let op:</b> om de betaling te kunnen verwerken, moet de tenaamstelling van de rekening overeenkomen met je accountnaam.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body" ng-if="(!requested || requiredValue.value.total > 0) && ((requiredValue.value.total | number:2) != ((booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount) | number:2))" ng-show="!$root.isPaymentLoading">
+          <h3>Rijtegoed</h3>
+          <div style="margin-bottom: 15px;">
+            <table class="financial">
+              <tr>
+                <td style="width:100%">Benodigd voor je ritten</td>
+                <td class="text-right">{{ requiredValue.value.sub_total | currency }}</td>
+              </tr>
+              <tr class="bt" ng-if="requiredValue.value.debt > 0">
+                <td>Openstaande facturen</td>
+                <td class="text-right">{{ requiredValue.value.debt | currency }}</td>
+              </tr>
+              <tr class="bt">
+                <td>Af: je huidige rijtegoed</td>
+                <td class="text-right">{{ requiredValue.value.credit | currency }}</td>
+              </tr>
+              <tr class="bt" ng-if="requiredValue.value.credit_limit > 0">
+                <td>Af: je kredietlimiet <info-icon tooltip-placement="bottom" tooltip-html="'Je betaalt ritten achteraf per automatische incasso, je kredietlimiet is het maximale bedrag dat je achteraf kunt betalen.'"></info-icon></td>
+                <td class="text-right">{{ requiredValue.value.credit_limit | currency }}</td>
+              </tr>
+              <tr class="bt">
+                <td ng-if="requiredValue.value.total >= 0"><b>Te betalen</b></td>
+                <td ng-if="requiredValue.value.total < 0"><b>Resterend rijtegoed</b></td>
+                <td class="text-right"><b>{{ requiredValue.value.total | currency }}</b></td>
+              </tr>
+            </table>
+
+            <div ng-if="requiredValue.value.total > 0">
+              <p class="text-center">
+                <button type="button" class="btn mywheels-btn-call-to-action btn-lg" ng-click="buyVoucher(requiredValue.value.voucher)">
+                  Koop {{ requiredValue.value.total | currency }} rijtegoed
+                </button>
+              </p>
+
+              <div ng-if="!accountApproved">
+                <p class="mywheels-btn-margin-top text-left">
+                  <b>Let op:</b> om de betaling te kunnen verwerken, moet de tenaamstelling van de rekening overeenkomen met je accountnaam.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Resource alternatives if booking is requested -->
+      <!--
+                  resourceAlternatives.length >= 1 && -->
+      <div class="card mw"
+          id="resourceAlternatives"
+          ng-if="!perspective.isContractor &&
+                  requested &&
+                  (!paymentInit || credit.value !== 0 || debt.value !== 0)">
+        <div class="card-heading">
+          <h3 class="card-title">{{ 'ALTERNATIVE_RESOURCES' | translate }}</h3>
+        </div>
+
+        <div class="card-body">
+          <p>Verhoog de kans op een auto en reserveer meerdere auto's. Zodra een huurverzoek geaccepteerd wordt, verlopen de andere huurverzoeken.</p>
+          <ul class="list-row">
+            <li ng-repeat="resource in resourceAlternatives" ng-click="selectResourceAlternative(resource)" ga-track-event="['interaction', 'selectResourceAlternative', 'bookingShow']">
+              <div ng-include="'resource/partials/resource-header4.tpl.html'"></div>
+            </li>
+          </ul>
+
+          <ul class="list-inline text-center">
+            <li id="dashboard_rent_a_car">
+              <a ui-sref="owm.resource.search.list({start: startDate, end: endDate, type: booking.resource.resourceType, seats: booking.resource.numberOfSeats})" class="btn btn-success btn-lg"  ga-track-event="['interaction', 'selectAllResourceAlternatives', 'bookingShow']">
+                Bekijk alle auto's
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="rpad col-md-4 col-md-pull-8">
+      <div class="status-sidebar card mw">
+        <div class="card-body">
+          <h3>Status</h3>
+          <ul class="list-unstyled">
+            <li
+              ng-repeat="step in progressList"
+              style="margin-bottom: .5rem;"
+              ng-style="{
+                'font-weight': step.stress ? 600 : 400,
+                'cursor': (step.tooltip || step.scrollTo) ? 'pointer' : 'inherit',
+              }"
+              uib-tooltip="{{ step.tooltip }}"
+              smooth-scroll-to-item="{{ step.scrollTo }}"
+            >
+              <ng-md-icon icon="check" ng-if="step.checked"></ng-md-icon>
+              <ng-md-icon icon="check_box_outline_blank" ng-if="!step.checked"></ng-md-icon>
+              {{ step.text }}
+            </li>
+          </ul>
+
+          <div
+            class="progress-indicator"
+            style="
+              position: relative;
+              margin-top: 2rem;
+              height: 2.6rem;
+              border-radius: 999rem;
+              background: #eee;
+              box-shadow: inset 1px 1px 5px rgba(0,0,0,0.1);
+            "
+          >
+            <div
+              class="progress-covered"
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                border-radius: 999rem;
+                background: #82b955;
+                width: 0%;
+
+                transition: width .4s ease;
+              "
+              ng-style="{
+                width: progressPercentage + '%',
+              }"
+            ></div>
+          </div>
+
+          <p class="summary">
+            Bla
+          </p>
+          
+          <div ng-if="showBookOnlyNotice"
+            class="h-escape h-pad"
+            style="
+              background: #ffecc2;
+              color: #911a1a;
+              padding-top: 1rem;
+              padding-bottom: 1rem;
+            "
+          >
+            <p><strong>Let op:</strong> Je account is op dit moment nog niet actief, je kunt de auto dus ook nog niet ophalen.</p>
+            <p>Een aantal van onze controles konden niet automatisch worden uitgevoerd voor jouw account. Zodra wij deze controles hebben uitgevoerd ontvang je per mail bericht over het activeren van je account.</p>
+          </div>
+        </div>
+      </div>
+
+      <div ng-include="'booking/show/partial-bookingInfoCard.tpl.html'"></div>
+    </div>
+  </div>
+</div>
