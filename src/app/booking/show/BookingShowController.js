@@ -18,11 +18,18 @@ angular.module('owm.booking.show', [])
 
   $log,
   $timeout,
+  $filter,
+  $mdDialog,
   $scope
 ) {
   // $scope = { perspective, resource, booking, contract }
 
-  var steps = {
+  // STEPS
+  // Figure out the current state of the reservation/booking process
+  //  in order to show a step-wise (& progress)-based indication.
+
+  // (Note: these are not linearly ordered!)
+  var steps = $scope.steps = {
     accountCheck: {
       checked: true,
       stress: false,
@@ -31,7 +38,7 @@ angular.module('owm.booking.show', [])
     reservation: {
       checked: true,
       stress: false,
-      text: 'Reservering gemaakt',
+      text: 'Reservering verstuurd',
     },
     accepted: {
       stress: false,
@@ -84,11 +91,57 @@ angular.module('owm.booking.show', [])
   }
 
   $scope.progressPercentage = 0;
+  $scope.showProgressCard = true;
+
   $timeout(function () {
     $scope.progressPercentage = 100 * ($scope.progressList.filter(function (step) {
       return step.checked;
     }).length / $scope.progressList.length);
+    $scope.showProgressCard = $scope.progressPercentage < 100;
   }, 100);
+
+  // Determine summary text
+  if (!steps.accepted.checked) {
+    $scope.progressSummary = 'We hebben de reservering naar verhuurder ' + $filter('fullname')($scope.booking.resource.owner) + ' gestuurd.';
+    if (!steps.payment.checked) {
+      $scope.progressSummary += ' Je kunt hieronder alvast betalen. De reservering is dan direct definitief na acceptatie door ' + $scope.booking.resource.owner.firstName + '.';
+    }
+    else {
+      $scope.progressSummary += ' Je ontvangt een mail als ' + $scope.booking.resource.owner.firstName + ' op je verzoek gereageerd heeft.';
+    }
+  }
+  else if (steps.accepted.checked && !steps.payment.checked) {
+    if ($scope.perspective.isContractHolder) {
+      $scope.progressSummary = 'Je reservering is gemaakt. Je hoeft alleen nog de reservering te betalen.';
+    }
+    else {
+      $scope.progressSummary = 'Je reservering is gemaakt. Vraag aan ' + $scope.contract.contractor.firstName + ' om de reservering te betalen.';
+    }
+  }
+  else if (steps.accepted.checked && steps.payment.checked) {
+    $scope.progressSummary = 'De reservering is geaccepteerd en het bedrag is betaald. Alles is in orde voor je rit en je kan goed verzekerd op weg.';
+  }
+
+  
+
+  $scope.openEditDialog = function ($event) {
+    $mdDialog.show({
+      scope: $scope,
+      preserveScope: true,
+      locals: {
+        hide: function () {
+          $mdDialog.hide();
+        },
+      },
+      templateUrl: 'booking/show/dialog-edit.tpl.html',
+      parent: angular.element(document.body),
+      targetEvent: $event,
+      clickOutsideToClose: true,
+    })
+    .then(function (res) {
+    });
+  };
+
 })
 
 .controller('BookingShowController', function (
@@ -758,6 +811,7 @@ angular.module('owm.booking.show', [])
       }
     },
   };
+  $timeout($scope.extraDrivers.load, 50);
 
 
   /*

@@ -350,7 +350,6 @@
 <!-- Medebestuurders -->
 <div class="card mw"
   ng-if="((userPerspective === 'renter' || userPerspective === 'contract_holder') && !paymentInit && ownContract)"
-  ng-init="extraDrivers.load()"
   ng-show="extraDrivers.inviteRequests.length > 0"
 >
   <div class="card-heading">

@@ -362,6 +362,7 @@ angular.module('openwheels', [
   $rootScope.moment = moment;
 
   $rootScope.appConfig = appConfig;
+  $rootScope.dev = typeof appConfig.test === 'object';
 
   $rootScope.$state = $state;
   $rootScope.$stateParams = $stateParams;

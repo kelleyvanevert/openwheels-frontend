@@ -1,7 +1,7 @@
-<div class="sidebar card mw">
+<div class="card mw">
   <div class="card-body">
     <h3>
-      {{ accepted ? 'Boeking' : 'Reservering' }}
+      Details
 
       <!-- Booking alterations for renter -->
       <span class="pull-right" style="
@@ -18,15 +18,21 @@
             padding: .2em .5em;
             height: auto;
           "
+          ng-click="openEditDialog($event)"
         >
           <ng-md-icon icon="edit"></ng-md-icon>
           wijzigen
         </a>
       </span>
     </h3>
+
+    <p class="reservation-progress-summary" style="text-align: center;" ng-if="!showProgressCard">
+      <em>{{ progressSummary }}</em>
+    </p>
     
     <!-- auto -->
     <div
+      ng-if="$root.dev || resource.pictures.length > 0"
       class="h-escape photo"
       style="
         height: 14rem;
@@ -74,13 +80,31 @@
       </div>
     </div>
 
+    <div ng-if="perspective.renter">
+      <h5>Medebestuurders</h5>
+      <p ng-if="extraDrivers.loading">Laden...</p>
+      <p ng-if="!extraDrivers.loading && extraDrivers.inviteRequests.length === 0">Geen medebestuurders.</p>
+      <ul class="list-unstyled" ng-if="!extraDrivers.loading && extraDrivers.inviteRequests.length > 0">
+        <li ng-repeat="inviteRequest in extraDrivers.inviteRequests">
+          <span ng-if="inviteRequest.status === 'invited'"
+              uib-tooltip="Let op: pas als de uitnodiging is geaccepteerd mag deze gebruiker meerijden.">
+            Nog niet geaccepteerd: &lt;{{ inviteRequest.recipient.email }}&gt;
+          </span>
+          <span ng-if="inviteRequest.status === 'accepted'"
+              uib-tooltip="Mag meerijden op deze boeking.">
+            {{ inviteRequest.recipient.firstName }} &lt;{{ inviteRequest.recipient.email }}&gt;
+          </span>
+        </li>
+      </ul>
+    </div>
+
     <!-- people -->
 
     <!-- (1) owner -->
     <div ng-if="perspective.isRenter && !perspective.isOwner">
-      <h3>
+      <h5>
         Eigenaar
-      </h3>
+      </h5>
       <div class="media">
         <img class="media-object pull-left img-user-normal" person-profile-image="{ person: resource.owner, size: 'normal' }" hide-xs />
         <div class="media-body">
@@ -121,9 +145,9 @@
 
     <!-- (2) renter -->
     <div ng-if="perspective.isOwner && !perspective.isRenter">
-      <h3>
+      <h5>
         Huurder
-      </h3>
+      </h5>
       <div class="media">
         <img class="media-object pull-left img-user-normal" person-profile-image="{ person: booking.person, size: 'normal' }" hide-xs />
         <div class="media-body">
@@ -170,9 +194,9 @@
       perspective.isRenter &&
       (resource.contactPerson && resource.contactPerson.id !== resource.owner.id)
     ">
-      <h3>
+      <h5>
         Beheerder
-      </h3>
+      </h5>
       <div class="media">
         <img class="media-object pull-left img-user-normal" person-profile-image="{ person: resource.contactPerson, size: 'normal' }" hide-xs />
         <div class="media-body">
