@@ -5,10 +5,18 @@
       <p ng-bind="'PROFILE_IBAN_INTRO' | translate"></p>
       <div class="form-group">
         <label>
-          {{ 'IBAN_NUMBER' | translate }}
-          <info-icon ng-if="isIbanBlocked" tooltip-html="'INFO_ACCOUNT_IBAN' | translate"></info-icon>
+          {{ 'IBAN_ACCOUNT_OWNER' | translate }}
+          <info-icon tooltip-html="'IBAN_ACCOUNT_OWNER_INFO' | translate"></info-icon>
         </label>
-        <input type="text" class="form-control" name="iban" ng-model="account.iban" ng-disabled="isIbanBlocked" />
+
+        <input type="text" class="form-control" name="iban" placeholder="Bijvoorbeeld A Jansen" ng-model="account.name" />
+      </div>
+      <div class="form-group">
+        <label>
+          {{ 'IBAN_NUMBER' | translate }}
+          <info-icon tooltip-html="'IBAN_NUMBER_INFO' | translate"></info-icon>
+        </label>
+        <input type="text" class="form-control" name="iban" placeholder="Bijvoorbeeld op de volgende manier: NL29RABO0159955734" ng-model="account.iban" />
       </div>
 
       <button type="button" class="btn btn-primary" ng-click="save(account)"
