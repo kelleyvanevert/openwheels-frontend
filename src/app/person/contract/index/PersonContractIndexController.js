@@ -1,7 +1,8 @@
 'use strict';
 angular.module('owm.person')
 
-.controller('PersonContractIndexController', function ($q, $filter, $uibModal, $translate, $scope,
+.controller('PersonContractIndexController', function ($q, $filter, $uibModal, $translate, $scope, $log,
+  $mdDialog,
   authService, dialogService, alertService, personService, contractService, me, Analytics, metaInfoService, appConfig, extraDriverService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard/profile/contracts'});
@@ -12,10 +13,7 @@ angular.module('owm.person')
   $scope.ownContracts = [];
   $scope.ownContractsCopy = [];
   $scope.otherContracts = [];
-  $scope.personsOnContracts = [];
   $scope.hasMoreToLoad = false;
-  $scope.isLoadingMore = false;
-  $scope.showLoaderSpinner = false;
 
   $scope.age = -1;
   if(authService.user.isAuthenticated && authService.user.identity.dateOfBirth) {
@@ -27,13 +25,21 @@ angular.module('owm.person')
     $scope.isLoadingContracts = false;
   });
 
+  function addContractFields (contract) {
+    contract.personsOnContracts = [];
+    contract.showLoaderSpinner = false;
+  }
+
   function loadContracts () {
     var ownContractsPromise = contractService.forContractor({ person: me.id });
     var otherContractsPromise = contractService.forDriver({ person: me.id });
 
-    alertService.load();
+    //alertService.load();
     return $q.all([ownContractsPromise, otherContractsPromise])
     .then(function (result) {
+      result[0].forEach(addContractFields);
+      result[1].forEach(addContractFields);
+      
       $scope.ownContracts = result[0];
       $scope.ownContractsCopy = angular.copy(result[0]);
       $scope.otherContracts = $filter('filter')(result[1], function (c) {
@@ -42,7 +48,7 @@ angular.module('owm.person')
       $scope.isLoadingContracts = false;
     })
     .finally(function () {
-      alertService.loaded();
+      //alertService.loaded();
     });
   }
 
@@ -57,13 +63,15 @@ angular.module('owm.person')
 
   $scope.loadMoreExtraDriverRequestsForContract = function(contract) {
 
-    $scope.showLoaderSpinner = true;
+    contract.showLoaderSpinner = true;
     offset += limit;
     $scope.getExtraDriverRequestsForContract(contract);
 
   };
 
   $scope.getExtraDriverRequestsForContract = function(contract) {
+
+    contract.showLoaderSpinner = true;
     extraDriverService.getRequestsForContract({
       contract : contract.id,
       limit: limit,
@@ -72,18 +80,18 @@ angular.module('owm.person')
     .then(function (data) {
 
       angular.forEach(data.result, function(val, key) {
-        $scope.personsOnContracts.push(val);
+        contract.personsOnContracts.push(val);
       });
 
       $scope.hasMoreToLoad = (data.result.length >= limit);
-      $scope.showLoaderSpinner = false;
 
-      return $scope.personsOnContracts;
+      return contract.personsOnContracts;
     })
     .catch(function (err) {
-      return $scope.personsOnContracts;
+      return contract.personsOnContracts;
     })
     .finally(function () {
+      contract.showLoaderSpinner = false;
     });
   };
 
@@ -171,18 +179,22 @@ angular.module('owm.person')
   $scope.addPerson = function (index) {
     var contract = $scope.ownContracts[index];
     var email = contract.emailToAdd;
+    
+    if (me.email === email) {
+      alertService.addError({
+        message: 'Je kunt jezelf niet toevoegen op je eigen contract',
+      });
+      return;
+    }
 
     alertService.load();
     extraDriverService.invitePersonForContract({
       contract: contract.id,
       email: email
     })
-      .then(function (person) {
+      .then(function (newInviteRequest) {
 
-        $scope.personsOnContracts.push({
-          'status' : 'invited',
-          'recipient' : person
-        });
+        contract.personsOnContracts.push(newInviteRequest);
 
         contract.emailToAdd = null;
       })
@@ -198,12 +210,14 @@ angular.module('owm.person')
     var contractId = contract.id;
     var personId = person.id;
 
-    dialogService.showModal(null, {
-      closeButtonText: 'Annuleren',
-      actionButtonText: 'Akkoord',
-      headerText: 'Persoon van contract verwijderen',
-      bodyText: 'Weet je zeker dat je deze persoon van je contract wilt verwijderen?'
-    }).then(function (result) {
+    var confirm = $mdDialog.confirm()
+          .title('Extra bestuurder van contract verwijderen?')
+          .textContent('Weet je zeker dat je deze persoon van je contract wilt verwijderen?')
+          .ariaLabel('Lucky day')
+          .ok('Akkoord')
+          .cancel('Annuleren');
+    
+    $mdDialog.show(confirm).then(function () {
       alertService.load();
       extraDriverService.removePersonFromContract({
         contract: contractId,
@@ -211,9 +225,9 @@ angular.module('owm.person')
       })
       .then(function () {
         // on success, remove from list
-        angular.forEach($scope.personsOnContracts, function (request, index) {
+        angular.forEach(contract.personsOnContracts, function (request, index) {
           if (request.recipient.id === personId) {
-            $scope.personsOnContracts.splice(index, 1);
+            contract.personsOnContracts.splice(index, 1);
           }
         });
       })

@@ -12,6 +12,19 @@ angular.module('owm.finance.index', [])
   $scope.kmPoints.total = $scope.kmPoints
     .map(function (o) { return +(o.amount); })
     .reduce(function (a,b) { return a+b; }, 0);
+  
+  function onNav () {
+    if ($state.$current.name === 'owm.finance.kmpoints') {
+      $scope.sectionTitle = 'Beheerdersvergoeding';
+    }
+    else if ($state.$current.name === 'owm.finance.vouchers') {
+      $scope.sectionTitle = 'Rijtegoed';
+    }
+    else if ($state.$current.name === 'owm.finance.v4') {
+      $scope.sectionTitle = 'Facturen';
+    }
+  }
+	$scope.$on('$stateChangeSuccess', onNav);
 
   $scope.payoutDialog = function($event) {
     $event.stopPropagation();

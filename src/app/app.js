@@ -267,6 +267,22 @@ angular.module('openwheels', [
    // });
 })
 
+.directive('spinner', function () {
+  return {
+    restrict: 'E',
+    //replace: true,
+    template: '<md-progress-circular md-mode="indeterminate" md-diameter="60" class="mw-primary md-hue-2" style="margin: 0 auto;"></md-progress-circular>',
+  };
+})
+
+.directive('inlineSpinner', function () {
+  return {
+    restrict: 'E',
+    //replace: true,
+    template: '<span style="display: inline-block; margin: 0 2px; vertical-align: middle; width: 28px; height: 28px; position: relative;"><md-progress-circular md-mode="indeterminate" md-diameter="40" class="mw-primary md-hue-2" style="position: absolute; top: -6px; left: -6px;"></md-progress-circular></span>',
+  };
+})
+
 .directive('convertToNumber', function() {
   return {
     require: 'ngModel',
@@ -278,6 +294,20 @@ angular.module('openwheels', [
         return val !== null ? '' + val : null;
       });
     }
+  };
+})
+
+.directive('smoothScrollToItem', function () {
+  return {
+    restrict: 'A',
+    scope: {
+      smoothScrollToItem: '@',
+    },
+    link: function (scope, element, attr) {
+      element.on('click', function() {
+        $('html,body').animate({ scrollTop: $(scope.smoothScrollToItem).offset().top }, 300);
+      });
+    },
   };
 })
 
@@ -377,7 +407,7 @@ angular.module('openwheels', [
 
   $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState) {
     // show spinner
-    if (toParams.loader !== false) {
+    if (toParams.loader !== false && !toState.noGlobalLoader) {
       alertService.load();
     }
     setAnalyticsUser();
@@ -429,14 +459,20 @@ angular.module('openwheels', [
       $state.includes('subscribe') ||
       $state.includes('invite') ||
       $state.includes('member') ||
+      $state.includes('owm.resource.edit') ||
+      $state.includes('owm.resource.create') ||
+      $state.includes('owm.resource.own') ||
+      $state.includes('owm.message') ||
       $state.includes('owm.trips') ||
       $state.includes('owm.finance.vouchers') ||
       $state.includes('owm.finance.v4') ||
       $state.includes('owm.finance.kmpoints') ||
+      $state.includes('owm.auth.signup') ||
       $state.includes('owm.person.details') ||
       $state.includes('owm.person.profile') ||
       $state.includes('owm.person.dashboard') ||
-      $state.includes('owmlanding')
+      $state.includes('owmlanding') ||
+      $state.includes('contractchoice')
     );
     $rootScope.containerHome = (
       ($state.includes('home')) || ($state.$current.self.url === '/auto-verhuren')

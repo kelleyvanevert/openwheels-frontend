@@ -4,7 +4,6 @@ angular.module('owm.person', [
   'owm.person.dashboard',
   'owm.person.intro',
   'owm.person.profile',
-  'owm.person.contractchoice',
   'owm.person.details',
   'owm.person.aboutme',
   'owm.person.action.payinvoicegroup',
@@ -344,10 +343,12 @@ angular.module('owm.person', [
   // dashboard/contracts
   $stateProvider.state('owm.person.contract', {
     url: '/contracts',
+    noGlobalLoader: true,
     redirectTo: 'owm.person.profile.contract',
   });
   $stateProvider.state('owm.person.profile.contract', {
     url: '/contracts',
+    noGlobalLoader: true,
     views: {
       '@owm.person.profile': {
         templateUrl: 'person/contract/index/person-contract-index.tpl.html',
@@ -358,6 +359,8 @@ angular.module('owm.person', [
 
   $stateProvider.state('owm.person.profile.contractchoice', {
     url: '/contractkeuze',
+    redirectTo: 'contractchoice',
+    /*
     views: {
       '@owm.person.profile': {
         templateUrl: 'person/contractchoice/contractchoice.tpl.html',
@@ -376,7 +379,7 @@ angular.module('owm.person', [
           person: person.id
         });
       }]
-    }
+    }*/
   });
 
 

@@ -1,12 +1,3 @@
-
-@media (max-width: 40em) {
-  .home.landing {
-    .landing-section {
-      font-size: 80%;
-    }
-  }
-}
-
 .home.landing {
 
   @media screen and (min-width: 640px) {
@@ -109,7 +100,7 @@
     position: relative;
     top: 0;
     left: 0;
-    font-family: @headings-font-family;
+    font-family: @font-family-sans-serif;
     transition: top .1s ease, left .1s ease, box-shadow .1s ease;
     box-shadow: 1px 3px 5px rgba(0,0,0,.2);
 
@@ -121,7 +112,7 @@
   }
 
   .hero {
-    background-image: url('../assets/img/bg/ijsjes.jpg');
+    /* voor headerfoto, zie onderaan `landing.less` */
     position: relative;
 
     .landing-title {
@@ -178,6 +169,14 @@
     }
   }
 
+  &.landing-lease .hero {
+    background-image: url('../assets/img/bg/in_straatbeeld3.jpg');
+  }
+
+  &.landing-lease .hero-overlay {
+    background-color: rgba(56, 132, 163, 0.27);
+  }
+
   .landing-lead {
     background: #cfd3d4;
     color: #406370;
@@ -213,13 +212,14 @@
       color: @mywheels-blue;
 
       img {
-        height: 1.7em;
+        height: auto;
+        max-height: 41px;
+        max-width: 90%;
+
         position: relative;
         vertical-align: text-bottom;
-        bottom: -.29em;
-        margin: 0 -.3em 0 -.5em;
-        user-select: none;
-
+        bottom: -2px;
+        margin: 0 .6rem 0 .4rem;
         user-select: none;
       }
     }
@@ -383,7 +383,6 @@
     h2 {
       color: @mywheels-blue;
       font-size: 2em;
-      margin: 0 0 1em;
     }
 
     ul {
@@ -454,7 +453,7 @@
         margin: .4em 0 .7em;
 
         text-align: center;
-        font-size: 1.5em;
+        font-size: 1.2em;
       }
 
       .voorwaarden-akkoord {
@@ -484,7 +483,6 @@
 
   @media (max-width: 40em) {
     .mywheels-ik-doe-mee {
-      padding: 0;
 
       .aanmeldformulier {
         padding: 1.4em;
@@ -532,6 +530,76 @@
       }
     }
   }
+
+  .lease-auto {
+
+    .pm {
+      white-space: nowrap;
+    }
+    
+    h2,
+    .price {
+      margin: 0;
+
+      font-family: @font-family-sans-serif;
+      color: black;
+      .size-5();
+    }
+
+    .eur {
+      font-size: 46px;
+      font-weight: bold;
+
+      display: inline-block;
+      margin: -10px 10px 0 0;
+    }
+
+    @media screen and (max-width: 540px) {
+      .price {
+        .size-3();
+      }
+      .eur {
+        font-size: 30px;
+      }
+    }
+
+    &.as-frame {
+      padding: 1rem 0;
+      transition: box-shadow .1s ease, transform .1s ease;
+      -webkit-transition: box-shadow .1s ease, transform .1s ease;
+
+      .hoverable-img {
+        background-size: contain;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        height: 20rem;
+        margin: -0.5rem 0;
+      }
+
+      background: white;
+
+      box-shadow: 1px 1px 14px rgba(0,0,0,.1);
+      -webkit-box-shadow: 1px 1px 14px rgba(0,0,0,.1);
+    }
+  }
+
+  .lease-banner {
+    margin: 6rem 0;
+  }
+}
+
+.home .hero {
+  /*background-image: url('../assets/img/bg/auto_aan_gracht.jpg');*/
+  background-image: url('../branding/img/bg.jpg');
+  background-position: 50% 50%;
+}
+
+.home.landing-open .hero {
+  background-image: url('../assets/img/bg/ijsjes.jpg');
+}
+
+.home.landing-lease .hero {
+  background-image: url('../assets/img/bg/in_straatbeeld3.jpg');
 }
 
 .media.coordinator {

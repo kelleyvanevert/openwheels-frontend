@@ -52,7 +52,7 @@
     <md-list-item id="menuMyCars" class="menu-item-resources" ng-click="navigate('owm.resource.own')" ng-if="user.isAuthenticated">
       <ng-md-icon icon="directions_car" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_RESOURCES' | translate }}</p>
     </md-list-item>
-    <md-list-item id="menuMyWheelsOpen" class="menu-item-mywheels-open" ng-click="goToMyWheelsOpen()" ng-if="user.isAuthenticated && user.identity.preference !== 'renter' && user.identity.provider.id === 1">
+    <md-list-item id="menuMyWheelsOpen" class="menu-item-mywheels-open" ng-click="navigate('owmlanding.mywheels-open')" ng-if="user.isAuthenticated && user.identity.preference !== 'renter' && user.identity.provider.id === 1">
       <ng-md-icon icon="smartphone" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MYWHEELS_OPEN_HEADLINE' | translate }}</p>
     </md-list-item>
     <md-list-item id="menuListCar" class="menu-item-list-your-car" ng-click="navigate('list-your-car')" ng-if="!user.isAuthenticated">
@@ -67,7 +67,7 @@
 
     <md-divider></md-divider>
 
-    <md-list-item id="menuGegevens" class="menu-item-profile" ng-click="navigate('owm.person.profile')" ng-if="user.identity.preference === 'owner' || user.identity.status !== 'new' || user.identity.provider.id !== 1">
+    <md-list-item id="menuGegevens" class="menu-item-profile" ng-click="navigate('owm.person.profile', { highlight: 'profiel' })" ng-if="user.identity.preference === 'owner' || user.identity.status !== 'new' || user.identity.provider.id !== 1">
       <ng-md-icon icon="settings" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_PROFILE' | translate }}</p>
     </md-list-item>
 

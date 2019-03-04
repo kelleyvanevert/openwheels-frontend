@@ -8,7 +8,7 @@
         	<div class="input-group">
 		        <span class="input-group-btn" ng-if="person.phoneNumbers.length > 1">
 		          <button type="button" class="btn btn-default" ng-click="removePhone(p, $index)">
-		          	<ng-md-icon icon="delete" ng-style="{'font-size': '16px', height: '18px'}"></ng-md-icon>
+		          	<ng-md-icon icon="delete" ng-style="{ height: '18px', 'margin-top': '-8px' }"></ng-md-icon>
 		          </button>
 		        </span>
 	            <input type="tel" name="phone_number" class="form-control" id="number-{{ $index }}" ng-model="p.number" ng-disabled="p.verified" placeholder="Telefoonnummer">
@@ -35,7 +35,7 @@
         	<div class="input-group">
 		        <span class="input-group-btn" ng-if="person.phoneNumbers.length > 1">
 		          <button type="button" class="btn btn-default" ng-click="removePhone(p, $index)">
-		          	<ng-md-icon icon="delete" ng-style="{'font-size': '16px', height: '18px'}"></ng-md-icon>
+		          	<ng-md-icon icon="delete" ng-style="{ height: '18px', 'margin-top': '-8px' }"></ng-md-icon>
   				  </button>
 		        </span>
 	            <input type="tel" name="phone_number" class="form-control" id="number-{{ $index }}" ng-model="p.number" ng-disabled="p.verified">

@@ -8,9 +8,9 @@
   -->
 
   <div class="card-body">
-    <p>Je hebt nog geen chipkaarten gekoppeld.</p>
+    <p ng-show="chipcards.length == 0">Je hebt nog geen chipkaarten gekoppeld.</p>
 
-    <ul class="list-group" ng-show="chipcards.length">
+    <ul class="list-group" ng-show="chipcards.length > 0">
       <li class="list-group-item" ng-repeat="chipcard in chipcards">
 
         <div class="pull-right">

@@ -107,7 +107,7 @@
 
                 <div ng-if="me" class="text-warning pull-right" style="padding-top: 3px;">
                     <div ng-if="!isFavoriteResolved">
-                        <i class="fa fa-heart-o fa-spin fa-2x text-muted"></i>
+                        <inline-spinner />
                     </div>
                     <div ng-if="isFavoriteResolved">
                         <i class="fa fa-heart fa-2x" ng-if="isFavorite" ng-click="toggleFavorite(false)"></i>
@@ -299,7 +299,7 @@
 <md-toolbar class="md-hue-2 fixed-call-to-action" ng-if="removed === false && !showBookingForm" hide-gt-xs>
     <div class="md-toolbar-tools">
         <md-button class="md-raised md-primary" ng-click="toggleBookingForm()" ng-if="!openDialogSpinner" ga-track-event="['booking', 'created_pre', user.isAuthenticated, null, true]">{{ 'BOOK_A_CAR' | translate }}</md-button>
-        <md-button class="md-raised md-primary" ng-if="openDialogSpinner"><i class="fa fa-fw fa-circle-o-notch fa-spin"></i></md-button>
+        <md-button class="md-raised md-primary" ng-if="openDialogSpinner"><inline-spinner /></md-button>
     </div>
     <div class="satisfaction" ng-if="resource.rating_totals.senders > 0">{{ satisfaction }} {{ 'SATISFACTION_RENTERS' | translate }}</div>
     <div class="satisfaction" ng-if="resource.rating_totals.senders === 0">{{ resource.price.dayRateTotal | currency }} per dag <span ng-if="resource.price.kmFree">en 100 km gratis</span></div>
@@ -313,12 +313,12 @@
             <md-card-title>
               <md-card-title-text>
                 <span class="md-headline">Deze auto is helaas niet meer beschikbaar</span>
-                <span class="md-subhead">Vind een andere auto bij jou in de buurt die wel beschikbaar is.</span>
+                <span class="md-subhead">Vind een andere auto in de buurt die wel beschikbaar is.</span>
               </md-card-title-text>
             </md-card-title>
             <md-card-content>
               <section>
-                <ow-geocoder-searchbar searchtext="homeAddressPrefill"></ow-geocoder-searchbar>
+                <ow-geocoder-searchbar searchtext="removedResourceAddress"></ow-geocoder-searchbar>
               </section>
             </md-card-content>
         </md-card>

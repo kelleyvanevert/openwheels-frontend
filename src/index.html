@@ -67,11 +67,15 @@
 <body layout="column">
 
 	<div ui-view>
-		<div class="global-spinner" ng-show="loader" type="loader.type"><i class="fa fa-spin fa-2x fa-fw fa-spinner"></i></div>
+		<div class="global-spinner" ng-show="loader" type="loader.type">
+			<div class="mw-md-progress-circular spinner-size-2"><div class="mw-md-scale-wrapper">
+			<div class="mw-md-spinner-wrapper"><div class="mw-md-inner"><div class="mw-md-gap"></div><div class="mw-md-left"><div class="mw-md-half-circle"></div></div><div class="mw-md-right"><div class="mw-md-half-circle"></div></div></div></div>
+			</div></div>
+		</div>
 	
 	</div>
 	<% scripts.forEach(function (file) { %>
-		<script type="text/javascript" src="<%= file %>"></script>
+		<script type="text/javascript" src="<%= file %>?v=<%= version %>"></script>
 		<% }); %>
 </body>
 

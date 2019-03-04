@@ -42,6 +42,10 @@ html {
   padding-left: 8px;
   padding-right: 8px;
 }
+.nopad {
+  padding-left: 0;
+  padding-right: 0;
+}
 @media (max-width: 480px) {
   .rpad {
     padding-left: 0;
@@ -147,6 +151,10 @@ md-icon {
     user-select: none;
 }
 
+.md-button {
+    font-size: 16px;
+    text-transform: none;
+}
 
 .lead {
     font-size: @font-size-base * 1.15;
@@ -169,6 +177,10 @@ md-icon {
 .size-4 {
     font-size: @font-size-base * 1.23;
     line-height: 1.7;
+}
+.size-5 {
+    font-size: @font-size-base * 1.4;
+    line-height: 1.8;
 }
 
 
@@ -283,6 +295,46 @@ a:hover {
         }
     }
 }
+
+table.nice,
+table.financial {
+  margin-bottom: 2rem;
+  width: 100%;
+
+  td {
+    vertical-align: top;
+    padding: .6rem 0;
+  }
+
+  tr.bt td {
+    border-top: 1px solid #ddd;
+  }
+
+  .line {
+    position: relative;
+    margin: .2em 0;
+    border-top: 1px solid #bbb;
+  }
+
+  &.table,
+  &.nice {
+    th:first-child,
+    td:first-child {
+      padding-left: 0;
+    }
+    th:last-child,
+    td:last-child {
+      padding-right: 0;
+    }
+  }
+}
+
+code {
+    color: #333;
+    background: none;
+    padding: 1px;
+}
+
 hr {
     margin-bottom: 10px;
     margin-top: 10px;
@@ -522,6 +574,22 @@ h2.without-card + .sub {
 }
 
 
+.card-pad-left {
+    padding-left: 2.2rem;
+}
+
+@media (max-width: 480px) {
+    .card-pad-left {
+        padding-left: 1.2rem;
+    }
+}
+
+.md-dialog-content {
+    h2 {
+        color: black;
+    }
+}
+
 /* Apply to `.card`s */
 .mw {
     color: #333;
@@ -529,6 +597,18 @@ h2.without-card + .sub {
     .card-heading,
     .card-body {
         padding: 2.2rem;
+
+        .h-escape {
+            margin: 0 -2.2rem;
+        }
+
+        .h-pad {
+            padding: 0 2.2rem;
+        }
+    }
+
+    .card-body + .card-body {
+        padding-top: 0;
     }
 
     h1,
@@ -562,6 +642,10 @@ h2.without-card + .sub {
         color: black;
         margin: 3.5rem 0 2rem 0;
         font-size: 1.3em;
+
+        &.text-white {
+            color: white;
+        }
     }
 
     .card-heading > h1:first-child,
@@ -579,6 +663,24 @@ h2.without-card + .sub {
     .card-heading > h4:last-child,
     .card-heading > h5:last-child,
     .card-heading > h6:last-child {
+        margin-bottom: 0;
+    }
+
+    .card-body > h1:first-child,
+    .card-body > h2:first-child,
+    .card-body > h3:first-child,
+    .card-body > h4:first-child,
+    .card-body > h5:first-child,
+    .card-body > h6:first-child {
+        margin-top: 0;
+    }
+
+    .card-body > h1:last-child,
+    .card-body > h2:last-child,
+    .card-body > h3:last-child,
+    .card-body > h4:last-child,
+    .card-body > h5:last-child,
+    .card-body > h6:last-child {
         margin-bottom: 0;
     }
 
@@ -621,7 +723,7 @@ h2.without-card + .sub {
     }*/
 
     ul.sidebar-menu {
-        margin: 0 -2.2rem;
+        margin: 0;
         padding: 0;
         display: block;
 
@@ -632,7 +734,6 @@ h2.without-card + .sub {
             padding: 1.1rem 2.2rem 1.1rem 5.7rem;
 
             a.menu-item {
-                font-family: @headings-font-family;
                 font-size: 1.2em;
                 line-height: 1.4em;
                 color: #333;
@@ -681,19 +782,19 @@ h2.without-card + .sub {
         ul.sidebar-menu {
             li {
                 a.menu-item {
-                    font-size: 1.3em;
+                    /*font-size: 1.3em;*/
 
                     ng-md-icon {
                         margin: 0;
 
                         position: absolute;
                         left: 2.2rem;
-                        top: 1.4rem;
+                        top: 1.3rem;
                     }
                 }
 
                 .feature {
-                    font-size: 1.1em;
+                    /*font-size: 1.1em;*/
                 }
             }
         }
@@ -704,11 +805,17 @@ h2.without-card + .sub {
         .card-heading,
         .card-body {
             padding: 1.2rem;
+
+            .h-escape {
+                margin: 0 -1.2rem;
+            }
+
+            .h-pad {
+                padding: 0 1.2rem;
+            }
         }
 
         ul.sidebar-menu {
-            margin: 0 -1.2rem;
-
             li {
                 padding: 1.1rem 1.2rem;
             }
@@ -778,6 +885,11 @@ input.ng-touched {
 
     &.inline {
         display: inline-block;
+    }
+
+    &.noanim {
+        -webkit-animation: none;
+        animation: none;
     }
 }
 
