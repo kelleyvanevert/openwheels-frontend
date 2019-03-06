@@ -219,7 +219,7 @@
 <!-- Wait for acceptation alert -->
 <div class="card mw" ng-if="(userPerspective === 'renter' || userPerspective === 'contract_holder') && hasRequestedTimeframe(booking) && hasAcceptedTimeframe(booking)" id="ownerText">
   <div class="card-body card-inverse" style="background-color:#e6a500; color:white;">
-    <span>De wijzging van je reeds geaccepteerde reservering is naar de verhuurder verstuurd. Na goedkeuring ontvang je per mail een bevestiging, pas dan is je wijziging definitief.</span>
+    <span>De wijziging van je reeds geaccepteerde reservering is naar de verhuurder verstuurd. Na goedkeuring ontvang je per mail een bevestiging, pas dan is je wijziging definitief.</span>
   </div>
 </div>
 
@@ -425,7 +425,7 @@
 <div id="bookingFormContainer"
     ng-if="(userPerspective === 'renter') &&
           ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 &&
-          !bookingEndedRealy">
+          !bookingEndedReally">
   <div class="card mw">
     <div class="card-heading">
       <h3 class="card-title">Reservering wijzigen</h3>
@@ -580,7 +580,7 @@
     id="mywheelsOpenInfo"
     ng-if="(userPerspective === 'renter' || userPerspective === 'contract_holder') &&
           ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 &&
-          !bookingEndedRealy">
+          !bookingEndedReally">
   <div class="card-heading">
     <h3 class="card-title" ng-if="resource.boardcomputer">MyWheels Open</h3>
     <h3 class="card-title" ng-if="!resource.boardcomputer">Sleuteloverdracht</h3>
@@ -595,24 +595,12 @@
   </div>
 </div>
 
-<!-- Discount information for renter -->
-<div class="card mw"
-    ng-if="(userPerspective === 'renter' || userPerspective === 'contract_holder') &&
-            discount.length > 0">
-  <div class="card-heading">
-    <h3 class="card-title">Kortingscode</h3>
-  </div>
-  <div class="card-body">
-    Je hebt kortingscode {{ discount[0].discount.code }} gebruikt voor deze reservering. Je krijgt tot <span ng-if="discount[0].discount.amount > 0">€ {{ discount[0].discount.amount }}</span> <span ng-if="discount[0].discount.percentage > 0">{{ discount[0].discount.percentage }}%</span> korting van <span ng-if="discount[0].discount.sender.id === resource.owner.id">verhuurder</span> {{ discount[0].discount.sender | fullname }}.
-  </div>
-</div>
-
 <!-- Booking alterations for owner -->
 <div class="card mw"
     ng-if="(userPerspective === 'owner') &&
           ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 &&
-          !bookingRequestEndedRealy &&
-          !bookingEndedRealy &&
+          !bookingRequestEndedReally &&
+          !bookingEndedReally &&
           (allowAcceptReject || allowCancel)">
   <div class="card-heading">
     <h3 class="card-title">
@@ -857,7 +845,7 @@
 <!-- Tips and rules for renter of MyWheels Open -->
 <div class="card mw"
     ng-if="(userPerspective === 'renter' || userPerspective === 'contract_holder') &&
-            !bookingEndedRealy">
+            !bookingEndedReally">
   <div class="card-heading">
     <h3 class="card-title">
       Tips

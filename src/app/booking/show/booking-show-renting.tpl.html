@@ -4,127 +4,88 @@
     </div>
     <div class="rpad col-md-8">
       <h1 class="page-title card-pad-left" style="text-align: left;">
-        Jouw boeking
+        Jouw reservering
       </h1>
     </div>
   </div>
   <div class="row">
     <div class="rpad col-md-8 col-md-push-4">
 
-      <!-- Payment -->
-      <div class="card mw"
-          id="bookingPayment"
-          ng-if="(userPerspective === 'renter' || userPerspective === 'contract_holder') &&
-                  paymentInit &&
-                  ((credit.value === 0 && debt.value === 0) || booking.approved === 'BUY_VOUCHER' || addExtraDriver)">
-        <div class="card-heading">
-          <h3 class="card-title">Reservering betalen</h3>
-        </div>
+      <div ng-include="'booking/show/partial-renterInitialPayment.tpl.html'"></div>
 
-        <div class="card-body text-center" ng-if="$root.isPaymentLoading">
-          <spinner />
-        </div>
-
-        <div class="card-body" ng-if="!$root.isPaymentLoading">
-          <voucher me="me" booking="booking" discount="discount" on-changed="bookingChanged(booking)"
-            on-extra-drivers-changed="bookingDriversChanged(booking)"></voucher>
-
-          <div ng-if="(requested && requiredValue.value.total === 0) || ((requiredValue.value.total | number:2) == ((booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount) | number:2))" class="text-center">
-            <button type="button" class="mywheels-btn-margin-top btn btn-success btn-lg" ng-click="buyVoucher(booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount)">
-              Koop {{ booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount | currency }} rijtegoed
-            </button>
-
-            <div ng-if="!accountApproved">
-              <p class="mywheels-btn-margin-top text-left">
-                <b>Let op:</b> om de betaling te kunnen verwerken, moet de tenaamstelling van de rekening overeenkomen met je accountnaam.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-body" ng-if="(!requested || requiredValue.value.total > 0) && ((requiredValue.value.total | number:2) != ((booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount) | number:2))" ng-show="!$root.isPaymentLoading">
-          <h3>Rijtegoed</h3>
-          <div style="margin-bottom: 15px;">
-            <table class="financial">
-              <tr>
-                <td style="width:100%">Benodigd voor je ritten</td>
-                <td class="text-right">{{ requiredValue.value.sub_total | currency }}</td>
-              </tr>
-              <tr class="bt" ng-if="requiredValue.value.debt > 0">
-                <td>Openstaande facturen</td>
-                <td class="text-right">{{ requiredValue.value.debt | currency }}</td>
-              </tr>
-              <tr class="bt">
-                <td>Af: je huidige rijtegoed</td>
-                <td class="text-right">{{ requiredValue.value.credit | currency }}</td>
-              </tr>
-              <tr class="bt" ng-if="requiredValue.value.credit_limit > 0">
-                <td>Af: je kredietlimiet <info-icon tooltip-placement="bottom" tooltip-html="'Je betaalt ritten achteraf per automatische incasso, je kredietlimiet is het maximale bedrag dat je achteraf kunt betalen.'"></info-icon></td>
-                <td class="text-right">{{ requiredValue.value.credit_limit | currency }}</td>
-              </tr>
-              <tr class="bt">
-                <td ng-if="requiredValue.value.total >= 0"><b>Te betalen</b></td>
-                <td ng-if="requiredValue.value.total < 0"><b>Resterend rijtegoed</b></td>
-                <td class="text-right"><b>{{ requiredValue.value.total | currency }}</b></td>
-              </tr>
-            </table>
-
-            <div ng-if="requiredValue.value.total > 0">
-              <p class="text-center">
-                <button type="button" class="btn mywheels-btn-call-to-action btn-lg" ng-click="buyVoucher(requiredValue.value.voucher)">
-                  Koop {{ requiredValue.value.total | currency }} rijtegoed
-                </button>
-              </p>
-
-              <div ng-if="!accountApproved">
-                <p class="mywheels-btn-margin-top text-left">
-                  <b>Let op:</b> om de betaling te kunnen verwerken, moet de tenaamstelling van de rekening overeenkomen met je accountnaam.
-                </p>
-              </div>
-            </div>
-          </div>
+      <!-- Wait for acceptation alert -->
+      <div class="card mw" ng-if="hasRequestedTimeframe(booking) && hasAcceptedTimeframe(booking)" id="ownerText">
+        <div class="card-body card-inverse" style="background-color:#e6a500; color:white;">
+          <span>De wijziging van je reeds geaccepteerde reservering is naar de verhuurder verstuurd. Na goedkeuring ontvang je per mail een bevestiging, pas dan is je wijziging definitief.</span>
         </div>
       </div>
 
-
-      <!-- Resource alternatives if booking is requested -->
-      <!--
-                  resourceAlternatives.length >= 1 && -->
-      <div class="card mw"
-          id="resourceAlternatives"
-          ng-if="!perspective.isContractor &&
-                  requested &&
-                  (!paymentInit || credit.value !== 0 || debt.value !== 0)">
-        <div class="card-heading">
-          <h3 class="card-title">{{ 'ALTERNATIVE_RESOURCES' | translate }}</h3>
+      <!-- Cancel reason -->
+      <div class="card mw" ng-if="['cancelled'].indexOf(booking.status) >= 0 && booking.cancelReason">
+        <div class="card-body card-inverse" style="background-color:#c85f5f; color:white;"> 
+          <span>Deze reservering is automatisch geannuleerd. Een andere huurder heeft de auto voor dezelfde huurperiode gereserveerd en betaald. Omdat jouw reservering nog niet betaald is, hebben we de reservering geannuleerd. Een reservering is pas definitief als je betaald hebt. Je kunt dit voorkomen door een reservering direct te betalen.</span>
         </div>
+      </div>
 
+      <!-- Booking altered after buy voucher -->
+      <div class="card mw" ng-if="alteredAfterBuyVoucher">
+        <div class="card-body card-inverse" style="background-color:#3bab78; color: white;">
+          <span>Gelukt! De betaling is ontvangen en de reservering is gewijzigd.</span>
+        </div>
+      </div>
+
+      <!-- Je bent zelf contractant (niet de contracthouder) -->
+      <div class="card mw"
+        ng-if="!perspective.isContractHolder"
+      >
         <div class="card-body">
-          <p>Verhoog de kans op een auto en reserveer meerdere auto's. Zodra een huurverzoek geaccepteerd wordt, verlopen de andere huurverzoeken.</p>
-          <ul class="list-row">
-            <li ng-repeat="resource in resourceAlternatives" ng-click="selectResourceAlternative(resource)" ga-track-event="['interaction', 'selectResourceAlternative', 'bookingShow']">
-              <div ng-include="'resource/partials/resource-header4.tpl.html'"></div>
-            </li>
-          </ul>
-
-          <ul class="list-inline text-center">
-            <li id="dashboard_rent_a_car">
-              <a ui-sref="owm.resource.search.list({start: startDate, end: endDate, type: booking.resource.resourceType, seats: booking.resource.numberOfSeats})" class="btn btn-success btn-lg"  ga-track-event="['interaction', 'selectAllResourceAlternatives', 'bookingShow']">
-                Bekijk alle auto's
-              </a>
-            </li>
-          </ul>
+          <p>
+            <ng-md-icon icon="info_outline"></ng-md-icon>
+            Deze boeking is gemaakt op het {{ contract.type.name }} contract van {{ contract.contractor.firstName }}.
+          </p>
         </div>
       </div>
 
 
-    </div>
+      <!-- remarks are not for contractors (non-renting contract holders) -->
+      <div ng-include="'booking/show/partial-remarks.tpl.html'" ng-if="!perspective.isContractor"></div>
+
+
+      <!-- While in the reservation process -->
+      <div ng-if="!progress.reservationCompleted">
+        <div ng-include="'booking/show/partial-alternatives.tpl.html'" ng-if="!perspective.isContractor"></div>
+      </div>
+
+
+      <!-- After reservation completed -->
+      <div ng-if="progress.reservationCompleted">
+        <div ng-include="'booking/show/partial-agreement.tpl.html'"></div>
+        <div ng-include="'booking/show/partial-renterDiscountInfo.tpl.html'"></div>
+      </div>
+
+
+      <!-- After reservation completed, and before the booking has (really) ended -->
+      <div ng-if="progress.reservationCompleted && !bookingEndedReally">
+        <div ng-include="'booking/show/partial-openCloseButtons.tpl.html'" ng-if="!perspective.isContractor"></div>
+        <div ng-include="'booking/show/partial-renterHowto.tpl.html'"></div>
+        <div ng-include="'booking/show/partial-map.tpl.html'"></div>
+      </div>
+
+
+      <!-- After the trip -->
+      <div ng-if="accepted && bookingEnded">
+        <div ng-include="'booking/show/partial-kmCheck.tpl.html'" ng-if="!perspective.isContractor"></div>
+        <div ng-include="'booking/show/partial-declarations.tpl.html'" ng-if="allowDeclarations && !perspective.isContractor"></div>
+        <div ng-include="'booking/show/partial-placeReview.tpl.html'" ng-if="showReviewTeaser && !perspective.isContractor"></div>
+        <booking-invoices booking="booking" perspective="renter" ng-if="!details.requested && booking.approved === 'OK'"></booking-invoices>
+      </div>
+
+
+    </div><!-- /col -->
 
     <div class="rpad col-md-4 col-md-pull-8">
       <!-- is this the correct condition ? -->
-      <div ng-include="'booking/show/partial-reservationProgressCard.tpl.html'"
-        ng-if="showProgressCard"
-      ></div>
+      <div ng-include="'booking/show/partial-reservationProgressCard.tpl.html'" ng-if="!progress.reservationCompleted"></div>
 
       <div ng-include="'booking/show/partial-bookingInfoCard.tpl.html'"></div>
     </div>

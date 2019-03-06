@@ -101,16 +101,141 @@ angular.module('owm.booking', [
 
         return perspective;
       }],
-    }
+      details: ['me', 'contract', 'booking', function (me, contract, booking) {
+
+        var details = {};
+
+        details.bookingStarted = moment().isAfter(moment(booking.beginBooking));
+        details.bookingEnded = moment().isAfter(moment(booking.endBooking));
+        details.bookingRequestEnded = moment().isAfter(moment(booking.endRequested));
+        details.bookingStartsWithinOneHour = moment().isAfter(moment(booking.beginBooking).add(-1, 'hour'));
+        details.bookingEndedReally = moment().isAfter(moment(booking.endBooking).add(1, 'hour'));
+        details.bookingRequestEndedReally = moment().isAfter(moment(booking.endRequested).add(1, 'hour'));
+        details.requested = (booking.status === 'requested');
+        details.accepted = (booking.status === 'accepted');
+        details.firstTime = (booking.person.numberOfBookings === 0);
+
+        details.showBookOnlyNotice = !booking.ok && (booking.person.status === 'book-only');
+
+        return details;
+      }],
+      progress: ['booking', 'contract', 'resource', 'perspective', 'details', '$filter', function (booking, contract, resource, perspective, details, $filter) {
+
+        if (perspective.pageView !== 'renting') {
+          return null;
+        }
+
+        var progress = {};
+
+        // STEPS
+        // Figure out the current state of the reservation/booking process
+        //  in order to show a step-wise (& progress)-based indication.
+        // (Note: these are not linearly ordered!)
+
+        var showPaymentScreen = perspective.isContractHolder &&
+          ((details.requested && details.firstTime) || booking.approved === 'BUY_VOUCHER') &&
+          ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0;
+      
+        progress.steps = {
+          accountCheck: {
+            checked: true,
+            stress: false,
+            text: 'Account gecontroleerd',
+          },
+          reservation: {
+            checked: true,
+            stress: false,
+            text: 'Reservering verstuurd',
+          },
+          accepted: {
+            stress: false,
+          },
+          payment: showPaymentScreen ? {
+            checked: false,
+            stress: true,
+            text: 'Reservering betalen',
+            scrollTo: '#bookingPayment',
+          } : {
+            checked: true,
+            stress: false,
+            text: 'Reservering betaald',
+          },
+        };
+
+        if (details.accepted) {
+          progress.steps.accepted.checked = true;
+          if (resource.isConfirmationRequiredOthers) {
+            progress.steps.accepted.text = 'Geaccepteerd door eigenaar';
+          } else {
+            progress.steps.accepted.text = 'Automatisch geaccepteerd';
+            //progress.steps.accepted.tooltip = 'Deze auto hoeft niet handmatig geaccepteerd te worden door de eigenaar';
+          }
+        } else {
+          progress.steps.accepted.checked = false;
+          progress.steps.accepted.text ='Nog niet geaccepteerd door eigenaar';
+          if (progress.steps.payment.checked) {
+            progress.steps.accepted.tooltip = 'Je kunt voor de zekerheid een alternatief overwegen. Andere openstaande reserveringen worden automatisch geannuleerd bij acceptatie.';
+          } else {
+            progress.steps.accepted.tooltip = 'Je kunt al wel betalen, zodat je direct op pad kunt zodra de reservering is geaccepteerd.';
+          }
+        }
+
+        progress.list = [
+          progress.steps.reservation,
+          progress.steps.accepted,
+          progress.steps.payment,
+        ];
+        
+        if (details.showBookOnlyNotice) {
+          progress.list.splice(1, 0, progress.steps.accountCheck);
+          progress.steps.accountCheck.checked = false;
+          progress.steps.accountCheck.stress = true;
+          progress.steps.accountCheck.text = 'Handmatige account-check vereist';
+        } else if (details.firstTime) {
+          progress.list.unshift(progress.steps.accountCheck);
+        }
+
+        progress.percentage = 100 * (progress.list.filter(function (step) {
+          return step.checked;
+        }).length / progress.list.length);
+
+        progress.reservationCompleted = progress.percentage >= 99;
+
+        // Determine summary text
+        if (!progress.steps.accepted.checked) {
+          progress.summary = 'We hebben de reservering naar verhuurder ' + $filter('fullname')(booking.resource.owner) + ' gestuurd.';
+          if (!progress.steps.payment.checked) {
+            progress.summary += ' Je kunt hieronder alvast betalen. De reservering is dan direct definitief na acceptatie door ' + booking.resource.owner.firstName + '.';
+          }
+          else {
+            progress.summary += ' Je ontvangt een mail als ' + booking.resource.owner.firstName + ' op je verzoek gereageerd heeft.';
+          }
+        }
+        else if (progress.steps.accepted.checked && !progress.steps.payment.checked) {
+          if (perspective.isContractHolder) {
+            progress.summary = 'Je reservering is gemaakt. Je hoeft alleen nog de reservering te betalen.';
+          }
+          else {
+            progress.summary = 'Je reservering is gemaakt. Vraag aan ' + contract.contractor.firstName + ' om de reservering te betalen.';
+          }
+        }
+        else if (progress.steps.accepted.checked && progress.steps.payment.checked) {
+          progress.summary = 'De reservering is geaccepteerd en het bedrag is betaald. Alles is in orde voor je rit en je kan goed verzekerd op weg.';
+        }
+
+        return progress;
+
+      }],
+    },
   })
 
   .state('owm.booking.show', {
     url: '',
     views: {
-      'main@shell': {
-        templateUrl: 'booking/show/booking-show.tpl.html',
-        controller: 'BookingShowController',
-      },
+//      'main@shell': {
+//        templateUrl: 'booking/show/booking-show.tpl.html',
+//        controller: 'BookingShowController',
+//      },
       'main-full@shell': {
         templateUrl: 'booking/show/booking-show-2.tpl.html',
         controller: 'BookingShowController',

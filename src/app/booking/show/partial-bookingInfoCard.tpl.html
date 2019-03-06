@@ -13,7 +13,7 @@
           class="btn mywheels-btn mywheels-btn-default"
           ng-if="perspective.isRenter &&
                 ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 &&
-                !bookingEndedRealy"
+                !bookingEndedReally"
           style="
             padding: .2em .5em;
             height: auto;
@@ -26,8 +26,8 @@
       </span>
     </h3>
 
-    <p class="reservation-progress-summary" style="text-align: center;" ng-if="!showProgressCard">
-      <em>{{ progressSummary }}</em>
+    <p class="reservation-progress-summary" style="text-align: center;" ng-if="progress.reservationCompleted">
+      <em>{{ progress.summary }}</em>
     </p>
     
     <!-- auto -->
@@ -47,8 +47,12 @@
     ></div>
 
     <p>
-      <a ui-sref="owm.resource.show({ resourceId: resource.id })" style="font-weight: 600;">{{ resource.alias }}</a><br />
-      {{ resource.brand }} {{ resource.model }}<br />
+      <a ui-sref="owm.resource.show({ resourceId: resource.id })" style="font-weight: 600;">{{ resource.alias }}</a>
+      <span style="margin-left: .5rem;" class="tag tag-warning" ng-if="resource.boardcomputer">MyWheels Open</span>
+      <br />
+      {{ resource.brand }} {{ resource.model }}
+        <span class="registration-plate">{{ resource.registrationPlate }}</span>
+      <br />
       {{ resource.location }} {{ resource.streetNumber }} <small>{{ resource.city  | toTitleCase }}</small>
     </p>
 
@@ -80,8 +84,25 @@
       </div>
     </div>
 
-    <div ng-if="perspective.renter">
-      <h5>Medebestuurders</h5>
+    <p ng-if="perspective.isRenter && discount.length > 0">
+      Je hebt kortingscode {{ discount[0].discount.code }} gebruikt voor deze reservering. Je krijgt tot <span ng-if="discount[0].discount.amount > 0">€ {{ discount[0].discount.amount }}</span> <span ng-if="discount[0].discount.percentage > 0">{{ discount[0].discount.percentage }}%</span> korting van <span ng-if="discount[0].discount.sender.id === resource.owner.id">verhuurder</span> {{ discount[0].discount.sender | fullname }}.
+    </p>
+
+    <div ng-if="perspective.isRenter">
+      <h5 ng-if="booking.riskReduction"
+        uib-tooltip="{{ contract.type.id === 60 ? 'Verplicht verlaagd wegens MyWheels Go contract' : '' }}">
+        Eigen risico: verlaagd
+      </h5>
+      <h5 ng-if="!booking.riskReduction">
+        Eigen risico: niet verlaagd
+      </h5>
+    </div>
+
+    <div ng-if="perspective.isRenter">
+      <h5>
+        Medebestuurders
+        <span ng-if="extraDrivers.inviteRequests.length > 0">({{ extraDrivers.inviteRequests.length }})</span>
+      </h5>
       <p ng-if="extraDrivers.loading">Laden...</p>
       <p ng-if="!extraDrivers.loading && extraDrivers.inviteRequests.length === 0">Geen medebestuurders.</p>
       <ul class="list-unstyled" ng-if="!extraDrivers.loading && extraDrivers.inviteRequests.length > 0">

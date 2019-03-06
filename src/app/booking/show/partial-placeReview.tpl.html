@@ -1,0 +1,27 @@
+
+<!-- Review -->
+<div class="card mw">
+  <div class="card-heading">
+    <h3 class="card-title">
+      {{ (userPerspective === 'renter') ? 'Beoordeel de rit' : 'Beoordeel de huurder' }}
+    </h3>
+  </div>
+  <div class="card-body">
+    <div class="leave-review-teaser" style="margin-bottom: 1em;">
+      <a ui-sref="{{ 'owm.booking.rating-' + userPerspective + '({ bookingId: ' + booking.id + ', setsatisfaction: \'positive\' })' }}">
+        <ng-md-icon size="50"
+                    icon="thumb_up"
+                    satisfaction="positive"
+                    alt="Icoon"
+                    aria-label="Icoon"></ng-md-icon>
+      </a>
+      <a ui-sref="{{ 'owm.booking.rating-' + userPerspective + '({ bookingId: ' + booking.id + ', setsatisfaction: \'negative\' })' }}">
+        <ng-md-icon size="50"
+                    icon="thumb_down"
+                    satisfaction="negative"
+                    alt="Icoon"
+                    aria-label="Icoon"></ng-md-icon>
+      </a>
+    </div>
+  </div>
+</div>

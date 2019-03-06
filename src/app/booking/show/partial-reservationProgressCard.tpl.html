@@ -4,7 +4,7 @@
     <h3>Status</h3>
     <ul class="list-unstyled">
       <li
-        ng-repeat="step in progressList"
+        ng-repeat="step in progress.list"
         style="margin-bottom: .5rem;"
         ng-style="{
           'font-weight': step.stress ? 600 : 400,
@@ -50,7 +50,7 @@
     </div>
 
     <p class="reservation-progress-summary" style="text-align: center;">
-      <em>{{ progressSummary }}</em>
+      <em>{{ progress.summary }}</em>
     </p>
 
     <div ng-if="showBookOnlyNotice"

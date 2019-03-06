@@ -489,8 +489,11 @@ md-dialog.mw-red md-toolbar {
 h1.page-title {
     text-align: center;
     margin: 3rem 0 2rem;
-    color: #555;
     font-size: 3.4rem;
+    font-family: @font-family-sans-serif;
+    font-weight: 600;
+    color: #222;
+    letter-spacing: -.05rem;
 }
 
 @media (max-width: @screen-md-max) {
@@ -528,15 +531,6 @@ h2.without-card + .sub {
 }
 
 
-.row.is-flex {
-    display: flex;
-    flex-wrap: wrap;
-}
-.row.is-flex > [class*='col-'] {
-    display: flex;
-    flex-direction: column;
-}
-
 /*
 * And with max cross-browser enabled.
 * Nobody should ever write this by hand. 
@@ -573,6 +567,49 @@ h2.without-card + .sub {
     }
 }
 
+
+.pin {
+    font-family: monospace;
+    border: 1px solid #ccc;
+    padding: 1px 3px;
+}
+
+.registration-plate {
+    font-weight: bold;
+    padding: 0 4px;
+    margin: 0 5px;
+}
+
+.speech-bubble {
+    display: inline-block;
+
+	position: relative;
+	background: #ececec;
+	border-radius: .6rem;
+    margin-top: 1.6rem;
+    padding: 1rem;
+    max-width: 50rem;
+
+    text-align: left;
+}
+
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 20%;
+	width: 0;
+	height: 0;
+    border: 1rem solid transparent;
+    border-bottom-color: #eee;
+    border-top: 0;
+    margin-left: -.5rem;
+    margin-top: -1rem;
+}
+
+.speech-bubble.connect-top-right:after {
+	right: 20%;
+}
 
 .card-pad-left {
     padding-left: 2.2rem;

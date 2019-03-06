@@ -9,7 +9,7 @@ angular.module('owm.booking.show', [])
   $log,
   $scope
 ) {
-  // $scope = { perspective, resource, booking, contract }
+  // $scope = { perspective, details, resource, booking, contract }
 })
 
 .controller('BookingShowRentingController', function (
@@ -22,105 +22,7 @@ angular.module('owm.booking.show', [])
   $mdDialog,
   $scope
 ) {
-  // $scope = { perspective, resource, booking, contract }
-
-  // STEPS
-  // Figure out the current state of the reservation/booking process
-  //  in order to show a step-wise (& progress)-based indication.
-
-  // (Note: these are not linearly ordered!)
-  var steps = $scope.steps = {
-    accountCheck: {
-      checked: true,
-      stress: false,
-      text: 'Account gecontroleerd',
-    },
-    reservation: {
-      checked: true,
-      stress: false,
-      text: 'Reservering verstuurd',
-    },
-    accepted: {
-      stress: false,
-    },
-    payment: {},
-  };
-
-  function updatePaymentStep () {
-    steps.payment = {
-      checked: !$scope.paymentInit,
-      stress: $scope.paymentInit,
-      text: $scope.paymentInit ? 'Reservering betalen' : 'Reservering betaald',
-      scrollTo: $scope.paymentInit ? '#bookingPayment' : undefined,
-    };
-  }
-  $scope.$watch('paymentInit', updatePaymentStep);
-  updatePaymentStep();
-
-  if ($scope.accepted) {
-    steps.accepted.checked = true;
-    if ($scope.resource.isConfirmationRequiredOthers) {
-      steps.accepted.text = 'Geaccepteerd door eigenaar';
-    } else {
-      steps.accepted.text = 'Automatisch geaccepteerd';
-      //steps.accepted.tooltip = 'Deze auto hoeft niet handmatig geaccepteerd te worden door de eigenaar';
-    }
-  } else {
-    steps.accepted.checked = false;
-    steps.accepted.text ='Nog niet geaccepteerd door eigenaar';
-    if (steps.payment.checked) {
-      steps.accepted.tooltip = 'Je kunt voor de zekerheid een alternatief overwegen. Andere openstaande reserveringen worden automatisch geannuleerd bij acceptatie.';
-    } else {
-      steps.accepted.tooltip = 'Je kunt al wel betalen, zodat je direct op pad kunt zodra de reservering is geaccepteerd.';
-    }
-  }
-
-  $scope.progressList = [
-    steps.reservation,
-    steps.accepted,
-    steps.payment,
-  ];
-  
-  if ($scope.showBookOnlyNotice) {
-    $scope.progressList.splice(1, 0, steps.accountCheck);
-    steps.accountCheck.checked = false;
-    steps.accountCheck.stress = true;
-    steps.accountCheck.text = 'Handmatige account-check vereist';
-  } else if ($scope.firstTime) {
-    $scope.progressList.unshift(steps.accountCheck);
-  }
-
-  $scope.progressPercentage = 0;
-  $scope.showProgressCard = true;
-
-  $timeout(function () {
-    $scope.progressPercentage = 100 * ($scope.progressList.filter(function (step) {
-      return step.checked;
-    }).length / $scope.progressList.length);
-    $scope.showProgressCard = $scope.progressPercentage < 100;
-  }, 100);
-
-  // Determine summary text
-  if (!steps.accepted.checked) {
-    $scope.progressSummary = 'We hebben de reservering naar verhuurder ' + $filter('fullname')($scope.booking.resource.owner) + ' gestuurd.';
-    if (!steps.payment.checked) {
-      $scope.progressSummary += ' Je kunt hieronder alvast betalen. De reservering is dan direct definitief na acceptatie door ' + $scope.booking.resource.owner.firstName + '.';
-    }
-    else {
-      $scope.progressSummary += ' Je ontvangt een mail als ' + $scope.booking.resource.owner.firstName + ' op je verzoek gereageerd heeft.';
-    }
-  }
-  else if (steps.accepted.checked && !steps.payment.checked) {
-    if ($scope.perspective.isContractHolder) {
-      $scope.progressSummary = 'Je reservering is gemaakt. Je hoeft alleen nog de reservering te betalen.';
-    }
-    else {
-      $scope.progressSummary = 'Je reservering is gemaakt. Vraag aan ' + $scope.contract.contractor.firstName + ' om de reservering te betalen.';
-    }
-  }
-  else if (steps.accepted.checked && steps.payment.checked) {
-    $scope.progressSummary = 'De reservering is geaccepteerd en het bedrag is betaald. Alles is in orde voor je rit en je kan goed verzekerd op weg.';
-  }
+  // $scope = { perspective, details, resource, booking, contract }
 
   
 
@@ -148,6 +50,8 @@ angular.module('owm.booking.show', [])
   $q, $timeout, $log, $scope, $location, $filter, $translate, $state, $stateParams, appConfig, API_DATE_FORMAT,
   bookingService, resourceService, invoice2Service, alertService, dialogService,
   perspective,
+  details,
+  progress,
   authService, boardcomputerService, discountUsageService, chatPopupService, linksService,
   booking, me, declarationService, $mdDialog, contract, Analytics, paymentService, voucherService,
   $window, $mdMedia, discountService, account2Service, $rootScope, chipcardService, metaInfoService,
@@ -158,6 +62,8 @@ angular.module('owm.booking.show', [])
   metaInfoService.set({canonical: 'https://mywheels.nl/booking/' + booking.id});
 
   $scope.perspective = perspective;
+  $scope.details = details;
+  $scope.progress = progress; // for renters
 
   $scope.appConfig = appConfig;
   $scope.contract = contract;
@@ -1005,82 +911,6 @@ angular.module('owm.booking.show', [])
   }
 
   /*
-  * Invoices
-  */
-  function injectInvoiceLines(res) {
-    var invoiceLinesSent, invoiceLinesReceived = [];
-    if(res.sent) {
-      invoiceLinesSent = _.map(_.flatten(_.pluck(res.sent, 'invoiceLines')), function(i) {i.type='sent'; return i; });
-    }
-    if(res.received) {
-      invoiceLinesReceived = _.map(_.flatten(_.pluck(res.received, 'invoiceLines')), function(i) {i.type='received'; return i; });
-    }
-    var invoiceLines = _.sortBy(_.union(invoiceLinesSent, invoiceLinesReceived), 'position');
-    $scope.invoiceLines = invoiceLines;
-    return invoiceLines;
-  }
-
-  $scope.receivedInvoices = null;
-  $scope.receivedInvoicesTotalAmount = 0;
-
-  $scope.sentInvoices = null;
-  $scope.sentInvoicesTotalAmount = 0;
-
-  if (($scope.userPerspective === 'renter' || $scope.userPerspective === 'contract_holder') && !$scope.requested && $scope.booking.approved === 'OK') {
-    $q.all({received: loadReceivedInvoices()})
-    .then(injectInvoiceLines);
-  }
-
-  if ($scope.userPerspective === 'owner' && !$scope.requested && $scope.booking.approved === 'OK') {
-    $q.all({received: loadReceivedInvoices(), sent: loadSentInvoices()})
-    .then(injectInvoiceLines);
-  }
-
-  function loadReceivedInvoices() {
-    var booking = $scope.booking;
-    return invoice2Service.getReceived({ person: me.id, booking: booking.id }).then(function (invoices) {
-
-      $scope.receivedInvoices = invoices || [];
-
-      var sum = 0;
-      var hasError = false;
-      angular.forEach(invoices, function (invoice) {
-        var invoiceTotal;
-        try {
-          invoiceTotal = parseFloat(invoice.total);
-          sum += invoiceTotal;
-        } catch (e) {
-          hasError = true;
-        }
-      });
-      $scope.receivedInvoicesTotalAmount = hasError ? null : sum;
-      return invoices;
-    });
-  }
-
-  function loadSentInvoices() {
-    var booking = $scope.booking;
-    return invoice2Service.getSent({ person: me.id, booking: booking.id }).then(function (invoices) {
-
-      $scope.sentInvoices = invoices || [];
-
-      var sum = 0;
-      var hasError = false;
-      angular.forEach(invoices, function (invoice) {
-        var invoiceTotal;
-        try {
-          invoiceTotal = parseFloat(invoice.total);
-          sum += invoiceTotal;
-        } catch (e) {
-          hasError = true;
-        }
-      });
-      $scope.sentInvoicesTotalAmount = hasError ? null : sum;
-      return invoices;
-    });
-  }
-
-  /*
   * Payment
   */
   $scope.buyVoucher = function (value) {
@@ -1167,12 +997,13 @@ angular.module('owm.booking.show', [])
     }
   }
 
+  $scope.paymentInit = $scope.perspective.pageView === 'renting' && !$scope.progress.steps.payment.checked;
+
   // open payment block to add extra driver
   $scope.addExtraDriver = false;
 
   $scope.addExtraDriverButton = function () {
     $scope.addExtraDriver = true;
-    $scope.initPayment();
     reload().then(function () {
       $('html, body').stop().animate({ scrollTop: $('#bookingPayment').offset().top }, 300, 'swing');
     });
@@ -1184,22 +1015,6 @@ angular.module('owm.booking.show', [])
       $rootScope.extraDriverAdded = false;
     }
   }, true);
-
-  // check if renter needs to pay the booking
-  $scope.initPayment = function() {
-    if((
-        ($scope.requested && booking.person.numberOfBookings === 0) ||
-        booking.approved === 'BUY_VOUCHER' ||
-        $scope.addExtraDriver) &&
-        ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 &&
-        me.id === $scope.contract.contractor.id
-      ) {
-      $scope.paymentInit = true;
-    } else {
-      $scope.paymentInit = false;
-    }
-  };
-  $scope.initPayment();
 
   // check if person is renter and needs to pay the booking
   if($scope.paymentInit && ($scope.userPerspective === 'renter' || $scope.userPerspective === 'contract_holder')) {
@@ -1239,6 +1054,7 @@ angular.module('owm.booking.show', [])
   $scope.bookingDriversChanged = function() {
     $log.log('bookingDriversChanged');
     reloadRequiredValue();
+    $scope.extraDrivers.load();
   };
 
   function reloadRequiredValue() {

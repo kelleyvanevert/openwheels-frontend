@@ -98,6 +98,8 @@ angular.module('openwheels', [
   'huurkostenLineDirective',
   'userStatusLine',
 
+  'bookingInvoicesDirective',
+
   'mwResourceLocationMap',
 
   'angular-owl-carousel-2',
@@ -346,6 +348,22 @@ angular.module('openwheels', [
 
 .filter('homeAddress', function (makeHomeAddressPrefill) {
   return makeHomeAddressPrefill;
+})
+
+.filter('toParagraphs', function () {
+  return function (text) {
+    return text.replace(/\r/g, '').split('\n\n').map(function (p) {
+      return '<p>' + p + '</p>';
+    }).join('');
+  };
+})
+
+.filter('highlightPin', function () {
+  return function (html) {
+    return html.replace(/De pincode van de tankpas is ([0-9]{4})./, function (str, pin) {
+      return 'De pincode van de tankpas is <strong class="pin">' + pin + '</strong>.';
+    });
+  };
 })
 
 .run(function (windowSizeService, oAuth2MessageListener, stateAuthorizer, authService, featuresService) {
