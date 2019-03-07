@@ -151,28 +151,29 @@ angular.module('owm.finance', [
       success: ['orderStatusId', function (orderStatusId) {
         return (orderStatusId > 0);
       }],
-      cont: ['$stateParams', '$log', '$state', function ($stateParams, $log, $state) {
-        var cont = null;
-
-        if ($stateParams.cont) {
-          try {
-            cont = JSON.parse($stateParams.cont);
-            $log.log('continuation:', cont);
-          } catch (e) {
-            $log.log('could not parse this `cont` parameter:', $stateParams.cont);
-          }
-        }
-
-        return cont;
+      afterPayment: ['$sessionStorage', function ($sessionStorage) {
+        var afterPayment = $sessionStorage.afterPayment || null;
+        $sessionStorage.afterPayment = null;
+        return afterPayment;
       }],
+//      cont: ['$stateParams', '$log', '$state', function ($stateParams, $log, $state) {
+//        var cont = null;
+//
+//        if ($stateParams.cont) {
+//          try {
+//            cont = JSON.parse($stateParams.cont);
+//            $log.log('continuation:', cont);
+//          } catch (e) {
+//            $log.log('could not parse this `cont` parameter:', $stateParams.cont);
+//          }
+//        }
+//
+//        return cont;
+//      }],
     },
-    onEnter: ['cont', '$state', function (cont, $state) {
-      if (cont) {
-        if (cont.booking) {
-          $state.go('owm.booking.show', {
-            bookingId: cont.booking,
-          });
-        }
+    onEnter: ['afterPayment', '$state', function (afterPayment, $state) {
+      if (afterPayment && afterPayment.redirect) {
+        $state.go(afterPayment.recirect.state, afterPayment.redirect.params);
       }
     }],
   })

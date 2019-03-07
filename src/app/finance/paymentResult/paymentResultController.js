@@ -2,14 +2,15 @@
 angular.module('owm.finance.paymentResult', [])
 
 .controller('PaymentResultController', function ($scope, $state, $log, $window, appConfig, orderStatusId, account2Service, alertService, voucherService, me, paymentService, bookingService, chipcardService, linksService, API_DATE_FORMAT, Analytics, metaInfoService,
-  $timeout,
+  $sessionStorage,
   cont // flow-continuation information
 ) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/payment-result'});
   metaInfoService.set({canonical: 'https://mywheels.nl/payment-result'});
 
-  var afterPayment;
+  //var afterPayment = $sessionStorage.afterPayment || null;
+
   $scope.isBusy = true;
   $scope.isApproved = false;
   $scope.accounts = [];
@@ -53,15 +54,15 @@ angular.module('owm.finance.paymentResult', [])
   };
 
   $scope.goAfterPayment = function () {
-    if (!afterPayment) {
-      $state.go('home');
-    }
-
-    if ($scope.result.success) {
-      $state.go(afterPayment.success.stateName, afterPayment.success.stateParams);
-    } else {
-      $state.go(afterPayment.error.stateName, afterPayment.error.stateParams);
-    }
+//    if (!afterPayment) {
+    $state.go('home');
+//    }
+//
+//    if ($scope.result.success) {
+//      $state.go(afterPayment.success.state, afterPayment.success.params);
+//    } else {
+//      $state.go(afterPayment.error.state, afterPayment.error.params);
+//    }
   };
 
   function getBookings() { //get all the bookings from the user
@@ -120,13 +121,6 @@ angular.module('owm.finance.paymentResult', [])
     } else {
       Analytics.trackEvent('payment', 'failed', undefined, undefined, true);
     }
-
-    try {
-      $scope.afterPayment = afterPayment = JSON.parse(sessionStorage.getItem('afterPayment'));
-    } catch (e) {
-      $scope.afterPayment = afterPayment = null;
-    }
-    sessionStorage.removeItem('afterPayment');
 
     account2Service.forMe({}).then(function (data) {
       $scope.accounts = data;

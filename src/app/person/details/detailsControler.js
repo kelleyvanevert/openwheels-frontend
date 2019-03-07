@@ -4,6 +4,7 @@ angular.module('owm.person.details', [])
 
 .controller('DetailsProfileController', function ($scope, $filter, $timeout, $translate, $window, $log, $state, $stateParams, $mdDialog,
   discountService, contractService, account2Service, person, alertService, personService, authService, me, dutchZipcodeService,
+  $sessionStorage,
   voucherService, $q, appConfig, paymentService, bookingService, invoice2Service, API_DATE_FORMAT, $anchorScroll, Analytics, metaInfoService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard/details/' + $stateParams.pageNumber});
@@ -492,11 +493,15 @@ angular.module('owm.person.details', [])
   };
   //redireceht to the pay service
   function redirect(url) {
-    var redirectTo = appConfig.appUrl + $state.href('owm.finance.payment-result', {
-      cont: JSON.stringify({
-        booking: $scope.booking.id,
-      }),
-    });
+    $sessionStorage.afterPayment = {
+      redirect: {
+        state: 'owm.booking.show',
+        params: {
+          bookingId: $scope.booking.id,
+        },
+      },
+    };
+    var redirectTo = appConfig.appUrl + $state.href('owm.finance.payment-result');
     $window.location.href = url + '?redirectTo=' + encodeURIComponent(redirectTo);
   }
 
