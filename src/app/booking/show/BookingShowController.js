@@ -52,6 +52,7 @@ angular.module('owm.booking.show', [])
   perspective,
   details,
   progress,
+  payRedirect,
   authService, boardcomputerService, discountUsageService, chatPopupService, linksService,
   booking, me, declarationService, $mdDialog, contract, Analytics, paymentService, voucherService,
   $window, $mdMedia, discountService, account2Service, $rootScope, chipcardService, metaInfoService,
@@ -934,9 +935,26 @@ angular.module('owm.booking.show', [])
           throw new Error('Er is een fout opgetreden');
         }
         if ($scope.extraCredit) {
-          redirectExtraCredit(data.url);
+          // TODO test
+          payRedirect(data.url, {
+            redirect: {
+              state: 'owm.booking.show',
+              params: {
+                bookingId: $scope.booking.id,
+                start: moment($scope.bookingRequest.beginRequested).format('YYMMDDHHmm'),
+                end: moment($scope.bookingRequest.endRequested).format('YYMMDDHHmm'),
+              },
+            },
+          });
         } else {
-          redirect(data.url);
+          payRedirect(data.url, {
+            redirect: {
+              state: 'owm.booking.show',
+              params: {
+                bookingId: $scope.booking.id,
+              },
+            },
+          });
         }
       })
       .catch(function (err) {
@@ -946,16 +964,6 @@ angular.module('owm.booking.show', [])
         alertService.loaded($scope);
       });
   };
-
-  function redirectExtraCredit(url) {
-    var redirectTo = appConfig.appUrl + $state.href('owm.booking.show', { bookingId: $scope.booking.id }) + '?start=' + moment($scope.bookingRequest.beginRequested).format('YYMMDDHHmm') + '&end=' + moment($scope.bookingRequest.endRequested).format('YYMMDDHHmm');
-    $window.location.href = url + '?redirectTo=' + encodeURIComponent(redirectTo);
-  }
-
-  function redirect(url) {
-    var redirectTo = appConfig.appUrl + $state.href('owm.finance.payment-result');
-    $window.location.href = url + '?redirectTo=' + encodeURIComponent(redirectTo);
-  }
 
   updateBookingTimesAfterPayment();
 
