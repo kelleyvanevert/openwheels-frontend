@@ -2,6 +2,7 @@
 angular.module('owm.finance.paymentResult', [])
 
 .controller('PaymentResultController', function ($scope, $state, $log, $window, appConfig, orderStatusId, account2Service, alertService, voucherService, me, paymentService, bookingService, chipcardService, linksService, API_DATE_FORMAT, Analytics, metaInfoService,
+  $timeout,
   cont // flow-continuation information
 ) {
 

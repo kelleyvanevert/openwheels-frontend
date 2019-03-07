@@ -143,25 +143,38 @@ angular.module('owm.finance', [
     },
     resolve: {
       orderStatusId: ['$stateParams', function ($stateParams) {
-        return $stateParams.orderStatusId;
+        return parseInt($stateParams.orderStatusId);
       }],
       me: ['authService', function (authService) {
         return authService.me();
       }],
-      cont: ['$stateParams', '$log', function ($stateParams, $log) {
+      success: ['orderStatusId', function (orderStatusId) {
+        return (orderStatusId > 0);
+      }],
+      cont: ['$stateParams', '$log', '$state', function ($stateParams, $log, $state) {
+        var cont = null;
+
         if ($stateParams.cont) {
           try {
-            var cont = JSON.parse($stateParams.cont);
+            cont = JSON.parse($stateParams.cont);
             $log.log('continuation:', cont);
-            return cont;
           } catch (e) {
             $log.log('could not parse this `cont` parameter:', $stateParams.cont);
           }
         }
 
-        return null;
+        return cont;
       }],
-    }
+    },
+    onEnter: ['cont', '$state', function (cont, $state) {
+      if (cont) {
+        if (cont.booking) {
+          $state.go('owm.booking.show', {
+            bookingId: cont.booking,
+          });
+        }
+      }
+    }],
   })
   ;
 

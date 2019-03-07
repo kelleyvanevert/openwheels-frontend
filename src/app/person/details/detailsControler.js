@@ -462,7 +462,6 @@ angular.module('owm.person.details', [])
     $scope.createBookingFlow();
   }
 
-  // to buy the vouchure
   $scope.buyVoucher = function() {
     alertService.load($scope);
     voucherService.calculateRequiredCreditForBooking({booking: $scope.booking.id})
@@ -494,7 +493,9 @@ angular.module('owm.person.details', [])
   //redireceht to the pay service
   function redirect(url) {
     var redirectTo = appConfig.appUrl + $state.href('owm.finance.payment-result', {
-      cont: JSON.stringify({ booking: $scope.booking.id }),
+      cont: JSON.stringify({
+        booking: $scope.booking.id,
+      }),
     });
     $window.location.href = url + '?redirectTo=' + encodeURIComponent(redirectTo);
   }
