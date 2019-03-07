@@ -22,6 +22,7 @@ angular.module('owm.finance', [
   };
 })
 
+// This is a helper to initiate a voucher payment + redirect for a certain amount.
 .factory('buyVoucherRedirect', function (
   $location,
   
@@ -246,10 +247,18 @@ angular.module('owm.finance', [
 //        return cont;
 //      }],
     },
-    onEnter: ['afterPayment', '$state', function (afterPayment, $state) {
-      if (afterPayment && afterPayment.redirect) {
-        $state.go(afterPayment.redirect.state, afterPayment.redirect.params);
+    onEnter: ['afterPayment', 'success', '$state', function (afterPayment, success, $state) {
+      var loc;
+      
+      if (success && afterPayment && afterPayment.redirect) {
+        loc = afterPayment.redirect;
+        $state.go(loc.state, loc.params);
       }
+      else if (!success && afterPayment && afterPayment.paymentErrorRedirect) {
+        loc = afterPayment.paymentErrorRedirect;
+        $state.go(loc.state, loc.params);
+      }
+      // else, just let this page handle it
     }],
   })
   ;

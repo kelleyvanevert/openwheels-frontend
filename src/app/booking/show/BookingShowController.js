@@ -63,6 +63,13 @@ angular.module('owm.booking.show', [])
                     success: 'driver_added',
                   },
                 },
+                paymentErrorRedirect: {
+                  state: 'owm.booking.show',
+                  params: {
+                    bookingId: booking.id,
+                    error: 'driver_payment_error',
+                  },
+                },
               },
             });
           })
