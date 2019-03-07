@@ -100,11 +100,21 @@
 
     <div ng-if="perspective.isRenter">
       <h5>
-        Medebestuurders
-        <span ng-if="extraDrivers.inviteRequests.length > 0">({{ extraDrivers.inviteRequests.length }})</span>
+        <span ng-if="!extraDrivers.loading && extraDrivers.inviteRequests.length === 0">
+          Geen extra bestuurders
+        </span>
+        <span ng-if="extraDrivers.loading || extraDrivers.inviteRequests.length > 0">
+          Extra bestuurders
+          <span ng-if="extraDrivers.inviteRequests.length > 0">({{ extraDrivers.inviteRequests.length }})</span>
+        </span>
+        <a href="#">
+          <ng-md-icon icon="add_circle"
+            aria-label="Voeg een extra bestuurder toe"
+            uib-tooltip="Voeg een extra bestuurder toe"
+          ></ng-md-icon>
+        </a>
       </h5>
       <p ng-if="extraDrivers.loading">Laden...</p>
-      <p ng-if="!extraDrivers.loading && extraDrivers.inviteRequests.length === 0">Geen medebestuurders.</p>
       <ul class="list-unstyled" ng-if="!extraDrivers.loading && extraDrivers.inviteRequests.length > 0">
         <li ng-repeat="inviteRequest in extraDrivers.inviteRequests">
           <span ng-if="inviteRequest.status === 'invited'"
@@ -115,6 +125,9 @@
               uib-tooltip="Mag meerijden op deze boeking.">
             {{ inviteRequest.recipient.firstName }} &lt;{{ inviteRequest.recipient.email }}&gt;
           </span>
+        </li>
+        <li ng-if="!details.bookingStarted">
+          <a href="#"><ng-md-icon icon="add_circle" aria-label="Voeg een extra bestuurder toe"></ng-md-icon></a>
         </li>
       </ul>
     </div>

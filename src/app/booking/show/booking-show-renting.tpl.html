@@ -11,8 +11,20 @@
   <div class="row">
     <div class="rpad col-md-8 col-md-push-4">
 
-      <div ng-include="'booking/show/partial-renterInitialPayment.tpl.html'"></div>
-
+      <!-- Book only notice -->
+      <div ng-if="showBookOnlyNotice"
+        class="card mw"
+        style="
+          background: #ffecc2;
+          color: #911a1a;
+        "
+      >
+        <div class="card-body">
+          <p><strong>Let op:</strong> Je account is op dit moment nog niet actief, je kunt de auto dus ook nog niet ophalen.</p>
+          <p>Een aantal van onze controles konden niet automatisch worden uitgevoerd voor jouw account. Zodra wij deze controles hebben uitgevoerd ontvang je per mail bericht over het activeren van je account.</p>
+        </div>
+      </div>
+      
       <!-- Wait for acceptation alert -->
       <div class="card mw" ng-if="hasRequestedTimeframe(booking) && hasAcceptedTimeframe(booking)" id="ownerText">
         <div class="card-body card-inverse" style="background-color:#e6a500; color:white;">
@@ -34,20 +46,6 @@
         </div>
       </div>
 
-      <!-- Book only notice -->
-      <div ng-if="showBookOnlyNotice"
-        class="card mw"
-        style="
-          background: #ffecc2;
-          color: #911a1a;
-        "
-      >
-        <div class="card-body">
-          <p><strong>Let op:</strong> Je account is op dit moment nog niet actief, je kunt de auto dus ook nog niet ophalen.</p>
-          <p>Een aantal van onze controles konden niet automatisch worden uitgevoerd voor jouw account. Zodra wij deze controles hebben uitgevoerd ontvang je per mail bericht over het activeren van je account.</p>
-        </div>
-      </div>
-      
 
       <!-- Je bent zelf contractant (niet de contracthouder) -->
       <div class="card mw"
@@ -61,6 +59,7 @@
         </div>
       </div>
 
+      <div ng-include="'booking/show/partial-renterInitialPayment.tpl.html'"></div>
 
       <!-- remarks are not for contractors (non-renting contract holders) -->
       <div ng-include="'booking/show/partial-remarks.tpl.html'" ng-if="!perspective.isContractor"></div>
