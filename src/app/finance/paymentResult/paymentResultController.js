@@ -1,7 +1,9 @@
 'use strict';
 angular.module('owm.finance.paymentResult', [])
 
-.controller('PaymentResultController', function ($scope, $state, $log, $window, appConfig, orderStatusId, account2Service, alertService, voucherService, me, paymentService, bookingService, chipcardService, linksService, API_DATE_FORMAT, Analytics, metaInfoService) {
+.controller('PaymentResultController', function ($scope, $state, $log, $window, appConfig, orderStatusId, account2Service, alertService, voucherService, me, paymentService, bookingService, chipcardService, linksService, API_DATE_FORMAT, Analytics, metaInfoService,
+  cont // flow-continuation information
+) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/payment-result'});
   metaInfoService.set({canonical: 'https://mywheels.nl/payment-result'});
@@ -142,7 +144,9 @@ angular.module('owm.finance.paymentResult', [])
   }
 
   function redirect(url) {
-    var redirectTo = appConfig.appUrl + '/payment-result';
+    var redirectTo = appConfig.appUrl + $state.href('owm.finance.payment-result', {
+      cont: JSON.stringify(cont),
+    });
     $window.location.href = url + '?redirectTo=' + encodeURIComponent(redirectTo);
   }
 

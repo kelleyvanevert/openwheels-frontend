@@ -493,7 +493,9 @@ angular.module('owm.person.details', [])
   };
   //redireceht to the pay service
   function redirect(url) {
-    var redirectTo = appConfig.appUrl + $state.href('owm.finance.payment-result');
+    var redirectTo = appConfig.appUrl + $state.href('owm.finance.payment-result', {
+      cont: JSON.stringify({ booking: $scope.booking.id }),
+    });
     $window.location.href = url + '?redirectTo=' + encodeURIComponent(redirectTo);
   }
 

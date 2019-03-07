@@ -131,7 +131,7 @@ angular.module('owm.finance', [
   })
 
   .state('owm.finance.payment-result', {
-    url: '/payment-result?orderStatusId',
+    url: '/payment-result?orderStatusId&cont',
     views: {
       'main-full@shell': {
         templateUrl: 'empty.tpl.html'
@@ -147,7 +147,18 @@ angular.module('owm.finance', [
       }],
       me: ['authService', function (authService) {
         return authService.me();
-      }]
+      }],
+      cont: ['$stateParams', '$log', function ($stateParams, $log) {
+        if ($stateParams) {
+          try {
+            return JSON.parse($stateParams);
+          } catch (e) {
+            $log.log('could not parse this `cont` parameter:', $stateParams.cont);
+          }
+        }
+
+        return null;
+      }],
     }
   })
   ;
