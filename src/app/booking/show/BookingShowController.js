@@ -16,6 +16,8 @@ angular.module('owm.booking.show', [])
   metaInfoService,
   appConfig,
 
+  buyVoucherRedirect,
+
   $log,
   $timeout,
   $filter,
@@ -23,6 +25,38 @@ angular.module('owm.booking.show', [])
   $scope
 ) {
   // $scope = { perspective, details, resource, booking, contract }
+
+  var booking = $scope.booking;
+
+
+  $scope.addExtraDriverDialog = function ($event) {
+    $mdDialog.show({
+      templateUrl: 'booking/show/dialog-addExtraDriver.tpl.html',
+      parent: angular.element(document.body),
+      targetEvent: $event,
+      clickOutsideToClose: true,
+      hasBackdrop: true,
+      controller: ['$scope', function ($scope) {
+        $scope.email = '';
+        $scope.hide = function () {
+          $mdDialog.hide();
+        };
+        $scope.pay = function () {
+          buyVoucherRedirect({
+            amount: 1.25,
+            afterPayment: {
+              redirect: {
+                state: 'owm.booking.show',
+                params: {
+                  bookingId: booking.id,
+                },
+              },
+            },
+          });
+        };
+      }],
+    });
+  };
 
   
 

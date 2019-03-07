@@ -1,0 +1,31 @@
+
+<md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="30" flex-xl="25"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3>
+      Extra bestuurder toevoegen
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+    <p>
+      Op een MyWheels Go contract kun je tot 3 personen extra toevoegen per rit, voor 1.25 euro per persoon.
+    </p>
+
+    <div class="form-group">
+      <label style="width: 100%;">
+        Email-adres
+        <input type="text" class="form-control" ng-model="email" required />
+      </label>
+    </div>
+
+    <div class="dialog-buttons-right" style="margin: .5rem -.5rem -.5rem 0;">
+      <button class="mywheels-btn mywheels-btn-border"
+              md-ink-ripple="#4b702c"
+              ng-click="pay()"
+              style="white-space: nowrap;">
+        Betalen en toevoegen
+      </button>
+    </div>
+  </md-dialog-content>
+</md-dialog>

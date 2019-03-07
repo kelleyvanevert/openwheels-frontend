@@ -9,7 +9,8 @@ angular.module('owm.finance', [
   'owm.finance.v4',
 ])
 
-.factory('payRedirect', ['$window', '$sessionStorage', '$state', 'appConfig', function ($window, $sessionStorage, $state, appConfig) {
+// This is a helper to save continuation information before going to pay.nl
+.factory('payRedirect', function ($window, $sessionStorage, $state, appConfig) {
   return function (payUrl, afterPayment) {
 
     // first, store flow-continuation information in session storage
@@ -19,7 +20,56 @@ angular.module('owm.finance', [
     var redirectTo = appConfig.appUrl + $state.href('owm.finance.payment-result');
     $window.location.href = payUrl + '?redirectTo=' + encodeURIComponent(redirectTo);
   };
-}])
+})
+
+.factory('buyVoucherRedirect', function (
+  $location,
+  
+  Analytics,
+
+  payRedirect,
+
+  alertService,
+  voucherService,
+  paymentService,
+  authService
+) {
+  return function (info) {
+    // info.amount: euros
+    // info.afterPayment
+    // info.onError
+
+    var me = authService.user.identity;
+
+    Analytics.trackEvent('payment', 'started', undefined, undefined, true);
+
+    if (!info.amount || info.amount < 0) {
+      return;
+    }
+
+    alertService.load();
+    $location.url($location.path());
+    voucherService.createVoucher({
+        person: me.id,
+        value: info.amount,
+      })
+      .then(function (voucher) {
+        return paymentService.payVoucher({
+          voucher: voucher.id
+        });
+      })
+      .then(function (data) {
+        if (!data.url) {
+          throw new Error('Er is een fout opgetreden');
+        }
+        payRedirect(data.url, info.afterPayment);
+      })
+      .catch(info.onError || function () {})
+      .finally(function () {
+        alertService.loaded();
+      });
+  };
+})
 
 .config(function config($stateProvider) {
 

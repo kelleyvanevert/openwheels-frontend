@@ -107,7 +107,7 @@
           Extra bestuurders
           <span ng-if="extraDrivers.inviteRequests.length > 0">({{ extraDrivers.inviteRequests.length }})</span>
         </span>
-        <a href="#">
+        <a href="#" ng-click="addExtraDriverDialog($event)">
           <ng-md-icon icon="add_circle"
             aria-label="Voeg een extra bestuurder toe"
             uib-tooltip="Voeg een extra bestuurder toe"
@@ -125,9 +125,6 @@
               uib-tooltip="Mag meerijden op deze boeking.">
             {{ inviteRequest.recipient.firstName }} &lt;{{ inviteRequest.recipient.email }}&gt;
           </span>
-        </li>
-        <li ng-if="!details.bookingStarted">
-          <a href="#"><ng-md-icon icon="add_circle" aria-label="Voeg een extra bestuurder toe"></ng-md-icon></a>
         </li>
       </ul>
     </div>
