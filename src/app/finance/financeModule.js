@@ -149,9 +149,11 @@ angular.module('owm.finance', [
         return authService.me();
       }],
       cont: ['$stateParams', '$log', function ($stateParams, $log) {
-        if ($stateParams) {
+        if ($stateParams.cont) {
           try {
-            return JSON.parse($stateParams);
+            var cont = JSON.parse($stateParams.cont);
+            $log.log('continuation:', cont);
+            return cont;
           } catch (e) {
             $log.log('could not parse this `cont` parameter:', $stateParams.cont);
           }
