@@ -14,7 +14,7 @@ angular.module('owm.booking', [
 
   .state('owm.booking', {
     abstract: true,
-    url: '/booking/:bookingId?start&end&orderStatusId',
+    url: '/booking/:bookingId?start&end&orderStatusId&success',
     views: {
       'main@shell': {
         template: '<div ui-view></div>'

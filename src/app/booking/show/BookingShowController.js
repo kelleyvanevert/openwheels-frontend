@@ -18,6 +18,8 @@ angular.module('owm.booking.show', [])
 
   buyVoucherRedirect,
 
+  extraDriverService,
+
   $log,
   $timeout,
   $filter,
@@ -37,21 +39,35 @@ angular.module('owm.booking.show', [])
       clickOutsideToClose: true,
       hasBackdrop: true,
       controller: ['$scope', function ($scope) {
+        
         $scope.email = '';
+        $scope.error = false;
+
         $scope.hide = function () {
           $mdDialog.hide();
         };
+        
         $scope.pay = function () {
-          buyVoucherRedirect({
-            amount: 1.25,
-            afterPayment: {
-              redirect: {
-                state: 'owm.booking.show',
-                params: {
-                  bookingId: booking.id,
+          extraDriverService.addDriver({
+            booking: booking.id,
+            email: $scope.email,
+          })
+          .then(function (newInviteRequest) {
+            buyVoucherRedirect({
+              amount: 1.25,
+              afterPayment: {
+                redirect: {
+                  state: 'owm.booking.show',
+                  params: {
+                    bookingId: booking.id,
+                    success: 'driver_added',
+                  },
                 },
               },
-            },
+            });
+          })
+          .catch(function (e) {
+            $scope.error = true;
           });
         };
       }],
