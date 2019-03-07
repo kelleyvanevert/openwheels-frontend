@@ -8,6 +8,19 @@ angular.module('owm.finance', [
   'owm.finance.deposit',
   'owm.finance.v4',
 ])
+
+.factory('payRedirect', ['$window', '$sessionStorage', '$state', 'appConfig', function ($window, $sessionStorage, $state, appConfig) {
+  return function (payUrl, afterPayment) {
+
+    // first, store flow-continuation information in session storage
+    $sessionStorage.afterPayment = afterPayment;
+
+    // then, redirect to pay
+    var redirectTo = appConfig.appUrl + $state.href('owm.finance.payment-result');
+    $window.location.href = payUrl + '?redirectTo=' + encodeURIComponent(redirectTo);
+  };
+}])
+
 .config(function config($stateProvider) {
 
   $stateProvider
@@ -152,11 +165,22 @@ angular.module('owm.finance', [
         return (orderStatusId > 0);
       }],
       afterPayment: ['$sessionStorage', function ($sessionStorage) {
-//        $sessionStorage.afterPayment = { redirect: { state: 'owm.booking.show', params: { bookingId: 110 } } };
+        //  afterPayment: {
+        //    redirect?: UIRoute
+        //    successLink?: UIRoute
+        //    errorLink?: UIRoute
+        //  }
+        //  interface UIRoute {
+        //    state: string
+        //    params?: object
+        //  }
         var afterPayment = $sessionStorage.afterPayment || null;
         $sessionStorage.afterPayment = null;
         return afterPayment;
       }],
+//      // Another possibility would have been the more state-less option of putting this
+//      //  info in the URL. But this seems less reliable for more data, because Pay.nl might
+//      //  not be too happy with really long URLs.
 //      cont: ['$stateParams', '$log', '$state', function ($stateParams, $log, $state) {
 //        var cont = null;
 //
@@ -165,7 +189,7 @@ angular.module('owm.finance', [
 //            cont = JSON.parse($stateParams.cont);
 //            $log.log('continuation:', cont);
 //          } catch (e) {
-//            $log.log('could not parse this `cont` parameter:', $stateParams.cont);
+//            $log.log('could not parse continuation parameter:', $stateParams.cont);
 //          }
 //        }
 //

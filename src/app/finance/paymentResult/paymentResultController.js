@@ -2,14 +2,12 @@
 angular.module('owm.finance.paymentResult', [])
 
 .controller('PaymentResultController', function ($scope, $state, $log, $window, appConfig, orderStatusId, account2Service, alertService, voucherService, me, paymentService, bookingService, chipcardService, linksService, API_DATE_FORMAT, Analytics, metaInfoService,
-  $sessionStorage,
-  cont // flow-continuation information
+  payRedirect,
+  afterPayment // flow-continuation information
 ) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/payment-result'});
   metaInfoService.set({canonical: 'https://mywheels.nl/payment-result'});
-
-  //var afterPayment = $sessionStorage.afterPayment || null;
 
   $scope.isBusy = true;
   $scope.isApproved = false;
@@ -43,7 +41,7 @@ angular.module('owm.finance.paymentResult', [])
           throw new Error('Er is een fout opgetreden');
         }
         /* redirect to payment url */
-        redirect(data.url);
+        payRedirect(data.url, afterPayment);
       })
       .catch(function (err) {
         alertService.addError(err);
@@ -54,15 +52,15 @@ angular.module('owm.finance.paymentResult', [])
   };
 
   $scope.goAfterPayment = function () {
-//    if (!afterPayment) {
-    $state.go('home');
-//    }
-//
-//    if ($scope.result.success) {
-//      $state.go(afterPayment.success.state, afterPayment.success.params);
-//    } else {
-//      $state.go(afterPayment.error.state, afterPayment.error.params);
-//    }
+    if (!afterPayment) {
+      $state.go('home');
+    }
+
+    if ($scope.result.successLink) {
+      $state.go(afterPayment.successLink.state, afterPayment.successLink.params);
+    } else {
+      $state.go(afterPayment.errorLink.state, afterPayment.errorLink.params);
+    }
   };
 
   function getBookings() { //get all the bookings from the user
@@ -136,13 +134,6 @@ angular.module('owm.finance.paymentResult', [])
       });
       $scope.isBusy = false;
     });
-  }
-
-  function redirect(url) {
-    var redirectTo = appConfig.appUrl + $state.href('owm.finance.payment-result', {
-      cont: JSON.stringify(cont),
-    });
-    $window.location.href = url + '?redirectTo=' + encodeURIComponent(redirectTo);
   }
 
   //start page
