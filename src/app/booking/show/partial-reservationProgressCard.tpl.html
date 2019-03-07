@@ -44,7 +44,7 @@
           transition: width .4s ease;
         "
         ng-style="{
-          width: progressPercentage + '%',
+          width: progress.percentage + '%',
         }"
       ></div>
     </div>
@@ -52,18 +52,5 @@
     <p class="reservation-progress-summary" style="text-align: center;">
       <em>{{ progress.summary }}</em>
     </p>
-
-    <div ng-if="showBookOnlyNotice"
-      class="h-escape h-pad"
-      style="
-        background: #ffecc2;
-        color: #911a1a;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-      "
-    >
-      <p><strong>Let op:</strong> Je account is op dit moment nog niet actief, je kunt de auto dus ook nog niet ophalen.</p>
-      <p>Een aantal van onze controles konden niet automatisch worden uitgevoerd voor jouw account. Zodra wij deze controles hebben uitgevoerd ontvang je per mail bericht over het activeren van je account.</p>
-    </div>
   </div>
 </div>

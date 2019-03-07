@@ -213,14 +213,22 @@ angular.module('owm.booking', [
         }
         else if (progress.steps.accepted.checked && !progress.steps.payment.checked) {
           if (perspective.isContractHolder) {
-            progress.summary = 'Je reservering is gemaakt. Je hoeft alleen nog de reservering te betalen.';
+            if (details.showBookOnlyNotice) {
+              progress.summary = 'Je reservering is gemaakt. Je account moet nog handmatig gecontroleerd worden, maar je kunt hieronder wel alvast betalen.';
+            } else {
+              progress.summary = 'Je reservering is gemaakt. Je hoeft alleen nog de reservering te betalen.';
+            }
           }
           else {
             progress.summary = 'Je reservering is gemaakt. Vraag aan ' + contract.contractor.firstName + ' om de reservering te betalen.';
           }
         }
         else if (progress.steps.accepted.checked && progress.steps.payment.checked) {
-          progress.summary = 'De reservering is geaccepteerd en het bedrag is betaald. Alles is in orde voor je rit en je kan goed verzekerd op weg.';
+          if (details.showBookOnlyNotice) {
+            progress.summary = 'De reservering is geaccepteerd en het bedrag is betaald. Je account moet wel nog handmatig gecontroleerd worden. Zodra dit is gedaan, kan je verzekerd op weg.';
+          } else {
+            progress.summary = 'De reservering is geaccepteerd en het bedrag is betaald. Alles is in orde voor je rit en je kan goed verzekerd op weg.';
+          }
         }
 
         return progress;

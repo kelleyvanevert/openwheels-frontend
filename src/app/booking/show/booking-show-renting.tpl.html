@@ -34,6 +34,21 @@
         </div>
       </div>
 
+      <!-- Book only notice -->
+      <div ng-if="showBookOnlyNotice"
+        class="card mw"
+        style="
+          background: #ffecc2;
+          color: #911a1a;
+        "
+      >
+        <div class="card-body">
+          <p><strong>Let op:</strong> Je account is op dit moment nog niet actief, je kunt de auto dus ook nog niet ophalen.</p>
+          <p>Een aantal van onze controles konden niet automatisch worden uitgevoerd voor jouw account. Zodra wij deze controles hebben uitgevoerd ontvang je per mail bericht over het activeren van je account.</p>
+        </div>
+      </div>
+      
+
       <!-- Je bent zelf contractant (niet de contracthouder) -->
       <div class="card mw"
         ng-if="!perspective.isContractHolder"
