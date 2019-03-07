@@ -162,7 +162,7 @@ angular.module('owm.finance', [
         return authService.me();
       }],
       success: ['orderStatusId', function (orderStatusId) {
-        return (orderStatusId > 0);
+        return (orderStatusId === 100);
       }],
       afterPayment: ['$sessionStorage', function ($sessionStorage) {
         //  afterPayment: {

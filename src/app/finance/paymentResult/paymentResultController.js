@@ -2,6 +2,7 @@
 angular.module('owm.finance.paymentResult', [])
 
 .controller('PaymentResultController', function ($scope, $state, $log, $window, appConfig, orderStatusId, account2Service, alertService, voucherService, me, paymentService, bookingService, chipcardService, linksService, API_DATE_FORMAT, Analytics, metaInfoService,
+  success,
   payRedirect,
   afterPayment // flow-continuation information
 ) {
@@ -19,7 +20,7 @@ angular.module('owm.finance.paymentResult', [])
   $scope.me = me;
 
   $scope.result = {
-    success: (orderStatusId > 0)
+    success: success,
   };
 
   $scope.buyVoucher = function (value) { //buy a vouchure from 0.01 cents
