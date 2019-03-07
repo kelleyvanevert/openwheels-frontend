@@ -152,6 +152,7 @@ angular.module('owm.finance', [
         return (orderStatusId > 0);
       }],
       afterPayment: ['$sessionStorage', function ($sessionStorage) {
+//        $sessionStorage.afterPayment = { redirect: { state: 'owm.booking.show', params: { bookingId: 110 } } };
         var afterPayment = $sessionStorage.afterPayment || null;
         $sessionStorage.afterPayment = null;
         return afterPayment;
@@ -173,7 +174,7 @@ angular.module('owm.finance', [
     },
     onEnter: ['afterPayment', '$state', function (afterPayment, $state) {
       if (afterPayment && afterPayment.redirect) {
-        $state.go(afterPayment.recirect.state, afterPayment.redirect.params);
+        $state.go(afterPayment.redirect.state, afterPayment.redirect.params);
       }
     }],
   })
