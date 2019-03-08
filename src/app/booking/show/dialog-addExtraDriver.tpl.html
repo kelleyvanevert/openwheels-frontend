@@ -9,21 +9,17 @@
       </md-button>
     </h3>
     
-    <div ng-if="extraDrivers.loading">
-      <p>Laden...</p>
+    <div ng-if="extraDrivers.loading || currentCredit === null">
+      <spinner />
     </div>
 
-    <form name="newEmailsForm" class="mywheels-form" ng-if="!extraDrivers.loading">
+    <form name="newEmailsForm" class="mywheels-form" ng-if="!extraDrivers.loading && currentCredit !== null">
       <p>
         Op een MyWheels Go contract kun je tot 3 personen extra toevoegen per rit, voor 1.25 euro per persoon.
         <span ng-if="extraDrivers.inviteRequests.length > 0">
           Je kunt dus nog <strong>{{ 3 - extraDrivers.inviteRequests.length }}</strong> <span>{{ 3 - extraDrivers.inviteRequests.length === 1 ? 'persoon' : 'personen' }}</span> uitnodigen.
         </span>
-      </p>
-
-      <p>
         Voeg hieronder de email-adressen toe van de personen die je als extra bestuurders wilt toevoegen.
-        Nadat je je rijtegoed hebt opgehoogd, worden de uitnodigingen automatisch verstuurd.
       </p>
 
       <div ng-repeat="newEmail in newEmails">
@@ -55,15 +51,32 @@
         <a ng-click="addEmailLine()"><ng-md-icon icon="add_circle"></ng-md-icon> nog iemand toevoegen</a>
       </p>
 
-      <p style="text-align: center;">
-        <button class="mywheels-btn mywheels-btn-call-to-action"
-                md-ink-ripple="#4b702c"
-                ng-click="pay()"
-                ng-disabled="newEmailsForm.$invalid"
-                style="white-space: nowrap;">
-          Koop {{ newEmails.length * 1.25 | currency }} rijtegoed &raquo;
-        </button>
-      </p>
+      <div ng-if="newEmails.length * 1.25 > currentCredit">
+        <p>
+          Voor het toevoegen van deze extra bestuurder<span ng-if="newEmails.length > 0">s</span> is extra rijtegoed vereist.
+          Nadat je je rijtegoed hebt opgehoogd, worden de uitnodigingen automatisch verstuurd.
+        </p>
+        <p style="text-align: center;">
+          <button class="mywheels-btn mywheels-btn-call-to-action"
+                  md-ink-ripple="#4b702c"
+                  ng-click="pay((newEmails.length * 1.25) - currentCredit)"
+                  ng-disabled="newEmailsForm.$invalid"
+                  style="white-space: nowrap;">
+            Koop {{ (newEmails.length * 1.25) - currentCredit | currency }} rijtegoed &raquo;
+          </button>
+        </p>
+      </div>
+      <div ng-if="newEmails.length * 1.25 <= currentCredit">
+        <p style="text-align: center;">
+          <button class="mywheels-btn mywheels-btn-call-to-action"
+                  md-ink-ripple="#4b702c"
+                  ng-click="addDirectly()"
+                  ng-disabled="newEmailsForm.$invalid"
+                  style="white-space: nowrap;">
+            Extra bestuurder<span ng-if="newEmails.length > 0">s</span> toevoegen &raquo;
+          </button>
+        </p>
+      </div>
 
       <p style="margin: 0;">
         <em>Let op: pas als een uitnodigde het verzoek heeft geaccepteerd mag hij/zij verzekerd meerijden.</em>

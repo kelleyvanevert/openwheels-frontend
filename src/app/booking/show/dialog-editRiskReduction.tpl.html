@@ -9,59 +9,82 @@
       </md-button>
     </h3>
 
-    <div ng-if="contract.type.id === 60">
-      <p>
-        Bij een MyWheels Go contract is het verplicht je eigen risico te verlagen.<br />
-        <a href="https://mywheels.nl/autodelen/hoe-huren-werkt/tarieven-huren/">Lees meer over de verschillende contractvormen die MyWheels biedt &raquo;</a>
-      </p>
+    <div ng-if="currentCredit === null">
+      <spinner />
     </div>
 
-    <form name="editRiskReductionForm" class="mywheels-form" ng-if="contract.type.id != 60">
-      <div ng-if="contract.ownRiskWaiver === 'month'">
-        <p ng-if="perspective.isContractHolder">
-          Je hebt bij je {{ contract.type.name }} gekozen om het eigen risico standaard te verlagen.
-          Wil je dit uitzetten? Dat kan op <a ui-sref="owm.person.profile.contract">je contractpagina</a>.
+    <div ng-if="currentCredit !== null">
+
+      <div ng-if="contract.type.id === 60">
+        <p>
+          Bij een MyWheels Go contract is het verplicht je eigen risico te verlagen.<br />
+          <a href="https://mywheels.nl/autodelen/hoe-huren-werkt/tarieven-huren/">Lees meer over de verschillende contractvormen die MyWheels biedt &raquo;</a>
         </p>
-        <p ng-if="!perspective.isContractHolder">
-          Bij dit {{ contract.type.name }} contract is gekozen het eigen risico standaard te verlagen.
-        </p>
-      </div>
-      <div ng-if="contract.ownRiskWaiver !== 'month'">
-        <div ng-if="booking.riskReduction">
-          <p>
-            Je hebt het eigen risico voor deze rit verlaagd.
-            Wil je dit uitzetten, dan kan dat met onderstaande knop.
-            Je rijtegoed wordt opgehoogd met het bedrag dat je hiermee hebt bespaard.
-          </p>
-          <p style="text-align: center;">
-            <button class="mywheels-btn mywheels-btn-call-to-action"
-                    md-ink-ripple="#4b702c"
-                    ng-click="turnOffRiskReduction()"
-                    style="white-space: nowrap;">
-              Eigen risico uitzetten
-            </button>
-          </p>
-        </div>
-        <div ng-if="!booking.riskReduction">
-          <p>
-            Je hebt het eigen risico niet verlaagd voor deze rit.
-            Het verlagen van je eigen risico kost {{ 3.5 | currency }} per etmaal.
-          </p>
-          <p>
-            Voor deze rit komt dat neer op {{ amount | currency }}.
-            Nadat je je rijtegoed hebt opgehoogd met dit bedrag, worden je eigen risico voor je verlaagd.
-          </p>
-          <p style="text-align: center;">
-            <button class="mywheels-btn mywheels-btn-call-to-action"
-                    md-ink-ripple="#4b702c"
-                    ng-click="pay()"
-                    style="white-space: nowrap;">
-              Koop {{ amount | currency }} rijtegoed &raquo;
-            </button>
-          </p>
-        </div>
       </div>
 
-    </form>
+      <form name="editRiskReductionForm" class="mywheels-form" ng-if="contract.type.id != 60">
+        <div ng-if="contract.ownRiskWaiver === 'month'">
+          <p ng-if="perspective.isContractHolder">
+            Je hebt bij je {{ contract.type.name }} gekozen om het eigen risico standaard te verlagen.
+            Wil je dit uitzetten? Dat kan op <a ui-sref="owm.person.profile.contract">je contractpagina</a>.
+          </p>
+          <p ng-if="!perspective.isContractHolder">
+            Bij dit {{ contract.type.name }} contract is gekozen het eigen risico standaard te verlagen.
+          </p>
+        </div>
+        <div ng-if="contract.ownRiskWaiver !== 'month'">
+          <div ng-if="booking.riskReduction">
+            <p>
+              Je hebt het eigen risico voor deze rit verlaagd.
+              Wil je dit uitzetten, dan kan dat met onderstaande knop.
+              Je rijtegoed wordt opgehoogd met het bedrag dat je hiermee hebt bespaard.
+            </p>
+            <p style="text-align: center;">
+              <button class="mywheels-btn mywheels-btn-call-to-action"
+                      md-ink-ripple="#4b702c"
+                      ng-click="setRiskReduction(false)"
+                      style="white-space: nowrap;">
+                Eigen risico uitzetten &raquo;
+              </button>
+            </p>
+          </div>
+          <div ng-if="!booking.riskReduction">
+            <p>
+              Je hebt het eigen risico niet verlaagd voor deze rit.
+              Het verlagen van je eigen risico kost {{ 3.5 | currency }} per etmaal.
+              Voor deze rit komt dat neer op {{ amount | currency }}.
+            </p>
+            <div ng-if="amount > currentCredit">
+              <p>
+                Nadat je je rijtegoed hebt opgehoogd met dit bedrag, worden je eigen risico voor je verlaagd.
+              </p>
+              <p style="text-align: center;">
+                <button class="mywheels-btn mywheels-btn-call-to-action"
+                        md-ink-ripple="#4b702c"
+                        ng-click="pay()"
+                        style="white-space: nowrap;">
+                  Koop {{ amount | currency }} rijtegoed &raquo;
+                </button>
+              </p>
+            </div>
+            <div ng-if="amount <= currentCredit">
+              <p>
+                Omdat je al genoeg rijtegoed hebt, kun je dit direct aanpassen.
+              </p>
+              <p style="text-align: center;">
+                <button class="mywheels-btn mywheels-btn-call-to-action"
+                        md-ink-ripple="#4b702c"
+                        ng-click="setRiskReduction(true)"
+                        style="white-space: nowrap;">
+                  Eigen risico aanzetten &raquo;
+                </button>
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    
+    </div>
   </md-dialog-content>
 </md-dialog>

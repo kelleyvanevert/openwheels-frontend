@@ -9,7 +9,7 @@ angular.module('owm.booking.show', [])
   $log,
   $scope
 ) {
-  // $scope = { perspective, details, flowContinuation, resource, booking, contract }
+  // $scope = { me, perspective, details, flowContinuation, resource, booking, contract }
 })
 
 .controller('BookingShowRentingController', function (
@@ -21,15 +21,29 @@ angular.module('owm.booking.show', [])
   extraDriverService,
   bookingService,
   alertService,
+  voucherService,
 
   $log,
+  $q,
   $timeout,
   $filter,
   $mdDialog,
   $sessionStorage,
   $scope
 ) {
-  // $scope = { perspective, details, flowContinuation, resource, booking, contract }
+  // $scope = { me, perspective, details, flowContinuation, resource, booking, contract }
+
+  $scope.getCurrentCredit = function () {
+    return voucherService
+      .calculateRequiredCredit({ person: $scope.me.id })
+      .then(function (requiredCredit) {
+        if (requiredCredit.total <= 0 && requiredCredit.credit > 0) {
+          return requiredCredit.credit;
+        } else {
+          return 0;
+        }
+      });
+  };
 
   $scope.editRiskReductionDialog = function ($event) {
     $mdDialog.show({
@@ -44,21 +58,35 @@ angular.module('owm.booking.show', [])
           $mdDialog.hide();
         };
         
+        dialogScope.currentCredit = null;
+        $scope.getCurrentCredit().then(function (currentCredit) {
+          dialogScope.currentCredit = currentCredit;
+        });
+
         dialogScope.perspective = $scope.perspective;
         dialogScope.contract = $scope.contract;
         dialogScope.booking = $scope.booking;
 
-        dialogScope.amount = 42;
+        var numMinutes = -Infinity;
+        if ($scope.booking.beginBooking) {
+          numMinutes = Math.max(numMinutes, moment($scope.booking.endBooking).diff($scope.booking.beginBooking, 'minutes'));
+        }
+        if ($scope.booking.beginRequested) {
+          numMinutes = Math.max(numMinutes, moment($scope.booking.endRequested).diff($scope.booking.beginRequested, 'minutes'));
+        }
+        var numDaysRoundedUp = Math.ceil(numMinutes / (60 * 24));
 
-        dialogScope.turnOffRiskReduction = function () {
+        dialogScope.amount = 3.5 * numDaysRoundedUp;
+
+        dialogScope.setRiskReduction = function (newRiskReduction) {
           bookingService.alter({
             booking: $scope.booking.id,
             newProps: {
-              riskReduction: false,
+              riskReduction: newRiskReduction,
             }
           })
           .then(function (updatedBooking) {
-            if (updatedBooking.riskReduction) {
+            if (newRiskReduction !== updatedBooking.riskReduction) {
               throw new Error({
                 message: 'Er is iets misgegaan',
               });
@@ -67,9 +95,9 @@ angular.module('owm.booking.show', [])
               // We've already requested the booking, and an extra API call
               //  would be overkill, but we know exactly what changed,
               //  so now just change it in-place.
-              $scope.booking.riskReduction = false;
+              $scope.booking.riskReduction = newRiskReduction;
               $mdDialog.hide();
-              alertService.add('success', 'De verlaging van je eigen risico is uitgezet.', 4000);
+              alertService.add('success', 'De verlaging van je eigen risico is ' + (newRiskReduction ? 'aangezet' : 'uitgezet') + '.', 4000);
             }
           })
           .catch(function (e) {
@@ -117,6 +145,11 @@ angular.module('owm.booking.show', [])
           $mdDialog.hide();
         };
         
+        dialogScope.currentCredit = null;
+        $scope.getCurrentCredit().then(function (currentCredit) {
+          dialogScope.currentCredit = currentCredit;
+        });
+
         dialogScope.extraDrivers = $scope.extraDrivers;
         dialogScope.newEmails = [
           { text: '' }
@@ -129,13 +162,32 @@ angular.module('owm.booking.show', [])
           dialogScope.newEmails.splice(i, 1);
         };
 
-        dialogScope.pay = function () {
+        dialogScope.addDirectly = function () {
+          $q.all(dialogScope.newEmails.map(function (newEmail) {
+            return extraDriverService.addDriver({
+              booking: $scope.booking.id,
+              email: newEmail.text,
+            });
+          }))
+          .then(function () {
+            alertService.add('success', 'De extra bestuurders zijn uitgenodigd.', 4000);
+            $scope.extraDrivers.load();
+          })
+          .catch(function (e) {
+            alertService.addError(e);
+          })
+          .finally(function () {
+            $mdDialog.hide();
+          });
+        };
+
+        dialogScope.pay = function (amount) {
           $sessionStorage.addExtraDriversEmails = dialogScope.newEmails.map(function (newEmail) {
             return newEmail.text;
           });
 
           buyVoucherRedirect({
-            amount: dialogScope.newEmails.length * 1.25,
+            amount: amount,
             afterPayment: {
               redirect: {
                 state: 'owm.booking.show',

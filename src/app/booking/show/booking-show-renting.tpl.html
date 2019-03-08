@@ -35,7 +35,31 @@
           <p>Het automatisch uitnodigen van de extra bestuurders is helaas niet gelukt. Je rijtegoed is wel al opgehoogd. Neem contact met ons op via het nummer <strong>085-7734222</strong> om dit probleem te verhelpen.</p>
         </div>
       </div>
+
+      <div ng-if="flowContinuation.error === 'error_payment_set_riskreduction'"
+        class="card mw"
+        style="
+          background: #ffecc2;
+          color: #911a1a;
+        "
+      >
+        <div class="card-body">
+          <p>De betaling is niet gelukt, waardoor je rijtegoed niet is opgehoogd. Hierdoor is het niet gelukt je eigen risico aan te passen.</p>
+        </div>
+      </div>
       
+      <div ng-if="flowContinuation.error === 'error_api_set_riskreduction'"
+        class="card mw"
+        style="
+          background: #ffecc2;
+          color: #911a1a;
+        "
+      >
+        <div class="card-body">
+          <p>Het aanpassen van je eigen risico is helaas niet gelukt. Je rijtegoed is wel al opgehoogd. Neem contact met ons op via het nummer <strong>085-7734222</strong> om dit probleem te verhelpen.</p>
+        </div>
+      </div>
+
       <!-- Book only notice -->
       <div ng-if="showBookOnlyNotice"
         class="card mw"
