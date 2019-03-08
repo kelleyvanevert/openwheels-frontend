@@ -25,6 +25,7 @@ angular.module('owm.booking.show', [])
 
   $log,
   $q,
+  $state,
   $timeout,
   $filter,
   $mdDialog,
@@ -45,9 +46,21 @@ angular.module('owm.booking.show', [])
       });
   };
 
-  $scope.editRiskReductionDialog = function ($event) {
+  $scope.cancelReservationDialog = function ($event) {
+    var confirm = $mdDialog.confirm()
+          .title('Reservering annuleren')
+          .textContent('Weet je zeker dat je deze reserving wilt annuleren?')
+          .ok('Akkoord')
+          .cancel('Annuleren');
+    
+    $mdDialog.show(confirm).then(function () {
+      // TODO
+    });
+  };
+
+  $scope.editReservationTimeframeDialog = function ($event) {
     $mdDialog.show({
-      templateUrl: 'booking/show/dialog-editRiskReduction.tpl.html',
+      templateUrl: 'booking/show/dialog-editReservationTimeframe.tpl.html',
       parent: angular.element(document.body),
       targetEvent: $event,
       clickOutsideToClose: true,
@@ -67,69 +80,132 @@ angular.module('owm.booking.show', [])
         dialogScope.contract = $scope.contract;
         dialogScope.booking = $scope.booking;
 
-        var numMinutes = -Infinity;
-        if ($scope.booking.beginBooking) {
-          numMinutes = Math.max(numMinutes, moment($scope.booking.endBooking).diff($scope.booking.beginBooking, 'minutes'));
-        }
-        if ($scope.booking.beginRequested) {
-          numMinutes = Math.max(numMinutes, moment($scope.booking.endRequested).diff($scope.booking.beginRequested, 'minutes'));
-        }
-        var numDaysRoundedUp = Math.ceil(numMinutes / (60 * 24));
+        dialogScope.changeset = {};
+        dialogScope.changeset.beginRequested = $scope.booking.beginRequested ? $scope.booking.beginRequested : $scope.booking.beginBooking;
+        dialogScope.changeset.endRequested   = $scope.booking.endRequested   ? $scope.booking.endRequested   : $scope.booking.endBooking;
 
-        dialogScope.amount = 3.5 * numDaysRoundedUp;
+        dialogScope.timeFrameError = null;
+        dialogScope.$watch('[changeset.beginRequested, changeset.endRequested]', function () {
+          //$log.log($scope.booking.beginRequested + ' -> ' + $scope.booking.endRequested);
 
-        dialogScope.setRiskReduction = function (newRiskReduction) {
-          bookingService.alter({
-            booking: $scope.booking.id,
-            newProps: {
-              riskReduction: newRiskReduction,
-            }
-          })
-          .then(function (updatedBooking) {
-            if (newRiskReduction !== updatedBooking.riskReduction) {
-              throw new Error({
-                message: 'Er is iets misgegaan',
-              });
-            }
-            else {
-              // We've already requested the booking, and an extra API call
-              //  would be overkill, but we know exactly what changed,
-              //  so now just change it in-place.
-              $scope.booking.riskReduction = newRiskReduction;
-              $mdDialog.hide();
-              alertService.add('success', 'De verlaging van je eigen risico is ' + (newRiskReduction ? 'aangezet' : 'uitgezet') + '.', 4000);
-            }
-          })
-          .catch(function (e) {
-            alertService.addError(e);
-          });
-        };
+          if (!dialogScope.changeset.beginRequested || !dialogScope.changeset.endRequested) {
+            return false;
+          }
 
-        dialogScope.pay = function (amount) {
-          $sessionStorage.setRiskReduction = true;
-
-          buyVoucherRedirect({
-            amount: amount,
-            afterPayment: {
-              redirect: {
-                state: 'owm.booking.show',
-                params: {
-                  bookingId: $scope.booking.id,
-                  cont: 'set_riskreduction',
-                },
-              },
-              paymentErrorRedirect: {
-                state: 'owm.booking.show',
-                params: {
-                  bookingId: $scope.booking.id,
-                  cont: 'error_payment_set_riskreduction',
-                },
-              },
-            },
-          });
-        };
+          if (moment(dialogScope.changeset.beginRequested) >= moment(dialogScope.changeset.endRequested)) {
+            dialogScope.timeFrameError = 'invalid';
+          }
+          else {
+            dialogScope.timeFrameError = null;
+          }
+        });
       }],
     });
+  };
+
+  $scope.editRiskReductionDialog = function ($event) {
+    if ($scope.contract.type.id === 60) {
+      $mdDialog.show({
+        templateUrl: 'booking/show/dialog-editRiskReductionGo.tpl.html',
+        parent: angular.element(document.body),
+        targetEvent: $event,
+        clickOutsideToClose: true,
+        hasBackdrop: true,
+      });
+    } else {
+      $mdDialog.show({
+        templateUrl: 'booking/show/dialog-editRiskReduction.tpl.html',
+        parent: angular.element(document.body),
+        targetEvent: $event,
+        clickOutsideToClose: true,
+        hasBackdrop: true,
+        controller: ['$scope', function (dialogScope) {
+
+          dialogScope.hide = function () {
+            $mdDialog.hide();
+          };
+          
+          dialogScope.currentCredit = null;
+          $scope.getCurrentCredit().then(function (currentCredit) {
+            dialogScope.currentCredit = currentCredit;
+          });
+
+          dialogScope.perspective = $scope.perspective;
+          dialogScope.contract = $scope.contract;
+          dialogScope.booking = $scope.booking;
+
+          var numMinutes = -Infinity;
+          if ($scope.booking.beginBooking) {
+            numMinutes = Math.max(numMinutes, moment($scope.booking.endBooking).diff($scope.booking.beginBooking, 'minutes'));
+          }
+          if ($scope.booking.beginRequested) {
+            numMinutes = Math.max(numMinutes, moment($scope.booking.endRequested).diff($scope.booking.beginRequested, 'minutes'));
+          }
+          var numDaysRoundedUp = Math.ceil(numMinutes / (60 * 24));
+
+          dialogScope.amount = 3.5 * numDaysRoundedUp;
+
+          dialogScope.setRiskReduction = function (newRiskReduction) {
+            bookingService.alter({
+              booking: $scope.booking.id,
+              newProps: {
+                riskReduction: newRiskReduction,
+              }
+            })
+            .then(function (updatedBooking) {
+              if (newRiskReduction !== updatedBooking.riskReduction) {
+                throw new Error({
+                  message: 'Er is iets misgegaan',
+                });
+              }
+              else {
+                // We've already requested the booking, and an extra API call
+                //  would be overkill, but we know exactly what changed,
+                //  so now just change it in-place.
+                $scope.booking.riskReduction = newRiskReduction;
+                $mdDialog.hide();
+                alertService.add('success', 'De verlaging van je eigen risico is ' + (newRiskReduction ? 'aangezet' : 'uitgezet') + '.', 4000);
+              }
+            })
+            .catch(function (e) {
+              alertService.addError(e);
+            });
+          };
+
+          dialogScope.pay = function (amount) {
+            $sessionStorage.setRiskReduction = true;
+
+            buyVoucherRedirect({
+              amount: amount,
+              afterPayment: {
+                redirect: {
+                  state: 'owm.booking.show',
+                  params: {
+                    bookingId: $scope.booking.id,
+                    cont: 'set_riskreduction',
+                  },
+                },
+                paymentErrorRedirect: {
+                  state: 'owm.booking.show',
+                  params: {
+                    bookingId: $scope.booking.id,
+                    cont: 'error_payment_set_riskreduction',
+                  },
+                },
+              },
+            });
+          };
+        }],
+      });
+    }
+  };
+
+  $scope.extraDriversDialog = function ($event) {
+    if ($scope.contract.type.id === 60) {
+      $scope.addExtraDriverDialog($event);
+    } else {
+      $state.go('owm.person.profile.contract');
+    }
   };
 
   $scope.addExtraDriverDialog = function ($event) {

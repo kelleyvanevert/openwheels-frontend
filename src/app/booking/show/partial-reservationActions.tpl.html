@@ -1,0 +1,58 @@
+
+<!-- Open and close buttons -->
+<div class="board-computer-control"
+     ng-show="showBoardComputerButtons">
+  <div class="card mw">
+    <!--
+    <div class="card-heading">
+      <h3 class="card-title">Acties</h3>
+    </div>
+    -->
+    <div class="row is-flex" style="padding: 1rem 0;">
+      <div class="col-xs-12 col-sm-6" style="padding: 0;">
+        <a
+          ng-click="editReservationTimeframeDialog($event)"
+          class="card-action"
+          title="TODO"
+          md-ink-ripple="#777"
+        >
+          <ng-md-icon icon="schedule"></ng-md-icon>
+          Begin- of eindtijd wijzigen
+        </a>
+      </div>
+      <div class="col-xs-12 col-sm-6" style="padding: 0;">
+        <a
+          ng-click="extraDriversDialog($event)"
+          class="card-action"
+          title="TODO"
+          md-ink-ripple="#777"
+        >
+          <ng-md-icon icon="people"></ng-md-icon>
+          Extra bestuurders wijzigen
+        </a>
+      </div>
+      <div class="col-xs-12 col-sm-6" style="padding: 0;">
+        <a
+          ng-click="editRiskReductionDialog($event)"
+          class="card-action"
+          title="TODO"
+          md-ink-ripple="#777"
+        >
+          <ng-md-icon icon="edit"></ng-md-icon>
+          Eigen risico {{ booking.riskReduction ? 'uitzetten' : 'aanzetten' }}
+        </a>
+      </div>
+      <div class="col-xs-12 col-sm-6" style="padding: 0;">
+        <a
+          ng-click="cancelReservationDialog($event)"
+          class="card-action action-cancel"
+          title="TODO"
+          md-ink-ripple="#c00"
+        >
+          <ng-md-icon icon="delete"></ng-md-icon>
+          Reservering annuleren
+        </a>
+      </div>
+    </ul>
+  </div>
+</div>

@@ -127,6 +127,12 @@
       </div>
 
 
+      <!-- After reservation completed, and before the booking has started -->
+      <div ng-if="progress.reservationCompleted && !details.bookingStarted">
+        <div ng-include="'booking/show/partial-reservationActions.tpl.html'" ng-if="!perspective.isContractor"></div>
+      </div>
+
+
       <!-- After reservation completed, and before the booking has (really) ended -->
       <div ng-if="progress.reservationCompleted && !bookingEndedReally">
         <div ng-include="'booking/show/partial-openCloseButtons.tpl.html'" ng-if="!perspective.isContractor"></div>
