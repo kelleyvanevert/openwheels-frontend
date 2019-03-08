@@ -17,7 +17,7 @@
       <p>
         Op een MyWheels Go contract kun je tot 3 personen extra toevoegen per rit, voor 1.25 euro per persoon.
         <span ng-if="extraDrivers.inviteRequests.length > 0">
-          Je kunt dus nog <strong>{{ 3 - extraDrivers.inviteRequests.length }}</strong> personen uitnodigen.
+          Je kunt dus nog <strong>{{ 3 - extraDrivers.inviteRequests.length }}</strong> <span>{{ 3 - extraDrivers.inviteRequests.length === 1 ? 'persoon' : 'personen' }}</span> uitnodigen.
         </span>
       </p>
 

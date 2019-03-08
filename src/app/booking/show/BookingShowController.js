@@ -777,6 +777,28 @@ angular.module('owm.booking.show', [])
         });
       }
     },
+    hasInvited: function () {
+      return $scope.extraDrivers.inviteRequests.filter(function (inviteRequest) {
+        return inviteRequest.status === 'invited';
+      }).length > 0;
+    },
+    remove: function (inviteRequest, $event) {
+      var confirm = $mdDialog.confirm()
+            .title('Extra bestuurder verwijderen?')
+            .textContent('Weet je zeker dat je deze persoon als extra bestuurder van de rit wilt verwijderen?')
+            .ok('Akkoord')
+            .cancel('Annuleren');
+      
+      $mdDialog.show(confirm).then(function () {
+        extraDriverService.removeDriver({
+          booking: $scope.booking.id,
+          email: inviteRequest.recipient.email,
+        })
+        .then(function () {
+          $scope.extraDrivers.load();
+        });
+      });
+    },
   };
   $timeout($scope.extraDrivers.load, 50);
 

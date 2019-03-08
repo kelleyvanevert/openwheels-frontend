@@ -107,7 +107,7 @@
           Extra bestuurders
           <span ng-if="extraDrivers.inviteRequests.length > 0">({{ extraDrivers.inviteRequests.length }})</span>
         </span>
-        <a href="#" ng-click="addExtraDriverDialog($event)">
+        <a ng-if="!details.bookingStarted" ng-click="addExtraDriverDialog($event)">
           <ng-md-icon icon="add_circle"
             aria-label="Voeg een extra bestuurder toe"
             uib-tooltip="Voeg een extra bestuurder toe"
@@ -117,16 +117,22 @@
       <p ng-if="extraDrivers.loading">Laden...</p>
       <ul class="list-unstyled" ng-if="!extraDrivers.loading && extraDrivers.inviteRequests.length > 0">
         <li ng-repeat="inviteRequest in extraDrivers.inviteRequests">
-          <span ng-if="inviteRequest.status === 'invited'"
-              uib-tooltip="Let op: pas als de uitnodiging is geaccepteerd mag deze gebruiker meerijden.">
-            Nog niet geaccepteerd: &lt;{{ inviteRequest.recipient.email }}&gt;
+          <span ng-if="inviteRequest.status === 'invited'">
+            Uitgenodigd: &lt;{{ inviteRequest.recipient.email }}&gt;
           </span>
           <span ng-if="inviteRequest.status === 'accepted'"
               uib-tooltip="Mag meerijden op deze boeking.">
             {{ inviteRequest.recipient.firstName }} &lt;{{ inviteRequest.recipient.email }}&gt;
           </span>
+          <a ng-if="!details.bookingStarted" ng-click="extraDrivers.remove(inviteRequest, $event)">
+            <ng-md-icon icon="clear"
+              aria-label="Verwijder deze extra bestuurder"
+              uib-tooltip="Verwijder deze extra bestuurder"
+            ></ng-md-icon>
+          </a>
         </li>
       </ul>
+      <p ng-if="extraDrivers.hasInvited()"><em>Let op: pas als een uitnodigde het verzoek heeft geaccepteerd mag hij/zij verzekerd meerijden.</em></p>
     </div>
 
     <!-- people -->
