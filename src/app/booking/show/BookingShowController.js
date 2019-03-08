@@ -9,7 +9,7 @@ angular.module('owm.booking.show', [])
   $log,
   $scope
 ) {
-  // $scope = { perspective, details, resource, booking, contract }
+  // $scope = { perspective, details, flowContinuation, resource, booking, contract }
 })
 
 .controller('BookingShowRentingController', function (
@@ -27,7 +27,7 @@ angular.module('owm.booking.show', [])
   $sessionStorage,
   $scope
 ) {
-  // $scope = { perspective, details, resource, booking, contract }
+  // $scope = { perspective, details, flowContinuation, resource, booking, contract }
 
 
   $scope.addExtraDriverDialog = function ($event) {
@@ -74,7 +74,7 @@ angular.module('owm.booking.show', [])
                 state: 'owm.booking.show',
                 params: {
                   bookingId: $scope.booking.id,
-                  cont: 'payment_error_add_drivers',
+                  cont: 'error_payment_add_drivers',
                 },
               },
             },
@@ -112,6 +112,7 @@ angular.module('owm.booking.show', [])
   perspective,
   details,
   progress,
+  flowContinuation,
   payRedirect,
   authService, boardcomputerService, discountUsageService, chatPopupService, linksService,
   booking, me, declarationService, $mdDialog, contract, Analytics, paymentService, voucherService,
@@ -125,6 +126,8 @@ angular.module('owm.booking.show', [])
   $scope.perspective = perspective;
   $scope.details = details;
   $scope.progress = progress; // for renters
+
+  $scope.flowContinuation = flowContinuation;
 
   $scope.appConfig = appConfig;
   $scope.contract = contract;

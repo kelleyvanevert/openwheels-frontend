@@ -11,6 +11,31 @@
   <div class="row">
     <div class="rpad col-md-8 col-md-push-4">
 
+      <!-- Flow continuation notices -->
+      <div ng-if="flowContinuation.error === 'error_payment_add_drivers'"
+        class="card mw"
+        style="
+          background: #ffecc2;
+          color: #911a1a;
+        "
+      >
+        <div class="card-body">
+          <p>De betaling is niet gelukt, waardoor je rijtegoed niet is opgehoogd. Hierdoor konden de extra bestuurders niet worden uitgenodigd.</p>
+        </div>
+      </div>
+      
+      <div ng-if="flowContinuation.error === 'error_api_add_drivers'"
+        class="card mw"
+        style="
+          background: #ffecc2;
+          color: #911a1a;
+        "
+      >
+        <div class="card-body">
+          <p>Het automatisch uitnodigen van de extra bestuurders is helaas niet gelukt. Je rijtegoed is wel al opgehoogd. Bel met MyWheels!</p>
+        </div>
+      </div>
+      
       <!-- Book only notice -->
       <div ng-if="showBookOnlyNotice"
         class="card mw"

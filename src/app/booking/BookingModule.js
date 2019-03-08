@@ -236,22 +236,35 @@ angular.module('owm.booking', [
       }],
       flowContinuation: ['$stateParams', '$sessionStorage', '$log', 'extraDriverService', 'booking', '$q', 'alertService', function ($stateParams, $sessionStorage, $log, extraDriverService, booking, $q, alertService) {
 
-        if ($stateParams.cont === 'add_extra_drivers') {
-          $log.log('now, add these extra drivers:', $sessionStorage.addExtraDriversEmails);
-          $q.all($sessionStorage.addExtraDriversEmails.map(function (email) {
-            return extraDriverService.addDriver({
-              booking: booking.id,
-              email: email,
+        return $q(function (resolve, reject) {
+          if ($stateParams.cont === 'add_extra_drivers') {
+            $log.log('now, add these extra drivers:', $sessionStorage.addExtraDriversEmails);
+            $q.all($sessionStorage.addExtraDriversEmails.map(function (email) {
+              return extraDriverService.addDriver({
+                booking: booking.id,
+                email: email,
+              });
+            }))
+            .then(function () {
+              alertService.add('success', 'De betaling is ontvangen, en de extra bestuurders zijn uitgenodigd.');
+              resolve({});
+            })
+            .catch(function (e) {
+              alertService.addError(e);
+              resolve({
+                error: 'error_api_add_drivers',
+              });
             });
-          }))
-          .then(function () {
-            $log.log('ALL DONE!');
-          })
-          .catch(alertService.addError);
-        }
-        else if ($stateParams.cont === 'payment_error_add_drivers') {
-          $log.log('encountered a payment error in add-driver flow');
-        }
+          }
+          else if ($stateParams.cont && $stateParams.cont.slice(0, 6) === 'error_') {
+            resolve({
+              error: $stateParams.cont,
+            });
+          }
+          else {
+            resolve({});
+          }
+        });
       }],
     },
   })
