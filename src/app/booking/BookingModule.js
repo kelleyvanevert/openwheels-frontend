@@ -273,6 +273,12 @@ angular.module('owm.booking', [
                   message: 'Er is iets misgegaan',
                 });
               }
+              else {
+                // We've already requested the booking, and an extra API call
+                //  would be overkill, but we know exactly what changed,
+                //  so now just change it in-place.
+                booking.riskReduction = true;
+              }
             })
             .then(function () {
               alertService.add('success', 'De betaling is ontvangen, en je eigen risico is verlaagd.', 4000);

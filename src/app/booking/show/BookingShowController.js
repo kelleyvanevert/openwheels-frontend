@@ -19,6 +19,8 @@ angular.module('owm.booking.show', [])
   buyVoucherRedirect,
 
   extraDriverService,
+  bookingService,
+  alertService,
 
   $log,
   $timeout,
@@ -47,6 +49,33 @@ angular.module('owm.booking.show', [])
         dialogScope.booking = $scope.booking;
 
         dialogScope.amount = 42;
+
+        dialogScope.turnOffRiskReduction = function () {
+          bookingService.alter({
+            booking: $scope.booking.id,
+            newProps: {
+              riskReduction: false,
+            }
+          })
+          .then(function (updatedBooking) {
+            if (updatedBooking.riskReduction) {
+              throw new Error({
+                message: 'Er is iets misgegaan',
+              });
+            }
+            else {
+              // We've already requested the booking, and an extra API call
+              //  would be overkill, but we know exactly what changed,
+              //  so now just change it in-place.
+              $scope.booking.riskReduction = false;
+              $mdDialog.hide();
+              alertService.add('success', 'De verlaging van je eigen risico is uitgezet.', 4000);
+            }
+          })
+          .catch(function (e) {
+            alertService.addError(e);
+          });
+        };
 
         dialogScope.pay = function () {
           $sessionStorage.setRiskReduction = true;
