@@ -14,7 +14,7 @@ angular.module('owm.booking', [
 
   .state('owm.booking', {
     abstract: true,
-    url: '/booking/:bookingId?start&end&orderStatusId&success&error',
+    url: '/booking/:bookingId?start&end&orderStatusId&cont',
     views: {
       'main@shell': {
         template: '<div ui-view></div>'
@@ -233,6 +233,14 @@ angular.module('owm.booking', [
 
         return progress;
 
+      }],
+      continuation: ['$stateParams', '$sessionStorage', '$log', function ($stateParams, $sessionStorage, $log) {
+        if ($stateParams.cont === 'add_extra_drivers') {
+          $log.log('now, add these extra drivers:', $sessionStorage.addExtraDriversEmails);
+        }
+        else if ($stateParams.cont === 'payment_error_add_drivers') {
+          $log.log('encountered a payment error in add-driver flow');
+        }
       }],
     },
   })

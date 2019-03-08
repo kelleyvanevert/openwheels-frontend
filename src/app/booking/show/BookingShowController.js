@@ -24,11 +24,10 @@ angular.module('owm.booking.show', [])
   $timeout,
   $filter,
   $mdDialog,
+  $sessionStorage,
   $scope
 ) {
   // $scope = { perspective, details, resource, booking, contract }
-
-  var booking = $scope.booking;
 
 
   $scope.addExtraDriverDialog = function ($event) {
@@ -38,44 +37,53 @@ angular.module('owm.booking.show', [])
       targetEvent: $event,
       clickOutsideToClose: true,
       hasBackdrop: true,
-      controller: ['$scope', function ($scope) {
-        
-        $scope.email = '';
-        $scope.error = false;
+      controller: ['$scope', function (dialogScope) {
 
-        $scope.hide = function () {
+        dialogScope.hide = function () {
           $mdDialog.hide();
         };
         
-        $scope.pay = function () {
-          extraDriverService.addDriver({
-            booking: booking.id,
-            email: $scope.email,
-          })
-          .then(function (newInviteRequest) {
-            buyVoucherRedirect({
-              amount: 1.25,
-              afterPayment: {
-                redirect: {
-                  state: 'owm.booking.show',
-                  params: {
-                    bookingId: booking.id,
-                    success: 'driver_added',
-                  },
-                },
-                paymentErrorRedirect: {
-                  state: 'owm.booking.show',
-                  params: {
-                    bookingId: booking.id,
-                    error: 'driver_payment_error',
-                  },
+        dialogScope.extraDrivers = $scope.extraDrivers;
+        dialogScope.newEmails = [
+          { text: '' }
+        ];
+        dialogScope.addEmailLine = function () {
+          dialogScope.newEmails.push({ text: '' });
+        };
+        dialogScope.removeEmailLine = function (newEmail) {
+          var i = dialogScope.newEmails.indexOf(newEmail);
+          dialogScope.newEmails.splice(i, 1);
+        };
+
+        dialogScope.pay = function () {
+          $sessionStorage.addExtraDriversEmails = dialogScope.newEmails.map(function (newEmail) {
+            return newEmail.text;
+          });
+
+          buyVoucherRedirect({
+            amount: dialogScope.newEmails.length * 1.25,
+            afterPayment: {
+              redirect: {
+                state: 'owm.booking.show',
+                params: {
+                  bookingId: $scope.booking.id,
+                  cont: 'add_extra_drivers',
                 },
               },
-            });
-          })
-          .catch(function (e) {
-            $scope.error = true;
+              paymentErrorRedirect: {
+                state: 'owm.booking.show',
+                params: {
+                  bookingId: $scope.booking.id,
+                  cont: 'payment_error_add_drivers',
+                },
+              },
+            },
           });
+          
+//          extraDriverService.addDriver({
+//            booking: $scope.booking.id,
+//            email: dialogScope.email,
+//          })
         };
       }],
     });

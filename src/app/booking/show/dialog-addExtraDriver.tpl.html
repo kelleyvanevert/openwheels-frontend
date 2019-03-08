@@ -1,35 +1,73 @@
 
-<md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="30" flex-xl="25"
+<md-dialog flex-xs="90" flex-sm="70" flex-md="50" flex-lg="40" flex-xl="30"
            class="info-dialog">
   <md-dialog-content class="md-dialog-content">
     <h3>
-      Extra bestuurder toevoegen
+      Extra bestuurders toevoegen
       <md-button class="md-icon-button close-button" ng-click="hide()">
         <ng-md-icon icon="close"></ng-md-icon>
       </md-button>
     </h3>
-    <p>
-      Op een MyWheels Go contract kun je tot 3 personen extra toevoegen per rit, voor 1.25 euro per persoon.
-    </p>
-
-    <div class="form-group">
-      <label style="width: 100%;">
-        Email-adres
-        <input type="text" class="form-control" ng-model="email" required />
-      </label>
+    
+    <div ng-if="extraDrivers.loading">
+      <p>Laden...</p>
     </div>
 
-    <p ng-if="error" class="text-danger">
-      Error!
-    </p>
+    <form name="newEmailsForm" class="mywheels-form" ng-if="!extraDrivers.loading">
+      <p>
+        Op een MyWheels Go contract kun je tot 3 personen extra toevoegen per rit, voor 1.25 euro per persoon.
+        <span ng-if="extraDrivers.inviteRequests.length > 0">
+          Je kunt dus nog <strong>{{ 3 - extraDrivers.inviteRequests.length }}</strong> personen uitnodigen.
+        </span>
+      </p>
 
-    <div class="dialog-buttons-right" style="margin: .5rem -.5rem -.5rem 0;">
-      <button class="mywheels-btn mywheels-btn-border"
-              md-ink-ripple="#4b702c"
-              ng-click="pay()"
-              style="white-space: nowrap;">
-        Betalen en toevoegen
-      </button>
-    </div>
+      <p>
+        Voeg hieronder de email-adressen toe van de personen die je als extra bestuurders wilt toevoegen.
+        Nadat je je rijtegoed hebt opgehoogd, worden de uitnodigingen automatisch verstuurd.
+      </p>
+
+      <div ng-repeat="newEmail in newEmails">
+        <ng-form
+          name="newEmailForm"
+        >
+          <div
+            class="form-group mw-button"
+            ng-class="{ 'has-error': newEmailForm.email.$touched && newEmailForm.email.$invalid }"
+          >
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              ng-model="newEmail.text"
+              ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z.]+\.[a-z.]{2,5}$/"
+              required
+            />
+            <md-button class="md-icon-button" ng-if="$index > 0" ng-click="removeEmailLine(newEmail)">
+              <ng-md-icon icon="close" aria-hidden="true"></ng-md-icon>
+            </md-button>
+            <div class="text-danger" ng-show="newEmailForm.email.$touched && newEmailForm.email.$invalid">
+              Voer een geldig email-adres in.
+            </div>
+          </div>
+        </ng-form>
+      </div>
+      <p ng-if="newEmails.length < (3 - extraDrivers.inviteRequests.length)">
+        <a ng-click="addEmailLine()"><ng-md-icon icon="add_circle"></ng-md-icon> nog iemand toevoegen</a>
+      </p>
+
+      <p style="text-align: center;">
+        <button class="mywheels-btn mywheels-btn-call-to-action"
+                md-ink-ripple="#4b702c"
+                ng-click="pay()"
+                ng-disabled="newEmailsForm.$invalid"
+                style="white-space: nowrap;">
+          Koop {{ newEmails.length * 1.25 | currency }} rijtegoed &raquo;
+        </button>
+      </p>
+
+      <p style="margin: 0;">
+        <em>Let op: pas als een uitnodigde het verzoek heeft geaccepteerd mag hij/zij verzekerd meerijden.</em>
+      </p>
+    </form>
   </md-dialog-content>
 </md-dialog>
