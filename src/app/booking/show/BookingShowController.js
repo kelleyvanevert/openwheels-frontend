@@ -135,6 +135,14 @@ angular.module('owm.booking.show', [])
   var resource = $scope.resource = booking.resource;
   $scope.me = me;
 
+//  $state.transitionTo('owm.booking.show', { cont: 'sdf' }, { notify: false });
+//  $state.current.reloadOnSearch = false;
+//  $location.search({ cont: null });
+//  $timeout(function () {
+//    $state.current.reloadOnSearch = undefined;
+//  });
+
+
   // Is person the renter or the owner
   $scope.ownContract = (contract.contractor.id === me.id);
   $scope.userPerspective = (function () {

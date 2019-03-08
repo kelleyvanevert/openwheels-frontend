@@ -236,8 +236,10 @@ angular.module('owm.booking', [
       }],
       flowContinuation: ['$stateParams', '$sessionStorage', '$log', 'extraDriverService', 'booking', '$q', 'alertService', function ($stateParams, $sessionStorage, $log, extraDriverService, booking, $q, alertService) {
 
+        var cont = $stateParams.cont;
+
         return $q(function (resolve, reject) {
-          if ($stateParams.cont === 'add_extra_drivers') {
+          if (cont === 'add_extra_drivers' && $sessionStorage.addExtraDriversEmails) {
             $log.log('now, add these extra drivers:', $sessionStorage.addExtraDriversEmails);
             $q.all($sessionStorage.addExtraDriversEmails.map(function (email) {
               return extraDriverService.addDriver({
@@ -246,7 +248,7 @@ angular.module('owm.booking', [
               });
             }))
             .then(function () {
-              alertService.add('success', 'De betaling is ontvangen, en de extra bestuurders zijn uitgenodigd.');
+              alertService.add('success', 'De betaling is ontvangen, en de extra bestuurders zijn uitgenodigd.', 4000);
               resolve({});
             })
             .catch(function (e) {
@@ -256,9 +258,9 @@ angular.module('owm.booking', [
               });
             });
           }
-          else if ($stateParams.cont && $stateParams.cont.slice(0, 6) === 'error_') {
+          else if (cont && cont.slice(0, 6) === 'error_') {
             resolve({
-              error: $stateParams.cont,
+              error: cont,
             });
           }
           else {
