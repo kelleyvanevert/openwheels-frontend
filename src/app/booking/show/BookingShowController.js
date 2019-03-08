@@ -29,6 +29,51 @@ angular.module('owm.booking.show', [])
 ) {
   // $scope = { perspective, details, flowContinuation, resource, booking, contract }
 
+  $scope.editRiskReductionDialog = function ($event) {
+    $mdDialog.show({
+      templateUrl: 'booking/show/dialog-editRiskReduction.tpl.html',
+      parent: angular.element(document.body),
+      targetEvent: $event,
+      clickOutsideToClose: true,
+      hasBackdrop: true,
+      controller: ['$scope', function (dialogScope) {
+
+        dialogScope.hide = function () {
+          $mdDialog.hide();
+        };
+        
+        dialogScope.perspective = $scope.perspective;
+        dialogScope.contract = $scope.contract;
+        dialogScope.booking = $scope.booking;
+
+        dialogScope.amount = 42;
+
+        dialogScope.pay = function () {
+          $sessionStorage.setRiskReduction = true;
+
+          buyVoucherRedirect({
+            amount: dialogScope.amount,
+            afterPayment: {
+              redirect: {
+                state: 'owm.booking.show',
+                params: {
+                  bookingId: $scope.booking.id,
+                  cont: 'set_riskreduction',
+                },
+              },
+              paymentErrorRedirect: {
+                state: 'owm.booking.show',
+                params: {
+                  bookingId: $scope.booking.id,
+                  cont: 'error_payment_set_riskreduction',
+                },
+              },
+            },
+          });
+        };
+      }],
+    });
+  };
 
   $scope.addExtraDriverDialog = function ($event) {
     $mdDialog.show({

@@ -234,7 +234,7 @@ angular.module('owm.booking', [
         return progress;
 
       }],
-      flowContinuation: ['$stateParams', '$sessionStorage', '$log', 'extraDriverService', 'booking', '$q', 'alertService', function ($stateParams, $sessionStorage, $log, extraDriverService, booking, $q, alertService) {
+      flowContinuation: ['$stateParams', '$sessionStorage', '$log', 'extraDriverService', 'booking', '$q', 'alertService', 'bookingService', function ($stateParams, $sessionStorage, $log, extraDriverService, booking, $q, alertService, bookingService) {
 
         var cont = $stateParams.cont;
 
@@ -249,12 +249,40 @@ angular.module('owm.booking', [
             }))
             .then(function () {
               alertService.add('success', 'De betaling is ontvangen, en de extra bestuurders zijn uitgenodigd.', 4000);
+              $sessionStorage.addExtraDriversEmails = null;
               resolve({});
             })
             .catch(function (e) {
               alertService.addError(e);
               resolve({
                 error: 'error_api_add_drivers',
+              });
+            });
+          }
+          if (cont === 'set_riskreduction' && $sessionStorage.setRiskReduction) {
+            $log.log('now, turn on risk reduction');
+            bookingService.alter({
+              booking: booking.id,
+              newProps: {
+                riskReduction: true,
+              }
+            })
+            .then(function (updatedBooking) {
+              if (!updatedBooking.riskReduction) {
+                throw new Error({
+                  message: 'Er is iets misgegaan',
+                });
+              }
+            })
+            .then(function () {
+              alertService.add('success', 'De betaling is ontvangen, en je eigen risico is verlaagd.', 4000);
+              $sessionStorage.setRiskReduction = null;
+              resolve({});
+            })
+            .catch(function (e) {
+              alertService.addError(e);
+              resolve({
+                error: 'error_api_set_riskreduction',
               });
             });
           }

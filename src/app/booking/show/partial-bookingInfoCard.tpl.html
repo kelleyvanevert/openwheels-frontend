@@ -89,12 +89,20 @@
     </p>
 
     <div ng-if="perspective.isRenter">
-      <h5 ng-if="booking.riskReduction"
-        uib-tooltip="{{ contract.type.id === 60 ? 'Verplicht verlaagd wegens MyWheels Go contract' : '' }}">
-        Eigen risico: verlaagd
-      </h5>
-      <h5 ng-if="!booking.riskReduction">
-        Eigen risico: niet verlaagd
+      <h5>
+        <span ng-if="booking.riskReduction"
+          uib-tooltip="{{ contract.type.id === 60 ? 'Verplicht verlaagd wegens MyWheels Go contract' : '' }}">
+          Eigen risico: verlaagd
+        </span>
+        <span ng-if="!booking.riskReduction">
+          Eigen risico: niet verlaagd
+        </span>
+        <a ng-if="!details.bookingStarted" ng-click="editRiskReductionDialog($event)">
+          <ng-md-icon icon="edit"
+            aria-label="Wijzig je eigen risico"
+            uib-tooltip="Wijzig je eigen risico"
+          ></ng-md-icon>
+        </a>
       </h5>
     </div>
 
