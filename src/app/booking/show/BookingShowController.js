@@ -105,11 +105,11 @@ angular.module('owm.booking.show', [])
           });
         };
 
-        dialogScope.pay = function () {
+        dialogScope.pay = function (amount) {
           $sessionStorage.setRiskReduction = true;
 
           buyVoucherRedirect({
-            amount: dialogScope.amount,
+            amount: amount,
             afterPayment: {
               redirect: {
                 state: 'owm.booking.show',
