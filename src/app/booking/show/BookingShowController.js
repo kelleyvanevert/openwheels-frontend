@@ -79,11 +79,6 @@ angular.module('owm.booking.show', [])
               },
             },
           });
-          
-//          extraDriverService.addDriver({
-//            booking: $scope.booking.id,
-//            email: dialogScope.email,
-//          })
         };
       }],
     });

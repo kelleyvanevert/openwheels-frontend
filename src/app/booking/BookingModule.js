@@ -234,9 +234,20 @@ angular.module('owm.booking', [
         return progress;
 
       }],
-      continuation: ['$stateParams', '$sessionStorage', '$log', function ($stateParams, $sessionStorage, $log) {
+      flowContinuation: ['$stateParams', '$sessionStorage', '$log', 'extraDriverService', 'booking', '$q', 'alertService', function ($stateParams, $sessionStorage, $log, extraDriverService, booking, $q, alertService) {
+
         if ($stateParams.cont === 'add_extra_drivers') {
           $log.log('now, add these extra drivers:', $sessionStorage.addExtraDriversEmails);
+          $q.all($sessionStorage.addExtraDriversEmails.map(function (email) {
+            return extraDriverService.addDriver({
+              booking: booking.id,
+              email: email,
+            });
+          }))
+          .then(function () {
+            $log.log('ALL DONE!');
+          })
+          .catch(alertService.addError);
         }
         else if ($stateParams.cont === 'payment_error_add_drivers') {
           $log.log('encountered a payment error in add-driver flow');
