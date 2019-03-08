@@ -111,6 +111,11 @@ angular.module('owm.booking.show', [])
         targetEvent: $event,
         clickOutsideToClose: true,
         hasBackdrop: true,
+        controller: ['$scope', function (dialogScope) {
+          dialogScope.hide = function () {
+            $mdDialog.hide();
+          };
+        }],
       });
     } else {
       $mdDialog.show({

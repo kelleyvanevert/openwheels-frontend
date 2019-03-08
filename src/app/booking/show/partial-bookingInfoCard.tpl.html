@@ -26,10 +26,6 @@
       </span>-->
     </h3>
 
-    <p class="reservation-progress-summary" style="text-align: center;" ng-if="progress.reservationCompleted">
-      <em>{{ progress.summary }}</em>
-    </p>
-    
     <!-- auto -->
     <div
       ng-if="$root.dev || resource.pictures.length > 0"
@@ -90,8 +86,7 @@
 
     <div ng-if="perspective.isRenter">
       <h5>
-        <span ng-if="booking.riskReduction"
-          uib-tooltip="{{ contract.type.id === 60 ? 'Verplicht verlaagd wegens MyWheels Go contract' : '' }}">
+        <span ng-if="booking.riskReduction">
           Eigen risico: verlaagd
         </span>
         <span ng-if="!booking.riskReduction">
@@ -129,10 +124,6 @@
         </li>
       </ul>
       <p ng-if="extraDrivers.hasInvited()"><em>Let op: pas als een uitnodigde het verzoek heeft geaccepteerd mag hij/zij verzekerd meerijden.</em></p>
-      <p ng-if="contract.type.id !== 60 && perspective.isContractHolder">
-        <em>Wil je extra bestuurders toevoegen aan of verwijderen van je {{ contract.type.name }} contract?
-          Dat kan op de <a ui-sref="owm.person.profile.contract">contactenpagina</a>.</em>
-      </p>
     </div>
 
     <!-- people -->
