@@ -1,5 +1,5 @@
 
-<md-dialog flex-xs="90" flex-sm="70" flex-md="50" flex-lg="40" flex-xl="30"
+<md-dialog flex-xs="100" flex-sm="70" flex-md="50" flex-lg="40" flex-xl="30"
            class="info-dialog">
   <md-dialog-content class="md-dialog-content">
     <h3>
@@ -19,34 +19,42 @@
         <div ng-if="extraDrivers.accepted.length > 0">
           <p>De volgende mensen mogen meerijden op deze rit:</p>
           <ul style="margin-bottom: 1rem;">
-            <li ng-repeat="inviteRequest in extraDrivers.accepted">
-              {{ inviteRequest.recipient.firstName }} &lt;{{ inviteRequest.recipient.email }}&gt;
-
-              <inline-confirm
-                ng-if="!details.bookingStarted && contract.type.id === 60"
-                initial-text="verwijderen"
-                confirm-text="zeker?"
-                on-confirm="extraDrivers.removeForSure(inviteRequest)"
-              ></inline-confirm>
+            <li ng-repeat="inviteRequest in extraDrivers.accepted"
+                style="padding: .2rem 0;">
+              <span class="pull-right">
+                <inline-confirm
+                  ng-if="!details.bookingStarted && contract.type.id === 60"
+                  initial-text="verwijderen"
+                  confirm-text="zeker?"
+                  on-confirm="extraDrivers.removeForSure(inviteRequest)"
+                ></inline-confirm>
+              </span>
+              <span style="display: block; overflow: hidden; text-overflow: ellipsis;">
+                {{ inviteRequest.recipient.firstName }} &lt;{{ inviteRequest.recipient.email }}&gt;
+              </span>
             </li>
           </ul>
         </div>
         
         <div ng-if="extraDrivers.invited.length > 0">
           <p>
-            De volgende mensen heb je uitgenodigd, maar hebben deze uitnodiging nog niet geaccepteerd.
+            De volgende mensen zijn uitgenodigd, maar hebben deze uitnodiging nog niet geaccepteerd.
             <em>Let op: pas als een uitnodigde het verzoek heeft geaccepteerd mag hij/zij verzekerd meerijden.</em>
           </p>
           <ul style="margin-bottom: 1rem;">
-            <li ng-repeat="inviteRequest in extraDrivers.invited">
-              &lt;{{ inviteRequest.recipient.email }}&gt;
-
-              <inline-confirm
-                ng-if="!details.bookingStarted && contract.type.id === 60"
-                initial-text="verwijderen"
-                confirm-text="zeker?"
-                on-confirm="extraDrivers.removeForSure(inviteRequest)"
-              ></inline-confirm>
+            <li ng-repeat="inviteRequest in extraDrivers.invited"
+                style="padding: .2rem 0;">
+              <span class="pull-right">
+                <inline-confirm
+                  ng-if="!details.bookingStarted && contract.type.id === 60"
+                  initial-text="verwijderen"
+                  confirm-text="zeker?"
+                  on-confirm="extraDrivers.removeForSure(inviteRequest)"
+                ></inline-confirm>
+              </span>
+              <span style="display: block; overflow: hidden; text-overflow: ellipsis;">
+                &lt;{{ inviteRequest.recipient.email }}&gt;
+              </span>
             </li>
           </ul>
         </div>
@@ -98,7 +106,7 @@
             Voor het toevoegen van deze extra bestuurder<span ng-if="newEmails.length > 0">s</span> is extra rijtegoed vereist.
             Nadat je je rijtegoed hebt opgehoogd, worden de uitnodigingen automatisch verstuurd.
           </p>
-          <p style="text-align: center;">
+          <p style="text-align: center; margin-bottom: 0;">
             <button class="mywheels-btn mywheels-btn-call-to-action"
                     md-ink-ripple="#4b702c"
                     ng-click="pay((newEmails.length * 1.25) - currentCredit)"
@@ -109,7 +117,7 @@
           </p>
         </div>
         <div ng-if="newEmails.length * 1.25 <= currentCredit">
-          <p style="text-align: center;">
+          <p style="text-align: center; margin-bottom: 0;">
             <button class="mywheels-btn mywheels-btn-call-to-action"
                     md-ink-ripple="#4b702c"
                     ng-click="addDirectly()"

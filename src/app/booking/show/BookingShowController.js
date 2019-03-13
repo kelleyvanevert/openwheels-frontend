@@ -49,7 +49,7 @@ angular.module('owm.booking.show', [])
   $scope.cancelReservationDialog = function ($event) {
     var confirm = $mdDialog.confirm()
           .title('Reservering annuleren')
-          .textContent('Weet je zeker dat je deze reserving wilt annuleren?')
+          .textContent('Weet je zeker dat je deze reservering wilt annuleren?')
           .ok('Akkoord')
           .cancel('Annuleren');
     
@@ -63,8 +63,9 @@ angular.module('owm.booking.show', [])
       templateUrl: 'booking/show/dialog-editReservationTimeframe.tpl.html',
       parent: angular.element(document.body),
       targetEvent: $event,
-      clickOutsideToClose: true,
+      clickOutsideToClose: false,
       hasBackdrop: true,
+      fullscreen: true,
       controller: ['$scope', function (dialogScope) {
 
         dialogScope.hide = function () {
@@ -109,8 +110,9 @@ angular.module('owm.booking.show', [])
         templateUrl: 'booking/show/dialog-editRiskReductionGo.tpl.html',
         parent: angular.element(document.body),
         targetEvent: $event,
-        clickOutsideToClose: true,
+        clickOutsideToClose: false,
         hasBackdrop: true,
+        fullscreen: true,
         controller: ['$scope', function (dialogScope) {
           dialogScope.hide = function () {
             $mdDialog.hide();
@@ -122,8 +124,9 @@ angular.module('owm.booking.show', [])
         templateUrl: 'booking/show/dialog-editRiskReduction.tpl.html',
         parent: angular.element(document.body),
         targetEvent: $event,
-        clickOutsideToClose: true,
+        clickOutsideToClose: false,
         hasBackdrop: true,
+        fullscreen: true,
         controller: ['$scope', function (dialogScope) {
 
           dialogScope.hide = function () {
@@ -168,8 +171,9 @@ angular.module('owm.booking.show', [])
                 //  would be overkill, but we know exactly what changed,
                 //  so now just change it in-place.
                 $scope.booking.riskReduction = newRiskReduction;
-                $mdDialog.hide();
-                alertService.add('success', 'De verlaging van je eigen risico is ' + (newRiskReduction ? 'aangezet' : 'uitgezet') + '.', 4000);
+                //$mdDialog.hide();
+                //alertService.add('success', 'De verlaging van je eigen risico is ' + (newRiskReduction ? 'aangezet' : 'uitgezet') + '.', 4000);
+                dialogScope.actionResultMessage = 'De verlaging van je eigen risico is ' + (newRiskReduction ? 'aangezet' : 'uitgezet') + '.';
               }
             })
             .catch(function (e) {
@@ -218,8 +222,9 @@ angular.module('owm.booking.show', [])
       templateUrl: 'booking/show/dialog-addExtraDriver.tpl.html',
       parent: angular.element(document.body),
       targetEvent: $event,
-      clickOutsideToClose: true,
+      clickOutsideToClose: false,
       hasBackdrop: true,
+      fullscreen: true,
       controller: ['$scope', function (dialogScope) {
 
         dialogScope.hide = function () {
