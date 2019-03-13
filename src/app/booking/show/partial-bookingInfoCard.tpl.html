@@ -73,34 +73,25 @@
     </div>
 
     <div ng-if="perspective.isRenter">
+      <!--
+        Let: ik tel hier niet het aantal uitnodigingen,
+         maar alleen het aantal daadwerkelijk geaccepteerde uitnodigingen.
+        Als je het "extra bestuurders wijzigen" dialoog opent,
+         krijg je wel ook verzoeken te zien, maar dan apart van
+         de reeds geaccepteerden.
+        Dit alles leek me een verstandige manier om heel helder te maken
+         dat alleen geaccepteerden mee mogen rijden.
+      -->
       <h5>
-        <span ng-if="!extraDrivers.loading && extraDrivers.inviteRequests.length === 0">
+        <span ng-if="!extraDrivers.loading && extraDrivers.accepted.length === 0">
           Geen extra bestuurders
         </span>
-        <span ng-if="extraDrivers.loading || extraDrivers.inviteRequests.length > 0">
-          Extra bestuurders
-          <span ng-if="extraDrivers.inviteRequests.length > 0">({{ extraDrivers.inviteRequests.length }})</span>
+        <span ng-if="extraDrivers.loading || extraDrivers.accepted.length > 0">
+          {{ extraDrivers.accepted.length }}
+          extra bestuurder{{ extraDrivers.accepted.length > 1 ? 's' : '' }}
         </span>
       </h5>
       <p ng-if="extraDrivers.loading">Laden...</p>
-      <ul class="list-unstyled" ng-if="!extraDrivers.loading && extraDrivers.inviteRequests.length > 0">
-        <li ng-repeat="inviteRequest in extraDrivers.inviteRequests">
-          <span ng-if="inviteRequest.status === 'invited'">
-            Uitgenodigd: &lt;{{ inviteRequest.recipient.email }}&gt;
-          </span>
-          <span ng-if="inviteRequest.status === 'accepted'"
-              uib-tooltip="Mag meerijden op deze boeking.">
-            {{ inviteRequest.recipient.firstName }} &lt;{{ inviteRequest.recipient.email }}&gt;
-          </span>
-          <a ng-if="!details.bookingStarted && contract.type.id === 60" ng-click="extraDrivers.remove(inviteRequest, $event)">
-            <ng-md-icon icon="clear"
-              aria-label="Verwijder deze extra bestuurder"
-              uib-tooltip="Verwijder deze extra bestuurder"
-            ></ng-md-icon>
-          </a>
-        </li>
-      </ul>
-      <p ng-if="extraDrivers.hasInvited()"><em>Let op: pas als een uitnodigde het verzoek heeft geaccepteerd mag hij/zij verzekerd meerijden.</em></p>
     </div>
 
     <!-- people -->
