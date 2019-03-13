@@ -134,9 +134,6 @@
 
       <div ng-include="'booking/show/partial-renterInitialPayment.tpl.html'"></div>
 
-      <!-- remarks are not for contractors (non-renting contract holders) -->
-      <div ng-include="'booking/show/partial-remarks.tpl.html'" ng-if="!perspective.isContractor"></div>
-
 
       <!-- While in the reservation process -->
       <div ng-if="!progress.reservationCompleted">
@@ -155,6 +152,9 @@
       <div ng-if="progress.reservationCompleted && !details.bookingStarted">
         <div ng-include="'booking/show/partial-reservationActions.tpl.html'" ng-if="!perspective.isContractor"></div>
       </div>
+
+      <!-- remarks are not for contractors (non-renting contract holders) -->
+      <div ng-include="'booking/show/partial-remarks.tpl.html'" ng-if="!perspective.isContractor"></div>
 
 
       <!-- After reservation completed, and before the booking has (really) ended -->

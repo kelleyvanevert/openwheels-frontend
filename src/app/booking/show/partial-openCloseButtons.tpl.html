@@ -17,6 +17,7 @@
                     ng-click="boardComputerControl('openDoor', $event)"
                     class="mywheels-btn mywheels-btn-big mywheels-btn-normal"
                     ng-class="{ 'mw-disabled': !enableBoardComputerButtons }"
+                    ng-disabled="!enableBoardComputerButtons"
                     md-ink-ripple="#4b702c">
               <ng-md-icon icon="lock_open" size="36" style="width: 36px; height: 36px;"></ng-md-icon>
             </button>
@@ -26,6 +27,7 @@
                     ng-click="boardComputerControl('closeDoor', $event)"
                     class="mywheels-btn mywheels-btn-big mywheels-btn-error"
                     ng-class="{ 'mw-disabled': !enableBoardComputerButtons }"
+                    ng-disabled="!enableBoardComputerButtons"
                     md-ink-ripple="#9a3d26">
               <ng-md-icon icon="lock" size="36" style="width: 36px; height: 36px;"></ng-md-icon>
             </button>
