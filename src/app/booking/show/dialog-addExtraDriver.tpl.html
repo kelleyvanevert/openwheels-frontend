@@ -106,7 +106,7 @@
             Voor het toevoegen van deze extra bestuurder<span ng-if="newEmails.length > 0">s</span> is extra rijtegoed vereist.
             Nadat je je rijtegoed hebt opgehoogd, worden de uitnodigingen automatisch verstuurd.
           </p>
-          <p style="text-align: center; margin-bottom: 0;">
+          <p class="dialog-buttons-centered">
             <button class="mywheels-btn mywheels-btn-call-to-action"
                     md-ink-ripple="#4b702c"
                     ng-click="pay((newEmails.length * 1.25) - currentCredit)"
@@ -117,7 +117,7 @@
           </p>
         </div>
         <div ng-if="newEmails.length * 1.25 <= currentCredit">
-          <p style="text-align: center; margin-bottom: 0;">
+          <p class="dialog-buttons-centered">
             <button class="mywheels-btn mywheels-btn-call-to-action"
                     md-ink-ripple="#4b702c"
                     ng-click="addDirectly()"

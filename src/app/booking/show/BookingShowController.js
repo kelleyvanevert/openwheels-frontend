@@ -15,6 +15,7 @@ angular.module('owm.booking.show', [])
 .controller('BookingShowRentingController', function (
   metaInfoService,
   appConfig,
+  Analytics,
 
   buyVoucherRedirect,
 
@@ -47,14 +48,43 @@ angular.module('owm.booking.show', [])
   };
 
   $scope.cancelReservationDialog = function ($event) {
-    var confirm = $mdDialog.confirm()
-          .title('Reservering annuleren')
-          .textContent('Weet je zeker dat je deze reservering wilt annuleren?')
-          .ok('Akkoord')
-          .cancel('Annuleren');
-    
-    $mdDialog.show(confirm).then(function () {
-      // TODO
+    $mdDialog.show({
+      templateUrl: 'booking/show/dialog-cancelReservation.tpl.html',
+      parent: angular.element(document.body),
+      targetEvent: $event,
+      clickOutsideToClose: false,
+      hasBackdrop: true,
+      fullscreen: true,
+      controller: ['$scope', function (dialogScope) {
+
+        dialogScope.hide = function () {
+          $mdDialog.hide();
+        };
+        
+        dialogScope.booking = $scope.booking;
+        dialogScope.details = $scope.details;
+
+        dialogScope.cancel = function () {
+
+          alertService.load();
+          bookingService.cancel({
+            id: dialogScope.booking.id
+          })
+          .then(function (booking) {
+            Analytics.trackEvent('booking', $scope.userPerspective === 'owner' ? 'cancelled_owner' : 'cancelled_renter', booking.id, undefined, true);
+            angular.merge(dialogScope.booking, booking);
+            alertService.add('success', $filter('translate')('BOOKING_CANCELED'), 5000);
+            $state.go('owm.person.dashboard');
+          })
+          .catch(function (e) {
+            alertService.addError(e);
+          })
+          .finally(function () {
+            $mdDialog.hide();
+            alertService.loaded();
+          });
+        };
+      }],
     });
   };
 

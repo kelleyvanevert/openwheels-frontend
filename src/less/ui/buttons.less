@@ -122,7 +122,7 @@ md-button.mw-green {
     background: @mywheels-red;
 }
 .mywheels-btn-error:hover {
-    background: #be4c2f;
+    background: darken(@mywheels-red, 1%) !important;
 }
 .mywheels-btn-light {
     //md-ink-ripple="#ded8d8"
@@ -203,4 +203,9 @@ md-button.mw-green {
     flex-wrap: wrap-reverse;
     justify-content: flex-end;
     align-items: center;
+}
+
+p.dialog-buttons-centered {
+    text-align: center;
+    margin: 3rem 0 0;
 }
