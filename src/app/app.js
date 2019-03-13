@@ -99,6 +99,7 @@ angular.module('openwheels', [
   'userStatusLine',
 
   'bookingInvoicesDirective',
+  'inlineConfirmDirective',
 
   'mwResourceLocationMap',
 

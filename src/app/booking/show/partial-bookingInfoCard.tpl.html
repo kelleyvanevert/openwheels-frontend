@@ -1,41 +1,18 @@
 <div class="card mw">
-  <div class="card-body">
-    <h3>
-      Details
-
-      <!-- Booking alterations for renter 
-      <span class="pull-right" style="
-        font-size: 1.6rem;
-        font-family: 'Source Sans Pro', Helvetica, arial, sans-serif;
-        margin-top: -.3rem;
-      ">
-        <a
-          class="btn mywheels-btn mywheels-btn-default"
-          ng-if="perspective.isRenter &&
-                ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 &&
-                !bookingEndedReally"
-          style="
-            padding: .2em .5em;
-            height: auto;
-          "
-          ng-click="openEditDialog($event)"
-        >
-          <ng-md-icon icon="edit"></ng-md-icon>
-          wijzigen
-        </a>
-      </span>-->
-    </h3>
+  <div class="card-body" style="padding-top: 0;">
 
     <!-- auto -->
     <div
       ng-if="$root.dev || resource.pictures.length > 0"
       class="h-escape photo"
       style="
-        height: 14rem;
+        height: 18rem;
         background-size: cover;
         background-color: #eee;
         background-repeat: no-repeat;
         background-position: 50% 50%;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
       "
       ng-style="{
         'background-image': 'url(' + (resource.pictures[0] | resourceAvatar: 'large') + ')',

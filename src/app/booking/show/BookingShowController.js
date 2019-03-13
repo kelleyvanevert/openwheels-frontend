@@ -232,6 +232,8 @@ angular.module('owm.booking.show', [])
         });
 
         dialogScope.extraDrivers = $scope.extraDrivers;
+        dialogScope.details = $scope.details;
+        dialogScope.contract = $scope.contract;
         dialogScope.newEmails = [
           { text: '' }
         ];
@@ -258,7 +260,9 @@ angular.module('owm.booking.show', [])
             alertService.addError(e);
           })
           .finally(function () {
-            $mdDialog.hide();
+            dialogScope.newEmails = [
+              { text: '' }
+            ];
           });
         };
 
@@ -965,6 +969,9 @@ angular.module('owm.booking.show', [])
   $scope.extraDrivers = {
     loading: false,
     inviteRequests: [],
+    invited: [],
+    accepted: [],
+    
     basis: ($scope.contract.type.id === 60) ? 'per_booking' : 'per_contract',
     load: function () {
       if ($scope.userPerspective !== 'owner') { // to avoid permission problem for now
@@ -986,6 +993,12 @@ angular.module('owm.booking.show', [])
             });
           }
           $scope.extraDrivers.inviteRequests = inviteRequests;
+          $scope.extraDrivers.invited = $scope.extraDrivers.inviteRequests.filter(function (inviteRequest) {
+            return inviteRequest.status === 'invited';
+          });
+          $scope.extraDrivers.accepted = $scope.extraDrivers.inviteRequests.filter(function (inviteRequest) {
+            return inviteRequest.status === 'accepted';
+          });
         })
         .catch(function (e) {
           alertService.addError(e);
@@ -996,9 +1009,7 @@ angular.module('owm.booking.show', [])
       }
     },
     hasInvited: function () {
-      return $scope.extraDrivers.inviteRequests.filter(function (inviteRequest) {
-        return inviteRequest.status === 'invited';
-      }).length > 0;
+      return $scope.extraDrivers.invited.length > 0;
     },
     remove: function (inviteRequest, $event) {
       var confirm = $mdDialog.confirm()
@@ -1008,13 +1019,16 @@ angular.module('owm.booking.show', [])
             .cancel('Annuleren');
       
       $mdDialog.show(confirm).then(function () {
-        extraDriverService.removeDriver({
-          booking: $scope.booking.id,
-          email: inviteRequest.recipient.email,
-        })
-        .then(function () {
-          $scope.extraDrivers.load();
-        });
+        $scope.extraDrivers.removeForSure(inviteRequest);
+      });
+    },
+    removeForSure: function (inviteRequest) {
+      extraDriverService.removeDriver({
+        booking: $scope.booking.id,
+        email: inviteRequest.recipient.email,
+      })
+      .then(function () {
+        $scope.extraDrivers.load();
       });
     },
   };
