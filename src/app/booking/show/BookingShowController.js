@@ -243,7 +243,22 @@ angular.module('owm.booking.show', [])
     if ($scope.contract.type.id === 60) {
       $scope.addExtraDriverDialog($event);
     } else {
-      $state.go('owm.person.profile.contract');
+      $mdDialog.show({
+        templateUrl: 'booking/show/dialog-extraDriversNonGoContract.tpl.html',
+        parent: angular.element(document.body),
+        targetEvent: $event,
+        clickOutsideToClose: false,
+        hasBackdrop: true,
+        fullscreen: true,
+        controller: ['$scope', function (dialogScope) {
+          
+          dialogScope.hide = function () {
+            $mdDialog.hide();
+          };
+
+          dialogScope.contract = $scope.contract;
+        }],
+      });
     }
   };
 

@@ -1,12 +1,15 @@
 
-<md-dialog flex-xs="90" flex-sm="70" flex-md="50" flex-lg="40" flex-xl="30"
+<md-dialog flex-xs="100" flex-sm="70" flex-md="50" flex-lg="40" flex-xl="30"
            class="info-dialog"
-           style="overflow: visible; position: absolute; top: 10px;">
+           style="overflow: visible; position: absolute;"
+           ng-style="{
+             top: $root.isWindowSizeSM ? '20px' : '0',
+           }">
   <md-dialog-content
     class="md-dialog-content"
     style="overflow: visible;"
   >
-    <h3>
+    <h3 class="with-close-button">
       Begin- en eindtijd reservering wijzigen
       <md-button class="md-icon-button close-button" ng-click="hide()">
         <ng-md-icon icon="close"></ng-md-icon>
@@ -20,7 +23,9 @@
     <div ng-if="currentCredit !== null">
 
       <form name="editReservationTimeframeForm" class="mywheels-form">
-        <p>hello</p>
+        <p>
+          Vul hieronder de gewenste nieuwe begin- en eindtijd in.
+        </p>
 
         <timeframe-picker
           name="timeframe"
@@ -34,6 +39,16 @@
         <div class="text-danger" ng-if="timeFrameError">
           Vul a.j.b. een geldig begin- en eindtijd in.
         </div>
+
+        <p class="dialog-buttons-centered">
+          <button class="mywheels-btn mywheels-btn-call-to-action"
+                  md-ink-ripple="#4b702c"
+                  ng-click="addDirectly()"
+                  ng-disabled="timeFrameError"
+                  style="white-space: nowrap;">
+            Wijzigen
+          </button>
+        </p>
 
       </form>
     
