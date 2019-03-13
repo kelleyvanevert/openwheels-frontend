@@ -1,10 +1,12 @@
 
 <md-dialog flex-xs="100" flex-sm="70" flex-md="50" flex-lg="40" flex-xl="30"
            class="info-dialog"
+           style="overflow: visible;">
+           <!--
            style="overflow: visible; position: absolute;"
            ng-style="{
              top: $root.isWindowSizeSM ? '20px' : '0',
-           }">
+           }"-->
   <md-dialog-content
     class="md-dialog-content"
     style="overflow: visible;"
@@ -16,11 +18,12 @@
       </md-button>
     </h3>
 
-    <div ng-if="currentCredit === null">
-      <spinner />
-    </div>
+    <p ng-if="actionResultMessage" class="alert alert-success" style="margin: 3rem 0 1rem 0;">
+      {{ actionResultMessage }}
+      <a ng-click="hide()">Sluiten</a>
+    </p>
 
-    <div ng-if="currentCredit !== null">
+    <div ng-if="!actionResultMessage">
 
       <form name="editReservationTimeframeForm" class="mywheels-form">
         <p>
@@ -40,15 +43,33 @@
           Vul a.j.b. een geldig begin- en eindtijd in.
         </div>
 
-        <p class="dialog-buttons-centered">
-          <button class="mywheels-btn mywheels-btn-call-to-action"
-                  md-ink-ripple="#4b702c"
-                  ng-click="addDirectly()"
-                  ng-disabled="timeFrameError"
-                  style="white-space: nowrap;">
-            Wijzigen
-          </button>
-        </p>
+        <div class="form-group">
+          <label>Opmerking voor {{ resource.owner.firstName || 'de eigenaar' }}</label>
+          <textarea class="form-control" ng-model="changeset.remarkRequester"></textarea>
+        </div>
+
+        <div ng-if="!extraCreditError">
+          <p class="dialog-buttons-centered">
+            <button class="mywheels-btn mywheels-btn-call-to-action"
+                    md-ink-ripple="#4b702c"
+                    ng-click="makeRequest()"
+                    ng-disabled="timeFrameError"
+                    style="white-space: nowrap;">
+              Wijziging aanvragen
+            </button>
+          </p>
+        </div>
+        <div ng-if="extraCreditError">
+          <p class="text-warning">{{ extraCreditError.message }}</p>
+          <p class="dialog-buttons-centered">
+            <button class="mywheels-btn mywheels-btn-call-to-action"
+                    md-ink-ripple="#4b702c"
+                    ng-click="pay(extraCreditError.required)"
+                    style="white-space: nowrap;">
+              Koop {{ extraCreditError.required | currency }} rijtegoed &raquo;
+            </button>
+          </p>
+        </div>
 
       </form>
     

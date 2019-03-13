@@ -583,6 +583,18 @@ h2.without-card + .sub {
     }
 }
 
+.list-de-emphasized {
+    margin: 0;
+    padding: 0;
+
+    > li {
+        list-style: none;
+
+        &:before {
+            content: "‣";
+        }
+    }
+}
 
 .pin {
     font-family: monospace;

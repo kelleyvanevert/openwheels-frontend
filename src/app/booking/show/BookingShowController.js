@@ -110,14 +110,19 @@ angular.module('owm.booking.show', [])
         dialogScope.perspective = $scope.perspective;
         dialogScope.contract = $scope.contract;
         dialogScope.booking = $scope.booking;
+        dialogScope.resource = $scope.resource;
 
         dialogScope.changeset = {};
         dialogScope.changeset.beginRequested = $scope.booking.beginRequested ? $scope.booking.beginRequested : $scope.booking.beginBooking;
         dialogScope.changeset.endRequested   = $scope.booking.endRequested   ? $scope.booking.endRequested   : $scope.booking.endBooking;
+        dialogScope.changeset.remarkRequester = '';
 
         dialogScope.timeFrameError = null;
+        dialogScope.extraCreditError = null;
+
         dialogScope.$watch('[changeset.beginRequested, changeset.endRequested]', function () {
           //$log.log($scope.booking.beginRequested + ' -> ' + $scope.booking.endRequested);
+          dialogScope.extraCreditError = null;
 
           if (!dialogScope.changeset.beginRequested || !dialogScope.changeset.endRequested) {
             return false;
@@ -130,6 +135,73 @@ angular.module('owm.booking.show', [])
             dialogScope.timeFrameError = null;
           }
         });
+
+        dialogScope.makeRequest = function () {
+          alertService.load();
+          bookingService.alterRequest({
+            booking: dialogScope.booking.id,
+            timeFrame: {
+              startDate: dialogScope.changeset.beginRequested,
+              endDate: dialogScope.changeset.endRequested,
+            },
+            remark: dialogScope.changeset.remarkRequester,
+          })
+          .then(function (updatedBbooking) {
+            Analytics.trackEvent('altered', 'success', updatedBbooking.id, undefined, true);
+            angular.merge(dialogScope.booking, updatedBbooking);
+            $scope.initPermissions();
+            if (dialogScope.booking.beginRequested) {
+              dialogScope.actionResultMessage = 'De wijziging is aangevraagd bij de verhuurder.';
+            } else {
+              dialogScope.actionResultMessage = 'Het huurverzoek is geaccepteerd.';
+            }
+          })
+          .catch(function (err) {
+            if (err && err.level && err.message) {
+              dialogScope.extraCredit = false;
+              if (err.message.match('onvoldoende')) {
+                dialogScope.extraCreditError = {
+                  required: err.data.extra_credit,
+                  message: err.message + '. Verhoog eerst je rijtegoed om de rit te kunnen verlengen.',
+                };
+              } else {
+                alertService.add(err.level, err.message, 5000);
+              }
+            } else {
+              alertService.addError(err);
+            }
+            if (!err.message.match('onvoldoende')) {
+              alertService.addError(err);
+            }
+          })
+          .finally(function () {
+            alertService.loaded();
+          });
+        };
+
+        dialogScope.pay = function (amount) {
+          $sessionStorage.alterTimeframeChangeset = angular.merge({}, dialogScope.changeset);
+
+          buyVoucherRedirect({
+            amount: amount,
+            afterPayment: {
+              redirect: {
+                state: 'owm.booking.show',
+                params: {
+                  bookingId: $scope.booking.id,
+                  cont: 'alter_timeframe',
+                },
+              },
+              paymentErrorRedirect: {
+                state: 'owm.booking.show',
+                params: {
+                  bookingId: $scope.booking.id,
+                  cont: 'error_payment_alter_timeframe',
+                },
+              },
+            },
+          });
+        };
       }],
     });
   };
@@ -335,7 +407,7 @@ angular.module('owm.booking.show', [])
                 state: 'owm.booking.show',
                 params: {
                   bookingId: $scope.booking.id,
-                  cont: 'error_payment_add_drivers',
+                  cont: 'error_payment_add_extra_drivers',
                 },
               },
             },
@@ -472,6 +544,7 @@ angular.module('owm.booking.show', [])
   /*
   * Init permissions
   */
+  $scope.initPermissions = initPermissions;
   initPermissions();
 
   function initPermissions() {

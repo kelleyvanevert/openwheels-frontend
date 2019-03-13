@@ -31,7 +31,7 @@
 
     <!-- timeframe -->
     <div class="h-escape">
-      <div class="mw-booking-timeframe" ng-click="editReservationTimeframeDialog($event)">
+      <div class="mw-booking-timeframe" style="margin-bottom: 1rem;">
         <div class="pickup" ng-if="hasAcceptedTimeframe(booking)">
           <div class="date">{{ booking.beginBooking | amDateFormat: 'ddd DD MMM' }}</div>
           <div class="time">{{ booking.beginBooking | amDateFormat: 'HH:mm' }}</div>
@@ -62,36 +62,35 @@
     </p>
 
     <div ng-if="perspective.isRenter">
-      <h5>
-        <span ng-if="booking.riskReduction">
-          Eigen risico: verlaagd
-        </span>
-        <span ng-if="!booking.riskReduction">
-          Eigen risico: niet verlaagd
-        </span>
-      </h5>
-    </div>
-
-    <div ng-if="perspective.isRenter">
-      <!--
-        Let: ik tel hier niet het aantal uitnodigingen,
-         maar alleen het aantal daadwerkelijk geaccepteerde uitnodigingen.
-        Als je het "extra bestuurders wijzigen" dialoog opent,
-         krijg je wel ook verzoeken te zien, maar dan apart van
-         de reeds geaccepteerden.
-        Dit alles leek me een verstandige manier om heel helder te maken
-         dat alleen geaccepteerden mee mogen rijden.
-      -->
-      <h5>
-        <span ng-if="!extraDrivers.loading && extraDrivers.accepted.length === 0">
-          Geen extra bestuurders
-        </span>
-        <span ng-if="extraDrivers.loading || extraDrivers.accepted.length > 0">
-          {{ extraDrivers.accepted.length }}
-          extra bestuurder{{ extraDrivers.accepted.length > 1 ? 's' : '' }}
-        </span>
-      </h5>
-      <p ng-if="extraDrivers.loading">Laden...</p>
+      <ul class="list-de-emphasized">
+        <li>
+          <span ng-if="booking.riskReduction">
+            Eigen risico: verlaagd
+          </span>
+          <span ng-if="!booking.riskReduction">
+            Eigen risico: niet verlaagd
+          </span>
+        </li>
+        <li>
+          <!--
+            Let: ik tel hier niet het aantal uitnodigingen,
+            maar alleen het aantal daadwerkelijk geaccepteerde uitnodigingen.
+            Als je het "extra bestuurders wijzigen" dialoog opent,
+            krijg je wel ook verzoeken te zien, maar dan apart van
+            de reeds geaccepteerden.
+            Dit alles leek me een verstandige manier om heel helder te maken
+            dat alleen geaccepteerden mee mogen rijden.
+          -->
+          <span ng-if="!extraDrivers.loading && extraDrivers.accepted.length === 0">
+            Geen extra bestuurders
+          </span>
+          <span ng-if="extraDrivers.loading || extraDrivers.accepted.length > 0">
+            {{ extraDrivers.accepted.length }}
+            extra bestuurder{{ extraDrivers.accepted.length > 1 ? 's' : '' }}
+          </span>
+          <span ng-if="extraDrivers.loading">Laden...</span>
+        </li>
+      </ul>
     </div>
 
     <!-- people -->

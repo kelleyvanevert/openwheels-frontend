@@ -239,6 +239,33 @@ angular.module('owm.booking', [
         var cont = $stateParams.cont;
 
         return $q(function (resolve, reject) {
+          if (cont === 'alter_timeframe' && $sessionStorage.alterTimeframeChangeset) {
+            $log.log('now, add these extra drivers:', $sessionStorage.alterTimeframeChangeset);
+            bookingService.alterRequest({
+              booking: booking.id,
+              timeFrame: {
+                startDate: $sessionStorage.alterTimeframeChangeset.beginRequested,
+                endDate: $sessionStorage.alterTimeframeChangeset.endRequested,
+              },
+              remark: $sessionStorage.alterTimeframeChangeset.remarkRequester,
+            })
+            .then(function (updatedBooking) {
+              angular.merge(booking, updatedBooking);
+              if (updatedBooking.beginRequested) {
+                alertService.add('success', 'De betaling is ontvangen, en de wijziging is aangevraagd bij de verhuurder.');
+              } else {
+                alertService.add('success', 'De betaling is ontvangen, en het huurverzoek is geaccepteerd.');
+              }
+              $sessionStorage.alterTimeframeChangeset = null;
+              resolve({});
+            })
+            .catch(function (e) {
+              alertService.addError(e);
+              resolve({
+                error: 'error_api_alter_timeframe',
+              });
+            });
+          }
           if (cont === 'add_extra_drivers' && $sessionStorage.addExtraDriversEmails) {
             $log.log('now, add these extra drivers:', $sessionStorage.addExtraDriversEmails);
             $q.all($sessionStorage.addExtraDriversEmails.map(function (email) {
@@ -255,7 +282,7 @@ angular.module('owm.booking', [
             .catch(function (e) {
               alertService.addError(e);
               resolve({
-                error: 'error_api_add_drivers',
+                error: 'error_api_add_extra_drivers',
               });
             });
           }
