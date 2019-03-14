@@ -1,0 +1,28 @@
+
+<div class="card mw info-card gray">
+
+  <div ng-if="booking.cancelReason === 'NOT_PAID_ON_TIME'">
+    <div class="card-heading">
+      <h3>
+        <ng-md-icon icon="cancel"></ng-md-icon>
+        Deze reservering is automatisch geannuleerd
+      </h3>
+    </div>
+    <div class="card-body">
+      <p>Deze reservering is automatisch geannuleerd. Een andere huurder heeft de auto voor dezelfde huurperiode gereserveerd en betaald. Omdat jouw reservering nog niet betaald is, hebben we de reservering geannuleerd. Een reservering is pas definitief als je betaald hebt. Je kunt dit voorkomen door een reservering direct te betalen.</p>
+    </div>
+  </div>
+
+  <div ng-if="booking.cancelReason !== 'NOT_PAID_ON_TIME'">
+    <div class="card-heading">
+      <h3>
+        <ng-md-icon icon="cancel"></ng-md-icon>
+        Deze reservering is geannuleerd
+      </h3>
+    </div>
+    <div class="card-body">
+      <p>Deze reservering is geannuleerd.</p>
+    </div>
+  </div>
+
+</div>

@@ -18,29 +18,26 @@
         <a
           ng-click="editReservationTimeframeDialog($event)"
           class="card-action"
-          title="TODO"
           md-ink-ripple="#777"
         >
           <ng-md-icon icon="schedule"></ng-md-icon>
           Begin- of eindtijd wijzigen
         </a>
       </div>
-      <div class="col-xs-12 col-sm-6" style="padding: 0;">
+      <div class="col-xs-12 col-sm-6" style="padding: 0;" ng-if="!perspective.isContractor">
         <a
           ng-click="extraDriversDialog($event)"
           class="card-action"
-          title="TODO"
           md-ink-ripple="#777"
         >
           <ng-md-icon icon="people"></ng-md-icon>
           Extra bestuurders wijzigen
         </a>
       </div>
-      <div class="col-xs-12 col-sm-6" style="padding: 0;">
+      <div class="col-xs-12 col-sm-6" style="padding: 0;" ng-if="!perspective.isContractor">
         <a
           ng-click="editRiskReductionDialog($event)"
           class="card-action"
-          title="TODO"
           md-ink-ripple="#777"
         >
           <ng-md-icon icon="edit"></ng-md-icon>
@@ -51,7 +48,6 @@
         <a
           ng-click="cancelReservationDialog($event)"
           class="card-action action-cancel"
-          title="TODO"
           md-ink-ripple="#c00"
         >
           <ng-md-icon icon="delete"></ng-md-icon>

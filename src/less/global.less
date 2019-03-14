@@ -954,6 +954,33 @@ h2.without-card + .sub {
         }
 
     }
+
+    &.info-card {
+        border: 3px solid #333;
+
+        h3,
+        h3 ng-md-icon {
+            color: #333;
+        }
+
+        &.error {
+            border-color: darken(@mywheels-red, 10%);
+
+            h3,
+            h3 ng-md-icon {
+                color: darken(@mywheels-red, 10%);
+            }
+        }
+
+        &.warning {
+            border-color: darken(@mywheels-orange, 2%);
+
+            h3,
+            h3 ng-md-icon {
+                color: darken(@mywheels-orange, 2%);
+            }
+        }
+    }
 }
 
 

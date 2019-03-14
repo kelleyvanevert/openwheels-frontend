@@ -148,7 +148,10 @@ angular.module('openwheels', [
   'owm.chat',
   'owm.message',
   'owm.discount',
-  'owm.contract'
+  'owm.contract',
+  
+  /* Visual components */
+  'owm.components',
 ])
 
 .constant('API_DATE_FORMAT', 'YYYY-MM-DD HH:mm')

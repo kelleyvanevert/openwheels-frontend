@@ -115,6 +115,9 @@ angular.module('owm.booking', [
         details.accepted = (booking.status === 'accepted');
         details.firstTime = (booking.person.numberOfBookings === 0);
 
+        details.cancelled = booking.status.match(/cancelled/);
+        details.rejected = booking.status.match(/rejected/);
+
         details.showBookOnlyNotice = !booking.ok && (booking.person.status === 'book-only');
 
         return details;

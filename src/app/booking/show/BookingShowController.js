@@ -115,7 +115,7 @@ angular.module('owm.booking.show', [])
         dialogScope.changeset = {};
         dialogScope.changeset.beginRequested = $scope.booking.beginRequested ? $scope.booking.beginRequested : $scope.booking.beginBooking;
         dialogScope.changeset.endRequested   = $scope.booking.endRequested   ? $scope.booking.endRequested   : $scope.booking.endBooking;
-        dialogScope.changeset.remarkRequester = '';
+        dialogScope.changeset.remarkRequester = $scope.booking.remarkRequester;
 
         dialogScope.timeFrameError = null;
         dialogScope.extraCreditError = null;

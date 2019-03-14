@@ -29,31 +29,26 @@
       {{ resource.location }} {{ resource.streetNumber }} <small>{{ resource.city  | toTitleCase }}</small>
     </p>
 
-    <!-- timeframe -->
-    <div class="h-escape">
-      <div class="mw-booking-timeframe" style="margin-bottom: 1rem;">
-        <div class="pickup" ng-if="hasAcceptedTimeframe(booking)">
-          <div class="date">{{ booking.beginBooking | amDateFormat: 'ddd DD MMM' }}</div>
-          <div class="time">{{ booking.beginBooking | amDateFormat: 'HH:mm' }}</div>
-        </div>
-        <div class="return" ng-if="hasAcceptedTimeframe(booking)">
-          <div class="date">{{ booking.endBooking | amDateFormat: 'ddd DD MMM' }}</div>
-          <div class="time">{{ booking.endBooking | amDateFormat: 'HH:mm' }}</div>
-        </div>
-        <div class="pickup" ng-if="!hasAcceptedTimeframe(booking)">
-          <div class="date">{{ booking.beginRequested | amDateFormat: 'ddd DD MMM' }}</div>
-          <div class="time">{{ booking.beginRequested | amDateFormat: 'HH:mm' }}</div>
-        </div>
-        <div class="return" ng-if="!hasAcceptedTimeframe(booking)">
-          <div class="date">{{ booking.endRequested | amDateFormat: 'ddd DD MMM' }}</div>
-          <div class="time">{{ booking.endRequested | amDateFormat: 'HH:mm' }}</div>
-        </div>
-        <svg class="t" height="100%" width="20" viewBox="110 0 40 100" preserveAspectRatio="none" shape-rendering="geometricPrecision">
-          <path d="M0,0 h110 l40,50 l-40,50 h-110z"
-                stroke-width="2"
-                stroke-linejoin="round"
-                stroke-linecap="square" />
-        </svg>
+    <div style="margin-bottom: 1rem;">
+
+      <!-- accepted timeframe -->
+      <div class="h-escape" ng-if="booking.beginBooking">
+        <booking-timeframe-indicator
+          frame="{
+            'pickup': booking.beginBooking,
+            'return': booking.endBooking,
+          }"
+        />
+      </div>
+
+      <!-- requested timeframe, if no accepted timeframe yet -->
+      <div class="h-escape" ng-if="!booking.beginBooking && booking.beginRequested">
+        <booking-timeframe-indicator
+          frame="{
+            'pickup': booking.beginRequested,
+            'return': booking.endRequested,
+          }"
+        />
       </div>
     </div>
 

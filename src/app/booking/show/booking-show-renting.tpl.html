@@ -84,20 +84,10 @@
         </div>
       </div>
 
-      <!-- Book only notice -->
-      <div ng-if="showBookOnlyNotice"
-        class="card mw"
-        style="
-          background: #ffecc2;
-          color: #911a1a;
-        "
-      >
-        <div class="card-body">
-          <p><strong>Let op:</strong> Je account is op dit moment nog niet actief, je kunt de auto dus ook nog niet ophalen.</p>
-          <p>Een aantal van onze controles konden niet automatisch worden uitgevoerd voor jouw account. Zodra wij deze controles hebben uitgevoerd ontvang je per mail bericht over het activeren van je account.</p>
-        </div>
-      </div>
-      
+      <book-only-info-card
+        ng-if="showBookOnlyNotice"
+      />
+
       <!-- Wait for acceptation alert -->
       <div class="card mw" ng-if="hasRequestedTimeframe(booking) && hasAcceptedTimeframe(booking)" id="ownerText">
         <div class="card-body card-inverse" style="background-color:#e6a500; color:white;">
@@ -105,19 +95,15 @@
         </div>
       </div>
 
-      <!-- Cancel reason -->
-      <div class="card mw" ng-if="['cancelled'].indexOf(booking.status) >= 0 && booking.cancelReason">
-        <div class="card-body card-inverse" style="background-color:#c85f5f; color:white;"> 
-          <span>Deze reservering is automatisch geannuleerd. Een andere huurder heeft de auto voor dezelfde huurperiode gereserveerd en betaald. Omdat jouw reservering nog niet betaald is, hebben we de reservering geannuleerd. Een reservering is pas definitief als je betaald hebt. Je kunt dit voorkomen door een reservering direct te betalen.</span>
-        </div>
-      </div>
+      <cancellation-info-card
+        ng-if="details.cancelled"
+        booking="booking"
+      />
 
-      <!-- Booking altered after buy voucher -->
-      <div class="card mw" ng-if="alteredAfterBuyVoucher">
-        <div class="card-body card-inverse" style="background-color:#3bab78; color: white;">
-          <span>Gelukt! De betaling is ontvangen en de reservering is gewijzigd.</span>
-        </div>
-      </div>
+      <rejection-info-card
+        ng-if="details.rejected"
+        booking="booking"
+      />
 
 
       <!-- Je bent zelf contractant (niet de contracthouder) -->
@@ -150,7 +136,7 @@
 
       <!-- After reservation completed, and before the booking has started -->
       <div ng-if="progress.reservationCompleted && !details.bookingStarted">
-        <div ng-include="'booking/show/partial-reservationActions.tpl.html'" ng-if="!perspective.isContractor"></div>
+        <div ng-include="'booking/show/partial-reservationActions.tpl.html'"></div>
       </div>
 
       <!-- remarks are not for contractors (non-renting contract holders) -->
@@ -178,7 +164,8 @@
 
     <div class="rpad col-md-4 col-md-pull-8">
       <!-- is this the correct condition ? -->
-      <div ng-include="'booking/show/partial-reservationProgressCard.tpl.html'" ng-if="!progress.reservationCompleted"></div>
+      <div ng-include="'booking/show/partial-reservationProgressCard.tpl.html'"
+        ng-if="!progress.reservationCompleted && !details.cancelled && !details.rejected"></div>
 
       <div ng-include="'booking/show/partial-bookingInfoCard.tpl.html'"></div>
     </div>
