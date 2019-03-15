@@ -197,18 +197,6 @@
                 </div>
             </div>
 
-            <!-- mywheels open benefits -->
-            <div class="card mw"
-                 id="mywheels_open_info"
-                 ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0">
-                <div class="card-heading">
-                    <h3>{{ 'MYWHEELS_OPEN_TITLE' | translate }}</h3>
-                </div>
-                <div class="card-body">
-                    <div ng-include="'resource/partials/mw-open-benefits.tpl.html'"></div>
-                </div>
-            </div>
-
             <!-- contact person -->
             <div class="card mw" ng-if="me && resource.contactPerson && (resource.contactPerson.id !== resource.owner.id)">
                 <div class="card-heading">
@@ -232,6 +220,18 @@
                     <div ng-if="resource.contactPerson.about">
                         <p>{{ resource.contactPerson.about}}</p>
                     </div>
+                </div>
+            </div>
+
+            <!-- mywheels open benefits -->
+            <div class="card mw"
+                 id="mywheels_open_info"
+                 ng-if="resource.locktypes.indexOf('chipcard') >= 0 || resource.locktypes.indexOf('smartphone') >= 0">
+                <div class="card-heading">
+                    <h3>{{ 'MYWHEELS_OPEN_TITLE' | translate }}</h3>
+                </div>
+                <div class="card-body">
+                    <div ng-include="'resource/partials/mw-open-benefits.tpl.html'"></div>
                 </div>
             </div>
 
