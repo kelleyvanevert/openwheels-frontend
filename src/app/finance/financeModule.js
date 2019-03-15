@@ -164,7 +164,15 @@ angular.module('owm.finance', [
         return instantPaymentService.getByIdAndToken({
           id: $stateParams.id,
           token: $stateParams.token,
-        });
+        })
+//        .then(function (instantPayment) {
+//          return instantPayment;
+//        })
+//        .catch(function (e) {
+//          /*jshint -W087 */
+//          debugger;
+//        })
+        ;
       }],
     },
   })

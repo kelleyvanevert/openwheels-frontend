@@ -71,43 +71,43 @@
               font-weight: 600;
             "
           >
-            Factuur nr {{ mainInvoiceGroup.id }} betalen
-            <span ng-if="currentCredit > 0">{{ mainInvoiceGroup.total - currentCredit | currency }}</span>
+            Betaal factuur #{{ mainInvoiceGroup.id }}
+            ({{ mainInvoiceGroup.total - currentCredit | currency }})
           </button>
         </p>
-        <p style="text-align: center;" ng-if="otherInvoiceGroups.length > 0">
-          <button
-            ng-click="payMain()"
-            class="mywheels-btn mywheels-btn-big mywheels-btn-default"
-            md-ink-ripple="#377791"
-            style="margin: .5rem;"
-          >
-            <span ng-style="{ visibility: makingMainInstantPayment ? 'hidden' : '' }">
-              Factuur nr {{ mainInvoiceGroup.id }} betalen
-              <span ng-if="currentCredit > 0">{{ mainInvoiceGroup.total - currentCredit | currency }}</span>
-            </span>
-            <span class="button-spinner-overlay" ng-show="makingMainInstantPayment"><inline-spinner /></span>
-          </button>
 
-          <button
-            ng-if="otherInvoiceGroups.length > 0"
-            ng-click="payAll()"
-            class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action"
-            md-ink-ripple="#9a3d26"
-            style="
-              margin: .5rem;
-              box-shadow: 1px 2px 1rem rgba(0,0,0,.2);
-              text-shadow: 1px 1px 1px rgba(0,0,0,.2);
-              font-weight: 600;
-            "
-          >
-            <span ng-style="{ visibility: makingAllInstantPayment ? 'hidden' : '' }">
-              Alle facturen betalen
-              {{ totalAllInvoiceGroups - currentCredit | currency }}
-            </span>
-            <span class="button-spinner-overlay" ng-show="makingAllInstantPayment"><inline-spinner /></span>
-          </button>
-        </p>
+        <div style="text-align: center;" ng-if="otherInvoiceGroups.length > 0">
+          <p>
+            <button
+              ng-if="otherInvoiceGroups.length > 0"
+              ng-click="payAll()"
+              class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action"
+              md-ink-ripple="#9a3d26"
+              style="
+                margin: .5rem;
+                box-shadow: 1px 2px 1rem rgba(0,0,0,.2);
+                text-shadow: 1px 1px 1px rgba(0,0,0,.2);
+                font-weight: 600;
+              "
+            >
+              <span ng-style="{ visibility: makingAllInstantPayment ? 'hidden' : '' }">
+                Betaal alle facturen
+                ({{ totalAllInvoiceGroups - currentCredit | currency }})
+              </span>
+              <span class="button-spinner-overlay" ng-show="makingAllInstantPayment"><inline-spinner /></span>
+            </button>
+          </p>
+          <p>of</p>
+          <p class="size-3">
+            <a
+              ng-click="payMain()"
+              style="margin: .5rem;"
+            >
+              Betaal factuur #{{ mainInvoiceGroup.id }}
+              ({{ mainInvoiceGroup.total - currentCredit | currency }})
+            </a>
+          </p>
+        </div>
       </div>
 
     </div>

@@ -20,6 +20,8 @@ angular.module('owm.components')
         $scope.collapse = false;
       }
 
+      $scope.subCollapse = !$scope.collapse;
+
       $scope.sumLines = function (lines) {
         return lines.reduce(function (total, line) {
           return total + line.total;
