@@ -1,0 +1,115 @@
+
+<div class="container container-transitional">
+  <div class="row">
+    <div class="rpad col-md-8 col-md-push-2">
+
+      <div
+        class="card mw info-card error"
+        ng-if="paymentFailed"
+      >
+        <div class="card-heading">
+          <h3>
+            <ng-md-icon icon="warning"></ng-md-icon>
+            Betaling niet gelukt.
+          </h3>
+        </div>
+        <div class="card-body">
+          <p><strong>Let op:</strong> De betaling is niet gelukt.</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 4rem;" ng-if="paymentSucceeded">
+        <div
+          class="card mw"
+          style="background:#3bab78; color: white;"
+        >
+          <div class="card-heading">
+            <h3 style="color: white;">Gelukt!</h3>
+          </div>
+          <div class="card-body">
+            <p class="size-3">
+              De betaling is ontvangen.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div ng-if="!paymentSucceeded">
+        <h1 class="page-title card-pad-left" style="text-align: left;">
+          Openstaande factuur
+        </h1>
+      
+        <instant-payment-invoice
+          invoice-group="mainInvoiceGroup"
+        />
+
+        <div ng-if="otherInvoiceGroups.length > 0">
+          <h2 class="page-title card-pad-left" style="text-align: left;">
+            Andere openstaande facturen
+          </h2>
+          
+          <instant-payment-invoice
+            invoice-group="invoiceGroup"
+            collapse="true"
+            ng-repeat="invoiceGroup in otherInvoiceGroups"
+          />
+        </div>
+
+        <p class="size-5" style="text-align: center; font-size: 600;" ng-if="currentCredit > 0">
+          Af: je huidige rijtegoed {{ currentCredit | currency }}
+        </p>
+        
+        <p style="text-align: center;" ng-if="otherInvoiceGroups.length === 0">
+          <button
+            ng-click="payMain()"
+            class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action"
+            md-ink-ripple="#9a3d26"
+            style="
+              margin: .5rem;
+              box-shadow: 1px 2px 1rem rgba(0,0,0,.2);
+              text-shadow: 1px 1px 1px rgba(0,0,0,.2);
+              font-weight: 600;
+            "
+          >
+            Factuur nr {{ mainInvoiceGroup.id }} betalen
+            <span ng-if="currentCredit > 0">{{ mainInvoiceGroup.total - currentCredit | currency }}</span>
+          </button>
+        </p>
+        <p style="text-align: center;" ng-if="otherInvoiceGroups.length > 0">
+          <button
+            ng-click="payMain()"
+            class="mywheels-btn mywheels-btn-big mywheels-btn-default"
+            md-ink-ripple="#377791"
+            style="margin: .5rem;"
+          >
+            <span ng-style="{ visibility: makingMainInstantPayment ? 'hidden' : '' }">
+              Factuur nr {{ mainInvoiceGroup.id }} betalen
+              <span ng-if="currentCredit > 0">{{ mainInvoiceGroup.total - currentCredit | currency }}</span>
+            </span>
+            <span class="button-spinner-overlay" ng-show="makingMainInstantPayment"><inline-spinner /></span>
+          </button>
+
+          <button
+            ng-if="otherInvoiceGroups.length > 0"
+            ng-click="payAll()"
+            class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action"
+            md-ink-ripple="#9a3d26"
+            style="
+              margin: .5rem;
+              box-shadow: 1px 2px 1rem rgba(0,0,0,.2);
+              text-shadow: 1px 1px 1px rgba(0,0,0,.2);
+              font-weight: 600;
+            "
+          >
+            <span ng-style="{ visibility: makingAllInstantPayment ? 'hidden' : '' }">
+              Alle facturen betalen
+              {{ totalAllInvoiceGroups - currentCredit | currency }}
+            </span>
+            <span class="button-spinner-overlay" ng-show="makingAllInstantPayment"><inline-spinner /></span>
+          </button>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>

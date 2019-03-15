@@ -17,6 +17,9 @@ angular.module('owm.finance.index', [])
     if ($state.$current.name === 'owm.finance.kmpoints') {
       $scope.sectionTitle = 'Beheerdersvergoeding';
     }
+    else if ($state.$current.name === 'owm.finance.invoice') {
+      $scope.sectionTitle = 'Factuur';
+    }
     else if ($state.$current.name === 'owm.finance.vouchers') {
       $scope.sectionTitle = 'Rijtegoed';
     }

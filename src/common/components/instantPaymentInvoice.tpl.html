@@ -1,0 +1,128 @@
+
+<div
+  ng-init="collapsed = collapse"
+  class="card mw instant-payment-invoice"
+  ng-class="{ collapsible: collapse, collapsed: collapsed }"
+>
+
+  <div
+    class="card-heading"
+    ng-click="collapsed = collapse && !collapsed"
+    ng-style="collapse ? { outline: 'none' } : { cursor: 'auto', outline: 'none' }"
+  >
+    <div class="pull-right size-4" style="font-weight: 600;" ng-style="collapsed ? { lineHeight: '1.1' } : {}">{{ invoiceGroup.total | currency }}</div>
+    <h3 style="margin-bottom: 0;">
+      Factuur
+      <ng-md-icon icon="arrow_drop_down" ng-if="collapsed"></ng-md-icon>
+    </h3>
+    <div ng-if="!collapsed">verzamelfactuur nr {{ invoiceGroup.id }}</div>
+  </div>
+  <div class="card-body" uib-collapse="collapsed">
+
+    <table class="table financial" style="margin-bottom: 0;">
+      <thead>
+        <tr>
+          <th colspan="3">Beschrijving</th>
+          <th class="text-right" style="padding-right: 0;">Kosten</th>
+          <th width="15%"></th>
+        </tr>
+      </thead>
+      <tbody
+        ng-repeat="(type, groups) in invoiceGroup.invoiceLines"
+        style="border-top-width: 1px;"
+      >
+        <tr
+          ng-repeat-start="group in groups"
+          ng-init="group.expanded = false"
+          ng-click="group.expanded = !group.expanded"
+          class="expandeable"
+          ng-class="{ expand_bt: group.expanded }"
+          ng-style="group.expanded ? { fontWeight: '600' } : ''"
+        >
+          <td colspan="3">
+            <span ng-if="type === 'booking'">Rit op {{ group.beginBooking | amDateFormat:'DD-MM-YYYY' }}</span>
+            <span ng-if="type !== 'booking'">Overig</span>
+          </td>
+          <td style="padding-right: 0;" class="text-right">
+            {{ sumLines(group.lines) | currency }}
+          </td>
+          <td class="text-right">
+            <ng-md-icon icon="arrow_drop_down" ng-if="!group.expanded"></ng-md-icon>
+            <ng-md-icon icon="arrow_drop_up" ng-if="group.expanded"></ng-md-icon>
+          </td>
+        </tr>
+        <tr ng-repeat-end class="nohover table-finance-subtable" ng-repeat="line in group.lines" ng-show="group.expanded"
+              ng-class="{ expand_bb: group.expanded && ($index === group.lines.length - 1) }">
+          <td class="subitem">
+            &emsp;{{ line.description }}
+          </td>
+          <td class="subitem text-right">
+            <span class="hidden-xs">
+              <em style="margin-right: .3rem;" ng-if="$index === 0"><small>Aantal:</small></em>
+              {{ line.quantity }}
+            </span>
+          </td>
+          <td class="subitem text-right">
+            <span class="hidden-xs">
+              <em style="margin-right: .3rem;" ng-if="$index === 0"><small>Prijs:</small></em>
+              {{ line.price | currency }}
+            </span>
+          </td>
+          <td class="subitem text-right">
+            {{ line.total | currency }}
+          </td>
+          <td class="subitem text-right">
+            <span class="hidden-xs">
+              <em style="margin-right: .3rem;" ng-if="$index === 0"><small>BTW:</small></em>
+              {{ line.tax | percentage }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!--
+    <div ng-repeat="(type, groups) in invoiceGroup.invoiceLines">
+      <table class="table financial" style="margin-bottom: 0;">
+        <thead>
+          <th>Beschrijving</th>
+          <th>Aantal</th>
+          <th>Prijs</th>
+          <th>Kosten</th>
+          <th>BTW</th>
+        </thead>
+        <tbody ng-repeat="group in groups" ng-init="group.collapsed = true">
+          <tr>
+            <td colspan="3">
+              <strong ng-if="type === 'booking'">Rit van {{ $root.moment(group.beginBooking).format('dddd DD MMM YYYY') }}</strong>
+              <strong ng-if="type !== 'booking'">Overig</strong>
+              <span ng-click="group.collapsed = !group.collapsed">toggle</span>
+            </td>
+            <td>
+              <span ng-if="group.collapsed">bla</span>
+            </td>
+            <td></td>
+          </tr>
+          <tr ng-show="!group.collapsed" ng-repeat="line in group.lines">
+            <td>&emsp;{{ line.description }}</td>
+            <td>{{ line.quantity }}</td>
+            <td>{{ line.price | currency }}</td>
+            <td>{{ line.total | currency }}</td>
+            <td>{{ line.tax | percentage }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td><strong>Totaal</strong></td>
+            <td></td>
+            <td></td>
+            <td><strong>{{ invoiceGroup.total | currency }}</strong></td>
+            <td></td>
+          </tr>
+        </tfoot> 
+      </table>
+    </div>
+    -->
+  </div>
+
+</div>

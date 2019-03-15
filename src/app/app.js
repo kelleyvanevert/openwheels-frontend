@@ -493,6 +493,8 @@ angular.module('openwheels', [
       $state.includes('owm.message') ||
       $state.includes('owm.trips') ||
       $state.includes('owm.finance.vouchers') ||
+      $state.includes('owm.finance.invoice') ||
+      $state.includes('owm.instantpayment') ||
       $state.includes('owm.finance.v4') ||
       $state.includes('owm.finance.kmpoints') ||
       $state.includes('owm.auth.signup') ||

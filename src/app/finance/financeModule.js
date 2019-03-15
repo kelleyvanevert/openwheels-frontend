@@ -3,6 +3,9 @@
 angular.module('owm.finance', [
   'owm.finance.index',
   'owm.finance.kmpoints',
+  'owm.finance.invoice',
+  'owm.finance.instapay',
+  'owm.finance.instapayresult',
   'owm.finance.vouchers',
   'owm.finance.paymentResult',
   'owm.finance.deposit',
@@ -92,7 +95,7 @@ angular.module('owm.finance', [
       }
     },
     resolve: {
-      me: ['authService', function (authService) {
+      me: ['authService', '$stateParams', function (authService, $stateParams) {
         return authService.me();
       }],
       requiredCredit: ['me', 'voucherService', function (me, voucherService) {
@@ -112,6 +115,57 @@ angular.module('owm.finance', [
         templateUrl: 'finance/v4/financeOverview.tpl.html',
         controller: 'FinanceV4OverviewController'
       }
+    },
+  })
+
+  .state('owm.finance.invoice', {
+    url: '/factuur/:invoiceGroupId',
+    noGlobalLoader: true,
+    views: {
+      '@owm.finance': {
+        templateUrl: 'finance/invoice/invoice.tpl.html',
+        controller: 'InvoiceController',
+      },
+    },
+  })
+
+  .state('owm.instantpayment', {
+    url: '/betaal?orderStatusId',
+    noGlobalLoader: true,
+    abstract: true,
+    resolve: {
+      orderStatusId: ['$stateParams', function ($stateParams) {
+        return $stateParams.orderStatusId ? parseInt($stateParams.orderStatusId) : null;
+      }],
+      paymentSucceeded: ['orderStatusId', function (orderStatusId) {
+        return (orderStatusId === 100);
+      }],
+      paymentFailed: ['orderStatusId', function (orderStatusId) {
+        return (orderStatusId !== 100);
+      }],
+    },
+  })
+
+  .state('owm.instantpayment.pay', {
+    url: '/:id/:token',
+    noGlobalLoader: true,
+    views: {
+      'main-full@shell': {
+        templateUrl: 'finance/instaPay/instaPay.tpl.html',
+        controller: 'InstantPaymentController',
+      },
+    },
+    resolve: {
+      instantPayment: ['instantPaymentService', '$stateParams', 'paymentSucceeded', function (instantPaymentService, $stateParams, paymentSucceeded) {
+        if (paymentSucceeded) {
+          return null;
+        }
+
+        return instantPaymentService.getByIdAndToken({
+          id: $stateParams.id,
+          token: $stateParams.token,
+        });
+      }],
     },
   })
 
