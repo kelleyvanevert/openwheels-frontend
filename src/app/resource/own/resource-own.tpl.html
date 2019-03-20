@@ -52,11 +52,11 @@
                 <ng-md-icon icon="settings"></ng-md-icon> <a ui-sref="owm.resource.edit({ resourceId: resource.id })">{{ 'EDIT_RESOURCE' | translate }}</a>
               </div>
 
-              <div class="truncate" ng-if="(resource.isAvailableOthers || resource.isAvailableFriends) && resource.isActive && me.provider.id !== 5">
+              <div class="truncate" ng-if="!isBeheerder(me, resource) && (resource.isAvailableOthers || resource.isAvailableFriends) && resource.isActive && me.provider.id !== 5">
                 <ng-md-icon icon="close"></ng-md-icon> <a ng-click="setResourceAvailability(resource, false)">{{ 'AVAILABLE_RESOURCE' | translate }}</a>
               </div>
 
-              <div class="truncate" ng-if="!resource.isAvailableOthers && !resource.isAvailableFriends && resource.isActive && me.provider.id !== 5">
+              <div class="truncate" ng-if="!isBeheerder(me, resource) && !resource.isAvailableOthers && !resource.isAvailableFriends && resource.isActive && me.provider.id !== 5">
                 <ng-md-icon icon="check"></ng-md-icon> <a ng-click="setResourceAvailability(resource, true)">{{ 'NOT_AVAILABLE_RESOURCE' | translate }}</a>
               </div>
 
@@ -64,7 +64,7 @@
                 <ng-md-icon icon="place"></ng-md-icon> <a ng-click="location(resource)">{{ 'SHOW_LOCATION_ON_MAP' | translate }}</a>
               </div>
 
-              <div class="truncate" ng-if="!resource.boardcomputer && resource.isActive && (resource.isAvailableOthers || resource.isAvailableFriends) && me.provider.id !== 5">
+              <div class="truncate" ng-if="!isBeheerder(me, resource) && !resource.boardcomputer && resource.isActive && (resource.isAvailableOthers || resource.isAvailableFriends) && me.provider.id !== 5">
                 <ng-md-icon icon="date_range"></ng-md-icon> <a ng-href="{{ $state.href('owm.resource.calendar', { city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id }) }}" ga-track-event="['interaction', 'updateAvailability', 'resourceOwn']">{{ 'RESOURCE_EDIT_CALENDAR' | translate }}</a>
               </div>
 
@@ -108,11 +108,11 @@
               <ng-md-icon icon="settings"></ng-md-icon> <a ui-sref="owm.resource.edit({ resourceId: resource.id })">{{ 'EDIT_RESOURCE' | translate }}</a>
             </div>
 
-            <div class="truncate" ng-if="(resource.isAvailableOthers || resource.isAvailableFriends) && resource.isActive && me.provider.id !== 5">
+            <div class="truncate" ng-if="!isBeheerder(me, resource) && (resource.isAvailableOthers || resource.isAvailableFriends) && resource.isActive && me.provider.id !== 5">
               <ng-md-icon icon="close"></ng-md-icon> <a ng-click="setResourceAvailability(resource, false)">{{ 'AVAILABLE_RESOURCE' | translate }}</a>
             </div>
 
-            <div class="truncate" ng-if="!resource.isAvailableOthers && !resource.isAvailableFriends && resource.isActive && me.provider.id !== 5">
+            <div class="truncate" ng-if="!isBeheerder(me, resource) && !resource.isAvailableOthers && !resource.isAvailableFriends && resource.isActive && me.provider.id !== 5">
               <ng-md-icon icon="check"></ng-md-icon> <a ng-click="setResourceAvailability(resource, true)">{{ 'NOT_AVAILABLE_RESOURCE' | translate }}</a>
             </div>
 
@@ -120,7 +120,7 @@
               <ng-md-icon icon="place"></ng-md-icon> <a ng-click="location(resource)">{{ 'SHOW_LOCATION_ON_MAP' | translate }}</a>
             </div>
 
-            <div class="truncate" ng-if="!resource.boardcomputer && resource.isActive && (resource.isAvailableOthers || resource.isAvailableFriends) && me.provider.id !== 5">
+            <div class="truncate" ng-if="!isBeheerder(me, resource) && !resource.boardcomputer && resource.isActive && (resource.isAvailableOthers || resource.isAvailableFriends) && me.provider.id !== 5">
               <ng-md-icon icon="date_range"></ng-md-icon> <a ng-href="{{ $state.href('owm.resource.calendar', { city: (resource.city | replaceSpaceToDash | lowercase), resourceId: resource.id }) }}" ga-track-event="['interaction', 'updateAvailability', 'resourceOwn']">{{ 'RESOURCE_EDIT_CALENDAR' | translate }}</a>
             </div>
 
@@ -311,7 +311,7 @@
     <div class="rpad col-md-4 col-md-pull-8">
 
       <!-- MyWheels Open banner for owners with resource-->
-      <div ng-if="me.provider.id === 1 && resources.length > 0">
+      <div ng-if="me.provider.id === 1">
         <div 
           class="mywheels--open--card"
           style="text-align: center;"

@@ -344,6 +344,10 @@ angular.module('openwheels', [
   }
 })
 
+.value('isBeheerder', function (person, resource) {
+  return (resource.contactPersonId === person.id) && (resource.ownerId !== person.id);
+})
+
 .filter('homeAddress', function (makeHomeAddressPrefill) {
   return makeHomeAddressPrefill;
 })
