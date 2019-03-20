@@ -365,6 +365,14 @@ angular.module('rpcServices', [])
   this.dirty = m('dirty');
 })
 
+.service('instantPaymentService', function (api) {
+  var m = function (name) {
+    return api.createRpcMethod('instant_payment.' + name);
+  };
+  this.getByIdAndToken = m('getByIdAndToken');
+  this.createByIdAndToken = m('createByIdAndToken');
+})
+
 .service('formSubmissionService', function (api) {
   var m = function (name) {
     return api.createRpcMethod('form_submission.' + name);
