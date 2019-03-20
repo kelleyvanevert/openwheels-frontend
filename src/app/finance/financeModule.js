@@ -5,7 +5,6 @@ angular.module('owm.finance', [
   'owm.finance.kmpoints',
   'owm.finance.invoice',
   'owm.finance.instapay',
-  'owm.finance.instapayresult',
   'owm.finance.vouchers',
   'owm.finance.paymentResult',
   'owm.finance.deposit',
