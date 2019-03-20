@@ -47,9 +47,14 @@ angular.module('AB', ['Cookies'])
 
   // currently running experiments
 
-  if ($rootScope.experiments.schattingKmKostenDropdown === undefined) {
-    var b = Math.random() < 0.5;
-    $rootScope.experiment('schattingKmKostenDropdown', b);
+  var kmSchattingOptions = [
+    'no', 'no', 'no', 'no', // 40%
+    'dropdown', 'dropdown', 'dropdown', // 30%
+    'show', 'show', 'show', // 30%
+  ];
+  if ($rootScope.experiments.kmSchatting === undefined) {
+    var chosen = kmSchattingOptions[Math.floor(Math.random() * kmSchattingOptions.length)];
+    $rootScope.experiment('kmSchatting', chosen);
   }
 
 });
