@@ -1,8 +1,35 @@
 
+
+
+<!-- Payment error [tenaamstelling] -->
+<div class="card mw" ng-if="account.disapprovedAccount && !account.approved && account.list.length === 1">
+  <div class="card-heading">
+    <h2 class="card-title">
+      <ng-md-icon icon="error" class="text-danger"></ng-md-icon>
+      {{ 'PAYMENT_NOT_APROVED_TITLE' | translate }}
+    </h2>
+  </div>
+  <div class="card-body">
+    <p translate="PAYMENT_NOT_APROVED_BODY" translate-values="{
+      name: account.disapprovedAccount.lastName,
+      surname: account.disapprovedAccount.person.surname,
+    }"></p>
+
+    <button type="button" class="mywheels-btn mywheels-btn-default" ng-click="buyVoucher('0.01')" md-ink-ripple="#3a6d81">
+      {{ 'PAY' | translate }}
+    </button>
+
+    <p translate="PAYMENT_NOT_APROVED_FOOTER" translate-values="{ lidnumber: account.disapprovedAccount.person.id }" class="mywheels-btn-margin-top"> </p>
+  </div>
+</div>
+
+
+
+
 <!-- Payment -->
 <div class="card mw"
     id="bookingPayment"
-    ng-if="paymentInit &&
+    ng-if="progress.showPaymentScreen &&
            ((credit.value === 0 && debt.value === 0) || booking.approved === 'BUY_VOUCHER' || addExtraDriver)">
   <div class="card-heading">
     <h3 class="card-title">Reservering betalen</h3>
