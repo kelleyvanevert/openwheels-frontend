@@ -1,0 +1,166 @@
+<div class="card mw">
+  <div class="card-body" style="padding-top: 0;">
+
+    <!-- auto -->
+    <div
+      ng-if="$root.dev || resource.pictures.length > 0"
+      class="h-escape photo"
+      style="
+        height: 18rem;
+        background-size: cover;
+        background-color: #eee;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+      "
+      ng-style="{
+        'background-image': 'url(' + (resource.pictures[0] | resourceAvatar: 'large') + ')',
+      }"
+    ></div>
+
+    <p>
+      <a ui-sref="owm.resource.show({ resourceId: resource.id })" style="font-weight: 600;">{{ resource.alias }}</a>
+      <span style="margin-left: .5rem;" class="tag tag-warning" ng-if="resource.boardcomputer">MyWheels Open</span>
+      <br />
+      {{ resource.brand }} {{ resource.model }}
+        <span class="registration-plate">{{ resource.registrationPlate }}</span>
+      <br />
+      {{ resource.location }} {{ resource.streetNumber }} <small>{{ resource.city  | toTitleCase }}</small>
+    </p>
+
+    <div style="margin-bottom: 1rem;">
+
+      <!-- accepted timeframe -->
+      <div class="h-escape" ng-if="booking.beginBooking">
+        <booking-timeframe-indicator
+          frame="{
+            'pickup': booking.beginBooking,
+            'return': booking.endBooking,
+          }"
+        />
+      </div>
+
+      <!-- requested timeframe, if no accepted timeframe yet -->
+      <div class="h-escape" ng-if="!booking.beginBooking && booking.beginRequested">
+        <booking-timeframe-indicator
+          frame="{
+            'pickup': booking.beginRequested,
+            'return': booking.endRequested,
+          }"
+        />
+      </div>
+
+    </div>
+
+    <p ng-if="perspective.isRenter && discount.length > 0">
+      Je hebt kortingscode {{ discount[0].discount.code }} gebruikt voor deze reservering. Je krijgt tot <span ng-if="discount[0].discount.amount > 0">€ {{ discount[0].discount.amount }}</span> <span ng-if="discount[0].discount.percentage > 0">{{ discount[0].discount.percentage }}%</span> korting van <span ng-if="discount[0].discount.sender.id === resource.owner.id">verhuurder</span> {{ discount[0].discount.sender | fullname }}.
+    </p>
+
+    <div ng-if="perspective.isRenter">
+      <ul class="list-de-emphasized">
+        <li>
+          <span ng-if="booking.riskReduction">
+            Eigen risico: verlaagd
+          </span>
+          <span ng-if="!booking.riskReduction">
+            Eigen risico: niet verlaagd
+          </span>
+        </li>
+        <li>
+          <!--
+            Let: ik tel hier niet het aantal uitnodigingen,
+            maar alleen het aantal daadwerkelijk geaccepteerde uitnodigingen.
+            Als je het "extra bestuurders wijzigen" dialoog opent,
+            krijg je wel ook verzoeken te zien, maar dan apart van
+            de reeds geaccepteerden.
+            Dit alles leek me een verstandige manier om heel helder te maken
+            dat alleen geaccepteerden mee mogen rijden.
+          -->
+          <span ng-if="!extraDrivers.loading && extraDrivers.accepted.length === 0">
+            Geen extra bestuurders
+          </span>
+          <span ng-if="extraDrivers.loading || extraDrivers.accepted.length > 0">
+            {{ extraDrivers.accepted.length }}
+            extra bestuurder{{ extraDrivers.accepted.length > 1 ? 's' : '' }}
+          </span>
+          <span ng-if="extraDrivers.loading">Laden...</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- people -->
+
+    <!-- (1) owner -->
+    <div ng-if="perspective.isRenter && !perspective.isOwner">
+      <h5>
+        Eigenaar: {{ resource.owner | fullname }}
+      </h5>
+      <div class="media">
+        <img class="media-object pull-left img-user-normal" person-profile-image="{ person: resource.owner, size: 'normal' }" hide-xs />
+        <div class="media-body" style="padding-top: 0;">
+          <ul class="list-unstyled list-spaced">
+            <li ng-if="resource.owner.phoneNumbers[0].number"><ng-md-icon icon="phone"></ng-md-icon>
+              <a href="tel:{{ resource.owner.phoneNumbers[0].number }}">{{ resource.owner.phoneNumbers[0].number }}</a>
+              <small ng-if="resource.owner.phoneNumbers[0].verified" class="text-success">(geverifieerd)</small>
+            </li>
+            <li><ng-md-icon icon="comment"></ng-md-icon>
+              <a ng-click="openChatWith(resource.owner)">{{ 'SEND_MESSAGE' | translate }}</a>
+            </li>
+          </ul>
+          <div><span badge-list="booking.person.badges"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- (2) renter -->
+    <div ng-if="perspective.isOwner && !perspective.isRenter">
+      <h5>
+        Huurder: {{ booking.person | fullname }}
+      </h5>
+      <div class="media">
+        <img class="media-object pull-left img-user-normal" person-profile-image="{ person: booking.person, size: 'normal' }" hide-xs />
+        <div class="media-body" style="padding-top: 0;">
+          <ul class="list-unstyled list-spaced">
+            <li ng-if="booking.person.phoneNumbers[0].number"><ng-md-icon icon="phone"></ng-md-icon>
+              {{ booking.person.phoneNumbers[0].number }}
+              <small ng-if="booking.person.phoneNumbers[0].verified" class="text-success">(geverifieerd)</small>
+            </li>
+            <li><ng-md-icon icon="comment"></ng-md-icon>
+              <a ng-click="openChatWith(booking.person)">{{ 'SEND_MESSAGE' | translate }}</a>
+            </li>
+          </ul>
+          <div>
+            <br>Bekijk het profiel van <a ui-sref="member({ personId: booking.person.id })">{{ booking.person.firstName }}</a> voor meer informatie en reviews.
+          </div>
+          <div><span badge-list="booking.person.badges"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- (3) contact person -->
+    <div ng-if="
+      perspective.isRenter &&
+      (resource.contactPerson && resource.contactPerson.id !== resource.owner.id)
+    ">
+      <h5>
+        Beheerder: {{ resource.contactPerson | fullname }}
+      </h5>
+      <div class="media">
+        <img class="media-object pull-left img-user-normal" person-profile-image="{ person: resource.contactPerson, size: 'normal' }" hide-xs />
+        <div class="media-body" style="padding-top: 0;">
+          <ul class="list-unstyled list-spaced">
+            <li ng-if="resource.contactPerson.phoneNumbers[0].number"><ng-md-icon icon="phone"></ng-md-icon>
+              {{ resource.contactPerson.phoneNumbers[0].number }}
+              <small ng-if="resource.contactPerson.phoneNumbers[0].verified" class="text-success">(geverifieerd)</small>
+            </li>
+            <li><ng-md-icon icon="comment"></ng-md-icon>
+              <a ng-click="openChatWith(resource.contactPerson)">{{ 'SEND_MESSAGE' | translate }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

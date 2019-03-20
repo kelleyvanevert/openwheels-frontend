@@ -1,0 +1,38 @@
+
+<md-dialog flex-xs="90" flex-sm="70" flex-md="50" flex-lg="40" flex-xl="30"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3 class="with-close-button">
+      Reservering annuleren
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+
+    <p>
+      Weet je zeker dat je deze reservering wilt annuleren?
+    </p>
+    <p>
+      <em ng-if="!details.requested && booking.approved === 'OK'">
+        Let op: Aan kort van te voren annuleren kunnen kosten verbonden zijn. Bekijk de <a href="https://mywheels.nl/autodelen/hoe-huren-werkt/tarieven-huren/" target="_blank">tarieven</a> voor meer informatie.
+      </em>
+    </p>
+
+    <p class="dialog-buttons-centered">
+      <button class="mywheels-btn mywheels-btn-border"
+              md-ink-ripple="#999"
+              ng-click="hide()"
+              style="white-space: nowrap;">
+        Sluiten
+      </button>
+      <button class="mywheels-btn mywheels-btn-error"
+              md-ink-ripple="#4b702c"
+              ng-click="cancel()"
+              style="white-space: nowrap;">
+        Reservering annuleren
+      </button>
+    </p>
+
+  </md-dialog-content>
+
+</md-dialog>

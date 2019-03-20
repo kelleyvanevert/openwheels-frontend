@@ -1,0 +1,84 @@
+
+<!-- Flow continuation notices -->
+<div ng-if="flowContinuation.error === 'error_payment_alter_timeframe'"
+  class="card mw"
+  style="
+    background: #ffecc2;
+    color: #911a1a;
+  "
+>
+  <div class="card-body">
+    <p>De betaling is niet gelukt, waardoor je rijtegoed niet is opgehoogd. Je verzoek tot wijziging is niet aangevraagd.</p>
+  </div>
+</div>
+
+<div ng-if="flowContinuation.error === 'error_api_alter_timeframe'"
+  class="card mw"
+  style="
+    background: #ffecc2;
+    color: #911a1a;
+  "
+>
+  <div class="card-body">
+    <p>Het versturen van je wijziging is helaas niet gelukt. Je rijtegoed is wel al opgehoogd. Neem contact met ons op via het nummer <strong>085-7734222</strong> om dit probleem te verhelpen.</p>
+  </div>
+</div>
+
+<div ng-if="flowContinuation.error === 'error_payment_add_extra_drivers'"
+  class="card mw"
+  style="
+    background: #ffecc2;
+    color: #911a1a;
+  "
+>
+  <div class="card-body">
+    <p>De betaling is niet gelukt, waardoor je rijtegoed niet is opgehoogd. Hierdoor konden de extra bestuurders niet worden uitgenodigd.</p>
+  </div>
+</div>
+
+<div ng-if="flowContinuation.error === 'error_api_add_extra_drivers'"
+  class="card mw"
+  style="
+    background: #ffecc2;
+    color: #911a1a;
+  "
+>
+  <div class="card-body">
+    <p>Het automatisch uitnodigen van de extra bestuurders is helaas niet gelukt. Je rijtegoed is wel al opgehoogd. Neem contact met ons op via het nummer <strong>085-7734222</strong> om dit probleem te verhelpen.</p>
+  </div>
+</div>
+
+<div ng-if="flowContinuation.error === 'error_payment_set_riskreduction'"
+  class="card mw"
+  style="
+    background: #ffecc2;
+    color: #911a1a;
+  "
+>
+  <div class="card-body">
+    <p>De betaling is niet gelukt, waardoor je rijtegoed niet is opgehoogd. Hierdoor is het niet gelukt je eigen risico aan te passen.</p>
+  </div>
+</div>
+
+<div ng-if="flowContinuation.error === 'error_api_set_riskreduction'"
+  class="card mw"
+  style="
+    background: #ffecc2;
+    color: #911a1a;
+  "
+>
+  <div class="card-body">
+    <p>Het aanpassen van je eigen risico is helaas niet gelukt. Je rijtegoed is wel al opgehoogd. Neem contact met ons op via het nummer <strong>085-7734222</strong> om dit probleem te verhelpen.</p>
+  </div>
+</div>
+
+<book-only-info-card
+  ng-if="showBookOnlyNotice"
+/>
+
+<!-- Wait for acceptation alert -->
+<div class="card mw" ng-if="hasRequestedTimeframe(booking) && hasAcceptedTimeframe(booking)" id="ownerText">
+  <div class="card-body card-inverse" style="background-color:#e6a500; color:white;">
+    <span>De wijziging van je reeds geaccepteerde reservering is naar de verhuurder verstuurd. Na goedkeuring ontvang je per mail een bevestiging, pas dan is je wijziging definitief.</span>
+  </div>
+</div>

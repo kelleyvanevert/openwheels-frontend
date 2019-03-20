@@ -4,6 +4,8 @@ angular.module('owm.person.details', [])
 
 .controller('DetailsProfileController', function ($scope, $filter, $timeout, $translate, $window, $log, $state, $stateParams, $mdDialog,
   discountService, contractService, account2Service, person, alertService, personService, authService, me, dutchZipcodeService,
+  $sessionStorage,
+  payRedirect,
   voucherService, $q, appConfig, paymentService, bookingService, invoice2Service, API_DATE_FORMAT, $anchorScroll, Analytics, metaInfoService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard/details/' + $stateParams.pageNumber});
@@ -467,7 +469,6 @@ angular.module('owm.person.details', [])
     $scope.createBookingFlow();
   }
 
-  // to buy the vouchure
   $scope.buyVoucher = function() {
     alertService.load($scope);
     voucherService.calculateRequiredCreditForBooking({booking: $scope.booking.id})
@@ -487,7 +488,14 @@ angular.module('owm.person.details', [])
           throw new Error('Er is een fout opgetreden');
         }
         /* redirect to payment url */
-        redirect(data.url);
+        payRedirect(data.url, {
+          redirect: {
+            state: 'owm.booking.show',
+            params: {
+              bookingId: $scope.booking.id,
+            },
+          },
+        });
       })
       .catch(function (err) {
         alertService.addError(err);
@@ -496,10 +504,5 @@ angular.module('owm.person.details', [])
         alertService.loaded($scope);
       });
   };
-  //redireceht to the pay service
-  function redirect(url) {
-    var redirectTo = appConfig.appUrl + $state.href('owm.finance.payment-result');
-    $window.location.href = url + '?redirectTo=' + encodeURIComponent(redirectTo);
-  }
 
 });
