@@ -122,7 +122,38 @@ angular.module('owm.booking', [
 
         return details;
       }],
-      progress: ['booking', 'contract', 'resource', 'perspective', 'details', '$filter', function (booking, contract, resource, perspective, details, $filter) {
+      account: ['account2Service', function (account2Service) {
+        return account2Service.forMe()
+        .then(function (list) {
+          var any_approved = false;
+          var any_disapproved_account = false;
+
+          // list: Account[]
+          //
+          // interface Account {
+          //   approved: boolean
+          //   iban: string
+          //   id: number
+          //   lastName: string
+          //   person: Person
+          // }
+          for (var i = 0; i < list.length; i++){
+            if (list[i].approved === true) {
+              any_approved = true;
+            }
+            if (list[i].approved === false) {
+              any_disapproved_account = list[i];
+            }
+          }
+
+          return {
+            list: list,
+            approved: !any_disapproved_account && any_approved,
+            disapprovedAccount: any_disapproved_account,
+          };
+        });
+      }],
+      progress: ['account', 'booking', 'contract', 'resource', 'perspective', 'details', '$filter', function (account, booking, contract, resource, perspective, details, $filter) {
 
         if (perspective.pageView !== 'renting') {
           return null;
@@ -135,10 +166,15 @@ angular.module('owm.booking', [
         //  in order to show a step-wise (& progress)-based indication.
         // (Note: these are not linearly ordered!)
 
-        var showPaymentScreen = perspective.isContractHolder &&
+        progress.showPaymentScreen = perspective.isContractHolder &&
           ((details.requested && details.firstTime) || booking.approved === 'BUY_VOUCHER') &&
           ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0;
-      
+
+        if (progress.showPaymentScreen && account.disapprovedAccount) {
+          // => this person has tried to pay, but was disapproved
+          progress.showPaymentScreen = !progress.showPaymentScreen;
+        }
+
         progress.steps = {
           accountCheck: {
             checked: true,
@@ -153,7 +189,7 @@ angular.module('owm.booking', [
           accepted: {
             stress: false,
           },
-          payment: showPaymentScreen ? {
+          payment: (progress.showPaymentScreen || account.disapprovedAccount) ? {
             checked: false,
             stress: true,
             text: 'Reservering betalen',

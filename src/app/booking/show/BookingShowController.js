@@ -9,7 +9,7 @@ angular.module('owm.booking.show', [])
   $log,
   $scope
 ) {
-  // $scope = { me, perspective, details, flowContinuation, resource, booking, contract }
+  // $scope = { account, me, perspective, details, flowContinuation, resource, booking, contract }
 })
 
 .controller('BookingShowRentingController', function (
@@ -34,7 +34,7 @@ angular.module('owm.booking.show', [])
   $sessionStorage,
   $scope
 ) {
-  // $scope = { me, perspective, details, flowContinuation, resource, booking, contract }
+  // $scope = { account, me, perspective, details, flowContinuation, resource, booking, contract }
 
   $scope.getCurrentCredit = function () {
     return voucherService
@@ -491,6 +491,7 @@ angular.module('owm.booking.show', [])
 .controller('BookingShowController', function (
   $q, $timeout, $log, $scope, $location, $filter, $translate, $state, $stateParams, appConfig, API_DATE_FORMAT,
   bookingService, resourceService, invoice2Service, alertService, dialogService,
+  account,
   perspective,
   details,
   progress,
@@ -505,6 +506,7 @@ angular.module('owm.booking.show', [])
   metaInfoService.set({url: appConfig.serverUrl + '/booking/' + booking.id});
   metaInfoService.set({canonical: 'https://mywheels.nl/booking/' + booking.id});
 
+  $scope.account = account;
   $scope.perspective = perspective;
   $scope.details = details;
   $scope.progress = progress; // for renters
@@ -1513,6 +1515,7 @@ angular.module('owm.booking.show', [])
   // check if person is renter and needs to pay the booking
   if($scope.paymentInit && ($scope.userPerspective === 'renter' || $scope.userPerspective === 'contract_holder')) {
 
+/*
     // check if person has already approved bank accounts
     $scope.accountApproved = false;
 
@@ -1530,6 +1533,7 @@ angular.module('owm.booking.show', [])
         }
       }
     });
+*/
 
     $scope.vouchers = null;
     $scope.requiredValue = null;
