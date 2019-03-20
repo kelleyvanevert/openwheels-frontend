@@ -3,6 +3,7 @@
 angular.module('owm.finance.vouchers', [])
 
 .controller('VouchersController', function ($window, $q, $state, $scope, account2Service, appConfig, alertService, voucherService,
+  payRedirect,
   paymentService, bookingService, me, Analytics, metaInfoService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/vouchers'});
@@ -97,7 +98,11 @@ angular.module('owm.finance.vouchers', [])
           throw new Error('Er is een fout opgetreden');
         }
         /* redirect to payment url */
-        redirect(data.url);
+        payRedirect(data.url, {
+          redirect: {
+            state: 'owm.finance.vouchers'
+          },
+        });
       })
       .catch(function (err) {
         alertService.addError(err);
@@ -145,11 +150,6 @@ angular.module('owm.finance.vouchers', [])
     return $q.all(results).catch(function (err) {
       alertService.addError(err);
     });
-  }
-
-  function redirect(url) {
-    var redirectTo = appConfig.appUrl + $state.href('owm.finance.payment-result');
-    $window.location.href = url + '?redirectTo=' + encodeURIComponent(redirectTo);
   }
 
   function checkStatus(approvedStatus) {

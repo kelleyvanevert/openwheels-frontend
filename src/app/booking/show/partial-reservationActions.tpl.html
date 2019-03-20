@@ -1,0 +1,62 @@
+
+<div class="board-computer-control">
+  <div class="card mw">
+    <div class="card-body" style="padding-bottom: 0;">
+      <p class="size-2 reservation-progress-summary" ng-if="progress.reservationCompleted">
+        {{ progress.summary }}
+      </p>
+      <div class="row is-flex" style="padding: 1rem 0; margin: 0 -.5rem !important;">
+        <div class="col-xxs-12 col-xs-6" style="padding: 0;">
+          <a
+            ng-click="editReservationTimeframeDialog($event)"
+            class="mywheels-btn mywheels-btn-action"
+            md-ink-ripple="#4796b6"
+          >
+            <ng-md-icon icon="schedule"></ng-md-icon>
+            {{ details.bookingStarted ? 'Inkorten of verlengen' : 'Begin- of eindtijd wijzigen' }}
+          </a>
+        </div>
+        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!details.bookingStarted && !perspective.isContractor">
+          <a
+            ng-click="extraDriversDialog($event)"
+            class="mywheels-btn mywheels-btn-action"
+            md-ink-ripple="#4796b6"
+          >
+            <ng-md-icon icon="people"></ng-md-icon>
+            Extra bestuurders wijzigen
+          </a>
+        </div>
+        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!details.bookingStarted && !perspective.isContractor">
+          <a
+            ng-click="editRiskReductionDialog($event)"
+            class="mywheels-btn mywheels-btn-action"
+            md-ink-ripple="#4796b6"
+          >
+            <ng-md-icon icon="edit"></ng-md-icon>
+            Eigen risico {{ booking.riskReduction ? 'niet verlagen' : 'verlagen' }}
+          </a>
+        </div>
+        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!details.bookingStarted">
+          <a
+            ng-click="discountCodeDialog($event)"
+            class="mywheels-btn mywheels-btn-action"
+            md-ink-ripple="#4796b6"
+          >
+            <ng-md-icon icon="local_offer"></ng-md-icon>
+            Kortingscode {{ discount.length > 0 ? '' : 'toevoegen' }}
+          </a>
+        </div>
+        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!details.bookingStarted">
+          <a
+            ng-click="cancelReservationDialog($event)"
+            class="mywheels-btn mywheels-btn-action action-cancel"
+            md-ink-ripple="#c00"
+          >
+            <ng-md-icon icon="delete"></ng-md-icon>
+            Reservering annuleren
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

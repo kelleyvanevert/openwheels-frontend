@@ -37,123 +37,117 @@
                 </td>
                 <td class="text-right">{{ extraDrivers.check ? (extraDrivers.price * extraDrivers.drivers.length) : 0 | currency }}</td>
             </tr>
-            <tr ng-if="!readOnlyMode">
-                <td style="padding: 0;" colspan="2">
-                    <div class="pricing-options">
-                        <table>
-                            <!-- Own risk reduction -->
-                            <tr>
-                                <td>
-                                    <div class="media">
-                                        <div class="media-object pull-left">
-                                            <input id="bookingRiskReduction" type="checkbox" ng-disabled="redemptionPending[booking.details.id]" ng-model="booking.details.riskReduction" ng-click="toggleRedemption()" />
-                                        </div>
-                
-                                        <div class="media-body" style="padding:0">
-                                            <p>
-                                                <label class="mywheels-form__label mywheels-form__label--no-margin" for="bookingRiskReduction">Eigen risico verlagen</label><br />
-                                                Het eigen risico bij schade is 500 euro. Voor 3,50 euro per dag verlaag je het eigen risico met 250 euro.
-                                                <a href="https://mywheels.nl/autodelen/hoe-huren-werkt/verzekering/" target="_blank">Lees meer</a>
-                                            </p>
-                                            <p class="text-danger" ng-show="voucherError.show">
-                                                {{'PERSON.CONTRACT.OWN_RISK_NOT_ALLOWED' | translate }}
-                                                <a ui-sref="contractchoice">{{'PERSON.CONTRACT.CHANGE_CONTRACT' | translate }}</a>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </td>
-                
-                                <td class="text-right">
-                                    <inline-spinner ng-if="redemptionPending[booking.details.id]" />
-                                    <span ng-if="!redemptionPending[booking.details.id]">{{ booking.details.booking_price.redemption | currency }}</span>
-                                </td>
-                            </tr>
-                
-                            <!-- Extra driver -->
-                            <tr ng-if="booking.details.contract_type === 60">
-                                <td>
-                                    <div class="media">
-                                        <div class="media-object pull-left">
-                                            <input type="checkbox" ng-model="extraDrivers.check" ng-click="toggleExtraDrivers(undefined, $event)" id="extraDriversCheck" />
-                                        </div>
-                
-                                        <div class="media-body" style="padding:0">
-                                            <form style="margin: 0"
-                                                class="mywheels-form"
-                                                name="formExtraDriver"
-                                                ng-submit="formExtraDriver.$valid && addExtraDriver()"
-                                                novalidate
-                                            >
-                                                <p>
-                                                    <label class="label--no-margin" for="extraDriversCheck">Extra bestuurders toevoegen</label><br />
-                                                    Voor 1,25 euro per persoon kun je bestuurders toevoegen. Alleen toegevoegde bestuurders mogen rijden.
-                                                </p>
-                                                
-                                                <div ng-if="extraDrivers.check">
-                                                    <ul class="list-group" ng-if="extraDrivers.drivers.length > 0">
-                                                        <!-- persons -->
-                                                        <li class="list-group-item"
-                                                            ng-class="'status-' + inviteRequest.status"
-                                                            ng-repeat="inviteRequest in extraDrivers.drivers"
-                                                        >
-                                                            <a href="#" class="pull-right hidden-xs" ng-if="inviteRequest.recipient.id" ng-click="removeExtraDriver(inviteRequest)">{{ 'REMOVE' | translate }}</a>
-                                                            <div ng-if="inviteRequest.status === 'accepted'">
-                                                                <div><strong class="text-success">Geaccepteerd</strong></div>
-                                                                <div><strong>{{ inviteRequest.recipient.firstName }} {{ inviteRequest.recipient.preposition }} {{ inviteRequest.recipient.surname }}</strong> &lt;{{ inviteRequest.recipient.email }}&gt;</div>
-                                                                <div><em>Mag meerijden op deze boeking.</em></div>
-                                                            </div>
-                                                            <div ng-if="inviteRequest.status === 'invited'">
-                                                                <div><strong class="text-warning">Uitgenodigd</strong></div>
-                                                                <div>&lt;{{ inviteRequest.recipient.email }}&gt;</div>
-                                                                <div><em>Let op: pas als de uitnodiging is geaccepteerd mag deze gebruiker meerijden.</em></div>
-                                                            </div>
-                                                            <div class="visible-xs-block" style="text-align: right;">
-                                                                <a href="#" ng-if="inviteRequest.recipient.id" ng-click="removeExtraDriver(inviteRequest)">{{ 'REMOVE' | translate }}</a>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-
-                                                    <div class="input-group" style="width: 100%;"
-                                                        ng-class="{ 'has-error' : formExtraDriver.email.$error.email }"
-                                                        ng-show="extraDrivers.drivers.length < 3"
-                                                    >
-                                                        <input type="email"
-                                                            ng-disabled="extraDrivers.drivers.length >= 3"
-                                                            required
-                                                            name="email"
-                                                            class="form-control"
-                                                            placeholder="Emailadres medebestuurder"
-                                                            ng-focus="toggleExtraDrivers(true)"
-                                                            ng-blur="(extraDrivers.new && formExtraDriver.$valid) || toggleExtraDrivers(false)"
-                                                            ng-model="extraDrivers.new" />
-                                                        
-                                                        <div class="input-group-btn">
-                                                        <button class="btn btn-default"
-                                                            ng-disabled="formExtraDriver.email.$error.required || formExtraDriver.email.$error.email"
-                                                            ng-click="addPerson($index)">{{ 'ADD' | translate }}</button>
-                                                        </div>
-                                                    </div>
-                                                    <p ng-show="extraDrivers.drivers.length === 3">
-                                                        Je hebt het maximum aantal van 3 medebestuurders toegevoegd.
-                                                    </p>
-                                                </div>
-
-                                            </form>
-                                        </div>
-                                    </div>
-                                </td>
-
-                                <td class="text-right">
-                                    <span>{{ extraDrivers.check ? (extraDrivers.price * extraDrivers.drivers.length) : 0 | currency }}</span>
-                                </td>
-                            </tr>
-                            <!-- //EXTRA DRIVER -->
-                        </table>
+            <!-- Own risk reduction -->
+            <tr class="bt" ng-if="!readOnlyMode">
+                <td>
+                    <md-checkbox
+                        class="md-primary"
+                        style="margin: 0;"
+                        ng-disabled="redemptionPending[booking.details.id]"
+                        ng-model="booking.details.riskReduction"
+                        ng-change="toggleRedemption()"
+                    >
+                        <strong style="font-weight: 600;">Eigen risico verlagen</strong>
+                    </md-checkbox>
+                    <div style="margin-left: 30px;">
+                        Het eigen risico bij schade is 500 euro. Voor 3,50 euro per dag verlaag je het eigen risico met 250 euro.
+                        <a href="https://mywheels.nl/autodelen/hoe-huren-werkt/verzekering/" target="_blank">Lees meer</a>
+                        
+                        <p style="margin: 5px 5px 5px 0;" class="text-danger" ng-show="voucherError.show">
+                            {{'PERSON.CONTRACT.OWN_RISK_NOT_ALLOWED' | translate }}
+                            <a ui-sref="contractchoice">{{'PERSON.CONTRACT.CHANGE_CONTRACT' | translate }}</a>
+                        </p>
                     </div>
+                </td>
+
+                <td class="text-right">
+                    <inline-spinner ng-if="redemptionPending[booking.details.id]" />
+                    <span ng-if="!redemptionPending[booking.details.id]">{{ booking.details.booking_price.redemption | currency }}</span>
                 </td>
             </tr>
 
-            <tr ng-class="{ bt: readOnlyMode }">
+            <!-- Extra driver -->
+            <tr class="bt" ng-if="booking.details.contract_type === 60 && !readOnlyMode">
+                <td>
+                    <form style="margin: 0"
+                        class="mywheels-form"
+                        name="formExtraDriver"
+                        ng-submit="formExtraDriver.$valid && addExtraDriver()"
+                        novalidate
+                    >
+                        <md-checkbox
+                            class="md-primary"
+                            style="margin: 0;"
+                            ng-model="extraDrivers.check"
+                            ng-change="toggleExtraDrivers(undefined, $event)"
+                        >
+                            <strong style="font-weight: 600;">Extra bestuurders toevoegen</strong>
+                        </md-checkbox>
+                        <div style="margin-left: 30px;">
+                            Voor 1,25 euro per persoon kun je bestuurders toevoegen. Alleen toegevoegde bestuurders mogen rijden.
+                            
+                            <div ng-if="extraDrivers.check">
+                                <ul class="list-unstyled"
+                                    ng-if="extraDrivers.drivers.length > 0"
+                                    style="margin-top: .5rem;">
+                                    <!-- persons -->
+                                    <li ng-class="'status-' + inviteRequest.status"
+                                        ng-repeat="inviteRequest in extraDrivers.drivers"
+                                        style="margin-top: .5rem;"
+                                    >
+                                        <a href="#" class="pull-right" ng-if="inviteRequest.recipient.id" ng-click="removeExtraDriver(inviteRequest)">{{ 'REMOVE' | translate }}</a>
+                                        <div ng-if="inviteRequest.status === 'accepted'">
+                                            <span uib-tooltip="Mag meerijden op deze boeking.">
+                                                <strong class="text-success">Geaccepteerd:</strong>
+                                                {{ inviteRequest.recipient.firstName }} {{ inviteRequest.recipient.preposition }} {{ inviteRequest.recipient.surname }}
+                                                &lt;{{ inviteRequest.recipient.email }}&gt;
+                                            </span>
+                                        </div>
+                                        <div ng-if="inviteRequest.status === 'invited'">
+                                            <span uib-tooltip="Let op: pas als de uitnodiging is geaccepteerd mag deze gebruiker meerijden.">
+                                                <strong class="text-warning">Uitgenodigd:</strong>
+                                                &lt;{{ inviteRequest.recipient.email }}&gt;
+                                            </span>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <div class="input-group"
+                                    style="width: 100%; margin-top: 1rem;"
+                                    ng-class="{ 'has-error' : formExtraDriver.email.$error.email }"
+                                    ng-show="extraDrivers.drivers.length < 3"
+                                >
+                                    <input type="email"
+                                        ng-disabled="extraDrivers.drivers.length >= 3"
+                                        required
+                                        name="email"
+                                        class="form-control"
+                                        placeholder="Emailadres medebestuurder"
+                                        ng-focus="toggleExtraDrivers(true)"
+                                        ng-blur="(extraDrivers.new && formExtraDriver.$valid) || toggleExtraDrivers(false)"
+                                        ng-model="extraDrivers.new" />
+                                    
+                                    <div class="input-group-btn">
+                                    <button class="btn btn-default"
+                                        ng-disabled="formExtraDriver.email.$error.required || formExtraDriver.email.$error.email"
+                                        ng-click="addPerson($index)">{{ 'ADD' | translate }}</button>
+                                    </div>
+                                </div>
+                                <p ng-show="extraDrivers.drivers.length === 3">
+                                    Je hebt het maximum aantal van 3 medebestuurders toegevoegd.
+                                </p>
+                            </div>
+
+                        </div>
+                    </form>
+                </td>
+
+                <td class="text-right">
+                    <span>{{ extraDrivers.check ? (extraDrivers.price * extraDrivers.drivers.length) : 0 | currency }}</span>
+                </td>
+            </tr>
+
+            <tr class="bt">
                 <td>
                     <div>
                         Kilometerkosten

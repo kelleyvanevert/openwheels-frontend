@@ -1,0 +1,133 @@
+
+<md-dialog flex-xs="100" flex-sm="70" flex-md="50" flex-lg="40" flex-xl="30"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3 class="with-close-button">
+      Extra bestuurders wijzigen
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+    
+    <div ng-if="extraDrivers.loading || currentCredit === null">
+      <spinner />
+    </div>
+
+    <form name="newEmailsForm" class="mywheels-form" ng-if="!extraDrivers.loading && currentCredit !== null">
+
+      <div ng-if="extraDrivers.inviteRequests.length > 0">
+        <div ng-if="extraDrivers.accepted.length > 0">
+          <p>De volgende mensen mogen meerijden op deze rit:</p>
+          <ul style="margin-bottom: 1rem;">
+            <li ng-repeat="inviteRequest in extraDrivers.accepted"
+                style="padding: .2rem 0;">
+              <span class="pull-right">
+                <inline-confirm
+                  ng-if="!details.bookingStarted && contract.type.id === 60"
+                  initial-text="verwijderen"
+                  confirm-text="zeker?"
+                  on-confirm="extraDrivers.removeForSure(inviteRequest)"
+                ></inline-confirm>
+              </span>
+              <span style="display: block; overflow: hidden; text-overflow: ellipsis;">
+                {{ inviteRequest.recipient.firstName }} &lt;{{ inviteRequest.recipient.email }}&gt;
+              </span>
+            </li>
+          </ul>
+        </div>
+        
+        <div ng-if="extraDrivers.invited.length > 0">
+          <p>
+            De volgende mensen zijn uitgenodigd, maar hebben deze uitnodiging nog niet geaccepteerd.
+            <em>Let op: pas als een uitnodigde het verzoek heeft geaccepteerd mag hij/zij verzekerd meerijden.</em>
+          </p>
+          <ul style="margin-bottom: 1rem;">
+            <li ng-repeat="inviteRequest in extraDrivers.invited"
+                style="padding: .2rem 0;">
+              <span class="pull-right">
+                <inline-confirm
+                  ng-if="!details.bookingStarted && contract.type.id === 60"
+                  initial-text="verwijderen"
+                  confirm-text="zeker?"
+                  on-confirm="extraDrivers.removeForSure(inviteRequest)"
+                ></inline-confirm>
+              </span>
+              <span style="display: block; overflow: hidden; text-overflow: ellipsis;">
+                &lt;{{ inviteRequest.recipient.email }}&gt;
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <p>
+        Op een MyWheels Go contract kun je tot 3 personen extra toevoegen per rit, voor {{ 1.25 | currency }} euro per persoon.
+        <span ng-if="extraDrivers.inviteRequests.length === 3">Je hebt in dit geval dus al het maximum aantal extra bestuurders toegevoegd.</span>
+        <span ng-if="extraDrivers.inviteRequests.length > 0 && extraDrivers.inviteRequests.length < 3">
+          Je kunt dus nog <strong>{{ 3 - extraDrivers.inviteRequests.length }}</strong> <span>{{ 3 - extraDrivers.inviteRequests.length === 1 ? 'persoon' : 'personen' }}</span> uitnodigen.
+        </span>
+        <span ng-if="extraDrivers.inviteRequests.length < 3">
+          Voeg hieronder de email-adressen toe van de personen die je als extra bestuurders wilt toevoegen.
+        </span>
+      </p>
+
+      <div ng-if="extraDrivers.inviteRequests.length < 3">
+        <div ng-repeat="newEmail in newEmails">
+          <ng-form
+            name="newEmailForm"
+          >
+            <div
+              class="form-group mw-button"
+              ng-class="{ 'has-error': newEmailForm.email.$touched && newEmailForm.email.$invalid }"
+            >
+              <input
+                type="email"
+                name="email"
+                class="form-control"
+                ng-model="newEmail.text"
+                ng-pattern="/^[^@]+@[a-z.]+\.[a-z.]{2,5}$/"
+                required
+              />
+              <md-button class="md-icon-button" ng-if="$index > 0" ng-click="removeEmailLine(newEmail)">
+                <ng-md-icon icon="close" aria-hidden="true"></ng-md-icon>
+              </md-button>
+              <div class="text-danger" ng-show="newEmailForm.email.$touched && newEmailForm.email.$invalid">
+                Voer een geldig email-adres in.
+              </div>
+            </div>
+          </ng-form>
+        </div>
+        <p ng-if="newEmails.length < (3 - extraDrivers.inviteRequests.length)">
+          <a ng-click="addEmailLine()"><ng-md-icon icon="add_circle"></ng-md-icon> nog iemand toevoegen</a>
+        </p>
+
+        <div ng-if="newEmails.length * 1.25 > currentCredit">
+          <p>
+            Voor het toevoegen van deze extra bestuurder<span ng-if="newEmails.length > 0">s</span> is extra rijtegoed vereist.
+            Nadat je je rijtegoed hebt opgehoogd, worden de uitnodigingen automatisch verstuurd.
+          </p>
+          <p class="dialog-buttons-centered">
+            <button class="mywheels-btn mywheels-btn-call-to-action"
+                    md-ink-ripple="#4b702c"
+                    ng-click="pay((newEmails.length * 1.25) - currentCredit)"
+                    ng-disabled="newEmailsForm.$invalid"
+                    style="white-space: nowrap;">
+              Koop {{ (newEmails.length * 1.25) - currentCredit | currency }} rijtegoed &raquo;
+            </button>
+          </p>
+        </div>
+        <div ng-if="newEmails.length * 1.25 <= currentCredit">
+          <p class="dialog-buttons-centered">
+            <button class="mywheels-btn mywheels-btn-call-to-action"
+                    md-ink-ripple="#4b702c"
+                    ng-click="addDirectly()"
+                    ng-disabled="newEmailsForm.$invalid"
+                    style="white-space: nowrap;">
+              Extra bestuurder<span ng-if="newEmails.length > 1">s</span> toevoegen
+            </button>
+          </p>
+        </div>
+      </div>
+    </form>
+  </md-dialog-content>
+</md-dialog>

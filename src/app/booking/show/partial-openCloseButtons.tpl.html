@@ -1,0 +1,39 @@
+
+<!-- Open and close buttons -->
+<div class="board-computer-control"
+     ng-show="showBoardComputerButtons">
+  <div class="card mw">
+    <div class="card-heading" ng-if="$root.isWindowSizeSM">
+      <h3 class="card-title">Openen en sluiten</h3>
+    </div>
+    <div class="card-body" id="resource__boardcomputer">
+      <p ng-if="!enableBoardComputerButtons && $root.isWindowSizeSM">
+        Als alles in orde is, kun je aan het begin van de rit de auto openen en sluiten met onderstaande knoppen.
+      </p>
+      <div class="text-center">
+        <ul class="list-inline">
+          <li>
+            <button title="Open de auto"
+                    ng-click="boardComputerControl('openDoor', $event)"
+                    class="mywheels-btn mywheels-btn-big mywheels-btn-normal"
+                    ng-class="{ 'mw-disabled': !enableBoardComputerButtons }"
+                    ng-disabled="!enableBoardComputerButtons"
+                    md-ink-ripple="#4b702c">
+              <ng-md-icon icon="lock_open" size="36" style="width: 36px; height: 36px;"></ng-md-icon>
+            </button>
+          </li>
+          <li>
+            <button title="Sluit de auto"
+                    ng-click="boardComputerControl('closeDoor', $event)"
+                    class="mywheels-btn mywheels-btn-big mywheels-btn-error"
+                    ng-class="{ 'mw-disabled': !enableBoardComputerButtons }"
+                    ng-disabled="!enableBoardComputerButtons"
+                    md-ink-ripple="#9a3d26">
+              <ng-md-icon icon="lock" size="36" style="width: 36px; height: 36px;"></ng-md-icon>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

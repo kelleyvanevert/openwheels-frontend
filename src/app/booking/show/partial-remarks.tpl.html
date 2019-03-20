@@ -1,0 +1,20 @@
+
+<!-- Remarks -->
+<div class="card mw"
+    ng-if="(booking.remarkRequester || booking.remarkAuthorizer)">
+  <div class="card-heading">
+    <h3 class="card-title">Opmerkingen</h3>
+  </div>
+  <div class="card-body">
+    <div ng-if="booking.remarkRequester">
+      <div><strong>{{ booking.person | fullname }}</strong></div>
+      <div class="speech-bubble" ng-bind-html="booking.remarkRequester | toParagraphs"></div>
+    </div>
+    <div ng-if="booking.remarkAuthorizer" ng-style="{
+      'margin-top': booking.remarkRequester ? '1rem' : '0'
+    }">
+      <div><strong>{{ booking.resource.owner | fullname }}</strong></div>
+      <div class="speech-bubble" ng-bind-html="booking.remarkAuthorizer | toParagraphs"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+
+<div class="card mw"
+    ng-if="invoiceLines.length > 0">
+
+  <!--
+    Received invoices
+    i.e. viewing from renter(/contractor) perspective
+  -->
+  <div ng-if="perspective === 'renter'">
+    <div class="card-heading">
+      <h3 class="card-title">
+        Kosten
+      </h3>
+    </div>
+    <div class="card-body">
+      <table class="table financial">
+        <tr>
+          <th>Omschrijving</th>
+          <th class="text-right xs-collapse">Aantal</th>
+          <th class="text-right xs-collapse">Prijs</th>
+          <th class="text-right">Totaal</th>
+          <th class="text-right xs-collapse">Btw</th>
+        </tr>
+        <tr ng-repeat="invoiceline in invoiceLines">
+          <td>{{ invoiceline.description }}</td>
+          <td class="number xs-collapse">{{ invoiceline.quantity }}</td>
+          <td class="number xs-collapse">{{ invoiceline.type == 'sent' ? -invoiceline.price : invoiceline.price | currency }}</td>
+          <td class="number" ng-class="{'text-pos': invoiceline.total < 0}">{{ invoiceline.total | currency }}</td>
+          <td class="number xs-collapse">{{ invoiceline.taxRate }}%</td>
+        </tr>
+        <tr>
+          <td colspan="1"><b>Totaal te {{(receivedInvoicesTotalAmount > 0 ? 'betalen' : 'ontvangen')}}</b></td>
+          <td colspan="2" class="xs-collapse"></td>
+          <td class="text-right">
+              <b>{{(receivedInvoicesTotalAmount < 0 ? -1 * receivedInvoicesTotalAmount : receivedInvoicesTotalAmount) | currency }}</b>
+          </td>
+          <td class="xs-collapse"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!--
+    Sent invoices
+    i.e. viewing from owner perspective
+  -->
+  <div ng-if="perspective === 'owner'">
+    <div class="card-heading">
+      <h3 class="card-title">
+        Opbrengsten
+      </h3>
+    </div>
+    <div class="card-body">
+      <table class="table financial">
+        <tr>
+          <th>Omschrijving</th>
+          <th class="text-right xs-collapse">Aantal</th>
+          <th class="text-right xs-collapse">Prijs</th>
+          <th class="text-right">Totaal</th>
+          <th class="text-right xs-collapse">Btw</th>
+        </tr>
+        <tr ng-repeat="invoiceline in invoiceLines">
+          <td>{{ invoiceline.description }}</td>
+          <td class="number xs-collapse">{{ invoiceline.quantity }}</td>
+          <td class="number xs-collapse">{{ invoiceline.type == 'sent' ? invoiceline.price : -invoiceline.price | currency }}</td>
+          <td class="number" ng-if="invoiceline.type == 'sent'" ng-class="{'text-neg': invoiceline.total < 0}">{{ invoiceline.total | currency }}</td>
+          <td class="number" ng-if="invoiceline.type == 'received'" ng-class="{'text-neg': invoiceline.total > 0}">{{ -invoiceline.total | currency }}</td>
+          <td class="number xs-collapse">{{ invoiceline.taxRate }}%</td>
+        </tr>
+        <tr>
+          <td colspan="1"><b>Totaal te {{(sentInvoicesTotalAmount - receivedInvoicesTotalAmount < 0 ? 'betalen' : 'ontvangen')}} </b></td>
+          <td colspan="2" class="xs-collapse"></td>
+          <td class="text-right">
+            <b>{{ (sentInvoicesTotalAmount - receivedInvoicesTotalAmount < 0 ? -1* (sentInvoicesTotalAmount - receivedInvoicesTotalAmount) : sentInvoicesTotalAmount - receivedInvoicesTotalAmount) | currency }}</b>
+          </td>
+          <td class="xs-collapse"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

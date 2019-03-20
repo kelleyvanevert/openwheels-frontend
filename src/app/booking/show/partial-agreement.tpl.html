@@ -1,0 +1,17 @@
+
+<!-- Agreement -->
+<div class="card mw"
+    ng-if="booking.ok &&
+            accepted &&
+            !requested &&
+            !bookingEnded &&
+            !booking.resource.boardcomputer">
+  <div class="card-body">
+    <p>
+      <a href="{{ allowAgreementUrl }}" target="_blank" ng-href="{{ allowAgreementUrl }}">
+        <ng-md-icon icon="file_download" class="btn-link"></ng-md-icon>
+        Download huurovereenkomst
+      </a>
+    </p>
+  </div>
+</div>
