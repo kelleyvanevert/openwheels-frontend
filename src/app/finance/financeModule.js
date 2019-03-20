@@ -165,13 +165,12 @@ angular.module('owm.finance', [
           id: $stateParams.id,
           token: $stateParams.token,
         })
-//        .then(function (instantPayment) {
-//          return instantPayment;
-//        })
-//        .catch(function (e) {
-//          /*jshint -W087 */
-//          debugger;
-//        })
+        .then(function (instantPayment) {
+          return instantPayment;
+        })
+        .catch(function (e) {
+          return null;
+        })
         ;
       }],
     },

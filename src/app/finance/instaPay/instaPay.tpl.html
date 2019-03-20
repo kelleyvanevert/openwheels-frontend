@@ -4,6 +4,19 @@
     <div class="rpad col-md-8 col-md-push-2">
 
       <div
+        ng-if="notFound"
+      >
+        <h1 class="page-title card-pad-left" style="text-align: left;">
+          Pagina niet gevonden
+        </h1>
+        <div class="card mw info-card error">
+          <div class="card-body">
+            <p>Het spijt ons, maar we konden de opgegeven pagina niet vinden.</p>
+          </div>
+        </div>
+      </div>
+
+      <div
         class="card mw info-card error"
         ng-if="paymentFailed"
       >
@@ -34,7 +47,7 @@
         </div>
       </div>
 
-      <div ng-if="!paymentSucceeded">
+      <div ng-if="!paymentSucceeded && !notFound">
         <h1 class="page-title card-pad-left" style="text-align: left;">
           Openstaande factuur
         </h1>

@@ -24,6 +24,10 @@ angular.module('owm.finance.instapay', [])
   metaInfoService.set({url: appConfig.serverUrl + '/betaal/' + $stateParams.id + '/' + $stateParams.token});
   metaInfoService.set({canonical: 'https://mywheels.nl/betaal/' + $stateParams.id + '/' + $stateParams.token});
 
+  if (!orderStatusId && !instantPayment) {
+    $scope.notFound = true;
+  }
+
   if (orderStatusId) {
     $scope.paymentSucceeded = paymentSucceeded;
     $scope.paymentFailed = paymentFailed;
