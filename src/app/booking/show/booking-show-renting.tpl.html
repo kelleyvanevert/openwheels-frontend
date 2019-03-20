@@ -8,104 +8,40 @@
       </h1>
     </div>
   </div>
-  <div class="row">
-    <div class="rpad col-md-8 col-md-push-4">
 
-      <!-- Flow continuation notices -->
-      <div ng-if="flowContinuation.error === 'error_payment_alter_timeframe'"
-        class="card mw"
-        style="
-          background: #ffecc2;
-          color: #911a1a;
-        "
-      >
-        <div class="card-body">
-          <p>De betaling is niet gelukt, waardoor je rijtegoed niet is opgehoogd. Je verzoek tot wijziging is niet aangevraagd.</p>
+  <!-- MOBILE VIEW -->
+  <div class="row visible-xs-block visible-sm-block">
+    <div class="rpad col-xs-12">
+      <div ng-include="'booking/show/partial-notices.tpl.html'"></div>
+
+      <div style="margin-top: -2rem; margin-bottom: 1rem;">
+
+        <!-- accepted timeframe -->
+        <div class="h-escape" ng-if="booking.beginBooking">
+          <booking-timeframe-indicator
+            frame="{
+              'pickup': booking.beginBooking,
+              'return': booking.endBooking,
+            }"
+          />
         </div>
+
+        <!-- requested timeframe, if no accepted timeframe yet -->
+        <div class="h-escape" ng-if="!booking.beginBooking && booking.beginRequested">
+          <booking-timeframe-indicator
+            frame="{
+              'pickup': booking.beginRequested,
+              'return': booking.endRequested,
+            }"
+          />
+        </div>
+        
       </div>
+
+      <!-- is this the correct condition ? -->
+      <div ng-include="'booking/show/partial-reservationProgressCard.tpl.html'"
+        ng-if="!progress.reservationCompleted && !details.cancelled && !details.rejected"></div>
       
-      <div ng-if="flowContinuation.error === 'error_api_alter_timeframe'"
-        class="card mw"
-        style="
-          background: #ffecc2;
-          color: #911a1a;
-        "
-      >
-        <div class="card-body">
-          <p>Het versturen van je wijziging is helaas niet gelukt. Je rijtegoed is wel al opgehoogd. Neem contact met ons op via het nummer <strong>085-7734222</strong> om dit probleem te verhelpen.</p>
-        </div>
-      </div>
-      
-      <div ng-if="flowContinuation.error === 'error_payment_add_extra_drivers'"
-        class="card mw"
-        style="
-          background: #ffecc2;
-          color: #911a1a;
-        "
-      >
-        <div class="card-body">
-          <p>De betaling is niet gelukt, waardoor je rijtegoed niet is opgehoogd. Hierdoor konden de extra bestuurders niet worden uitgenodigd.</p>
-        </div>
-      </div>
-      
-      <div ng-if="flowContinuation.error === 'error_api_add_extra_drivers'"
-        class="card mw"
-        style="
-          background: #ffecc2;
-          color: #911a1a;
-        "
-      >
-        <div class="card-body">
-          <p>Het automatisch uitnodigen van de extra bestuurders is helaas niet gelukt. Je rijtegoed is wel al opgehoogd. Neem contact met ons op via het nummer <strong>085-7734222</strong> om dit probleem te verhelpen.</p>
-        </div>
-      </div>
-
-      <div ng-if="flowContinuation.error === 'error_payment_set_riskreduction'"
-        class="card mw"
-        style="
-          background: #ffecc2;
-          color: #911a1a;
-        "
-      >
-        <div class="card-body">
-          <p>De betaling is niet gelukt, waardoor je rijtegoed niet is opgehoogd. Hierdoor is het niet gelukt je eigen risico aan te passen.</p>
-        </div>
-      </div>
-      
-      <div ng-if="flowContinuation.error === 'error_api_set_riskreduction'"
-        class="card mw"
-        style="
-          background: #ffecc2;
-          color: #911a1a;
-        "
-      >
-        <div class="card-body">
-          <p>Het aanpassen van je eigen risico is helaas niet gelukt. Je rijtegoed is wel al opgehoogd. Neem contact met ons op via het nummer <strong>085-7734222</strong> om dit probleem te verhelpen.</p>
-        </div>
-      </div>
-
-      <book-only-info-card
-        ng-if="showBookOnlyNotice"
-      />
-
-      <!-- Wait for acceptation alert -->
-      <div class="card mw" ng-if="hasRequestedTimeframe(booking) && hasAcceptedTimeframe(booking)" id="ownerText">
-        <div class="card-body card-inverse" style="background-color:#e6a500; color:white;">
-          <span>De wijziging van je reeds geaccepteerde reservering is naar de verhuurder verstuurd. Na goedkeuring ontvang je per mail een bevestiging, pas dan is je wijziging definitief.</span>
-        </div>
-      </div>
-
-      <cancellation-info-card
-        ng-if="details.cancelled"
-        booking="booking"
-      />
-
-      <rejection-info-card
-        ng-if="details.rejected"
-        booking="booking"
-      />
-
-
       <!-- Je bent zelf contractant (niet de contracthouder) -->
       <div class="card mw"
         ng-if="!perspective.isContractHolder"
@@ -120,6 +56,94 @@
 
       <div ng-include="'booking/show/partial-renterInitialPayment.tpl.html'"></div>
 
+      <cancellation-info-card
+        ng-if="details.cancelled"
+        booking="booking"
+      />
+
+      <rejection-info-card
+        ng-if="details.rejected"
+        booking="booking"
+      />
+
+
+      <!-- After reservation completed, and before the booking has (really) ended -->
+      <div ng-if="progress.reservationCompleted && !bookingEndedReally">
+        <div ng-include="'booking/show/partial-openCloseButtons.tpl.html'" ng-if="!perspective.isContractor"></div>
+      </div>
+
+
+      <!-- After reservation completed, and before the booking has started -->
+      <div ng-if="progress.reservationCompleted && !details.bookingStarted">
+        <div ng-include="'booking/show/partial-reservationActions.tpl.html'"></div>
+        <div ng-include="'booking/show/partial-renterHowto.tpl.html'"></div>
+      </div>
+
+      <div ng-include="'booking/show/partial-bookingInfoCard.tpl.html'"></div>
+
+      <!-- While in the reservation process -->
+      <div ng-if="!progress.reservationCompleted">
+        <div ng-include="'booking/show/partial-alternatives.tpl.html'" ng-if="!perspective.isContractor"></div>
+      </div>
+
+
+      <!-- After reservation completed -->
+      <div ng-if="progress.reservationCompleted">
+        <div ng-include="'booking/show/partial-agreement.tpl.html'"></div>
+        <div ng-include="'booking/show/partial-renterDiscountInfo.tpl.html'"></div>
+      </div>
+
+
+      <!-- remarks are not for contractors (non-renting contract holders) -->
+      <div ng-include="'booking/show/partial-remarks.tpl.html'" ng-if="!perspective.isContractor"></div>
+
+
+      <!-- After reservation completed, and before the booking has (really) ended -->
+      <div ng-if="progress.reservationCompleted && !bookingEndedReally">
+        <div ng-include="'booking/show/partial-map.tpl.html'"></div>
+      </div>
+
+
+      <!-- After the trip -->
+      <div ng-if="accepted && bookingEnded">
+        <div ng-include="'booking/show/partial-kmCheck.tpl.html'" ng-if="!perspective.isContractor"></div>
+        <div ng-include="'booking/show/partial-declarations.tpl.html'" ng-if="allowDeclarations && !perspective.isContractor"></div>
+        <div ng-include="'booking/show/partial-placeReview.tpl.html'" ng-if="showReviewTeaser && !perspective.isContractor"></div>
+        <booking-invoices booking="booking" perspective="renter" ng-if="!details.requested && booking.approved === 'OK'"></booking-invoices>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DESKTOP (/TABLET) VIEW -->
+  <div class="row hidden-xs hidden-sm">
+    <div class="rpad col-md-8 col-md-push-4">
+
+      <div ng-include="'booking/show/partial-notices.tpl.html'"></div>
+
+      <cancellation-info-card
+        ng-if="details.cancelled"
+        booking="booking"
+      />
+
+      <rejection-info-card
+        ng-if="details.rejected"
+        booking="booking"
+      />
+
+      <!-- Je bent zelf contractant (niet de contracthouder) -->
+      <div class="card mw"
+        ng-if="!perspective.isContractHolder"
+      >
+        <div class="card-body">
+          <p>
+            <ng-md-icon icon="info_outline"></ng-md-icon>
+            Deze boeking is gemaakt op het {{ contract.type.name }} contract van {{ contract.contractor.firstName }}.
+          </p>
+        </div>
+      </div>
+
+      <div ng-include="'booking/show/partial-renterInitialPayment.tpl.html'"></div>
 
       <!-- While in the reservation process -->
       <div ng-if="!progress.reservationCompleted">

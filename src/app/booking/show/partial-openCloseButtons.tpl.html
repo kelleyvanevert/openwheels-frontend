@@ -3,11 +3,11 @@
 <div class="board-computer-control"
      ng-show="showBoardComputerButtons">
   <div class="card mw">
-    <div class="card-heading">
+    <div class="card-heading" ng-if="$root.isWindowSizeSM">
       <h3 class="card-title">Openen en sluiten</h3>
     </div>
     <div class="card-body" id="resource__boardcomputer">
-      <p ng-if="!enableBoardComputerButtons">
+      <p ng-if="!enableBoardComputerButtons && $root.isWindowSizeSM">
         Als alles in orde is, kun je aan het begin van de rit de auto openen en sluiten met onderstaande knoppen.
       </p>
       <div class="text-center">

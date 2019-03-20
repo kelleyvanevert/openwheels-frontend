@@ -29,7 +29,7 @@
       {{ resource.location }} {{ resource.streetNumber }} <small>{{ resource.city  | toTitleCase }}</small>
     </p>
 
-    <div style="margin-bottom: 1rem;">
+    <div style="margin-bottom: 1rem;" class="hidden-xs hidden-sm">
 
       <!-- accepted timeframe -->
       <div class="h-escape" ng-if="booking.beginBooking">
@@ -50,6 +50,7 @@
           }"
         />
       </div>
+
     </div>
 
     <p ng-if="perspective.isRenter && discount.length > 0">

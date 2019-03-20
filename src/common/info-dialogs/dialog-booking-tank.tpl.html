@@ -1,0 +1,15 @@
+
+<md-dialog flex="100"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3 class="with-close-button">
+      Hoe tank ik?
+      
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+
+    <div ng-bind-html="params.booking.fuelManual | toParagraphs | highlightPin"></div>
+  </md-dialog-content>
+</md-dialog>

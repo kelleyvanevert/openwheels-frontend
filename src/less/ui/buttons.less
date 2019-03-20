@@ -145,6 +145,33 @@ md-button.mw-green {
 .mywheels-btn-border:hover {
     background: #e0e0e0;
 }
+.mywheels-btn-action {
+    margin: .5rem;
+    padding: 1rem;
+    background: white;
+    border: 2px solid #e5e5e5;
+    height: auto;
+    font-weight: 600;
+
+    transition: all .1s ease;
+}
+.mywheels-btn-action:hover {
+    background: #d1e6ef;
+    border-color: @mywheels-blue;
+
+    &, ng-md-icon {
+        color: darken(@mywheels-blue, 10%);
+    }
+
+    &.action-cancel {
+        background: #f7d8d8;
+        border-color: #c00;
+
+        &, ng-md-icon {
+            color: darken(#c00, 10%);
+        }
+    }
+}
 .mywheels-btn-secondary {
     padding: .5em 0;
     background: white;
