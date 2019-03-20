@@ -21,6 +21,8 @@
     "angular": false,
     "FastClick": true,
     "moment": false,
+    "debugger": false,
+    "console": false,
     "_": false,
     "$": false,
     "alert": false,

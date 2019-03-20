@@ -294,6 +294,25 @@ a:hover {
             }
         }
     }
+
+    tr.expandeable {
+        cursor: pointer;
+        outline: none;
+        
+        &.expanded,
+        &:hover {
+            > td {
+                background: #eee;
+            }
+        }
+    }
+    /*
+    tr.expand_bt > td {
+        border-top: 2px solid black;
+    }
+    tr.expand_bb > td {
+        border-bottom: 2px solid black;
+    }*/
 }
 
 table.nice,
@@ -506,6 +525,29 @@ h1.page-title {
     h1.page-title {
         margin: 0 0 1.4rem;
         font-size: 2.8rem;
+    }
+}
+
+h2.page-title {
+    text-align: center;
+    margin: 3rem 0 2rem;
+    font-size: 2.6rem;
+    font-family: @font-family-sans-serif;
+    font-weight: normal;
+    color: #555;
+    letter-spacing: -.05rem;
+}
+
+@media (max-width: @screen-md-max) {
+    h2.page-title {
+        margin: 1.4rem 0 1.4rem;
+    }
+}
+
+@media (max-width: @screen-sm-max) {
+    h2.page-title {
+        margin: 0 0 1.4rem;
+        font-size: 2.2rem;
     }
 }
 
@@ -774,11 +816,17 @@ a.contact-now {
     }
 
     .card-heading > h1:first-child,
+    .card-heading > :first-child + h1,
     .card-heading > h2:first-child,
+    .card-heading > :first-child + h2,
     .card-heading > h3:first-child,
+    .card-heading > :first-child + h3,
     .card-heading > h4:first-child,
+    .card-heading > :first-child + h4,
     .card-heading > h5:first-child,
-    .card-heading > h6:first-child {
+    .card-heading > :first-child + h5,
+    .card-heading > h6:first-child,
+    .card-heading > :first-child + h6 {
         margin-top: 0;
     }
 
@@ -792,11 +840,17 @@ a.contact-now {
     }
 
     .card-body > h1:first-child,
+    .card-body > :first-child + h1,
     .card-body > h2:first-child,
+    .card-body > :first-child + h2,
     .card-body > h3:first-child,
+    .card-body > :first-child + h3,
     .card-body > h4:first-child,
+    .card-body > :first-child + h4,
     .card-body > h5:first-child,
-    .card-body > h6:first-child {
+    .card-body > :first-child + h5,
+    .card-body > h6:first-child,
+    .card-body > :first-child + h6 {
         margin-top: 0;
     }
 
@@ -819,7 +873,8 @@ a.contact-now {
         margin: 1.5rem 0;
     }
 
-    p:first-child {
+    p:first-child,
+    :first-child + p {
         margin-top: 0;
     }
 
