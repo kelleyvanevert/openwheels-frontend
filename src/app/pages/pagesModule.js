@@ -9,6 +9,7 @@ angular.module('owm.pages', [
 
   'owmlanding.mywheels-open',
   'owmlanding.mywheels-lease',
+  'owmlanding.beheerders',
 ])
 
 .config(function ($stateProvider) {
@@ -39,13 +40,25 @@ angular.module('owm.pages', [
         });
       }],
     },
-//    data: {
-//      access: {
-//        deny: {
-//          authenticated: true
-//        }
-//      }
-//    }
+  })
+
+  .state('owmlanding.beheerders', {
+    url: '/beheerders',
+    views: {
+      'toolbar@shell': {
+        //templateUrl: 'pages/beheerders/toolbar.tpl.html',
+        templateUrl: 'shell/toolbar/toolbar.tpl.html',
+        controller: 'ToolbarController',
+      },
+      'menu@shell': {
+        templateUrl: 'shell/menu/menu.tpl.html',
+        controller: 'MenuController'
+      },
+      'main-full@shell': {
+        templateUrl: 'pages/beheerders/beheerders.tpl.html',
+        controller: 'BeheerdersPaginaController'
+      }
+    },
   })
 
   .state('owmlanding.mywheels-open', {

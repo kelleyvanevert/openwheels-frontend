@@ -64,10 +64,14 @@ angular.module('vouchersDirective', [])
         });
       }
 
-      function setExtraDrivers (extraDriverInviteRequests) {
-        $scope.extraDrivers.drivers = extraDriverInviteRequests;
+      function onExtraDriversChanged () {
         getVoucherPrice($scope.booking);
         $scope.onExtraDriversChanged($scope.booking);
+      }
+
+      function setExtraDrivers (extraDriverInviteRequests) {
+        $scope.extraDrivers.drivers = extraDriverInviteRequests;
+        onExtraDriversChanged();
       }
 
       function reloadExtraDrivers () {
@@ -263,6 +267,9 @@ angular.module('vouchersDirective', [])
             $scope.extraDrivers.drivers.push(newInviteRequest);
           })
           .then(function () {
+            onExtraDriversChanged();
+          })
+          .then(function () {
             $scope.extraDrivers.new = '';
             $scope.extraDrivers.check = true;
           })
@@ -297,6 +304,9 @@ angular.module('vouchersDirective', [])
           .then(function () {
             var i = $scope.extraDrivers.drivers.indexOf(inviteRequest);
             $scope.extraDrivers.drivers.splice(i, 1);
+          })
+          .then(function () {
+            onExtraDriversChanged();
           })
           .catch(function(e) {
             alertService.addError(e);
