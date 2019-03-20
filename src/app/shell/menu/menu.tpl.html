@@ -34,12 +34,20 @@
       <ng-md-icon icon="home" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_DASHBOARD' | translate }}</p>
     </md-list-item>
 
-    <md-list-item id="menuMessages" class="menu-item-messages" ng-click="navigate('owm.message')">
-      <ng-md-icon icon="message" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_MESSAGES' | translate }}</p>
+    <md-list-item id="menuTrips" class="menu-item-trips" ng-click="navigate('owm.trips')">
+      <ng-md-icon icon="today" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_TRIPS' | translate }}</p>
     </md-list-item>
 
-    <md-list-item id="menuMessages" class="menu-item-invite" ng-click="navigate('invite')" ng-if="user.identity.provider.id === 1">
-      <ng-md-icon icon="share" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'INVITE_FRIENDS_MENU' | translate }}</p>
+    <md-list-item id="menuRijtegoed" class="menu-item-vouchers" ng-click="navigate('owm.finance.vouchers')" ng-if="user.identity.preference !== 'owner'">
+      <ng-md-icon icon="payment" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_VOUCHERS' | translate }}</p>
+    </md-list-item>
+
+    <md-list-item id="menuFinance" class="menu-item-finance" ng-click="navigate('owm.finance.v4')">
+      <ng-md-icon icon="euro_symbol" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_FINANCE' | translate }}</p>
+    </md-list-item>
+
+    <md-list-item id="menuMessages" class="menu-item-messages" ng-click="navigate('owm.message')">
+      <ng-md-icon icon="message" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_MESSAGES' | translate }}</p>
     </md-list-item>
 
     <md-divider></md-divider>
@@ -57,9 +65,6 @@
     </md-list-item>
     <md-list-item id="menuListCar" class="menu-item-list-your-car" ng-click="navigate('list-your-car')" ng-if="!user.isAuthenticated">
       <ng-md-icon icon="directions_car" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'LIST_YOUR_CAR' | translate }}</p>
-    </md-list-item>
-    <md-list-item id="menuHelp" class="menu-item-how-it-works" ng-click="translateAndNavigate('NAVBAR.HOW_IT_WORKS_URL')">
-      <ng-md-icon icon="help_outline" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'NAVBAR.HOW_IT_WORKS' | translate }}</p>
     </md-list-item>
   </md-list>
 
@@ -79,17 +84,12 @@
       <ng-md-icon icon="content_paste" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_CONTRACTS' | translate }}</p>
     </md-list-item>
 
-    <md-list-item id="menuRijtegoed" class="menu-item-vouchers" ng-click="navigate('owm.finance.vouchers')" ng-if="user.identity.preference !== 'owner'">
-
-      <ng-md-icon icon="payment" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_VOUCHERS' | translate }}</p>
+    <md-list-item id="menuMessages" class="menu-item-invite" ng-click="navigate('invite')" ng-if="user.identity.provider.id === 1">
+      <ng-md-icon icon="share" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'INVITE_FRIENDS_MENU' | translate }}</p>
     </md-list-item>
 
-    <md-list-item id="menuFinance" class="menu-item-finance" ng-click="navigate('owm.finance.v4')">
-      <ng-md-icon icon="euro_symbol" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_FINANCE' | translate }}</p>
-    </md-list-item>
-
-    <md-list-item id="menuTrips" class="menu-item-trips" ng-click="navigate('owm.trips')">
-      <ng-md-icon icon="history" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_TRIPS' | translate }}</p>
+    <md-list-item id="menuHelp" class="menu-item-how-it-works" ng-click="translateAndNavigate('NAVBAR.HOW_IT_WORKS_URL')">
+      <ng-md-icon icon="help_outline" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'NAVBAR.HOW_IT_WORKS' | translate }}</p>
     </md-list-item>
 
     <md-divider></md-divider>

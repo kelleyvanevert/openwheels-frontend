@@ -137,14 +137,14 @@
           <div
             class="card-body"
           >
-            {{ resource.owner | fullname }}
+            Eigenaar
             <div class="pull-right">
               <a class="contact-now" alt="Bel {{ resource.owner.phoneNumbers[0].number }}" ng-if="resource.owner.phoneNumbers[0].number" href="tel:{{ resource.owner.phoneNumbers[0].number }}"><ng-md-icon icon="call"></ng-md-icon></a>
               <a class="contact-now" alt="Mail {{ resource.owner.email }}" ng-if="resource.owner.email" href="mailto:{{ resource.owner.email }}"><ng-md-icon icon="mail_outline"></ng-md-icon></a>
               <a class="contact-now" alt="Stuur bericht" ng-click="openChatWith(resource.owner)"><ng-md-icon icon="chat"></ng-md-icon></a>
             </div>
             <br />
-            <small>Eigenaar auto</small>
+            <small>{{ resource.owner | fullname }}</small>
           </div>
         </div>
 
@@ -153,14 +153,14 @@
           <div
             class="card-body"
           >
-            {{ booking.person | fullname }}
+            Huurder
             <div class="pull-right">
               <a class="contact-now" alt="Bel {{ booking.person.phoneNumbers[0].number }}" ng-if="booking.person.phoneNumbers[0].number" href="tel:{{ booking.person.phoneNumbers[0].number }}"><ng-md-icon icon="call"></ng-md-icon></a>
               <a class="contact-now" alt="Mail {{ booking.person.email }}" ng-if="booking.person.email" href="mailto:{{ booking.person.email }}"><ng-md-icon icon="mail_outline"></ng-md-icon></a>
               <a class="contact-now" alt="Stuur bericht" ng-click="openChatWith(booking.person)"><ng-md-icon icon="chat"></ng-md-icon></a>
             </div>
             <br />
-            <small>Huurder</small>
+            <small>{{ booking.person | fullname }}</small>
           </div>
         </div>
 
@@ -172,14 +172,14 @@
           <div
             class="card-body"
           >
-            {{ resource.contactPerson | fullname }}
+            Beheerder
             <div class="pull-right">
               <a class="contact-now" alt="Bel {{ resource.contactPerson.phoneNumbers[0].number }}" ng-if="resource.contactPerson.phoneNumbers[0].number" href="tel:{{ resource.contactPerson.phoneNumbers[0].number }}"><ng-md-icon icon="call"></ng-md-icon></a>
               <a class="contact-now" alt="Mail {{ resource.contactPerson.email }}" ng-if="resource.contactPerson.email" href="mailto:{{ resource.contactPerson.email }}"><ng-md-icon icon="mail_outline"></ng-md-icon></a>
               <a class="contact-now" alt="Stuur bericht" ng-click="openChatWith(resource.contactPerson)"><ng-md-icon icon="chat"></ng-md-icon></a>
             </div>
             <br />
-            <small>Huurder</small>
+            <small>{{ resource.contactPerson | fullname }}</small>
           </div>
         </div>
       </div>
