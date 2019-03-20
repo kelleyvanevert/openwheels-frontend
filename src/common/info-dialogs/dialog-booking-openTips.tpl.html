@@ -1,0 +1,39 @@
+
+<md-dialog flex="100"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3 class="with-close-button">
+      MyWheels Open tips
+      
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+
+    <table>
+      <tr>
+        <td style="width:55px; padding-top: 1rem;"><img src="assets/img/icons/magnifyinglass.png" /></td>
+        <td style="padding-top: 1rem;">Check de auto vóór de rit op schade</td>
+      </tr>
+      <tr>
+        <td style="width:55px; padding-top: 1rem;"><img src="assets/img/icons/nosmoking.png" /></td>
+        <td style="padding-top: 1rem;">Niet roken in de auto</td>
+      </tr>
+      <tr>
+        <td style="width:55px; padding-top: 1rem;"><img src="assets/img/icons/watch.png" /></td>
+        <td style="padding-top: 1rem;">Breng de auto op tijd terug of verleng de rit</td>
+      </tr>
+      <tr>
+        <td style="width:55px; padding-top: 1rem;"><img src="assets/img/icons/sparkles.png" /></td>
+        <td style="padding-top: 1rem;">Lever de auto weer schoon en netjes in</td>
+      </tr>
+      <tr>
+        <td style="width:55px; padding-top: 1rem;"><img src="assets/img/icons/gas.png" /></td>
+        <td style="padding-top: 1rem;">
+          <span ng-if="params.booking.resource.fuelType === 'elektrisch'">Zorg dat de auto na afloop weer opgeladen wordt</span>
+          <span ng-if="params.booking.resource.fuelType !== 'elektrisch'">Minimaal 1/4 tank vol voor de volgende huurder</span>
+        </td>
+      </tr>
+    </table>
+  </md-dialog-content>
+</md-dialog>

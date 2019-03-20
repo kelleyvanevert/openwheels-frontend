@@ -96,8 +96,8 @@ md-button.mw-green {
     //md-ink-ripple="#3a6d81"
     background: @mywheels-blue;
 }
-.mywheels-btn-default:hover,
-.mywheels-btn-default:focus {
+.mywheels-btn-default:enabled:hover,
+.mywheels-btn-default:enabled:focus {
     background: darken(@mywheels-blue, 1%) !important;
     color: white;
 }
@@ -109,20 +109,20 @@ md-button.mw-green {
     //md-ink-ripple="#8f6700"
     background: @mywheels-orange;
 }
-.mywheels-btn-call-to-action:hover,
-.mywheels-btn-call-to-action:focus {
+.mywheels-btn-call-to-action:enabled:hover,
+.mywheels-btn-call-to-action:enabled:focus {
     background: darken(@mywheels-orange, 1%) !important;
     color: white;
 }
 .mywheels-btn-warning:hover {
     background: #cd9300;
 }
-.mywheels-btn-error {
+.mywheels-btn-error:enabled {
     //md-ink-ripple="#9a3d26"
     background: @mywheels-red;
 }
-.mywheels-btn-error:hover {
-    background: #be4c2f;
+.mywheels-btn-error:enabled:hover {
+    background: darken(@mywheels-red, 1%) !important;
 }
 .mywheels-btn-light {
     //md-ink-ripple="#ded8d8"
@@ -144,6 +144,33 @@ md-button.mw-green {
 }
 .mywheels-btn-border:hover {
     background: #e0e0e0;
+}
+.mywheels-btn-action {
+    margin: .5rem;
+    padding: 1rem;
+    background: white;
+    border: 2px solid #e5e5e5;
+    height: auto;
+    font-weight: 600;
+
+    transition: all .1s ease;
+}
+.mywheels-btn-action:hover {
+    background: #d1e6ef;
+    border-color: @mywheels-blue;
+
+    &, ng-md-icon {
+        color: darken(@mywheels-blue, 10%);
+    }
+
+    &.action-cancel {
+        background: #f7d8d8;
+        border-color: #c00;
+
+        &, ng-md-icon {
+            color: darken(#c00, 10%);
+        }
+    }
 }
 .mywheels-btn-secondary {
     padding: .5em 0;
@@ -203,4 +230,9 @@ md-button.mw-green {
     flex-wrap: wrap-reverse;
     justify-content: flex-end;
     align-items: center;
+}
+
+p.dialog-buttons-centered {
+    text-align: center;
+    margin: 3rem 0 0;
 }

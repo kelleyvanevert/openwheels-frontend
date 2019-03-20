@@ -1,12 +1,15 @@
 'use strict';
 angular.module('owm.finance.paymentResult', [])
 
-.controller('PaymentResultController', function ($scope, $state, $log, $window, appConfig, orderStatusId, account2Service, alertService, voucherService, me, paymentService, bookingService, chipcardService, linksService, API_DATE_FORMAT, Analytics, metaInfoService) {
+.controller('PaymentResultController', function ($scope, $state, $log, $window, appConfig, orderStatusId, account2Service, alertService, voucherService, me, paymentService, bookingService, chipcardService, linksService, API_DATE_FORMAT, Analytics, metaInfoService,
+  success,
+  payRedirect,
+  afterPayment // flow-continuation information
+) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/payment-result'});
   metaInfoService.set({canonical: 'https://mywheels.nl/payment-result'});
 
-  var afterPayment;
   $scope.isBusy = true;
   $scope.isApproved = false;
   $scope.accounts = [];
@@ -17,7 +20,7 @@ angular.module('owm.finance.paymentResult', [])
   $scope.me = me;
 
   $scope.result = {
-    success: (orderStatusId > 0)
+    success: success,
   };
 
   $scope.buyVoucher = function (value) { //buy a vouchure from 0.01 cents
@@ -39,7 +42,7 @@ angular.module('owm.finance.paymentResult', [])
           throw new Error('Er is een fout opgetreden');
         }
         /* redirect to payment url */
-        redirect(data.url);
+        payRedirect(data.url, afterPayment);
       })
       .catch(function (err) {
         alertService.addError(err);
@@ -54,10 +57,10 @@ angular.module('owm.finance.paymentResult', [])
       $state.go('home');
     }
 
-    if ($scope.result.success) {
-      $state.go(afterPayment.success.stateName, afterPayment.success.stateParams);
+    if ($scope.result.successLink) {
+      $state.go(afterPayment.successLink.state, afterPayment.successLink.params);
     } else {
-      $state.go(afterPayment.error.stateName, afterPayment.error.stateParams);
+      $state.go(afterPayment.errorLink.state, afterPayment.errorLink.params);
     }
   };
 
@@ -118,13 +121,6 @@ angular.module('owm.finance.paymentResult', [])
       Analytics.trackEvent('payment', 'failed', undefined, undefined, true);
     }
 
-    try {
-      $scope.afterPayment = afterPayment = JSON.parse(sessionStorage.getItem('afterPayment'));
-    } catch (e) {
-      $scope.afterPayment = afterPayment = null;
-    }
-    sessionStorage.removeItem('afterPayment');
-
     account2Service.forMe({}).then(function (data) {
       $scope.accounts = data;
       data.every(function (elm) {
@@ -139,11 +135,6 @@ angular.module('owm.finance.paymentResult', [])
       });
       $scope.isBusy = false;
     });
-  }
-
-  function redirect(url) {
-    var redirectTo = appConfig.appUrl + '/payment-result';
-    $window.location.href = url + '?redirectTo=' + encodeURIComponent(redirectTo);
   }
 
   //start page

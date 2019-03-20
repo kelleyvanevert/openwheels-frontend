@@ -98,6 +98,9 @@ angular.module('openwheels', [
   'huurkostenLineDirective',
   'userStatusLine',
 
+  'bookingInvoicesDirective',
+  'inlineConfirmDirective',
+
   'mwResourceLocationMap',
 
   'angular-owl-carousel-2',
@@ -145,7 +148,10 @@ angular.module('openwheels', [
   'owm.chat',
   'owm.message',
   'owm.discount',
-  'owm.contract'
+  'owm.contract',
+  
+  /* Visual components */
+  'owm.components',
 ])
 
 .constant('API_DATE_FORMAT', 'YYYY-MM-DD HH:mm')
@@ -352,17 +358,37 @@ angular.module('openwheels', [
   return makeHomeAddressPrefill;
 })
 
+.filter('toParagraphs', function () {
+  return function (text) {
+    return text.replace(/\r/g, '').split('\n\n').map(function (p) {
+      return '<p>' + p + '</p>';
+    }).join('');
+  };
+})
+
+.filter('highlightPin', function () {
+  return function (html) {
+    return html.replace(/De pincode van de tankpas is ([0-9]{4})./, function (str, pin) {
+      return 'De pincode van de tankpas is <strong class="pin">' + pin + '</strong>.';
+    });
+  };
+})
+
 .run(function (windowSizeService, oAuth2MessageListener, stateAuthorizer, authService, featuresService) {
   /* Intentionally left blank */
 })
 
 .run(function ($window, $log, $timeout, $state, $stateParams, $rootScope, $anchorScroll,
+  appConfig,
   alertService, featuresService, linksService, metaInfoService, Analytics, authService, $location, $localStorage,
   AB,
   $analytics) {
 
   
   $rootScope.moment = moment;
+
+  $rootScope.appConfig = appConfig;
+  $rootScope.dev = typeof appConfig.test === 'object';
 
   $rootScope.$state = $state;
   $rootScope.$stateParams = $stateParams;
@@ -418,7 +444,9 @@ angular.module('openwheels', [
 
     if (toState.redirectTo) {
       e.preventDefault();
-      $state.go(toState.redirectTo, angular.merge(toParams, toState.redirectToParams || {}), { location: 'replace' });
+      var redirectTo = (typeof toState.redirectTo === 'function') ? toState.redirectTo() : toState.redirectTo;
+      var redirectToParams = (typeof toState.redirectToParams === 'function') ? toState.redirectToParams() : toState.redirectToParams;
+      $state.go(redirectTo, angular.merge(toParams, redirectToParams || {}), { location: 'replace' });
     }
   });
 
@@ -475,6 +503,7 @@ angular.module('openwheels', [
       $state.includes('owm.person.details') ||
       $state.includes('owm.person.profile') ||
       $state.includes('owm.person.dashboard') ||
+      $state.includes('owm.booking.show') ||
       $state.includes('owmlanding') ||
       $state.includes('contractchoice')
     );

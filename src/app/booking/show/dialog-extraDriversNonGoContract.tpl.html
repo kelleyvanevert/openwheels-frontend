@@ -1,0 +1,19 @@
+
+<md-dialog flex-xs="90" flex-sm="70" flex-md="50" flex-lg="40" flex-xl="30"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3 class="with-close-button">
+      Extra bestuurders wijzigen
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+
+    <p>
+      Deze reservering is gemaakt op een {{ contract.type.name }} contract.
+      Om de extra bestuurders op dit contract te wijzigen kun je terecht
+       op de <a ng-click="hide()" ui-sref="owm.person.profile.contract">contractpagina</a>.
+    </p>
+
+  </md-dialog-content>
+</md-dialog>
