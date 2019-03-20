@@ -19,8 +19,7 @@ angular.module('infoDialogDirective', [])
           // targetEvent: $event,
           clickOutsideToClose: true,
           hasBackdrop: true,
-          fullscreen: s.fullscreen === undefined ? true : s.fullscreen
-          ,
+          fullscreen: s.fullscreen === undefined ? true : s.fullscreen,
           controller: ['$scope', function ($scope) {
             $scope.params = s.params;
             $scope.hide = function () {
