@@ -74,12 +74,115 @@
 
 
       <!-- After reservation completed, and before the booking has started -->
-      <div ng-if="progress.reservationCompleted && !details.bookingStarted">
+      <div ng-if="progress.reservationCompleted">
         <div ng-include="'booking/show/partial-reservationActions.tpl.html'"></div>
-        <div ng-include="'booking/show/partial-renterHowto.tpl.html'"></div>
       </div>
 
-      <div ng-include="'booking/show/partial-bookingInfoCard.tpl.html'"></div>
+      <!-- fullscreen dialog click-throughs -->
+      <div
+        class="card mw"
+      >
+        <div class="card-body-item">
+          <div
+            class="card-body"
+            info-dialog="booking-bookingInfo"
+            info-dialog-fullscreen="true"
+            info-dialog-params="{ booking: booking, resource: resource, perspective: perspective, discount: discount, extraDrivers: extraDrivers }"
+          >
+            <ng-md-icon class="pull-right" icon="chevron_right"></ng-md-icon>
+            Boekingsinformatie<br />
+            <small>{{ resource.brand }} {{ resource.model }} {{ resource.location }}</small>
+          </div>
+        </div>
+
+        <div class="card-body-item" ng-if="progress.reservationCompleted && !details.bookingStarted">
+          <div
+            class="card-body"
+            info-dialog="booking-openClose"
+            info-dialog-fullscreen="true"
+            info-dialog-params="{ booking: booking, resource: resource }"
+          >
+            <ng-md-icon class="pull-right" icon="chevron_right"></ng-md-icon>
+            Hoe open of sluit ik deze auto?
+          </div>
+        </div>
+
+        <div class="card-body-item" ng-if="progress.reservationCompleted && !details.bookingStarted">
+          <div
+            ng-if="progress.reservationCompleted && !details.bookingStarted"
+            class="card-body"
+            info-dialog="booking-tank"
+            info-dialog-fullscreen="true"
+            info-dialog-params="{ booking: booking, resource: resource }"
+          >
+            <ng-md-icon class="pull-right" icon="chevron_right"></ng-md-icon>
+            Hoe tank ik?
+          </div>
+        </div>
+
+        <div class="card-body-item" ng-if="resource.boardcomputer && progress.reservationCompleted && !details.bookingStarted">
+          <div
+            class="card-body"
+            info-dialog="booking-openTips"
+            info-dialog-fullscreen="true"
+            info-dialog-params="{ booking: booking, resource: resource }"
+          >
+            <ng-md-icon class="pull-right" icon="chevron_right"></ng-md-icon>
+            MyWheels Open tips
+          </div>
+        </div>
+
+        <!-- (1) owner -->
+        <div class="card-body-item" ng-if="perspective.isRenter && !perspective.isOwner">
+          <div
+            class="card-body"
+          >
+            {{ resource.owner | fullname }}
+            <div class="pull-right">
+              <a class="contact-now" alt="Bel {{ resource.owner.phoneNumbers[0].number }}" ng-if="resource.owner.phoneNumbers[0].number" href="tel:{{ resource.owner.phoneNumbers[0].number }}"><ng-md-icon icon="call"></ng-md-icon></a>
+              <a class="contact-now" alt="Mail {{ resource.owner.email }}" ng-if="resource.owner.email" href="mailto:{{ resource.owner.email }}"><ng-md-icon icon="mail_outline"></ng-md-icon></a>
+              <a class="contact-now" alt="Stuur bericht" ng-click="openChatWith(resource.owner)"><ng-md-icon icon="chat"></ng-md-icon></a>
+            </div>
+            <br />
+            <small>Eigenaar auto</small>
+          </div>
+        </div>
+
+        <!-- (2) renter -->
+        <div class="card-body-item" ng-if="perspective.isOwner && !perspective.isRenter">
+          <div
+            class="card-body"
+          >
+            {{ booking.person | fullname }}
+            <div class="pull-right">
+              <a class="contact-now" alt="Bel {{ booking.person.phoneNumbers[0].number }}" ng-if="booking.person.phoneNumbers[0].number" href="tel:{{ booking.person.phoneNumbers[0].number }}"><ng-md-icon icon="call"></ng-md-icon></a>
+              <a class="contact-now" alt="Mail {{ booking.person.email }}" ng-if="booking.person.email" href="mailto:{{ booking.person.email }}"><ng-md-icon icon="mail_outline"></ng-md-icon></a>
+              <a class="contact-now" alt="Stuur bericht" ng-click="openChatWith(booking.person)"><ng-md-icon icon="chat"></ng-md-icon></a>
+            </div>
+            <br />
+            <small>Huurder</small>
+          </div>
+        </div>
+
+        <!-- (3) contact person -->
+        <div class="card-body-item" ng-if="
+          perspective.isRenter &&
+          (resource.contactPerson && resource.contactPerson.id !== resource.owner.id)
+        ">
+          <div
+            class="card-body"
+          >
+            {{ resource.contactPerson | fullname }}
+            <div class="pull-right">
+              <a class="contact-now" alt="Bel {{ resource.contactPerson.phoneNumbers[0].number }}" ng-if="resource.contactPerson.phoneNumbers[0].number" href="tel:{{ resource.contactPerson.phoneNumbers[0].number }}"><ng-md-icon icon="call"></ng-md-icon></a>
+              <a class="contact-now" alt="Mail {{ resource.contactPerson.email }}" ng-if="resource.contactPerson.email" href="mailto:{{ resource.contactPerson.email }}"><ng-md-icon icon="mail_outline"></ng-md-icon></a>
+              <a class="contact-now" alt="Stuur bericht" ng-click="openChatWith(resource.contactPerson)"><ng-md-icon icon="chat"></ng-md-icon></a>
+            </div>
+            <br />
+            <small>Huurder</small>
+          </div>
+        </div>
+      </div>
 
       <!-- While in the reservation process -->
       <div ng-if="!progress.reservationCompleted">
@@ -90,7 +193,6 @@
       <!-- After reservation completed -->
       <div ng-if="progress.reservationCompleted">
         <div ng-include="'booking/show/partial-agreement.tpl.html'"></div>
-        <div ng-include="'booking/show/partial-renterDiscountInfo.tpl.html'"></div>
       </div>
 
 
@@ -154,12 +256,11 @@
       <!-- After reservation completed -->
       <div ng-if="progress.reservationCompleted">
         <div ng-include="'booking/show/partial-agreement.tpl.html'"></div>
-        <div ng-include="'booking/show/partial-renterDiscountInfo.tpl.html'"></div>
       </div>
 
 
       <!-- After reservation completed, and before the booking has started -->
-      <div ng-if="progress.reservationCompleted && !details.bookingStarted">
+      <div ng-if="progress.reservationCompleted">
         <div ng-include="'booking/show/partial-reservationActions.tpl.html'"></div>
       </div>
 
@@ -170,7 +271,7 @@
       <!-- After reservation completed, and before the booking has (really) ended -->
       <div ng-if="progress.reservationCompleted && !bookingEndedReally">
         <div ng-include="'booking/show/partial-openCloseButtons.tpl.html'" ng-if="!perspective.isContractor"></div>
-        <div ng-include="'booking/show/partial-renterHowto.tpl.html'"></div>
+        <div ng-include="'booking/show/partial-renterHowto.tpl.html'" ng-if="!details.cancelled && !details.bookingEndedReally"></div>
         <div ng-include="'booking/show/partial-map.tpl.html'"></div>
       </div>
 

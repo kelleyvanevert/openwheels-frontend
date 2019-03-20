@@ -23,6 +23,7 @@ angular.module('owm.booking.show', [])
   bookingService,
   alertService,
   voucherService,
+  discountService,
 
   $log,
   $q,
@@ -45,6 +46,54 @@ angular.module('owm.booking.show', [])
           return 0;
         }
       });
+  };
+
+  $scope.discountCodeDialog = function ($event) {
+    $mdDialog.show({
+      templateUrl: 'booking/show/dialog-discountCode.tpl.html',
+      parent: angular.element(document.body),
+      targetEvent: $event,
+      clickOutsideToClose: false,
+      hasBackdrop: true,
+      fullscreen: true,
+      controller: ['$scope', function (dialogScope) {
+
+        dialogScope.showSpinner = false;
+        dialogScope.discountError = null;
+        dialogScope.changeset = {};
+        
+        dialogScope.discount = $scope.discount;
+        dialogScope.resource = $scope.resource;
+
+        dialogScope.hide = function () {
+          $mdDialog.hide();
+        };
+
+        dialogScope.onChange = function () {
+          dialogScope.discountError = false;
+        };
+
+        dialogScope.applyDiscountCode = function () {
+          dialogScope.showSpinner = true;
+          discountService.apply({
+            booking: $scope.booking.id,
+            discount: dialogScope.changeset.discountCode,
+          })
+          .then(function (discount) {
+            dialogScope.discount.push(discount);
+            if (!$scope.progress.steps.payment.checked) {
+              $scope.bookingChanged($scope.booking);
+            }
+          })
+          .catch(function (err) {
+            dialogScope.discountError = err.message;
+          })
+          .finally(function () {
+            dialogScope.showSpinner = false;
+          });
+        };
+      }]
+    });
   };
 
   $scope.cancelReservationDialog = function ($event) {

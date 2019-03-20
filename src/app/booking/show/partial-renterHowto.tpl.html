@@ -1,88 +1,44 @@
 
-<!-- Drive and fuel information -->
-<div ng-if="['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 &&
-            !bookingEndedReally">
-
-  <!-- mobile -->
-  <div class="visible-xs-block visible-sm-block">
-    <div
-      class="card mw"
-    >
-      <div
-        class="card-body"
-        info-dialog="booking-openClose"
-        info-dialog-fullscreen="true"
-        info-dialog-params="{ booking: booking, resource: resource }"
-      >
-        Hoe open of sluit ik deze auto?
-        <ng-md-icon class="pull-right" icon="chevron_right"></ng-md-icon>
-      </div>
-      <div class="card-body-sep"></div>
-      <div
-        class="card-body"
-        info-dialog="booking-tank"
-        info-dialog-fullscreen="true"
-        info-dialog-params="{ booking: booking, resource: resource }"
-      >
-        Hoe tank ik?
-        <ng-md-icon class="pull-right" icon="chevron_right"></ng-md-icon>
-      </div>
-      <div class="card-body-sep"></div>
-      <div
-        ng-if="resource.boardcomputer"
-        class="card-body"
-        info-dialog="booking-openTips"
-        info-dialog-fullscreen="true"
-        info-dialog-params="{ booking: booking, resource: resource }"
-      >
-        MyWheels Open tips
-        <ng-md-icon class="pull-right" icon="chevron_right"></ng-md-icon>
-      </div>
-    </div>
+<!-- Drive and fuel information [DESKTOP] -->
+<div class="hidden-xs hidden-sm card mw"
+      id="mywheelsOpenInfo">
+  <div class="card-heading">
+    <h3 class="card-title" ng-if="resource.boardcomputer">MyWheels Open</h3>
+    <h3 class="card-title" ng-if="!resource.boardcomputer">Sleuteloverdracht</h3>
   </div>
 
-  <!-- desktop -->
-  <div class="hidden-xs hidden-sm card mw"
-       id="mywheelsOpenInfo">
-    <div class="card-heading">
-      <h3 class="card-title" ng-if="resource.boardcomputer">MyWheels Open</h3>
-      <h3 class="card-title" ng-if="!resource.boardcomputer">Sleuteloverdracht</h3>
-    </div>
+  <div class="card-body">
+    <h5>{{ 'LOCKTYPE.ophalen' | translate }}</h5>
+    <div ng-bind-html="booking.lockTypeManual | toParagraphs"></div>
 
-    <div class="card-body">
-      <h5>{{ 'LOCKTYPE.ophalen' | translate }}</h5>
-      <div ng-bind-html="booking.lockTypeManual | toParagraphs"></div>
+    <h5>{{ 'DRIVE' | translate }}</h5>
+    <div ng-bind-html="booking.fuelManual | toParagraphs | highlightPin"></div>
 
-      <h5>{{ 'DRIVE' | translate }}</h5>
-      <div ng-bind-html="booking.fuelManual | toParagraphs | highlightPin"></div>
-
-      <h5 ng-if="resource.boardcomputer">Tips</h5>
-      <table ng-if="resource.boardcomputer">
-        <tr>
-          <td style="width:55px;"><img src="assets/img/icons/magnifyinglass.png" /></td>
-          <td style="line-height: 40px;">Check de auto vóór de rit op schade</td>
-        </tr>
-        <tr>
-          <td style="width:55px;"><img src="assets/img/icons/nosmoking.png" /></td>
-          <td style="line-height: 40px;">Niet roken in de auto</td>
-        </tr>
-        <tr>
-          <td style="width:55px;"><img src="assets/img/icons/watch.png" /></td>
-          <td style="line-height: 40px;">Breng de auto op tijd terug of verleng de rit</td>
-        </tr>
-        <tr>
-          <td style="width:55px;"><img src="assets/img/icons/sparkles.png" /></td>
-          <td style="line-height: 40px;">Lever de auto weer schoon en netjes in</td>
-        </tr>
-        <tr>
-          <td style="width:55px;"><img src="assets/img/icons/gas.png" /></td>
-          <td style="line-height: 40px;">
-            <span ng-if="booking.resource.fuelType === 'elektrisch'">Zorg dat de auto na afloop weer opgeladen wordt</span>
-            <span ng-if="booking.resource.fuelType !== 'elektrisch'">Minimaal 1/4 tank vol voor de volgende huurder</span>
-          </td>
-        </tr>
-      </table>
-    </div>
+    <h5 ng-if="resource.boardcomputer">Tips</h5>
+    <table ng-if="resource.boardcomputer">
+      <tr>
+        <td style="width:55px;"><img src="assets/img/icons/magnifyinglass.png" /></td>
+        <td style="line-height: 40px;">Check de auto vóór de rit op schade</td>
+      </tr>
+      <tr>
+        <td style="width:55px;"><img src="assets/img/icons/nosmoking.png" /></td>
+        <td style="line-height: 40px;">Niet roken in de auto</td>
+      </tr>
+      <tr>
+        <td style="width:55px;"><img src="assets/img/icons/watch.png" /></td>
+        <td style="line-height: 40px;">Breng de auto op tijd terug of verleng de rit</td>
+      </tr>
+      <tr>
+        <td style="width:55px;"><img src="assets/img/icons/sparkles.png" /></td>
+        <td style="line-height: 40px;">Lever de auto weer schoon en netjes in</td>
+      </tr>
+      <tr>
+        <td style="width:55px;"><img src="assets/img/icons/gas.png" /></td>
+        <td style="line-height: 40px;">
+          <span ng-if="booking.resource.fuelType === 'elektrisch'">Zorg dat de auto na afloop weer opgeladen wordt</span>
+          <span ng-if="booking.resource.fuelType !== 'elektrisch'">Minimaal 1/4 tank vol voor de volgende huurder</span>
+        </td>
+      </tr>
+    </table>
   </div>
-
 </div>
