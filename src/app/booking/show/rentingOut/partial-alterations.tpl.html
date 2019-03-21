@@ -1,0 +1,72 @@
+
+<!-- Booking alterations for owner -->
+<div class="card mw"
+    ng-if="['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0 &&
+          !bookingRequestEndedReally &&
+          !bookingEndedReally &&
+          (allowAcceptReject || allowCancel)">
+  <div class="card-heading">
+    <h3 class="card-title">
+      <span ng-if="userPerspective==='owner' && !hasAcceptedTimeframe(booking)">
+        {{ booking.person.firstName | wantsToRent : booking.resource }}
+      </span>
+
+      <span ng-if="userPerspective==='owner' && hasAcceptedTimeframe(booking) && !hasRequestedTimeframe(booking)">
+      {{ booking.person.firstName | hasRented : booking.resource }}
+      </span>
+
+      <span ng-if="userPerspective==='owner' && hasAcceptedTimeframe(booking) && hasRequestedTimeframe(booking)">
+      {{ booking.person.firstName | wantsToChangeBooking }}
+      </span>
+    </h3>
+  </div>
+  <div class="card-body">
+    <div class="row" ng-if="hasAcceptedTimeframe(booking) && hasRequestedTimeframe(booking)" style="text-align:center; margin-bottom:15px;">
+      <div class="col-md-4">
+        <div style="min-height: 40px;">
+          <ng-md-icon icon="arrow_forward" class="text-warning material-icons"></ng-md-icon>
+          <datetime style="display: inline;" datetime="{{ booking.beginRequested }}"></datetime>
+        </div>
+        <div style="min-height: 40px;">
+          <ng-md-icon icon="arrow_back" class="text-warning material-icons"></ng-md-icon>
+          <datetime style="display: inline;" datetime="{{ booking.endRequested }}"></datetime>
+        </div>
+        <span ng-if="!hasAcceptedTimeframe(booking)" class="tag tag-{{ booking.status }}">{{ booking.status | bookingStatus }}</span>
+        <span ng-if="hasAcceptedTimeframe(booking)" class="tag tag-requested">{{ 'requested' | bookingStatus }}</span>
+      </div>
+      <div class="col-md-4" style="padding-bottom: 25px;">
+        <ng-md-icon icon="compare_arrows" class="material-icons" style="margin-top: 23px;"></ng-md-icon>
+      </div>
+      <div class="col-md-4">
+        <div style="min-height: 40px;">
+          <ng-md-icon icon="arrow_forward" class="text-success material-icons"></ng-md-icon>
+          <datetime style="display: inline;" datetime="{{ booking.beginBooking }}"></datetime>
+        </div>
+        <div style="min-height: 40px;">
+          <ng-md-icon icon="arrow_back" class="text-success material-icons"></ng-md-icon>
+          <datetime style="display: inline;" datetime="{{ booking.endBooking }}"></datetime>
+        </div>
+        <span ng-if="!hasAcceptedTimeframe(booking)" class="tag tag-{{ booking.status }}">{{ booking.status | bookingStatus }}</span>
+        <span ng-if="hasAcceptedTimeframe(booking)" class="tag tag-accepted">{{ 'accepted' | bookingStatus }}</span>
+      </div>
+    </div>
+    <div class="allowAcceptReject">
+      <div class="text-center" ng-if="allowAcceptReject">
+        <div class="form-group">
+          <label>{{ 'BOOKING.REMARK_AUTHORIZER_LABEL' | translate }}</label>
+          <textarea class="form-control" ng-model="userInput.acceptRejectRemark" />
+        </div>
+        <button type="button" class="btn btn-success btn-lg" ng-click="acceptBooking(booking)">Accepteren</button>
+        <button type="button" class="btn btn-danger btn-lg" ng-click="rejectBooking(booking)">Weigeren</button>
+      </div>
+    </div>
+    <div ng-if="!hasRequestedTimeframe(booking) && allowCancel">
+      Je hebt de de aanvraag reeds geaccepteerd. Je kan de verhuring nog annuleren. Aan kort van te voren annuleren kunnen kosten verbonden zijn. Bekijk de <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/kan-ik-een-geaccepteerde-verhuring-annuleren/" target="_blank">FAQ</a> voor meer informatie.
+    </div>
+    <div class="row text-center" ng-if="allowCancel" style="margin-top:10px;">
+      <button class="btn btn-default" ng-click="cancelBooking(booking)">
+        {{ 'CANCEL_BOOKING' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

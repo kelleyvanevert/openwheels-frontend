@@ -158,6 +158,7 @@ angular.module('owm.finance.instapay', [])
 
   function pay (payInstantPayment, redirectTo) {
     var url = appConfig.appUrl + '/instant-payment/pay-now/' + payInstantPayment.id + '/' + payInstantPayment.viewToken +
+      '/10/0' + // betalen met iDeal
       '?redirectTo=' + encodeURIComponent(redirectTo);
     
     $window.location = url;
