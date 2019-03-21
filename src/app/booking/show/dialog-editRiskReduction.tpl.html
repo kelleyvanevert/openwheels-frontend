@@ -54,33 +54,14 @@
                 Het verlagen van je eigen risico kost {{ 3.5 | currency }} per etmaal.
                 Voor deze rit komt dat neer op {{ amount | currency }}.
               </p>
-              <div ng-if="amount > currentCredit">
-                <p>
-                  Je hebt hiervoor op het moment niet genoeg rijtegoed.
-                  Nadat je je rijtegoed hebt opgehoogd, wordt het eigen risico voor je verlaagd.
-                </p>
-                <p class="dialog-buttons-centered">
-                  <button class="mywheels-btn mywheels-btn-call-to-action"
-                          md-ink-ripple="#4b702c"
-                          ng-click="pay(amount - currentCredit)"
-                          style="white-space: nowrap;">
-                    Koop {{ amount - currentCredit | currency }} rijtegoed &raquo;
-                  </button>
-                </p>
-              </div>
-              <div ng-if="amount <= currentCredit">
-                <p>
-                  Omdat je al genoeg rijtegoed hebt, kun je dit direct aanpassen.
-                </p>
-                <p class="dialog-buttons-centered">
-                  <button class="mywheels-btn mywheels-btn-call-to-action"
-                          md-ink-ripple="#4b702c"
-                          ng-click="setRiskReduction(true)"
-                          style="white-space: nowrap;">
-                    Eigen risico aanzetten
-                  </button>
-                </p>
-              </div>
+              <p class="dialog-buttons-centered">
+                <button class="mywheels-btn mywheels-btn-call-to-action"
+                        md-ink-ripple="#4b702c"
+                        ng-click="setRiskReduction(true)"
+                        style="white-space: nowrap;">
+                  Eigen risico aanzetten
+                </button>
+              </p>
             </div>
           </div>
 

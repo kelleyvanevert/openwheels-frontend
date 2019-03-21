@@ -199,11 +199,13 @@ angular.module('owm.booking.show', [])
             Analytics.trackEvent('altered', 'success', updatedBbooking.id, undefined, true);
             angular.merge(dialogScope.booking, updatedBbooking);
             $scope.initPermissions();
-            if (dialogScope.booking.beginRequested) {
-              dialogScope.actionResultMessage = 'De wijziging is aangevraagd bij de verhuurder.';
-            } else {
-              dialogScope.actionResultMessage = 'Het huurverzoek is geaccepteerd.';
-            }
+
+            var actionResultMessage = (dialogScope.booking.beginRequested) ?
+              'De wijziging is aangevraagd bij de verhuurder.' :
+              'Het huurverzoek is geaccepteerd.';
+            
+            $mdDialog.hide();
+            alertService.add('success', actionResultMessage, 5000);
           })
           .catch(function (err) {
             if (err && err.level && err.message) {
@@ -217,9 +219,6 @@ angular.module('owm.booking.show', [])
                 alertService.add(err.level, err.message, 5000);
               }
             } else {
-              alertService.addError(err);
-            }
-            if (!err.message.match('onvoldoende')) {
               alertService.addError(err);
             }
           })
@@ -322,37 +321,15 @@ angular.module('owm.booking.show', [])
                 //  would be overkill, but we know exactly what changed,
                 //  so now just change it in-place.
                 $scope.booking.riskReduction = newRiskReduction;
-                //$mdDialog.hide();
-                //alertService.add('success', 'De verlaging van je eigen risico is ' + (newRiskReduction ? 'aangezet' : 'uitgezet') + '.', 4000);
-                dialogScope.actionResultMessage = 'De verlaging van je eigen risico is ' + (newRiskReduction ? 'aangezet' : 'uitgezet') + '.';
+                
+                var actionResultMessage = 'De verlaging van je eigen risico is ' + (newRiskReduction ? 'aangezet' : 'uitgezet') + '.';
+                
+                $mdDialog.hide();
+                alertService.add('success', actionResultMessage, 5000);
               }
             })
             .catch(function (e) {
               alertService.addError(e);
-            });
-          };
-
-          dialogScope.pay = function (amount) {
-            $sessionStorage.setRiskReduction = true;
-
-            buyVoucherRedirect({
-              amount: amount,
-              afterPayment: {
-                redirect: {
-                  state: 'owm.booking.show',
-                  params: {
-                    bookingId: $scope.booking.id,
-                    cont: 'set_riskreduction',
-                  },
-                },
-                paymentErrorRedirect: {
-                  state: 'owm.booking.show',
-                  params: {
-                    bookingId: $scope.booking.id,
-                    cont: 'error_payment_set_riskreduction',
-                  },
-                },
-              },
             });
           };
         }],
@@ -1148,6 +1125,11 @@ angular.module('owm.booking.show', [])
     
     basis: ($scope.contract.type.id === 60) ? 'per_booking' : 'per_contract',
     load: function () {
+      if ($scope.extraDrivers.basis === 'per_contract' && !$scope.perspective.isContractHolder) {
+        $scope.extraDrivers.noPermission = true;
+        return;
+      }
+
       if ($scope.userPerspective !== 'owner') { // to avoid permission problem for now
 
         $scope.extraDrivers.loading = true;
@@ -1632,7 +1614,7 @@ angular.module('owm.booking.show', [])
     } else {
       //alertService.addGenericError();
     }
-    if(!err.message.match('onvoldoende')) {
+    if(!err.message || !err.message.match('onvoldoende')) {
       $scope.initBookingRequestScope($scope.booking);
     }
   }

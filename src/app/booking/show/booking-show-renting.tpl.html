@@ -56,6 +56,8 @@
 
       <div ng-include="'booking/show/partial-renterInitialPayment.tpl.html'"></div>
 
+      <div ng-include="'booking/show/partial-reservationProcessActions.tpl.html'"></div>
+      
       <cancellation-info-card
         ng-if="details.cancelled"
         booking="booking"
@@ -71,7 +73,6 @@
       <div ng-if="progress.reservationCompleted && !bookingEndedReally">
         <div ng-include="'booking/show/partial-openCloseButtons.tpl.html'" ng-if="!perspective.isContractor"></div>
       </div>
-
 
       <!-- After reservation completed, and before the booking has started -->
       <div ng-if="progress.reservationCompleted">
@@ -95,7 +96,7 @@
           </div>
         </div>
 
-        <div class="card-body-item" ng-if="progress.reservationCompleted && !details.bookingStarted">
+        <div class="card-body-item" ng-if="progress.reservationCompleted">
           <div
             class="card-body"
             info-dialog="booking-openClose"
@@ -107,9 +108,8 @@
           </div>
         </div>
 
-        <div class="card-body-item" ng-if="progress.reservationCompleted && !details.bookingStarted">
+        <div class="card-body-item" ng-if="progress.reservationCompleted">
           <div
-            ng-if="progress.reservationCompleted && !details.bookingStarted"
             class="card-body"
             info-dialog="booking-tank"
             info-dialog-fullscreen="true"
@@ -120,7 +120,7 @@
           </div>
         </div>
 
-        <div class="card-body-item" ng-if="resource.boardcomputer && progress.reservationCompleted && !details.bookingStarted">
+        <div class="card-body-item" ng-if="resource.boardcomputer && progress.reservationCompleted">
           <div
             class="card-body"
             info-dialog="booking-openTips"
@@ -247,6 +247,8 @@
 
       <div ng-include="'booking/show/partial-renterInitialPayment.tpl.html'"></div>
 
+      <div ng-include="'booking/show/partial-reservationProcessActions.tpl.html'"></div>
+      
       <!-- While in the reservation process -->
       <div ng-if="!progress.reservationCompleted">
         <div ng-include="'booking/show/partial-alternatives.tpl.html'" ng-if="!perspective.isContractor"></div>
