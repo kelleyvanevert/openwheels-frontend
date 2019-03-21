@@ -74,10 +74,10 @@ angular.module('owmlanding.mywheels-lease', ['slick'])
   $scope.FAQ = [
     {
       question: 'Hoeveel kilometer mag ik per jaar rijden?',
-      answer: 'De leaseprijs is inclusief 12.000 kilometer per jaar. De kilometerbundel is zowel voor je privé kilometers, als voor de kilometers van huurders in jouw leaseauto. Boven dit aantal kilometers per jaar is de meerprijs per kilometer 8 cent.',
+      answer: 'De leaseprijs is inclusief 15.000 kilometer per jaar. De kilometerbundel is zowel voor je privé kilometers, als voor de kilometers van huurders in jouw leaseauto. Boven dit aantal kilometers per jaar is de meerprijs per kilometer 8 cent.',
     }, {
       question: 'Wat is de looptijd?',
-      answer: 'De looptijd is 48 maanden, een kortere looptijd is niet mogelijk. Wil je het contract eerder beëindigen? Dat kan door het contract eenmalig af te kopen voor 1.000 euro.',
+      answer: 'De looptijd is 36 maanden, voor 15 euro per maand extra kun je na één jaar maandelijks het contract opzeggen.',
     }, {
       question: 'Krijg ik MyWheels bestickering op mijn auto?',
       answer: 'Ja, we plakken MyWheels stickers op de auto. De buren zien dan dat ze jouw auto kunnen huren. Wil je geen bestickering? Dan betaal je 40 euro per maand extra.',
@@ -92,7 +92,7 @@ angular.module('owmlanding.mywheels-lease', ['slick'])
       answer: 'We verwachten dat jouw auto minimaal 10 dagen per beschikbaar is voor autodelen, waarvan 4 dagen in het weekeinde.',
     }, {
       question: 'Waarom is de leaseprijs zo voordelig?',
-      answer: 'De leaseprijs is voordeliger dan bij andere aanbieders omdat maandelijks de eerste 100 euro aan verhuuropbrengst naar de leasemaatschappij gaat. Verdien je meer? Dan ontvang jij de extra verhuuropbrengst.',
+      answer: 'De leaseprijs is voordeliger dan bij andere aanbieders omdat maandelijks de eerste 50 euro aan verhuuropbrengst naar de leasemaatschappij gaat. Verdien je meer? Dan ontvang jij de extra verhuuropbrengst.',
     }, {
       question: 'Hoe is de auto verzekerd tijdens verhuur?',
       answer: 'De auto is per verhuring aanvullend all-risk verzekerd met de ritverzekering van Centraal Beheer via het MyWheels platform.',
