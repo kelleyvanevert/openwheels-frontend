@@ -1609,7 +1609,7 @@ angular.module('owm.booking.show', [])
       $scope.extraCredit = false;
       if(err.message.match('onvoldoende')) {
         $scope.extraCredit = err.data.extra_credit;
-        $scope.errorExtraCredit = err.message + '. Betaal hieronder ' + err.data.extra_credit + ' euro extra rijtegoed om de rit te kunnen verlengen.';
+        $scope.errorExtraCredit = err.message + '. Betaal ' + err.data.extra_credit + ' euro extra rijtegoed om de rit te kunnen verlengen.';
       } else {
         alertService.add(err.level, err.message, 5000);
       }
