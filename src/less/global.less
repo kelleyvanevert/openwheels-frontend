@@ -1287,6 +1287,25 @@ input.ng-touched {
 }
 */
 
+ul.list-unstyled.list-with-icons {
+    > li {
+        position: relative;
+        padding-left: 30px;
+
+        > ng-md-icon {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    }
+
+    &.list-spaced {
+        > li > ng-md-icon {
+            top: 0.3em;
+        }
+    }
+}
+
 
 .skel {
     background: #ddd;

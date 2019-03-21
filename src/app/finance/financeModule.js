@@ -117,6 +117,74 @@ angular.module('owm.finance', [
     },
   })
 
+/*
+
+interface InvoiceGroup_BookingsData {
+  original: InvoiceGroup
+  [type: "renter" | "owner"]: {
+    [booking_id: number]: {
+      total: number
+      totalTax: number
+      booking: Booking
+      invoiceLines: InvoiceLine[] // (w/ invoicetype: "sent" | "received")
+    }
+  }
+  other: {
+    0: Invoice[]
+  }
+}
+
+interface InvoiceGroup {
+  id: number
+  approved: boolean
+  currency: "EUR"
+  
+  date: datetime_string
+  expirationDate: datetime_string
+  paid: null | datetime_string
+
+  person: Person // (me)
+  total: number
+  // type
+}
+
+interface Invoice {
+  id: number
+  
+  date: datetime_string
+  expirationDate: datetime_string
+  paid: null | datetime_string
+
+  sender: Person
+  recipient: Person
+
+  invoiceLines: InvoiceLine[]
+
+  // recipientInvoiceGroup
+
+  total: number
+  totalTax: number
+
+  type: string // e.g. "receipt"
+}
+
+interface InvoiceLine {
+  id: number
+
+  position: number
+  price: number // euros
+  total: number
+  quantity: number
+  taxRate: number // percentage 0 .. 100
+  description: string
+
+  type: string // e.g. "receipt"
+
+  // invoice
+}
+
+*/
+
   .state('owm.finance.invoice', {
     url: '/factuur/:invoiceGroupId',
     noGlobalLoader: true,
@@ -125,6 +193,98 @@ angular.module('owm.finance', [
         templateUrl: 'finance/invoice/invoice.tpl.html',
         controller: 'InvoiceController',
       },
+    },
+    resolve: {
+      invoiceGroups: ['me', 'paymentService', function (me, paymentService) {
+        return paymentService.getInvoiceGroups({
+          person: me.id,
+          max: 100,
+          status: 'unpaid',
+        })
+        .catch(function (err) {
+          // TODO
+        });
+      }],
+      invoiceGroupsData: ['invoiceGroups', 'invoice2Service', '$q', function (invoiceGroups, invoice2Service, $q) {
+        return $q.all(invoiceGroups.map(function (invoiceGroup) {
+          return invoice2Service.getInvoiceGroup({
+            invoiceGroup: invoiceGroup.id,
+            groupByBooking: true,
+          })
+          .catch(function (err) {
+            // TODO
+          });
+        }));
+      }],
+      invoiceGroups_simplified: ['invoiceGroupsData', function (invoiceGroupsData) {
+        return invoiceGroupsData.map(function (invoiceGroupData) {
+          var lines = {
+            other: [
+              {
+                lines: [],
+              },
+            ],
+            booking: [],
+          };
+
+          if (invoiceGroupData.other[0] && invoiceGroupData.other[0].length > 0) {
+            _.forEach(invoiceGroupData.other[0], function (invoice) {
+              _.forEach(invoice.invoiceLines, function (invoiceLine) {
+                lines.other[0].lines.push({
+                  description: invoiceLine.description,
+                  quantity: invoiceLine.quantity,
+                  price: invoiceLine.price,
+                  total: invoiceLine.total,
+                  tax: invoiceLine.taxRate / 100,
+                });
+              });
+            });
+          }
+
+          var type = 'renter';
+          _.forEach(Object.values(invoiceGroupData[type]), function (linesForBooking) {
+            var booking = linesForBooking.booking;
+            if (!lines.booking[booking.id]) {
+              lines.booking[booking.id] = {
+                beginBooking: booking.beginBooking,
+                lines: [],
+              };
+            }
+
+            _.forEach(linesForBooking.invoiceLines, function (invoiceLine) {
+              if ((invoiceLine.invoicetype === 'sent' && type === 'renter') || (invoiceLine.invoicetype === 'received' && type === 'owner')) {
+                lines.booking[booking.id].lines.push({
+                  description: invoiceLine.description,
+                  quantity: invoiceLine.quantity,
+                  price: - invoiceLine.price,
+                  total: - invoiceLine.total,
+                  tax: invoiceLine.taxRate / 100,
+                });
+              } else {
+                lines.booking[booking.id].lines.push({
+                  description: invoiceLine.description,
+                  quantity: invoiceLine.quantity,
+                  price: invoiceLine.price,
+                  total: invoiceLine.total,
+                  tax: invoiceLine.taxRate / 100,
+                });
+              }
+            });
+          });
+
+          lines.booking = Object.values(lines.booking);
+
+          if (lines.other[0].lines.length === 0) {
+            lines.other = [];
+          }
+
+          return {
+            id: invoiceGroupData.original.id,
+            total: invoiceGroupData.original.total,
+            invoiceLines: lines,
+          };
+        });
+      }],
     },
   })
 

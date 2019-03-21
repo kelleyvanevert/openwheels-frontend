@@ -2,6 +2,36 @@
 
 angular.module('owm.components')
 
+/*
+
+type type_string = "other" | "booking"
+
+interface invoiceGroup {
+  id: number
+
+  total: number
+
+  invoiceLines: {
+    [type: type_string]: Group[]
+  }
+}
+
+interface Group {
+  beginBooking: datetime_string // if "booking" type
+
+  lines: Line[]
+}
+
+interface Line {
+  description: string
+  quantity: number
+  price: number
+  total: number
+  tax: number // percentage 0..1
+}
+
+*/
+
 .directive('instantPaymentInvoice', function (
   $state,
   $window,

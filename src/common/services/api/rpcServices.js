@@ -158,6 +158,7 @@ angular.module('rpcServices', [])
   this.createSenderInvoiceGroup = m('createSenderInvoiceGroup');
   this.createRecipientInvoiceGroup = m('createRecipientInvoiceGroup');
   this.calculatePrice = m('calculatePrice');
+  this.getInvoiceGroup = m('getInvoiceGroup');
 })
 
 .service('accountService', function (api) {
