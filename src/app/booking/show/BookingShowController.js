@@ -332,30 +332,6 @@ angular.module('owm.booking.show', [])
               alertService.addError(e);
             });
           };
-
-          dialogScope.pay = function (amount) {
-            $sessionStorage.setRiskReduction = true;
-
-            buyVoucherRedirect({
-              amount: amount,
-              afterPayment: {
-                redirect: {
-                  state: 'owm.booking.show',
-                  params: {
-                    bookingId: $scope.booking.id,
-                    cont: 'set_riskreduction',
-                  },
-                },
-                paymentErrorRedirect: {
-                  state: 'owm.booking.show',
-                  params: {
-                    bookingId: $scope.booking.id,
-                    cont: 'error_payment_set_riskreduction',
-                  },
-                },
-              },
-            });
-          };
         }],
       });
     }
@@ -1638,7 +1614,7 @@ angular.module('owm.booking.show', [])
     } else {
       //alertService.addGenericError();
     }
-    if(!err.message.match('onvoldoende')) {
+    if(!err.message || !err.message.match('onvoldoende')) {
       $scope.initBookingRequestScope($scope.booking);
     }
   }
