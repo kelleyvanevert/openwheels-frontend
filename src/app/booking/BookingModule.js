@@ -153,7 +153,16 @@ angular.module('owm.booking', [
           };
         });
       }],
-      progress: ['account', 'booking', 'contract', 'resource', 'perspective', 'details', '$filter', function (account, booking, contract, resource, perspective, details, $filter) {
+      debt: ['voucherService', 'me', function (voucherService, me) {
+        return voucherService.calculateDebt({ person: me.id })
+        .then(function (debt) {
+          return { value: debt };
+        })
+        .catch(function (err) {
+          return { error: err };
+        });
+      }],
+      progress: ['account', 'booking', 'contract', 'resource', 'perspective', 'details', 'debt', '$filter', function (account, booking, contract, resource, perspective, details, debt, $filter) {
 
         if (perspective.pageView !== 'renting') {
           return null;
@@ -166,13 +175,21 @@ angular.module('owm.booking', [
         //  in order to show a step-wise (& progress)-based indication.
         // (Note: these are not linearly ordered!)
 
+        if (details.firstTime) {
+          // => in fact numberOfBookings is only incremented when approved,
+          //    so we need to check debt :|
+          if (debt.value === 0) {
+            details.firstTime = false;
+          }
+        }
+
         progress.showPaymentScreen = perspective.isContractHolder &&
           ((details.requested && details.firstTime) || booking.approved === 'BUY_VOUCHER') &&
           ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0;
 
         if (progress.showPaymentScreen && account.disapprovedAccount) {
           // => this person has tried to pay, but was disapproved
-          progress.showPaymentScreen = !progress.showPaymentScreen;
+          progress.showPaymentScreen = false;
         }
 
         progress.steps = {
