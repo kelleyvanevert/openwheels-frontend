@@ -199,11 +199,13 @@ angular.module('owm.booking.show', [])
             Analytics.trackEvent('altered', 'success', updatedBbooking.id, undefined, true);
             angular.merge(dialogScope.booking, updatedBbooking);
             $scope.initPermissions();
-            if (dialogScope.booking.beginRequested) {
-              dialogScope.actionResultMessage = 'De wijziging is aangevraagd bij de verhuurder.';
-            } else {
-              dialogScope.actionResultMessage = 'Het huurverzoek is geaccepteerd.';
-            }
+
+            var actionResultMessage = (dialogScope.booking.beginRequested) ?
+              'De wijziging is aangevraagd bij de verhuurder.' :
+              'Het huurverzoek is geaccepteerd.';
+            
+            $mdDialog.hide();
+            alertService.add('success', actionResultMessage, 5000);
           })
           .catch(function (err) {
             if (err && err.level && err.message) {
@@ -217,9 +219,6 @@ angular.module('owm.booking.show', [])
                 alertService.add(err.level, err.message, 5000);
               }
             } else {
-              alertService.addError(err);
-            }
-            if (!err.message.match('onvoldoende')) {
               alertService.addError(err);
             }
           })
@@ -322,9 +321,11 @@ angular.module('owm.booking.show', [])
                 //  would be overkill, but we know exactly what changed,
                 //  so now just change it in-place.
                 $scope.booking.riskReduction = newRiskReduction;
-                //$mdDialog.hide();
-                //alertService.add('success', 'De verlaging van je eigen risico is ' + (newRiskReduction ? 'aangezet' : 'uitgezet') + '.', 4000);
-                dialogScope.actionResultMessage = 'De verlaging van je eigen risico is ' + (newRiskReduction ? 'aangezet' : 'uitgezet') + '.';
+                
+                var actionResultMessage = 'De verlaging van je eigen risico is ' + (newRiskReduction ? 'aangezet' : 'uitgezet') + '.';
+                
+                $mdDialog.hide();
+                alertService.add('success', actionResultMessage, 5000);
               }
             })
             .catch(function (e) {
@@ -1148,6 +1149,11 @@ angular.module('owm.booking.show', [])
     
     basis: ($scope.contract.type.id === 60) ? 'per_booking' : 'per_contract',
     load: function () {
+      if ($scope.extraDrivers.basis === 'per_contract' && !$scope.perspective.isContractHolder) {
+        $scope.extraDrivers.noPermission = true;
+        return;
+      }
+
       if ($scope.userPerspective !== 'owner') { // to avoid permission problem for now
 
         $scope.extraDrivers.loading = true;
