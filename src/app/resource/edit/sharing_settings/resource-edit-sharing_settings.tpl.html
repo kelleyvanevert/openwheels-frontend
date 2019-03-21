@@ -2,7 +2,7 @@
 
   <form name="editResourceForm">
 
-    <div id="availability" class="form-group" ng-if="!resource.boardcomputer">
+    <div id="availability" class="form-group" ng-if="!resource.boardcomputer && !isBeheerder(me, resource)">
 
       <div class="form-group">
         <label>{{ 'RESOURCE_AVAILABLE_LABEL' | translate }}</label>
