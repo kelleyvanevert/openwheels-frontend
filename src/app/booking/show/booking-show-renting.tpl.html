@@ -253,15 +253,14 @@
       </div>
 
 
-      <!-- After reservation completed -->
-      <div ng-if="progress.reservationCompleted">
-        <div ng-include="'booking/show/partial-agreement.tpl.html'"></div>
-      </div>
-
-
       <!-- After reservation completed, and before the booking has started -->
       <div ng-if="progress.reservationCompleted">
         <div ng-include="'booking/show/partial-reservationActions.tpl.html'"></div>
+      </div>
+
+      <!-- After reservation completed -->
+      <div ng-if="progress.reservationCompleted">
+        <div ng-include="'booking/show/partial-agreement.tpl.html'"></div>
       </div>
 
       <!-- remarks are not for contractors (non-renting contract holders) -->

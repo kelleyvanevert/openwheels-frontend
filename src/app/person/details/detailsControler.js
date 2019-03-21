@@ -58,6 +58,21 @@ angular.module('owm.person.details', [])
   };
 
 
+  $scope.months = [
+    {label: $translate.instant('JANUARY'), value: 1},
+    {label: $translate.instant('FEBRUARY'), value: 2},
+    {label: $translate.instant('MARCH'), value: 3},
+    {label: $translate.instant('APRIL'), value: 4},
+    {label: $translate.instant('MAY'), value: 5},
+    {label: $translate.instant('JUNE'), value: 6},
+    {label: $translate.instant('JULY'), value: 7},
+    {label: $translate.instant('AUGUST'), value: 8},
+    {label: $translate.instant('SEPTEMBER'), value: 9},
+    {label: $translate.instant('OCTOBER'), value: 10},
+    {label: $translate.instant('NOVEMBER'), value: 11},
+    {label: $translate.instant('DECEMBER'), value: 12}
+  ];
+
   //booking section
   var URL_DATE_TIME_FORMAT = 'YYMMDDHHmm';
   var cachedBookings = {};
@@ -204,14 +219,16 @@ angular.module('owm.person.details', [])
       if (autoDateInput) {
         autoDateInput.onkeyup = function (e) {
           var target = e.srcElement;
-          var maxLength = parseInt(target.attributes.maxlength.value, 10);
-          var myLength = target.value.length;
-          if (myLength >= maxLength) {
-            var next = target;
-            next = next.nextElementSibling;
-            if (next !== null) {
-              if (next.tagName.toLowerCase() === 'input') {
-                next.focus();
+          if (target.tagName.toLowerCase() === 'input') {
+            var maxLength = parseInt(target.attributes.maxlength.value, 10);
+            var myLength = target.value.length;
+            if (myLength >= maxLength) {
+              var next = target;
+              next = next.nextElementSibling;
+              if (next !== null) {
+                if (next.tagName.toLowerCase() === 'input' || next.tagName.toLowerCase() === 'select') {
+                  next.focus();
+                }
               }
             }
           }
