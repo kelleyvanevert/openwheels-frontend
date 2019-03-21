@@ -391,10 +391,6 @@ angular.module('owm.booking', [
   .state('owm.booking.show', {
     url: '',
     views: {
-//      'main@shell': {
-//        templateUrl: 'booking/show/booking-show.tpl.html',
-//        controller: 'BookingShowController',
-//      },
       'main-full@shell': {
         templateUrl: 'booking/show/booking-show-2.tpl.html',
         controller: 'BookingShowController',
