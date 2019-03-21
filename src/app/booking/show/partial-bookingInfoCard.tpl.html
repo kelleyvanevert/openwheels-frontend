@@ -122,9 +122,27 @@
         <img class="media-object pull-left img-user-normal" person-profile-image="{ person: booking.person, size: 'normal' }" hide-xs />
         <div class="media-body" style="padding-top: 0;">
           <ul class="list-unstyled list-spaced">
+            <li ng-if="booking.person.created"><ng-md-icon icon="perm_contact_calendar"></ng-md-icon> 
+              {{ booking.person.created | memberSince }}
+            </li>
+            <li ng-if="booking.person.streetName"><ng-md-icon icon="place"></ng-md-icon>
+              {{ booking.person.streetName }} {{ booking.person.streetNumber }}, {{ booking.person.city }}
+            </li>
             <li ng-if="booking.person.phoneNumbers[0].number"><ng-md-icon icon="phone"></ng-md-icon>
               {{ booking.person.phoneNumbers[0].number }}
               <small ng-if="booking.person.phoneNumbers[0].verified" class="text-success">(geverifieerd)</small>
+            </li>
+            <li><ng-md-icon icon="check"></ng-md-icon>
+              {{ booking.person.numberOfBookings | hasBookedTimes }}
+            </li>
+            <li ng-if="booking.person.facebookUid"><ng-md-icon icon="share"></ng-md-icon>
+              <a target="_blank" ng-href="https://facebook.com/{{ booking.person.facebookUid }}">Facebook</a>
+            </li>
+            <li ng-if="booking.person.twitterUid"><md-ico>share</md-icon>
+              <a target="_blank" ng-href="https://twitter.com/{{ booking.person.twitterUid }}">Twitter</a>
+            </li>
+            <li ng-if="booking.person.linkedinUid"><ng-md-icon icon="share"></ng-md-icon>
+              <a target="_blank" ng-href="https://www.linkedin.com/profile/view?id={{ booking.person.linkedinUid }}">LinkedIn</a>
             </li>
             <li><ng-md-icon icon="comment"></ng-md-icon>
               <a ng-click="openChatWith(booking.person)">{{ 'SEND_MESSAGE' | translate }}</a>

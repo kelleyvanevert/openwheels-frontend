@@ -167,7 +167,11 @@
                                                     <h3 class="ng-binding">{{ 'LICENSE_DATE' | translate }}</h3>
                                                     <div id="date" class="icon date">
                                                         <input id="day" name="day" inputmode="numeric" pattern="[0-9]*" ng-model="licenseDate.day" placeholder="DD" maxlength="2" max="31" min="0" class="ng-pristine ng-untouched ng-valid ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength" aria-invalid="false" type="number" required="">
-                                                        <input id="month" name="month" inputmode="numeric" pattern="[0-9]*" ng-model="licenseDate.month" placeholder="MM" maxlength="2" max="12" min="0" class="ng-pristine ng-untouched ng-valid ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength" aria-invalid="false" type="number" required="">
+                                                        
+                                                        <select id="month" name="month" ng-model="licenseDate.month" ng-options="month.value as month.label for month in months" class="maand">
+                                                            <option value="">maand</option>
+                                                        </select>
+                                                        
                                                         <input id="year" name="year" inputmode="numeric" pattern="[0-9]*" ng-model="licenseDate.year" placeholder="JJJJ" maxlength="4" max="{{ validLicenseMax }}" min="{{ validLicenseMin }}" class="ng-pristine ng-untouched ng-valid ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength" aria-invalid="false" type="number" required="">
                                                     </div>
 
