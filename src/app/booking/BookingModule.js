@@ -270,7 +270,7 @@ angular.module('owm.booking', [
         if (!progress.steps.accepted.checked) {
           progress.summary = 'We hebben de reservering naar verhuurder ' + $filter('fullname')(booking.resource.owner) + ' gestuurd.';
           if (!progress.steps.payment.checked) {
-            progress.summary += ' Je kunt hieronder alvast betalen. De reservering is dan direct definitief na acceptatie door ' + booking.resource.owner.firstName + '.';
+            progress.summary += ' Je kunt alvast betalen. De reservering is dan direct definitief na acceptatie door ' + booking.resource.owner.firstName + '.';
           }
           else {
             progress.summary += ' Je ontvangt een mail als ' + booking.resource.owner.firstName + ' op je verzoek gereageerd heeft.';
@@ -279,7 +279,7 @@ angular.module('owm.booking', [
         else if (progress.steps.accepted.checked && !progress.steps.payment.checked) {
           if (perspective.isContractHolder) {
             if (details.showBookOnlyNotice) {
-              progress.summary = 'Je reservering is gemaakt. Je account moet nog handmatig gecontroleerd worden, maar je kunt hieronder wel alvast betalen.';
+              progress.summary = 'Je reservering is gemaakt. Je account moet nog handmatig gecontroleerd worden, maar je kunt wel alvast betalen.';
             } else {
               progress.summary = 'Je reservering is gemaakt. Je hoeft alleen nog de reservering te betalen.';
             }

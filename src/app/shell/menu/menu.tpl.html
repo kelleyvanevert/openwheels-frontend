@@ -29,17 +29,34 @@
     <md-divider></md-divider>
   </md-list>
 
-  <md-list ng-if="user.isAuthenticated">
-    <md-list-item id="menuDashboard" class="menu-item-dashboard" ng-click="navigate('owm.person.dashboard')">
+  <md-list>
+    <md-list-item id="menuDashboard" class="menu-item-dashboard" ng-click="navigate('owm.person.dashboard')" ng-if="user.isAuthenticated">
       <ng-md-icon icon="home" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_DASHBOARD' | translate }}</p>
     </md-list-item>
 
-    <md-list-item id="menuTrips" class="menu-item-trips" ng-click="navigate('owm.trips')">
-      <ng-md-icon icon="today" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_TRIPS' | translate }}</p>
+    <md-list-item id="menuSearchCar" class="menu-item-rent-a-car" ng-click="navigate('owm.resource.search.list')">
+      <ng-md-icon icon="search" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'RENT_A_CAR' | translate }}</p>
     </md-list-item>
 
-    <md-list-item id="menuRijtegoed" class="menu-item-vouchers" ng-click="navigate('owm.finance.vouchers')" ng-if="user.identity.preference !== 'owner'">
-      <ng-md-icon icon="payment" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_VOUCHERS' | translate }}</p>
+    <md-list-item id="menuMyCars" class="menu-item-resources" ng-click="navigate('owm.resource.own')" ng-if="user.isAuthenticated">
+      <ng-md-icon icon="directions_car" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_RESOURCES' | translate }}</p>
+    </md-list-item>
+
+    <md-list-item id="menuListCar" class="menu-item-list-your-car" ng-click="navigate('list-your-car')" ng-if="!user.isAuthenticated">
+      <ng-md-icon icon="directions_car" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'LIST_YOUR_CAR' | translate }}</p>
+    </md-list-item>
+
+    <md-list-item id="menuHelp" class="menu-item-how-it-works" ng-click="translateAndNavigate('NAVBAR.HOW_IT_WORKS_URL')" ng-if="!user.isAuthenticated">
+      <ng-md-icon icon="help_outline" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'NAVBAR.HOW_IT_WORKS' | translate }}</p>
+    </md-list-item>
+
+    <md-divider></md-divider>
+  </md-list>
+
+  <md-list ng-if="user.isAuthenticated">
+
+    <md-list-item id="menuTrips" class="menu-item-trips" ng-click="navigate('owm.trips')">
+      <ng-md-icon icon="today" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_TRIPS' | translate }}</p>
     </md-list-item>
 
     <md-list-item id="menuFinance" class="menu-item-finance" ng-click="navigate('owm.finance.v4')">
@@ -50,22 +67,6 @@
       <ng-md-icon icon="message" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_MESSAGES' | translate }}</p>
     </md-list-item>
 
-    <md-divider></md-divider>
-  </md-list>
-
-  <md-list>
-    <md-list-item id="menuSearchCar" class="menu-item-rent-a-car" ng-click="navigate('owm.resource.search.list')">
-      <ng-md-icon icon="search" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'RENT_A_CAR' | translate }}</p>
-    </md-list-item>
-    <md-list-item id="menuMyCars" class="menu-item-resources" ng-click="navigate('owm.resource.own')" ng-if="user.isAuthenticated">
-      <ng-md-icon icon="directions_car" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_RESOURCES' | translate }}</p>
-    </md-list-item>
-    <md-list-item id="menuMyWheelsOpen" class="menu-item-mywheels-open" ng-click="navigate('owmlanding.mywheels-open')" ng-if="user.isAuthenticated && user.identity.preference !== 'renter' && user.identity.provider.id === 1">
-      <ng-md-icon icon="smartphone" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MYWHEELS_OPEN_HEADLINE' | translate }}</p>
-    </md-list-item>
-    <md-list-item id="menuListCar" class="menu-item-list-your-car" ng-click="navigate('list-your-car')" ng-if="!user.isAuthenticated">
-      <ng-md-icon icon="directions_car" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'LIST_YOUR_CAR' | translate }}</p>
-    </md-list-item>
   </md-list>
 
   <md-list ng-if="user.isAuthenticated">
@@ -78,10 +79,6 @@
 
     <md-list-item id="menuGegevens" class="menu-item-profile" ng-click="navigate('owm.person.details', {pageNumber: '1'})" ng-if="user.identity.preference !== 'owner' && user.identity.status === 'new' && user.identity.provider.id === 1">
       <ng-md-icon icon="settings" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_PROFILE' | translate }}</p>
-    </md-list-item>
-
-    <md-list-item id="menuContracts" class="menu-item-contracts" ng-click="navigate('owm.person.contract')">
-      <ng-md-icon icon="content_paste" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_CONTRACTS' | translate }}</p>
     </md-list-item>
 
     <md-list-item id="menuMessages" class="menu-item-invite" ng-click="navigate('invite')" ng-if="user.identity.provider.id === 1">
