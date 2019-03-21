@@ -153,6 +153,15 @@ angular.module('owm.booking', [
           };
         });
       }],
+      credit: ['voucherService', 'me', function (voucherService, me) {
+        return voucherService.calculateCredit({ person: me.id })
+        .then(function (credit) {
+          return { value: credit };
+        })
+        .catch(function (err) {
+          return { error: err };
+        });
+      }],
       debt: ['voucherService', 'me', function (voucherService, me) {
         return voucherService.calculateDebt({ person: me.id })
         .then(function (debt) {
@@ -162,7 +171,7 @@ angular.module('owm.booking', [
           return { error: err };
         });
       }],
-      progress: ['account', 'booking', 'contract', 'resource', 'perspective', 'details', 'debt', '$filter', function (account, booking, contract, resource, perspective, details, debt, $filter) {
+      progress: ['account', 'booking', 'contract', 'resource', 'perspective', 'details', 'debt', 'credit', '$filter', function (account, booking, contract, resource, perspective, details, debt, credit, $filter) {
 
         if (perspective.pageView !== 'renting') {
           return null;
@@ -178,7 +187,7 @@ angular.module('owm.booking', [
         if (details.firstTime) {
           // => in fact numberOfBookings is only incremented when approved,
           //    so we need to check debt :|
-          if (debt.value === 0) {
+          if (debt.value === 0 && credit.value > 0) {
             details.firstTime = false;
           }
         }
