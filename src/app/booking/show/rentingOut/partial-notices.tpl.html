@@ -1,0 +1,34 @@
+
+<!-- notices -->
+<div class="card mw" id="ownerText">
+  <!-- If booking is not ok -->
+  <div class="card-body card-inverse" style="background-color:#c85f5f;" ng-if="!booking.ok && !requested && !bookingEnded && !details.cancelled && !details.rejected">
+    <h2 class="text-white" style="margin: 0;">De aanvraag is nog niet definitief</h2>
+    <p class="text-white">
+      De huurder moet nog actie ondernemen om deze aanvraag definitief te maken. Mogelijk moet de huurder nog betalen of andere gegevens doorgeven. Geef de auto niet mee zolang deze melding zichtbaar is.
+    </p>
+  </div>
+
+  <!-- If booking is not ok -->
+  <div class="card-body card-inverse" style="background-color:#c85f5f;" ng-if="details.rejected">
+    <h2 class="text-white" style="margin: 0;">Je hebt deze aanvraag afgewezen</h2>
+  </div>
+
+  <!-- If booking is not ok -->
+  <div class="card-body card-inverse" style="background-color:#c85f5f;" ng-if="booking.status === 'owner_cancelled'">
+    <h2 class="text-white" style="margin: 0;">Je hebt deze aanvraag geannuleerd</h2>
+  </div>
+
+  <!-- If booking is not ok -->
+  <div class="card-body card-inverse" style="background-color:#c85f5f;" ng-if="booking.status === 'cancelled'">
+    <h2 class="text-white" style="margin: 0;">Deze reservering is geannuleerd.</h2>
+  </div>
+
+  <!-- If booking is ok -->
+  <div class="card-body card-inverse" ng-if="booking.ok && !requested && !bookingEnded && !hasRequestedTimeframe(booking) && !details.cancelled && !details.rejected">
+    <h2 class="text-white" style="margin: 0;">De aanvraag is definitief</h2>
+    <p class="text-white">
+      De huurder heeft alles geregeld voor deze rit. Je kan de auto aan de huurder meegeven. <span ng-if="!booking.resource.boardcomputer">Vergeet niet de huurovereenkomst samen met de huurder in te vullen.</span>
+    </p>
+  </div>
+</div>

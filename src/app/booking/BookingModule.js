@@ -331,7 +331,7 @@ angular.module('owm.booking', [
               });
             });
           }
-          if (cont === 'add_extra_drivers' && $sessionStorage.addExtraDriversEmails) {
+          else if (cont === 'add_extra_drivers' && $sessionStorage.addExtraDriversEmails) {
             $log.log('now, add these extra drivers:', $sessionStorage.addExtraDriversEmails);
             $q.all($sessionStorage.addExtraDriversEmails.map(function (email) {
               return extraDriverService.addDriver({
@@ -348,39 +348,6 @@ angular.module('owm.booking', [
               alertService.addError(e);
               resolve({
                 error: 'error_api_add_extra_drivers',
-              });
-            });
-          }
-          if (cont === 'set_riskreduction' && $sessionStorage.setRiskReduction) {
-            $log.log('now, turn on risk reduction');
-            bookingService.alter({
-              booking: booking.id,
-              newProps: {
-                riskReduction: true,
-              }
-            })
-            .then(function (updatedBooking) {
-              if (!updatedBooking.riskReduction) {
-                throw new Error({
-                  message: 'Er is iets misgegaan',
-                });
-              }
-              else {
-                // We've already requested the booking, and an extra API call
-                //  would be overkill, but we know exactly what changed,
-                //  so now just change it in-place.
-                booking.riskReduction = true;
-              }
-            })
-            .then(function () {
-              alertService.add('success', 'De betaling is ontvangen, en je eigen risico is verlaagd.', 4000);
-              $sessionStorage.setRiskReduction = null;
-              resolve({});
-            })
-            .catch(function (e) {
-              alertService.addError(e);
-              resolve({
-                error: 'error_api_set_riskreduction',
               });
             });
           }
@@ -401,7 +368,7 @@ angular.module('owm.booking', [
     url: '',
     views: {
       'main-full@shell': {
-        templateUrl: 'booking/show/booking-show-2.tpl.html',
+        templateUrl: 'booking/show/booking-show.tpl.html',
         controller: 'BookingShowController',
       },
     },
