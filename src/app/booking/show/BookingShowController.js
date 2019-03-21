@@ -62,6 +62,8 @@ angular.module('owm.booking.show', [])
         dialogScope.discountError = null;
         dialogScope.changeset = {};
         
+        dialogScope.details = $scope.details;
+        
         dialogScope.discount = $scope.discount;
         dialogScope.resource = $scope.resource;
 

@@ -1,0 +1,80 @@
+
+<div class="row">
+  <div class="rpad col-md-4">
+    
+    <!-- Status(balk) reservering -->
+    <div ng-include="'booking/show/renting/partial-reservationProgressCard.tpl.html'"
+      ng-if="!progress.reservationCompleted && !details.cancelled && !details.rejected"></div>
+
+    <!-- Boekingsinformatie -->
+    <div ng-include="'booking/show/partial-bookingInfoCard.tpl.html'"></div>
+
+  </div>
+  <div class="rpad col-md-8">
+
+    <!-- Status en meldingen -->
+    <div ng-include="'booking/show/renting/partial-notices.tpl.html'"></div>
+
+    <!-- Je bent zelf contractant (niet de contracthouder) -->
+    <div class="card mw" ng-if="!perspective.isContractHolder">
+      <div class="card-body">
+        <p>
+          <ng-md-icon icon="info_outline"></ng-md-icon>
+          Deze boeking is gemaakt op het {{ contract.type.name }} contract van {{ contract.contractor.firstName }}.
+        </p>
+      </div>
+    </div>
+
+    <!-- Betalingsscherm -->
+    <div ng-include="'booking/show/renting/partial-payment.tpl.html'"></div>
+
+    <!-- Annuleer-knop -->
+    <div ng-include="'booking/show/renting/partial-reservationProcessActions.tpl.html'"></div>
+    
+    <!-- Alternatieven, voor als de reservering nog niet compleet is -->
+    <div ng-if="!progress.reservationCompleted">
+      <div ng-include="'booking/show/renting/partial-alternatives.tpl.html'" ng-if="!perspective.isContractor"></div>
+    </div>
+
+    <!-- Acties -->
+    <div ng-if="progress.reservationCompleted">
+      <div ng-include="'booking/show/renting/partial-reservationActions.tpl.html'"></div>
+    </div>
+
+    <!-- Opmerkingen van huurder & verhuurder -->
+    <div ng-include="'booking/show/partial-remarks.tpl.html'" ng-if="!perspective.isContractor"></div>
+
+    <!-- Huurovereenkomst -->
+    <div ng-include="'booking/show/partial-agreement.tpl.html'"></div>
+
+    <!-- VOOR SUCCESVOLLE RESERVERINGEN && VOORDAT DE RIT IS AFGELOPEN -->
+    <div ng-if="progress.reservationCompleted && !bookingEndedReally && !details.cancelled">
+
+      <!-- MW Open openen en sluiten knoppen -->
+      <div ng-include="'booking/show/partial-openCloseButtons.tpl.html'" ng-if="!perspective.isContractor"></div>
+
+      <!-- Informatie over ophalen, tanken, MW Open etc -->
+      <div ng-include="'booking/show/renting/partial-renterHowto.tpl.html'"></div>
+
+      <!-- Kaart -->
+      <div ng-include="'booking/show/renting/partial-map.tpl.html'"></div>
+    </div>
+
+    <!-- NADAT DE RIT IS AFGELOPEN -->
+    <div ng-if="accepted && bookingEnded">
+
+      <!-- Kilometerstanden doorgegeven / accorderen -->
+      <div ng-include="'booking/show/partial-kmCheck.tpl.html'" ng-if="!perspective.isContractor"></div>
+
+      <!-- Tankbonnen -->
+      <div ng-include="'booking/show/partial-declarations.tpl.html'" ng-if="allowDeclarations && !perspective.isContractor"></div>
+
+      <!-- Review schrijven teaser -->
+      <div ng-include="'booking/show/partial-placeReview.tpl.html'" ng-if="showReviewTeaser && !perspective.isContractor"></div>
+
+      <!-- Kosten -->
+      <booking-invoices booking="booking" perspective="renter" ng-if="!details.requested && booking.approved === 'OK'"></booking-invoices>
+    </div>
+
+  </div>
+</div>
