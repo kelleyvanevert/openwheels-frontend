@@ -11,7 +11,7 @@ angular.module('bookingInvoicesDirective', [])
   return {
     restrict: 'E',
     scope: {
-      perspective: '@', // "renter" or "owner"
+      viewAs: '@', // "renter" or "owner"
       booking: '=',
     },
     templateUrl: 'directives/bookingInvoices/bookingInvoices.tpl.html',
@@ -42,12 +42,12 @@ angular.module('bookingInvoicesDirective', [])
       $scope.sentInvoices = null;
       $scope.sentInvoicesTotalAmount = 0;
 
-      if ($scope.perspective === 'renter') {
+      if ($scope.viewAs === 'renter') {
         $q.all({received: loadReceivedInvoices()})
         .then(injectInvoiceLines);
       }
 
-      if ($scope.perspective === 'owner') {
+      if ($scope.viewAs === 'owner') {
         $q.all({received: loadReceivedInvoices(), sent: loadSentInvoices()})
         .then(injectInvoiceLines);
       }

@@ -41,7 +41,9 @@
       <div ng-include="'booking/show/partial-placeReview.tpl.html'" ng-if="showReviewTeaser"></div>
 
       <!-- Opbrengsten -->
-      <booking-invoices booking="booking" perspective="owner" ng-if="!details.requested && booking.approved === 'OK'"></booking-invoices>
+      <booking-invoices booking="booking" view-as="owner"
+        ng-if="!details.requested && booking.approved === 'OK'"
+      />
     </div>
 
     <!-- MW Open banner -->

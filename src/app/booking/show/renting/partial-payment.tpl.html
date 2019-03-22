@@ -44,11 +44,14 @@
       on-extra-drivers-changed="bookingDriversChanged(booking)"></voucher>
 
     <div ng-if="(requested && requiredValue.value.total === 0) || ((requiredValue.value.total | number:2) == ((booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount) | number:2))" class="text-center">
-      <button type="button" class="btn mywheels-btn-call-to-action btn-lg" ng-click="buyVoucher(booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount)">
-        Koop {{ booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount | currency }} rijtegoed
-      </button>
+      
+      <p class="text-center" style="margin-top: 1rem;">
+        <button type="button" class="btn mywheels-btn-call-to-action btn-lg" ng-click="buyVoucher(booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount)">
+          Koop {{ booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount | currency }} rijtegoed
+        </button>
+      </p>
 
-      <p class="mywheels-btn-margin-top text-left" ng-if="!accountApproved">
+      <p class="mywheels-btn-margin-top text-left" ng-if="!account.approved">
         <b>Let op:</b> om de betaling te kunnen verwerken, moet de tenaamstelling van de rekening overeenkomen met je accountnaam.
       </p>
     </div>
@@ -82,13 +85,13 @@
       </table>
 
       <div ng-if="requiredValue.value.total > 0">
-        <p class="text-center">
+        <p class="text-center" style="margin-top: 1rem;">
           <button type="button" class="btn mywheels-btn-call-to-action btn-lg" ng-click="buyVoucher(requiredValue.value.voucher)">
             Koop {{ requiredValue.value.total | currency }} rijtegoed
           </button>
         </p>
 
-        <p class="mywheels-btn-margin-top text-left" ng-if="!accountApproved">
+        <p class="mywheels-btn-margin-top text-left" ng-if="!account.approved">
           <b>Let op:</b> om de betaling te kunnen verwerken, moet de tenaamstelling van de rekening overeenkomen met je accountnaam.
         </p>
       </div>

@@ -31,7 +31,7 @@
     ></div>
 
     <p>
-      <a ui-sref="owm.resource.show({ resourceId: params.resource.id })" style="font-weight: 600;">{{ params.resource.alias }}</a>
+      <a ng-click="hide()" ui-sref="owm.resource.show({ resourceId: params.resource.id })" style="font-weight: 600;">{{ params.resource.alias }}</a>
       <span style="margin-left: .5rem;" class="tag tag-warning" ng-if="params.resource.boardcomputer">MyWheels Open</span>
       <br />
       {{ params.resource.brand }} {{ params.resource.model }}
