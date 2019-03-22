@@ -48,6 +48,42 @@ angular.module('owm.booking.show', [])
       });
   };
 
+  $scope.kmStandenDialog = function ($event) {
+    $mdDialog.show({
+      templateUrl: 'booking/show/dialog-kmStanden.tpl.html',
+      parent: angular.element(document.body),
+      targetEvent: $event,
+      clickOutsideToClose: false,
+      hasBackdrop: true,
+      fullscreen: true,
+      controller: ['$scope', function (dialogScope) {
+
+        dialogScope.me = $scope.me;
+        dialogScope.booking = $scope.booking;
+        dialogScope.perspective = $scope.perspective;
+        dialogScope.details = $scope.details;
+
+        dialogScope.hide = function () {
+          $mdDialog.hide();
+        };
+
+        dialogScope.finalize = function () {
+          alertService.load();
+          bookingService.finishTrip({ booking: $scope.booking.id })
+          .then(function () {
+            alertService.loaded($scope);
+            alertService.add('success', 'De rit is afgerond', 4000);
+            $mdDialog.hide();
+            $state.reload();
+          })
+          .catch(function (err) {
+            dialogScope.apiError = err.message || true;
+          });
+        };
+      }],
+    });
+  };
+
   $scope.discountCodeDialog = function ($event) {
     $mdDialog.show({
       templateUrl: 'booking/show/dialog-discountCode.tpl.html',
@@ -94,7 +130,7 @@ angular.module('owm.booking.show', [])
             dialogScope.showSpinner = false;
           });
         };
-      }]
+      }],
     });
   };
 
@@ -201,7 +237,7 @@ angular.module('owm.booking.show', [])
             Analytics.trackEvent('altered', 'success', updatedBbooking.id, undefined, true);
             angular.merge(dialogScope.booking, updatedBbooking);
             $scope.initPermissions();
-
+            
             var actionResultMessage = (dialogScope.booking.beginRequested) ?
               'De wijziging is aangevraagd bij de verhuurder.' :
               'Het huurverzoek is geaccepteerd.';
@@ -979,6 +1015,7 @@ angular.module('owm.booking.show', [])
     .then(function (booking) {
       Analytics.trackEvent('altered', 'success', booking.id, undefined, true);
       $scope.booking = booking;
+      $state.reload();
       initPermissions();
       if (booking.beginRequested) {
         alertService.add('info', $filter('translate')('BOOKING_ALTER_REQUESTED'), 5000);
@@ -1041,6 +1078,7 @@ angular.module('owm.booking.show', [])
     })
     .then(function (booking) {
       $scope.booking = booking;
+      $state.reload();
       initPermissions();
       $scope.initBookingRequestScope(booking);
       alertService.add('success', $filter('translate')('BOOKING_STOPPED'), 10000);
@@ -1106,6 +1144,7 @@ angular.module('owm.booking.show', [])
     .then(function (booking) {
       Analytics.trackEvent('booking', 'rejected', booking.id, undefined, true);
       $scope.booking = booking;
+      $state.reload();
       initPermissions();
       alertService.add('success', $filter('translate')('BOOKING.REJECT.SUCCESS'), 5000);
     })
@@ -1460,6 +1499,7 @@ angular.module('owm.booking.show', [])
         Analytics.trackEvent('altered', 'success', booking.id, undefined, true);
         $scope.booking = booking;
         $scope.initBookingRequestScope(booking);
+        $state.reload();
         initPermissions();
         $scope.alteredAfterBuyVoucher = true;
         if (booking.beginRequested) {

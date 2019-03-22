@@ -1,6 +1,6 @@
 
 <!-- Add kilometers -->
-<div class="card mw"
+<div class="card mw card-inverse"
     id="kilometerForm"
     ng-if="accepted &&
             booking.ok &&
@@ -8,23 +8,18 @@
             (!booking.trip.odoBegin || !booking.trip.odoEnd) &&
             !booking.resource.boardcomputer &&
             !booking.trip.finalized">
-  <div class="card-body card-inverse" style="background-color:#5faac8; color:white;" layout="row" layout-xs="column">
-    <div flex="75" flex-xs="100">
-      <h3 style="color:#fff; margin-bottom:10px; margin-top: 0;">Kilometerstanden doorgeven</h3>
-      Wil je de (begin en eind) kilometerstand van de rit doorgeven?
-    </div>
-
-    <p hide-gt-xs></p>
-
-    <div flex="25" flex-xs="100" class="text-center">
-      <md-button class="md-raised" ui-sref="owm.booking.administer({ bookingId: booking.id })">Rit administreren</md-button>
+  <div class="card-body card-inverse text-white" style="background-color:#5faac8;">
+    <md-button class="pull-right md-raised" style="color: black;" ui-sref="owm.booking.administer({ bookingId: booking.id })">Rit administreren</md-button>
+    <h3 class="text-white" style="margin-top: 0;">Kilometerstanden doorgeven</h3>
+    
+    <p>Wil je de (begin en eind) kilometerstand van de rit doorgeven?</p>
     </div>
   </div>
 </div>
 
 
 <!-- Wait for finalizing trip by other -->
-<div class="card mw"
+<div class="card mw card-inverse"
     id="kilometerForm"
     ng-if="booking.ok &&
             bookingStarted &&
@@ -32,31 +27,21 @@
             booking.trip.updatedBy.id === me.id &&
             !booking.resource.boardcomputer &&
             !booking.trip.finalized">
-  <div class="card-body card-inverse" style="background-color:#5faac8; color:white;">
-    <h3 class="text-white" style="margin: 0;">Controle kilometers</h3>
-    <span ng-if="userPerspective==='owner'">Je hebt onderstaande kilometerstanden doorgegeven. We hebben {{ booking.person.firstName }} gevraagd om de kilometerstanden te controleren. Als {{ booking.person.firstName }} dit niet binnen zeven dagen doet, worden de kilometerstanden automatisch geaccordeerd.</span>
-    <span ng-if="userPerspective==='renter'">Je hebt onderstaande kilometerstanden doorgegeven. We hebben {{ booking.resource.owner.firstName }} gevraagd om de kilometerstanden te controleren. Als {{ booking.resource.owner.firstName }} dit niet binnen zeven dagen doet, worden de kilometerstanden automatisch geaccordeerd.</span>
-    <br/><br/>
-    <table>
-      <tr>
-        <td>Begin kilometerstand: </td>
-        <td class="text-right">{{ booking.trip.odoBegin }}</td>
-      </tr>
-      <tr>
-        <td>Eind kilometerstand: </td>
-        <td class="text-right">{{ booking.trip.odoEnd }}</td>
-      </tr>
-      <tr>
-        <td>Gereden kilometers: </td>
-        <td class="text-right">{{ booking.trip.odoEnd - booking.trip.odoBegin }}</td>
-      </tr>
-    </table>
-  </div>
+  <div class="card-body card-inverse text-white" style="background-color:#5faac8;">
+    <h3 class="text-white" style="margin-top: 0;">Controle kilometers</h3>
+    
+    <p ng-if="userPerspective==='owner'">Je hebt onderstaande kilometerstanden doorgegeven. We hebben {{ booking.person.firstName }} gevraagd om de kilometerstanden te controleren. Als {{ booking.person.firstName }} dit niet binnen zeven dagen doet, worden de kilometerstanden automatisch geaccordeerd.</p>
+    <p ng-if="userPerspective==='renter'">Je hebt onderstaande kilometerstanden doorgegeven. We hebben {{ booking.resource.owner.firstName }} gevraagd om de kilometerstanden te controleren. Als {{ booking.resource.owner.firstName }} dit niet binnen zeven dagen doet, worden de kilometerstanden automatisch geaccordeerd.</p>
+    <ul>
+      <li>Begin kilometerstand: <strong>{{ booking.trip.odoBegin }}</strong></li>
+      <li>Eind kilometerstand: <strong>{{ booking.trip.odoEnd }}</strong></li>
+      <li>Gereden kilometers: <strong>{{ booking.trip.odoEnd - booking.trip.odoBegin }}</strong></li>
+    </ul>
 </div>
 
 
 <!-- Finalize trip -->
-<div class="card mw"
+<div class="card mw card-inverse"
     id="kilometerForm"
     ng-if="booking.ok &&
             bookingEnded &&
@@ -64,34 +49,16 @@
             booking.trip.updatedBy.id !== me.id &&
             !booking.resource.boardcomputer &&
             !booking.trip.finalized">
-  <div class="card-body card-inverse" style="background-color:#5faac8; color:white;" layout="row" layout-xs="column">
-    <div flex="70" flex-xs="100">
-      <h3 style="color:#fff; margin-bottom:10px;">Controleer kilometers</h3>
-      Zijn onderstaande kilometerstanden correct?
-      <br/><br/>
-      <table>
-        <tr>
-          <td>Begin kilometerstand: </td>
-          <td class="text-right">{{ booking.trip.odoBegin }}</td>
-        </tr>
-        <tr>
-          <td>Eind kilometerstand: </td>
-          <td class="text-right">{{ booking.trip.odoEnd }}</td>
-        </tr>
-        <tr>
-          <td>Gereden kilometers: </td>
-          <td class="text-right">{{ booking.trip.odoEnd - booking.trip.odoBegin }}</td>
-        </tr>
-      </table>
-      <br/>
-      Kloppen bovenstaande gegevens niet? Neem dan <a href="http://mywheels.nl/autodelen/community/contact" target="_blank" style="color:#fff; text-decoration:underline">contact</a> met ons op.
-    </div>
+  <div class="card-body card-inverse text-white" style="background-color:#5faac8;">
+    <md-button class="pull-right md-raised" style="color: black;" ui-sref="owm.booking.finalize({booking: booking.id})">{{ 'FINALIZE_BOOKING' | translate }}</md-button>
+    <h3 class="text-white" style="margin-top: 0;">Controleer kilometers</h3>
 
-    <p hide-gt-xs></p>
-
-    <div flex="30" flex-xs="100" class="text-center">
-      <p hide-xs><br/><br/><br/></p>
-      <md-button class="md-raised" ui-sref="owm.booking.finalize({booking: booking.id})">{{ 'FINALIZE_BOOKING' | translate }}</md-button>
-    </div>
+    <p>Zijn onderstaande kilometerstanden correct?</p>
+    <ul>
+      <li>Begin kilometerstand: <strong>{{ booking.trip.odoBegin }}</strong></li>
+      <li>Eind kilometerstand: <strong>{{ booking.trip.odoEnd }}</strong></li>
+      <li>Gereden kilometers: <strong>{{ booking.trip.odoEnd - booking.trip.odoBegin }}</strong></li>
+    </ul>
+    <p>Kloppen bovenstaande gegevens niet? Neem dan <a href="http://mywheels.nl/autodelen/community/contact" target="_blank" style="color:#fff; text-decoration:underline">contact</a> met ons op.</p>
   </div>
 </div>

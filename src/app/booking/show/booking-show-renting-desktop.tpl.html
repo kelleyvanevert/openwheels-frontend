@@ -37,7 +37,7 @@
     </div>
 
     <!-- Acties -->
-    <div ng-if="progress.reservationCompleted">
+    <div ng-if="progress.reservationCompleted && booking.ok">
       <div ng-include="'booking/show/renting/partial-reservationActions.tpl.html'"></div>
     </div>
 
@@ -63,9 +63,6 @@
     <!-- NADAT DE RIT IS AFGELOPEN -->
     <div ng-if="accepted && bookingEnded">
 
-      <!-- Kilometerstanden doorgegeven / accorderen -->
-      <div ng-include="'booking/show/partial-kmCheck.tpl.html'" ng-if="!perspective.isContractor"></div>
-
       <!-- Tankbonnen -->
       <div ng-include="'booking/show/partial-declarations.tpl.html'" ng-if="allowDeclarations && !perspective.isContractor"></div>
 
@@ -73,7 +70,9 @@
       <div ng-include="'booking/show/partial-placeReview.tpl.html'" ng-if="showReviewTeaser && !perspective.isContractor"></div>
 
       <!-- Kosten -->
-      <booking-invoices booking="booking" perspective="renter" ng-if="!details.requested && booking.approved === 'OK'"></booking-invoices>
+      <booking-invoices booking="booking" view-as="renter"
+        ng-if="!details.requested && booking.approved === 'OK'"
+      />
     </div>
 
   </div>
