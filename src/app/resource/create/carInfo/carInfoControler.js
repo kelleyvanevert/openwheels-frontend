@@ -216,7 +216,6 @@ angular.module('owm.resource.create.carInfo', [])
                 })
                 .then(function (resource) {
                   masterResource = resource;
-                  $scope.cancel();
 
                   // adding properties is a secondary requirement -- if it fails, just continue
                   saveResourceProperties()
@@ -227,6 +226,7 @@ angular.module('owm.resource.create.carInfo', [])
                     $log.log('ERR saving properties');
                   })
                   .finally(function () {
+                    $scope.cancel();
                     $state.go('owm.resource.create.location', {brand: false, model: false, color: false, bouwjaar: false, numberOfSeats: false, fuelType: false, resourceType: false});
                   });
                 })
