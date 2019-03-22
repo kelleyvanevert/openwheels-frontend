@@ -53,7 +53,7 @@
 
             <div class="form-group mw-icon">
                 <ng-md-icon aria-hidden="true" icon="today"></ng-md-icon>
-                <input type="text" id="bouwjaar" name="bouwjaar" ng-model="resource.bouwjaar" placeholder="{{ 'TIME_OF_ORGIN' | translate }}" ng-disabled="disabledFields.bouwjaar" pattern="[0-9]*" ng-pattern="/195[0-9]|20[0-9]{2}/" maxlength="4" max="2025" min="1950">
+                <input type="text" id="bouwjaar" name="bouwjaar" ng-model="resource.bouwjaar" placeholder="{{ 'TIME_OF_ORGIN' | translate }}" ng-disabled="disabledFields.bouwjaar" pattern="[0-9]*" ng-pattern="/19[5-9][0-9]|20[0-9]{2}/" maxlength="4" max="2025" min="1950">
                 <div class="err-block" ng-show="editResourceForm.$submitted && (!resource.bouwjaar || editResourceForm.bouwjaar.$error.pattern)">
                     <span class="text-danger">Vul aub het bouwjaar in van de auto</span>
                 </div>
