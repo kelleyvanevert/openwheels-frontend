@@ -4,6 +4,7 @@ angular.module('owm.finance.vouchers', [])
 
 .controller('VouchersController', function ($window, $q, $state, $scope, account2Service, appConfig, alertService, voucherService,
   payRedirect,
+  $rootScope,
   paymentService, bookingService, me, Analytics, metaInfoService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/vouchers'});
@@ -51,6 +52,10 @@ angular.module('owm.finance.vouchers', [])
       }).then(function (value) {
         delete value.bookings;
         _.extend($scope.requiredValue, value);
+
+        $rootScope.bus = $rootScope.bus || {};
+        $rootScope.bus.requiredCredit = value;
+
         return $scope.requiredValue;
       })
       .catch(function (err) {
