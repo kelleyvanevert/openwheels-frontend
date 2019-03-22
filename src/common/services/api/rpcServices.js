@@ -372,6 +372,7 @@ angular.module('rpcServices', [])
   };
   this.getByIdAndToken = m('getByIdAndToken');
   this.createByIdAndToken = m('createByIdAndToken');
+  this.create = m('create');
 })
 
 .service('formSubmissionService', function (api) {

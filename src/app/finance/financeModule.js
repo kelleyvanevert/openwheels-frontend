@@ -24,6 +24,16 @@ angular.module('owm.finance', [
   };
 })
 
+.factory('instaPayRedirect', function ($window, appConfig) {
+  return function (instantPayment, redirectTo) {
+    var url = appConfig.appUrl + '/instant-payment/pay-now/' + instantPayment.id + '/' + instantPayment.viewToken +
+      '/10/0' + // betalen met iDeal
+      '?redirectTo=' + encodeURIComponent(redirectTo);
+    
+    $window.location = url;
+  };
+})
+
 // This is a helper to initiate a voucher payment + redirect for a certain amount.
 .factory('buyVoucherRedirect', function (
   $location,
@@ -186,8 +196,30 @@ interface InvoiceLine {
 */
 
   .state('owm.finance.invoice', {
-    url: '/factuur/:invoiceGroupId',
-    noGlobalLoader: true,
+    url: '/factuur?orderStatusId',
+    noGlobalLoader: false,
+    views: {
+      '@owm.finance': {
+        templateUrl: 'finance/invoice/invoiceResult.tpl.html',
+        controller: 'InvoiceResultController',
+      },
+    },
+    resolve: {
+      orderStatusId: ['$stateParams', function ($stateParams) {
+        return $stateParams.orderStatusId ? parseInt($stateParams.orderStatusId) : null;
+      }],
+      paymentSucceeded: ['orderStatusId', function (orderStatusId) {
+        return (orderStatusId === 100);
+      }],
+      paymentFailed: ['orderStatusId', function (orderStatusId) {
+        return (orderStatusId !== 100);
+      }],
+    },
+  })
+
+  .state('owm.finance.invoice.pay', {
+    url: '/:invoiceGroupId',
+    noGlobalLoader: false,
     views: {
       '@owm.finance': {
         templateUrl: 'finance/invoice/invoice.tpl.html',
@@ -195,25 +227,35 @@ interface InvoiceLine {
       },
     },
     resolve: {
+      credit: ['voucherService', 'me', function (voucherService, me) {
+        return voucherService.calculateCredit({ person: me.id })
+        .then(function (credit) {
+          return { value: credit };
+        });
+      }],
       invoiceGroups: ['me', 'paymentService', function (me, paymentService) {
         return paymentService.getInvoiceGroups({
           person: me.id,
           max: 100,
           status: 'unpaid',
-        })
-        .catch(function (err) {
-          // TODO
+        }).then(function (invoiceGroups) {
+          return invoiceGroups.filter(function (invoiceGroup) {
+            return invoiceGroup.total > 0;
+          });
         });
+//        .catch(function (err) {
+//          // TODO
+//        });
       }],
       invoiceGroupsData: ['invoiceGroups', 'invoice2Service', '$q', function (invoiceGroups, invoice2Service, $q) {
         return $q.all(invoiceGroups.map(function (invoiceGroup) {
           return invoice2Service.getInvoiceGroup({
             invoiceGroup: invoiceGroup.id,
             groupByBooking: true,
-          })
-          .catch(function (err) {
-            // TODO
           });
+//          .catch(function (err) {
+//            // TODO
+//          });
         }));
       }],
       invoiceGroups_simplified: ['invoiceGroupsData', function (invoiceGroupsData) {
@@ -241,34 +283,35 @@ interface InvoiceLine {
             });
           }
 
-          var type = 'renter';
-          _.forEach(Object.values(invoiceGroupData[type]), function (linesForBooking) {
-            var booking = linesForBooking.booking;
-            if (!lines.booking[booking.id]) {
-              lines.booking[booking.id] = {
-                beginBooking: booking.beginBooking,
-                lines: [],
-              };
-            }
-
-            _.forEach(linesForBooking.invoiceLines, function (invoiceLine) {
-              if ((invoiceLine.invoicetype === 'sent' && type === 'renter') || (invoiceLine.invoicetype === 'received' && type === 'owner')) {
-                lines.booking[booking.id].lines.push({
-                  description: invoiceLine.description,
-                  quantity: invoiceLine.quantity,
-                  price: - invoiceLine.price,
-                  total: - invoiceLine.total,
-                  tax: invoiceLine.taxRate / 100,
-                });
-              } else {
-                lines.booking[booking.id].lines.push({
-                  description: invoiceLine.description,
-                  quantity: invoiceLine.quantity,
-                  price: invoiceLine.price,
-                  total: invoiceLine.total,
-                  tax: invoiceLine.taxRate / 100,
-                });
+          _.forEach(['renter', 'owner'], function (type) {
+            _.forEach(Object.values(invoiceGroupData[type]), function (linesForBooking) {
+              var booking = linesForBooking.booking;
+              if (!lines.booking[booking.id]) {
+                lines.booking[booking.id] = {
+                  beginBooking: booking.beginBooking,
+                  lines: [],
+                };
               }
+
+              _.forEach(linesForBooking.invoiceLines, function (invoiceLine) {
+                if ((invoiceLine.invoicetype === 'sent' && type === 'renter') || (invoiceLine.invoicetype === 'received' && type === 'owner')) {
+                  lines.booking[booking.id].lines.push({
+                    description: invoiceLine.description,
+                    quantity: invoiceLine.quantity,
+                    price: - invoiceLine.price,
+                    total: - invoiceLine.total,
+                    tax: invoiceLine.taxRate / 100,
+                  });
+                } else {
+                  lines.booking[booking.id].lines.push({
+                    description: invoiceLine.description,
+                    quantity: invoiceLine.quantity,
+                    price: invoiceLine.price,
+                    total: invoiceLine.total,
+                    tax: invoiceLine.taxRate / 100,
+                  });
+                }
+              });
             });
           });
 
