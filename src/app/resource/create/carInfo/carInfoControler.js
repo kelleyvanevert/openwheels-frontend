@@ -200,13 +200,13 @@ angular.module('owm.resource.create.carInfo', [])
       brand = $scope.resource.brand,
       model = $scope.resource.model,
       color = $scope.resource.color,
-      bouwjaar = $scope.resource.bouwjaar,
+      bouwjaar = $scope.resource.bouwjaar && parseInt($scope.resource.bouwjaar),
       fuelType = $scope.resource.fuelType;
 
     // check if every input field is filled in
     if (brand && model) {
       if (alias) {
-        if (bouwjaar) {
+        if (bouwjaar && bouwjaar >= 1900) {
           if (color) {
             if (fuelType) {
               saveResourceProperties()
@@ -238,7 +238,7 @@ angular.module('owm.resource.create.carInfo', [])
             alertService.loaded();
           }
         } else {
-          alertService.add('danger', 'Hoe oud is jouw auto?', 5000);
+          alertService.add('danger', 'Vul aub een geldig bouwjaar in', 5000);
           alertService.loaded();
         }
       } else {
