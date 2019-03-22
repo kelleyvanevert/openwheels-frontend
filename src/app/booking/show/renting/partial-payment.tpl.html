@@ -48,11 +48,9 @@
         Koop {{ booking.details.booking_price.total + booking.details.km_price - booking.details.discount - booking.details.friend_invite_discount | currency }} rijtegoed
       </button>
 
-      <div ng-if="!accountApproved">
-        <p class="mywheels-btn-margin-top text-left">
-          <b>Let op:</b> om de betaling te kunnen verwerken, moet de tenaamstelling van de rekening overeenkomen met je accountnaam.
-        </p>
-      </div>
+      <p class="mywheels-btn-margin-top text-left" ng-if="!accountApproved">
+        <b>Let op:</b> om de betaling te kunnen verwerken, moet de tenaamstelling van de rekening overeenkomen met je accountnaam.
+      </p>
     </div>
   </div>
 
