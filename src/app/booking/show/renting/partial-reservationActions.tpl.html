@@ -59,7 +59,7 @@
             Kortingscode {{ discount.length > 0 ? '' : 'toevoegen' }}
           </a>
         </div>
-        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="details.bookingStarted && !booking.resource.boardcomputer">
+        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="details.bookingStarted && !booking.resource.boardcomputer && !perspective.isContractor">
           <a
             ng-click="kmStandenDialog($event)"
             class="mywheels-btn mywheels-btn-action"
