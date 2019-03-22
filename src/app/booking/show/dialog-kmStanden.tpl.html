@@ -1,0 +1,92 @@
+
+<md-dialog flex-xs="100" flex-sm="70" flex-md="50" flex-lg="40" flex-xl="30"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3 class="with-close-button">
+      Rit administreren
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+
+    <!-- Add kilometers -->
+    <div ng-if="(!booking.trip.odoBegin || !booking.trip.odoEnd) && !booking.trip.finalized">
+
+      <p><strong>Kilometerstanden doorgeven</strong></p>
+
+      <p>Wil je de (begin en eind) kilometerstand van de rit doorgeven?</p>
+    
+      <p class="dialog-buttons-centered">
+        <button class="mywheels-btn mywheels-btn-call-to-action"
+                md-ink-ripple="#4b702c"
+                ng-click="hide()"
+                ui-sref="owm.booking.administer({ bookingId: booking.id })"
+                style="white-space: nowrap;">
+          Rit administreren
+        </button>
+      </p>
+
+    </div>
+
+
+    <!-- Wait for finalizing trip by other -->
+    <div ng-if="booking.trip.odoBegin && booking.trip.odoEnd && (booking.trip.updatedBy.id === me.id) && !booking.trip.finalized">
+
+      <p><strong>Controle kilometers</strong></p>
+
+      <p ng-if="perspective.pageView === 'rentingOut'">Je hebt onderstaande kilometerstanden doorgegeven. We hebben {{ booking.person.firstName }} gevraagd om de kilometerstanden te controleren. Als {{ booking.person.firstName }} dit niet binnen zeven dagen doet, worden de kilometerstanden automatisch geaccordeerd.</p>
+      <p ng-if="perspective.pageView === 'renting'">Je hebt onderstaande kilometerstanden doorgegeven. We hebben {{ booking.resource.owner.firstName }} gevraagd om de kilometerstanden te controleren. Als {{ booking.resource.owner.firstName }} dit niet binnen zeven dagen doet, worden de kilometerstanden automatisch geaccordeerd.</p>
+      <ul>
+        <li>Begin kilometerstand: <strong>{{ booking.trip.odoBegin }}</strong></li>
+        <li>Eind kilometerstand: <strong>{{ booking.trip.odoEnd }}</strong></li>
+        <li>Gereden kilometers: <strong>{{ booking.trip.odoEnd - booking.trip.odoBegin }}</strong></li>
+      </ul>
+
+    </div>
+
+
+    <!-- Finalize trip -->
+    <div ng-if="details.bookingEnded && booking.trip.odoBegin && booking.trip.odoEnd && (booking.trip.updatedBy.id !== me.id) && !booking.trip.finalized">
+
+      <p><strong>Controleer kilometers</strong></p>
+
+      <p>Zijn onderstaande kilometerstanden correct?</p>
+      <ul>
+        <li>Begin kilometerstand: <strong>{{ booking.trip.odoBegin }}</strong></li>
+        <li>Eind kilometerstand: <strong>{{ booking.trip.odoEnd }}</strong></li>
+        <li>Gereden kilometers: <strong>{{ booking.trip.odoEnd - booking.trip.odoBegin }}</strong></li>
+      </ul>
+      <p>Kloppen bovenstaande gegevens niet? Neem dan <a href="http://mywheels.nl/autodelen/community/contact">contact</a> met ons op.</p>
+
+      <p class="dialog-buttons-centered">
+        <button class="mywheels-btn mywheels-btn-call-to-action"
+                md-ink-ripple="#4b702c"
+                ng-click="finalize()"
+                style="white-space: nowrap;">
+          {{ 'FINALIZE_BOOKING' | translate }}
+        </button>
+      </p>
+
+    </div>
+
+
+    <!-- Trip has been finalized -->
+    <div ng-if="details.bookingEnded && booking.trip.finalized">
+
+      <p><strong>Kilometerstanden</strong></p>
+
+      <p>Onderstaande kilometerstanden zijn geaccordeerd en in het systeem opgenomen.</p>
+      <ul>
+        <li>Begin kilometerstand: <strong>{{ booking.trip.odoBegin }}</strong></li>
+        <li>Eind kilometerstand: <strong>{{ booking.trip.odoEnd }}</strong></li>
+        <li>Gereden kilometers: <strong>{{ booking.trip.odoEnd - booking.trip.odoBegin }}</strong></li>
+      </ul>
+
+    </div>
+
+    <p ng-if="apiError" class="text-danger">
+      Er is helaas iets misgegaan. Probeer het later nog eens.
+    </p>
+
+  </md-dialog-content>
+</md-dialog>

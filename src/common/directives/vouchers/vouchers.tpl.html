@@ -226,10 +226,10 @@
         </tbody>
     </table>
 
-    <div style="margin-top: 1rem;" ng-if="booking.cancelAfter && booking.approved !== 'OK' && booking.details.discount === 0 && booking.details.friend_invite_discount === 0 && !holidaytrip" class="text-danger">
+    <p style="margin-top: 1rem;" ng-if="booking.cancelAfter && booking.approved !== 'OK' && booking.details.discount === 0 && booking.details.friend_invite_discount === 0 && !holidaytrip" class="text-danger">
         <span ng-if="blockedUntil > now">De auto is nog {{ minutesLeft }} minuten voor je geblokkeerd, daarna kunnen andere huurders de auto ook reserveren. Betaal direct om de reservering definitief te maken.</span>
         <span ng-if="blockedUntil < now">De auto is niet meer voor je geblokkeerd, andere huurders kunnen de auto ook reserveren. Betaal voor {{booking.cancelAfter | amDateFormat:'D MMMM YYYY HH:mm'}} om de reservering definitief te maken.</span>
-    </div>
+    </p>
 
     <div class="voucher-overlay voucher-loading" ng-if="!booking.details">
         <md-progress-circular md-mode="indeterminate" md-diameter="96"></md-progress-circular>
