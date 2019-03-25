@@ -67,7 +67,7 @@ angular.module('licencePlateInfoDirective', [])
                   zitplaatsen: responseCarData.data[0].aantal_zitplaatsen,
                   inrichting: responseCarData.data[0].inrichting,
                   brandstof: response.data[0].brandstof_omschrijving,
-                  datum_eerste_toelating: moment(responseCarData.data[0].datum_eerste_toelating, 'DD/MM/YYYY').format('YYYY'),
+                  datum_eerste_toelating: responseCarData.data[0].datum_eerste_toelating.substring(0, 4),
                   kleur: responseCarData.data[0].eerste_kleur,
                   verzekerd: responseCarData.data[0].wam_verzekerd,
                   vervaldatum_apk:  responseCarData.data[0].vervaldatum_apk,

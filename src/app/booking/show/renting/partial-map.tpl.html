@@ -6,7 +6,7 @@
     <h3 class="card-title">{{ resource.location }} {{ resource.streetNumber }} <small>{{ resource.city }}</small></h3>
   </div>
   <mw-resource-location-map map="map"></mw-resource-location-map>
-  <div class="card-heading" ng-if="locationError">
+  <div class="card-heading" ng-if="locationError && !bookingEndedReally">
     <span>{{ locationError }}</span>
   </div>
 </div>
