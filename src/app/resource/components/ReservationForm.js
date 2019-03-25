@@ -102,13 +102,13 @@ angular.module('owm.resource.reservationForm', [])
             if (availability.yes) {
               loadContractsOnce().then(function () {
                 validateDiscountCode();
-                $log.log('loadPrice after availability');
-                loadPrice();
+                $log.log('onContractChoiceChange after availability');
+                onContractChoiceChange();
               });
             } else {
               validateDiscountCode();
-              $log.log('loadPrice after availability');
-              loadPrice();
+              $log.log('onContractChoiceChange after availability');
+              onContractChoiceChange();
             }
           }
         });
@@ -124,8 +124,8 @@ angular.module('owm.resource.reservationForm', [])
   }
 
   $scope.$watch('booking.riskReduction', function () {
-    $log.log('loadPrice after booking.riskReduction changed');
-    loadPrice();
+    $log.log('onContractChoiceChange after booking.riskReduction changed');
+    onContractChoiceChange();
   });
 
 
@@ -191,10 +191,32 @@ angular.module('owm.resource.reservationForm', [])
         })
         .then(function (contracts) {
           booking.contractOptions = contracts || [];
-          booking.contract = contracts.length ? contracts[0] : null;
-          $scope.$watch('booking.contract.id', function (n, o) {
-            if (n !== o) {
-              loadPrice();
+
+          // Choice of contract is stored in localstorage
+          //  instead of in-session (or in-navigation),
+          //  because it seems more of a permanent-y choice.
+          // (You can always change it, but this way it is
+          //  also persisted for future bookings.)
+          var possiblePreviousChoice = _.find(contracts, {
+            id: parseInt($localStorage.contractChoice),
+          });
+          if (possiblePreviousChoice) {
+            booking.contract = possiblePreviousChoice;
+          } else if (contracts.length > 0) {
+            booking.contract = contracts[0];
+            $localStorage.contractChoice = booking.contract.id;
+          } else {
+            booking.contract = null;
+            $localStorage.contractChoice = null;
+          }
+
+          $scope.$watch('booking.contract.id', function (newId, oldId) {
+            if (newId !== oldId) {
+              // This is a user-intention
+              // Save it for future use
+              $localStorage.contractChoice = newId;
+
+              onContractChoiceChange();
             }
           });
           resolve(contracts);
@@ -203,19 +225,20 @@ angular.module('owm.resource.reservationForm', [])
     });
   }
 
-  function loadPrice () {
-    //$log.log('loadPrice()');
+  function onContractChoiceChange () {
 
     var availability = $scope.availability;
     var resource = $scope.resource;
     var booking = $scope.booking;
     $scope.price = null;
 
+    // Determine whether a timeframe has begin given and
+    //  the car is available
     if (!availability || availability.no || !booking.beginRequested || !booking.endRequested) {
-      //$log.log(' (aborted)');
       return;// reject();
     }
 
+    // If available, determine rental price
     invoice2Service.calculatePrice({
       resource: resource.id,
       timeFrame: {
@@ -415,7 +438,8 @@ angular.module('owm.resource.reservationForm', [])
         endDate: booking.endRequested,
         discountCode: booking.discountCode,
         remarkRequester: booking.remarkRequester,
-        riskReduction: booking.riskReduction
+        contractId: booking.contract ? booking.contract.id : undefined,
+        riskReduction: booking.riskReduction,
       });
     } else if ($scope.person.status === 'book-only' && $scope.features.signupFlow && $scope.person.numberOfBookings === 0 && !$scope.verifiedPhoneNumbers) { // verify phone number
       $scope.loading.createBooking = false;
@@ -427,7 +451,8 @@ angular.module('owm.resource.reservationForm', [])
         endDate: booking.endRequested,
         discountCode: booking.discountCode,
         remarkRequester: booking.remarkRequester,
-        riskReduction: booking.riskReduction
+        contractId: booking.contract ? booking.contract.id : undefined,
+        riskReduction: booking.riskReduction,
       });
     } else if (!booking.contract) { // should pay deposit to get a contract
       $scope.loading.createBooking = false;

@@ -1,0 +1,54 @@
+
+<div class="row">
+  <div class="rpad col-md-4">
+
+    <!-- Boekingsinformatie -->
+    <div ng-include="'booking/show/partial-bookingInfoCard.tpl.html'"></div>
+
+  </div>
+  <div class="rpad col-md-8">
+
+    <!-- Status en meldingen -->
+    <div ng-include="'booking/show/rentingOut/partial-notices.tpl.html'"></div>
+
+    <!-- Accepteren van huurverzoek / Annuleren -->
+    <div ng-include="'booking/show/rentingOut/partial-alterations.tpl.html'"></div>
+
+    <!-- Kortingscode info -->
+    <div ng-include="'booking/show/rentingOut/partial-discountInfo.tpl.html'"></div>
+
+    <!-- MW Open openen en sluiten knoppen -->
+    <div ng-if="!bookingEndedReally">
+      <div ng-include="'booking/show/partial-openCloseButtons.tpl.html'"></div>
+    </div>
+
+    <!-- Huurovereenkomst -->
+    <div ng-include="'booking/show/partial-agreement.tpl.html'"></div>
+
+
+    <!-- NADAT DE RIT IS AFGELOPEN -->
+    <div ng-if="bookingEnded">
+
+      <!-- Kilometerstanden doorgegeven / accorderen -->
+      <div ng-include="'booking/show/partial-kmCheck.tpl.html'" ng-if="accepted"></div>
+
+      <!-- Tankbonnetjes -->
+      <div ng-include="'booking/show/partial-declarations.tpl.html'" ng-if="allowDeclarations && accepted"></div>
+
+      <!-- Review schrijven teaser -->
+      <div ng-include="'booking/show/partial-placeReview.tpl.html'" ng-if="showReviewTeaser && accepted"></div>
+
+      <!-- Opbrengsten -->
+      <booking-invoices booking="booking" view-as="owner"
+        ng-if="!details.requested && booking.approved === 'OK'"
+      />
+    </div>
+
+    <!-- Opmerkingen van huurder & verhuurder -->
+    <div ng-include="'booking/show/partial-remarks.tpl.html'"></div>
+
+    <!-- MW Open banner -->
+    <div ng-include="'booking/show/rentingOut/partial-mwOpen-teaser.tpl.html'"></div>
+
+  </div>
+</div>

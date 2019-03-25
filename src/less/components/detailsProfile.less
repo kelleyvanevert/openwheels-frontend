@@ -189,7 +189,7 @@ ul.checklist {
 
 
 .mw-booking-timeframe {
-    margin: 2em 0 0 0;
+    margin: 2rem 0 0 0;
     display: flex;
     justify-content: center;
     align-content: center;
@@ -197,7 +197,9 @@ ul.checklist {
 
     position: relative;
     
-    background: #ddd;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    background: white;
 
     .pickup, .return {
         text-align: center;
@@ -216,11 +218,11 @@ ul.checklist {
 
     .pickup {
         width: 50%;
-        background: #eee;
+        background: white;
     }
     .t path {
-        fill: #eee;
-        stroke: black;
+        fill: white;
+        stroke: #ddd;
     }
     .return {
         width: 50%;
@@ -231,6 +233,7 @@ ul.checklist {
         position: absolute;
         top: 0;
         left: 50%;
+        left: ~"calc(50% - 10px)";
         bottom: 0;
     }
 }

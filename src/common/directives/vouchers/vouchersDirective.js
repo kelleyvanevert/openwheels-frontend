@@ -178,6 +178,8 @@ angular.module('vouchersDirective', [])
         })
         .then(function () {
           $scope.voucherError.show = false;
+
+          $scope.onChanged($scope.booking);
         })
         .catch(function (err) {
           if (err.message === 'Bij je huidige gebruiksvorm is verlaging van het eigen risico verplicht.') {
@@ -190,13 +192,10 @@ angular.module('vouchersDirective', [])
           }
           /* revert */
           $scope.booking.details.riskReduction = !$scope.booking.details.riskReduction;
-
         })
         .finally(function () {
-          $scope.onChanged($scope.booking);
           $scope.redemptionPending = {};
           alertService.loaded();
-          //$log.log('<< voucher/toggleRedemption/loaded');
           $scope.isBusy = false;
         });
       };

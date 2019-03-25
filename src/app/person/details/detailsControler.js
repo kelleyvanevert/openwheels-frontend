@@ -4,6 +4,8 @@ angular.module('owm.person.details', [])
 
 .controller('DetailsProfileController', function ($scope, $filter, $timeout, $translate, $window, $log, $state, $stateParams, $mdDialog,
   discountService, contractService, account2Service, person, alertService, personService, authService, me, dutchZipcodeService,
+  $sessionStorage,
+  payRedirect,
   voucherService, $q, appConfig, paymentService, bookingService, invoice2Service, API_DATE_FORMAT, $anchorScroll, Analytics, metaInfoService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard/details/' + $stateParams.pageNumber});
@@ -32,7 +34,8 @@ angular.module('owm.person.details', [])
     city = $stateParams.city,
     discountCode = $stateParams.discountCode,
     remarkRequester = $stateParams.remarkRequester,
-    riskReduction = $stateParams.riskReduction,
+    contractId = $stateParams.contractId,
+    riskReduction = $stateParams.riskReduction ? ($stateParams.riskReduction === 'true') : undefined,
     timeFrame = {
       startDate: moment($stateParams.startDate).format(API_DATE_FORMAT),
       endDate: moment($stateParams.endDate).format(API_DATE_FORMAT)
@@ -54,6 +57,21 @@ angular.module('owm.person.details', [])
     max: true
   };
 
+
+  $scope.months = [
+    {label: $translate.instant('JANUARY'), value: 1},
+    {label: $translate.instant('FEBRUARY'), value: 2},
+    {label: $translate.instant('MARCH'), value: 3},
+    {label: $translate.instant('APRIL'), value: 4},
+    {label: $translate.instant('MAY'), value: 5},
+    {label: $translate.instant('JUNE'), value: 6},
+    {label: $translate.instant('JULY'), value: 7},
+    {label: $translate.instant('AUGUST'), value: 8},
+    {label: $translate.instant('SEPTEMBER'), value: 9},
+    {label: $translate.instant('OCTOBER'), value: 10},
+    {label: $translate.instant('NOVEMBER'), value: 11},
+    {label: $translate.instant('DECEMBER'), value: 12}
+  ];
 
   //booking section
   var URL_DATE_TIME_FORMAT = 'YYMMDDHHmm';
@@ -140,7 +158,8 @@ angular.module('owm.person.details', [])
       endDate: $stateParams.endDate,
       discountCode: $stateParams.discountCode,
       remarkRequester: $stateParams.remarkRequester,
-      riskReduction: $stateParams.riskReduction
+      contractId: $stateParams.contractId,
+      riskReduction: $stateParams.riskReduction,
     });
   }
   // toggle the sections
@@ -200,14 +219,16 @@ angular.module('owm.person.details', [])
       if (autoDateInput) {
         autoDateInput.onkeyup = function (e) {
           var target = e.srcElement;
-          var maxLength = parseInt(target.attributes.maxlength.value, 10);
-          var myLength = target.value.length;
-          if (myLength >= maxLength) {
-            var next = target;
-            next = next.nextElementSibling;
-            if (next !== null) {
-              if (next.tagName.toLowerCase() === 'input') {
-                next.focus();
+          if (target.tagName.toLowerCase() === 'input') {
+            var maxLength = parseInt(target.attributes.maxlength.value, 10);
+            var myLength = target.value.length;
+            if (myLength >= maxLength) {
+              var next = target;
+              next = next.nextElementSibling;
+              if (next !== null) {
+                if (next.tagName.toLowerCase() === 'input' || next.tagName.toLowerCase() === 'select') {
+                  next.focus();
+                }
               }
             }
           }
@@ -297,7 +318,8 @@ angular.module('owm.person.details', [])
         endDate: $stateParams.endDate,
         discountCode: $stateParams.discountCode,
         remarkRequester: $stateParams.remarkRequester,
-        riskReduction: $stateParams.riskReduction
+        contractId: $stateParams.contractId,
+        riskReduction: $stateParams.riskReduction,
       }, {
         absolute: true
       })
@@ -357,7 +379,9 @@ angular.module('owm.person.details', [])
       resource: resourceId,
       timeFrame: timeFrame,
       person: me.id,
-      remark: remarkRequester
+      remark: remarkRequester,
+      contract: contractId,
+      riskReduction: riskReduction,
     }).then(function (booking) { //go to an other state
       Analytics.trackEvent('booking', 'created_post', booking.id, booking.resource.owner.id === 282 ? 11 : (!booking.resource.isConfirmationRequiredOthers ? 4 : undefined), true);
       goToNextState(3, booking.id); //set the booking id in the url
@@ -462,7 +486,6 @@ angular.module('owm.person.details', [])
     $scope.createBookingFlow();
   }
 
-  // to buy the vouchure
   $scope.buyVoucher = function() {
     alertService.load($scope);
     voucherService.calculateRequiredCreditForBooking({booking: $scope.booking.id})
@@ -482,7 +505,14 @@ angular.module('owm.person.details', [])
           throw new Error('Er is een fout opgetreden');
         }
         /* redirect to payment url */
-        redirect(data.url);
+        payRedirect(data.url, {
+          redirect: {
+            state: 'owm.booking.show',
+            params: {
+              bookingId: $scope.booking.id,
+            },
+          },
+        });
       })
       .catch(function (err) {
         alertService.addError(err);
@@ -491,10 +521,5 @@ angular.module('owm.person.details', [])
         alertService.loaded($scope);
       });
   };
-  //redireceht to the pay service
-  function redirect(url) {
-    var redirectTo = appConfig.appUrl + $state.href('owm.finance.payment-result');
-    $window.location.href = url + '?redirectTo=' + encodeURIComponent(redirectTo);
-  }
 
 });

@@ -1,0 +1,105 @@
+
+<div
+  ng-init="collapsed = collapse"
+  class="card mw instant-payment-invoice"
+  ng-class="{ collapsible: collapse, collapsed: collapsed }"
+>
+
+  <div
+    class="card-heading"
+    ng-click="collapsed = collapse && !collapsed"
+    ng-style="collapse ? { outline: 'none' } : { cursor: 'auto', outline: 'none' }"
+  >
+    <div class="pull-right size-4" style="font-weight: 600; line-height: 1.1;">{{ invoiceGroup.total | currency }}</div>
+    <h3 style="margin-bottom: 0;">
+      Factuur #{{ invoiceGroup.id }}
+      <ng-md-icon icon="arrow_drop_down" ng-if="collapse && collapsed"></ng-md-icon>
+      <ng-md-icon icon="arrow_drop_up" ng-if="collapse && !collapsed"></ng-md-icon>
+    </h3>
+  </div>
+  <div class="card-body" uib-collapse="collapsed">
+
+    <table class="table financial" style="margin-bottom: 0;">
+      <thead>
+        <tr>
+          <th colspan="3">Beschrijving</th>
+          <th class="text-right" style="padding-right: 0;">Kosten</th>
+          <th width="15%"></th>
+        </tr>
+      </thead>
+      <tbody
+        ng-repeat="(type, groups) in invoiceGroup.invoiceLines"
+        style="border-top-width: 1px;"
+      >
+        <tr
+          ng-repeat-start="group in groups"
+          ng-init="group.expanded = !subCollapse"
+          ng-click="subCollapse && (group.expanded = !group.expanded)"
+          ng-style="subCollapse ? { outline: 'none' } : { cursor: 'auto', outline: 'none' }"
+          ng-class="{ expandeable: subCollapse }"
+        >
+          <td colspan="3">
+            <span ng-if="type === 'booking'">Rit op {{ group.beginBooking | amDateFormat:'DD-MM-YYYY' }}</span>
+            <span ng-if="type !== 'booking'">Overig</span>
+          </td>
+          <td style="padding-right: 0;" class="text-right">
+            {{ sumLines(group.lines) | currency }}
+          </td>
+          <td class="text-right">
+            <span ng-if="subCollapse">
+              <ng-md-icon icon="arrow_drop_down" ng-if="!group.expanded"></ng-md-icon>
+              <ng-md-icon icon="arrow_drop_up" ng-if="group.expanded"></ng-md-icon>
+            </span>
+          </td>
+        </tr>
+        <tr ng-show="group.expanded">
+          <td class="subitem">
+          </td>
+          <td class="subitem text-right">
+            <span class="hidden-xs">
+              <em><small>Aantal</small></em>
+            </span>
+          </td>
+          <td class="subitem text-right">
+            <span class="hidden-xs">
+              <em><small>Prijs</small></em>
+            </span>
+          </td>
+          <td class="subitem text-right">
+            <em><small>Kosten</small></em>
+          </td>
+          <td class="subitem text-right">
+            <span class="hidden-xs">
+              <em><small>BTW</small></em>
+            </span>
+          </td>
+        </tr>
+        <tr ng-repeat-end class="nohover table-finance-subtable" ng-repeat="line in group.lines" ng-show="group.expanded"
+              ng-class="{ expand_bb: group.expanded && ($index === group.lines.length - 1) }">
+          <td class="subitem">
+            &emsp;{{ line.description }}
+          </td>
+          <td class="subitem text-right">
+            <span class="hidden-xs">
+              {{ line.quantity }}
+            </span>
+          </td>
+          <td class="subitem text-right">
+            <span class="hidden-xs">
+              {{ line.price | currency }}
+            </span>
+          </td>
+          <td class="subitem text-right">
+            {{ line.total | currency }}
+          </td>
+          <td class="subitem text-right">
+            <span class="hidden-xs">
+              {{ line.tax | percentage }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

@@ -1,0 +1,17 @@
+
+<div class="mw-booking-timeframe">
+  <div class="pickup">
+    <div class="date">{{ frame.pickup | amDateFormat: 'ddd DD MMM' }}</div>
+    <div class="time">{{ frame.pickup | amDateFormat: 'HH:mm' }}</div>
+  </div>
+  <div class="return">
+    <div class="date">{{ frame.return | amDateFormat: 'ddd DD MMM' }}</div>
+    <div class="time">{{ frame.return | amDateFormat: 'HH:mm' }}</div>
+  </div>
+  <svg class="t" height="100%" width="20" viewBox="110 0 40 100" preserveAspectRatio="none" shape-rendering="geometricPrecision">
+    <path d="M0,0 h110 l40,50 l-40,50 h-110z"
+          stroke-width="2"
+          stroke-linejoin="round"
+          stroke-linecap="square" />
+  </svg>
+</div>

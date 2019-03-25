@@ -3,11 +3,17 @@
 angular.module('owm.finance.index', [])
 
 .controller('FinanceIndexController', function (me, requiredCredit, kmPoints,
-  $scope, $q, $state,
+  $scope, $q, $state, $rootScope,
   $mdDialog, paymentService, alertService) {
   
   $scope.me = me;
   $scope.requiredCredit = requiredCredit;
+  $rootScope.$watch('bus.requiredCredit', function () {
+    if ($rootScope.bus && $rootScope.bus.requiredCredit) {
+      $scope.requiredCredit = $rootScope.bus.requiredCredit;
+    }
+  });
+  
   $scope.kmPoints = kmPoints;
   $scope.kmPoints.total = $scope.kmPoints
     .map(function (o) { return +(o.amount); })
@@ -16,6 +22,9 @@ angular.module('owm.finance.index', [])
   function onNav () {
     if ($state.$current.name === 'owm.finance.kmpoints') {
       $scope.sectionTitle = 'Beheerdersvergoeding';
+    }
+    else if ($state.$current.name.match(/^owm\.finance\.invoice/)) {
+      $scope.sectionTitle = 'Factuur betalen';
     }
     else if ($state.$current.name === 'owm.finance.vouchers') {
       $scope.sectionTitle = 'Rijtegoed';

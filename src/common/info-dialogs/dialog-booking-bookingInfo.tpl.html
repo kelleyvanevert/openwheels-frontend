@@ -1,0 +1,79 @@
+
+<md-dialog flex="100"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3 class="with-close-button">
+      Boekingsinformatie
+      
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+    
+    <!-- auto -->
+    <div
+      ng-if="$root.dev || params.resource.pictures.length > 0"
+      class="photo"
+      style="
+        height: 18rem;
+        background-size: cover;
+        background-color: #eee;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        
+        margin-bottom: 1rem;
+      "
+      ng-style="{
+        'background-image': 'url(' + (params.resource.pictures[0] | resourceAvatar: 'large') + ')',
+      }"
+    ></div>
+
+    <p>
+      <a ng-click="hide()" ui-sref="owm.resource.show({ resourceId: params.resource.id })" style="font-weight: 600;">{{ params.resource.alias }}</a>
+      <span style="margin-left: .5rem;" class="tag tag-warning" ng-if="params.resource.boardcomputer">MyWheels Open</span>
+      <br />
+      {{ params.resource.brand }} {{ params.resource.model }}
+        <span class="registration-plate">{{ params.resource.registrationPlate }}</span>
+      <br />
+      {{ params.resource.location }} {{ params.resource.streetNumber }} <small>{{ params.resource.city  | toTitleCase }}</small>
+    </p>
+
+    <p ng-if="params.perspective.isRenter && params.discount.length > 0">
+      Je hebt kortingscode {{ params.discount[0].discount.code }} gebruikt voor deze reservering. Je krijgt tot <span ng-if="params.discount[0].discount.amount > 0">€ {{ params.discount[0].discount.amount }}</span> <span ng-if="params.discount[0].discount.percentage > 0">{{ discount[0].discount.percentage }}%</span> korting van <span ng-if="params.discount[0].discount.sender.id === params.resource.owner.id">verhuurder</span> {{ discount[0].discount.sender | fullname }}.
+    </p>
+
+    <div ng-if="params.perspective.isRenter">
+      <ul class="list-de-emphasized">
+        <li>
+          <span ng-if="params.booking.riskReduction">
+            Eigen risico: verlaagd
+          </span>
+          <span ng-if="!params.booking.riskReduction">
+            Eigen risico: niet verlaagd
+          </span>
+        </li>
+        <li ng-if="!params.extraDrivers.noPermission">
+          <!--
+            Let: ik tel hier niet het aantal uitnodigingen,
+            maar alleen het aantal daadwerkelijk geaccepteerde uitnodigingen.
+            Als je het "extra bestuurders wijzigen" dialoog opent,
+            krijg je wel ook verzoeken te zien, maar dan apart van
+            de reeds geaccepteerden.
+            Dit alles leek me een verstandige manier om heel helder te maken
+            dat alleen geaccepteerden mee mogen rijden.
+          -->
+          <span ng-if="!params.extraDrivers.loading && params.extraDrivers.accepted.length === 0">
+            Geen extra bestuurders
+          </span>
+          <span ng-if="params.extraDrivers.loading || params.extraDrivers.accepted.length > 0">
+            {{ params.extraDrivers.accepted.length }}
+            extra bestuurder{{ params.extraDrivers.accepted.length > 1 ? 's' : '' }}
+          </span>
+          <span ng-if="params.extraDrivers.loading">Laden...</span>
+        </li>
+      </ul>
+    </div>
+  </md-dialog-content>
+</md-dialog>

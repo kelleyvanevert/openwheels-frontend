@@ -1,0 +1,30 @@
+
+<div
+  class="card mw info-card error"
+  ng-if="paymentFailed"
+>
+  <div class="card-heading">
+    <h3>
+      <ng-md-icon icon="warning"></ng-md-icon>
+      Betaling niet gelukt.
+    </h3>
+  </div>
+  <div class="card-body">
+    <p><strong>Let op:</strong> De betaling is niet gelukt.</p>
+  </div>
+</div>
+
+<div
+  class="card mw"
+  style="background:#3bab78; color: white;"
+  ng-if="paymentSucceeded"
+>
+  <div class="card-heading">
+    <h3 style="color: white;">Gelukt!</h3>
+  </div>
+  <div class="card-body">
+    <p class="size-3">
+      De betaling is ontvangen.
+    </p>
+  </div>
+</div>
