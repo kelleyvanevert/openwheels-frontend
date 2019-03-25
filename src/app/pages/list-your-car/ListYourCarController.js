@@ -69,7 +69,7 @@ angular.module('owm.pages.list-your-car', [])
         color: $filter('lowercase')($scope.licencePlate.data.kleur),
         fuel: $filter('lowercase')($scope.licencePlate.data.brandstof),
         type: $filter('lowercase')($scope.licencePlate.data.inrichting),
-        year: $scope.licencePlate.data.datum_eerste_toelating,
+        year: $scope.licencePlate.data.datum_eerste_toelating.substring(0, 4),
         dayPrice: $scope.calculateYourPrice.dayPrice,
         numberOfDays: $scope.calculateYourPrice.numberOfDays,
         personSubmitted: false
@@ -86,7 +86,7 @@ angular.module('owm.pages.list-your-car', [])
           color: $filter('lowercase')($scope.licencePlate.data.kleur),
           fuel: $filter('lowercase')($scope.licencePlate.data.brandstof),
           type: $filter('lowercase')($scope.licencePlate.data.inrichting),
-          year: $scope.licencePlate.data.datum_eerste_toelating
+          year: $scope.licencePlate.data.datum_eerste_toelating.substring(0, 4)
         },
         fullscreen: $mdMedia('xs'),
         templateUrl: 'pages/list-your-car/list-your-car-dialog.tpl.html',

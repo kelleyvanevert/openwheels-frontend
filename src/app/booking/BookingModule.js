@@ -109,8 +109,8 @@ angular.module('owm.booking', [
         details.bookingEnded = moment().isAfter(moment(booking.endBooking));
         details.bookingRequestEnded = moment().isAfter(moment(booking.endRequested));
         details.bookingStartsWithinOneHour = moment().isAfter(moment(booking.beginBooking).add(-1, 'hour'));
-        details.bookingEndedReally = moment().isAfter(moment(booking.endBooking).add(1, 'hour'));
-        details.bookingRequestEndedReally = moment().isAfter(moment(booking.endRequested).add(1, 'hour'));
+        details.bookingEndedReally = moment().isAfter(moment(booking.endBooking).add(30, 'minutes'));
+        details.bookingRequestEndedReally = moment().isAfter(moment(booking.endRequested).add(30, 'minutes'));
         details.requested = (booking.status === 'requested');
         details.accepted = (booking.status === 'accepted');
         details.firstTime = (booking.person.numberOfBookings === 0);

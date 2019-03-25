@@ -56,7 +56,7 @@
             <a class="contact-now" alt="Stuur bericht" ng-click="openChatWith(booking.person)"><ng-md-icon icon="chat"></ng-md-icon></a>
           </div>
           <br />
-          <small><strong>{{ booking.person | fullname }}</strong></small>
+          <small>{{ booking.person | fullname }}</small>
 
           <ul class="list-unstyled list-spaced list-with-icons" style="margin-top: 1.4rem;">
             <li ng-if="booking.person.created"><ng-md-icon icon="perm_contact_calendar"></ng-md-icon> 
@@ -101,9 +101,6 @@
       <div ng-include="'booking/show/partial-openCloseButtons.tpl.html'"></div>
     </div>
 
-    <!-- Opmerkingen van huurder & verhuurder -->
-    <div ng-include="'booking/show/partial-remarks.tpl.html'"></div>
-
     <!-- Huurovereenkomst -->
     <div ng-include="'booking/show/partial-agreement.tpl.html'"></div>
 
@@ -124,6 +121,9 @@
         ng-if="!details.requested && booking.approved === 'OK'"
       />
     </div>
+
+    <!-- Opmerkingen van huurder & verhuurder -->
+    <div ng-include="'booking/show/partial-remarks.tpl.html'"></div>
 
     <!-- MW Open banner -->
     <div ng-include="'booking/show/rentingOut/partial-mwOpen-teaser.tpl.html'"></div>

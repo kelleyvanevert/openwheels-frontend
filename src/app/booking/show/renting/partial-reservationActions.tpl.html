@@ -2,14 +2,14 @@
 <div class="board-computer-control">
   <div class="card mw">
     <div class="card-body" style="padding-bottom: 0;">
-      <p class="size-2 reservation-progress-summary" ng-if="!details.bookingEnded">
+      <p class="size-2 reservation-progress-summary" ng-if="!details.bookingEndedReally">
         {{ progress.summary }}
       </p>
-      <p class="size-2 reservation-progress-summary" ng-if="details.bookingEnded">
-        De rit is afgelopen. U kunt met de knop hieronder de kilometerstanden doorgeven of verifieren.
+      <p class="size-2 reservation-progress-summary" ng-if="details.bookingEndedReally">
+        De rit is afgelopen. Je kunt met de knop hieronder de kilometerstanden doorgeven of verifieren.
       </p>
       <div class="row is-flex" style="padding: 1rem 0; margin: 0 -.5rem !important;">
-        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!details.bookingEnded">
+        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!details.bookingEndedReally">
           <a
             ng-click="editReservationTimeframeDialog($event)"
             class="mywheels-btn mywheels-btn-action"

@@ -30,7 +30,7 @@ angular.module('owm.resource.own', [])
       color: $filter('lowercase')($scope.licencePlate.data.kleur),
       fuel: $filter('lowercase')($scope.licencePlate.data.brandstof),
       type: $filter('lowercase')($scope.licencePlate.data.inrichting),
-      year: $scope.licencePlate.data.datum_eerste_toelating,
+      year: $scope.licencePlate.data.datum_eerste_toelating.substring(0, 4),
       personSubmitted: false
     });
   };
