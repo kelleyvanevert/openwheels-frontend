@@ -94,7 +94,7 @@
           </td>
           <td class="subitem text-right">
             <span class="hidden-xs">
-              {{ line.tax | percentage }}
+              {{ (line.tax / 100) | percentage }}
             </span>
           </td>
         </tr>
