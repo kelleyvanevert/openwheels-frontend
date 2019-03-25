@@ -105,16 +105,16 @@
     <div ng-include="'booking/show/partial-agreement.tpl.html'"></div>
 
     <!-- NADAT DE RIT IS AFGELOPEN -->
-    <div ng-if="accepted && bookingEnded">
+    <div ng-if="bookingEnded">
 
       <!-- Kilometerstanden doorgegeven / accorderen -->
-      <div ng-include="'booking/show/partial-kmCheck.tpl.html'"></div>
+      <div ng-include="'booking/show/partial-kmCheck.tpl.html'" ng-if="accepted"></div>
 
       <!-- Tankbonnetjes -->
-      <div ng-include="'booking/show/partial-declarations.tpl.html'" ng-if="allowDeclarations"></div>
+      <div ng-include="'booking/show/partial-declarations.tpl.html'" ng-if="allowDeclarations && accepted"></div>
 
       <!-- Review schrijven teaser -->
-      <div ng-include="'booking/show/partial-placeReview.tpl.html'" ng-if="showReviewTeaser"></div>
+      <div ng-include="'booking/show/partial-placeReview.tpl.html'" ng-if="showReviewTeaser && accepted"></div>
 
       <!-- Opbrengsten -->
       <booking-invoices booking="booking" view-as="owner"
