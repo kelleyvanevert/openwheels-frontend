@@ -228,7 +228,7 @@ angular.module('openwheels', [
 })
 
 .config(function (appConfig, uiGmapGoogleMapApiProvider) {
-  appConfig.gmaps_js_api_key = appConfig.test.gmaps_js_api_key || 'AIzaSyAo1K2Hn24_rsLBS6pi-x6o28QRqcrN1lE';
+  appConfig.gmaps_js_api_key = appConfig.test.gmaps_js_api_key || 'AIzaSyC1QrtfmsYNsJAfx9OOl5QX0oNpMVo3fbw';
   
   uiGmapGoogleMapApiProvider.configure({
     key: appConfig.gmaps_js_api_key,
