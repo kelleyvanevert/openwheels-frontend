@@ -10,7 +10,8 @@ angular.module('owm.resource.edit', [
 ])
 
 .controller('ResourceEditController', function ($timeout, $state, $scope, me, resource, members, metaInfoService, appConfig,
-  currentSectionId
+  currentSectionId,
+  isBeheerder
 ) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/auto/' + resource.id + '/wijzigen'});
@@ -28,15 +29,18 @@ angular.module('owm.resource.edit', [
     $scope.hasPermission = true;
   }
 
+  $scope.isBeheerder = isBeheerder;
+  var beheer = isBeheerder(me, resource);
+
   $scope.sections = [
     { id: 'specificaties', title: 'Specificaties', icon: 'directions_car' },
     { id: 'instellingen', title: 'Instellingen', icon: 'settings' },
-    { id: 'prijs', title: 'Huurprijs', icon: 'euro_symbol' },
+    beheer ? undefined : { id: 'prijs', title: 'Huurprijs', icon: 'euro_symbol' },
     { id: 'fotos', title: 'Foto\'s', icon: 'photo_library' },
     { id: 'locatie', title: 'Locatie', icon: 'location_on' },
     { id: 'vrienden', title: 'Vrienden van deze auto', icon: 'people' },
-    { id: 'kortingscodes', title: 'Kortingscodes', icon: 'local_offer' },
-  ];
+    beheer ? undefined : { id: 'kortingscodes', title: 'Kortingscodes', icon: 'local_offer' },
+  ].filter(function (b) { return !!b; });
 
   function onNav () {
     $scope.currentSection = _.find($scope.sections, function (sect) {

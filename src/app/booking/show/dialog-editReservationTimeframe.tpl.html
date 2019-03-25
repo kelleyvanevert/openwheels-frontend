@@ -1,0 +1,78 @@
+
+<md-dialog flex-xs="100" flex-sm="70" flex-md="50" flex-lg="40" flex-xl="30"
+           class="info-dialog"
+           style="overflow: visible;">
+           <!--
+           style="overflow: visible; position: absolute;"
+           ng-style="{
+             top: $root.isWindowSizeSM ? '20px' : '0',
+           }"-->
+  <md-dialog-content
+    class="md-dialog-content"
+    style="overflow: visible;"
+  >
+    <h3 class="with-close-button">
+      Begin- of eindtijd reservering wijzigen
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+
+    <p ng-if="actionResultMessage" class="alert alert-success" style="margin: 3rem 0 1rem 0;">
+      {{ actionResultMessage }}
+      <a ng-click="hide()">Sluiten</a>
+    </p>
+
+    <div ng-if="!actionResultMessage">
+
+      <form name="editReservationTimeframeForm" class="mywheels-form">
+        <p>
+          Vul hieronder de gewenste nieuwe begin- en eindtijd in.
+        </p>
+
+        <timeframe-picker
+          name="timeframe"
+          pickup-date-time="changeset.beginRequested"
+          return-date-time="changeset.endRequested"
+          mobile-autoscroll="false"
+          show-extend-buttons="true"
+          disable-logic="true"
+        ></timeframe-picker>
+        
+        <div class="text-danger" ng-if="timeFrameError">
+          Vul a.j.b. een geldig begin- en eindtijd in.
+        </div>
+
+        <div class="form-group">
+          <label>Opmerking voor {{ resource.owner.firstName || 'de eigenaar' }}</label>
+          <textarea class="form-control" ng-model="changeset.remarkRequester"></textarea>
+        </div>
+
+        <div ng-if="!extraCreditError">
+          <p class="dialog-buttons-centered">
+            <button class="mywheels-btn mywheels-btn-call-to-action"
+                    md-ink-ripple="#4b702c"
+                    ng-click="makeRequest()"
+                    ng-disabled="timeFrameError"
+                    style="white-space: nowrap;">
+              Wijziging aanvragen
+            </button>
+          </p>
+        </div>
+        <div ng-if="extraCreditError">
+          <p class="text-warning">{{ extraCreditError.message }}</p>
+          <p class="dialog-buttons-centered">
+            <button class="mywheels-btn mywheels-btn-call-to-action"
+                    md-ink-ripple="#4b702c"
+                    ng-click="pay(extraCreditError.required)"
+                    style="white-space: nowrap;">
+              Koop {{ extraCreditError.required | currency }} rijtegoed &raquo;
+            </button>
+          </p>
+        </div>
+
+      </form>
+    
+    </div>
+  </md-dialog-content>
+</md-dialog>

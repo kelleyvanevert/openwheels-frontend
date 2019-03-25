@@ -158,6 +158,7 @@ angular.module('rpcServices', [])
   this.createSenderInvoiceGroup = m('createSenderInvoiceGroup');
   this.createRecipientInvoiceGroup = m('createRecipientInvoiceGroup');
   this.calculatePrice = m('calculatePrice');
+  this.getInvoiceGroup = m('getInvoiceGroup');
 })
 
 .service('accountService', function (api) {
@@ -363,6 +364,15 @@ angular.module('rpcServices', [])
   };
   this.addUserDamage = m('addUserDamage');
   this.dirty = m('dirty');
+})
+
+.service('instantPaymentService', function (api) {
+  var m = function (name) {
+    return api.createRpcMethod('instant_payment.' + name);
+  };
+  this.getByIdAndToken = m('getByIdAndToken');
+  this.createByIdAndToken = m('createByIdAndToken');
+  this.create = m('create');
 })
 
 .service('formSubmissionService', function (api) {

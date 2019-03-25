@@ -171,6 +171,59 @@
         </div>
       </div>
 
+      <!-- MEMBER RESOURCES -->
+      <div id="members_resource_buttons" class="mw card" ng-if="membersResources.length >= 1">
+
+        <div class="card-heading">
+          <h2 class="card-title">{{ 'MEMBERS_RESOURCES' | translate }}<info-icon tooltip-html="'INFO_MEMBERS_RESOURCES' | translate"></info-icon></h2>
+        </div>
+
+        <div class="card-body">
+          <div ng-if="membersResources.length >= 1">
+            <ul class="list-row">
+              <li ng-repeat="resource in membersResources" ng-click="selectFavoriteResource(resource)">
+                <div ng-include="'resource/partials/resource-header1.tpl.html'"></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAVORITES -->
+      <div id="dashboard_buttons" class="mw card" ng-if="favoriteResources.length >= 1 && membersResources.length === 0">
+
+        <div class="card-heading">
+          <h2 class="card-title">{{ 'FAVORITE_RESOURCES' | translate }}<info-icon tooltip-html="'INFO_FAVORITES' | translate"></info-icon></h2>
+        </div>
+
+        <div class="card-body">
+          <div>
+            <ul class="list-row">
+              <li ng-repeat="resource in favoriteResources" ng-click="selectFavoriteResource(resource)">
+                <div ng-include="'resource/partials/resource-header1.tpl.html'"></div>
+              </li>
+            </ul>
+            <center>
+              <a ui-sref="owm.resource.search.list" class="mywheels-btn mywheels-btn-normal mywheels-btn-big">{{ 'SHOW_MORE_RESOURCES' | translate }}</a>
+            </center>
+          </div>
+
+          <ul class="list-inline" ng-if="!(favoriteResources.length >= 1)">
+            <li id="dashboard_rent_a_car" ng-if="me.preference != 'owner'">
+              <a ui-sref="owm.resource.search.list" class="btn btn-success">
+                {{ 'RENT_A_CAR' | translate }}
+              </a>
+            </li>
+            <li id="dashboard_list_your_car" ng-if="me.preference != 'renter'">
+              <a ui-sref="owm.resource.own" class="btn btn-primary">
+                {{ 'MY_RESOURCES' | translate }}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
       <!-- MyWheels Open banner for owners with resource-->
       <div ng-if="me.provider.id === 1 && resources.length > 0">
         <div 
@@ -244,58 +297,6 @@
         </div>
       </div>
 
-      <!-- MEMBER RESOURCES -->
-      <div id="members_resource_buttons" class="mw card" ng-if="membersResources.length >= 1">
-
-        <div class="card-heading">
-          <h2 class="card-title">{{ 'MEMBERS_RESOURCES' | translate }}<info-icon tooltip-html="'INFO_MEMBERS_RESOURCES' | translate"></info-icon></h2>
-        </div>
-
-        <div class="card-body">
-          <div ng-if="membersResources.length >= 1">
-            <ul class="list-row">
-              <li ng-repeat="resource in membersResources" ng-click="selectFavoriteResource(resource)">
-                <div ng-include="'resource/partials/resource-header1.tpl.html'"></div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- FAVORITES -->
-      <div id="dashboard_buttons" class="mw card" ng-if="favoriteResources.length >= 1 && membersResources.length === 0">
-
-        <div class="card-heading">
-          <h2 class="card-title">{{ 'FAVORITE_RESOURCES' | translate }}<info-icon tooltip-html="'INFO_FAVORITES' | translate"></info-icon></h2>
-        </div>
-
-        <div class="card-body">
-          <div>
-            <ul class="list-row">
-              <li ng-repeat="resource in favoriteResources" ng-click="selectFavoriteResource(resource)">
-                <div ng-include="'resource/partials/resource-header1.tpl.html'"></div>
-              </li>
-            </ul>
-            <center>
-              <a ui-sref="owm.resource.search.list" class="mywheels-btn mywheels-btn-normal mywheels-btn-big">{{ 'SHOW_MORE_RESOURCES' | translate }}</a>
-            </center>
-          </div>
-
-          <ul class="list-inline" ng-if="!(favoriteResources.length >= 1)">
-            <li id="dashboard_rent_a_car" ng-if="me.preference != 'owner'">
-              <a ui-sref="owm.resource.search.list" class="btn btn-success">
-                {{ 'RENT_A_CAR' | translate }}
-              </a>
-            </li>
-            <li id="dashboard_list_your_car" ng-if="me.preference != 'renter'">
-              <a ui-sref="owm.resource.own" class="btn btn-primary">
-                {{ 'MY_RESOURCES' | translate }}
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
       <!-- BLOG ITEMS -->   
       <div class="mw card" ng-if="me.provider.id === 1">
         <div class="card-heading">
@@ -315,8 +316,7 @@
             </center>
         </div>
       </div>
-
-
+      
     </div><!-- /col-8 -->
 
     <div class="rpad col-md-4 col-md-pull-8">

@@ -30,6 +30,7 @@ angular.module('owm.person.account', [])
   function saveAccount (account) {
     var newProps = {};
     newProps.iban = account.iban;
+    newProps.name = account.name;
 
     alertService.closeAll();
     $scope.isAccountSaving = true;

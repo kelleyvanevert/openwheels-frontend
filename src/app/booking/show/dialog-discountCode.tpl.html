@@ -1,0 +1,49 @@
+
+<md-dialog flex-xs="100" flex-sm="70" flex-md="50" flex-lg="40" flex-xl="30"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3 class="with-close-button">
+      Kortingscode {{ discount.length === 0 ? 'toevoegen' : '' }}
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+
+    <p ng-if="discount.length > 0">
+      Je hebt de kortingscode "{{ discount[0].discount.code }}" gebruikt voor deze reservering. Je krijgt tot <span ng-if="discount[0].discount.amount > 0">€ {{ discount[0].discount.amount }}</span> <span ng-if="discount[0].discount.percentage > 0">{{ discount[0].discount.percentage }}%</span> korting van <span ng-if="discount[0].discount.sender.id === resource.owner.id">verhuurder</span> {{ discount[0].discount.sender | fullname }}.
+    </p>
+    
+    <div ng-if="discount.length === 0">
+      <p>Je hebt geen kortingscode voor deze reservering toegevoegd.</p>
+
+      <form name="discountCodeForm" class="mywheels-form" ng-if="!details.bookingStarted">
+
+        <div class="form-group mw-button">
+          <input
+            type="text"
+            ng-change="onChange()"
+            ng-model="changeset.discountCode"
+            placeholder="Kortingscode"
+          />
+          <md-button ng-if="showSpinner" class="md-icon-button">
+            <md-progress-circular md-diameter="24"></md-progress-circular>
+          </md-button>
+        </div>
+        <p ng-if="discountError" class="discount-notice error">
+          {{ discountError }}
+        </p>
+
+        <p class="dialog-buttons-centered">
+          <button class="mywheels-btn mywheels-btn-call-to-action"
+                  md-ink-ripple="#4b702c"
+                  ng-click="applyDiscountCode()"
+                  style="white-space: nowrap;">
+            Kortingscode toevoegen
+          </button>
+        </p>
+
+      </form>
+    </div>
+  
+  </md-dialog-content>
+</md-dialog>

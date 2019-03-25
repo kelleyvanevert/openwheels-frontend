@@ -112,14 +112,17 @@
         </div>
       </div>
       <div>
-          <button type="submit" class="btn btn-primary" ng-disabled="form.$pristine || form.$error.required" ng-bind="'SAVE' | translate"></button>
+        <button type="button" class="btn btn-primary" ng-click="administerBooking()" ng-disabled="form.$pristine || form.$error.required" ng-bind="'SAVE' | translate"></button>
       </div>
-      <div class="declarations" ng-if="allowDeclarations">
+    </form>
+
+    <div class="row">
+      <div class="col col-sm-12 declarations" ng-if="allowDeclarations">
         <h4 class="declarations__heading">{{ 'DECL_ADDED_HEADING' | translate }}</h4>
         <p ng-if="!declarations || declarations.length == 0">{{ 'DECL_NO_DECL' | translate }}</p>
         <div ng-repeat="declaration in declarations">
           <div class="declarations__item">
-            <div class="declarations__item__image" ng-style="{'background-image': 'url(declaration/' + declaration.image + ')'}" ng-click="openDialog($event, declaration)"></div>
+            <div class="declarations__item__image" ng-style="{'background-image': 'url('+appConfig.serverUrl+'/declaration/' + declaration.image + ')'}" ng-click="openDialog($event, declaration)"></div>
             <div class="declarations__item__text">
               <p class="declarations__item__amount">&euro;{{::declaration.amount|number:2}}</p>
               <p><small>{{ 'DECL_LABEL_DATE' | translate }}</small><br>{{::declaration.created}}</p>
@@ -127,6 +130,7 @@
           </div>
         </div>
       </div>
-    </form>
+    </div>
+
   </div>
 </div>

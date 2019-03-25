@@ -1,0 +1,20 @@
+
+<div class="card mw" ng-if="!progress.reservationCompleted && !details.cancelled && !details.rejected">
+  <div class="card-heading">
+    <h3>Acties</h3>
+  </div>
+  <div class="card-body" style="padding-bottom: 0;">
+    <div class="row is-flex" style="padding: 1rem 0; margin: 0 -.5rem !important;">
+      <div class="col-xxs-12 col-xs-6" style="padding: 0;">
+        <a
+          ng-click="cancelReservationDialog($event)"
+          class="mywheels-btn mywheels-btn-action action-cancel"
+          md-ink-ripple="#c00"
+        >
+          <ng-md-icon icon="delete"></ng-md-icon>
+          Reservering annuleren
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

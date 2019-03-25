@@ -3,6 +3,7 @@
 angular.module('owm.resource.own', [])
 
 .controller('ResourceOwnController', function ($scope, $filter, $state, me, $translate, resources, resourceService, authService,
+  isBeheerder,
   alertService, dialogService, boardcomputerService, $window, metaInfoService, appConfig) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/mijn-auto'});
@@ -10,6 +11,8 @@ angular.module('owm.resource.own', [])
 
   $scope.resources = resources;
   $scope.me = me;
+
+  $scope.isBeheerder = isBeheerder;
 
   $scope.licencePlate = {
     content: '',
@@ -27,7 +30,7 @@ angular.module('owm.resource.own', [])
       color: $filter('lowercase')($scope.licencePlate.data.kleur),
       fuel: $filter('lowercase')($scope.licencePlate.data.brandstof),
       type: $filter('lowercase')($scope.licencePlate.data.inrichting),
-      year: $scope.licencePlate.data.datum_eerste_toelating,
+      year: $scope.licencePlate.data.datum_eerste_toelating.substring(0, 4),
       personSubmitted: false
     });
   };

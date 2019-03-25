@@ -1,0 +1,18 @@
+
+<md-dialog flex="100"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3 class="with-close-button">
+      Hoe open of sluit ik deze auto?
+      
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+    
+    <p ng-if="params.resource.boardcomputer"><strong>MyWheels Open</strong></p>
+    <p ng-if="!params.resource.boardcomputer"><strong>Sleuteloverdracht</strong></p>
+
+    <div ng-bind-html="params.booking.lockTypeManual | toParagraphs"></div>
+  </md-dialog-content>
+</md-dialog>

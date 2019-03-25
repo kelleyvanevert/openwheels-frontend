@@ -146,7 +146,7 @@ angular.module('owm.booking.administer', [])
     }
   }
 
-  $scope.submit = function () {
+  $scope.administerBooking = function () {
     saveDeclaration();
   };
 

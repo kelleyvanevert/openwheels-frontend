@@ -1,0 +1,132 @@
+
+<div class="row">
+  <div class="rpad col-xs-12">
+
+    <!-- Status en meldingen -->
+    <div ng-include="'booking/show/rentingOut/partial-notices.tpl.html'"></div>
+
+    <!-- Begin- en eindtijd -->
+    <div style="margin-top: -1rem; margin-bottom: 1rem;">
+      <div class="h-escape" ng-if="booking.beginBooking">
+        <booking-timeframe-indicator
+          frame="{
+            'pickup': booking.beginBooking,
+            'return': booking.endBooking,
+          }"
+        />
+      </div>
+      <div class="h-escape" ng-if="!booking.beginBooking && booking.beginRequested">
+        <booking-timeframe-indicator
+          frame="{
+            'pickup': booking.beginRequested,
+            'return': booking.endRequested,
+          }"
+        />
+      </div>
+    </div>
+
+    <!-- Accepteren van huurverzoek / Annuleren -->
+    <div ng-include="'booking/show/rentingOut/partial-alterations.tpl.html'"></div>
+
+    <!-- fullscreen dialog click-throughs -->
+    <div class="card mw">
+
+      <div class="card-body-item">
+        <div
+          class="card-body"
+          info-dialog="booking-bookingInfo"
+          info-dialog-fullscreen="true"
+          info-dialog-params="{ booking: booking, resource: resource, perspective: perspective, discount: discount, extraDrivers: extraDrivers }"
+        >
+          <ng-md-icon class="pull-right" icon="chevron_right"></ng-md-icon>
+          Boekingsinformatie<br />
+          <small>{{ resource.brand }} {{ resource.model }} {{ resource.location }}</small>
+        </div>
+      </div>
+
+      <!-- (2) renter -->
+      <div class="card-body-item" ng-if="perspective.isOwner && !perspective.isRenter">
+        <div
+          class="card-body"
+        >
+          Huurder
+          <div class="pull-right">
+            <a class="contact-now" alt="Bel {{ booking.person.phoneNumbers[0].number }}" ng-if="booking.person.phoneNumbers[0].number" href="tel:{{ booking.person.phoneNumbers[0].number }}"><ng-md-icon icon="call"></ng-md-icon></a>
+            <a class="contact-now" alt="Mail {{ booking.person.email }}" ng-if="booking.person.email" href="mailto:{{ booking.person.email }}"><ng-md-icon icon="mail_outline"></ng-md-icon></a>
+            <a class="contact-now" alt="Stuur bericht" ng-click="openChatWith(booking.person)"><ng-md-icon icon="chat"></ng-md-icon></a>
+          </div>
+          <br />
+          <small>{{ booking.person | fullname }}</small>
+
+          <ul class="list-unstyled list-spaced list-with-icons" style="margin-top: 1.4rem;">
+            <li ng-if="booking.person.created"><ng-md-icon icon="perm_contact_calendar"></ng-md-icon> 
+              {{ booking.person.created | memberSince }}
+            </li>
+            <li ng-if="booking.person.streetName"><ng-md-icon icon="place"></ng-md-icon>
+              {{ booking.person.streetName }} {{ booking.person.streetNumber }}, {{ booking.person.city }}
+            </li>
+            <li ng-if="booking.person.phoneNumbers[0].number"><ng-md-icon icon="phone"></ng-md-icon>
+              {{ booking.person.phoneNumbers[0].number }}
+              <small ng-if="booking.person.phoneNumbers[0].verified" class="text-success">(geverifieerd)</small>
+            </li>
+            <li><ng-md-icon icon="check"></ng-md-icon>
+              {{ booking.person.numberOfBookings | hasBookedTimes }}
+            </li>
+            <li ng-if="booking.person.facebookUid"><ng-md-icon icon="share"></ng-md-icon>
+              <a target="_blank" ng-href="https://facebook.com/{{ booking.person.facebookUid }}">Facebook</a>
+            </li>
+            <li ng-if="booking.person.twitterUid"><md-ico>share</md-icon>
+              <a target="_blank" ng-href="https://twitter.com/{{ booking.person.twitterUid }}">Twitter</a>
+            </li>
+            <li ng-if="booking.person.linkedinUid"><ng-md-icon icon="share"></ng-md-icon>
+              <a target="_blank" ng-href="https://www.linkedin.com/profile/view?id={{ booking.person.linkedinUid }}">LinkedIn</a>
+            </li>
+            <li><ng-md-icon icon="comment"></ng-md-icon>
+              <a ng-click="openChatWith(booking.person)">{{ 'SEND_MESSAGE' | translate }}</a>
+            </li>
+          </ul>
+          <p>
+            Bekijk het profiel van <a ui-sref="member({ personId: booking.person.id })">{{ booking.person.firstName }}</a> voor meer informatie en reviews.
+          </p>
+        </div>
+      </div>
+
+    </div><!-- /.card -->
+
+    <!-- Kortingscode info -->
+    <div ng-include="'booking/show/rentingOut/partial-discountInfo.tpl.html'"></div>
+
+    <!-- MW Open openen en sluiten knoppen -->
+    <div ng-if="!bookingEndedReally">
+      <div ng-include="'booking/show/partial-openCloseButtons.tpl.html'"></div>
+    </div>
+
+    <!-- Huurovereenkomst -->
+    <div ng-include="'booking/show/partial-agreement.tpl.html'"></div>
+
+    <!-- NADAT DE RIT IS AFGELOPEN -->
+    <div ng-if="bookingEnded">
+
+      <!-- Kilometerstanden doorgegeven / accorderen -->
+      <div ng-include="'booking/show/partial-kmCheck.tpl.html'" ng-if="accepted"></div>
+
+      <!-- Tankbonnetjes -->
+      <div ng-include="'booking/show/partial-declarations.tpl.html'" ng-if="allowDeclarations && accepted"></div>
+
+      <!-- Review schrijven teaser -->
+      <div ng-include="'booking/show/partial-placeReview.tpl.html'" ng-if="showReviewTeaser && accepted"></div>
+
+      <!-- Opbrengsten -->
+      <booking-invoices booking="booking" view-as="owner"
+        ng-if="!details.requested && booking.approved === 'OK'"
+      />
+    </div>
+
+    <!-- Opmerkingen van huurder & verhuurder -->
+    <div ng-include="'booking/show/partial-remarks.tpl.html'"></div>
+
+    <!-- MW Open banner -->
+    <div ng-include="'booking/show/rentingOut/partial-mwOpen-teaser.tpl.html'"></div>
+
+  </div>
+</div>
