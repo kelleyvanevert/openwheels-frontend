@@ -22,11 +22,9 @@
       <div ng-include="'booking/show/partial-openCloseButtons.tpl.html'"></div>
     </div>
 
-    <!-- Opmerkingen van huurder & verhuurder -->
-    <div ng-include="'booking/show/partial-remarks.tpl.html'"></div>
-
     <!-- Huurovereenkomst -->
     <div ng-include="'booking/show/partial-agreement.tpl.html'"></div>
+
 
     <!-- NADAT DE RIT IS AFGELOPEN -->
     <div ng-if="accepted && bookingEnded">
@@ -45,6 +43,9 @@
         ng-if="!details.requested && booking.approved === 'OK'"
       />
     </div>
+
+    <!-- Opmerkingen van huurder & verhuurder -->
+    <div ng-include="'booking/show/partial-remarks.tpl.html'"></div>
 
     <!-- MW Open banner -->
     <div ng-include="'booking/show/rentingOut/partial-mwOpen-teaser.tpl.html'"></div>

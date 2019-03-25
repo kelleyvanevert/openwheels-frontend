@@ -575,8 +575,8 @@ angular.module('owm.booking.show', [])
   $scope.bookingEnded = moment().isAfter(moment(booking.endBooking));
   $scope.bookingRequestEnded = moment().isAfter(moment(booking.endRequested));
   $scope.bookingStartsWithinOneHour = moment().isAfter(moment(booking.beginBooking).add(-1, 'hour'));
-  $scope.bookingEndedReally = moment().isAfter(moment(booking.endBooking).add(1, 'hour'));
-  $scope.bookingRequestEndedReally = moment().isAfter(moment(booking.endRequested).add(1, 'hour'));
+  $scope.bookingEndedReally = moment().isAfter(moment(booking.endBooking).add(30, 'minutes'));
+  $scope.bookingRequestEndedReally = moment().isAfter(moment(booking.endRequested).add(30, 'minutes'));
   $scope.showBookingForm = !$scope.bookingEndedReally;
   $scope.requested = ($scope.booking.status === 'requested');
   $scope.accepted = ($scope.booking.status === 'accepted');
@@ -960,7 +960,11 @@ angular.module('owm.booking.show', [])
       $scope.setMarkersForMap();
     })
     .catch(function (error) {
-      $scope.locationError = error.message;
+      if (error.message === 'Not allowed to access log') {
+        $scope.locationError = 'De huidige locatie kan niet opgehaald worden.';
+      } else {
+        $scope.locationError = error.message;
+      }
       latitude = $scope.resource.latitude;
       longitude = $scope.resource.longitude;
       $scope.setMarkersForMap();
