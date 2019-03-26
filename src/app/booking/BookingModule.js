@@ -148,7 +148,7 @@ angular.module('owm.booking', [
 
           return {
             list: list,
-            approved: !any_disapproved_account && any_approved,
+            approved: any_approved,
             disapprovedAccount: any_disapproved_account,
           };
         });
@@ -196,7 +196,7 @@ angular.module('owm.booking', [
           ((details.requested && details.firstTime) || booking.approved === 'BUY_VOUCHER') &&
           ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0;
 
-        if (progress.showPaymentScreen && account.disapprovedAccount) {
+        if (progress.showPaymentScreen && account.disapprovedAccount && !account.approved) {
           // => this person has tried to pay, but was disapproved
           progress.showPaymentScreen = false;
         }
@@ -215,7 +215,7 @@ angular.module('owm.booking', [
           accepted: {
             stress: false,
           },
-          payment: (progress.showPaymentScreen || account.disapprovedAccount) ? {
+          payment: (progress.showPaymentScreen || (account.disapprovedAccount && !account.approved)) ? {
             checked: false,
             stress: true,
             text: 'Reservering betalen',
