@@ -14,10 +14,6 @@ angular.module('owm.resource.show.calendar', [
     metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/'+ (resource.city || '').toLowerCase().replace(/ /g, '-') + '/' + resource.id + '/kalender'});
     metaInfoService.set({canonical: 'https://mywheels.nl/auto-huren/'+ (resource.city || '').toLowerCase().replace(/ /g, '-') + '/' + resource.id + '/kalender'});
 
-    if (isBeheerder(me, resource)) {
-      return $state.go('owm.resource.own');
-    }
-
     $scope.me = me;
     $scope.resource = resource;
     $scope.view = $stateParams.view || 'agendaWeek';
