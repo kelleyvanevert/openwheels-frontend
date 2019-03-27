@@ -742,6 +742,7 @@ angular.module('owm.booking.show', [])
       templateUrl: 'booking/show/dialog-' + messageCode + '.tpl.html',
       parent: angular.element(document.body),
       targetEvent: $event,
+      fullscreen: true,
       clickOutsideToClose: true,
       // scope: $scope,
       // preserveScope: true,
@@ -767,7 +768,10 @@ angular.module('owm.booking.show', [])
       return false;
     }
 
-    // helper
+    // helpers
+    function id (x) {
+      return x;
+    }
     function showInfoDialog (dialog, scopeExtender) {
       return function (errorMessage) {
         infoDialog(dialog, $event, function ($scope) {
@@ -783,7 +787,7 @@ angular.module('owm.booking.show', [])
 
     if (action === 'closeDoor') {
       return closeDoor()
-        .then(showInfoDialog('closeDoorSuccess'))
+        .then(resource.askReports ? showInfoDialog('closeDoorSuccess') : id)
         .catch(showInfoDialog('boardComputerError'));
     }
 
@@ -791,6 +795,8 @@ angular.module('owm.booking.show', [])
       return openDoor()
         .then(showInfoDialog('openDoorSuccess', function ($scope) {
           $scope.damageStateReported = true;
+
+          $scope.askReports = resource.askReports;
 
           $scope.messDescription = '';
           $scope.thanks = false;
@@ -814,8 +820,9 @@ angular.module('owm.booking.show', [])
     }
 
     if (action === 'openDoor') {
-      if (!booking || booking.trip.begin) {
+      if (!booking || booking.trip.begin || !resource.askReports) {
         // If there is no related booking, or the trip has indeed already begun,
+        //  or the resource has the `askReports` flag set to `false`,
         //  just open the door and be done with it.
         return openDoor()
           .then(showInfoDialog('openDoorSuccess'))
@@ -825,6 +832,7 @@ angular.module('owm.booking.show', [])
       // There is a booking, and the related trip has not yet begun,
       //  so show a dialog informing after possible new damage.
       return infoDialog('openDoorDamagePrompt', $event, function ($scope) {
+        $scope.knownDamage = resource.knownDamage;
         $scope.schade = false;
         $scope.damageDescription = '';
         $scope.hide = function () {
