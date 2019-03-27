@@ -299,7 +299,7 @@ angular.module('google.places', [])
 										 $scope.query = viewValue;
 
 										 var cachedPredictions = tryGetCachedPredictions(viewValue);
-										 if (cachedPredictions) {
+										 if (cachedPredictions && cachedPredictions.length > 0) {
 											
 											 clearPredictions();
 											 $scope.predictions.push.apply($scope.predictions, cachedPredictions);
