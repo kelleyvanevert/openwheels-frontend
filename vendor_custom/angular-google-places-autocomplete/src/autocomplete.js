@@ -325,8 +325,10 @@ angular.module('google.places', [])
 													if ($scope.predictions.length > 5) {
 														$scope.predictions.length = 5;  // trim predictions down to size
 													}
-
-													cachePredictions(request.input, $scope.predictions);
+													
+													if ($scope.predictions.length > 0) {
+														cachePredictions(request.input, $scope.predictions);
+													}
 												});
 											});
 
