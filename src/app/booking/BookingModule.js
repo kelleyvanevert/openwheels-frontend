@@ -76,7 +76,7 @@ angular.module('owm.booking', [
         // In principe zijn 7 van de 8 combinaties hiervan zijn mogelijk,
         //  maar we willen toch maar 1 'view'
         if (perspective.isRenter) {
-          // - not owner + not contract holder => "contractant" i.e. renting on someone else's contract
+          // - not owner + not contract holder => renting on someone else's contract
           // - not owner +     contract holder => normal rent
           // -     owner + not contract holder => [a bit weird but technically possible]
           //                                      renting your own car on someone else's contract
@@ -85,17 +85,14 @@ angular.module('owm.booking', [
           //                                      (normal for the lease-construction)
           perspective.pageView = 'renting';
         }
-        else if (perspective.isOwner) {
-          // - not contract holder => normal renting out situation
-          // -     contract holder => [weird but technically possible]
-          //                          someone is renting your car on your contract
-          //                          (maybe the child of someone in a lease construction or something...)
-          perspective.pageView = 'rentingOut';
-        }
-        else /*if (perspective.isContractHolder)*/ {
-          // you are the contract-holder, and you're now viewing
-          //  this rental action
+        else if (perspective.isContractHolder) {
+          // - not owner => just a normal rental of someone on your contract
+          // -     onwer => owner as well as contract holder is typically a business contract,
+          //                in which case you'll want to be able to perform all renter actions etc.
           perspective.pageView = 'renting';
+        }
+        else if (perspective.isOwner) {
+          perspective.pageView = 'rentingOut';
         }
 
 
@@ -201,6 +198,18 @@ angular.module('owm.booking', [
           progress.showPaymentScreen = false;
         }
 
+        // "Reservering betalen" of "Reservering betaald"
+        var needsToPay = false;
+        if (progress.showPaymentScreen) {
+          needsToPay = true;
+        }
+        if (account.disapprovedAccount && !account.approved) {
+          needsToPay = true;
+        }
+        if (booking.approved !== 'OK' && !details.accepted) {
+          needsToPay = true;
+        }
+
         progress.steps = {
           accountCheck: {
             checked: true,
@@ -215,7 +224,7 @@ angular.module('owm.booking', [
           accepted: {
             stress: false,
           },
-          payment: (progress.showPaymentScreen || (account.disapprovedAccount && !account.approved)) ? {
+          payment: needsToPay ? {
             checked: false,
             stress: true,
             text: 'Reservering betalen',
