@@ -43,7 +43,7 @@
                     </span>
                     <span ng-if="requiredCredit.total <= 0 && requiredCredit.credit > 0">
                       resterend
-                      {{ requiredCredit.credit | currency }}
+                      {{ requiredCredit.credit - requiredCredit.sub_total | currency }}
                     </span>
                     
                     <a href="#"

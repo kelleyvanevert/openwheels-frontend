@@ -40,12 +40,36 @@ angular.module('owm.booking.show', [])
     return voucherService
       .calculateRequiredCredit({ person: $scope.me.id })
       .then(function (requiredCredit) {
-        if (requiredCredit.total <= 0 && requiredCredit.credit > 0) {
-          return requiredCredit.credit;
-        } else {
-          return 0;
-        }
+        // + credit (24 E rijtegoed)
+        // - sub_total (boeking kost 24 E)
+        // - debt (openstaande facturen)
+        // = actual spendable amount of money
+
+        // and then cap anything below 0E, because we don't want the user to pay for future bookings
+        //  or open invoices just to add an extra driver or extend the timeframe
+        return Math.max(requiredCredit.credit - requiredCredit.sub_total - requiredCredit.debt, 0);
       });
+  };
+
+  $scope.declarationsDialog = function ($event) {
+    $mdDialog.show({
+      templateUrl: 'booking/show/renting/dialog-declarations.tpl.html',
+      parent: angular.element(document.body),
+      targetEvent: $event,
+      clickOutsideToClose: false,
+      hasBackdrop: true,
+      fullscreen: true,
+      controller: ['$scope', function (dialogScope) {
+
+        dialogScope.appConfig = $scope.appConfig;
+        dialogScope.booking = $scope.booking;
+        dialogScope.allowDeclarationsAdd = $scope.allowDeclarationsAdd;
+
+        dialogScope.hide = function () {
+          $mdDialog.hide();
+        };
+      }],
+    });
   };
 
   $scope.kmStandenDialog = function ($event) {
