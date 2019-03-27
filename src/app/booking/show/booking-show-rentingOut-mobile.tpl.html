@@ -104,12 +104,17 @@
     <!-- Huurovereenkomst -->
     <div ng-include="'booking/show/partial-agreement.tpl.html'"></div>
 
-    <!-- NADAT DE RIT IS AFGELOPEN -->
-    <div ng-if="bookingEnded">
+    <!-- VANAF AANVANG RIT -->
+    <div ng-if="details.bookingStarted && !booking.resource.boardcomputer">
 
       <!-- Kilometerstanden doorgegeven / accorderen -->
       <div ng-include="'booking/show/partial-kmCheck.tpl.html'" ng-if="accepted"></div>
+    
+    </div>
 
+    <!-- NADAT DE RIT IS AFGELOPEN -->
+    <div ng-if="bookingEnded">
+      
       <!-- Tankbonnetjes -->
       <div ng-include="'booking/show/partial-declarations.tpl.html'" ng-if="allowDeclarations && accepted"></div>
 
