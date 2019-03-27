@@ -178,6 +178,10 @@ module.exports = function (grunt) {
         presets: [
           '@babel/preset-env',
         ],
+        plugins: [
+          [ "@babel/plugin-transform-react-jsx", { "pragma":"preact.h" } ],
+          "@babel/plugin-proposal-class-properties",
+        ],
       },
       dist: {
         files: [
@@ -456,7 +460,9 @@ module.exports = function (grunt) {
 
       jssrc: {
         files: '<%= app_files.js %>',
-        tasks: [ 'jshint:src', 'copy:buildAppjs' ]
+        tasks: [ //'jshint:src',
+          'copy:buildAppjs'
+        ]
       },
 
       jssrc_babel: {
@@ -592,7 +598,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build-common', [
-    'clean', 'html2js', 'jshint:src',
+    'clean', 'html2js', // 'jshint:src',
     'replace:angularMaterialCss', // TODO: remove temp fix
     'copy:buildAppAssets', 'copy:buildAppBranding', 'copy:buildApp', 'copy:buildVendorFonts',
     'copy:buildAppjs', 'babel', 'copy:buildVendorjs'
