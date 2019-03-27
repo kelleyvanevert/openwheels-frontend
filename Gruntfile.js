@@ -172,6 +172,26 @@ module.exports = function (grunt) {
       }
     },
 
+    babel: {
+      options: {
+        sourceMap: true,
+        presets: [
+          '@babel/preset-env',
+        ],
+      },
+      dist: {
+        files: [
+          {
+            src: '<%= app_files.es6 %>',
+            dest: '<%= build_dir %>/',
+            ext: '.js',
+            cwd: '.',
+            expand: true
+          }
+        ]
+      }
+    },
+
     /**
      * `grunt concat` concatenates multiple source files into a single file.
      */
@@ -285,9 +305,6 @@ module.exports = function (grunt) {
       src: [
         'src/app/**/*.js',
         'src/common/**/*.js'
-      ],
-      gruntfile: [
-        'Gruntfile.js'
       ],
       options: {
         jshintrc: '.jshintrc'
@@ -437,17 +454,14 @@ module.exports = function (grunt) {
         livereload: 35730
       },
 
-      gruntfile: {
-        files: 'Gruntfile.js',
-        tasks: [ 'jshint:gruntfile' ],
-        options: { livereload: 35730 }
+      jssrc: {
+        files: '<%= app_files.js %>',
+        tasks: [ 'jshint:src', 'copy:buildAppjs' ]
       },
 
-      jssrc: {
-        files: [
-          '<%= app_files.js %>'
-        ],
-        tasks: [ 'jshint:src', 'copy:buildAppjs' ]
+      jssrc_babel: {
+        files: '<%= app_files.es6 %>',
+        tasks: [ 'babel' ]
       },
 
       config: {
@@ -581,7 +595,7 @@ module.exports = function (grunt) {
     'clean', 'html2js', 'jshint:src',
     'replace:angularMaterialCss', // TODO: remove temp fix
     'copy:buildAppAssets', 'copy:buildAppBranding', 'copy:buildApp', 'copy:buildVendorFonts',
-    'copy:buildAppjs', 'copy:buildVendorjs'
+    'copy:buildAppjs', 'babel', 'copy:buildVendorjs'
   ]);
 
   grunt.registerTask('compile', [

@@ -1,5 +1,7 @@
 'use strict';
 
+window.sayHi = (...[a, b]) => console.log(`${a}, ${b}!`)
+
 angular.module('openwheels', [
 /* Framework */
   'ngAria',

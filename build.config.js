@@ -8,7 +8,11 @@ module.exports = {
   app_files: {
     js: [
       'src/**/*Module.js', // modules first
-      'src/**/*.js'
+      'src/**/*.js',
+    ],
+    es6: [
+      'src/**/*Module.es6', // modules first
+      'src/**/*.es6',
     ],
     atpl: [ 'src/app/**/*.tpl.html' ],
     ctpl: [ 'src/common/**/*.tpl.html' ],
