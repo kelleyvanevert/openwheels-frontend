@@ -377,13 +377,6 @@ module.exports = function (grunt) {
           }
         }
       },
-      coverage: {
-        options: {
-          port: 9001,
-          open: true,
-          base: 'test/coverage/www'
-        }
-      },
       bin: {
         options: {
           open: true,
@@ -456,11 +449,6 @@ module.exports = function (grunt) {
         ],
         tasks: [ 'jshint:src', 'copy:buildAppjs' ]
       },
-
-      // testSpecs: {
-      //   files: ['test/unit/**/*.spec.js'],
-      //   tasks: ['karma:background:run']
-      // },
 
       config: {
         files: [
@@ -536,31 +524,6 @@ module.exports = function (grunt) {
       }
     },
 
-    karma: {
-      options: {
-        configFile: './test/unit/config/karma.conf.js',
-        reporters: ['progress', 'coverage'],
-        preprocessors: {
-          'src/**/*.js': ['coverage']
-        },
-        coverageReporter: {
-          type: 'html',
-          dir : 'test/coverage/',
-          subdir: 'www'
-        }
-      },
-      background: {
-        background: true,
-        singleRun: false
-      },
-      autoWatch: {
-        autoWatch: true
-      },
-      singleRun: {
-        singleRun: true
-      }
-    },
-
     synclocale: {
       options: {
         base: 'src/assets/locale'
@@ -572,17 +535,6 @@ module.exports = function (grunt) {
       }
     }
 
-  };
-
-  var coverageConfig = {
-    watch: {
-      coverage: {
-        options: {
-          livereload: '<%= connect.options.livereload %>'
-        },
-        files: 'test/coverage/**/*.*'
-      }
-    }
   };
 
   grunt.initConfig(grunt.util._.extend(gruntConfig, buildConfig));
@@ -605,18 +557,6 @@ module.exports = function (grunt) {
     'ngconstant:development',
     'index:build'
   ]);
-
-  // run unit tests once
-  grunt.registerTask('unit', ['karma:singleRun']);
-
-  // run unit tests in background
-  grunt.registerTask('unit-watch', ['karma:autoWatch']);
-
-  // open coverage report (+ livereload, so can't be used at the same time as 'grunt server')
-  grunt.registerTask('coverage', function () {
-    grunt.initConfig(grunt.util._.extend(gruntConfig, buildConfig, coverageConfig));
-    grunt.task.run(['karma:singleRun', 'connect:coverage', 'watch:coverage']);
-  });
 
   // sync locale files
   grunt.registerTask('locale', ['synclocale:nl_en']);
