@@ -1,0 +1,42 @@
+
+<md-dialog flex-xs="90" flex-sm="70" flex-md="50" flex-lg="40" flex-xl="30"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3 class="with-close-button">
+      Tankbonnen
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+
+    <div ng-repeat="declaration in booking.declarations">
+      <div class="declarations__item">
+        <div class="declarations__item__image" ng-style="{'background-image': 'url('+appConfig.serverUrl+'/declaration/' + declaration.image + ')'}" ng-click="openDialog($event, declaration)"></div>
+        <div class="declarations__item__text">
+          <p class="declarations__item__amount">&euro;{{::declaration.amount|number:2}}</p>
+          <p style="margin-bottom: 0;"><small>{{ 'DECL_LABEL_DATE' | translate }}</small><br>{{::declaration.created}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="clear: both;"></div>
+
+    <p ng-if="!booking.declarations || booking.declarations.length == 0">
+      {{ 'DECL_NO_DEC_SHOW' | translate }}
+    </p>
+
+    <p class="dialog-buttons-centered" style="margin-top: 2rem;" ng-if="allowDeclarationsAdd">
+      <a
+        class="mywheels-btn mywheels-btn-call-to-action"
+        md-ink-ripple="#4b702c"
+        style="white-space: nowrap;"
+        ng-click="hide()"
+        ui-sref="^.administer"
+      >
+        {{ 'DECL_ADD' | translate }}
+      </a>
+    </p>
+
+  </md-dialog-content>
+
+</md-dialog>
