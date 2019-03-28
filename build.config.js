@@ -23,8 +23,8 @@ module.exports = {
 
   vendor_files: {
     js: [
+      'vendor_custom/polyfill.min.js',
       'src/polyfills/custom-event.js',
-      'src/polyfills/object-assign.js',
 
       'src/assets/js/tokenServiceFactory.js',
       'src/assets/js/moment-with-locales.js', // 2.9.0
