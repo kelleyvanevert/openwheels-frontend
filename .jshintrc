@@ -23,6 +23,7 @@
     "moment": false,
     "debugger": false,
     "console": false,
+    "d3": false,
     "_": false,
     "$": false,
     "alert": false,

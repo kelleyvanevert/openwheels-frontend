@@ -101,6 +101,8 @@ module.exports = {
 
       'vendor/angulartics/dist/angulartics.min.js',
       'vendor/angulartics-google-tag-manager/dist/angulartics-google-tag-manager.min.js',
+
+      'vendor_custom/angular-load.js',
     ],
     fonts: [
       'vendor/font-awesome/fonts/*'

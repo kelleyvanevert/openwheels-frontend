@@ -1,0 +1,94 @@
+
+.resource_calendar {
+  position: relative;
+
+  font-size: 14px;
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    .time_axis {
+      font-size: 14px;
+
+      line {
+        color: #ccc;
+      }
+    }
+  }
+
+  .resource_list {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    bottom: 0;
+
+    box-sizing: border-box;
+    width: 200px;
+    line-height: 20px;
+
+    /* .resource */
+  }
+
+  .calendar {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    
+    /* .block */
+  }
+
+  .resource {
+    margin: 2px;
+    padding: 8px;
+    height: 56px;
+    box-sizing: border-box;
+    
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    background: white;
+  }
+
+  .block {
+    position: absolute;
+    background: #eee;
+    border-left: 2px solid #aaa;
+    border-right: 2px solid #aaa;
+    padding: 4px;
+
+    color: #333;
+
+    box-sizing: border-box;
+    
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:hover {
+      background: #ddd;
+      border-color: #888;
+      color: black;
+      transform: scale(1.05);
+    }
+  }
+
+  .none_found {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 20px;
+    line-height: 34px;
+
+    em {
+      padding: 3px;
+      background: white;
+    }
+  }
+}

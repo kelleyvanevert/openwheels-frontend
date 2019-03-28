@@ -29,6 +29,7 @@ angular.module('openwheels', [
   'ngScrollTo',
   'uiCropper',
   // 'vcRecaptcha',
+  'angularLoad',
 
   /* Auto-generated */
   'templates-app',

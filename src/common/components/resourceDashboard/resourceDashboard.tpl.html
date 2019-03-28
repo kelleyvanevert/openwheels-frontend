@@ -28,11 +28,29 @@
             <span ng-if="loading">Laden...</span>
           </div>
 
-          <ul>
-            <li ng-repeat="group in grouped">
-              <strong>{{ group.resource.alias }}</strong>
-            </li>
-          </ul>
+          <div class="resource_calendar">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+              viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice"
+              style="width: 100%; height: 100%;"
+            >
+              <g class="resource_axis"></g>
+              <g class="time_axis"></g>
+            </svg>
+
+            <div class="calendar">
+              <div class="none_found" ng-if="grouped.length === 0"><em>Geen reserveringen gevonden</em></div>
+            </div>
+            
+            <div class="resource_list">
+              <div class="resource" ng-repeat="group in grouped">
+                <div><strong>{{ group.resource.alias }}</strong></div>
+                <div>
+                  {{ group.resource.brand }} {{ group.resource.model }}
+                  [<small>{{ group.resource.registrationPlate }}</small>]
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
