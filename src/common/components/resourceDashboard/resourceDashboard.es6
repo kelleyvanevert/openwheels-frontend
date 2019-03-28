@@ -10,7 +10,8 @@ angular.module('owm.components')
   API_DATE_FORMAT,
   
   contractService,
-  bookingService
+  bookingService,
+  calendarService
 ) {
   return {
     restrict: 'E',
@@ -118,25 +119,13 @@ angular.module('owm.components')
         // TODO caching
 
         // Temporary API call (We're going to use the new `calender.search` later)
-        const bookings = await bookingService.forOwner({
+        const grouped = await calendarService.search({
           person: $scope.me.id,
           timeFrame: {
             startDate: data.startDate.format(API_DATE_FORMAT),
             endDate: data.endDate.format(API_DATE_FORMAT),
           },
         });
-        const grouped = Object.values(
-          bookings.reduce((grouped, booking) => {
-            if (!grouped[booking.resource.id]) {
-              grouped[booking.resource.id] = {
-                resource: booking.resource,
-                bookings: [],
-              };
-            }
-            grouped[booking.resource.id].bookings.push(booking);
-            return grouped;
-          }, {})
-        );
 
         $scope.loading = false;
         $scope.grouped = grouped;
@@ -186,8 +175,8 @@ angular.module('owm.components')
           .select(".domain").remove();
         
         // Reservations
-        const all_bookings = _.flatten($scope.grouped.map((group, i) => {
-          return group.bookings.map(booking => ({
+        const all_blocks = _.flatten($scope.grouped.map((group, i) => {
+          return group.blocks.map(booking => ({
             y: i,
             x0: moment(booking.beginBooking || booking.beginRequested, API_DATE_FORMAT),
             x1: moment(booking.endBooking || booking.endRequested, API_DATE_FORMAT),
@@ -195,16 +184,16 @@ angular.module('owm.components')
           }));
         }));
 
-        const blocks = elements.calendar.selectAll(".block").data(all_bookings, ({ booking }) => booking.id);
-        blocks.exit().remove();
-        const new_blocks = blocks
+        const block_divs = elements.calendar.selectAll(".block").data(all_blocks, ({ booking }) => booking.id);
+        block_divs.exit().remove();
+        const new_block_divs = block_divs
           .enter()
             .append("a")
             .attr("href", "#")
             .attr("onclick", "return false;")
             .attr("class", "block");
-        new_blocks.append("div").append("strong").text(({ booking }) => (booking.remarkRequester || "").slice(0, 50))
-        new_blocks.merge(blocks)
+        new_block_divs.append("div").append("strong").text(({ booking }) => (booking.remarkRequester || "").slice(0, 50))
+        new_block_divs.merge(block_divs)
             .style("top", ({ y }) => (yScale(y) + settings.vPad) + "px")
             .style("left", ({ x0 }) => xScale(x0.toDate()) + "px")
             .style("width", ({ x0, x1 }) => (xScale(x1.toDate()) - xScale(x0.toDate())) + "px")

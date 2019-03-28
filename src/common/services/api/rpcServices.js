@@ -252,7 +252,7 @@ angular.module('rpcServices', [])
   this.alterPeriodic = m('alterPeriodic');
   this.removePeriodic = m('removePeriodic');
   this.between = m('between');
-  //this.search = params => new  setTimeout();
+  this.search = m('search');
 })
 
 .service('messageService', function (api) {
