@@ -744,6 +744,35 @@ a.contact-now {
     margin-left: .7rem;
 }
 
+ul.inline-pills {
+    display: inline;
+    margin: 0;
+    padding: 0;
+
+    > li {
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+
+        > a.pill {
+            display: block;
+            padding: .3rem .5rem;
+            margin-right: .5rem;
+            border-radius: .4rem;
+
+            &:hover {
+                background: #eee;
+            }
+
+            &.active,
+            &.active:hover {
+                background: @mywheels-blue;
+                color: white;
+            }
+        }
+    }
+}
+
 /* Apply to `.card`s */
 .mw {
     color: #333;

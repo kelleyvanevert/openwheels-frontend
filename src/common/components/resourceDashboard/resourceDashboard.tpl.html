@@ -1,0 +1,40 @@
+
+<div>
+  <ng-form name="calendarForm">
+    <div class="card mw resource-dashboard" ng-if="isCompany">
+      <div class="card-body">
+        <div class="mywheels-form">
+          <div class="tools">
+            <ul class="inline-pills">
+              <li ng-repeat="(key, scale) in scales">
+                <a class="pill" ng-class="{ active: key === focus.scale }"
+                  ng-click="setScale(key); $event.preventDefault()">{{ scale.text }}</a>
+              </li>
+            </ul>
+            <div style="display: inline-block;">
+              <div class="form-group mw-datepicker mw-icon"
+                  bootstrap-date-time-picker="dateConfig">
+                <ng-md-icon aria-hidden="true" icon="today"></ng-md-icon>
+                <input type="text" autocomplete="off" name="date" id="date" placeholder="Datum" required
+                      ng-model="focus.date"
+                      ng-change="changeDate($event)" />
+              </div>
+            </div>
+            <a ng-click="move('subtract'); $event.preventDefault()"><ng-md-icon icon="keyboard_arrow_left"></ng-md-icon></a>
+            <a ng-click="setToday(); $event.preventDefault()"><ng-md-icon icon="today"></ng-md-icon></a>
+            <a ng-click="move('add'); $event.preventDefault()"><ng-md-icon icon="keyboard_arrow_right"></ng-md-icon></a>
+            <a ng-click="refresh(); $event.preventDefault()"><ng-md-icon icon="refresh"></ng-md-icon></a>
+
+            <span ng-if="loading">Laden...</span>
+          </div>
+
+          <ul>
+            <li ng-repeat="group in grouped">
+              <strong>{{ group.resource.alias }}</strong>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </ng-form>
+</div>
