@@ -4,6 +4,7 @@ angular.module('owm.components')
 
 .directive('resourceDashboard', function (
   $state,
+  $filter,
   appConfig,
   angularLoad,
 
@@ -58,10 +59,27 @@ angular.module('owm.components')
 
       $scope.loading = true;
       $scope.grouped = [];
+      $scope.data = {};
 
       $scope.focus = {
         scale: "day",
         date: moment().format(dateConfig.format),
+
+        resourcesPerPage: 10,
+        page: 0,
+      };
+
+      $scope.setResourcesPerPage = function (num) {
+        $scope.focus.resourcesPerPage = num;
+        $scope.focus.page = 0;
+
+        focusUpdated();
+      };
+
+      $scope.setPage = function (page) {
+        $scope.focus.page = page;
+
+        focusUpdated();
       };
 
       $scope.changeDate = function () {
@@ -96,9 +114,8 @@ angular.module('owm.components')
 
       // PRIVATE
 
-      const data = {};
       const settings = {
-        rowHeight: 60,
+        rowHeight: 50,
         resourceWidth: 200,
         marginTop: 40,
         marginRight: 4,
@@ -111,24 +128,65 @@ angular.module('owm.components')
       async function focusUpdated () {
         console.log($scope.focus);
         const interval = $scope.scales[$scope.focus.scale].interval;
-        data.startDate = moment($scope.focus.date, dateConfig.format).startOf(interval[1]);
-        data.endDate = data.startDate.clone().add(...interval);
+        $scope.data.startDate = moment($scope.focus.date, dateConfig.format).startOf(interval[1]);
+        $scope.data.endDate = $scope.data.startDate.clone().add(...interval);
 
         $scope.loading = true;
+
+        const { page } = $scope.focus;
 
         // TODO caching
 
         // Temporary API call (We're going to use the new `calender.search` later)
-        const grouped = await calendarService.search({
-          person: $scope.me.id,
-          timeFrame: {
-            startDate: data.startDate.format(API_DATE_FORMAT),
-            endDate: data.endDate.format(API_DATE_FORMAT),
-          },
-        });
+        try {
+          $scope.data.apiResult = await calendarService.search({
+            person: $scope.me.id,
+            timeFrame: {
+              startDate: $scope.data.startDate.format(API_DATE_FORMAT),
+              endDate: $scope.data.endDate.format(API_DATE_FORMAT),
+            },
+            offset: page * $scope.focus.resourcesPerPage,
+            limit: $scope.focus.resourcesPerPage,
+          });
+          $scope.data.grouped = $scope.data.apiResult.result;
+          $scope.data.numPages = Math.ceil($scope.data.apiResult.total / $scope.focus.resourcesPerPage);
+
+          $scope.data.paginationLinks = [];
+          if (page >= 3) {
+            $scope.data.paginationLinks.push({ text: 1, page: 0 });
+            if (page > 3) {
+              $scope.data.paginationLinks.push({ text: '...' });
+            }
+          }
+
+          if (page > 1) {
+            $scope.data.paginationLinks.push({ text: page - 1, page: page - 2 });
+          }
+          if (page > 0) {
+            $scope.data.paginationLinks.push({ text: page    , page: page - 1 });
+          }
+          $scope.data.paginationLinks.push({ text: page + 1, page: page     });
+          if (page < $scope.data.numPages - 1) {
+            $scope.data.paginationLinks.push({ text: page + 2, page: page + 1 });
+          }
+          if (page < $scope.data.numPages - 2) {
+            $scope.data.paginationLinks.push({ text: page + 3, page: page + 2 });
+          }
+
+          if (($scope.data.numPages - page - 1) >= 3) {
+            if (($scope.data.numPages - page - 1) > 3) {
+              $scope.data.paginationLinks.push({ text: '...' });
+            }
+            $scope.data.paginationLinks.push({ text: $scope.data.numPages, page: $scope.data.numPages - 1 });
+          }
+        }
+        catch (error) {
+          $scope.data.apiResult = null;
+          $scope.data.grouped = [];
+          $scope.data.error = error;
+        }
 
         $scope.loading = false;
-        $scope.grouped = grouped;
 
         redraw();
 
@@ -138,8 +196,8 @@ angular.module('owm.components')
       function redraw () {
         console.log("redraw");
 
-        const W = data.W = elements.svg.node().clientWidth;
-        const Y = Math.max(1, $scope.grouped.length);
+        const W = settings.W = elements.svg.node().clientWidth;
+        const Y = Math.max(1, $scope.data.grouped.length);
         const H = Y * settings.rowHeight + settings.marginTop + settings.marginBottom;
 
         elements.container
@@ -152,12 +210,12 @@ angular.module('owm.components')
 
         // VERTICAL LINES AND DATE/TIME AXIS
         const xScale = d3.scaleTime()
-          .domain([data.startDate.toDate(), data.endDate.toDate()])
+          .domain([$scope.data.startDate.toDate(), $scope.data.endDate.toDate()])
           .range([0, W - 200 - settings.marginRight]);
         const timeAxis = d3.axisTop(xScale)
           .tickSize(6 + H - settings.marginTop)
           .tickPadding(4)
-          .tickFormat(data.multiFormat);
+          .tickFormat(settings.multiFormat);
         elements.svg.select(".time_axis")
           .attr("transform", `translate(${settings.resourceWidth} ${H})`)
           .call(timeAxis);
@@ -175,7 +233,7 @@ angular.module('owm.components')
           .select(".domain").remove();
         
         // Reservations
-        const all_blocks = _.flatten($scope.grouped.map((group, i) => {
+        const all_blocks = _.flatten($scope.data.grouped.map((group, i) => {
           return group.blocks.map(booking => ({
             y: i,
             x0: moment(booking.beginBooking || booking.beginRequested, API_DATE_FORMAT),
@@ -193,9 +251,10 @@ angular.module('owm.components')
             .attr("onclick", "return false;")
             .attr("class", "block");
         new_block_divs.append("div").append("strong").text(({ booking }) => (booking.remarkRequester || "").slice(0, 50))
+        new_block_divs.append("div").text(({ booking }) => $filter('fullname')(booking.person))
         new_block_divs.merge(block_divs)
             .style("top", ({ y }) => (yScale(y) + settings.vPad) + "px")
-            .style("left", ({ x0 }) => xScale(x0.toDate()) + "px")
+            .style("left", ({ x0 }) => (200 + xScale(x0.toDate())) + "px")
             .style("width", ({ x0, x1 }) => (xScale(x1.toDate()) - xScale(x0.toDate())) + "px")
             .style("height", (settings.rowHeight - 2*settings.vPad) + "px");
       }
@@ -213,7 +272,7 @@ angular.module('owm.components')
 
         await angularLoad.loadScript("https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js");
 
-        data.locale = d3.timeFormatLocale({
+        settings.locale = d3.timeFormatLocale({
           "dateTime": "%d-%m-%Y %H:%M:%S",
           "date": "%d-%m-%Y",
           "time": "%H:%M:%S",
@@ -223,25 +282,25 @@ angular.module('owm.components')
           "months": "januari|februari|maart|april|mei|juni|juli|augustus|oktober|november|december".split("|"),
           "shortMonths": "jan|feb|mrt|apr|mei|jun|jul|aug|sept|okt|nov|dec".split("|"),
         });
-        data.formatters = {
-          ms: data.locale.format(".%L"),
-          s: data.locale.format(":%S"),
-          m: data.locale.format("%H:%M"),
-          h: data.locale.format("%H:00"),
-          d: data.locale.format("%a %d"),
-          wk: data.locale.format("%b %d"),
-          mo: data.locale.format("%B"),
-          yr: data.locale.format("%Y"),
+        settings.formatters = {
+          ms: settings.locale.format(".%L"),
+          s: settings.locale.format(":%S"),
+          m: settings.locale.format("%H:%M"),
+          h: settings.locale.format("%H:00"),
+          d: settings.locale.format("%a %d"),
+          wk: settings.locale.format("%b %d"),
+          mo: settings.locale.format("%B"),
+          yr: settings.locale.format("%Y"),
         };
-        data.multiFormat = date => {
+        settings.multiFormat = date => {
           return (
-              d3.timeSecond(date) < date ? data.formatters.ms
-              : d3.timeMinute(date) < date ? data.formatters.s
-              : d3.timeHour(date) < date ? data.formatters.m
-              : d3.timeDay(date) < date ? data.formatters.h
-              : d3.timeMonth(date) < date ? (d3.timeWeek(date) < date ? data.formatters.d : data.formatters.wk)
-              : d3.timeYear(date) < date ? data.formatters.mo
-              : data.formatters.yr
+              d3.timeSecond(date) < date ? settings.formatters.ms
+              : d3.timeMinute(date) < date ? settings.formatters.s
+              : d3.timeHour(date) < date ? settings.formatters.m
+              : d3.timeDay(date) < date ? settings.formatters.h
+              : d3.timeMonth(date) < date ? (d3.timeWeek(date) < date ? settings.formatters.d : settings.formatters.wk)
+              : d3.timeYear(date) < date ? settings.formatters.mo
+              : settings.formatters.yr
             )(date);
         };
 
@@ -250,7 +309,7 @@ angular.module('owm.components')
         elements.calendar = elements.container.select('.calendar');
 
         d3.select(window).on("resize", () => {
-          if (!data.W || data.W !== elements.svg.node().clientWidth) {
+          if (!settings.W || settings.W !== elements.svg.node().clientWidth) {
             redraw();
           }
         });

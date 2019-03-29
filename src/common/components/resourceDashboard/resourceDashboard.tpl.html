@@ -28,6 +28,28 @@
             <span ng-if="loading">Laden...</span>
           </div>
 
+          <div class="tools"><!--ng-if="focus.page !== 0 || (focus.resourcesPerPage < data.apiResult.total)"-->
+            <strong>Auto's per pagina:</strong>
+            <ul class="inline-pills">
+              <li ng-repeat="num in [1, 5, 10, 20, 50]">
+                <a class="pill" ng-class="{ active: num === focus.resourcesPerPage }"
+                  ng-click="setResourcesPerPage(num); $event.preventDefault()">{{ num }}</a>
+              </li>
+            </ul>
+            <strong>Pagina:</strong>
+            <ul class="inline-pills">
+              <li ng-repeat="pill in data.paginationLinks">
+                <span ng-if="pill.page === undefined">{{ pill.text }}</span>
+                <a
+                  ng-if="(pill.page !== undefined)"
+                  class="pill"
+                  ng-class="{ active: pill.page === focus.page }"
+                  ng-click="setPage(pill.page); $event.preventDefault()"
+                >{{ pill.text }}</a>
+              </li>
+            </ul>
+          </div>
+
           <div class="resource_calendar">
             <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
               viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice"
@@ -38,11 +60,11 @@
             </svg>
 
             <div class="calendar">
-              <div class="none_found" ng-if="grouped.length === 0"><em>Geen reserveringen gevonden</em></div>
+              <div class="none_found" ng-if="data.grouped.length === 0"><em>Geen reserveringen gevonden</em></div>
             </div>
             
             <div class="resource_list">
-              <div class="resource" ng-repeat="group in grouped">
+              <div class="resource" ng-repeat="group in data.grouped">
                 <div><strong>{{ group.resource.alias }}</strong></div>
                 <div>
                   {{ group.resource.brand }} {{ group.resource.model }}
