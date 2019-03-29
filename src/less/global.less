@@ -775,6 +775,43 @@ ul.inline-pills {
     }
 }
 
+.overlayable {
+    position: relative;
+
+    .overlayable-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, .85);
+        z-index: 100;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+
+        &.form-succeeded {
+            font-size: 1.2em;
+            background: rgba(255, 255, 255, .95);
+            .lead p,
+            ng-md-icon {
+                color: darken(@mywheels-blue, 4%);
+            }
+        }
+        &.form-failed {
+            font-size: 1.2em;
+            background: rgba(255, 255, 255, .95);
+            .lead p,
+            ng-md-icon {
+                color: darken(@mywheels-red, 2%);
+            }
+        }
+    }
+}
+
 /* Apply to `.card`s */
 .mw {
     color: #333;

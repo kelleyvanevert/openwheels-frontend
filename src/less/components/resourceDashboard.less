@@ -5,7 +5,7 @@
   font-size: 14px;
   line-height: 18px;
 
-  svg {
+  svg.backdrop {
     position: absolute;
     top: 0;
     left: 0;
@@ -39,8 +39,34 @@
     right: 0;
     bottom: 0;
     left: 0;
+
+    overflow: hidden;
     
-    /* .block */
+    /* .blocks .block */
+
+    .nw {
+      position: absolute;
+      top: 0;
+      left: 200px;
+      right: 0;
+      bottom: 0;
+
+      .plus {
+        display: none;
+        position: absolute;
+
+        box-sizing: border-box;
+        text-align: center;
+        padding: 6px;
+
+        width: 46px;
+        height: 46px;
+        
+        ng-md-icon {
+          color: darken(@mywheels-blue, 10%);
+        }
+      }
+    }
   }
 
   .resource {

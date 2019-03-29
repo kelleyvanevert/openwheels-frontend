@@ -4,6 +4,7 @@ angular.module('owm.components')
 
 .directive('resourceDashboard', function (
   $state,
+  $q,
   $filter,
   $mdDialog,
   appConfig,
@@ -12,7 +13,9 @@ angular.module('owm.components')
   API_DATE_FORMAT,
   
   contractService,
+  resourceService,
   bookingService,
+  extraDriverService,
   calendarService
 ) {
   return {
@@ -108,6 +111,12 @@ angular.module('owm.components')
       $scope.setScale = function (key) {
         $scope.focus.scale = key;
         focusUpdated();
+      };
+
+      $scope.showCreateBookingDialog = function ($event) {
+        createBookingDialog({
+          event: $event,
+        });
       };
 
       $scope.refresh = function () {
@@ -245,7 +254,7 @@ angular.module('owm.components')
           }));
         }));
 
-        const block_divs = elements.calendar.selectAll(".block").data(all_blocks, ({ booking }) => booking.id);
+        const block_divs = elements.calendar.select(".blocks").selectAll(".block").data(all_blocks, ({ booking }) => booking.id);
         block_divs.exit().remove();
         const new_block_divs = block_divs
           .enter()
@@ -261,6 +270,32 @@ angular.module('owm.components')
             .style("left", ({ x0 }) => (200 + xScale(x0.toDate())) + "px")
             .style("width", ({ x0, x1 }) => (xScale(x1.toDate()) - xScale(x0.toDate())) + "px")
             .style("height", (settings.rowHeight - 2*settings.vPad) + "px");
+        
+        elements.calendar.select(".nw")
+          .on("mousemove", null)
+          .on("mousemove", function () {
+            const [x, y] = d3.mouse(this);
+            const i = Math.floor(yScale.invert(y));
+            const group = $scope.data.grouped[i];
+            if (group) {
+              const datetime = moment(xScale.invert(x)).roundNext15Min();
+              //console.log(x, y, datetime.format(API_DATE_FORMAT), group.resource.alias);
+              elements.plus
+                .style("display", "block")
+                .style("top", (yScale(i + .5) - 23) + "px")
+                .style("left", (x - 23) + "px")
+                .on("click", () => createBookingDialog({
+                  resource: group.resource,
+                  datetime,
+                  event: d3.event,
+                }));
+            } else {
+              console.log("no resource for:", x, y, i);
+            }
+          })
+          .on("mouseout", () => {
+            elements.plus.style("display", "none");
+          });
       }
 
       function openDialog ({ booking }) {
@@ -282,8 +317,117 @@ angular.module('owm.components')
         });
       }
 
+      function createBookingDialog ({ resource = null, datetime = moment(), event }) {
+        $mdDialog.show({
+          templateUrl: 'components/resourceDashboard/dialog-createBooking.tpl.html',
+          parent: angular.element(document.body),
+          targetEvent: event,
+          clickOutsideToClose: false,
+          hasBackdrop: true,
+          fullscreen: true,
+          controller: ['$scope', function (dialogScope) {
+
+            dialogScope.fixedResource = !!resource;
+
+            dialogScope.booking = {
+              resource,
+              beginRequested: datetime.format(API_DATE_FORMAT),
+              endRequested: datetime.clone().add(1, 'hour').format(API_DATE_FORMAT),
+              person: null,
+              remarkRequester: '',
+            };
+            dialogScope.personQuery = '';
+            dialogScope.resourceQuery = '';
+
+            dialogScope.$watch('[booking.beginRequested, booking.endRequested]', function () {
+              if (!dialogScope.booking.beginRequested || !dialogScope.booking.endRequested) {
+                dialogScope.timeFrameError = true;
+                return;
+              }
+
+              if (moment(dialogScope.booking.beginRequested) >= moment(dialogScope.booking.endRequested)) {
+                dialogScope.timeFrameError = 'invalid';
+                return;
+              }
+
+              dialogScope.timeFrameError = false;
+            });
+
+            dialogScope.searchResource = function (query) {
+              return resourceService.forOwner({
+                person: $scope.focus.contract.contractor.id,
+              });
+            };
+
+            dialogScope.searchPerson = function (query) {
+              return extraDriverService.search({
+                person: $scope.focus.contract.contractor.id,
+                contract: $scope.focus.contract.id,
+                search: query,
+                //limit: 999,
+                //offset: 0,
+              }).then(d => {
+                return d.result;
+              });
+            };
+
+            //dialogScope.selectPerson = () => {};
+            //dialogScope.queryChange = () => {};
+
+            dialogScope.create = function () {
+              if (dialogScope.timeFrameError || !dialogScope.booking.person || !dialogScope.booking.resource) {
+                return;
+              }
+
+              dialogScope.succeeded = false;
+              dialogScope.failed = false;
+              dialogScope.sending = true;
+              
+              bookingService.create({
+                resource: dialogScope.booking.resource.id,
+                timeFrame: {
+                  startDate: dialogScope.booking.beginRequested,
+                  endDate: dialogScope.booking.endRequested
+                },
+                person: dialogScope.booking.person.id,
+                contract: $scope.focus.contract.id,
+                remark: dialogScope.booking.remarkRequester,
+              })
+              .then(createdBooking => {
+                dialogScope.succeeded = true;
+                $scope.refresh();
+              })
+              .catch(e => {
+                dialogScope.failed = true;
+              })
+              .finally(__ => {
+                dialogScope.sending = false;
+              });
+            };
+
+            dialogScope.hide = function () {
+              $mdDialog.hide();
+            };
+          }],
+        });
+      };
+
       init();
       async function init () {
+
+        moment.fn.roundNext15Min = function () {
+          let intervals = Math.floor(this.minutes() / 15);
+          if (this.minutes() % 15 != 0) {
+            intervals++;
+          }
+          if(intervals == 4) {
+            this.add('hours', 1);
+            intervals = 0;
+          }
+          this.minutes(intervals * 15);
+          this.seconds(0);
+          return this;
+        }
 
         const contracts = await contractService.forDriver({
           person: $scope.me.id
@@ -331,6 +475,7 @@ angular.module('owm.components')
           elements.container = d3.select($element.find('.resource_calendar')[0]);
           elements.svg = elements.container.select('svg');
           elements.calendar = elements.container.select('.calendar');
+          elements.plus = elements.calendar.select('.plus');
 
           d3.select(window).on("resize", () => {
             if (!settings.W || settings.W !== elements.svg.node().clientWidth) {
@@ -339,7 +484,6 @@ angular.module('owm.components')
           });
 
           focusUpdated();
-
         }
 
         $scope.$digest();

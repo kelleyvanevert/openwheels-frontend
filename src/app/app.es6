@@ -357,6 +357,12 @@ angular.module('openwheels', [
   return (resource.contactPersonId === person.id) && (resource.ownerId !== person.id);
 })
 
+.filter('removeIdAnnotation', function () {
+  return function (str) {
+    return (str || '').replace(/[ ]*\[[a-z0-9]*\][ ]*$/i, '');
+  };
+})
+
 .filter('homeAddress', function (makeHomeAddressPrefill) {
   return makeHomeAddressPrefill;
 })
