@@ -20,7 +20,7 @@ angular.module('owm.person', [
    */
   $stateProvider.state('owm.person', {
     abstract: true,
-    url: '/dashboard',
+    url: '/dashboard?cal_p&cal_rpp&cal_c&cal_s&cal_d',
     data: {
       access: {
         deny: {

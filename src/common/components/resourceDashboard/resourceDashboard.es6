@@ -7,6 +7,7 @@ angular.module('owm.components')
   $q,
   $filter,
   $mdDialog,
+  $stateParams,
   appConfig,
   angularLoad,
 
@@ -84,6 +85,25 @@ angular.module('owm.components')
         contract: null,
       };
 
+      if ($stateParams.cal_p && $stateParams.cal_p.match(/^[0-9]+$/)) {
+        $scope.focus.page = parseInt($stateParams.cal_p);
+      }
+      if ($stateParams.cal_rpp && $stateParams.cal_rpp.match(/^[0-9]+$/)) {
+        $scope.focus.resourcesPerPage = parseInt($stateParams.cal_rpp);
+      }
+      if ($stateParams.cal_c && $stateParams.cal_c.match(/^[0-9]+$/)) {
+        $scope.focus.contract_id = parseInt($stateParams.cal_c);
+      }
+      if ($stateParams.cal_s && $scope.scales[$stateParams.cal_s]) {
+        $scope.focus.scale = $stateParams.cal_s;
+      }
+      if ($stateParams.cal_d) {
+        const m = moment($stateParams.cal_d, dateConfig.format);
+        if (m.isValid()) {
+          $scope.focus.date = $stateParams.cal_d;
+        }
+      }
+
       $scope.setResourcesPerPage = function (num) {
         $scope.focus.resourcesPerPage = num;
         $scope.focus.page = 0;
@@ -147,6 +167,14 @@ angular.module('owm.components')
       const elements = {};
 
       async function focusUpdated () {
+        $state.go('.', {
+          cal_p: $scope.focus.page,
+          cal_rpp: $scope.focus.resourcesPerPage,
+          cal_c: $scope.focus.contract.id,
+          cal_d: $scope.focus.date,
+          cal_s: $scope.focus.scale,
+        }, { notify: false, reload: false });
+
         const scale = $scope.scales[$scope.focus.scale];
         $scope.data.startDate = moment($scope.focus.date, dateConfig.format).startOf(scale.interval[1]);
         $scope.data.endDate = $scope.data.startDate.clone().add(...scale.interval);
@@ -407,6 +435,7 @@ angular.module('owm.components')
               })
               .then(createdBooking => {
                 dialogScope.succeeded = true;
+                dialogScope.createdBooking = createdBooking;
                 $scope.refresh();
               })
               .catch(error => {
@@ -445,9 +474,17 @@ angular.module('owm.components')
         const contracts = await contractService.forDriver({
           person: $scope.me.id
         });
-        $scope.focus.contract = contracts.reduce((companyContract, contract) => {
-          return companyContract || (contract.type.id === 120 ? contract : null);
-        }, null);
+        if ($scope.focus.contract_id) {
+          const found = _.find(contracts, contract => contract.id === $scope.focus.contract_id);
+          if (found && found.type.id === 120) {
+            $scope.focus.contract = found;
+          }
+        }
+        if (!$scope.focus.contract) {
+          $scope.focus.contract = contracts.reduce((companyContract, contract) => {
+            return companyContract || (contract.type.id === 120 ? contract : null);
+          }, null);
+        }
 
         if ($scope.focus.contract) {
 
