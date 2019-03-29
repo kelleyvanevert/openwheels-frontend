@@ -50,14 +50,23 @@ angular.module('owm.components')
         day: {
           text: '24 uur',
           interval: [1, "day"],
+          makeTitle: a => a.format('ddd D MMMM YYYY'),
+          tickFormat: date => moment(date).format('HH:mm'),
+          ticks: () => d3.timeHour.every(2),
         },
         two_days: {
           text: '2 dagen',
           interval: [2, "day"],
+          makeTitle: a => `${a.format('ddd D MMMM YYYY')} en ${a.clone().add(1, 'day').format('ddd D MMMM YYYY')}`,
+          tickFormat: date => moment(date).format('HH:mm'),
+          ticks: () => d3.timeHour.every(4),
         },
         week: {
           text: '1 week',
           interval: [1, "week"],
+          makeTitle: a => `${a.format('ddd D MMMM YYYY')} t/m ${a.clone().add(6, 'day').format('ddd D MMMM YYYY')}`,
+          tickFormat: date => moment(date).format('ddd D'),
+          ticks: () => d3.timeDay.every(1),
         },
       };
 
@@ -138,10 +147,11 @@ angular.module('owm.components')
       const elements = {};
 
       async function focusUpdated () {
-        console.log($scope.focus);
-        const interval = $scope.scales[$scope.focus.scale].interval;
-        $scope.data.startDate = moment($scope.focus.date, dateConfig.format).startOf(interval[1]);
-        $scope.data.endDate = $scope.data.startDate.clone().add(...interval);
+        const scale = $scope.scales[$scope.focus.scale];
+        $scope.data.startDate = moment($scope.focus.date, dateConfig.format).startOf(scale.interval[1]);
+        $scope.data.endDate = $scope.data.startDate.clone().add(...scale.interval);
+
+        $scope.data.title = scale.makeTitle($scope.data.startDate, $scope.data.endDate);
 
         $scope.loading = true;
 
@@ -211,6 +221,7 @@ angular.module('owm.components')
         const W = settings.W = elements.svg.node().clientWidth;
         const Y = Math.max(1, $scope.data.grouped.length);
         const H = Y * settings.rowHeight + settings.marginTop + settings.marginBottom;
+        const scale = $scope.scales[$scope.focus.scale];
 
         elements.container
           .style('height', H + 'px');
@@ -225,9 +236,10 @@ angular.module('owm.components')
           .domain([$scope.data.startDate.toDate(), $scope.data.endDate.toDate()])
           .range([0, W - 200 - settings.marginRight]);
         const timeAxis = d3.axisTop(xScale)
+          .ticks(scale.ticks())
           .tickSize(6 + H - settings.marginTop)
           .tickPadding(4)
-          .tickFormat(settings.multiFormat);
+          .tickFormat(scale.tickFormat);
         elements.svg.select(".time_axis")
           .attr("transform", `translate(${settings.resourceWidth} ${H})`)
           .call(timeAxis);
@@ -440,38 +452,6 @@ angular.module('owm.components')
         if ($scope.focus.contract) {
 
           await angularLoad.loadScript("https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js");
-
-          settings.locale = d3.timeFormatLocale({
-            "dateTime": "%d-%m-%Y %H:%M:%S",
-            "date": "%d-%m-%Y",
-            "time": "%H:%M:%S",
-            "periods": ["AM", "PM"],
-            "days": "zondag|maandag|dinsdag|woensdag|donderdag|vrijdag|zaterdag".split("|"),
-            "shortDays": "zo|ma|di|wo|do|vr|za".split("|"),
-            "months": "januari|februari|maart|april|mei|juni|juli|augustus|oktober|november|december".split("|"),
-            "shortMonths": "jan|feb|mrt|apr|mei|jun|jul|aug|sept|okt|nov|dec".split("|"),
-          });
-          settings.formatters = {
-            ms: settings.locale.format(".%L"),
-            s: settings.locale.format(":%S"),
-            m: settings.locale.format("%H:%M"),
-            h: settings.locale.format("%H:00"),
-            d: settings.locale.format("%a %d"),
-            wk: settings.locale.format("%b %d"),
-            mo: settings.locale.format("%B"),
-            yr: settings.locale.format("%Y"),
-          };
-          settings.multiFormat = date => {
-            return (
-                d3.timeSecond(date) < date ? settings.formatters.ms
-                : d3.timeMinute(date) < date ? settings.formatters.s
-                : d3.timeHour(date) < date ? settings.formatters.m
-                : d3.timeDay(date) < date ? settings.formatters.h
-                : d3.timeMonth(date) < date ? (d3.timeWeek(date) < date ? settings.formatters.d : settings.formatters.wk)
-                : d3.timeYear(date) < date ? settings.formatters.mo
-                : settings.formatters.yr
-              )(date);
-          };
 
           elements.container = d3.select($element.find('.resource_calendar')[0]);
           elements.svg = elements.container.select('svg');

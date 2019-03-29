@@ -4,15 +4,11 @@
     <div class="card mw resource-dashboard" ng-if="focus.contract">
       <div class="card-body">
         <div class="mywheels-form">
-          <div class="tools">
-            <ul class="inline-pills">
-              <li ng-repeat="(key, scale) in scales">
-                <a class="pill" ng-class="{ active: key === focus.scale }"
-                  ng-click="setScale(key); $event.preventDefault()">{{ scale.text }}</a>
-              </li>
-            </ul>
+          <div class="tools pull-left">
+            <a ng-click="move('subtract'); $event.preventDefault()"><ng-md-icon icon="keyboard_arrow_left"></ng-md-icon></a>
             <div style="display: inline-block;">
               <div class="form-group mw-datepicker mw-icon"
+                  style="width: 14rem;"
                   bootstrap-date-time-picker="dateConfig">
                 <ng-md-icon aria-hidden="true" icon="today"></ng-md-icon>
                 <input type="text" autocomplete="off" name="date" id="date" placeholder="Datum" required
@@ -20,36 +16,30 @@
                       ng-change="changeDate($event)" />
               </div>
             </div>
-            <a ng-click="move('subtract'); $event.preventDefault()"><ng-md-icon icon="keyboard_arrow_left"></ng-md-icon></a>
-            <a ng-click="setToday(); $event.preventDefault()"><ng-md-icon icon="today"></ng-md-icon></a>
             <a ng-click="move('add'); $event.preventDefault()"><ng-md-icon icon="keyboard_arrow_right"></ng-md-icon></a>
-            <a ng-click="refresh(); $event.preventDefault()"><ng-md-icon icon="refresh"></ng-md-icon></a>
-            <a class="add" ng-click="showCreateBookingDialog($event); $event.preventDefault()"><ng-md-icon icon="add_box"></ng-md-icon></a>
-
-            <span ng-if="loading">Laden...</span>
+            <a ng-click="setToday(); $event.preventDefault()">Vandaag</a>
+            <!--<a ng-click="refresh(); $event.preventDefault()"><ng-md-icon icon="refresh"></ng-md-icon></a>-->
           </div>
 
-          <div class="tools"><!--ng-if="focus.page !== 0 || (focus.resourcesPerPage < data.apiResult.total)"-->
-            <strong>Auto's per pagina:</strong>
+          <div class="tools pull-right" style="padding: .3rem 0;">
             <ul class="inline-pills">
-              <li ng-repeat="num in [1, 5, 10, 20, 50]">
-                <a class="pill" ng-class="{ active: num === focus.resourcesPerPage }"
-                  ng-click="setResourcesPerPage(num); $event.preventDefault()">{{ num }}</a>
-              </li>
-            </ul>
-            <strong>Pagina:</strong>
-            <ul class="inline-pills">
-              <li ng-repeat="pill in data.paginationLinks">
-                <span ng-if="pill.page === undefined">{{ pill.text }}</span>
-                <a
-                  ng-if="(pill.page !== undefined)"
-                  class="pill"
-                  ng-class="{ active: pill.page === focus.page }"
-                  ng-click="setPage(pill.page); $event.preventDefault()"
-                >{{ pill.text }}</a>
+              <li ng-repeat="(key, scale) in scales">
+                <a class="pill" ng-class="{ active: key === focus.scale }"
+                  ng-click="setScale(key); $event.preventDefault()">{{ scale.text }}</a>
               </li>
             </ul>
           </div>
+
+          <div class="tools" style="text-align: center; margin-bottom: 2rem; padding: .8rem 0;">
+            <a class="add_booking" ng-click="showCreateBookingDialog($event); $event.preventDefault()">
+              <ng-md-icon icon="add_box"></ng-md-icon>
+              Nieuwe reservering
+            </a>
+          </div>
+
+          <h3 style="text-align: center;">
+            {{ loading ? 'Laden...' : data.title }}
+          </h3>
 
           <div class="resource_calendar">
             <svg class="backdrop" xmlns="http://www.w3.org/2000/svg" version="1.1"
@@ -79,6 +69,34 @@
                 </div>
               </div>
             </div>
+          </div>
+
+
+          <div
+            class="tools"
+            style="text-align: center; margin-top: 2.4rem;"
+          >
+            <strong>Auto's per pagina:</strong>
+            <ul class="inline-pills">
+              <li ng-repeat="num in [5, 10, 20, 50]">
+                <a class="pill" ng-class="{ active: num === focus.resourcesPerPage }"
+                  ng-click="setResourcesPerPage(num); $event.preventDefault()">{{ num }}</a>
+              </li>
+            </ul>
+            <span style="margin-left: 2rem;" ng-if="(focus.resourcesPerPage < data.apiResult.total)">
+              <strong>Pagina:</strong>
+              <ul class="inline-pills">
+                <li ng-repeat="pill in data.paginationLinks">
+                  <span ng-if="pill.page === undefined">{{ pill.text }}</span>
+                  <a
+                    ng-if="(pill.page !== undefined)"
+                    class="pill"
+                    ng-class="{ active: pill.page === focus.page }"
+                    ng-click="setPage(pill.page); $event.preventDefault()"
+                  >{{ pill.text }}</a>
+                </li>
+              </ul>
+            </span>
           </div>
         </div>
       </div>
