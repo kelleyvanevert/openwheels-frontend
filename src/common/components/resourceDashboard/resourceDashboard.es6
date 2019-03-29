@@ -407,6 +407,7 @@ angular.module('owm.components')
               })
               .then(createdBooking => {
                 dialogScope.succeeded = true;
+                dialogScope.createdBooking = createdBooking;
                 $scope.refresh();
               })
               .catch(error => {

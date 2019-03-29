@@ -102,6 +102,7 @@
         <div class="size-2" style="font-weight: bold;">
           <p><ng-md-icon icon="check" size="40" style="width: 20px; height: 40px;"></ng-md-icon></p>
           <p>De reservering is gemaakt.</p>
+          <p><a ng-click="hide()" ui-sref="owm.booking.show({ bookingId: createdBooking.id })">Naar boekingspagina &raquo;</a></p>
         </div>
       </div>
       <div class="overlayable-overlay overlayable-failed" ng-if="failed">
