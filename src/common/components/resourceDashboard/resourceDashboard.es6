@@ -5,6 +5,7 @@ angular.module('owm.components')
 .directive('resourceDashboard', function (
   $state,
   $filter,
+  $mdDialog,
   appConfig,
   angularLoad,
 
@@ -67,6 +68,8 @@ angular.module('owm.components')
 
         resourcesPerPage: 10,
         page: 0,
+
+        contract: null,
       };
 
       $scope.setResourcesPerPage = function (num) {
@@ -140,7 +143,7 @@ angular.module('owm.components')
         // Temporary API call (We're going to use the new `calender.search` later)
         try {
           $scope.data.apiResult = await calendarService.search({
-            person: $scope.me.id,
+            person: $scope.focus.contract.contractor.id,
             timeFrame: {
               startDate: $scope.data.startDate.format(API_DATE_FORMAT),
               endDate: $scope.data.endDate.format(API_DATE_FORMAT),
@@ -249,7 +252,8 @@ angular.module('owm.components')
             .append("a")
             .attr("href", "#")
             .attr("onclick", "return false;")
-            .attr("class", "block");
+            .attr("class", ({ booking }) => "block")
+            .on("click", openDialog);
         new_block_divs.append("div").append("strong").text(({ booking }) => (booking.remarkRequester || "").slice(0, 50))
         new_block_divs.append("div").text(({ booking }) => $filter('fullname')(booking.person))
         new_block_divs.merge(block_divs)
@@ -259,63 +263,86 @@ angular.module('owm.components')
             .style("height", (settings.rowHeight - 2*settings.vPad) + "px");
       }
 
+      function openDialog ({ booking }) {
+        $mdDialog.show({
+          templateUrl: 'components/resourceDashboard/dialog-booking.tpl.html',
+          parent: angular.element(document.body),
+          targetEvent: d3.event,
+          clickOutsideToClose: true,
+          hasBackdrop: true,
+          fullscreen: true,
+          controller: ['$scope', function (dialogScope) {
+
+            dialogScope.booking = booking;
+
+            dialogScope.hide = function () {
+              $mdDialog.hide();
+            };
+          }],
+        });
+      }
+
       init();
       async function init () {
 
         const contracts = await contractService.forDriver({
           person: $scope.me.id
         });
-        const isCompany = $scope.isCompany = contracts.reduce((isCompany, contract) => isCompany || contract.type.id === 120, false);
-        if (!isCompany) {
-          return;
+        $scope.focus.contract = contracts.reduce((companyContract, contract) => {
+          return companyContract || (contract.type.id === 120 ? contract : null);
+        }, null);
+
+        if ($scope.focus.contract) {
+
+          await angularLoad.loadScript("https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js");
+
+          settings.locale = d3.timeFormatLocale({
+            "dateTime": "%d-%m-%Y %H:%M:%S",
+            "date": "%d-%m-%Y",
+            "time": "%H:%M:%S",
+            "periods": ["AM", "PM"],
+            "days": "zondag|maandag|dinsdag|woensdag|donderdag|vrijdag|zaterdag".split("|"),
+            "shortDays": "zo|ma|di|wo|do|vr|za".split("|"),
+            "months": "januari|februari|maart|april|mei|juni|juli|augustus|oktober|november|december".split("|"),
+            "shortMonths": "jan|feb|mrt|apr|mei|jun|jul|aug|sept|okt|nov|dec".split("|"),
+          });
+          settings.formatters = {
+            ms: settings.locale.format(".%L"),
+            s: settings.locale.format(":%S"),
+            m: settings.locale.format("%H:%M"),
+            h: settings.locale.format("%H:00"),
+            d: settings.locale.format("%a %d"),
+            wk: settings.locale.format("%b %d"),
+            mo: settings.locale.format("%B"),
+            yr: settings.locale.format("%Y"),
+          };
+          settings.multiFormat = date => {
+            return (
+                d3.timeSecond(date) < date ? settings.formatters.ms
+                : d3.timeMinute(date) < date ? settings.formatters.s
+                : d3.timeHour(date) < date ? settings.formatters.m
+                : d3.timeDay(date) < date ? settings.formatters.h
+                : d3.timeMonth(date) < date ? (d3.timeWeek(date) < date ? settings.formatters.d : settings.formatters.wk)
+                : d3.timeYear(date) < date ? settings.formatters.mo
+                : settings.formatters.yr
+              )(date);
+          };
+
+          elements.container = d3.select($element.find('.resource_calendar')[0]);
+          elements.svg = elements.container.select('svg');
+          elements.calendar = elements.container.select('.calendar');
+
+          d3.select(window).on("resize", () => {
+            if (!settings.W || settings.W !== elements.svg.node().clientWidth) {
+              redraw();
+            }
+          });
+
+          focusUpdated();
+
         }
 
-        await angularLoad.loadScript("https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js");
-
-        settings.locale = d3.timeFormatLocale({
-          "dateTime": "%d-%m-%Y %H:%M:%S",
-          "date": "%d-%m-%Y",
-          "time": "%H:%M:%S",
-          "periods": ["AM", "PM"],
-          "days": "zondag|maandag|dinsdag|woensdag|donderdag|vrijdag|zaterdag".split("|"),
-          "shortDays": "zo|ma|di|wo|do|vr|za".split("|"),
-          "months": "januari|februari|maart|april|mei|juni|juli|augustus|oktober|november|december".split("|"),
-          "shortMonths": "jan|feb|mrt|apr|mei|jun|jul|aug|sept|okt|nov|dec".split("|"),
-        });
-        settings.formatters = {
-          ms: settings.locale.format(".%L"),
-          s: settings.locale.format(":%S"),
-          m: settings.locale.format("%H:%M"),
-          h: settings.locale.format("%H:00"),
-          d: settings.locale.format("%a %d"),
-          wk: settings.locale.format("%b %d"),
-          mo: settings.locale.format("%B"),
-          yr: settings.locale.format("%Y"),
-        };
-        settings.multiFormat = date => {
-          return (
-              d3.timeSecond(date) < date ? settings.formatters.ms
-              : d3.timeMinute(date) < date ? settings.formatters.s
-              : d3.timeHour(date) < date ? settings.formatters.m
-              : d3.timeDay(date) < date ? settings.formatters.h
-              : d3.timeMonth(date) < date ? (d3.timeWeek(date) < date ? settings.formatters.d : settings.formatters.wk)
-              : d3.timeYear(date) < date ? settings.formatters.mo
-              : settings.formatters.yr
-            )(date);
-        };
-
-        elements.container = d3.select($element.find('.resource_calendar')[0]);
-        elements.svg = elements.container.select('svg');
-        elements.calendar = elements.container.select('.calendar');
-
-        d3.select(window).on("resize", () => {
-          if (!settings.W || settings.W !== elements.svg.node().clientWidth) {
-            redraw();
-          }
-        });
-
-//        $scope.$digest();
-        focusUpdated();
+        $scope.$digest();
       }
 
     },
