@@ -46,7 +46,7 @@ angular.module('owmlanding.beheerders', ['slick'])
       $scope.formSendStatus = 'sending';
 
       formSubmissionService.send({
-        type: 'mw_lease',
+        type: 'mw_beheerders',
         email: $scope.formEntry.email,
         firstName: $scope.formEntry.firstName,
         surname: $scope.formEntry.surname,
