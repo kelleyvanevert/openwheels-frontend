@@ -1,0 +1,121 @@
+
+<md-dialog flex-xs="100" flex-sm="70" flex-md="50" flex-lg="40" flex-xl="30"
+           class="info-dialog"
+           style="overflow: visible;">
+  <md-dialog-content
+    class="md-dialog-content"
+    style="overflow: visible;"
+  >
+    <h3 class="with-close-button">
+      Reservering maken
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+
+    <form name="createBookingForm" class="mywheels-form overlayable">
+      <div class="form-group" ng-if="!fixedResource">
+        <p>
+          <label>Auto</label>
+        </p>
+        <md-autocomplete
+          md-selected-item="booking.resource"
+          md-search-text="resourceQuery"
+          md-items="resource in searchResource(resourceQuery)"
+          md-item-text="resource.alias + ' (' + resource.brand + ' ' + resource.model + ' ' + resource.registrationPlate + ')'"
+          md-min-length="0"
+          placeholder="Selecteer auto"
+        >
+          <md-item-template>
+            <span md-highlight-text="resourceQuery" md-highlight-flags="^i">
+              {{ resource.alias + ' (' + resource.brand + ' ' + resource.model + ' ' + resource.registrationPlate + ')' }}
+            </span>
+          </md-item-template>
+          <md-not-found>
+            Niet gevonden: "{{ resourceQuery }}"
+          </md-not-found>
+        </md-autocomplete>
+      </div>
+
+      <p ng-if="fixedResource">
+        <strong>{{ booking.resource.alias }}</strong><br />
+        {{ booking.resource.brand }} {{ booking.resource.model }} [<small>{{ booking.resource.registrationPlate }}</small>]
+      </p>
+
+      <p>
+        <label>Begin- en eindtijd</label>
+      </p>
+      <timeframe-picker
+        name="timeframe"
+        pickup-date-time="booking.beginRequested"
+        return-date-time="booking.endRequested"
+        mobile-autoscroll="false"
+        show-extend-buttons="true"
+        disable-logic="true"
+      ></timeframe-picker>
+      
+      <div class="text-danger" ng-if="timeFrameError">
+        Vul a.j.b. een geldig begin- en eindtijd in.
+      </div>
+
+      <div class="form-group">
+        <p>
+          <label>Persoon</label>
+        </p>
+        <md-autocomplete
+          md-selected-item="booking.person"
+          md-search-text="personQuery"
+          md-items="person in searchPerson(personQuery)"
+          md-item-text="(person | fullname) + ' [' + person.id + ']'"
+          md-min-length="0"
+          placeholder="Zoek op naam"
+        >
+          <md-item-template>
+            <span md-highlight-text="personQuery" md-highlight-flags="^i">{{ person | fullname }} [{{ person.id }}]</span>
+          </md-item-template>
+          <md-not-found>
+            Niet gevonden: "{{ personQuery }}"
+          </md-not-found>
+        </md-autocomplete>
+      </div>
+
+      <div class="form-group">
+        <p>
+          <label>Opmerking / kenmerk</label>
+        </p>
+        <textarea class="form-control" ng-model="booking.remarkRequester"></textarea>
+      </div>
+
+      <p class="dialog-buttons-centered">
+        <button class="mywheels-btn mywheels-btn-call-to-action"
+                md-ink-ripple="#4b702c"
+                ng-click="create()"
+                style="white-space: nowrap;">
+          Reservering maken
+        </button>
+      </p>
+
+      <div class="overlayable-overlay" ng-if="sending">
+        <md-progress-circular md-mode="indeterminate" md-diameter="96"></md-progress-circular>
+      </div>
+      <div class="overlayable-overlay overlayable-succeeded" ng-if="succeeded">
+        <div class="size-2" style="font-weight: bold;">
+          <p><ng-md-icon icon="check" size="40" style="width: 20px; height: 40px;"></ng-md-icon></p>
+          <p>De reservering is gemaakt.</p>
+        </div>
+      </div>
+      <div class="overlayable-overlay overlayable-failed" ng-if="failed">
+        <div class="size-2">
+          <p><ng-md-icon icon="error" size="40" style="width: 20px; height: 40px;"></ng-md-icon></p>
+          <p>
+            Het spijt ons heel erg, maar er is iets misgegaan bij het maken van de reservering:
+          </p>
+          <p class="text-danger">
+            {{ error.message }}
+          </p>
+        </div>
+      </div>
+    </form>
+
+  </md-dialog-content>
+</md-dialog>
