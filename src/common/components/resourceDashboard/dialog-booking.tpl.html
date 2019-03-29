@@ -13,6 +13,11 @@
       </md-button>
     </h3>
 
+    <p>
+      <em ng-if="booking.remarkRequester">{{ booking.remarkRequester }}</em>
+      <em ng-if="!booking.remarkRequester">Geen kenmerk</em>
+    </p>
+
     <div class="media media--bordered">
 
       <div class="media-object pull-left">

@@ -397,8 +397,9 @@ angular.module('owm.components')
                 dialogScope.succeeded = true;
                 $scope.refresh();
               })
-              .catch(e => {
+              .catch(error => {
                 dialogScope.failed = true;
+                dialogScope.error = error;
               })
               .finally(__ => {
                 dialogScope.sending = false;
