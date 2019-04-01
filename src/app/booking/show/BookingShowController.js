@@ -838,8 +838,9 @@ angular.module('owm.booking.show', [])
     }
 
     if (action === 'openDoor') {
-      if (!booking || booking.trip.begin) {
-        // If there is no related booking, or the trip has indeed already begun,
+      console.log(booking.resource.askDamage);
+      if (!booking || booking.trip.begin || !booking.resource.askDamage || !booking.resource.askCleanliness) {
+        // If there is no related booking, or the trip has indeed already begun or askDamage or askCleanliness is false,
         //  just open the door and be done with it.
         return openDoor()
           .then(showInfoDialog('openDoorSuccess'))
