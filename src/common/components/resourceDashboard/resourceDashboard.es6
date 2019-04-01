@@ -79,7 +79,7 @@ angular.module('owm.components')
         scale: "day",
         date: moment().format(dateConfig.format),
 
-        resourcesPerPage: 10,
+        resourcesPerPage: 25,
         page: 0,
 
         contract: null,
@@ -482,7 +482,7 @@ angular.module('owm.components')
         }
         if (!$scope.focus.contract) {
           $scope.focus.contract = contracts.reduce((companyContract, contract) => {
-            return companyContract || (contract.type.id === 120 ? contract : null);
+            return companyContract || (contract.type.id === 15 ? contract : null);
           }, null);
         }
 
