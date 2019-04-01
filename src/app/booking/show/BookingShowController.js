@@ -703,7 +703,7 @@ angular.module('owm.booking.show', [])
       }
     }
 
-    if ($scope.userPerspective === 'owner') {
+    if ($scope.userPerspective === 'owner' || ($scope.userPerspective === 'contract_holder' && resource.owner.id === me.id)) {
       $scope.allowAcceptReject = booking.beginRequested && booking.endRequested;
       $scope.allowCancel = (function () {
         return (
