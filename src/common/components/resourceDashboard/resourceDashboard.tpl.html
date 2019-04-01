@@ -71,32 +71,18 @@
             </div>
           </div>
 
-
           <div
             class="tools"
             style="text-align: center; margin-top: 2.4rem;"
+            ng-if="(focus.resourcesPerPage < data.apiResult.total)"
           >
-            <strong>Auto's per pagina:</strong>
+            <strong>Aantal auto's:</strong>
             <ul class="inline-pills">
               <li ng-repeat="num in [5, 10, 20, 50]">
                 <a class="pill" ng-class="{ active: num === focus.resourcesPerPage }"
                   ng-click="setResourcesPerPage(num); $event.preventDefault()">{{ num }}</a>
               </li>
             </ul>
-            <span style="margin-left: 2rem;" ng-if="(focus.resourcesPerPage < data.apiResult.total)">
-              <strong>Pagina:</strong>
-              <ul class="inline-pills">
-                <li ng-repeat="pill in data.paginationLinks">
-                  <span ng-if="pill.page === undefined">{{ pill.text }}</span>
-                  <a
-                    ng-if="(pill.page !== undefined)"
-                    class="pill"
-                    ng-class="{ active: pill.page === focus.page }"
-                    ng-click="setPage(pill.page); $event.preventDefault()"
-                  >{{ pill.text }}</a>
-                </li>
-              </ul>
-            </span>
           </div>
         </div>
       </div>
