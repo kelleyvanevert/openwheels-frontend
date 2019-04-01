@@ -703,7 +703,7 @@ angular.module('owm.booking.show', [])
       }
     }
 
-    if ($scope.userPerspective === 'owner') {
+    if ($scope.userPerspective === 'owner' || ($scope.userPerspective === 'contract_holder' && resource.owner.id === me.id)) {
       $scope.allowAcceptReject = booking.beginRequested && booking.endRequested;
       $scope.allowCancel = (function () {
         return (
@@ -838,8 +838,9 @@ angular.module('owm.booking.show', [])
     }
 
     if (action === 'openDoor') {
-      if (!booking || booking.trip.begin) {
-        // If there is no related booking, or the trip has indeed already begun,
+      console.log(booking.resource.askDamage);
+      if (!booking || booking.trip.begin || !booking.resource.askDamage || !booking.resource.askCleanliness) {
+        // If there is no related booking, or the trip has indeed already begun or askDamage or askCleanliness is false,
         //  just open the door and be done with it.
         return openDoor()
           .then(showInfoDialog('openDoorSuccess'))
