@@ -575,13 +575,13 @@ angular.module('owm.booking.show', [])
       // - een boeking op iemand anders' contract [je bent contractant]
       return 'renter';
     }
-    else if (resource.owner.id === me.id) {
-      return 'owner';
-    }
     else if ($scope.ownContract) {
       // het gaat hier om een rit van een contractant
       // [dit is niet jouw eigen boeking, maar die van een contractant]
       return 'contract_holder';
+    }
+    else if (resource.owner.id === me.id) {
+      return 'owner';
     }
   }());
 
@@ -662,7 +662,7 @@ angular.module('owm.booking.show', [])
       $scope.allowAgreementUrl = linksService.bookingAgreementPdf(booking.id);
     }
 
-    if ($scope.userPerspective === 'renter') {
+    if ($scope.userPerspective === 'renter' || $scope.userPerspective === 'contract_holder') {
       $scope.allowEdit = (function () {
         if (booking.endBooking) {
           return moment().isBefore(moment(booking.endBooking).add(30, 'minutes')); // hooguit 30 minuten geleden afgelopen
