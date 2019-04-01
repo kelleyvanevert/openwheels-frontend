@@ -744,6 +744,74 @@ a.contact-now {
     margin-left: .7rem;
 }
 
+ul.inline-pills {
+    display: inline;
+    margin: 0;
+    padding: 0;
+
+    > li {
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+
+        > a.pill {
+            display: block;
+            padding: .3rem .5rem;
+            margin-right: .3rem;
+            border-radius: .4rem;
+            min-width: 2.6rem;
+            text-align: center;
+
+            &:hover {
+                background: #eee;
+            }
+
+            &.active,
+            &.active:hover {
+                background: @mywheels-blue;
+                color: white;
+            }
+        }
+    }
+}
+
+.overlayable {
+    position: relative;
+
+    .overlayable-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, .85);
+        z-index: 100;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+
+        &.form-succeeded {
+            font-size: 1.2em;
+            background: rgba(255, 255, 255, .95);
+            .lead p,
+            ng-md-icon {
+                color: darken(@mywheels-blue, 4%);
+            }
+        }
+        &.form-failed {
+            font-size: 1.2em;
+            background: rgba(255, 255, 255, .95);
+            .lead p,
+            ng-md-icon {
+                color: darken(@mywheels-red, 2%);
+            }
+        }
+    }
+}
+
 /* Apply to `.card`s */
 .mw {
     color: #333;
@@ -1212,6 +1280,10 @@ a.contact-now {
 
     .col-xxs-pull-11 {
         right: 91.66666666666666%;
+    }
+
+    .col-xxs-offset-0 {
+        margin-left: 0%;
     }
 
     .col-xxs-offset-1 {

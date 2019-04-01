@@ -42,13 +42,18 @@
     <!-- Betalingsscherm -->
     <div ng-include="'booking/show/renting/partial-payment.tpl.html'"></div>
 
+    <!-- Accepteren/weigeren als zijnde eigenaar [onwaarschijnlijk, maar kan gebeuren bv. in geval business: eigenaar+contracthouder] -->
+    <div ng-if="perspective.isOwner">
+      <div ng-include="'booking/show/renting/partial-ownerAcceptReject.tpl.html'"></div>
+    </div>
+    
     <!-- Annuleer-knop -->
     <div ng-include="'booking/show/renting/partial-reservationProcessActions.tpl.html'"></div>
 
     <!-- After reservation completed, and before the booking has (really) ended -->
     <div ng-if="progress.reservationCompleted && !bookingEndedReally && !details.cancelled">
       <!-- MW Open openen en sluiten knoppen -->
-      <div ng-include="'booking/show/partial-openCloseButtons.tpl.html'" ng-if="!perspective.isContractor"></div>
+      <div ng-include="'booking/show/partial-openCloseButtons.tpl.html'"></div>
     </div>
 
     <!-- Acties -->
@@ -155,9 +160,6 @@
 
     <!-- NADAT DE RIT IS AFGELOPEN -->
     <div ng-if="bookingEnded">
-
-      <!-- Tankbonnen -->
-      <div ng-include="'booking/show/partial-declarations.tpl.html'" ng-if="allowDeclarations && !perspective.isContractor && accepted"></div>
 
       <!-- Review schrijven teaser -->
       <div ng-include="'booking/show/partial-placeReview.tpl.html'" ng-if="showReviewTeaser && !perspective.isContractor && accepted"></div>

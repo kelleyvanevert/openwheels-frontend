@@ -1,0 +1,135 @@
+
+.resource-dashboard {
+
+  .tools {
+  }
+  
+  a.add_booking {
+    ng-md-icon {
+      color: darken(@mywheels-blue, 10%);
+    }
+  }
+
+}
+
+.resource_calendar {
+  min-height: 5px;
+  min-width: 5px;
+  position: relative;
+
+  font-size: 14px;
+  line-height: 18px;
+
+  svg.backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    .time_axis {
+      font-size: 14px;
+
+      line {
+        color: #ccc;
+      }
+    }
+  }
+
+  .resource_list {
+    position: absolute;
+    top: 38px;
+    left: 0;
+    bottom: 0;
+
+    box-sizing: border-box;
+    width: 200px;
+
+    /* .resource */
+  }
+
+  .calendar {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    overflow: hidden;
+    
+    /* .blocks .block */
+
+    .nw {
+      position: absolute;
+      top: 0;
+      left: 200px;
+      right: 0;
+      bottom: 0;
+
+      .plus {
+        display: none;
+        position: absolute;
+
+        box-sizing: border-box;
+        text-align: center;
+        padding: 6px;
+
+        width: 46px;
+        height: 46px;
+        
+        ng-md-icon {
+          color: darken(@mywheels-blue, 10%);
+        }
+      }
+    }
+  }
+
+  .resource {
+    margin: 4px 0;
+    padding: 4px;
+    height: 46px;
+    box-sizing: border-box;
+    
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    background: white;
+  }
+
+  .block {
+    position: absolute;
+    background: #eee;
+    border-left: 2px solid #aaa;
+    border-right: 2px solid #aaa;
+    padding: 4px;
+
+    color: #333;
+
+    box-sizing: border-box;
+    
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:hover {
+      background: #ddd;
+      border-color: #888;
+      color: black;
+      transform: scale(1.02);
+    }
+  }
+
+  .none_found {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 20px;
+    line-height: 34px;
+
+    em {
+      padding: 3px;
+      background: white;
+    }
+  }
+}

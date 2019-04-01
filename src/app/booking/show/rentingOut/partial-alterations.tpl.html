@@ -7,15 +7,15 @@
           (allowAcceptReject || allowCancel)">
   <div class="card-heading">
     <h3 class="card-title">
-      <span ng-if="userPerspective==='owner' && !hasAcceptedTimeframe(booking)">
+      <span ng-if="!hasAcceptedTimeframe(booking)">
         {{ booking.person.firstName | wantsToRent : booking.resource }}
       </span>
 
-      <span ng-if="userPerspective==='owner' && hasAcceptedTimeframe(booking) && !hasRequestedTimeframe(booking)">
+      <span ng-if="hasAcceptedTimeframe(booking) && !hasRequestedTimeframe(booking)">
       {{ booking.person.firstName | hasRented : booking.resource }}
       </span>
 
-      <span ng-if="userPerspective==='owner' && hasAcceptedTimeframe(booking) && hasRequestedTimeframe(booking)">
+      <span ng-if="hasAcceptedTimeframe(booking) && hasRequestedTimeframe(booking)">
       {{ booking.person.firstName | wantsToChangeBooking }}
       </span>
     </h3>
@@ -63,10 +63,18 @@
     <div ng-if="!hasRequestedTimeframe(booking) && allowCancel">
       Je hebt de de aanvraag reeds geaccepteerd. Je kan de verhuring nog annuleren. Aan kort van te voren annuleren kunnen kosten verbonden zijn. Bekijk de <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/kan-ik-een-geaccepteerde-verhuring-annuleren/" target="_blank">FAQ</a> voor meer informatie.
     </div>
-    <div class="row text-center" ng-if="allowCancel" style="margin-top:10px;">
-      <button class="btn btn-default" ng-click="cancelBooking(booking)">
-        {{ 'CANCEL_BOOKING' | translate }}
-      </button>
+
+    <div class="row is-flex" style="padding: 1rem 0 0; margin: 0 -.5rem !important;">
+      <div class="col-xxs-12 col-xxs-offset-0 col-xs-offset-3 col-xs-6" style="padding: 0;" ng-if="allowCancel">
+        <a
+          ng-click="cancelBooking(booking)"
+          class="mywheels-btn mywheels-btn-action action-cancel"
+          md-ink-ripple="#c00"
+        >
+          <ng-md-icon icon="delete"></ng-md-icon>
+          Annuleer verhuring
+        </a>
+      </div>
     </div>
   </div>
 </div>
