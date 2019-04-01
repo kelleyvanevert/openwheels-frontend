@@ -575,13 +575,13 @@ angular.module('owm.booking.show', [])
       // - een boeking op iemand anders' contract [je bent contractant]
       return 'renter';
     }
-    else if (resource.owner.id === me.id) {
-      return 'owner';
-    }
     else if ($scope.ownContract) {
       // het gaat hier om een rit van een contractant
       // [dit is niet jouw eigen boeking, maar die van een contractant]
       return 'contract_holder';
+    }
+    else if (resource.owner.id === me.id) {
+      return 'owner';
     }
   }());
 
@@ -662,7 +662,7 @@ angular.module('owm.booking.show', [])
       $scope.allowAgreementUrl = linksService.bookingAgreementPdf(booking.id);
     }
 
-    if ($scope.userPerspective === 'renter') {
+    if ($scope.userPerspective === 'renter' || $scope.userPerspective === 'contract_holder') {
       $scope.allowEdit = (function () {
         if (booking.endBooking) {
           return moment().isBefore(moment(booking.endBooking).add(30, 'minutes')); // hooguit 30 minuten geleden afgelopen
@@ -703,7 +703,7 @@ angular.module('owm.booking.show', [])
       }
     }
 
-    if ($scope.userPerspective === 'owner') {
+    if ($scope.userPerspective === 'owner' || ($scope.userPerspective === 'contract_holder' && resource.owner.id === me.id)) {
       $scope.allowAcceptReject = booking.beginRequested && booking.endRequested;
       $scope.allowCancel = (function () {
         return (
@@ -838,8 +838,9 @@ angular.module('owm.booking.show', [])
     }
 
     if (action === 'openDoor') {
-      if (!booking || booking.trip.begin) {
-        // If there is no related booking, or the trip has indeed already begun,
+      console.log(booking.resource.askDamage);
+      if (!booking || booking.trip.begin || !booking.resource.askDamage || !booking.resource.askCleanliness) {
+        // If there is no related booking, or the trip has indeed already begun or askDamage or askCleanliness is false,
         //  just open the door and be done with it.
         return openDoor()
           .then(showInfoDialog('openDoorSuccess'))

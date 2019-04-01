@@ -53,7 +53,7 @@
     <!-- After reservation completed, and before the booking has (really) ended -->
     <div ng-if="progress.reservationCompleted && !bookingEndedReally && !details.cancelled">
       <!-- MW Open openen en sluiten knoppen -->
-      <div ng-include="'booking/show/partial-openCloseButtons.tpl.html'" ng-if="!perspective.isContractor"></div>
+      <div ng-include="'booking/show/partial-openCloseButtons.tpl.html'"></div>
     </div>
 
     <!-- Acties -->

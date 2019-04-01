@@ -1,5 +1,5 @@
 
-<div>
+<div >
   <ng-form name="calendarForm">
     <div class="card mw resource-dashboard" ng-if="focus.contract">
       <div class="card-body">
@@ -65,7 +65,7 @@
                 <div><strong>{{ group.resource.alias }}</strong></div>
                 <div>
                   {{ group.resource.brand }} {{ group.resource.model }}
-                  [<small>{{ group.resource.registrationPlate }}</small>]
+                  <small ng-if="group.resource.registrationPlate">[{{ group.resource.registrationPlate }}]</small>
                 </div>
               </div>
             </div>
