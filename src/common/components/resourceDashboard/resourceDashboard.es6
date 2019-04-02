@@ -483,7 +483,7 @@ angular.module('owm.components')
         }
         if (!$scope.focus.contract) {
           $scope.focus.contract = contracts.reduce((companyContract, contract) => {
-            return companyContract || (contract.type.id === 15 ? contract : null) || (contract.type.id === 65 && contract.contractor === me ? contract : null);
+            return companyContract || (contract.type.id === 15 ? contract : null) || (contract.type.id === 65 && contract.contractor.id === $scope.me.id ? contract : null);
           }, null);
         }
 
