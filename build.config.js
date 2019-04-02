@@ -8,7 +8,11 @@ module.exports = {
   app_files: {
     js: [
       'src/**/*Module.js', // modules first
-      'src/**/*.js'
+      'src/**/*.js',
+    ],
+    es6: [
+      'src/**/*Module.es6', // modules first
+      'src/**/*.es6',
     ],
     atpl: [ 'src/app/**/*.tpl.html' ],
     ctpl: [ 'src/common/**/*.tpl.html' ],
@@ -19,8 +23,8 @@ module.exports = {
 
   vendor_files: {
     js: [
+      'vendor_custom/polyfill.min.js',
       'src/polyfills/custom-event.js',
-      'src/polyfills/object-assign.js',
 
       'src/assets/js/tokenServiceFactory.js',
       'src/assets/js/moment-with-locales.js', // 2.9.0
@@ -97,6 +101,8 @@ module.exports = {
 
       'vendor/angulartics/dist/angulartics.min.js',
       'vendor/angulartics-google-tag-manager/dist/angulartics-google-tag-manager.min.js',
+
+      'vendor_custom/angular-load.js',
     ],
     fonts: [
       'vendor/font-awesome/fonts/*'

@@ -1,5 +1,7 @@
 'use strict';
 
+window.sayHi = (...[a, b]) => console.log(`${a}, ${b}!`)
+
 angular.module('openwheels', [
 /* Framework */
   'ngAria',
@@ -27,6 +29,7 @@ angular.module('openwheels', [
   'ngScrollTo',
   'uiCropper',
   // 'vcRecaptcha',
+  'angularLoad',
 
   /* Auto-generated */
   'templates-app',
@@ -352,6 +355,12 @@ angular.module('openwheels', [
 
 .value('isBeheerder', function (person, resource) {
   return (resource.contactPersonId === person.id) && (resource.ownerId !== person.id);
+})
+
+.filter('removeIdAnnotation', function () {
+  return function (str) {
+    return (str || '').replace(/[ ]*\[[a-z0-9]*\][ ]*$/i, '');
+  };
 })
 
 .filter('homeAddress', function (makeHomeAddressPrefill) {

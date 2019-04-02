@@ -1,5 +1,20 @@
 
 <div>
+  <div class="card mw" ng-if="!booking.resource.boardcomputer && booking.trip.finalized">
+    <div class="card-heading">
+      <h3 class="card-title">
+        Kilometerstanden
+      </h3>
+    </div>
+    <div class="card-body">
+      <ul>
+        <li>Begin kilometerstand: <strong>{{ booking.trip.odoBegin }}</strong></li>
+        <li>Eind kilometerstand: <strong>{{ booking.trip.odoEnd }}</strong></li>
+        <li>Gereden kilometers: <strong>{{ booking.trip.odoEnd - booking.trip.odoBegin }}</strong></li>
+      </ul>
+    </div>
+  </div>
+
   <div class="card mw" ng-if="invoiceLines.length > 0">
 
     <!--
@@ -51,7 +66,7 @@
         </h3>
       </div>
       <div class="card-body">
-        <table class="table financial">
+        <table class="table financial" style="margin-bottom: 0;">
           <tr>
             <th>Omschrijving</th>
             <th class="text-right xs-collapse">Aantal</th>

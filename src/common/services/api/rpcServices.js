@@ -252,6 +252,7 @@ angular.module('rpcServices', [])
   this.alterPeriodic = m('alterPeriodic');
   this.removePeriodic = m('removePeriodic');
   this.between = m('between');
+  this.search = m('search');
 })
 
 .service('messageService', function (api) {
@@ -349,6 +350,7 @@ angular.module('rpcServices', [])
   this.invitePersonForContract = m('invitePersonForContract');
   this.removePersonFromContract = m('removePersonFromContract');
   this.getExtraDriverBookingList = m('getExtraDriverBookingList');
+  this.search = m('search');
 })
 
 .service('kmPointService', function (api) {

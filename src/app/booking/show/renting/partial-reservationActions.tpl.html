@@ -1,11 +1,12 @@
 
-<div class="board-computer-control">
+<div ng-if="!details.bookingEndedReally || !booking.trip.finalized">
+
   <div class="card mw">
     <div class="card-body" style="padding-bottom: 0;">
       <p class="size-2 reservation-progress-summary" ng-if="!details.bookingEndedReally">
         {{ progress.summary }}
       </p>
-      <p class="size-2 reservation-progress-summary" ng-if="details.bookingEndedReally">
+      <p class="size-2 reservation-progress-summary" ng-if="details.bookingEndedReally && !booking.trip.finalized">
         De rit is afgelopen. Je kunt met de knop hieronder de kilometerstanden doorgeven of verifieren.
       </p>
       <div class="row is-flex" style="padding: 1rem 0; margin: 0 -.5rem !important;">
@@ -16,7 +17,7 @@
             md-ink-ripple="#4796b6"
           >
             <ng-md-icon icon="schedule"></ng-md-icon>
-            {{ details.bookingStarted ? 'Verlengen' : 'Begin- of eindtijd wijzigen' }}
+            {{ details.bookingStarted ? 'Verlengen' : 'Wijzig begin- of eindtijd' }}
           </a>
         </div>
         <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="details.bookingStarted && !details.bookingEnded">
@@ -26,7 +27,7 @@
             md-ink-ripple="#4796b6"
           >
             <ng-md-icon icon="schedule"></ng-md-icon>
-            Nu beëindigen
+            Beëindig nu
           </a>
         </div>
         <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!extraDrivers.noPermission && !details.bookingStarted && !perspective.isContractor">
@@ -36,7 +37,7 @@
             md-ink-ripple="#4796b6"
           >
             <ng-md-icon icon="people"></ng-md-icon>
-            Extra bestuurders wijzigen
+            Wijzig extra bestuurders
           </a>
         </div>
         <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!details.bookingStarted && !perspective.isContractor">
@@ -46,7 +47,7 @@
             md-ink-ripple="#4796b6"
           >
             <ng-md-icon icon="edit"></ng-md-icon>
-            Eigen risico {{ booking.riskReduction ? 'niet verlagen' : 'verlagen' }}
+            {{ booking.riskReduction ? 'Verlaag eigen risico niet' : 'Verlaag eigen risico' }}
           </a>
         </div>
         <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!details.bookingStarted">
@@ -56,17 +57,27 @@
             md-ink-ripple="#4796b6"
           >
             <ng-md-icon icon="local_offer"></ng-md-icon>
-            Kortingscode {{ discount.length > 0 ? '' : 'toevoegen' }}
+            {{ discount.length > 0 ? 'Kortingscode' : 'Voeg kortingscode toe' }}
           </a>
         </div>
-        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="details.bookingStarted && !booking.resource.boardcomputer && !perspective.isContractor">
+        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="details.bookingStarted && !booking.resource.boardcomputer && !perspective.isContractor && !booking.trip.finalized">
           <a
             ng-click="kmStandenDialog($event)"
             class="mywheels-btn mywheels-btn-action"
             md-ink-ripple="#4796b6"
           >
             <ng-md-icon icon="straighten"></ng-md-icon>
-            Rit administreren
+            Administreer rit
+          </a>
+        </div>
+        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="details.bookingEnded && allowDeclarations && !perspective.isContractor && details.accepted">
+          <a
+            ng-click="declarationsDialog($event)"
+            class="mywheels-btn mywheels-btn-action"
+            md-ink-ripple="#4796b6"
+          >
+            <ng-md-icon icon="local_gas_station"></ng-md-icon>
+            Tankbonnen
           </a>
         </div>
         <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!details.bookingStarted">
@@ -76,10 +87,11 @@
             md-ink-ripple="#c00"
           >
             <ng-md-icon icon="delete"></ng-md-icon>
-            Reservering annuleren
+            Annuleer reservering
           </a>
         </div>
       </div>
     </div>
   </div>
+
 </div>
