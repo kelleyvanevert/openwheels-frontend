@@ -79,7 +79,7 @@ angular.module('owm.components')
         scale: "day",
         date: moment().format(dateConfig.format),
 
-        resourcesPerPage: 25,
+        resourcesPerPage: 50,
         page: 0,
 
         contract: null,
@@ -191,6 +191,7 @@ angular.module('owm.components')
         try {
           $scope.data.apiResult = await calendarService.search({
             person: $scope.focus.contract.contractor.id,
+            contract: $scope.focus.contract.id,
             timeFrame: {
               startDate: $scope.data.startDate.format(API_DATE_FORMAT),
               endDate: $scope.data.endDate.format(API_DATE_FORMAT),
@@ -373,7 +374,7 @@ angular.module('owm.components')
               resource,
               beginRequested: datetime.format(API_DATE_FORMAT),
               endRequested: datetime.clone().add(1, 'hour').format(API_DATE_FORMAT),
-              person: null,
+              person: $scope.me.id === $scope.focus.contract.contractor.id ? null : $scope.me,
               remarkRequester: '',
             };
             dialogScope.personQuery = '';
@@ -482,7 +483,7 @@ angular.module('owm.components')
         }
         if (!$scope.focus.contract) {
           $scope.focus.contract = contracts.reduce((companyContract, contract) => {
-            return companyContract || (contract.type.id === 15 ? contract : null);
+            return companyContract || (contract.type.id === 15 ? contract : null) || (contract.type.id === 65 ? contract : null);
           }, null);
         }
 
