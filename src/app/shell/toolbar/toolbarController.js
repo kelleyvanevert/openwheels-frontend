@@ -21,6 +21,14 @@ angular.module('owm.shell')
 		$scope.profileImageUrl = $filter('profileImageUrl')(me);
 	}
 
+	$scope.redirectTo = function() {
+	  if (me) {
+	    $state.go('owm.person.dashboard');
+	  } else {
+	    $state.go('home');
+	  }
+	};
+
 	$timeout(function () {
 		if($localStorage.invitedBySlug) {
 		  $scope.invitedBySlug = $localStorage.invitedBySlug;
