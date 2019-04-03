@@ -247,7 +247,7 @@ angular.module('owm.components')
       function redraw () {
         console.log("redraw");
 
-        const W = settings.W = elements.svg.node().clientWidth;
+        const W = settings.W = elements.container.node().clientWidth;
         const Y = Math.max(1, $scope.data.grouped.length);
         const H = Y * settings.rowHeight + settings.marginTop + settings.marginBottom;
         const scale = $scope.scales[$scope.focus.scale];
