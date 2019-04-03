@@ -72,49 +72,31 @@ angular.module('owm.components')
       };
 
       $scope.loading = true;
-      $scope.grouped = [];
-      $scope.data = {};
-
-      $scope.focus = {
-        scale: "day",
-        date: moment().format(dateConfig.format),
-
-        resourcesPerPage: 50,
-        page: 0,
-
-        contract: null,
+      $scope.data = {
+        grouped: [],
+        numCurrentlyShowing: 0,
       };
 
-      if ($stateParams.cal_p && $stateParams.cal_p.match(/^[0-9]+$/)) {
-        $scope.focus.page = parseInt($stateParams.cal_p);
-      }
-      if ($stateParams.cal_rpp && $stateParams.cal_rpp.match(/^[0-9]+$/)) {
-        $scope.focus.resourcesPerPage = parseInt($stateParams.cal_rpp);
-      }
-      if ($stateParams.cal_c && $stateParams.cal_c.match(/^[0-9]+$/)) {
-        $scope.focus.contract_id = parseInt($stateParams.cal_c);
-      }
-      if ($stateParams.cal_s && $scope.scales[$stateParams.cal_s]) {
-        $scope.focus.scale = $stateParams.cal_s;
-      }
-      if ($stateParams.cal_d) {
-        const m = moment($stateParams.cal_d, dateConfig.format);
-        if (m.isValid()) {
-          $scope.focus.date = $stateParams.cal_d;
-        }
-      }
+      const focus = $scope.$root.resouceDashboardFocus = $scope.focus = (
+        $scope.$root.resouceDashboardFocus
+        || {
+            scale: "day",
+            date: moment().format(dateConfig.format),
+
+            resourcesPerPage: 20,
+
+            contract: null,
+          }
+      );
 
       $scope.setResourcesPerPage = function (num) {
-        $scope.focus.resourcesPerPage = num;
-        $scope.focus.page = 0;
+        focus.resourcesPerPage = num;
 
         focusUpdated();
       };
 
-      $scope.setPage = function (page) {
-        $scope.focus.page = page;
-
-        focusUpdated();
+      $scope.loadMore = function () {
+        loadResources();
       };
 
       $scope.changeDate = function () {
@@ -125,20 +107,20 @@ angular.module('owm.components')
         if (dir !== 'add' && dir !== 'subtract') {
           dir = 'add';
         }
-        const curr = moment($scope.focus.date, dateConfig.format);
-        $scope.focus.date = curr[dir](...$scope.scales[$scope.focus.scale].interval).format(dateConfig.format);
+        const curr = moment(focus.date, dateConfig.format);
+        focus.date = curr[dir](...$scope.scales[focus.scale].interval).format(dateConfig.format);
         $scope.calendarForm.date.$setTouched(true);
         focusUpdated();
       };
 
       $scope.setToday = function () {
-        $scope.focus.date = moment().format(dateConfig.format);
+        focus.date = moment().format(dateConfig.format);
         $scope.calendarForm.date.$setTouched(true);
         focusUpdated();
       };
 
       $scope.setScale = function (key) {
-        $scope.focus.scale = key;
+        focus.scale = key;
         focusUpdated();
       };
 
@@ -166,82 +148,55 @@ angular.module('owm.components')
       };
       const elements = {};
 
-      async function focusUpdated () {
-        $state.go('.', {
-          cal_p: $scope.focus.page,
-          cal_rpp: $scope.focus.resourcesPerPage,
-          cal_c: $scope.focus.contract.id,
-          cal_d: $scope.focus.date,
-          cal_s: $scope.focus.scale,
-        }, { notify: false, reload: false });
-
-        const scale = $scope.scales[$scope.focus.scale];
-        $scope.data.startDate = moment($scope.focus.date, dateConfig.format).startOf(scale.interval[1]);
-        $scope.data.endDate = $scope.data.startDate.clone().add(...scale.interval);
-
-        $scope.data.title = scale.makeTitle($scope.data.startDate, $scope.data.endDate);
-
+      async function loadResources () {
         $scope.loading = true;
 
-        const { page } = $scope.focus;
-
-        // TODO caching
-
-        // Temporary API call (We're going to use the new `calender.search` later)
         try {
           $scope.data.apiResult = await calendarService.search({
-            person: $scope.focus.contract.contractor.id,
-            contract: $scope.focus.contract.id,
+            person: focus.contract.contractor.id,
+            contract: focus.contract.id,
             timeFrame: {
               startDate: $scope.data.startDate.format(API_DATE_FORMAT),
               endDate: $scope.data.endDate.format(API_DATE_FORMAT),
             },
-            offset: page * $scope.focus.resourcesPerPage,
-            limit: $scope.focus.resourcesPerPage,
+            offset: $scope.data.grouped.filter(group => !group.invalidated).length,
+            limit: focus.resourcesPerPage,
           });
-          $scope.data.grouped = $scope.data.apiResult.result;
-          $scope.data.numPages = Math.ceil($scope.data.apiResult.total / $scope.focus.resourcesPerPage);
-
-          $scope.data.paginationLinks = [];
-          if (page >= 3) {
-            $scope.data.paginationLinks.push({ text: 1, page: 0 });
-            if (page > 3) {
-              $scope.data.paginationLinks.push({ text: '...' });
+          $scope.data.apiResult.result.forEach(group => {
+            const i = _.findIndex($scope.data.grouped, other => other.resource.id === group.resource.id);
+            if (i >= 0) {
+              $scope.data.grouped.splice(i, 1, group);
+            } else {
+              $scope.data.grouped.push(group);
             }
-          }
-
-          if (page > 1) {
-            $scope.data.paginationLinks.push({ text: page - 1, page: page - 2 });
-          }
-          if (page > 0) {
-            $scope.data.paginationLinks.push({ text: page    , page: page - 1 });
-          }
-          $scope.data.paginationLinks.push({ text: page + 1, page: page     });
-          if (page < $scope.data.numPages - 1) {
-            $scope.data.paginationLinks.push({ text: page + 2, page: page + 1 });
-          }
-          if (page < $scope.data.numPages - 2) {
-            $scope.data.paginationLinks.push({ text: page + 3, page: page + 2 });
-          }
-
-          if (($scope.data.numPages - page - 1) >= 3) {
-            if (($scope.data.numPages - page - 1) > 3) {
-              $scope.data.paginationLinks.push({ text: '...' });
-            }
-            $scope.data.paginationLinks.push({ text: $scope.data.numPages, page: $scope.data.numPages - 1 });
-          }
+          });
+          $scope.data.grouped = $scope.data.grouped.filter(group => !group.invalidated);
+          $scope.data.hasMore = $scope.data.apiResult.total > $scope.data.grouped.length;
         }
         catch (error) {
           $scope.data.apiResult = null;
-          $scope.data.grouped = [];
           $scope.data.error = error;
         }
 
         $scope.loading = false;
-
         redraw();
-
         $scope.$digest();
+      }
+
+      async function focusUpdated () {
+        const scale = $scope.scales[focus.scale];
+        $scope.data.startDate = moment(focus.date, dateConfig.format).startOf(scale.interval[1]);
+        $scope.data.endDate = $scope.data.startDate.clone().add(...scale.interval);
+
+        $scope.data.title = scale.makeTitle($scope.data.startDate, $scope.data.endDate);
+
+        // TODO caching
+
+        $scope.data.grouped.forEach(group => {
+          group.blocks = [];
+          group.invalidated = true;
+        });
+        loadResources();
       }
 
       function redraw () {
@@ -250,7 +205,7 @@ angular.module('owm.components')
         const W = settings.W = elements.container.node().clientWidth;
         const Y = Math.max(1, $scope.data.grouped.length);
         const H = Y * settings.rowHeight + settings.marginTop + settings.marginBottom;
-        const scale = $scope.scales[$scope.focus.scale];
+        const scale = $scope.scales[focus.scale];
 
         elements.container
           .style('height', H + 'px');
@@ -304,13 +259,16 @@ angular.module('owm.components')
             .attr("onclick", "return false;")
             .attr("class", ({ booking }) => "block")
             .on("click", openDialog);
-        new_block_divs.append("div").append("strong").text(({ booking }) => (booking.remarkRequester || "").slice(0, 50))
-        new_block_divs.append("div").text(({ booking }) => $filter('fullname')(booking.person))
+        const txt = new_block_divs.append("div").attr("class", "txt");
+        txt.append("div").append("strong").text(({ booking }) => (booking.remarkRequester || "").slice(0, 50))
+        txt.append("div").text(({ booking }) => $filter('fullname')(booking.person))
         new_block_divs.merge(block_divs)
             .style("top", ({ y }) => (yScale(y) + settings.vPad) + "px")
             .style("left", ({ x0 }) => (200 + xScale(x0.toDate())) + "px")
             .style("width", ({ x0, x1 }) => (xScale(x1.toDate()) - xScale(x0.toDate())) + "px")
-            .style("height", (settings.rowHeight - 2*settings.vPad) + "px");
+            .style("height", (settings.rowHeight - 2*settings.vPad) + "px")
+          .select(".txt")
+            .style("margin-left", ({ x0 }) => Math.max(0, -xScale(x0.toDate())) + "px");
         
         elements.calendar.select(".nw")
           .on("mousemove", null)
@@ -331,7 +289,7 @@ angular.module('owm.components')
                   event: d3.event,
                 }));
             } else {
-              console.log("no resource for:", x, y, i);
+              //console.log("no resource for:", x, y, i);
             }
           })
           .on("mouseout", () => {
@@ -374,7 +332,7 @@ angular.module('owm.components')
               resource,
               beginRequested: datetime.format(API_DATE_FORMAT),
               endRequested: datetime.clone().add(1, 'hour').format(API_DATE_FORMAT),
-              person: $scope.me.id === $scope.focus.contract.contractor.id ? null : $scope.me,
+              person: $scope.me.id === focus.contract.contractor.id ? null : $scope.me,
               remarkRequester: '',
             };
             dialogScope.personQuery = '';
@@ -396,14 +354,14 @@ angular.module('owm.components')
 
             dialogScope.searchResource = function (query) {
               return resourceService.forOwner({
-                person: $scope.focus.contract.contractor.id,
+                person: focus.contract.contractor.id,
               });
             };
 
             dialogScope.searchPerson = function (query) {
               return extraDriverService.search({
-                person: $scope.focus.contract.contractor.id,
-                contract: $scope.focus.contract.id,
+                person: focus.contract.contractor.id,
+                contract: focus.contract.id,
                 search: query,
                 //limit: 999,
                 //offset: 0,
@@ -431,7 +389,7 @@ angular.module('owm.components')
                   endDate: dialogScope.booking.endRequested
                 },
                 person: dialogScope.booking.person.id,
-                contract: $scope.focus.contract.id,
+                contract: focus.contract.id,
                 remark: dialogScope.booking.remarkRequester,
               })
               .then(createdBooking => {
@@ -475,19 +433,19 @@ angular.module('owm.components')
         const contracts = await contractService.forDriver({
           person: $scope.me.id
         });
-        if ($scope.focus.contract_id) {
-          const found = _.find(contracts, contract => contract.id === $scope.focus.contract_id);
+        if (focus.contract_id) {
+          const found = _.find(contracts, contract => contract.id === focus.contract_id);
           if (found && found.type.id === 120) {
-            $scope.focus.contract = found;
+            focus.contract = found;
           }
         }
-        if (!$scope.focus.contract) {
-          $scope.focus.contract = contracts.reduce((companyContract, contract) => {
+        if (!focus.contract) {
+          focus.contract = contracts.reduce((companyContract, contract) => {
             return companyContract || (contract.type.id === 15 ? contract : null) || (contract.type.id === 65 && contract.contractor.id === $scope.me.id ? contract : null);
           }, null);
         }
 
-        if ($scope.focus.contract) {
+        if (focus.contract) {
 
           await angularLoad.loadScript("https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js");
 
