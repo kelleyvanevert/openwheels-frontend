@@ -766,6 +766,7 @@ angular.module('owm.booking.show', [])
       templateUrl: 'booking/show/dialog-' + messageCode + '.tpl.html',
       parent: angular.element(document.body),
       targetEvent: $event,
+      fullscreen: true,
       clickOutsideToClose: true,
       // scope: $scope,
       // preserveScope: true,
@@ -791,7 +792,10 @@ angular.module('owm.booking.show', [])
       return false;
     }
 
-    // helper
+    // helpers
+    function id (x) {
+      return x;
+    }
     function showInfoDialog (dialog, scopeExtender) {
       return function (errorMessage) {
         infoDialog(dialog, $event, function ($scope) {
@@ -807,7 +811,7 @@ angular.module('owm.booking.show', [])
 
     if (action === 'closeDoor') {
       return closeDoor()
-        .then(showInfoDialog('closeDoorSuccess'))
+        .then(resource.askCleanliness ? showInfoDialog('closeDoorSuccess') : id)
         .catch(showInfoDialog('boardComputerError'));
     }
 
@@ -815,6 +819,9 @@ angular.module('owm.booking.show', [])
       return openDoor()
         .then(showInfoDialog('openDoorSuccess', function ($scope) {
           $scope.damageStateReported = true;
+
+          $scope.askDamage = resource.askDamage;
+          $scope.askCleanliness = resource.askCleanliness;
 
           $scope.messDescription = '';
           $scope.thanks = false;
@@ -850,6 +857,7 @@ angular.module('owm.booking.show', [])
       // There is a booking, and the related trip has not yet begun,
       //  so show a dialog informing after possible new damage.
       return infoDialog('openDoorDamagePrompt', $event, function ($scope) {
+        $scope.knownDamage = resource.knownDamage;
         $scope.schade = false;
         $scope.damageDescription = '';
         $scope.hide = function () {
