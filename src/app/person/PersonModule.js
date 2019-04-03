@@ -30,7 +30,10 @@ angular.module('owm.person', [
     },
     resolve: {
       me: ['authService', function (authService) {
-        return authService.me();
+        return authService.me().then(function (me) {
+          me.isBusinessConnected = true;
+          return me;
+        });
       }],
       homeAddressPrefill: ['me', 'makeHomeAddressPrefill', function (me, makeHomeAddressPrefill) {
         return makeHomeAddressPrefill(me);

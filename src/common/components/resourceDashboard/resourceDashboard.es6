@@ -308,6 +308,7 @@ angular.module('owm.components')
           controller: ['$scope', function (dialogScope) {
 
             dialogScope.booking = booking;
+            dialogScope.perspective = $scope.perspective;
 
             dialogScope.hide = function () {
               $mdDialog.hide();
@@ -316,7 +317,7 @@ angular.module('owm.components')
         });
       }
 
-      function createBookingDialog ({ resource = null, datetime = moment(), event }) {
+      function createBookingDialog ({ resource = null, datetime = moment().roundNext15Min(), event }) {
         $mdDialog.show({
           templateUrl: 'components/resourceDashboard/dialog-createBooking.tpl.html',
           parent: angular.element(document.body),
@@ -324,92 +325,16 @@ angular.module('owm.components')
           clickOutsideToClose: false,
           hasBackdrop: true,
           fullscreen: true,
-          controller: ['$scope', function (dialogScope) {
-
-            dialogScope.fixedResource = !!resource;
-
-            dialogScope.booking = {
-              resource,
-              beginRequested: datetime.format(API_DATE_FORMAT),
-              endRequested: datetime.clone().add(1, 'hour').format(API_DATE_FORMAT),
-              person: $scope.me.id === focus.contract.contractor.id ? null : $scope.me,
-              remarkRequester: '',
-            };
-            dialogScope.personQuery = '';
-            dialogScope.resourceQuery = '';
-
-            dialogScope.$watch('[booking.beginRequested, booking.endRequested]', function () {
-              if (!dialogScope.booking.beginRequested || !dialogScope.booking.endRequested) {
-                dialogScope.timeFrameError = true;
-                return;
-              }
-
-              if (moment(dialogScope.booking.beginRequested) >= moment(dialogScope.booking.endRequested)) {
-                dialogScope.timeFrameError = 'invalid';
-                return;
-              }
-
-              dialogScope.timeFrameError = false;
-            });
-
-            dialogScope.searchResource = function (query) {
-              return resourceService.forOwner({
-                person: focus.contract.contractor.id,
-              });
-            };
-
-            dialogScope.searchPerson = function (query) {
-              return extraDriverService.search({
-                person: focus.contract.contractor.id,
-                contract: focus.contract.id,
-                search: query,
-                //limit: 999,
-                //offset: 0,
-              }).then(d => {
-                return d.result;
-              });
-            };
-
-            //dialogScope.selectPerson = () => {};
-            //dialogScope.queryChange = () => {};
-
-            dialogScope.create = function () {
-              if (dialogScope.timeFrameError || !dialogScope.booking.person || !dialogScope.booking.resource) {
-                return;
-              }
-
-              dialogScope.succeeded = false;
-              dialogScope.failed = false;
-              dialogScope.sending = true;
-              
-              bookingService.create({
-                resource: dialogScope.booking.resource.id,
-                timeFrame: {
-                  startDate: dialogScope.booking.beginRequested,
-                  endDate: dialogScope.booking.endRequested
-                },
-                person: dialogScope.booking.person.id,
-                contract: focus.contract.id,
-                remark: dialogScope.booking.remarkRequester,
-              })
-              .then(createdBooking => {
-                dialogScope.succeeded = true;
-                dialogScope.createdBooking = createdBooking;
-                $scope.refresh();
-              })
-              .catch(error => {
-                dialogScope.failed = true;
-                dialogScope.error = error;
-              })
-              .finally(__ => {
-                dialogScope.sending = false;
-              });
-            };
-
-            dialogScope.hide = function () {
-              $mdDialog.hide();
-            };
-          }],
+          locals: {
+            fixedResource: !!resource,
+            perspective: $scope.perspective,
+            resource,
+            datetime,
+            me: $scope.me,
+            contract: focus.contract,
+            onBookingCreated: () => $scope.refresh(),
+          },
+          controller: 'RD_CreateBookingDialogController',
         });
       };
 
@@ -433,19 +358,18 @@ angular.module('owm.components')
         const contracts = await contractService.forDriver({
           person: $scope.me.id
         });
-        if (focus.contract_id) {
-          const found = _.find(contracts, contract => contract.id === focus.contract_id);
-          if (found && found.type.id === 120) {
-            focus.contract = found;
-          }
-        }
         if (!focus.contract) {
           focus.contract = contracts.reduce((companyContract, contract) => {
             return companyContract || (contract.type.id === 15 ? contract : null) || (contract.type.id === 65 && contract.contractor.id === $scope.me.id ? contract : null);
           }, null);
         }
 
-        if (focus.contract) {
+        if (focus.contract) { // ($scope.me.isBusinessConnected) {
+
+          $scope.show = true;
+          $scope.perspective = {
+            isProviderAdmin: false,
+          };
 
           await angularLoad.loadScript("https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js");
 
@@ -455,7 +379,7 @@ angular.module('owm.components')
           elements.plus = elements.calendar.select('.plus');
 
           d3.select(window).on("resize", () => {
-            if (!settings.W || settings.W !== elements.svg.node().clientWidth) {
+            if (!settings.W || settings.W !== elements.container.node().clientWidth) {
               redraw();
             }
           });
