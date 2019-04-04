@@ -42,7 +42,7 @@
       </div>
       <div class="media-body">
 
-        <div id="booking-list-item-owner_ok" class="pull-right text-right">
+        <div id="booking-list-item-owner_ok" class="pull-right text-right" ng-if="perspective.isProviderAdmin">
           <!-- OK ICON !-->
           <span ng-if="booking.ok && booking.approved !== 'BUY_VOUCHER'">
             <i class="fa fa-check-circle fa-2x text-success" uib-tooltip="Deze boeking is akkoord, je kunt de auto meegeven aan de huurder"></i>
@@ -68,6 +68,20 @@
         </div>
 
       </div>
+    </div>
+
+    <!-- Trip has been finalized -->
+    <div ng-if="booking.trip.finalized">
+
+      <p><strong>Kilometerstanden</strong></p>
+
+      <p>Onderstaande kilometerstanden zijn geaccordeerd en in het systeem opgenomen.</p>
+      <ul>
+        <li>Begin kilometerstand: <strong>{{ booking.trip.odoBegin }}</strong></li>
+        <li>Eind kilometerstand: <strong>{{ booking.trip.odoEnd }}</strong></li>
+        <li>Gereden kilometers: <strong>{{ booking.trip.odoEnd - booking.trip.odoBegin }}</strong></li>
+      </ul>
+
     </div>
 
   </md-dialog-content>
