@@ -1,14 +1,14 @@
 
 <div >
   <ng-form name="calendarForm">
-    <div class="card mw resource-dashboard" ng-if="focus.contract">
+    <div class="card mw resource-dashboard" ng-if="show">
       <div class="card-body">
         <div class="mywheels-form">
           <div class="tools pull-left">
             <a ng-click="move('subtract'); $event.preventDefault()"><ng-md-icon icon="keyboard_arrow_left"></ng-md-icon></a>
             <div style="display: inline-block;">
               <div class="form-group mw-datepicker mw-icon"
-                  style="width: 14rem;"
+                  style="width: 14rem; height: 1rem;"
                   bootstrap-date-time-picker="dateConfig">
                 <ng-md-icon aria-hidden="true" icon="today"></ng-md-icon>
                 <input type="text" autocomplete="off" name="date" id="date" placeholder="Datum" required
@@ -31,10 +31,12 @@
           </div>
 
           <div class="tools" style="text-align: center; margin-bottom: 2rem; padding: .8rem 0;">
-            <a class="add_booking" ng-click="showCreateBookingDialog($event); $event.preventDefault()">
-              <ng-md-icon icon="add_box"></ng-md-icon>
-              Nieuwe reservering
-            </a>
+            <span ng-if="perspective.isProviderAdmin"><!-- temporary -->
+              <a class="add_booking" ng-click="showCreateBookingDialog($event); $event.preventDefault()">
+                <ng-md-icon icon="add_box"></ng-md-icon>
+                Nieuwe reservering
+              </a>
+            </span>
           </div>
 
           <h3 style="text-align: center;">
@@ -51,7 +53,7 @@
             </svg>
 
             <div class="calendar">
-              <div class="none_found" ng-if="data.grouped.length === 0"><em>Geen reserveringen gevonden</em></div>
+              <div class="none_found" ng-if="!loading && data.grouped.length === 0"><em>Geen reserveringen gevonden</em></div>
               <div class="nw">
                 <a class="plus" href="#">
                   <ng-md-icon icon="add_box" size="34" style="height: 34px; width: 34px;"></ng-md-icon>
@@ -61,26 +63,24 @@
             </div>
             
             <div class="resource_list">
-              <div class="resource" ng-repeat="group in data.grouped">
+              <a class="resource" ng-repeat="group in data.grouped" ui-sref="owm.resource.show({ resourceId: group.resource.id })">
                 <div><strong>{{ group.resource.alias }}</strong></div>
                 <div>
                   {{ group.resource.brand }} {{ group.resource.model }}
                   <small ng-if="group.resource.registrationPlate">[{{ group.resource.registrationPlate }}]</small>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
 
           <div
             class="tools"
             style="text-align: center; margin-top: 2.4rem;"
-            ng-if="(focus.resourcesPerPage < data.apiResult.total)"
+            ng-if="data.hasMore"
           >
-            <strong>Aantal auto's:</strong>
             <ul class="inline-pills">
-              <li ng-repeat="num in [5, 10, 20, 50]">
-                <a class="pill" ng-class="{ active: num === focus.resourcesPerPage }"
-                  ng-click="setResourcesPerPage(num); $event.preventDefault()">{{ num }}</a>
+              <li>
+                <a class="pill" ng-click="loadMore(); $event.preventDefault()">Meer laden</a>
               </li>
             </ul>
           </div>

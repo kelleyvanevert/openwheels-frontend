@@ -1,19 +1,24 @@
 
-<md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="30" flex-xl="25" class="mw-green">
-  <md-toolbar>
-    <div class="md-toolbar-tools">
-      <h2>Auto openen</h2>
-
-      <span flex></span>
-      <md-button class="md-icon-button" ng-click="hide()">
+<md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="30" flex-xl="25" class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3 class="with-close-button">
+      Auto openen
+      <md-button class="md-icon-button close-button" ng-click="hide()">
         <ng-md-icon icon="close"></ng-md-icon>
       </md-button>
-    </div>
-  </md-toolbar>
-  <md-dialog-content class="md-dialog-content">
+    </h3>
+
     <div ng-if="!schade">
-      <p class="lead">
-        Heeft de auto nieuwe schade?
+      <div ng-if="knownDamage">
+        <p>Van deze auto is de volgende schade reeds bekend:</p>
+        <div ng-bind-html="knownDamage | toParagraphs" style="
+          padding: 1rem 1.4rem 1px;
+          margin-bottom: 1rem;
+          background: #e7edf0;"
+        ></div>
+      </div>
+      <p>
+        <strong>Heeft de auto nieuwe schade?</strong>
       </p>
       <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between;">
         <button class="mywheels-btn mywheels-btn-big mywheels-btn-error"
