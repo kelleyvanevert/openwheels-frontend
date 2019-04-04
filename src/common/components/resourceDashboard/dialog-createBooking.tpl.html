@@ -89,6 +89,7 @@
       <p class="dialog-buttons-centered">
         <button class="mywheels-btn mywheels-btn-call-to-action"
                 md-ink-ripple="#4b702c"
+                ng-disabled="timeFrameError || !booking.person || !booking.resource"
                 ng-click="create()"
                 style="white-space: nowrap;">
           Reservering maken

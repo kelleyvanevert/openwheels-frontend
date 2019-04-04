@@ -368,7 +368,7 @@ angular.module('owm.components')
 
           $scope.show = true;
           $scope.perspective = {
-            isProviderAdmin: false,
+            isProviderAdmin: (focus.contract.contractor.id === $scope.me.id), // temporary
           };
 
           await angularLoad.loadScript("https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js");
