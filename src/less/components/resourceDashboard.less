@@ -85,23 +85,34 @@
   }
 
   .resource {
+    display: block;
+
     margin: 4px 0;
     padding: 4px;
     height: 46px;
     box-sizing: border-box;
+
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
     
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 
     background: white;
+    color: inherit;
+
+    &:hover {
+      text-decoration: underline;
+      color: black;
+    }
   }
 
   .block {
     position: absolute;
-    background: #eee;
-    border-left: 2px solid #aaa;
-    border-right: 2px solid #aaa;
+    background: #e8eced;
+    border-left: 2px solid #777;
+    border-right: 2px solid #777;
     padding: 4px;
 
     color: #333;
@@ -113,10 +124,9 @@
     text-overflow: ellipsis;
 
     &:hover {
-      background: #ddd;
-      border-color: #888;
+      text-decoration: underline;
+      border-color: black;
       color: black;
-      transform: scale(1.02);
     }
   }
 
