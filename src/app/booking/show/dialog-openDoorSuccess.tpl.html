@@ -1,16 +1,13 @@
 
-<md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="30" flex-xl="25" class="mw-green">
-  <md-toolbar>
-    <div class="md-toolbar-tools">
-      <h2>Auto wordt geopend</h2>
-
-      <span flex></span>
-      <md-button class="md-icon-button" ng-click="hide()">
+<md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="30" flex-xl="25" class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3 class="with-close-button">
+      Auto wordt geopend
+      <md-button class="md-icon-button close-button" ng-click="hide()">
         <ng-md-icon icon="close"></ng-md-icon>
       </md-button>
-    </div>
-  </md-toolbar>
-  <md-dialog-content class="md-dialog-content">
+    </h3>
+
     <div>
       <p class="lead text-success">
         <span ng-if="damageStateReported && !thanks">Bedankt voor het doorgeven!<br /></span>
@@ -18,7 +15,7 @@
       </p>
 
       <!-- Optionally show a mess prompt -->
-      <div ng-show="reportMessDescription">
+      <div ng-show="askCleanliness">
         <div ng-show="!thanks">
           <div ng-show="!mess">
             <p class="lead">
