@@ -17,61 +17,6 @@ angular.module('owmlanding.mywheels-business', ['slick'])
 
   $scope.$anchorScroll = $anchorScroll;
 
-  $scope.formEntry = {
-    numEmployees: '',
-  };
-  $scope.formSendStatus = false;
-
-  personService.meAnonymous().then(autoFill).catch(function () {});
-
-  function autoFill (user) {
-    if ($scope.form.$pristine) {
-      $scope.formEntry.email = user.email;
-      $scope.formEntry.firstName = user.firstName;
-      $scope.formEntry.surname = (user.preposition ? (user.preposition + ' ') : '') + user.surname;
-      $scope.formEntry.zipcode = user.zipcode;
-      if (user.phoneNumbers && user.phoneNumbers.length > 0) {
-        var preferred = user.phoneNumbers[0].number;
-        for (var i = 0; i < user.phoneNumbers.length; i++) {
-          if (user.phoneNumbers[i].type === 'mobile') {
-            preferred = user.phoneNumbers[i].number;
-          }
-        }
-        $scope.formEntry.phoneNumber = preferred;
-      }
-      //$scope.formEntry.registrationPlate;
-    }
-  }
-
-  $scope.submit = function () {
-    if ($scope.form.$valid) {
-      $scope.formSendStatus = 'sending';
-
-      formSubmissionService.send({
-        type: 'mw_business',
-        email: $scope.formEntry.email,
-        firstName: $scope.formEntry.firstName,
-        surname: $scope.formEntry.surname,
-        zipcode: $scope.formEntry.zipcode,
-        phoneNumber: $scope.formEntry.phoneNumber,
-        extraInfo: {
-          model: $scope.formEntry.model,
-        },
-      })
-      .then(function (r) {
-        $scope.formSendStatus = 'success';
-        Analytics.trackEvent('forms', 'mywheels_business', undefined, undefined, true);
-      })
-      .catch(function (e) {
-        $scope.formSendStatus = 'error';
-        Analytics.trackEvent('exceptions', 'mywheels_business', undefined, undefined, true);
-      })
-      .finally(function () {
-        // hi
-      });
-    }
-  };
-
   // Veelgestelde vragen
   $scope.FAQ = [
     {
