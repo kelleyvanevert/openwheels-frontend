@@ -39,7 +39,6 @@ angular.module('owm.components')
       const dateConfig = $scope.dateConfig = {
         ...dateTimeConfig,
         format: 'DD-MM-YYYY',
-        minDate: moment().startOf('day'),
         widgetPositioning: { // with knowledge of the html (!)
           horizontal: 'auto', // 'left',
           vertical: 'bottom',
