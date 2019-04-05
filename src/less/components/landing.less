@@ -622,6 +622,56 @@
   background-color: rgba(150, 142, 68, 0.09);
 }
 
+.landing-hero {
+  background-size: cover;
+  position: relative;
+  background-position: 50% 35%;
+  
+  .landing-hero-overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+
+  &.zakelijk {
+    background-color: #d6e0e6;
+    background-image: url('/assets/img/bg/wind_turbines.jpg');
+    background-position: 50% 50%;
+
+    .landing-hero-overlay {
+      background: rgba(11, 40, 27, 0.1);
+    }
+  }
+  &.business {
+    background-image: url('/assets/img/photo/opening_car_large_2.jpg');
+    background-position: 50% 15%;
+
+    .landing-hero-overlay {
+      background: rgba(41, 21, 6, 0.4);
+    }
+  }
+  &.group {
+    background-color: #60a9c5;
+    background-image: url('https://lh3.google.com/u/0/d/1TWVHxVttvNfzjaMZEs79I9XExJjM9FQl=w1615-h916-iv1');
+
+    .landing-hero-overlay {
+      background: rgba(13, 60, 79, 0.5);
+    }
+  }
+  &.share {
+    background-color: #ade284;
+    background-image: url('https://lh3.google.com/u/0/d/1tGErzYznCfdyZ89045u7xlYRXEXG93sc=w1920-h916-iv1');
+
+    .landing-hero-overlay {
+      background: rgba(36, 55, 21, 0.5);
+    }
+  }
+}
+
 .media.coordinator {
   font-family: @headings-font-family;
 
@@ -714,5 +764,92 @@
     color: #777;
     border-radius: 999px;
     border: 3px dashed #bbb;
+  }
+}
+
+.landing-block-link {
+  margin-bottom: 2rem;
+  padding: 2rem;
+  box-sizing: border-box;
+  position: relative;
+
+  background: white;
+
+  transition: transform .1s ease;
+
+  h2 {
+    font-size: 2.5rem;
+    color: #444;
+  }
+
+  .brand img {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .landing-block-links-row {
+    box-shadow: 2px 2px 1rem rgba(0,0,0,.2);
+  }
+  .landing-block-link {
+    &:hover {
+      z-index: 10;
+      transform: scale(1.02);
+      box-shadow: 2px 2px 1rem rgba(0,0,0,.2);
+
+      color: white;
+      h2 {
+        color: white;
+      }
+
+      &.business {
+        background: #e4b84b;
+      }
+      &.fleet {
+        background: #545454;
+      }
+      &.group {
+        background: #81b8cd;
+      }
+      &.share {
+        background: #a1c982;
+      }
+
+      a,
+      a:hover {
+        color: white;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.feature-pad {
+  padding: 2rem 0;
+}
+
+@media screen and (min-width: 992px) {
+  .feature-pad {
+    padding: 10rem 2rem 0;
+  }
+}
+
+.feature-img {
+  display: block;
+  margin: 0 auto;
+  max-width: 600px;
+
+  &.feature-img-textual {
+    background: #ededed;
+    min-height: 50rem;
+    padding: 1rem 2rem;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .feature-img {
+    &.feature-img-textual {
+      padding: 3rem 5rem;
+    }
   }
 }
