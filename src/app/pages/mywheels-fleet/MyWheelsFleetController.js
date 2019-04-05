@@ -2,8 +2,7 @@
 
 angular.module('owmlanding.mywheels-fleet', ['slick'])
 
-.controller('MyWheelsFleetController', function ($scope, $log, me, metaInfoService, appConfig, $anchorScroll, formSubmissionService, personService,
-  Analytics) {
+.controller('MyWheelsFleetController', function ($scope, $log, me, metaInfoService, appConfig, $anchorScroll) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/fleet'});
   metaInfoService.set({canonical: 'https://mywheels.nl' + '/fleet'});
