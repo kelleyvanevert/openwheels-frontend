@@ -1,0 +1,204 @@
+<div class="home landing landing-lease">
+    <div class="landing-hero business">
+        <div class="landing-hero-overlay"></div>
+        <div class="container container-transitional">
+            <div class="row" style="padding: 8rem 0">
+                <div class="rpad col-md-6">
+                    <div>
+                        <p>
+                            <img ng-src="assets/img/mywheels-business-textwhite.png" height="32" />
+                        </p>
+                        <h1 style="margin: 2rem 0 3rem; color: white;">Het hele MyWheels platform tot je beschikking</h1>
+                        <!--<p class="size-3 text-white">
+                           Hallo
+                        </p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container container-transitional">
+        <div class="row">
+            <div class="rpad col-xs-12">
+                <h2 id="hoe_werkt_het" style="padding: 3rem 0; text-align: center; color: #333;">Zakelijk autodelen</h2>
+            </div>
+            <div class="rpad col-sm-6 size-3">
+                <p>
+                    Zakelijk autodelen biedt organisaties veel voordelen: lagere mobiliteitskosten, geen zorgen over onderhoud en schade, minder CO2-uitstoot, alle zakelijke ritten op één factuur en minder ruimte nodig voor parkeerplaatsen.
+                </p>
+            </div>
+            <div class="rpad col-sm-6 size-3">
+                <p>
+                    Autodelen via MyWheels is geschikt voor freelancers, zzp’ers en eenmanszaken, maar ook voor het midden- en kleinbedrijf (MKB) met meerdere medewerkers.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container container-transitional">
+        <div class="row" style="padding: 5rem 0;">
+            <div class="rpad col-xs-12 col-md-6">
+                <div class="feature-pad">
+                    <h2 style="
+                        font-size: 2.6rem;
+                        color: #333;
+                    ">MyWheels Open</h2>
+                    <p class="size-3">
+                        De meeste organisaties maken gebruik van deelauto’s met MyWheels Open. Deze auto’s kan een medewerker direct boeken en openen met zijn of haar smartphone, NS-Business Card of een andere OV-chipkaart.
+                    </p>
+                    <p style="text-align: center;">
+                        <md-button
+                            hide-xs
+                            class="mywheels-btn-call-to-action"
+                            md-ink-ripple="#8f6700"
+                            ui-sref="owm.resource.search.list({ smartwheels: true })"
+                            style="
+                                font-size: 2rem;
+                                padding: .4rem 1.2rem;
+                                margin-left: 0;
+                            "
+                        >
+                            <span>Bekijk het aanbod</span>
+                        </md-button>
+                    </p>
+                    <p class="size-2">
+                        <em>Staan er nog geen auto’s met MyWheels Open in de buurt? Neem dan via onderstaand formulier contact met ons op, dan bekijken we of we een auto kunnen plaatsen.</em>
+                    </p>
+                </div>
+            </div>
+            <div class="rpad col-xs-12 col-md-6">
+                <div class="feature-img">
+                    <img class="img-responsive" ng-src="assets/img/mobile.png" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="padding: 5rem 0;">
+            <div class="rpad col-xs-12 col-md-6 col-md-push-6">
+                <div class="feature-pad">
+                    <h2 style="
+                        font-size: 2.6rem;
+                        color: #333;
+                    ">Onze idealen</h2>
+                    <div class="size-3">
+                        <p>
+                            Organisaties die via MyWheels auto’s huren, betalen daarvoor een eerlijke prijs. Onze voordelige tarieven zijn het directe gevolg van onze idealen. MyWheels streeft namelijk niet naar winstmaximalisatie, maar naar doelen die goed zijn voor mens, milieu en maatschappij.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="rpad col-xs-12 col-md-6 col-md-pull-6">
+                <div class="feature-img">
+                    <img class="img-responsive" ng-src="assets/img/idealen.png" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container container-transitional">
+        <div class="row">
+            <div class="rpad col-xs-12">
+                <h2 id="hoe_werkt_het" style="padding: 3rem 0; text-align: center; color: #333;">Kies de juiste contractvorm</h2>
+            </div>
+            <div class="rpad col-sm-8 col-sm-offset-2 size-3">
+                <p>
+                    Als organisatie kun je uit drie contracten kiezen om ritten te betalen. Bij MyWheels Go betaal je de rit vooraf per iDEAL, bij MyWheels Member en MyWheels Company worden de ritkosten achteraf automatisch geïncasseerd. Ook kun je ervoor kiezen om facturen per bankoverschrijving te betalen.
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <contract-chooser
+        me="me"
+        disable-auto-request-go="true"
+        disable-choice="!me"
+    />
+
+
+    <!-- IK DOE MEE! -->
+    <div class="container container-transitional">
+        <div class="rpad col-xs-12" style="text-align: center;">
+            <h2 id="aanmeldformulier" style="color: #333; padding-top: 5rem;">Neem contact op</h2>
+            <p class="size-2">
+                Vul het contactformulier hieronder in voor informatie over zakelijk autodelen of om een zakelijke contract aan te vragen.
+            </p>
+        </div>
+    </div>
+    <div
+        class="container container-transitional
+                mywheels-ik-doe-mee"
+        style="padding-top: 0;"
+    >
+        <div class="rpad col-sm-8 col-sm-offset-2">
+            <div style="padding-top: 1em;">
+                <request-info-form
+                    extra-fields="{
+                        numEmployees: true,
+                    }"
+                    track-event="mw_business_form"
+                    form-name="mw_business_form"
+                />
+            </div>
+        </div>
+    </div>
+    <!-- /IK DOE MEE! -->
+
+    <!-- ADAVANTAGES -->
+    <div class="advantage-mywheels">
+        <div class="container container-transitional">
+            <div class="row">
+                <div class="rpad col-xs-12">
+                    <h2 style="color: #333; text-align: center; padding: 1rem 0;">Veelgestelde vragen</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="rpad col-sm-6 col-xs-12">
+
+                <div class="card mw faq" ng-repeat="faq in FAQ.left">
+                    <div class="card-heading" ng-click="faq.open = !faq.open;">
+                    <h4 class="card-title">{{ faq.question }}</h4>
+                    </div>
+                    <div class="panel-body" uib-collapse="!faq.open">
+                    <p>{{ faq.answer }}</p>
+                    </div>
+                </div>
+
+                </div>
+                <div class="rpad col-sm-6 col-xs-12">
+
+                <div class="card mw faq" ng-repeat="faq in FAQ.right">
+                    <div class="card-heading" ng-click="faq.open = !faq.open;">
+                    <h4 class="card-title">{{ faq.question }}</h4>
+                    </div>
+                    <div class="panel-body" uib-collapse="!faq.open">
+                    <p>{{ faq.answer }}</p>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /ADVANTAGES -->
+
+    <!-- TRIANGLE BAR HOME -->
+    <div class="triangle--bar--home triangle--bar--home-lightgray"></div>
+    <!-- /TRIANGLE BAR -->
+
+    <div class="footer-logo-row text-center">
+        <div class="container-home">
+            <h2 class="footer-logo-row-header">In de media</h2>
+            <div class="row no-margin">
+                <div class="col-xs-6 col-md-2"><img src="assets/img/media/de_volkskrant_logo.png" /></div>
+                <div class="col-xs-6 col-md-2"><img src="assets/img/media/nos_logo.png" /></div>
+                <div class="col-xs-6 col-md-2"><img src="assets/img/media/de_telegraaf_logo.png" /></div>
+                <div class="col-xs-6 col-md-2"><img src="assets/img/media/financieel_dagblad_logo.png" /></div>
+                <div class="col-xs-6 col-md-2"><img src="assets/img/media/bnr_nieuwsradio_logo.png" /></div>
+                <div class="col-xs-6 col-md-2"><img src="assets/img/media/het_parool_logo.png" /></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- close home -->

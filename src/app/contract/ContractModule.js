@@ -17,14 +17,9 @@ angular.module('owm.contract', [
       denyAnonymous: true
     },
     resolve: {
-      person: ['authService', function (authService) {
+      me: ['authService', function (authService) {
         return authService.me();
       }],
-      contracts: ['$stateParams', 'person', 'contractService', function ($stateParams, person, contractService) {
-        return contractService.forContractor({
-          person: person.id
-        });
-      }]
     },
   });
 });
