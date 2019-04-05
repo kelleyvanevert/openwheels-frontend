@@ -716,3 +716,70 @@
     border: 3px dashed #bbb;
   }
 }
+
+
+.landing-block-link {
+  padding: 2rem;
+  box-sizing: border-box;
+  position: relative;
+
+  background: white;
+
+  transition: transform .1s ease;
+
+  h2 {
+    font-size: 2.5rem;
+    color: #444;
+  }
+
+  .brand {
+    img {
+      display: block;
+    }
+  }
+
+  .txt {
+    display: block !important;
+  }
+  .txt-hover {
+    display: none !important;
+  }
+
+  &:hover {
+    z-index: 10;
+    transform: scale(1.02);
+
+    color: white;
+    h2 {
+      color: white;
+    }
+
+    .txt {
+      display: none !important;
+    }
+    .txt-hover {
+      display: block !important;
+    }
+
+    &.business {
+      background: #e4b84b;
+    }
+    &.fleet {
+      background: #545454;
+    }
+    &.group {
+      background: #81b8cd;
+    }
+    &.share {
+      background: #a1c982;
+    }
+
+    box-shadow: 2px 2px 1rem rgba(0,0,0,.2);
+
+    a,
+    a:hover {
+      color: white;
+      text-decoration: underline;
+    }
+  }
+}
