@@ -90,15 +90,28 @@ angular.module('owm.pages', [
     },
   })
 
+  .state('owmlanding.mywheels-zakelijk', {
+    url: '/zakelijk',
+    views: {
+      'toolbar@shell': {
+        templateUrl: 'pages/mywheels-zakelijk/toolbar.tpl.html', // reused (!)
+      },
+      'main-full@shell': {
+        templateUrl: 'pages/mywheels-zakelijk/mywheels-zakelijk.tpl.html',
+        controller: 'MyWheelsZakelijkController',
+      },
+    },
+  })
+
   .state('owmlanding.mywheels-fleet', {
     url: '/fleet',
     views: {
       'toolbar@shell': {
-        templateUrl: 'pages/mywheels-fleet/toolbar.tpl.html',
+        templateUrl: 'pages/mywheels-zakelijk/toolbar.tpl.html', // reused (!)
       },
       'main-full@shell': {
         templateUrl: 'pages/mywheels-fleet/mywheels-fleet.tpl.html',
-        controller: 'MyWheelsFleetController'
+        controller: 'MyWheelsFleetController',
       },
     },
   })
@@ -107,26 +120,11 @@ angular.module('owm.pages', [
     url: '/business',
     views: {
       'toolbar@shell': {
-        templateUrl: 'pages/mywheels-business/toolbar.tpl.html',
+        templateUrl: 'pages/mywheels-zakelijk/toolbar.tpl.html', // reused (!)
       },
       'main-full@shell': {
         templateUrl: 'pages/mywheels-business/mywheels-business.tpl.html',
-        controller: 'MyWheelsBusinessController'
-      },
-    },
-  })
-
-  .state('owmlanding.mywheels-zakelijk', {
-    url: '/zakelijk',
-    views: {
-      'toolbar@shell': {
-        templateUrl: 'pages/mywheels-zakelijk/toolbar.tpl.html',
-//        templateUrl: 'shell/toolbar/toolbar.tpl.html',
-//        controller: 'ToolbarController',
-      },
-      'main-full@shell': {
-        templateUrl: 'pages/mywheels-zakelijk/mywheels-zakelijk.tpl.html',
-        controller: 'MyWheelsZakelijkController'
+        controller: 'MyWheelsBusinessController',
       },
     },
   })

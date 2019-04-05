@@ -717,8 +717,8 @@
   }
 }
 
-
 .landing-block-link {
+  margin-bottom: 2rem;
   padding: 2rem;
   box-sizing: border-box;
   position: relative;
@@ -732,54 +732,44 @@
     color: #444;
   }
 
-  .brand {
-    img {
-      display: block;
-    }
+  .brand img {
+    display: block;
   }
+}
 
-  .txt {
-    display: block !important;
-  }
-  .txt-hover {
-    display: none !important;
-  }
-
-  &:hover {
-    z-index: 10;
-    transform: scale(1.02);
-
-    color: white;
-    h2 {
-      color: white;
-    }
-
-    .txt {
-      display: none !important;
-    }
-    .txt-hover {
-      display: block !important;
-    }
-
-    &.business {
-      background: #e4b84b;
-    }
-    &.fleet {
-      background: #545454;
-    }
-    &.group {
-      background: #81b8cd;
-    }
-    &.share {
-      background: #a1c982;
-    }
-
+@media screen and (min-width: 992px) {
+  .landing-block-links-row {
     box-shadow: 2px 2px 1rem rgba(0,0,0,.2);
+  }
+  .landing-block-link {
+    &:hover {
+      z-index: 10;
+      transform: scale(1.02);
+      box-shadow: 2px 2px 1rem rgba(0,0,0,.2);
 
-    a,
-    a:hover {
       color: white;
-      text-decoration: underline;
+      h2 {
+        color: white;
+      }
+
+      &.business {
+        background: #e4b84b;
+      }
+      &.fleet {
+        background: #545454;
+      }
+      &.group {
+        background: #81b8cd;
+      }
+      &.share {
+        background: #a1c982;
+      }
+
+      a,
+      a:hover {
+        color: white;
+        text-decoration: underline;
+      }
     }
   }
 }

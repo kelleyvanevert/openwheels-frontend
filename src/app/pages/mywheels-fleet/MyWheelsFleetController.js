@@ -2,7 +2,7 @@
 
 angular.module('owmlanding.mywheels-fleet', ['slick'])
 
-.controller('MyWheelsFleetController', function ($scope, $log, metaInfoService, appConfig, $anchorScroll, formSubmissionService, personService,
+.controller('MyWheelsFleetController', function ($scope, $log, me, metaInfoService, appConfig, $anchorScroll, formSubmissionService, personService,
   Analytics) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/fleet'});
@@ -12,6 +12,8 @@ angular.module('owmlanding.mywheels-fleet', ['slick'])
     title: 'MyWheels Fleet',
     description: 'MyWheels Fleet',
   });
+
+  $scope.me = me;
 
   $scope.$anchorScroll = $anchorScroll;
 
