@@ -1,0 +1,276 @@
+<div class="home landing landing-lease">
+    <div style="
+        background-image: url('/assets/img/photo/using_app_large_2.jpg');
+        background-size: cover;
+        background-position: 50% 15%;
+        position: relative;
+    ">
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.4)"></div>
+        <div class="container container-transitional">
+            <div class="row" style="padding: 12rem 0 12rem 0">
+                <div class="rpad col-md-6">
+                    <div>
+                        <p>
+                            <img ng-src="assets/img/mywheels-fleet-textwhite.png" height="32" />
+                        </p>
+                        <h1 style="margin: 2rem 0 3rem; color: white;">Deel je bedrijfsauto's in besloten groep</h1>
+                        <p class="size-3 text-white">
+                            Deel de bedrijfsauto's met je medewerkers in besloten groep, door gebruik te maken van onze MyWheels Open technologie en autodeelplatform.
+                        </p>
+                        <p style="margin-top: 3rem;">
+                            <md-button
+                                hide-xs
+                                class="mywheels-btn-call-to-action app--toolbar--button--text"
+                                md-ink-ripple="#8f6700"
+                                href="#aanmeldformulier"
+                                smooth-scroll-to-item="#aanmeldformulier"
+                                style="
+                                    font-size: 2rem;
+                                    padding: .4rem 1.2rem;
+                                    margin-left: 0;
+                                "
+                            >
+                                <span>Neem contact op</span>
+                            </md-button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container container-transitional">
+        <div class="row" style="padding: 5rem 0;">
+            <div class="rpad col-xs-12 col-md-6">
+                <div class="feature-pad">
+                    <h2 style="
+                        font-size: 2.6rem;
+                        color: #333;
+                    ">Gemakkelijk op weg</h2>
+                    <p class="size-3">
+                        Medewerkers kunnen auto's direct reserveren, openen en sluiten via MyWheels.nl en de MyWheels app voor Android en iOS / iPhone.
+                    </p>
+                    <p class="size-3" style="text-align: center;">
+                        <ng-md-icon icon="phone_android" size="28" style="color: #555; height: 28px; width: 28px;"></ng-md-icon>
+                        <ng-md-icon icon="tablet" size="42" style="color: #555; height: 42px; width: 42px; margin: 0 2rem;"></ng-md-icon>
+                        <ng-md-icon icon="laptop" size="60" style="color: #555; height: 60px; width: 60px;"></ng-md-icon>
+                    </p>
+                </div>
+            </div>
+            <div class="rpad col-xs-12 col-md-6">
+                <div class="feature-img">
+                    <img class="img-responsive" ng-src="assets/img/screens/make_reservation_3.png" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="padding: 5rem 0;">
+            <div class="rpad col-xs-12 col-md-6 col-md-push-6">
+                <div class="feature-pad">
+                    <h2 style="
+                        font-size: 2.6rem;
+                        color: #333;
+                    ">Eenvoudige administratie</h2>
+                    <p class="size-3">
+                        Medewerkers kunnen worden toegevoegd en verwijderd als gebruikers van auto's.
+                        Rapportages meteen te downloaden over ritgegevens zoals datum, gebruikers, personeelsnummers en kilometers.
+                    </p>
+                </div>
+            </div>
+            <div class="rpad col-xs-12 col-md-6 col-md-pull-6">
+                <div class="feature-img">
+                    <img class="img-responsive" ng-src="assets/img/screens/resource_calendar_4.png" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="padding: 5rem 0;">
+            <div class="rpad col-xs-12 col-md-6">
+                <div class="feature-pad">
+                    <h2 style="
+                        font-size: 2.6rem;
+                        color: #333;
+                    ">24/7 support</h2>
+                    <p class="size-3">
+                        De supportafdeling van MyWheels is 24/7 telefonisch bereikbaar voor ondersteuning.
+                    </p>
+                </div>
+            </div>
+            <div class="rpad col-xs-12 col-md-6">
+                <div class="feature-img">
+                    <img style="width: 100%;" class="img-responsive" ng-src="assets/img/photo/support.svg" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="padding: 5rem 0;">
+            <div class="rpad col-xs-12 col-md-6 col-md-push-6">
+                <div class="feature-pad">
+                    <h2 style="
+                        font-size: 2.6rem;
+                        color: #333;
+                    ">Vaste maandprijs per auto</h2>
+                    <p class="size-3">
+                        MyWheels biedt een overzichtelijk kostenplaatje van vaste maandprijzen per auto. Er worden geen opstartkosten of kosten per gebruiker gerekend.
+                    </p>
+                </div>
+            </div>
+            <div class="rpad col-xs-12 col-md-6 col-md-pull-6">
+                <div class="feature-img feature-img-textual">
+                    <ul class="size-3 list-unstyled list-spaced">
+                        <li style="border-bottom: 1px solid #ccc;">1 tot 3 auto's: <strong style="color: #337088;">{{ 45 | currency }}</strong> per auto</li>
+                        <li style="border-bottom: 1px solid #ccc;">4 tot 10 auto's: <strong style="color: #337088;">{{ 40 | currency }}</strong> per auto</li>
+                        <li style="border-bottom: 1px solid #ccc;">10 tot 20 auto's: <strong style="color: #337088;">{{ 35 | currency }}</strong> per auto</li>
+                        <li style="border-bottom: 1px solid #ccc;">20 tot 50 auto's: <strong style="color: #337088;">{{ 32.5 | currency }}</strong> per auto</li>
+                        <li>50+ auto's: <strong style="color: #337088;">{{ 30 | currency }}</strong> per auto</li>
+                    </ul>
+                    <div style="
+                        margin-top: 3rem;
+                    ">
+                        <p>De kosten van de hardware (MyWheels Open technologie) bedragen eenmalig {{ 515 | currency }} incl in- en uitbouwkosten, excl BTW 
+                        Het is mogelijk een paslezer te laten plaatsen. De kosten daarvan zijn additioneel {{ 90 | currency }} excl.
+                        Maandelijkse kosten voor de connectiviteit aan de leverancier van de hardware zijn {{ 13.95 | currency }} per maand. (prijswijzigingen voorbehouden)</p>
+
+                        <p>Mogelijke additionele diensten
+                        Het is mogelijk het beheer van de auto volledig uit handen geven aan MyWheels. Denk hierbij aan:</p>
+                        <ul>
+                            <li>De afhandeling van schade;</li>
+                            <li>De afhandeling van boetes;</li>
+                            <li>Periodieke schoonmaak op locatie.</li>
+                        </ul>
+                        <p>Prijzen op aanvraag.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="padding: 5rem 0;">
+            <div class="rpad col-xs-12 col-md-6">
+                <div class="feature-pad">
+                    <h2 style="
+                        font-size: 2.6rem;
+                        color: #333;
+                    ">Lease-mogelijkheden</h2>
+                    <p class="size-3">
+                        MyWheels kan ook auto's leveren aan je bedrijf, als je graag een soort lease-constructie wil oid.
+                    </p>
+                </div>
+            </div>
+            <div class="rpad col-xs-12 col-md-6">
+                <div class="feature-img feature-img-textual">
+                    <p>De kosten van de hardware (MyWheels Open technologie) bedragen eenmalig {{ 515 | currency }} incl in- en uitbouwkosten, excl BTW 
+                    Het is mogelijk een paslezer te laten plaatsen. De kosten daarvan zijn additioneel {{ 90 | currency }} excl.
+                    Maandelijkse kosten voor de connectiviteit aan de leverancier van de hardware zijn {{ 13.95 | currency }} per maand. (prijswijzigingen voorbehouden)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container container-transitional">
+        <div class="row">
+            <div class="rpad col-xs-12">
+                <h2 id="hoe_werkt_het" style="padding: 3rem 0; text-align: center; color: #333;">Hoe werkt MyWheels Fleet?</h2>
+            </div>
+            <div class="rpad col-sm-6 size-3">
+                <p>
+                    MyWheels bestaat al sinds 1996, en sinds 2010 zijn we gebruik gaan maken van boordcomputers in onze auto's, zodat de gebruiker zonder sleuteloverdracht gemakkelijk op weg kan. Ons autodeelplatform is een bewezen success, en daarom bieden we het nu graag aan als service aan bedrijven en organisaties die een groene stap willen zetten.
+                </p>
+            </div>
+            <div class="rpad col-sm-6 size-3">
+                <p>
+                    Bij MyWheels Fleet kunnen de medewerkers van jouw bedrijf gemakkelijk bedrijfsauto's reserveren via ons autodeelplatform.
+                    Dit reserveren kan gemakkelijk via de website, of een van onze apps. Een auto kan vervolgens ook via de website, of de app, geopend worden. Zo hoef je geen sleuteladministratie meer te doen.
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- /WIL JE MEEDOEN? -->
+
+
+    <!-- IK DOE MEE! -->
+    <div class="container container-transitional">
+        <div class="rpad col-xs-12" style="text-align: center;">
+            <h2 id="aanmeldformulier" style="color: #333; padding-top: 5rem;">Neem contact op</h2>
+            <p class="size-2">
+                Geïnteresseerd? Vul hieronder je gegevens in en we nemen vrijblijvend contact met je op.
+            </p>
+        </div>
+    </div>
+    <div
+        class="container container-transitional
+                mywheels-ik-doe-mee"
+        style="padding-top: 0;"
+    >
+        <div class="rpad col-sm-8 col-sm-offset-2">
+            <div style="padding-top: 1em;">
+                <request-info-form
+                    extra-fields="{
+                        numEmployees: true,
+                        numCars: true,
+                    }"
+                    track-event="mw_fleet_form"
+                    form-name="mw_fleet_form"
+                    submit-text="Verzenden"
+                />
+            </div>
+        </div>
+    </div>
+    <!-- /IK DOE MEE! -->
+
+    <!-- ADAVANTAGES -->
+    <div class="advantage-mywheels">
+        <div class="container container-transitional">
+            <div class="row">
+                <div class="rpad col-xs-12">
+                    <h2 style="color: #333; text-align: center; padding: 1rem 0;">Veelgestelde vragen</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="rpad col-sm-6 col-xs-12">
+
+                <div class="card mw faq" ng-repeat="faq in FAQ.left">
+                    <div class="card-heading" ng-click="faq.open = !faq.open;">
+                    <h4 class="card-title">{{ faq.question }}</h4>
+                    </div>
+                    <div class="panel-body" uib-collapse="!faq.open">
+                    <p>{{ faq.answer }}</p>
+                    </div>
+                </div>
+
+                </div>
+                <div class="rpad col-sm-6 col-xs-12">
+
+                <div class="card mw faq" ng-repeat="faq in FAQ.right">
+                    <div class="card-heading" ng-click="faq.open = !faq.open;">
+                    <h4 class="card-title">{{ faq.question }}</h4>
+                    </div>
+                    <div class="panel-body" uib-collapse="!faq.open">
+                    <p>{{ faq.answer }}</p>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /ADVANTAGES -->
+
+    <!-- TRIANGLE BAR HOME -->
+    <div class="triangle--bar--home triangle--bar--home-lightgray"></div>
+    <!-- /TRIANGLE BAR -->
+
+    <div class="footer-logo-row text-center">
+        <div class="container-home">
+            <h2 class="footer-logo-row-header">In de media</h2>
+            <div class="row no-margin">
+                <div class="col-xs-6 col-md-2"><img src="assets/img/media/de_volkskrant_logo.png" /></div>
+                <div class="col-xs-6 col-md-2"><img src="assets/img/media/nos_logo.png" /></div>
+                <div class="col-xs-6 col-md-2"><img src="assets/img/media/de_telegraaf_logo.png" /></div>
+                <div class="col-xs-6 col-md-2"><img src="assets/img/media/financieel_dagblad_logo.png" /></div>
+                <div class="col-xs-6 col-md-2"><img src="assets/img/media/bnr_nieuwsradio_logo.png" /></div>
+                <div class="col-xs-6 col-md-2"><img src="assets/img/media/het_parool_logo.png" /></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- close home -->

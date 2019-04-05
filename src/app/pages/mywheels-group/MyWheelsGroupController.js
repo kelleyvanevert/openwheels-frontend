@@ -1,17 +1,18 @@
 'use strict';
 
-angular.module('owmlanding.mywheels-lease', ['slick'])
+angular.module('owmlanding.mywheels-group', ['slick'])
 
-.controller('MyWheelsLeaseController', function ($scope, $log, metaInfoService, appConfig, $anchorScroll, formSubmissionService, personService,
-  Analytics) {
+.controller('MyWheelsGroupController', function ($scope, $log, me, metaInfoService, appConfig, $anchorScroll) {
 
-  metaInfoService.set({url: appConfig.serverUrl + '/lease'});
-  metaInfoService.set({canonical: 'https://mywheels.nl' + '/lease'});
+  metaInfoService.set({url: appConfig.serverUrl + '/group'});
+  metaInfoService.set({canonical: 'https://mywheels.nl' + '/group'});
 
   metaInfoService.set({
-    title: 'MyWheels Lease',
-    description: 'Lease nu een auto, verhuur hem met MyWheels Open zonder sleuteloverdracht en verdien je maandlasten terug vanuit je luie stoel.',
+    title: 'MyWheels Group',
+    description: 'MyWheels Group',
   });
+
+  $scope.me = me;
 
   $scope.$anchorScroll = $anchorScroll;
 
