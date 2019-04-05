@@ -11,6 +11,8 @@ angular.module('owm.pages', [
   'owmlanding.mywheels-lease',
   'owmlanding.mywheels-fleet',
   'owmlanding.mywheels-business',
+  'owmlanding.mywheels-group',
+  'owmlanding.mywheels-share',
   'owmlanding.mywheels-zakelijk',
   'owmlanding.beheerders',
 ])
@@ -125,6 +127,32 @@ angular.module('owm.pages', [
       'main-full@shell': {
         templateUrl: 'pages/mywheels-business/mywheels-business.tpl.html',
         controller: 'MyWheelsBusinessController',
+      },
+    },
+  })
+
+  .state('owmlanding.mywheels-group', {
+    url: '/group',
+    views: {
+      'toolbar@shell': {
+        templateUrl: 'pages/mywheels-zakelijk/toolbar.tpl.html', // reused (!)
+      },
+      'main-full@shell': {
+        templateUrl: 'pages/mywheels-group/mywheels-group.tpl.html',
+        controller: 'MyWheelsGroupController',
+      },
+    },
+  })
+
+  .state('owmlanding.mywheels-share', {
+    url: '/share',
+    views: {
+      'toolbar@shell': {
+        templateUrl: 'pages/mywheels-zakelijk/toolbar.tpl.html', // reused (!)
+      },
+      'main-full@shell': {
+        templateUrl: 'pages/mywheels-share/mywheels-share.tpl.html',
+        controller: 'MyWheelsShareController',
       },
     },
   })
