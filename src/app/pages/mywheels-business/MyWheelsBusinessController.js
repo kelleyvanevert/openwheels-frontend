@@ -2,7 +2,7 @@
 
 angular.module('owmlanding.mywheels-business', ['slick'])
 
-.controller('MyWheelsBusinessController', function ($scope, $log, metaInfoService, appConfig, $anchorScroll, formSubmissionService, personService,
+.controller('MyWheelsBusinessController', function ($scope, $log, me, metaInfoService, appConfig, $anchorScroll, formSubmissionService, personService,
   Analytics) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/business'});
@@ -13,11 +13,12 @@ angular.module('owmlanding.mywheels-business', ['slick'])
     description: 'MyWheels Business',
   });
 
+  $scope.me = me;
+
   $scope.$anchorScroll = $anchorScroll;
 
   $scope.formEntry = {
     numEmployees: '',
-    numCars: '',
   };
   $scope.formSendStatus = false;
 
@@ -47,7 +48,7 @@ angular.module('owmlanding.mywheels-business', ['slick'])
       $scope.formSendStatus = 'sending';
 
       formSubmissionService.send({
-        type: 'mw_lease',
+        type: 'mw_business',
         email: $scope.formEntry.email,
         firstName: $scope.formEntry.firstName,
         surname: $scope.formEntry.surname,

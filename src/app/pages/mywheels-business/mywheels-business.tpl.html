@@ -1,22 +1,4 @@
 <div class="home landing landing-lease">
-    <!-- SEARCHBAR
-    <div class="hero inverted text-center">
-        <div class="hero-overlay"></div>
-        <div class="landing-title">
-            <h1><span class="highlight">De lease-auto die zichzelf terugverdient</span></h1>
-            <a
-                class="mywheels-btn mywheels-btn-bigger mywheels-btn-call-to-action"
-                md-ink-ripple="#8f6700"
-                href="#aanmeldformulier"
-                smooth-scroll-to-item="#aanmeldformulier"
-            >
-                Meld je nu aan
-                <span style="position: relative; bottom: -.1em; right: -.4em;">〉</span>
-            </a>
-        </div>
-    </div>
-    /SEARCHBAR -->
-
     <div style="
         background-image: url('/assets/img/photo/opening_car_large_2.jpg');
         background-size: cover;
@@ -25,32 +7,16 @@
     ">
         <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(41, 21, 6, 0.4)"></div>
         <div class="container container-transitional">
-            <div class="row" style="padding: 12rem 0 12rem 0">
+            <div class="row" style="padding: 8rem 0">
                 <div class="rpad col-md-6">
                     <div>
                         <p>
                             <img ng-src="assets/img/mywheels-business-textwhite.png" height="32" />
                         </p>
-                        <h1 style="margin: 2rem 0 3rem; color: white;">Het hele MyWheels platform ter beschikking</h1>
-                        <p class="size-3 text-white">
-                            Je hoeft het wiel niet opnieuw uit te vinden: laat al je medewerkers meerijden op één contract.
-                        </p>
-                        <p style="margin-top: 3rem;">
-                            <md-button
-                                hide-xs
-                                class="mywheels-btn-call-to-action app--toolbar--button--text"
-                                md-ink-ripple="#8f6700"
-                                href="#aanmeldformulier"
-                                smooth-scroll-to-item="#aanmeldformulier"
-                                style="
-                                    font-size: 2rem;
-                                    padding: .4rem 1.2rem;
-                                    margin-left: 0;
-                                "
-                            >
-                                <span>Kies deze contractvorm &raquo;</span>
-                            </md-button>
-                        </p>
+                        <h1 style="margin: 2rem 0 3rem; color: white;">Het hele MyWheels platform tot je beschikking</h1>
+                        <!--<p class="size-3 text-white">
+                           Hallo
+                        </p>-->
                     </div>
                 </div>
             </div>
@@ -58,19 +24,50 @@
     </div>
 
     <div class="container container-transitional">
+        <div class="row">
+            <div class="rpad col-xs-12">
+                <h2 id="hoe_werkt_het" style="padding: 3rem 0; text-align: center; color: #333;">Zakelijk autodelen</h2>
+            </div>
+            <div class="rpad col-sm-6 size-3">
+                <p>
+                    Zakelijk autodelen biedt organisaties veel voordelen: lagere mobiliteitskosten, geen zorgen over onderhoud en schade, minder CO2-uitstoot, alle zakelijke ritten op één factuur en minder ruimte nodig voor parkeerplaatsen.
+                </p>
+            </div>
+            <div class="rpad col-sm-6 size-3">
+                <p>
+                    Autodelen via MyWheels is geschikt voor freelancers, zzp’ers en eenmanszaken, maar ook voor het midden- en kleinbedrijf (MKB) met meerdere medewerkers.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container container-transitional">
         <div class="row" style="padding: 5rem 0;">
-            <div class="rpad col-md-6" style="padding: 12rem 3rem 0;">
+            <div class="rpad col-md-6" style="padding: 8rem 3rem 0;">
                 <h2 style="
                     font-size: 2.6rem;
                     color: #333;
-                ">Gemakkelijk op weg</h2>
+                ">MyWheels Open</h2>
                 <p class="size-3">
-                    Medewerkers kunnen auto's direct reserveren, openen en sluiten via MyWheels.nl en de MyWheels app voor Android en iOS / iPhone.
+                    De meeste organisaties maken gebruik van deelauto’s met MyWheels Open. Deze auto’s kan een medewerker direct boeken en openen met zijn of haar smartphone, NS-Business Card of een andere OV-chipkaart.
                 </p>
-                <p class="size-3" style="text-align: center;">
-                    <ng-md-icon icon="phone_android" size="28" style="color: #555; height: 28px; width: 28px;"></ng-md-icon>
-                    <ng-md-icon icon="tablet" size="42" style="color: #555; height: 42px; width: 42px; margin: 0 2rem;"></ng-md-icon>
-                    <ng-md-icon icon="laptop" size="60" style="color: #555; height: 60px; width: 60px;"></ng-md-icon>
+                <p style="text-align: center;">
+                    <md-button
+                        hide-xs
+                        class="mywheels-btn-call-to-action"
+                        md-ink-ripple="#8f6700"
+                        ui-sref="owm.resource.search.list({ smartwheels: true })"
+                        style="
+                            font-size: 2rem;
+                            padding: .4rem 1.2rem;
+                            margin-left: 0;
+                        "
+                    >
+                        <span>Bekijk het aanbod</span>
+                    </md-button>
+                </p>
+                <p class="size-2">
+                    <em>Staan er nog geen auto’s met MyWheels Open in de buurt? Neem dan via onderstaand formulier contact met ons op, dan bekijken we of we een auto kunnen plaatsen.</em>
                 </p>
             </div>
             <div class="rpad col-md-6">
@@ -86,11 +83,17 @@
                 <h2 style="
                     font-size: 2.6rem;
                     color: #333;
-                ">Eenvoudige administratie</h2>
-                <p class="size-3">
-                    Medewerkers kunnen worden toegevoegd en verwijderd als gebruikers van auto's.
-                    Rapportages meteen te downloaden over ritgegevens zoals datum, gebruikers, personeelsnummers en kilometers.
-                </p>
+                ">Onze idealen</h2>
+                <div class="size-3">
+                    <p>
+                        Organisaties die via MyWheels auto’s huren, betalen daarvoor een eerlijke prijs. Onze voordelige tarieven zijn het directe gevolg van onze idealen. MyWheels streeft namelijk niet naar winstmaximalisatie, maar naar doelen die goed zijn voor mens, milieu en maatschappij. Door autodelen te stimuleren wil MyWheels een bijdrage leveren aan:
+                    </p>
+                    <ul>
+                        <li>minder CO2-uitstoot</li>
+                        <li>leefbare buurten</li>
+                        <li>sociale verbondenheid</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -98,22 +101,22 @@
     <div class="container container-transitional">
         <div class="row">
             <div class="rpad col-xs-12">
-                <h2 id="hoe_werkt_het" style="padding: 3rem 0; text-align: center; color: #333;">Hoe werkt MyWheels Business?</h2>
+                <h2 id="hoe_werkt_het" style="padding: 3rem 0; text-align: center; color: #333;">Kies de juiste contractvorm</h2>
             </div>
-            <div class="rpad col-sm-6 size-3">
+            <div class="rpad col-sm-8 col-sm-offset-2 size-3">
                 <p>
-                    MyWheels bestaat al sinds 1996, en sinds 2010 zijn we gebruik gaan maken van boordcomputers in onze auto's, zodat de gebruiker zonder sleuteloverdracht gemakkelijk op weg kan. Ons autodeelplatform is een bewezen success, en daarom bieden we het nu graag aan als service aan bedrijven en organisaties die een groene stap willen zetten.
-                </p>
-            </div>
-            <div class="rpad col-sm-6 size-3">
-                <p>
-                    Bij MyWheels Business kunnen de medewerkers van jouw bedrijf gemakkelijk bedrijfsauto's reserveren via ons autodeelplatform.
-                    Dit reserveren kan gemakkelijk via de website, of een van onze apps. Een auto kan vervolgens ook via de website, of de app, geopend worden. Zo hoef je geen sleuteladministratie meer te doen.
+                    Als organisatie kun je uit drie contracten kiezen om ritten te betalen. Bij MyWheels Go betaal je de rit vooraf per iDEAL, bij MyWheels Member en MyWheels Company worden de ritkosten achteraf automatisch geïncasseerd. Ook kun je ervoor kiezen om facturen per bankoverschrijving te betalen.
                 </p>
             </div>
         </div>
     </div>
-    <!-- /WIL JE MEEDOEN? -->
+
+
+    <contract-chooser
+        me="me"
+        disable-auto-request-go="true"
+        disable-choice="!me"
+    />
 
 
     <!-- IK DOE MEE! -->
@@ -121,7 +124,7 @@
         <div class="rpad col-xs-12" style="text-align: center;">
             <h2 id="aanmeldformulier" style="color: #333; padding-top: 5rem;">Neem contact op</h2>
             <p class="size-2">
-                Geïnteresseerd? Vul hieronder je gegevens in en we nemen vrijblijvend contact met je op.
+                Vul het contactformulier hieronder in voor informatie over zakelijk autodelen of om een zakelijke contract aan te vragen.
             </p>
         </div>
     </div>
@@ -209,29 +212,13 @@
                                   <div class="text-danger" ng-show="form.numEmployees.$error.required">Geef a.j.b. de omvang van het bedrijf aan.</div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <select name="numCars"
-                                        ng-model="formEntry.numCars"
-                                        md-select-on-focus
-                                        required="true"
-                                        ng-options="option.value as option.label disable when options.disabled for option in [
-                                            { label: '-- Omvang wagenpark --', value: '', disabled: true },
-                                            { label: 'Minder dan 10 auto\'s', value: '0-10' },
-                                            { label: 'Tussen 10 en 100 auto\'s', value: '10-100' },
-                                            { label: 'Meer dan 100 auto\'s', value: '100+' },
-                                        ]"
-                                />
-                                <div ng-show="form.$submitted || form.numCars.$touched">
-                                  <div class="text-danger" ng-show="form.numCars.$error.required">Geef a.j.b. de omvang van het wagenpark aan.</div>
-                                </div>
-                            </div>
 
                             <p class="w-submit-button">
                                 <button type="submit"
                                         ng-click="submit()"
                                         class="mywheels-btn mywheels-btn-call-to-action"
                                         md-ink-ripple="#8f6700">
-                                    Ja, ik doe mee <span style="position: relative; bottom: -.1em; right: -.4em;">〉</span>
+                                    Verzenden <span style="position: relative; bottom: -.1em; right: -.4em;">〉</span>
                                 </button>
                             </p>
                         </form>

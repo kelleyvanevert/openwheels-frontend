@@ -120,9 +120,9 @@ angular.module('owm.pages', [
     url: '/zakelijk',
     views: {
       'toolbar@shell': {
-//        templateUrl: 'pages/mywheels-zakelijk/toolbar.tpl.html',
-        templateUrl: 'shell/toolbar/toolbar.tpl.html',
-        controller: 'ToolbarController',
+        templateUrl: 'pages/mywheels-zakelijk/toolbar.tpl.html',
+//        templateUrl: 'shell/toolbar/toolbar.tpl.html',
+//        controller: 'ToolbarController',
       },
       'main-full@shell': {
         templateUrl: 'pages/mywheels-zakelijk/mywheels-zakelijk.tpl.html',
