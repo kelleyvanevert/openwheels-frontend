@@ -2,35 +2,55 @@
     <div class="landing-hero business">
         <div class="landing-hero-overlay"></div>
         <div class="container container-transitional">
-            <div class="row" style="padding: 8rem 0">
+            <div class="row" style="padding: 12rem 0 12rem 0">
                 <div class="rpad col-md-6">
                     <div>
                         <p>
                             <img ng-src="assets/img/mywheels-business-textwhite.png" height="32" />
                         </p>
-                        <h1 style="margin: 2rem 0 3rem; color: white;">Het hele MyWheels platform tot je beschikking</h1>
-                        <!--<p class="size-3 text-white">
-                           Hallo
-                        </p>-->
+                        <h1 style="margin: 2rem 0 3rem; color: white;">Huur zakelijk een MyWheels deelauto</h1>
+                        <p class="size-3 text-white">
+                            Met 2.500 deelauto's staat er altijd wel een auto bij jou in de buurt.
+                        </p>
+                        <p style="margin-top: 3rem;">
+                            <md-button
+                                hide-xs
+                                class="mywheels-btn-call-to-action app--toolbar--button--text"
+                                md-ink-ripple="#8f6700"
+                                href="#aanmeldformulier"
+                                smooth-scroll-to-item="#aanmeldformulier"
+                                style="
+                                    font-size: 2rem;
+                                    padding: .4rem 1.2rem;
+                                    margin-left: 0;
+                                "
+                            >
+                                <span>Neem contact op</span>
+                            </md-button>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- TRIANGLE BAR HOME -->
+    <div class="triangle--bar--home triangle--bar--home-white"></div>
+    <!-- /TRIANGLE BAR -->
+
     <div class="container container-transitional">
         <div class="row">
-            <div class="rpad col-xs-12">
-                <h2 id="hoe_werkt_het" style="padding: 3rem 0; text-align: center; color: #333;">Zakelijk autodelen</h2>
+            <div class="rpad col-xs-12 wat-is-mywheels-open"">
+                <h2 class="text-black">Wat is <span style="white-space: nowrap;"><img title="MyWheels Business" alt="MyWheels Business" ng-src="assets/img/mywheels-business.png" />?</span></h2>
             </div>
             <div class="rpad col-sm-6 size-3">
                 <p>
-                    Zakelijk autodelen biedt organisaties veel voordelen: lagere mobiliteitskosten, geen zorgen over onderhoud en schade, minder CO2-uitstoot, alle zakelijke ritten op één factuur en minder ruimte nodig voor parkeerplaatsen.
+                    Maak gebruik van 2.500 bedrijfsauto's en ervaar de voordelen van autodelen: lagere mobiliteitskosten, geen zorgen over onderhoud en schade, minder CO2-uitstoot en alle zakelijke ritten op één factuur.
                 </p>
             </div>
             <div class="rpad col-sm-6 size-3">
                 <p>
-                    Autodelen via MyWheels is geschikt voor freelancers, zzp’ers en eenmanszaken, maar ook voor het midden- en kleinbedrijf (MKB) met meerdere medewerkers.
+                    Zakelijk autodelen via MyWheels is geschikt voor zzp’ers en eenmanszaken, maar ook voor gemeentes en het midden- en kleinbedrijf (MKB).
                 </p>
             </div>
         </div>
@@ -45,7 +65,7 @@
                         color: #333;
                     ">MyWheels Open</h2>
                     <p class="size-3">
-                        De meeste organisaties maken gebruik van deelauto’s met MyWheels Open. Deze auto’s kan een medewerker direct boeken en openen met zijn of haar smartphone, NS-Business Card of een andere OV-chipkaart.
+                        De meeste organisaties maken gebruik van deelauto’s met MyWheels Open. Deze auto’s kan een medewerker direct boeken en openen met zijn of haar smartphone, NS-Business Card of een andere OV-chipkaart. 
                     </p>
                     <p style="text-align: center;">
                         <md-button
@@ -61,6 +81,9 @@
                         >
                             <span>Bekijk het aanbod</span>
                         </md-button>
+                    </p>
+                    <p class="size-3">
+                        Particulieren bieden hun auto ook via MyWheels aan. Deze auto's opent een medewerker gewoon met de sleutel.
                     </p>
                     <p class="size-2">
                         <em>Staan er nog geen auto’s met MyWheels Open in de buurt? Neem dan via onderstaand formulier contact met ons op, dan bekijken we of we een auto kunnen plaatsen.</em>
@@ -103,26 +126,25 @@
             </div>
             <div class="rpad col-sm-8 col-sm-offset-2 size-3">
                 <p>
-                    Als organisatie kun je uit drie contracten kiezen om ritten te betalen. Bij MyWheels Go betaal je de rit vooraf per iDEAL, bij MyWheels Member en MyWheels Company worden de ritkosten achteraf automatisch geïncasseerd. Ook kun je ervoor kiezen om facturen per bankoverschrijving te betalen.
+                    Je kunt uit drie zakelijke contracten kiezen om ritten te betalen. Bij MyWheels Go betaal je de rit vooraf per iDEAL, bij MyWheels Member en MyWheels Company worden de ritkosten achteraf automatisch geïncasseerd. Ook kun je ervoor kiezen om facturen per bankoverschrijving te betalen.
                 </p>
             </div>
         </div>
     </div>
 
-
     <contract-chooser
         me="me"
         disable-auto-request-go="true"
         disable-choice="!me"
+        enable-company="true"
     />
-
 
     <!-- IK DOE MEE! -->
     <div class="container container-transitional">
         <div class="rpad col-xs-12" style="text-align: center;">
             <h2 id="aanmeldformulier" style="color: #333; padding-top: 5rem;">Neem contact op</h2>
             <p class="size-2">
-                Vul het contactformulier hieronder in voor informatie over zakelijk autodelen of om een zakelijke contract aan te vragen.
+                Vul onderstaand contactformulier in voor meer informatie of om een zakelijke contract aan te vragen.
             </p>
         </div>
     </div>
