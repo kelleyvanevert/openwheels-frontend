@@ -21,30 +21,62 @@ angular.module('owm.shell', [])
         });
         return dfd.promise;
       }],
-      me: ['authService', function (authService) {
+      me: ['authService', 'providerInfoService', '$rootScope', function (authService, providerInfoService, $rootScope) {
         return authService.userPromise().then(function (user) {
-          return user.isAuthenticated ? user.identity : null;
+          if (user.isAuthenticated) {
+            return providerInfoService.getInfo({ provider: user.identity.provider.id })
+            .then(function (info) {
+
+              // interface ProviderInfo {
+              //   extraInfo: any | ProviderExtraInfo;
+              //   fleetManager: Person;
+              //   visibleName: string;
+              // }
+
+              // type markdown = string;
+
+              // enum ProfileBlacklistItem {
+              //   gender              = "gender";
+              //   date_of_birth       = "date_of_birth";
+              //   phone_number        = "phone_number";
+              //   address             = "address";
+              //   driver_license      = "driver_license";
+              //   external_identifier = "external_identifier";
+              // }
+
+              // interface ProviderExtraInfo {
+              //   emergency_number: string;
+              //   welcome_text: markdown;
+              //   help_text: markdown;
+              //   person_profile_blacklist: ProfileBlacklistItem[];
+              // }
+
+              $rootScope.providerInfo = info;
+              return user.identity;
+            });
+          } else {
+            return null;
+          }
         });
       }],
-      checkBusiness: ['me', '$rootScope', function (me, $rootScope) {
-        return ($rootScope.businessUI = me.isBusinessConnected);
-      }],
-      providerInfo: ['me', 'providerInfoService', '$rootScope', function (me, providerInfoService, $rootScope) {
-        return providerInfoService.getInfo({ provider: me.provider.id })
-        .then(function (info) {
-          // interface ProviderInfo {
-          //   extraInfo: any | ProviderExtraInfo
-          //   fleetManager: Person
-          //   visibleName: string
-          // }
-          // interface ProviderExtraInfo {
-          //   emergency_number: string
-          //   welcome_text: string
-          // }
-          $rootScope.providerInfo = info;
-          return info;
-        });
-      }],
+
+      // This is really whacko, but I blieve the presence of another resolve here,
+      //  that depends upon `me`, causes that `me` to be needed earlier on in the
+      //  process, and somehow hence triggering a state change error, leading to
+      //  a cycle of silent refresh attempts.
+      // Quick solution (I don't really know how to solve it more cleanly right now)
+      //  is to just get the provider info within the `me` resolver.
+
+      // providerInfo: ['me', 'providerInfoService', function (me, providerInfoService) {
+      //   if (!me) {
+      //     return null;
+      //   }
+      //   
+      //   return providerInfoService.getInfo({ provider: me.provider.id })
+      //   .then(function (info) {
+      //     return info;
+      //   });
+      // }],
     }
   });
 
