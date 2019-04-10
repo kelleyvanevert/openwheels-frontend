@@ -67,14 +67,15 @@
                         md-select-on-focus
                         required="true"
                         ng-options="option.value as option.label disable when options.disabled for option in [
-                            { label: '-- Omvang bedrijf/organisatie --', value: '', disabled: true },
-                            { label: 'Minder dan 10 medewerkers', value: '0-10' },
-                            { label: 'Tussen 10 en 100 medewerkers', value: '10-100' },
-                            { label: 'Meer dan 100 medewerkers', value: '100+' },
+                            { label: '-- Aantal medewerkers --', value: '', disabled: true },
+                            { label: '1 tot 10 medewerkers', value: '1-9' },
+                            { label: '10 tot 50 medewerkers', value: '11-49' },
+                            { label: '50 tot 100 medewerkers', value: '50-99' },
+                            { label: '100+ medewerkers', value: '100+' },
                         ]"
                 />
                 <div ng-show="form.$submitted || form.numEmployees.$touched">
-                  <div class="text-danger" ng-show="form.numEmployees.$error.required">Geef de omvang van het bedrijf aan.</div>
+                  <div class="text-danger" ng-show="form.numEmployees.$error.required">Geef het aantal medewerkers van het bedrijf aan.</div>
                 </div>
             </div>
 
@@ -84,14 +85,16 @@
                         md-select-on-focus
                         required="true"
                         ng-options="option.value as option.label disable when options.disabled for option in [
-                            { label: '-- Omvang wagenpark --', value: '', disabled: true },
-                            { label: 'Minder dan 10 auto\'s', value: '0-10' },
-                            { label: 'Tussen 10 en 100 auto\'s', value: '10-100' },
-                            { label: 'Meer dan 100 auto\'s', value: '100+' },
+                            { label: '-- Aantal auto\'s --', value: '', disabled: true },
+                            { label: '1 tot 4 auto\'s', value: '1-3' },
+                            { label: '4 tot 10 auto\'s', value: '4-9' },
+                            { label: '10 tot 20 auto\'s', value: '10-19' },
+                            { label: '20 tot 50 auto\'s', value: '20-49' },
+                            { label: '50+ auto\'s', value: '50+' },
                         ]"
                 />
                 <div ng-show="form.$submitted || form.numCars.$touched">
-                    <div class="text-danger" ng-show="form.numCars.$error.required">Geef de omvang van het wagenpark aan.</div>
+                    <div class="text-danger" ng-show="form.numCars.$error.required">Geef het aantal auto's van het wagenpark aan.</div>
                 </div>
             </div>
 

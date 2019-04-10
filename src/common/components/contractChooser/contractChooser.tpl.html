@@ -28,7 +28,7 @@
       <section class="contract-choice contract-choice--middle" ng-class="{'contract-choice--middle--small': $mdMedia('xs')}">
         <h3 same-height="headercontract">MyWheels Member</h3>
         <section>
-          <div class="pay" same-height="aa">Betaal achteraf per SEPA incasso *</div>
+          <div class="pay" same-height="aa">Betaal achteraf per SEPA incasso<span ng-if="!enableCompany"> *</span></div>
           <ul>
             <li same-height="a0">Wekelijkse facturatie</li>
             <li same-height="e">Gratis 2 extra bestuurders</li>
@@ -52,7 +52,7 @@
           ng-if="!me.isCompany && !enableCompany">
         <h3 same-height="headercontract">MyWheels Premium</h3>
         <section>
-          <div class="pay" same-height="aa">Betaal achteraf per SEPA incasso *</div>
+          <div class="pay" same-height="aa">Betaal achteraf per SEPA incasso<span ng-if="!enableCompany"> *</span></div>
           <ul>
             <li same-height="a0">Wekelijkse facturatie</li>
             <li same-height="e">Gratis 4 extra bestuurders</li>
@@ -86,7 +86,7 @@
             <li same-height="d">Inkorten rit tot maximaal 2 uur</li>
             <li same-height="f">25 euro per maand</li>
             <li same-height="g">250 euro borg</li>
-            <li same-height="h">50% korting boekingskosten</li>
+            <li same-height="h">50% korting op boekingskosten</li>
             <li same-height="i" style="display: flex; flex-direction: column; justify-content: center;" ng-if="!disableChoice">
               <button type="button" ng-if="has.company" name="button" class="mywheels-btn mywheels-btn-default" ui-sref="owm.finance.vouchers">Kies dit contract</button>
               <button type="button" ng-if="!has.company" name="button" class="mywheels-btn mywheels-btn-default" ng-click="select('company')">Kies dit contract</button>
