@@ -60,7 +60,7 @@ angular.module('owm.trips.index', [])
   };
  
   $scope.showCancelled = ($stateParams.cancelled === 'true');
-  $scope.otherOnContract = ($stateParams.otherOnContract === 'true');
+  $scope.otherOnContract = $stateParams.otherOnContract ? ($stateParams.otherOnContract === 'true') : me.isBusinessConnected;
 
   // Load all bookings for this person in the role of either a renter or an owner with pagination
   $scope.loadBookings = function (role) {

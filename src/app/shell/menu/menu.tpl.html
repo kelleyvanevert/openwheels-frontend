@@ -59,7 +59,7 @@
       <ng-md-icon icon="today" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_TRIPS' | translate }}</p>
     </md-list-item>
 
-    <md-list-item id="menuFinance" class="menu-item-finance" ng-click="navigate('owm.finance.v4')">
+    <md-list-item id="menuFinance" class="menu-item-finance" ng-click="navigate('owm.finance.v4')" ng-if="!user.identity.isBusinessConnected">
       <ng-md-icon icon="euro_symbol" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_FINANCE' | translate }}</p>
     </md-list-item>
 

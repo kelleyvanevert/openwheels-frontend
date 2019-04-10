@@ -15,7 +15,7 @@ angular.module('owm.person.profile', [])
     { id: 'personal', title: 'Persoonsgegevens', icon: 'person' },
     { id: 'contact', title: 'Contactgegevens', icon: 'phone_android' },
     { id: 'profiel', title: 'Profiel', icon: 'account_circle' },
-    (person.preference !== 'renter' || person.status === 'active') ?
+    (person.preference !== 'renter' || person.status === 'active') && !person.isBusinessConnected ?
       { id: 'bank', title: 'Bankrekening', icon: 'account_balance_wallet' } :
       undefined,
     { sref: 'owm.person.profile.contract', title: 'Contracten', icon: 'content_paste' },

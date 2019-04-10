@@ -16,7 +16,7 @@ angular.module('owm.person.dashboard', [])
   
   $scope.homeAddressPrefill = homeAddressPrefill;
 
-  if ((me.provider.id === 1 || me.isBusinessConnected) && me.preference) {
+  if (me.provider.id === 1 && me.preference) {
     // = MyWheels
 
     if (me.preference !== 'owner') {
@@ -43,6 +43,13 @@ angular.module('owm.person.dashboard', [])
         { sref: 'owm.message', title: 'Berichten' },
       ];
     }*/
+  } else if (me.isBusinessConnected) {
+    $scope.dashboardLinks = [
+      { sref: 'owm.trips', title: 'Ritten' },
+      { sref: 'owm.resource.search.list', title: 'Zoek een auto' }, // of misschien iets anders?
+      { sref: 'owm.message', title: 'Berichten' },
+      { sref: 'owm.person.profile({ highlight: "profiel" })', title: 'Mijn gegevens' },
+    ];
   }
 
 
