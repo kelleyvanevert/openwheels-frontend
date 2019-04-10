@@ -20,7 +20,31 @@ angular.module('owm.shell', [])
           }
         });
         return dfd.promise;
-      }]
+      }],
+      me: ['authService', function (authService) {
+        return authService.userPromise().then(function (user) {
+          return user.isAuthenticated ? user.identity : null;
+        });
+      }],
+      checkBusiness: ['me', '$rootScope', function (me, $rootScope) {
+        return ($rootScope.businessUI = me.isBusinessConnected);
+      }],
+      providerInfo: ['me', 'providerInfoService', '$rootScope', function (me, providerInfoService, $rootScope) {
+        return providerInfoService.getInfo({ provider: me.provider.id })
+        .then(function (info) {
+          // interface ProviderInfo {
+          //   extraInfo: any | ProviderExtraInfo
+          //   fleetManager: Person
+          //   visibleName: string
+          // }
+          // interface ProviderExtraInfo {
+          //   emergency_number: string
+          //   welcome_text: string
+          // }
+          $rootScope.providerInfo = info;
+          return info;
+        });
+      }],
     }
   });
 
@@ -43,13 +67,6 @@ angular.module('owm.shell', [])
         controller: 'FooterController'
       }
     },
-    resolve: {
-      me: ['authService', function (authService) {
-        return authService.userPromise().then(function (user) {
-          return user.isAuthenticated ? user.identity : null;
-        });
-      }],
-    },
   });
 
   /**
@@ -66,13 +83,6 @@ angular.module('owm.shell', [])
         templateUrl: 'shell/footer/footer.tpl.html',
         controller: 'FooterController'
       },
-    },
-    resolve: {
-      me: ['authService', function (authService) {
-        return authService.userPromise().then(function (user) {
-          return user.isAuthenticated ? user.identity : null;
-        });
-      }],
     },
   });
 

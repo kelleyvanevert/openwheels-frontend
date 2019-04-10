@@ -16,7 +16,7 @@ angular.module('owm.person.dashboard', [])
   
   $scope.homeAddressPrefill = homeAddressPrefill;
 
-  if (me.provider.id === 1 && me.preference) {
+  if ((me.provider.id === 1 || me.isBusinessConnected) && me.preference) {
     // = MyWheels
 
     if (me.preference !== 'owner') {

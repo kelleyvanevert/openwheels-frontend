@@ -387,4 +387,12 @@ angular.module('rpcServices', [])
       other: params,
     });
   };
-});
+})
+
+.service('providerInfoService', function (api) {
+  var m = function (name) {
+    return api.createRpcMethod('providerinfo.' + name);
+  };
+  this.getInfo = m('getInfoByProvider');
+})
+;
