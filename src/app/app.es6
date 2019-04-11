@@ -363,6 +363,8 @@ angular.module('openwheels', [
   };
 })
 
+.filter('snarkdown', () => snarkdown)
+
 .filter('homeAddress', function (makeHomeAddressPrefill) {
   return makeHomeAddressPrefill;
 })

@@ -104,7 +104,7 @@
     transition: top .1s ease, left .1s ease, box-shadow .1s ease;
     box-shadow: 1px 3px 5px rgba(0,0,0,.2);
 
-    &:hover {
+    &:hover:not([disabled]) {
       /*top: -1px;
       left: -1px;*/
       box-shadow: 1px 3px 15px rgba(0,0,0,.4);
@@ -668,7 +668,15 @@
   }
   &.share {
     background-color: #ade284;
-    background-image: url('https://lh3.google.com/u/0/d/1tGErzYznCfdyZ89045u7xlYRXEXG93sc=w1920-h916-iv1');
+    background-image: url('/assets/img/photo/picnic.jpg');
+
+    .landing-hero-overlay {
+      background: rgba(36, 55, 21, 0.5);
+    }
+  }
+  &.business-welcome {
+    background-color: #ade284;
+    background-image: url('/assets/img/photo/picnic.jpg');
 
     .landing-hero-overlay {
       background: rgba(36, 55, 21, 0.5);
@@ -856,4 +864,31 @@
       padding: 3rem 5rem;
     }
   }
+}
+
+
+.smooth-slide-appear.ng-enter {
+  transition: transform .3s ease, opacity .3s ease;
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.smooth-slide-appear-init .smooth-slide-appear.ng-enter {
+  transform: translateY(0px);
+  opacity: 1;
+}
+
+.smooth-slide-appear.ng-enter.ng-enter-active {
+  transform: translateY(0px);
+  opacity: 1;
+}
+
+.smooth-slide-appear.ng-leave {
+  transition: transform .3s ease, opacity .3s ease;
+  transform: translateY(0px);
+  opacity: 1;
+}
+.smooth-slide-appear.ng-leave.ng-leave-active {
+  transform: translateY(-30px);
+  opacity: 0;
 }
