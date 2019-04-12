@@ -353,6 +353,30 @@ angular.module('openwheels', [
   }
 })
 
+// A mapping from the blacklisted "fields"
+//  to the concrete excluded properties of a given
+//  person entity
+.value('personProfileBlacklistPropMap', {
+  gender       : ["is_male"],
+  dateOfBirth  : ["dateOfBirth"],
+  address      : ["zipcode", "streetNumber", "city", "streetName", "latitude", "longitude"],
+  driverLicense: ["driverLicenseNumber", "drivingLicenseValidUntil"],
+})
+
+.factory('blacklistFilterPersonProps', function ($rootScope, personProfileBlacklistPropMap) {
+  const blacklistedProps = Object.keys($rootScope.providerInfo.extraInfo.personProfileBlacklist)
+    .map(field => personProfileBlacklistPropMap[field])
+    .reduce((a, b) => a.concat(b), []);
+
+  return function (personProps) {
+    personProps = _.clone(personProps);
+    blacklistedProps.forEach(prop => {
+      delete personProps[prop];
+    });
+    return personProps;
+  };
+})
+
 .value('isBeheerder', function (person, resource) {
   return (resource.contactPersonId === person.id) && (resource.ownerId !== person.id);
 })
@@ -363,7 +387,9 @@ angular.module('openwheels', [
   };
 })
 
-.filter('snarkdown', () => snarkdown)
+.filter('snarkdown', () => md => {
+  return snarkdown(md || "");
+})
 
 .filter('homeAddress', function (makeHomeAddressPrefill) {
   return makeHomeAddressPrefill;

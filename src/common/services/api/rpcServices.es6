@@ -393,6 +393,17 @@ angular.module('rpcServices', [])
   var m = function (name) {
     return api.createRpcMethod('providerinfo.' + name);
   };
-  this.getInfo = m('getInfoByProvider');
+  var _getInfo = m('getInfoByProvider');
+  this.getInfo = function (params) {
+    return _getInfo(params).then(info => {
+      if (!info.extraInfo) {
+        info.extraInfo = {};
+      }
+      if (!info.extraInfo.personProfileBlacklist) {
+        info.extraInfo.personProfileBlacklist = {};
+      }
+      return info;
+    });
+  };
 })
 ;

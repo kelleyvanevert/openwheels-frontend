@@ -18,7 +18,7 @@ angular.module('owm.components')
       me: '=',
     },
     templateUrl: 'components/businessWelcomePage/businessWelcomePage.tpl.html',
-    controller: function ($scope) {
+    controller: function ($scope, $rootScope, blacklistFilterPersonProps) {
 
       $scope.person = angular.copy($scope.me);
 
@@ -48,7 +48,7 @@ angular.module('owm.components')
         let newProps;
 
         if ($scope.step === 0) {
-          newProps = _.pick($scope.person, [
+          newProps = blacklistFilterPersonProps(_.pick($scope.person, [
             "firstName",
             "preposition",
             "surname",
@@ -58,13 +58,13 @@ angular.module('owm.components')
             "streetName",
             "latitude",
             "longitude",
-          ]);
+          ]));
         } else if ($scope.step === 1) {
-          newProps = _.pick($scope.person, [
+          newProps = blacklistFilterPersonProps(_.pick($scope.person, [
             "driverLicenseNumber",
             "drivingLicenseValidUntil",
             "externalIdentifier",
-          ]);
+          ]));
           newProps.externalIdentifier = newProps.externalIdentifier || "";
         }
 

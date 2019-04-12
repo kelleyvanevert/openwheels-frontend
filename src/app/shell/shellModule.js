@@ -36,19 +36,18 @@ angular.module('owm.shell', [])
               // type markdown = string;
 
               // enum ProfileBlacklistItem {
-              //   gender              = "gender";
-              //   date_of_birth       = "date_of_birth";
-              //   phone_number        = "phone_number";
-              //   address             = "address";
-              //   driver_license      = "driver_license";
-              //   external_identifier = "external_identifier";
+              //   gender        = "gender";
+              //   dateOfBirth   = "dateOfBirth";
+              //   address       = "address";
+              //   driverLicense = "driverLicense";
+              //   social        = "social";
               // }
 
               // interface ProviderExtraInfo {
-              //   emergency_number: string;
-              //   welcome_text: markdown;
-              //   help_text: markdown;
-              //   person_profile_blacklist: ProfileBlacklistItem[];
+              //   emergencyNumber: string;
+              //   welcomeText: markdown;
+              //   helpText: markdown;
+              //   personProfileBlacklist: { [item: ProfileBlacklistItem]: boolean; }
               // }
 
               $rootScope.providerInfo = info;
