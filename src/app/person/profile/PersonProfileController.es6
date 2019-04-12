@@ -4,6 +4,7 @@ angular.module('owm.person.profile', [])
 
 .controller('PersonProfileController', function ($scope, $filter, $timeout, $translate, person, alertService,
   hasBooked, $state, $log,
+  API_DATE_FORMAT,
   personService, authService, dutchZipcodeService, metaInfoService, appConfig) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard/profile'});
@@ -183,20 +184,27 @@ angular.module('owm.person.profile', [])
     });
   };
 
-  $scope.dateConfig = {
-    //model
-    modelFormat: 'YYYY-MM-DD',
-    formatSubmit: 'yyyy-mm-dd',
-
-    //view
-    viewFormat: 'DD-MM-YYYY',
-    format: 'dd-mm-yyyy',
-
-    //options
-    selectMonths: true,
-    selectYears: '100',
-    max: true
+  const dateTimeConfig = {
+    // showAccept: true,
+    focusOnShow: false, // (!) important for mobile
+    useCurrent: true,
+    toolbarPlacement: 'bottom',
   };
+
+  const dateConfig = $scope.dateConfig = {
+    ...dateTimeConfig,
+    format: 'DD-MM-YYYY',
+    // todo maxDate
+    widgetPositioning: { // with knowledge of the html (!)
+      horizontal: 'auto', // 'left',
+      vertical: 'bottom',
+    },
+    width: '20em',
+  };
+  $scope.dateOfBirth_viewValue = moment($scope.person.dateOfBirth, API_DATE_FORMAT).format(dateConfig.format);
+  $scope.$watch('dateOfBirth_viewValue', () => {
+    $scope.person.dateOfBirth = moment($scope.dateOfBirth_viewValue, dateConfig.format).format(API_DATE_FORMAT);
+  });
 
   $scope.$watch(function () {
     return $translate.use();

@@ -85,7 +85,28 @@
               </p>
             </div>
 
-            <div class="form-group">
+            <div class="mywheels-form">
+              <label for="dateOfBirth" style="margin: 0;">
+                {{ 'DATE_OF_BIRTH' | translate }}
+                <info-icon ng-if="!allowLicenseRelated" tooltip-html="'INFO_PROFILE_LICENSE_RESTRICT' | translate"></info-icon>
+              </label>
+              <div class="form-group mw-datepicker mw-icon"
+                  bootstrap-date-time-picker="dateConfig">
+                <ng-md-icon aria-hidden="true" icon="today"></ng-md-icon>
+                <input
+                  name="dateOfBirth"
+                  id="dateOfBirth"
+                  type="text"
+                  placeholder="{{ 'PICK_A_DATE' | translate }}"
+                  ng-disabled="!allowLicenseRelated"
+                  required
+                  ng-model="dateOfBirth_viewValue"
+                />
+              </div>
+              <p class="help-block" ng-show="personalDataForm.dateOfBirth.$error.required"><span class="text-danger">{{ 'REQUIRED' | translate }}</span></p>
+            </div>
+
+            <!--<div class="form-group">
               <label for="dateOfBirth">
                 {{ 'DATE_OF_BIRTH' | translate }}
                 <info-icon ng-if="!allowLicenseRelated" tooltip-html="'INFO_PROFILE_LICENSE_RESTRICT' | translate"></info-icon>
@@ -94,9 +115,8 @@
                 ng-disabled="!allowLicenseRelated"
                 class="form-control pickadate-input" ng-model="person.dateOfBirth" pickadate="dateConfig" required>
 
-              <p class="help-block" ng-show="personalDataForm.dateOfBirth.$error.required"><span class="text-danger">{{ 'REQUIRED' | translate }}</span>
-              </p>
-            </div>
+              <p class="help-block" ng-show="personalDataForm.dateOfBirth.$error.required"><span class="text-danger">{{ 'REQUIRED' | translate }}</span></p>
+            </div>-->
 
             <div class="form-group" id="form-group-company-name">
               <label for="companyName">
