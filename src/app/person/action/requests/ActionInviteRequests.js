@@ -9,6 +9,9 @@ angular.module('owm.person.invite-requests', [])
     metaInfoService.set({url: appConfig.serverUrl + '/dashboard/profile/invite-requests'});
     metaInfoService.set({canonical: 'https://mywheels.nl/dashboard/profile/invite-requests'});
 
+    $scope.me = me;
+    $scope.nudgeToFlow = false;
+
     $scope.inviteRequestsBooking = inviteRequestsBooking;
     $scope.inviteRequestsContract = inviteRequestsContract;
     $scope.showForm = true;
@@ -38,6 +41,9 @@ angular.module('owm.person.invite-requests', [])
       })
         .then(function () {
           $scope.loadRequestsBooking();
+          if (me.status === 'new') {
+            $scope.nudgeToFlow = true;
+          }
         })
         .catch(function (err) {
           alertService.addError(err);
@@ -89,6 +95,9 @@ angular.module('owm.person.invite-requests', [])
       })
         .then(function () {
           $scope.loadRequestsContract();
+          if (me.status === 'new') {
+            $scope.nudgeToFlow = true;
+          }
         })
         .catch(function (err) {
           alertService.addError(err);

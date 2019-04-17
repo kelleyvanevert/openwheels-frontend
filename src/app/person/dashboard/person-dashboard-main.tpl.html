@@ -342,6 +342,17 @@
             </div>
           </div>
           
+          <div ng-if="person.isBusinessConnected">
+            <h3 style="text-align: center;">
+              <span ng-if="!$root.providerInfo.extraInfo.logo">{{ $root.providerInfo.visibleName }}</span>
+              <span ng-if="$root.providerInfo.extraInfo.logo"><img ng-src="{{ $root.providerInfo.extraInfo.logo }}" style="max-width: 300px;" /></span>
+            </h3>
+            <div
+              ng-if="$root.providerInfo.extraInfo.helpText"
+              class="about-me snarkdown"
+              ng-bind-html="$root.providerInfo.extraInfo.helpText | snarkdown"
+            ></div>
+          </div>
           <div ng-if="!person.isBusinessConnected">
             <user-status-line person="person" has-booked="hasBooked"></user-status-line>
 

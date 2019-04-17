@@ -88,7 +88,7 @@
             <li ng-if="me.provider.id === 1">
               <a ui-sref="invite">{{ 'INVITE_EXTRA_VOUCHERS' | translate }} ›</a>
             </li>
-            <li ng-if="requiredValue && me.numberOfBookings > 3">
+            <li ng-if="requiredValue && me.numberOfBookings > 3 && !me.isBusinessConnected">
               <a ui-sref="contractchoice">{{ 'PERSON.CONTRACT.CHANGE_CONTRACT' | translate }} ›</a>
             </li>
           </ul>

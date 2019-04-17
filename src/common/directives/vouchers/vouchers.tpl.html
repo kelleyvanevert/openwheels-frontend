@@ -22,7 +22,7 @@
                 <td class="text-right">{{ booking.details.booking_price.booking_fee | currency }}</td>
             </tr>
             <tr class="bt"
-                ng-if="readOnlyMode">
+                ng-if="readOnlyMode && !me.isBusinessConnected">
                 <td>
                     <span ng-if="booking.details.riskReduction">Eigen risico verlaagd</span>
                     <span ng-if="!booking.details.riskReduction">Eigen risico niet verlaagd</span>
@@ -38,7 +38,7 @@
                 <td class="text-right">{{ extraDrivers.check ? (extraDrivers.price * extraDrivers.drivers.length) : 0 | currency }}</td>
             </tr>
             <!-- Own risk reduction -->
-            <tr class="bt" ng-if="!readOnlyMode">
+            <tr class="bt" ng-if="!readOnlyMode && !me.isBusinessConnected">
                 <td>
                     <md-checkbox
                         class="md-primary"
