@@ -36,7 +36,7 @@
           </td>
           <td class="price">{{ price.booking_fee | currency }}</td>
         </tr>
-        <tr ng-if="booking.contract.ownRiskWaiver !== 'month'">
+        <tr ng-if="booking.contract.ownRiskWaiver !== 'month' && !person.isBusinessConnected">
           <td class="description">
             <div class="name">
               Eigen risico verlagen{{ (!price.must_decrease_own_risk && (booking.contract.ownRiskWaiver === 'not')) ? ':' : '' }}

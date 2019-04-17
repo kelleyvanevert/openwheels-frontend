@@ -8,6 +8,8 @@ angular.module('owm.person')
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard/profile/contracts'});
   metaInfoService.set({canonical: 'https://mywheels.nl/dashboard/profile/contracts'});
 
+  $scope.me = me;
+
   $scope.busy = false;
   $scope.isLoadingContracts = true;
   $scope.ownContracts = [];

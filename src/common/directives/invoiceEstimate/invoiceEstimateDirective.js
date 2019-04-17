@@ -20,6 +20,7 @@ angular.module('invoiceEstimateDirective', [])
       resource: '=',
       booking: '=',
       price: '=',
+      person: '=',
     },
     templateUrl: 'directives/invoiceEstimate/invoiceEstimate.tpl.html',
     replace: true,
