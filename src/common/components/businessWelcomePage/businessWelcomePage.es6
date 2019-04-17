@@ -10,6 +10,7 @@ angular.module('owm.components')
   alertService,
 
   personService,
+  authService,
   dutchZipcodeService
 ) {
   return {
@@ -40,12 +41,24 @@ angular.module('owm.components')
       };
 
       $scope.step = 0;
+      $scope.loading = false;
       // if ($scope.person.firstName && $scope.person.surname && $scope.person.zipcode && $scope.person.streetNumber) {
       //   $scope.step = 1;
       // }
 
-      $scope.next = function () {
+      $scope.next = function (form) {
+        if (!form.$valid) {
+          angular.forEach(form.$error, field => {
+            angular.forEach(field, errorField => {
+              errorField.$setTouched();
+            });
+          });
+          return;
+        }
+        $scope.apiError = null;
+
         let newProps;
+        $scope.loading = true;
 
         if ($scope.step === 0) {
           newProps = blacklistFilterPersonProps(_.pick($scope.person, [
@@ -63,9 +76,11 @@ angular.module('owm.components')
           newProps = blacklistFilterPersonProps(_.pick($scope.person, [
             "driverLicenseNumber",
             "drivingLicenseValidUntil",
+            "dateOfBirth",
+            "male",
             "externalIdentifier",
           ]));
-          newProps.externalIdentifier = newProps.externalIdentifier || "";
+          newProps.flowCompleted = true;
         }
 
         personService.alter({
@@ -76,8 +91,15 @@ angular.module('owm.components')
           $scope.step++;
         })
         .catch(error => {
-          console.log("error", error);
+          $scope.apiError = error.message;
+        })
+        .finally(() => {
+          $scope.loading = false;
         });
+      };
+
+      $scope.ensureFlowCompleted = () => {
+        authService.user.identity.flowCompleted = true;
       };
 
       var phoneNumber = {
@@ -140,6 +162,13 @@ angular.module('owm.components')
         const valid = date.isValid() && date.isAfter(moment());
         form.licenseDateValidUntil.$setValidity("validAndFuture", valid);
         $scope.person.drivingLicenseValidUntil = date.format("YYYY-MM-DD");
+      };
+
+      $scope.setDateOfBirth = form => {
+        const date = moment(form.dateOfBirth.$viewValue, dateConfig.format);
+        const valid = date.isValid() && date.isBefore(moment());
+        form.dateOfBirth.$setValidity("validAndPast", valid);
+        $scope.person.dateOfBirth = date.format("YYYY-MM-DD");
       };
 
     },

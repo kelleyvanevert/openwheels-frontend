@@ -10,11 +10,6 @@ angular.module('owm.person.profile', [])
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard/profile'});
   metaInfoService.set({canonical: 'https://mywheels.nl/dashboard/profile'});
 
-  if (person.isBusinessConnected && (person.externalIdentifier === null)) {
-    $state.go('owm.person.dashboard');
-    return;
-  }
-
   $scope.hasBooked = hasBooked;
 
   $scope.sections = [

@@ -33,6 +33,7 @@ angular.module('owm.shell', [])
               //   visibleName: string;
               // }
 
+              // type URL = string;
               // type markdown = string;
 
               // enum ProfileBlacklistItem {
@@ -46,8 +47,11 @@ angular.module('owm.shell', [])
               // interface ProviderExtraInfo {
               //   emergencyNumber: string;
               //   welcomeText: markdown;
+              //   logo: URL;
               //   helpText: markdown;
-              //   personProfileBlacklist: { [item: ProfileBlacklistItem]: boolean; }
+              //   personProfileBlacklist: {
+              //     [item: ProfileBlacklistItem]: boolean;
+              //   }
               // }
 
               $rootScope.providerInfo = info;
