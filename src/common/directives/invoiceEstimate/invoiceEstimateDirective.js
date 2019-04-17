@@ -24,7 +24,13 @@ angular.module('invoiceEstimateDirective', [])
     templateUrl: 'directives/invoiceEstimate/invoiceEstimate.tpl.html',
     replace: true,
     controller: ['$scope', '$filter', '$mdDialog', function ($scope, $filter, $mdDialog) {
-      
+
+      if ($scope.booking.contract && $scope.booking.contract.type.id !== 60) {
+        $scope.totalText = 'Verwachte ritkosten';
+      } else {
+        $scope.totalText = 'Totaal te betalen';
+      }
+
       $scope.showPriceDetails = false;
       $scope.setShowPriceDetails = function (b) {
         $scope.showPriceDetails = b;

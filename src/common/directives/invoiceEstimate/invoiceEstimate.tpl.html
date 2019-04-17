@@ -155,8 +155,8 @@
              ng-style="$root.experiments.kmSchatting === 'show' ? { 'color': '#666' } : {}">
               <td class="description">
                 <div class="name">
-                  Totaal te betalen
-                  <ng-md-icon size="20" icon="info_italic" class="info-icon bg" info-dialog="schattingKilometerkosten" info-dialog-params="{ resource: resource }"></ng-md-icon>
+                  {{ totalText }}
+                  <ng-md-icon size="20" icon="info_italic" class="info-icon bg" info-dialog="schattingKilometerkosten" info-dialog-params="{ resource: resource, title: totalText }"></ng-md-icon>
                 </div>
               </td>
               <td class="price">{{ price.total + price.km_price_fuel + price.km_price_rate | currency }}</td>
