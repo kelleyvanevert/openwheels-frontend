@@ -1,0 +1,6 @@
+<div ng-if="me.isBusinessConnected && !me.flowCompleted">
+  <business-welcome-page me="me" />
+</div>
+<div ng-if="!(me.isBusinessConnected && !me.flowCompleted)">
+  <div ng-include="'person/dashboard/person-dashboard-main.tpl.html'"></div>
+</div>

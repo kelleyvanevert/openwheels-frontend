@@ -61,7 +61,10 @@
       </div>
     </div>
     <div ng-if="!hasRequestedTimeframe(booking) && allowCancel">
-      Je hebt de de aanvraag reeds geaccepteerd. Je kan de verhuring nog annuleren. Aan kort van te voren annuleren kunnen kosten verbonden zijn. Bekijk de <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/kan-ik-een-geaccepteerde-verhuring-annuleren/" target="_blank">FAQ</a> voor meer informatie.
+      Je hebt de de aanvraag reeds geaccepteerd. Je kan de verhuring nog annuleren.
+      <span ng-if="!me.isBusinessConnected">
+        Aan kort van te voren annuleren kunnen kosten verbonden zijn. Bekijk de <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/kan-ik-een-geaccepteerde-verhuring-annuleren/" target="_blank">FAQ</a> voor meer informatie.
+      </span>
     </div>
 
     <div class="row is-flex" style="padding: 1rem 0 0; margin: 0 -.5rem !important;">

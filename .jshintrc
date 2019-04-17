@@ -26,6 +26,7 @@
     "d3": false,
     "_": false,
     "$": false,
+    "snarkdown": false,
     "alert": false,
     "jasmine": false,
     "describe"   : false,

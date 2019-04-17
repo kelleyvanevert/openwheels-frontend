@@ -10,7 +10,6 @@ angular.module('owm.finance.v4', [])
 
   $scope.config = appConfig;
   $scope.Math = $window.Math;
-  $scope.provider = me.provider.id;
 
   $scope.loaded = {ungrouped: false, grouped: false};
   $scope.view = me.preference || 'both';

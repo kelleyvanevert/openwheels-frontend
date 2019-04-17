@@ -35,11 +35,11 @@ angular.module('owm.resource.edit', [
   $scope.sections = [
     { id: 'specificaties', title: 'Specificaties', icon: 'directions_car' },
     { id: 'instellingen', title: 'Instellingen', icon: 'settings' },
-    beheer ? undefined : { id: 'prijs', title: 'Huurprijs', icon: 'euro_symbol' },
+    (beheer || me.isBusinessConnected) ? undefined : { id: 'prijs', title: 'Huurprijs', icon: 'euro_symbol' },
     { id: 'fotos', title: 'Foto\'s', icon: 'photo_library' },
     { id: 'locatie', title: 'Locatie', icon: 'location_on' },
     { id: 'vrienden', title: 'Vrienden van deze auto', icon: 'people' },
-    beheer ? undefined : { id: 'kortingscodes', title: 'Kortingscodes', icon: 'local_offer' },
+    (beheer || me.isBusinessConnected) ? undefined : { id: 'kortingscodes', title: 'Kortingscodes', icon: 'local_offer' },
   ].filter(function (b) { return !!b; });
 
   function onNav () {

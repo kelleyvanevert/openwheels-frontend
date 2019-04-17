@@ -168,6 +168,8 @@ angular.module('owm.booking.show', [])
       fullscreen: true,
       controller: ['$scope', function (dialogScope) {
 
+        dialogScope.me = $scope.me;
+
         dialogScope.hide = function () {
           $mdDialog.hide();
         };
@@ -1074,7 +1076,8 @@ angular.module('owm.booking.show', [])
         headerText: $translate.instant('CANCEL_BOOKING'),
         bodyText: $translate.instant('BOOKING.CANCEL.CONFIRM_TEXT'),
         contract: contract,
-        booking: booking
+        booking: booking,
+        me: $scope.me,
       });
     };
     if($scope.requested){
