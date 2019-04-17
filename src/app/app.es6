@@ -357,10 +357,11 @@ angular.module('openwheels', [
 //  to the concrete excluded properties of a given
 //  person entity
 .value('personProfileBlacklistPropMap', {
-  gender       : ["male"],
-  dateOfBirth  : ["dateOfBirth"],
-  address      : ["zipcode", "streetNumber", "city", "streetName", "latitude", "longitude"],
-  driverLicense: ["driverLicenseNumber", "drivingLicenseValidUntil"],
+  gender            : ["male"],
+  dateOfBirth       : ["dateOfBirth"],
+  address           : ["zipcode", "streetNumber", "city", "streetName", "latitude", "longitude"],
+  driverLicense     : ["driverLicenseNumber", "drivingLicenseValidUntil"],
+  externalIdentifier: ["externalIdentifier"],
 })
 
 .factory('blacklistFilterPersonProps', function ($rootScope, personProfileBlacklistPropMap) {

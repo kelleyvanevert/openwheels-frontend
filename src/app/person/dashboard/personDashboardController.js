@@ -46,7 +46,7 @@ angular.module('owm.person.dashboard', [])
   } else if (me.isBusinessConnected) {
     $scope.dashboardLinks = [
       { sref: 'owm.trips', title: 'Ritten' },
-      { sref: 'owm.resource.search.list', title: 'Zoek een auto' }, // of misschien iets anders?
+      { sref: 'owm.resource.search.list', title: 'Huur een auto' },
       { sref: 'owm.message', title: 'Berichten' },
       { sref: 'owm.person.profile({ highlight: "profiel" })', title: 'Mijn gegevens' },
     ];
