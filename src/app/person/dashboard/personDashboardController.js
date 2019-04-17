@@ -43,6 +43,13 @@ angular.module('owm.person.dashboard', [])
         { sref: 'owm.message', title: 'Berichten' },
       ];
     }*/
+  } else if (me.isBusinessConnected) {
+    $scope.dashboardLinks = [
+      { sref: 'owm.trips', title: 'Ritten' },
+      { sref: 'owm.resource.search.list', title: 'Zoek een auto' }, // of misschien iets anders?
+      { sref: 'owm.message', title: 'Berichten' },
+      { sref: 'owm.person.profile({ highlight: "profiel" })', title: 'Mijn gegevens' },
+    ];
   }
 
 

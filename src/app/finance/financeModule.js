@@ -101,7 +101,10 @@ angular.module('owm.finance', [
         deny: {
           anonymous: true
         },
-      }
+      },
+      checkAccess: function (me) {
+        return !me.isBusinessConnected;
+      },
     },
     resolve: {
       me: ['authService', '$stateParams', function (authService, $stateParams) {

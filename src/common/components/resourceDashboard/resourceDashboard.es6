@@ -354,16 +354,30 @@ angular.module('owm.components')
           return this;
         }
 
+        // Determining whether to show the dashboard:
+        // - Transitional period:
+        //   - Check whether the user has a(ny) contract of type 15, or of type 65 as well as being the contract holder
+        //   - Just use the first contract found that meets the criteria
+        // - Future:
+        //   - Check whether person is `isBusinessConnected`
+        //   - If so, just pick the first contract (assumption: there should only be one)
+
         const contracts = await contractService.forDriver({
           person: $scope.me.id
         });
-        if (!focus.contract) {
+        if ($scope.me.isBusinessConnected) {
+          console.debug('Showing resource dashboard for business user');
+          focus.contract = contracts[0];
+        } else {
           focus.contract = contracts.reduce((companyContract, contract) => {
             return companyContract || (contract.type.id === 15 ? contract : null) || (contract.type.id === 65 && contract.contractor.id === $scope.me.id ? contract : null);
           }, null);
+          if (focus.contract) {
+            console.debug('Showing resource dashboard for company contract user');
+          }
         }
 
-        if (focus.contract) { // ($scope.me.isBusinessConnected) {
+        if (focus.contract) {
 
           $scope.show = true;
           $scope.perspective = {

@@ -59,7 +59,7 @@
       <ng-md-icon icon="today" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_TRIPS' | translate }}</p>
     </md-list-item>
 
-    <md-list-item id="menuFinance" class="menu-item-finance" ng-click="navigate('owm.finance.v4')">
+    <md-list-item id="menuFinance" class="menu-item-finance" ng-click="navigate('owm.finance.v4')" ng-if="!user.identity.isBusinessConnected">
       <ng-md-icon icon="euro_symbol" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_FINANCE' | translate }}</p>
     </md-list-item>
 
@@ -73,11 +73,15 @@
 
     <md-divider></md-divider>
 
-    <md-list-item id="menuGegevens" class="menu-item-profile" ng-click="navigate('owm.person.profile', { highlight: 'profiel' })" ng-if="user.identity.preference === 'owner' || user.identity.status !== 'new' || user.identity.provider.id !== 1">
+    <md-list-item id="menuGegevens" class="menu-item-profile" ng-click="navigate('owm.person.profile', { highlight: 'profiel' })"
+      ng-if="user.identity.preference === 'owner' || user.identity.status !== 'new' || user.identity.provider.id !== 1"
+    >
       <ng-md-icon icon="settings" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_PROFILE' | translate }}</p>
     </md-list-item>
 
-    <md-list-item id="menuGegevens" class="menu-item-profile" ng-click="navigate('owm.person.details', {pageNumber: '1'})" ng-if="user.identity.preference !== 'owner' && user.identity.status === 'new' && user.identity.provider.id === 1">
+    <md-list-item id="menuGegevens" class="menu-item-profile" ng-click="navigate('owm.person.details', {pageNumber: '1'})"
+      ng-if="user.identity.preference !== 'owner' && user.identity.status === 'new' && user.identity.provider.id === 1"
+    >
       <ng-md-icon icon="settings" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_PROFILE' | translate }}</p>
     </md-list-item>
 
