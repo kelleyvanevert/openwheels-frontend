@@ -288,10 +288,11 @@ angular.module('owm.components')
                   event: d3.event,
                 }));
             } else {
-              //console.log("no resource for:", x, y, i);
+              // console.log("no resource for:", x, y, i);
             }
           })
-          .on("mouseout", () => {
+          .on("mouseleave", () => {
+            // console.log("mouseout");
             elements.plus.style("display", "none");
           });
       }
