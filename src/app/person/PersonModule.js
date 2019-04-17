@@ -142,7 +142,7 @@ angular.module('owm.person', [
     url: '',
     views: {
       'main-full@shell': {
-        templateUrl: 'person/dashboard/person-dashboard-hero.tpl.html',
+        templateUrl: 'person/dashboard/person-dashboard.tpl.html',
         controller: 'PersonDashboardController'
       }
     },

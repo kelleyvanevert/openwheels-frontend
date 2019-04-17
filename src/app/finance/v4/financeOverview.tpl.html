@@ -51,8 +51,8 @@
         </tr>
         <tr ng-show="open" class="nohover table-finance-subtable lastrow">
           <td colspan="3" class="table-finance-col-1 first subitem">
-            <a ng-if="provider !== 50" ui-sref="owm.booking.show({bookingId: openInvoice.booking.id })">Bekijk alle ritdetails</a>
-            <a ng-if="provider === 50" target="_blank" ng-href="{{openInvoice.pdf}}">Bekijk alle ritdetails</a>
+            <a ng-if="me.provider.id !== 50" ui-sref="owm.booking.show({bookingId: openInvoice.booking.id })">Bekijk alle ritdetails</a>
+            <a ng-if="me.provider.id === 50" target="_blank" ng-href="{{openInvoice.pdf}}">Bekijk alle ritdetails</a>
           </td>
         </tr>
       </tbody>
@@ -162,7 +162,7 @@
         <tr>
           <th>#</th>
           <th>Datum</th>
-          <th ng-if="provider !== 50" >Status</th>
+          <th ng-if="me.provider.id !== 50" >Status</th>
           <th class="text-right">Bedrag</th>
           <th> </th>
         </tr>
@@ -171,10 +171,10 @@
         <tr class="clickable" ng-show="invoiceGroup.type == 'new'"  ng-repeat-start="invoiceGroup in allGroupedInvoices | limitTo:groupedInvoicesPerPage:groupedInvoicesPerPage*(currentInvoicePage-1)">
           <td>{{invoiceGroup.invoice.id}}</td>
           <td>{{invoiceGroup.invoice.date | amDateFormat:'DD-MM-YYYY'}}</td>
-          <td ng-if="provider !== 50">{{statusText(invoiceGroup.invoice.status)}} <span ng-if="statusTooltipEnable(invoiceGroup.invoice.status)" uib-tooltip="{{statusTooltipText(invoiceGroup.invoice.status)}}" class="text-muted"><i class="fa fa-info-circle"></i></span></td>
+          <td ng-if="me.provider.id !== 50">{{statusText(invoiceGroup.invoice.status)}} <span ng-if="statusTooltipEnable(invoiceGroup.invoice.status)" uib-tooltip="{{statusTooltipText(invoiceGroup.invoice.status)}}" class="text-muted"><i class="fa fa-info-circle"></i></span></td>
           <td class="text-right">{{invoiceGroup.invoice.total < 0 ? -1 * invoiceGroup.invoice.total : invoiceGroup.invoice.total | currency}}</td>
           <td class="text-right">
-            <a ng-if="(me.provider.id === 1 || me.provider.id === 5) && invoiceGroup.invoice.status === 'USER_PAY'" class="btn btn-xs btn-info" ui-sref="owm.finance.invoice.pay({ invoiceGroupId: invoiceGroup.invoice.id })">Betaal</a> 
+            <a ng-if="(me.provider.id === 1 || me.isBusinessConnected || me.provider.id === 5) && invoiceGroup.invoice.status === 'USER_PAY'" class="btn btn-xs btn-info" ui-sref="owm.finance.invoice.pay({ invoiceGroupId: invoiceGroup.invoice.id })">Betaal</a> 
             <a target="_blank" ng-href="{{invoiceGroup.invoice.pdflink}}" ga-track-event="['interaction', 'openInvoicePDF', 'financeOverview']"><i title="Download pdf" class="fa fa-fw fa-file-pdf-o"></i></a>
           </td>
         </tr>

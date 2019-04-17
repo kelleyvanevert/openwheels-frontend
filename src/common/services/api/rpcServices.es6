@@ -387,4 +387,23 @@ angular.module('rpcServices', [])
       other: params,
     });
   };
-});
+})
+
+.service('providerInfoService', function (api) {
+  var m = function (name) {
+    return api.createRpcMethod('providerinfo.' + name);
+  };
+  var _getInfo = m('getInfoByProvider');
+  this.getInfo = function (params) {
+    return _getInfo(params).then(info => {
+      if (!info.extraInfo) {
+        info.extraInfo = {};
+      }
+      if (!info.extraInfo.personProfileBlacklist) {
+        info.extraInfo.personProfileBlacklist = {};
+      }
+      return info;
+    });
+  };
+})
+;

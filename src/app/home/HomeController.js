@@ -81,19 +81,4 @@ angular.module('owm.home', ['owm.resource', 'slick'])
     }
     $state.go('owm.resource.search.list', resourceQueryService.createStateParams());
   };
-
-/*
-  // Automatically log in, if possible
-  if (!authService.user.isAuthenticated) {
-    tokenSilentRefreshService.silentRefresh().then(function (token) {
-      // this does the rest of the magic
-      // (state is automatically reloaded, I believe, and at least
-      //  the root scope's user variable is changed,
-      //  triggering a re-render of the toolbar and menu)
-      authService.notifyFreshToken(token, true);
-
-      $scope.homeAddressPrefill = makeHomeAddressPrefill(authService.user.identity);
-    });
-  }
-*/
 });

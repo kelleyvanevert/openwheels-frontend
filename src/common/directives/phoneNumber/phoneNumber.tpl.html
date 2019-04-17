@@ -1,5 +1,5 @@
 <div class="mywheels-form">
-	<h3>{{ 'MOBILE_PHONENUMBER' | translate }}</h3>
+	<h3 ng-if="!phoneNumberOptions.disableTitle">{{ 'MOBILE_PHONENUMBER' | translate }}</h3>
 
 	<!-- show on screens greater than 600px -->
 	<div id="phone_number_group" class="responsive hide-xs" ng-repeat="p in person.phoneNumbers" layout="row" layout-wrap>
@@ -17,7 +17,12 @@
 
 		<!-- verify phone number -->
 	    <div id="verify_phone_number_group" flex="20" ng-if="!p.verified">
-        	<a class="mywheels-btn mywheels-btn-normal verify_button" ng-click="addOrVerifyNumber(p.id, p.number, p.confidential)" ng-disabled="!p.number">
+        	<a
+				style="height: auto; line-height: 2rem;"
+				class="mywheels-btn mywheels-btn-normal verify_button"
+				ng-click="addOrVerifyNumber(p.id, p.number, p.confidential)"
+				ng-disabled="!p.number"
+			>
         		Verifiëren
         	</a>
 	    </div>
@@ -44,7 +49,12 @@
 
 		<!-- verify phone number -->
 	    <div id="verify_phone_number_group" ng-if="!p.verified">
-        	<a class="mywheels-btn mywheels-btn-normal verify_button" ng-click="addOrVerifyNumber(p.id, p.number, p.confidential)" ng-disabled="!p.number">
+        	<a
+				style="height: auto; line-height: 2rem;"
+				class="mywheels-btn mywheels-btn-normal verify_button"
+				ng-click="addOrVerifyNumber(p.id, p.number, p.confidential)"
+				ng-disabled="!p.number"
+			>
         		Verifiëren
         	</a>
 	    </div>
