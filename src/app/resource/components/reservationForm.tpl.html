@@ -46,20 +46,29 @@
       </p>
     </div>
 
-    <invoice-estimate ng-if="availability && price"
-                      resource="resource"
-                      booking="booking"
-                      price="price"></invoice-estimate>
+    <div class="availability-notice is-unavailable" ng-if="person.isBusinessConnected && availability && price">
+      <p class="notice">
+        <ng-md-icon icon="check" aria-hidden="true"></ng-md-icon>
+        Auto is beschikbaar
+      </p>
+    </div>
+    <div ng-if="!person.isBusinessConnected">
+      <invoice-estimate ng-if="availability && price"
+                        resource="resource"
+                        person="person"
+                        booking="booking"
+                        price="price"></invoice-estimate>
 
-    <!-- TODO (move to invoice estimate component) -->
-    <div class="discount-notice success invited-discount" ng-if="invitedDiscount">
-      Je ontvangt {{ 10 | currency }} korting van {{ person.invited.firstName }}!
+      <!-- TODO (move to invoice estimate component) -->
+      <div class="discount-notice success invited-discount" ng-if="invitedDiscount">
+        Je ontvangt {{ 10 | currency }} korting van {{ person.invited.firstName }}!
+      </div>
     </div>
   </div>
 
   <table class="reservation-extra-fields" ng-show="showExtraFields || booking.discountCode">
     <tbody>
-      <tr>
+      <tr ng-if="!person.isBusinessConnected">
         <th>
           <label for="res_discountCode"><ng-md-icon aria-label="Voeg kortingscode toe" icon="local_offer"></ng-md-icon></label>
         </th>
@@ -98,14 +107,14 @@
       </tr>
       <tr>
         <th>
-          <label for="res_comment"><ng-md-icon aria-label="Voeg opmerking toe" icon="message"></ng-md-icon></label>
+          <label for="res_comment"><ng-md-icon aria-label="{{ person.isBusinessConnected ? 'Voeg kenmerk toe' : 'Voeg opmerking toe' }}" icon="message"></ng-md-icon></label>
         </th>
         <td>
           <div class="form-group">
             <textarea id="res_comment"
                       rows="1"
                       auto-resize
-                      placeholder="Opmerking voor {{ resource.owner.firstName || 'de eigenaar' }}"
+                      placeholder="{{ person.isBusinessConnected ? 'Kenmerk' : 'Opmerking voor ' + (resource.owner.firstName || 'de eigenaar') }}"
                       md-select-on-focus
                       ng-blur="extraFieldBlur()"
                       ng-model="booking.remarkRequester"></textarea>
@@ -118,11 +127,17 @@
   <div class="text-center" style="margin-top: 1em;">
 
     <div class="secondary-buttons btn-group-justified" role="group" style="margin-bottom: 1em;" ng-show="!showExtraFields && !booking.discountCode">
-      <div class="btn-group" role="group">
-        <a class="btn mywheels-btn mywheels-btn-secondary" ng-click="extraField('discountCode')"><ng-md-icon icon="local_offer"></ng-md-icon> Kortingscode</a>
+      <div class="btn-group" role="group" ng-if="!person.isBusinessConnected">
+        <a class="btn mywheels-btn mywheels-btn-secondary" ng-click="extraField('discountCode')">
+          <ng-md-icon icon="local_offer"></ng-md-icon>
+          Kortingscode
+        </a>
       </div>
       <div class="btn-group" role="group">
-        <a class="btn mywheels-btn mywheels-btn-secondary" ng-click="extraField('comment')"><ng-md-icon icon="message"></ng-md-icon> Opmerking</a>
+        <a class="btn mywheels-btn mywheels-btn-secondary" ng-click="extraField('comment')">
+          <ng-md-icon icon="message"></ng-md-icon>
+          {{ person.isBusinessConnected ? 'Kenmerk toevoegen' : 'Opmerking' }}
+        </a>
       </div>
     </div>
 

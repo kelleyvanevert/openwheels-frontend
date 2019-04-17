@@ -18,6 +18,7 @@ angular.module('resourcePricingDirective', [])
     restrict: 'E',
     scope: {
       resource: '=',
+      isBusiness: '=',
     },
     //templateUrl: 'directives/resourcePricing/resourcePricing.tpl.html',
     template: '<div ng-include="templateUrl"></div>',

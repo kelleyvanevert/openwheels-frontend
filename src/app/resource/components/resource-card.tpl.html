@@ -8,7 +8,7 @@
             <span ng-if="resource.locktypes.indexOf('chipcard') < 0 && resource.locktypes.indexOf('smartphone') >= 0">Openen met smartphone</span>
             <span ng-if="resource.locktypes.indexOf('chipcard') >= 0 && resource.locktypes.indexOf('smartphone') < 0">Openen met OV-chipkaart</span>
         </div>
-        <div class="price">
+        <div class="price" ng-if="!$root.providerInfo.isBusiness">
             <h2 class="no-margin" style="color:#fff">
           {{ resource.price.dayRateTotal | currency }}
           </h2>

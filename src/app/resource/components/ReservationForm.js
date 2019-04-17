@@ -238,38 +238,24 @@ angular.module('owm.resource.reservationForm', [])
       return;// reject();
     }
 
-    // If available, determine rental price
-    invoice2Service.calculatePrice({
-      resource: resource.id,
-      timeFrame: {
-        startDate: booking.beginRequested,
-        endDate: booking.endRequested
-      },
-      includeRedemption: booking.riskReduction,
-      contract: booking.contract ? booking.contract.id : undefined,
-    })
-    .then(function (price) {
-      $scope.price = price;
-    });
+    if ($scope.person.isBusinessConnected) {
+      $scope.price = {}; // a bit of a hack
+    } else {
+      // If available, determine rental price
+      invoice2Service.calculatePrice({
+        resource: resource.id,
+        timeFrame: {
+          startDate: booking.beginRequested,
+          endDate: booking.endRequested
+        },
+        includeRedemption: booking.riskReduction,
+        contract: booking.contract ? booking.contract.id : undefined,
+      })
+      .then(function (price) {
+        $scope.price = price;
+      });
+    }
   }
-
-  $scope.priceHtml = function (price) {
-    var s = '';
-    if (price.rent > 0) {
-      s += 'Huur: ' + $filter('currency')(price.rent) + '<br/>';
-    }
-    if (price.insurance > 0) {
-      s += 'Verzekering: ' + $filter('currency')(price.insurance) + '<br/>';
-    }
-    if (price.booking_fee > 0) {
-      s += 'Boekingskosten: ' + $filter('currency')(price.booking_fee) + '<br/>';
-    }
-    if (price.redemption > 0) {
-      s += 'Verlagen eigen risico: ' + $filter('currency')(price.redemption) + '<br/>';
-    }
-    s += 'Totaal: ' + $filter('currency')(price.total);
-    return s;
-  };
 
   $scope.removeLocalDiscountCode = function removeLocalDiscountCode () {
     // Ideally, we'd just want to `$state.go('.', { discountCode: '' })`

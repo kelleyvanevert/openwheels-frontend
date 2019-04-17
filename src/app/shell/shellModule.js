@@ -27,10 +27,13 @@ angular.module('owm.shell', [])
             return providerInfoService.getInfo({ provider: user.identity.provider.id })
             .then(function (info) {
 
+              info.isBusiness = user.identity.isBusinessConnected;
+
               // interface ProviderInfo {
               //   extraInfo: any | ProviderExtraInfo;
               //   fleetManager: Person;
               //   visibleName: string;
+              //   isBusiness: boolean;
               // }
 
               // type URL = string;
