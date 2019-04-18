@@ -4,6 +4,7 @@ angular.module('owm.person.dashboard', [])
 
 .controller('PersonDashboardController', function ($q, $scope, $sce, $state, me, bookingList, rentalList, actions, person,
   homeAddressPrefill, $filter, hasBooked,
+  unwrap,
   authService, bookingService, alertService, boardcomputerService, actionService, resourceService, resourceQueryService,
   blogItems, $localStorage, personService, extraDriverService, dialogService, $translate, $timeout, Analytics, metaInfoService, appConfig, $window) {
 
@@ -182,8 +183,8 @@ angular.module('owm.person.dashboard', [])
     if (placeDetails) {
       resourceQueryService.setText($scope.search.text);
       resourceQueryService.setLocation({
-        latitude: placeDetails.geometry.location.lat(),
-        longitude: placeDetails.geometry.location.lng()
+        latitude: unwrap(placeDetails.geometry.location.lat),
+        longitude: unwrap(placeDetails.geometry.location.lng),
       });
     }
     $state.go('owm.resource.search.list', resourceQueryService.createStateParams());

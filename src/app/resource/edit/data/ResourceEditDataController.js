@@ -2,7 +2,7 @@
 
 angular.module('owm.resource.edit.data', [])
 
-.controller('ResourceEditDataController', function ($q, $scope, $filter, $translate, alertService, resourceService) {
+.controller('ResourceEditDataController', function ($q, $scope, $filter, $translate, alertService, resourceService, unwrap) {
 
   // expects to see $scope.$parent
   var resource = $scope.$parent.resource;
@@ -189,8 +189,8 @@ angular.module('owm.resource.edit.data', [])
     //set new values on scope
     $scope.resource.location = address.route + ' ' + address.streetNumber;
     $scope.resource.city = address.city;
-    $scope.resource.latitude = $scope.searchPlace.details.geometry.location.lat();
-    $scope.resource.longitude = $scope.searchPlace.details.geometry.location.lng();
+    $scope.resource.latitude = unwrap($scope.searchPlace.details.geometry.location.lat);
+    $scope.resource.longitude = unwrap($scope.searchPlace.details.geometry.location.lng);
   });
 
   //reset map center als een nieuwe locatie is geselecteerd
