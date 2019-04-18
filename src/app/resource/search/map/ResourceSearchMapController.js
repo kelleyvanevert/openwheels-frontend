@@ -4,6 +4,7 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
 
   .controller('ResourceSearchMapController', function ($scope, uiGmapGoogleMapApi, uiGmapIsReady, $stateParams, appConfig,
     $log,
+    unwrap,
     metaInfoService, resourceService, resourceQueryService, $state, $location, $rootScope, $timeout, $filter) {
 
     metaInfoService.set({url: appConfig.serverUrl + '/auto-huren/kaart'});
@@ -307,7 +308,10 @@ angular.module('owm.resource.search.map', ['uiGmapgoogle-maps'])
             $scope.map.fitMarkers = false;
             $scope.bounds = angular.copy(boundsFromSearch);
           }else if($scope.placeDetails.geometry.location){
-            $scope.map.center = {latitude: $scope.placeDetails.geometry.location.lat(), longitude:  $scope.placeDetails.geometry.location.lng()};
+            $scope.map.center = {
+              latitude:  unwrap($scope.placeDetails.geometry.location.lat),
+              longitude: unwrap($scope.placeDetails.geometry.location.lng),
+            };
             $scope.map.zoom = 13;
           }
         }

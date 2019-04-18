@@ -4,6 +4,7 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
  
 .directive('owGeocoderSearchbar', function ($rootScope, $log, $filter, Geocoder, resourceQueryService,
     autocompleteOptions,
+    unwrap,
     $state, $mdMenu, $window, alertService, $location) {
   return {
     restrict: 'E',
@@ -156,9 +157,9 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
           });
           doCall(resourceQueryService.createStateParams());
         })
-				.finally(function() {
-					$scope.searcher.loading = false;
-				})
+        .finally(function() {
+          $scope.searcher.loading = false;
+        })
         ;
       };
 
@@ -185,8 +186,8 @@ angular.module('geocoderDirectiveSearchbar', ['geocoder', 'google.places', 'ngMa
             
             resourceQueryService.setText(res.formatted_address);
             resourceQueryService.setLocation({
-              latitude: res.geometry.location.lat(),
-              longitude: res.geometry.location.lng()
+              latitude:  unwrap(res.geometry.location.lat),
+              longitude: unwrap(res.geometry.location.lng),
             });
             doCall(resourceQueryService.createStateParams());
           }

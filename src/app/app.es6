@@ -335,6 +335,10 @@ angular.module('openwheels', [
   };
 })
 
+.value('unwrap', function (x) {
+  return typeof x === 'function' ? x() : x;
+})
+
 .value('makeHomeAddressPrefill', function (me) {
   if (!me) {
     return '';

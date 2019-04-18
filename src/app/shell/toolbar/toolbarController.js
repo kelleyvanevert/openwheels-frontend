@@ -5,6 +5,7 @@ angular.module('owm.shell')
 .controller('ToolbarController', function ($scope, $state, me, $rootScope,
 		$localStorage, $timeout, $filter, autocompleteOptions,
 		$location,
+		unwrap,
 		resourceQueryService
 ) {
 
@@ -48,8 +49,8 @@ angular.module('owm.shell')
 			
 			resourceQueryService.setText(res.formatted_address);
 			resourceQueryService.setLocation({
-				latitude: res.geometry.location.lat(),
-				longitude: res.geometry.location.lng()
+				latitude:  unwrap(res.geometry.location.lat),
+				longitude: unwrap(res.geometry.location.lng),
 			});
 
 			var params = resourceQueryService.createStateParams();
