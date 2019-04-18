@@ -21,10 +21,10 @@ angular.module('owmlanding.mywheels-business', ['slick'])
   $scope.FAQ = [
     {
       question: 'Hoe maak ik een zakelijk account aan?',
-      answer: 'Meld je aan met je eigen persoonsgegevens en vul tijdens het registeren de bedrijfsnaam in. Je kunt daarna kiezen uit een van bovenstaande zakelijke contracten.',
+      answer: 'Vul bovenstaand contactformulier in om een zakelijk contract aan te vragen.',
     }, {
-      question: 'Hoe nodig ik medewerkers als extra bestuurder uit?',
-      answer: 'Bij het MyWheels Member en MyWheels Company contract kun je extra bestuurders uitnodigen. Ga daarvoor naar de pagina Contracten en voeg het e-mailadres van de medewerker toe aan je contract. De medewerker kan dan op kosten van het bedrijf ritten maken.',
+      question: 'Hoeveel bestuurders kan ik kosteloos toevoegen?',
+      answer: 'Bij MyWheels Company kun je vijftig bestuurders toevoegen en bij MyWheels Member twee. Bij MyWheels Go betaal je een bedrag per extra bestuurder.',
     }, {
       question: 'Ontvang ik een btw-factuur?',
       answer: 'Je ontvangt automatisch gespecificeerde btw-facturen op naam van jouw bedrijf.',
