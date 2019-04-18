@@ -54,7 +54,8 @@ angular.module('bookingInvoicesDirective', [])
 
       function loadReceivedInvoices() {
         var booking = $scope.booking;
-        return invoice2Service.getReceived({ person: me.id, booking: booking.id }).then(function (invoices) {
+        return invoice2Service.getReceived({ person: me.id, booking: booking.id }, undefined, { cache: true })
+        .then(function (invoices) {
 
           $scope.receivedInvoices = invoices || [];
 
@@ -76,7 +77,8 @@ angular.module('bookingInvoicesDirective', [])
 
       function loadSentInvoices() {
         var booking = $scope.booking;
-        return invoice2Service.getSent({ person: me.id, booking: booking.id }).then(function (invoices) {
+        return invoice2Service.getSent({ person: me.id, booking: booking.id }, undefined, { cache: true })
+        .then(function (invoices) {
 
           $scope.sentInvoices = invoices || [];
 
