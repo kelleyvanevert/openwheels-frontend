@@ -114,6 +114,15 @@
                 </div>
             </div>
 
+            <div class="form-group" ng-if="extraFields.comment">
+                <textarea
+                    name="comment"
+                    ng-model="formEntry.comment"
+                    md-select-on-focus
+                    placeholder="Opmerkingen"
+                ></textarea>
+            </div>
+
             <p class="w-submit-button">
                 <button type="submit"
                         ng-click="submit()"

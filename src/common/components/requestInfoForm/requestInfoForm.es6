@@ -31,6 +31,7 @@ angular.module('owm.components')
         numEmployees: '',
         numCars: '',
         model: '',
+        comment: '',
       };
       $scope.formSendStatus = false;
 
