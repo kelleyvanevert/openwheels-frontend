@@ -246,7 +246,7 @@ angular.module('owm.person.dashboard', [])
 
   function loadFavoriteResources() {
     resourceService.getFavorites({
-        maxResults: 5
+        maxResults: me.isBusinessConnected ? 10 : 5,
       }).then(function (favoriteResources) {
         $scope.favoriteResources = favoriteResources || [];
       })

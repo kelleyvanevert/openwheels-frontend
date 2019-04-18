@@ -308,6 +308,7 @@ angular.module('owm.components')
           controller: ['$scope', function (dialogScope) {
 
             dialogScope.booking = booking;
+            dialogScope.me = $scope.me;
             dialogScope.perspective = $scope.perspective;
 
             dialogScope.hide = function () {

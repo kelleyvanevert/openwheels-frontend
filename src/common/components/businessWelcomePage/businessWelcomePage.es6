@@ -40,6 +40,12 @@ angular.module('owm.components')
         width: '20em',
       };
 
+      $scope.numSteps = 2;
+      const blacklisted = $rootScope.providerInfo.extraInfo.personProfileBlacklist;
+      if (blacklisted.driverLicense && blacklisted.dateOfBirth && blacklisted.gender && blacklisted.externalIdentifier) {
+        $scope.numSteps = 1;
+      }
+
       $scope.step = 0;
       $scope.loading = false;
       // if ($scope.person.firstName && $scope.person.surname && $scope.person.zipcode && $scope.person.streetNumber) {
@@ -80,6 +86,9 @@ angular.module('owm.components')
             "male",
             "externalIdentifier",
           ]));
+        }
+
+        if ($scope.step + 1 === $scope.numSteps) {
           newProps.flowCompleted = true;
         }
 

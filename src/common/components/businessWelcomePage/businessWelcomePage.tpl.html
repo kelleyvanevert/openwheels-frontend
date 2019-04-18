@@ -1,4 +1,4 @@
-<div class="home landing">
+<div class="home darker-bg landing">
   <div class="landing-hero business-welcome">
     <div class="landing-hero-overlay"></div>
     <div class="container container-transitional">
@@ -39,7 +39,7 @@
         >
           <div class="card mw">
             <div class="card-body">
-              <h3>1/2 Basisgegevens</h3>
+              <h3>{{ numSteps > 1 ? '1/' + numSteps + ' ' : '' }}Basisgegevens</h3>
               <div style="padding-top: 2rem;">
 
                 <div class="row">
@@ -168,14 +168,14 @@
         </form>
 
         <form
-          ng-if="step === 1"
+          ng-if="step === 1 && step < numSteps"
           style="position: absolute; top: 0; left: 0; right: 0;"
           class="mywheels-form smooth-slide-appear"
           name="extraInfoForm"
         >
           <div class="card mw">
             <div class="card-body">
-              <h3>2/2 Extra gegevens</h3>
+              <h3>2/{{ numSteps }} Extra gegevens</h3>
               <div style="padding-top: 2rem;">
 
                 <div class="row" ng-if="!$root.providerInfo.extraInfo.personProfileBlacklist.driverLicense">
@@ -293,7 +293,7 @@
         </form>
 
         <div
-          ng-if="step === 2"
+          ng-if="step === numSteps"
           style="position: absolute; top: 0; left: 0; right: 0;"
           class="smooth-slide-appear"
         >
@@ -313,7 +313,7 @@
                   ng-click="ensureFlowCompleted()"
                   ui-sref="owm.resource.search.list"
                 >
-                  Zoek een auto
+                  Huur een auto
                 </md-button>
               </p>
             </div>
@@ -324,21 +324,4 @@
     </div><!-- /.col -->
   </div>
 
-  <!-- TRIANGLE BAR HOME -->
-  <div class="triangle--bar--home triangle--bar--home-lightgray"></div>
-  <!-- /TRIANGLE BAR -->
-
-  <div class="footer-logo-row text-center">
-    <div class="container-home">
-      <h2 class="footer-logo-row-header">Onze referenties</h2>
-      <div class="row no-margin">
-        <div class="col-xs-6 col-md-2"><img src="assets/img/media/de_volkskrant_logo.png"></div>
-        <div class="col-xs-6 col-md-2"><img src="assets/img/media/nos_logo.png"></div>
-        <div class="col-xs-6 col-md-2"><img src="assets/img/media/de_telegraaf_logo.png"></div>
-        <div class="col-xs-6 col-md-2"><img src="assets/img/media/financieel_dagblad_logo.png"></div>
-        <div class="col-xs-6 col-md-2"><img src="assets/img/media/bnr_nieuwsradio_logo.png"></div>
-        <div class="col-xs-6 col-md-2"><img src="assets/img/media/het_parool_logo.png"></div>
-      </div>
-    </div>
-  </div>
 </div>

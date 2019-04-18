@@ -50,7 +50,7 @@
             {{ booking.riskReduction ? 'Verlaag eigen risico niet' : 'Verlaag eigen risico' }}
           </a>
         </div>
-        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!details.bookingStarted">
+        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!details.bookingStarted && !booking.person.isBusinessConnected">
           <a
             ng-click="discountCodeDialog($event)"
             class="mywheels-btn mywheels-btn-action"
