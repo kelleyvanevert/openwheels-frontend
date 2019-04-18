@@ -34,6 +34,10 @@ angular.module('google.places', [])
 					 [ '$parse', '$compile', '$timeout', '$document', 'googlePlacesApi',
 						 function ($parse, $compile, $timeout, $document, googlePromise) {
 
+							 function unwrap (x) {
+								 return typeof x === 'function' ? x() : x;
+							 }
+
 								if (!Object.entries) {
 									Object.entries = function( obj ){
 										var ownProps = Object.keys( obj ),
@@ -60,7 +64,9 @@ angular.module('google.places', [])
 								 try {
 									 window.localStorage.setItem('cache_places_autocomplete', '{}');
 									 cache = {};
-								 } catch (e) {} // no localstorage
+								 } catch (e) {
+									 // noop
+								 } // no localstorage
 							 } // no localstorage or json parse error
 
 							 var cacheSaveTimeoutID;
@@ -162,7 +168,10 @@ angular.module('google.places', [])
 
 									try {
 										window.localStorage.setItem('cache_places_details', JSON.stringify(placesCache));
-									} catch (e) {} // no localstorage or storage limit reached
+									} catch (e) {
+										// console.debug(e);
+										// noop
+									} // no localstorage or storage limit reached
 								 }
 
 								 placesCacheSaveTimeoutID = undefined;
@@ -184,26 +193,28 @@ angular.module('google.places', [])
 											return false;
 										}
 
-										var place = placesCache[input].result;
-										var loc = place.geometry.location;
-										place.geometry.location = {
-											lat: function () { return loc.lat; },
-											lng: function () { return loc.lng; },
-										};
-										return place;
+										return placesCache[input].result;
 									}
 
 									// if anything goes wrong
 								 return false;
 							 }
 
-							 function cachePlacesResult (input, result) {
-								 if (placesCache) {
-									placesCache[input] = {
-										timestamp: Math.round(Date.now() / 1000),
-										result: result,
-									};
-									schedulePlacesCacheSave();
+							 function cachePlacesResult (input, place) {
+								 try {
+									place = JSON.parse(JSON.stringify(place));
+									// place.geometry.location.lat = unwrap(place.geometry.location.lat);
+									// place.geometry.location.lng = unwrap(place.geometry.location.lng);
+									if (placesCache) {
+										placesCache[input] = {
+											timestamp: Math.round(Date.now() / 1000),
+											result: place,
+										};
+										schedulePlacesCacheSave();
+									}
+								 } catch (e) {
+									 // console.debug(e);
+									 // noop
 								 }
 							 }
 
