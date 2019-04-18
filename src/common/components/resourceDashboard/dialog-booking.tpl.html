@@ -42,7 +42,7 @@
       </div>
       <div class="media-body">
 
-        <div id="booking-list-item-owner_ok" class="pull-right text-right" ng-if="perspective.isProviderAdmin">
+        <div id="booking-list-item-owner_ok" class="pull-right text-right" ng-if="perspective.isProviderAdmin || booking.person.id === me.id">
           <!-- OK ICON !-->
           <span ng-if="booking.ok && booking.approved !== 'BUY_VOUCHER'">
             <i class="fa fa-check-circle fa-2x text-success" uib-tooltip="Deze boeking is akkoord, je kunt de auto meegeven aan de huurder"></i>

@@ -5,7 +5,8 @@
             accepted &&
             !requested &&
             !bookingEnded &&
-            !booking.resource.boardcomputer">
+            !booking.resource.boardcomputer &&
+            !booking.person.isBusinessConnected">
   <div class="card-body">
     <p>
       <a href="{{ allowAgreementUrl }}" target="_blank" ng-href="{{ allowAgreementUrl }}">
