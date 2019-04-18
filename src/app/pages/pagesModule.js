@@ -9,6 +9,11 @@ angular.module('owm.pages', [
 
   'owmlanding.mywheels-open',
   'owmlanding.mywheels-lease',
+  'owmlanding.mywheels-fleet',
+  'owmlanding.mywheels-business',
+  'owmlanding.mywheels-group',
+  'owmlanding.mywheels-share',
+  'owmlanding.mywheels-zakelijk',
   'owmlanding.beheerders',
 ])
 
@@ -83,6 +88,71 @@ angular.module('owm.pages', [
       'main-full@shell': {
         templateUrl: 'pages/mywheels-lease/mywheels-lease.tpl.html',
         controller: 'MyWheelsLeaseController'
+      },
+    },
+  })
+
+  .state('owmlanding.mywheels-zakelijk', {
+    url: '/zakelijk',
+    views: {
+      'toolbar@shell': {
+        templateUrl: 'pages/mywheels-zakelijk/toolbar.tpl.html', // reused (!)
+      },
+      'main-full@shell': {
+        templateUrl: 'pages/mywheels-zakelijk/mywheels-zakelijk.tpl.html',
+        controller: 'MyWheelsZakelijkController',
+      },
+    },
+  })
+
+  .state('owmlanding.mywheels-fleet', {
+    url: '/fleet',
+    views: {
+      'toolbar@shell': {
+        templateUrl: 'pages/mywheels-zakelijk/toolbar.tpl.html', // reused (!)
+      },
+      'main-full@shell': {
+        templateUrl: 'pages/mywheels-fleet/mywheels-fleet.tpl.html',
+        controller: 'MyWheelsFleetController',
+      },
+    },
+  })
+
+  .state('owmlanding.mywheels-business', {
+    url: '/business',
+    views: {
+      'toolbar@shell': {
+        templateUrl: 'pages/mywheels-zakelijk/toolbar.tpl.html', // reused (!)
+      },
+      'main-full@shell': {
+        templateUrl: 'pages/mywheels-business/mywheels-business.tpl.html',
+        controller: 'MyWheelsBusinessController',
+      },
+    },
+  })
+
+  .state('owmlanding.mywheels-group', {
+    url: '/group',
+    views: {
+      'toolbar@shell': {
+        templateUrl: 'pages/mywheels-zakelijk/toolbar.tpl.html', // reused (!)
+      },
+      'main-full@shell': {
+        templateUrl: 'pages/mywheels-group/mywheels-group.tpl.html',
+        controller: 'MyWheelsGroupController',
+      },
+    },
+  })
+
+  .state('owmlanding.mywheels-share', {
+    url: '/share',
+    views: {
+      'toolbar@shell': {
+        templateUrl: 'pages/mywheels-zakelijk/toolbar.tpl.html', // reused (!)
+      },
+      'main-full@shell': {
+        templateUrl: 'pages/mywheels-share/mywheels-share.tpl.html',
+        controller: 'MyWheelsShareController',
       },
     },
   })

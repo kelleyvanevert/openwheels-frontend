@@ -353,6 +353,32 @@ angular.module('openwheels', [
   }
 })
 
+// A mapping from the blacklisted "fields"
+//  to the concrete excluded properties of a given
+//  person entity
+.value('personProfileBlacklistPropMap', {
+  gender            : ["male"],
+  dateOfBirth       : ["dateOfBirth"],
+  address           : ["zipcode", "streetNumber", "city", "streetName", "latitude", "longitude"],
+  driverLicense     : ["driverLicenseNumber", "drivingLicenseValidUntil"],
+  externalIdentifier: ["externalIdentifier"],
+})
+
+.factory('blacklistFilterPersonProps', function ($rootScope, personProfileBlacklistPropMap) {
+  const blacklistedProps = Object.entries($rootScope.providerInfo.extraInfo.personProfileBlacklist)
+    .map(([field, blacklist]) => blacklist ? field : null)
+    .map(field => field ? personProfileBlacklistPropMap[field] : [])
+    .reduce((a, b) => a.concat(b), []);
+
+  return function (personProps) {
+    personProps = _.clone(personProps);
+    blacklistedProps.forEach(prop => {
+      delete personProps[prop];
+    });
+    return personProps;
+  };
+})
+
 .value('isBeheerder', function (person, resource) {
   return (resource.contactPersonId === person.id) && (resource.ownerId !== person.id);
 })
@@ -361,6 +387,10 @@ angular.module('openwheels', [
   return function (str) {
     return (str || '').replace(/[ ]*\[[a-z0-9]*\][ ]*$/i, '');
   };
+})
+
+.filter('snarkdown', () => md => {
+  return snarkdown(md || "");
 })
 
 .filter('homeAddress', function (makeHomeAddressPrefill) {
@@ -418,6 +448,19 @@ angular.module('openwheels', [
     return String(a);
   };
 
+  function possiblyRedirectToProfileFlow (e) {
+    if (authService.user.isAuthenticated) {
+      const me = authService.user.identity;
+      const shouldFlow = me.isBusinessConnected && !me.flowCompleted;
+      const onDashboard = $state.includes('owm.person.dashboard');
+      const onLandingPage = $state.includes('owmlanding');
+      if (shouldFlow && !onDashboard && !onLandingPage) {
+        e.preventDefault();
+        $state.go('owm.person.dashboard');
+      }
+    }
+  }
+
   function setAnalyticsUser () {
     if (authService.user.isAuthenticated) {
       var userId = authService.user.identity.firstName + authService.user.identity.id;
@@ -449,6 +492,7 @@ angular.module('openwheels', [
     if (toParams.loader !== false && !toState.noGlobalLoader) {
       alertService.load();
     }
+
     setAnalyticsUser();
 
     if (toState.redirectTo) {
@@ -461,6 +505,8 @@ angular.module('openwheels', [
 
   $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
     $state.previous = fromState;
+
+    possiblyRedirectToProfileFlow(event);
 
     $rootScope.previousState = fromState;
     $rootScope.previousStateParams = fromParams;

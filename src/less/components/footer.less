@@ -76,3 +76,35 @@
         height: 59px;
     }
 }
+
+.partner_logos {
+    margin-top: 4rem;
+    text-align: center;
+    overflow: hidden;
+
+    .logo {
+        display: inline-block;
+        margin: 3rem 9rem;
+        vertical-align: middle;
+
+        img {
+            margin: 0;
+        }
+    }
+}
+
+@media (max-width: 400px) {
+    .partner_logos {
+        text-align: center;
+        overflow: hidden;
+
+        .logo {
+            display: block;
+            margin: 3rem 0;
+
+            img {
+                margin: 0 auto;
+            }
+        }
+    }
+}

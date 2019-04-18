@@ -81,7 +81,7 @@
                 <p>Via MyWheels kun je kiezen uit twee verschillende modellen die via een private leaseconstructie worden aangeboden: een brandstof Peugeot 108 en een elektrische Renault ZOE.</p>
 
                 <p>
-                    <a href="https://mywheels.nl/autodelen/wp-content/uploads/2019/03/voorwaarden_maart_2019.pdf">
+                    <a href="https://mywheels.nl/autodelen/wp-content/uploads/2019/04/MyWheels_Lease_Voorwaarden_april2019.pdf">
                         Lees de voorwaarden &raquo;
                     </a>
                 </p>
@@ -204,113 +204,14 @@
     >
         <div class="rpad col-sm-8 col-sm-offset-2">
             <div style="padding-top: 1em;">
-                <div class="aanmeldformulier">
-                    <div class="form-surround">
-                        <form name="form" class="mywheels-form">
-
-                            <div class="form-group">
-                                <input type="text"
-                                       name="first_name"
-                                       ng-model="formEntry.firstName"
-                                       md-select-on-focus
-                                       required="true"
-                                       placeholder="Initialen / voornaam" />
-                                <div ng-show="form.$submitted || form.first_name.$touched">
-                                  <div class="text-danger" ng-show="form.first_name.$error.required">Vul je initialen of voornaam in.</div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <input type="text"
-                                       name="surname"
-                                       ng-model="formEntry.surname"
-                                       md-select-on-focus
-                                       required="true"
-                                       placeholder="Achternaam" />
-                                <div ng-show="form.$submitted || form.surname.$touched">
-                                  <div class="text-danger" ng-show="form.surname.$error.required">Vul je achternaam in.</div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <input type="text"
-                                       name="zipcode"
-                                       ng-model="formEntry.zipcode"
-                                       md-select-on-focus
-                                       required="true"
-                                       placeholder="Postcode" />
-                                <div ng-show="form.$submitted || form.zipcode.$touched">
-                                  <div class="text-danger" ng-show="form.zipcode.$error.required">Vul je postcode in.</div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <input type="email"
-                                       name="email"
-                                       ng-model="formEntry.email"
-                                       md-select-on-focus
-                                       required="true"
-                                       placeholder="Email" />
-                                <div ng-show="form.$submitted || form.email.$touched">
-                                  <div class="text-danger" ng-show="form.email.$error.required || form.email.$error.email">Vul een e-mailadres in.</div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <input type="text"
-                                       name="phone_number"
-                                       ng-model="formEntry.phoneNumber"
-                                       md-select-on-focus
-                                       required="true"
-                                       valid-phone-number
-                                       placeholder="Telefoonnummer" />
-                                <div ng-show="form.$submitted || form.phone_number.$touched">
-                                  <div class="text-danger" ng-show="form.phone_number.$error.required">Vul een telefoonnummer in. Zo kunnen we je bereiken.</div>
-                                  <div class="text-danger" ng-show="form.phone_number.$error.validPhoneNumber">Dit lijkt niet een valide telefoonnummer te zijn. Graag een telefoonnummer invoeren met enkel nummers, spaties en streepjes en haakjes, dat tussen de 5 en 20 tekens lang is.</div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <select name="model"
-                                        ng-model="formEntry.model"
-                                        md-select-on-focus
-                                        required="true"
-                                        ng-options="option.value as option.label disable when options.disabled for option in [
-                                            { label: '-- Voorkeur model --', value: '', disabled: true },
-                                            { label: 'Peugeot 108', value: 'peugeot_108' },
-                                            { label: 'Renault ZOE', value: 'renault_zoe' },
-                                        ]"
-                                />
-                                <div ng-show="form.$submitted || form.model.$touched">
-                                  <div class="text-danger" ng-show="form.model.$error.required">Geef je voorkeursmodel aan.</div>
-                                </div>
-                            </div>
-
-                            <p class="w-submit-button">
-                                <button type="submit"
-                                        ng-click="submit()"
-                                        class="mywheels-btn mywheels-btn-call-to-action"
-                                        md-ink-ripple="#8f6700">
-                                    Ja, ik doe mee <span style="position: relative; bottom: -.1em; right: -.4em;">〉</span>
-                                </button>
-                            </p>
-                        </form>
-                        <div class="form-overlay form-sending" ng-if="formSendStatus === 'sending'">
-                            <md-progress-circular md-mode="indeterminate" md-diameter="96"></md-progress-circular>
-                        </div>
-                        <div class="form-overlay form-submitted" ng-if="formSendStatus === 'success'">
-                            <div class="size-2" style="font-weight: bold;">
-                                <p><ng-md-icon icon="check" size="40" style="width: 20px; height: 40px;"></ng-md-icon></p>
-                                <p>Bedankt voor de interesse!</p>
-                                <p>We nemen spoedig contact met je op.</p>
-                            </div>
-                        </div>
-                        <div class="form-overlay form-error" ng-if="formSendStatus === 'error'">
-                            <div class="size-2">
-                                <p><ng-md-icon icon="error" size="40" style="width: 20px; height: 40px;"></ng-md-icon></p>
-                                <p>
-                                    Het spijt ons heel erg, maar er is iets misgegaan bij het versturen van het formulier.
-                                    Je kunt in plaats hiervan een mailtje sturen naar <a href="support@mywheels.nl">support@mywheels.nl</a>.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <request-info-form
+                    extra-fields="{
+                        model: true,
+                    }"
+                    track-event="mywheels_lease_meedoen"
+                    form-name="mw_lease"
+                    submit-text="Ja, ik doe mee"
+                />
             </div>
         </div>
     </div>

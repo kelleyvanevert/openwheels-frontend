@@ -10,6 +10,8 @@ angular.module('phoneNumberDirective', [])
     templateUrl: 'directives/phoneNumber/phoneNumber.tpl.html',
     controller: function functionName($scope, $log, personService, alertService, $mdDialog, $mdMedia) {
 
+      $scope.phoneNumberOptions = $scope.phoneNumberOptions || {};
+
       $scope.verificationCodeAlreadySent = false;
       $scope.verificationCodeError = false;
 
@@ -69,6 +71,9 @@ angular.module('phoneNumberDirective', [])
         .then(function(person){
           //update phone numbers in the scope
           $scope.person.phoneNumbers = person.phoneNumbers;
+          if ($scope.phoneNumberOptions.onUpdate) {
+            $scope.phoneNumberOptions.onUpdate(person.phoneNumbers);
+          }
 
           //send the code for the first time
           if(phoneNumber && !$scope.verificationCodeAlreadySent) {

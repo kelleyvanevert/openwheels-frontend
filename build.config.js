@@ -103,6 +103,8 @@ module.exports = {
       'vendor/angulartics-google-tag-manager/dist/angulartics-google-tag-manager.min.js',
 
       'vendor_custom/angular-load.js',
+
+      'node_modules/snarkdown/dist/snarkdown.umd.js',
     ],
     fonts: [
       'vendor/font-awesome/fonts/*'

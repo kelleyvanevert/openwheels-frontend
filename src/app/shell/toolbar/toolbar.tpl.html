@@ -97,7 +97,7 @@
             </md-button>
           </md-menu-item>
 
-          <md-menu-item ng-if="user.identity.preference === 'owner' || user.identity.status !== 'new' || user.identity.provider.id !== 1">
+          <md-menu-item ng-if="user.identity.preference === 'owner' || user.identity.status !== 'new' || user.identity.provider.id !== 1 || user.identity.isBusinessConnected">
             <md-button id="toolbarPersonmenuGegevens" ui-sref="owm.person.profile({ highlight: 'profiel' })">
               <ng-md-icon icon="settings" alt="Icoon" aria-label="Icoon"></ng-md-icon>
               <span>{{ 'MY_PROFILE' | translate }}</span>
@@ -111,7 +111,7 @@
             </md-button>
           </md-menu-item>
 
-          <md-menu-item ng-if="user.identity.provider.id == 1">
+          <md-menu-item ng-if="user.identity.provider.id === 1">
             <md-button id="toolbarPersonmenuInvite" ui-sref="invite">
               <ng-md-icon icon="share" alt="Icoon" aria-label="Icoon"></ng-md-icon>
               <span>{{ 'INVITE_FRIENDS_MENU' | translate }}</span>

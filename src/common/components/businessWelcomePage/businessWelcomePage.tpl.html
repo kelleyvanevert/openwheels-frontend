@@ -1,0 +1,327 @@
+<div class="home darker-bg landing">
+  <div class="landing-hero business-welcome">
+    <div class="landing-hero-overlay"></div>
+    <div class="container container-transitional">
+      <div class="row" style="padding: 6rem 0 8rem 0">
+        <div class="rpad col-md-6">
+          <p>
+            <img ng-src="assets/img/mywheels-zakelijk-textwhite.png" height="32" />
+          </p>
+          <h1 style="margin: 2rem 0 3rem; color: white;">Welkom bij MyWheels!</h1>
+          <div class="snarkdown size-3 text-white" ng-bind-html="$root.providerInfo.extraInfo.welcomeText | snarkdown"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRIANGLE BAR HOME -->
+  <div class="triangle--bar--home triangle--bar--home-white"></div>
+  <!-- /TRIANGLE BAR -->
+
+  <div class="container container-transitional" style="padding-bottom: 20rem;">
+    <div class="row" style="padding-bottom: 3rem;">
+      <div class="rpad xol-xs-12">
+        <h3 style="text-align: center;">
+          <span ng-if="!$root.providerInfo.extraInfo.logo">{{ $root.providerInfo.visibleName }}</span>
+          <span ng-if="$root.providerInfo.extraInfo.logo"><img ng-src="{{ $root.providerInfo.extraInfo.logo }}" style="max-width: 300px;" /></span>
+        </h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="rpad col-xs-12 col-md-8 col-md-offset-2"
+        style="position: relative; min-height: 50rem;">
+
+        <form
+          ng-if="step === 0"
+          style="position: absolute; top: 0; left: 0; right: 0;"
+          class="mywheels-form smooth-slide-appear"
+          name="profileForm"
+        >
+          <div class="card mw">
+            <div class="card-body">
+              <h3>{{ numSteps > 1 ? '1/' + numSteps + ' ' : '' }}Basisgegevens</h3>
+              <div style="padding-top: 2rem;">
+
+                <div class="row">
+                  <div class="col-xs-12 col-sm-4">
+                    <div class="form-group">
+                      <p style="margin: .5rem 0"><label>Voornaam*</label></p>
+                      <input
+                        type="text"
+                        name="firstName"
+                        class="form-control"
+                        ng-model="person.firstName"
+                        required
+                      />
+                      <div class="text-danger" ng-show="profileForm.firstName.$touched && profileForm.firstName.$error.required">
+                        Dit veld is verplicht
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-4 col-sm-3">
+                    <div class="form-group">
+                      <p style="margin: .5rem 0"><label>Tussenvoegsel</label></p>
+                      <input
+                        type="text"
+                        name="preposition"
+                        class="form-control"
+                        ng-model="person.preposition"
+                        null-if-empty
+                      />
+                    </div>
+                  </div>
+                  <div class="col-xs-8 col-sm-5">
+                    <div class="form-group">
+                      <p style="margin: .5rem 0"><label>Achternaam*</label></p>
+                      <input
+                        type="text"
+                        name="surname"
+                        class="form-control"
+                        ng-model="person.surname"
+                        required
+                      />
+                      <div class="text-danger" ng-show="profileForm.surname.$touched && profileForm.surname.$error.required">
+                        Dit veld is verplicht
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- /.row -->
+
+                <div class="row">
+                  <div
+                    class="col-xs-12"
+                    style="padding-top: 2rem;"
+                    ng-init="(phoneNumberOptions = {
+                      disableTitle: true,
+                      onUpdate: phoneUpdate(profileForm),
+                    }) && phoneUpdate(profileForm)(person.phoneNumbers)"
+                  >
+                    <p style="margin: .5rem 0"><label>Mobiel nummer*</label></p>
+                    <div phone-number style="margin-top: -1rem"></div>
+                  </div>
+                </div><!-- /.row -->
+
+                <div class="row" ng-if="!$root.providerInfo.extraInfo.personProfileBlacklist.address">
+                  <div class="col-xs-8">
+                    <div class="form-group">
+                      <p style="margin: .5rem 0"><label>Postcode*</label></p>
+                      <input
+                        type="text"
+                        name="zipcode"
+                        class="form-control"
+                        ng-model="person.zipcode"
+                        required
+                      />
+                      <div class="text-danger" ng-show="profileForm.zipcode.$touched && profileForm.zipcode.$error.required">
+                        Dit veld is verplicht
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-4">
+                    <div class="form-group">
+                      <p style="margin: .5rem 0"><label>Huisnummer*</label></p>
+                      <input
+                        type="text"
+                        name="streetNumber"
+                        class="form-control"
+                        ng-model="person.streetNumber"
+                        required
+                      />
+                      <div class="text-danger" ng-show="profileForm.streetNumber.$touched && profileForm.streetNumber.$error.required">
+                        Dit veld is verplicht
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12" ng-if="person.zipcode && person.streetNumber">
+                    <p>
+                      <span ng-if="zipcodeAutocompleting"><inline-spinner /></span>
+                      <span ng-if="!zipcodeAutocompleting" style="color: #777;">
+                        <span ng-if="person.city">{{ person.streetName }} {{ person.streetNumber }}, {{ person.city }}</span>
+                        <span ng-if="!person.city">Onbekend adres</span>
+                      </span>
+                    </p>
+                  </div>
+                </div><!-- /.row -->
+
+              </div>
+
+              <p class="text-danger" ng-show="apiError">
+                {{ apiError }}
+              </p>
+              <p style="text-align: center;">
+                <md-button
+                  class="mywheels-btn-call-to-action"
+                  md-ink-ripple="#8f6700"
+                  ng-click="next(profileForm)"
+                  style="
+                    font-size: 2rem;
+                    padding: .4rem 1.2rem;
+                    margin-left: 0;
+                  "
+                >
+                  Volgende
+                  <inline-spinner ng-if="loading" />
+                </md-button>
+              </p>
+            </div>
+          </div><!-- /.card -->
+        </form>
+
+        <form
+          ng-if="step === 1 && step < numSteps"
+          style="position: absolute; top: 0; left: 0; right: 0;"
+          class="mywheels-form smooth-slide-appear"
+          name="extraInfoForm"
+        >
+          <div class="card mw">
+            <div class="card-body">
+              <h3>2/{{ numSteps }} Extra gegevens</h3>
+              <div style="padding-top: 2rem;">
+
+                <div class="row" ng-if="!$root.providerInfo.extraInfo.personProfileBlacklist.driverLicense">
+                  <div class="col-xs-12 col-sm-8">
+                    <div class="form-group">
+                      <p style="margin: .5rem 0"><label>Rijbewijsnummer*</label></p>
+                      <input
+                        style="height: 4rem;"
+                        type="text"
+                        name="driverLicenseNumber"
+                        class="form-control"
+                        ng-model="person.driverLicenseNumber"
+                        ng-pattern="/^[0-9]+$/"
+                        maxlength="10"
+                        required
+                      />
+                      <div class="text-danger" ng-show="extraInfoForm.driverLicenseNumber.$touched && extraInfoForm.driverLicenseNumber.$error.required">
+                        Dit veld is verplicht
+                      </div>
+                      <div class="text-danger" ng-show="extraInfoForm.driverLicenseNumber.$touched && extraInfoForm.driverLicenseNumber.$error.pattern">
+                        Voer het 10-cijferige rijbewijsnummer in
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-4">
+                    <div class="form-group">
+                      <p style="margin: .5rem 0"><label>Verloopdatum rijbewijs*</label></p>
+                      <div class="form-group mw-datepicker mw-icon"
+                          bootstrap-date-time-picker="dateConfig">
+                        <ng-md-icon aria-hidden="true" icon="today"></ng-md-icon>
+                        <input type="text" autocomplete="off" name="licenseDateValidUntil" id="date" placeholder="Datum" required
+                              ng-model="bladate"
+                              ng-change="setLicenseDateValidUntil(extraInfoForm)" />
+                        <div class="text-danger" ng-show="extraInfoForm.licenseDateValidUntil.$touched && (extraInfoForm.licenseDateValidUntil.$error.required || extraInfoForm.licenseDateValidUntil.$error.validAndFuture)">
+                          Voer een geldige toekomstige verloopdatum in
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- /.row -->
+
+                <div class="row">
+                  <div class="col-xs-12 col-sm-6" ng-if="!$root.providerInfo.extraInfo.personProfileBlacklist.dateOfBirth">
+                    <div ng-if="!$root.providerInfo.extraInfo.personProfileBlacklist.dateOfBirth">
+                      <div class="form-group">
+                        <p style="margin: .5rem 0"><label>Geboortedatum*</label></p>
+                        <div class="form-group mw-datepicker mw-icon"
+                            bootstrap-date-time-picker="dateConfig">
+                          <ng-md-icon aria-hidden="true" icon="today"></ng-md-icon>
+                          <input type="text" autocomplete="off" name="dateOfBirth" id="date" placeholder="Datum" required
+                                ng-model="bladate"
+                                ng-change="setDateOfBirth(extraInfoForm)" />
+                          <div class="text-danger" ng-show="extraInfoForm.dateOfBirth.$touched && (extraInfoForm.dateOfBirth.$error.required || extraInfoForm.dateOfBirth.$error.validAndPast)">
+                            Voer een geldige geboortedatum in
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6" ng-if="!$root.providerInfo.extraInfo.personProfileBlacklist.gender">
+                    <div ng-if="!$root.providerInfo.extraInfo.personProfileBlacklist.gender">
+                      <div class="form-group">
+                        <p style="margin: .5rem 0"><label>Geslacht*</label></p>
+                        <select name="male" class="form-control" ng-model="person.male" required
+                          style="min-height: 4rem;"
+                          ng-options="visibility.value as visibility.label for visibility in [
+                            { label: 'vrouw', value: false },
+                            { label: 'man', value: true },
+                          ]">
+                        </select>
+                        <div class="text-danger" ng-show="extraInfoForm.male.$touched && extraInfoForm.male.$error.required">
+                          Dit veld is verplicht
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- /.row -->
+
+                <div class="row" ng-if="!$root.providerInfo.extraInfo.personProfileBlacklist.externalIdentifier">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+                      <p style="margin: .5rem 0"><label>Personeelsnummer</label></p>
+                      <input
+                        type="text"
+                        name="externalIdentifier"
+                        class="form-control"
+                        ng-model="person.externalIdentifier"
+                      />
+                    </div>
+                  </div>
+                </div><!-- /.row -->
+
+              </div>
+
+              <p class="text-danger" ng-show="apiError">
+                {{ apiError }}
+              </p>
+              <p style="text-align: center;">
+                <md-button
+                  class="mywheels-btn-call-to-action"
+                  md-ink-ripple="#8f6700"
+                  ng-click="next(extraInfoForm)"
+                  style="
+                    font-size: 2rem;
+                    padding: .4rem 1.2rem;
+                    margin-left: 0;
+                  "
+                >
+                  Volgende
+                  <inline-spinner ng-if="loading" />
+                </md-button>
+              </p>
+            </div>
+          </div><!-- /.card -->
+        </form>
+
+        <div
+          ng-if="step === numSteps"
+          style="position: absolute; top: 0; left: 0; right: 0;"
+          class="smooth-slide-appear"
+        >
+          <div class="card mw">
+            <div class="card-body">
+              <h3>Klaar</h3>
+              <p>Je kunt nu op weg!</p>
+              <p style="text-align: center;">
+                <md-button
+                  class="mywheels-btn-call-to-action"
+                  md-ink-ripple="#8f6700"
+                  style="
+                    font-size: 2rem;
+                    padding: .4rem 1.2rem;
+                    margin-left: 0;
+                  "
+                  ng-click="ensureFlowCompleted()"
+                  ui-sref="owm.resource.search.list"
+                >
+                  Huur een auto
+                </md-button>
+              </p>
+            </div>
+          </div><!-- /.card -->
+        </div><!-- /step -->
+
+      </div>
+    </div><!-- /.col -->
+  </div>
+
+</div>

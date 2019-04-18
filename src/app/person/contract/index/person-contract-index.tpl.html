@@ -20,15 +20,15 @@
     <div class="well" ng-show="ownContracts.length" ng-repeat="contract in ownContracts">
       <h4>{{ contract.type.name }}</h4>
 
-      <p hide-gt-xs></p>
+      <p ng-if="!me.isBusinessConnected" hide-gt-xs></p>
 
-      <span ng-if="ownContracts.length == 1">
+      <span ng-if="ownContracts.length == 1 && !me.isBusinessConnected">
         <button class="btn btn-default" ui-sref="contractchoice">{{ 'PERSON.CONTRACT.CHANGE_CONTRACT' | translate }}</button>
       </span>
 
-      <p hide-gt-xs></p>
+      <p ng-if="!me.isBusinessConnected" hide-gt-xs></p>
 
-      <span ng-if="contract.type.id !== 60">
+      <span ng-if="contract.type.id !== 60 && !me.isBusinessConnected">
         <button class="btn btn-default" ng-click="endContract($index)">{{ 'CONTRACT_END_ACTION' | translate }}</button>
       </span>
 
@@ -74,7 +74,7 @@
           <spinner />
         </p>
         <p ng-if="!contract.showLoaderSpinner && contract.personsOnContracts.length === 0">
-          Je hebt geen extra bestuurders uitgenodigd om mee te rijden op dit contract. Voer het email-adres in van een geregistreerde MyWheels lid om deze als medebestuurder uit te nodigen.
+          Je hebt geen extra bestuurders uitgenodigd om mee te rijden op dit contract. Voer een e-mailadres in om een extra bestuurder uit te nodigen.
           <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/iemand-anders-contract-gebruik-maken/">Wat is dit?</a>
         </p>
         <ul class="list-group" ng-if="contract.personsOnContracts.length > 0">

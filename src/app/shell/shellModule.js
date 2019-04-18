@@ -20,7 +20,69 @@ angular.module('owm.shell', [])
           }
         });
         return dfd.promise;
-      }]
+      }],
+      me: ['authService', 'providerInfoService', '$rootScope', function (authService, providerInfoService, $rootScope) {
+        return authService.userPromise().then(function (user) {
+          if (user.isAuthenticated) {
+            return providerInfoService.getInfo({ provider: user.identity.provider.id })
+            .then(function (info) {
+
+              info.isBusiness = user.identity.isBusinessConnected;
+
+              // interface ProviderInfo {
+              //   extraInfo: any | ProviderExtraInfo;
+              //   fleetManager: Person;
+              //   visibleName: string;
+              //   isBusiness: boolean;
+              // }
+
+              // type URL = string;
+              // type markdown = string;
+
+              // enum ProfileBlacklistItem {
+              //   gender        = "gender";
+              //   dateOfBirth   = "dateOfBirth";
+              //   address       = "address";
+              //   driverLicense = "driverLicense";
+              //   social        = "social";
+              // }
+
+              // interface ProviderExtraInfo {
+              //   emergencyNumber: string;
+              //   welcomeText: markdown;
+              //   logo: URL;
+              //   helpText: markdown;
+              //   personProfileBlacklist: {
+              //     [item: ProfileBlacklistItem]: boolean;
+              //   }
+              // }
+
+              $rootScope.providerInfo = info;
+              return user.identity;
+            });
+          } else {
+            return null;
+          }
+        });
+      }],
+
+      // This is really whacko, but I blieve the presence of another resolve here,
+      //  that depends upon `me`, causes that `me` to be needed earlier on in the
+      //  process, and somehow hence triggering a state change error, leading to
+      //  a cycle of silent refresh attempts.
+      // Quick solution (I don't really know how to solve it more cleanly right now)
+      //  is to just get the provider info within the `me` resolver.
+
+      // providerInfo: ['me', 'providerInfoService', function (me, providerInfoService) {
+      //   if (!me) {
+      //     return null;
+      //   }
+      //   
+      //   return providerInfoService.getInfo({ provider: me.provider.id })
+      //   .then(function (info) {
+      //     return info;
+      //   });
+      // }],
     }
   });
 
@@ -43,13 +105,6 @@ angular.module('owm.shell', [])
         controller: 'FooterController'
       }
     },
-    resolve: {
-      me: ['authService', function (authService) {
-        return authService.userPromise().then(function (user) {
-          return user.isAuthenticated ? user.identity : null;
-        });
-      }],
-    },
   });
 
   /**
@@ -66,13 +121,6 @@ angular.module('owm.shell', [])
         templateUrl: 'shell/footer/footer.tpl.html',
         controller: 'FooterController'
       },
-    },
-    resolve: {
-      me: ['authService', function (authService) {
-        return authService.userPromise().then(function (user) {
-          return user.isAuthenticated ? user.identity : null;
-        });
-      }],
     },
   });
 
