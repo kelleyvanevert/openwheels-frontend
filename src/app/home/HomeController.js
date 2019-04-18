@@ -6,6 +6,7 @@ angular.module('owm.home', ['owm.resource', 'slick'])
 .controller('HomeController', function ($scope, $translate, $location, resourceQueryService,
   $window, $timeout, $state, resourceService, $localStorage, $http, metaInfoService, appConfig,
   makeHomeAddressPrefill,
+  unwrap,
   authService, tokenSilentRefreshService) {
 
   metaInfoService.set({url: appConfig.serverUrl});
@@ -75,8 +76,8 @@ angular.module('owm.home', ['owm.resource', 'slick'])
     if (placeDetails) {
       resourceQueryService.setText($scope.search.text);
       resourceQueryService.setLocation({
-        latitude: placeDetails.geometry.location.lat(),
-        longitude: placeDetails.geometry.location.lng()
+        latitude: unwrap(placeDetails.geometry.location.lat),
+        longitude: unwrap(placeDetails.geometry.location.lng),
       });
     }
     $state.go('owm.resource.search.list', resourceQueryService.createStateParams());

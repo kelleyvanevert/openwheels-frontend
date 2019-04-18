@@ -34,6 +34,10 @@ angular.module('google.places', [])
 					 [ '$parse', '$compile', '$timeout', '$document', 'googlePlacesApi',
 						 function ($parse, $compile, $timeout, $document, googlePromise) {
 
+							 function unwrap (x) {
+								 return typeof x === 'function' ? x() : x;
+							 }
+
 								if (!Object.entries) {
 									Object.entries = function( obj ){
 										var ownProps = Object.keys( obj ),
@@ -46,6 +50,9 @@ angular.module('google.places', [])
 									};
 								}
 
+								// AUTOCOMPLETION CACHE
+								// ====================
+
 							 var cache;
 							 try {
 								 cache = JSON.parse(window.localStorage.getItem('cache_places_autocomplete'));
@@ -57,7 +64,9 @@ angular.module('google.places', [])
 								 try {
 									 window.localStorage.setItem('cache_places_autocomplete', '{}');
 									 cache = {};
-								 } catch (e) {} // no localstorage
+								 } catch (e) {
+									 // noop
+								 } // no localstorage
 							 } // no localstorage or json parse error
 
 							 var cacheSaveTimeoutID;
@@ -120,6 +129,92 @@ angular.module('google.places', [])
 										}),
 									};
 									scheduleCacheSave();
+								 }
+							 }
+
+								// PLACES API CACHE
+								// ================
+
+							 var placesCache;
+							 try {
+								 placesCache = JSON.parse(window.localStorage.getItem('cache_places_details'));
+								 if (!placesCache) {
+									 window.localStorage.setItem('cache_places_details', '{}');
+									 placesCache = {};
+								 }
+							 } catch (e) {
+								 try {
+									 window.localStorage.setItem('cache_places_details', '{}');
+									 placesCache = {};
+								 } catch (e) {} // no localstorage
+							 } // no localstorage or json parse error
+
+							 var placesCacheSaveTimeoutID;
+
+							 function savePlacesCache () {
+								 if (placesCache && window.localStorage) {
+									
+									// first, prune the cache to only include the 500 most recent places api results
+									var entries = Object.entries(placesCache);
+									var num_remove = Math.max(0, entries.length - 500);
+									if (num_remove) {
+										entries
+											.sort(function (a,b) { return a.timestamp < b.timestamp; })
+											.slice(0, num_remove)
+											.forEach(function (entry) {
+												delete placesCache[entry[0]];
+											});
+									}
+
+									try {
+										window.localStorage.setItem('cache_places_details', JSON.stringify(placesCache));
+									} catch (e) {
+										// console.debug(e);
+										// noop
+									} // no localstorage or storage limit reached
+								 }
+
+								 placesCacheSaveTimeoutID = undefined;
+							 }
+
+							 function schedulePlacesCacheSave () {
+								 if (!placesCacheSaveTimeoutID) {
+									 placesCacheSaveTimeoutID = setTimeout(savePlacesCache, 1000);
+								 }
+							 }
+
+							 function tryGetPlacesCachedResult (input) {
+									if (placesCache && placesCache[input]) {
+										var dt_seconds = (Math.round(Date.now() / 1000) - placesCache[input].timestamp);
+										if (dt_seconds / (60 * 60 * 24 * 30) > 1) {
+											// don't keep/use longer than 1 month
+											delete placesCache[input];
+											schedulePlacesCacheSave();
+											return false;
+										}
+
+										return placesCache[input].result;
+									}
+
+									// if anything goes wrong
+								 return false;
+							 }
+
+							 function cachePlacesResult (input, place) {
+								 try {
+									place = JSON.parse(JSON.stringify(place));
+									// place.geometry.location.lat = unwrap(place.geometry.location.lat);
+									// place.geometry.location.lng = unwrap(place.geometry.location.lng);
+									if (placesCache) {
+										placesCache[input] = {
+											timestamp: Math.round(Date.now() / 1000),
+											result: place,
+										};
+										schedulePlacesCacheSave();
+									}
+								 } catch (e) {
+									 // console.debug(e);
+									 // noop
 								 }
 							 }
 
@@ -248,6 +343,16 @@ angular.module('google.places', [])
 										 });
 									 }
 
+									 function selectAction(place) {
+											$scope.$apply(function () {
+												$scope.model = place;
+												$scope.$emit('g-places-autocomplete:select', place);
+												$timeout(function () {
+													controller.$viewChangeListeners.forEach(function (fn) {fn();});
+												});
+											});
+									 }
+
 									 function select() {
 										 var prediction;
 
@@ -257,35 +362,33 @@ angular.module('google.places', [])
 										 }
 
 										 if (prediction.is_custom) {
-											 $scope.$apply(function () {
-												 $scope.model = prediction.place;
-												 $scope.$emit('g-places-autocomplete:select', prediction.place);
-												 $timeout(function () {
-													 controller.$viewChangeListeners.forEach(function (fn) {fn();});
-												 });
-											 });
+											 $timeout(function () {
+											   selectAction(prediction.place);
+											 }, 200);
 										 } else {
-											 placesService.getDetails({
-												 placeId: prediction.place_id,
-												 fields: [
-													 'formatted_address',
-													 'address_component',
-													 'geometry',
-													 'icon',
-													 'id',
-													 'place_id',
-												 ],
-											 }, function (place, status) {
-												 if (status === google.maps.places.PlacesServiceStatus.OK) {
-													 $scope.$apply(function () {
-														 $scope.model = place;
-														 $scope.$emit('g-places-autocomplete:select', place);
-														 $timeout(function () {
-															 controller.$viewChangeListeners.forEach(function (fn) {fn();});
-														 });
-													 });
-												 }
-											 });
+											 var cachedResult = tryGetPlacesCachedResult(prediction.place_id);
+											 if (cachedResult) {
+												 $timeout(function () {
+													 selectAction(cachedResult);
+												 }, 200);
+											 } else {
+												placesService.getDetails({
+													placeId: prediction.place_id,
+													fields: [
+														'formatted_address',
+														'address_component',
+														'geometry',
+														'icon',
+														'id',
+														'place_id',
+													],
+												}, function (place, status) {
+													if (status === google.maps.places.PlacesServiceStatus.OK) {
+														cachePlacesResult (prediction.place_id, place);
+														selectAction(place);
+													}
+												});
+											 }
 										 }
 
 										 clearPredictions();
