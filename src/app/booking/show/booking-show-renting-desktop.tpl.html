@@ -67,7 +67,7 @@
 
       <!-- Kosten -->
       <booking-invoices booking="booking" view-as="renter"
-        ng-if="!details.requested && booking.approved === 'OK'"
+        ng-if="!me.isBusinessConnected && !details.requested && booking.approved === 'OK'"
       />
     </div>
 

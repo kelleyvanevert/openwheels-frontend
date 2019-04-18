@@ -1,6 +1,9 @@
 
 .home {
     background-color: #F8F8F8;
+    &.darker-bg {
+        background-color: #ededed;
+    }
     h2 {
         font-size: 2.2em;
     }
@@ -687,6 +690,15 @@
 .triangle--bar--home.triangle--bar--home-white:after,
 .triangle--bar--home.triangle--bar--home-white:before {
     border-bottom-color: #F8F8F8;
+}
+.darker-bg {
+    .triangle--bar--home-white {
+        background: #ededed;
+    }
+    .triangle--bar--home.triangle--bar--home-white:after,
+    .triangle--bar--home.triangle--bar--home-white:before {
+        border-bottom-color: #ededed;
+    }
 }
 .triangle--bar--home-lightgray {
     background: #eee;

@@ -29,18 +29,18 @@
     <!-- /TRIANGLE BAR -->
 
     <!-- MYWHEELS OPEN -->
-    <div class="mywheels--open--card" ng-if="features.homePage" ui-sref="owmlanding.mywheels-open" ga-track-event="['interaction', 'mywheelsOpen', 'home']" hide-xs>
+    <div class="mywheels--open--card" ng-if="features.homePage && (!user || !user.identity.isBusinessConnected)" ui-sref="owmlanding.mywheels-open" ga-track-event="['interaction', 'mywheelsOpen', 'home']" hide-xs>
        <img src="../branding/img/mywheels_open_desktop.png" class="banner" />
            <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary">Meld je aan</a>
     </div>
    
-    <div class="mywheels--open--card" ng-if="features.homePage" ui-sref="owmlanding.mywheels-open" ga-track-event="['interaction', 'mywheelsOpen', 'home']" hide-gt-xs>
+    <div class="mywheels--open--card" ng-if="features.homePage && (!user || !user.identity.isBusinessConnected)" ui-sref="owmlanding.mywheels-open" ga-track-event="['interaction', 'mywheelsOpen', 'home']" hide-gt-xs>
        <img src="../branding/img/mywheels_open_mobiel.png" class="banner" />
            <a class="mywheels-btn mywheels-btn-light mywheels-btn-big" md-ink-ripple="#ded8d8" class="md-primary">Meld je aan</a>
     </div>
 
     <!-- BLOG ITEMS -->   
-    <div class="blog--overview" ng-if="features.homePage">
+    <div class="blog--overview" ng-if="features.homePage && (!user || !user.identity.isBusinessConnected)">
         <section class="center">
             <h2>Ons laatste nieuws</h2>
             <a type="button" name="button" class="mywheels-btn mywheels-btn-default mywheels-btn-big" href="https://mywheels.nl/blog/" target="_blank" md-ink-ripple="#3a6d81" hide-xs>

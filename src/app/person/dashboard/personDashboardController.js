@@ -43,6 +43,13 @@ angular.module('owm.person.dashboard', [])
         { sref: 'owm.message', title: 'Berichten' },
       ];
     }*/
+  } else if (me.isBusinessConnected) {
+    $scope.dashboardLinks = [
+      { sref: 'owm.trips', title: 'Ritten' },
+      { sref: 'owm.resource.search.list', title: 'Huur een auto' },
+      { sref: 'owm.message', title: 'Berichten' },
+      { sref: 'owm.person.profile({ highlight: "profiel" })', title: 'Mijn gegevens' },
+    ];
   }
 
 
@@ -51,28 +58,30 @@ angular.module('owm.person.dashboard', [])
   // to, we present the user a modal and ask what he/she wants to do
   //
   // Else show normal dashboard/intro page
-  if($localStorage.booking_before_signup) {
-    var data = angular.copy($localStorage.booking_before_signup);
-    delete $localStorage.booking_before_signup;
-    if(data.flow === 'add_resource') {
-      setPreference('owner');
-      $state.go('owm.resource.create.carInfo', data);
-    } else if(data.flow === 'booking') {
-      setPreference('renter');
-      $state.go('owm.person.details', data);
-    } else if(data.flow === 'subscribe_resource_show') {
-      setPreference('renter');
-      $state.go('owm.resource.show', data);
-    } else if (!me.preference){
-      showModal()
-      .then(redirect);
-    }
-  } else {
-    if(me.status === 'new' && !me.preference && !me.extraDriver) {
-      showModal()
-      .then(redirect);
-    } else if(me.status === 'new' && me.preference !== 'owner' && !me.extraDriver) {
-      $state.go('owm.person.intro');
+  if (!me.isBusinessConnected) {
+    if($localStorage.booking_before_signup) {
+      var data = angular.copy($localStorage.booking_before_signup);
+      delete $localStorage.booking_before_signup;
+      if(data.flow === 'add_resource') {
+        setPreference('owner');
+        $state.go('owm.resource.create.carInfo', data);
+      } else if(data.flow === 'booking') {
+        setPreference('renter');
+        $state.go('owm.person.details', data);
+      } else if(data.flow === 'subscribe_resource_show') {
+        setPreference('renter');
+        $state.go('owm.resource.show', data);
+      } else if (!me.preference){
+        showModal()
+        .then(redirect);
+      }
+    } else {
+      if(me.status === 'new' && !me.preference && !me.extraDriver) {
+        showModal()
+        .then(redirect);
+      } else if(me.status === 'new' && me.preference !== 'owner' && !me.extraDriver) {
+        $state.go('owm.person.intro');
+      }
     }
   }
 
@@ -237,7 +246,7 @@ angular.module('owm.person.dashboard', [])
 
   function loadFavoriteResources() {
     resourceService.getFavorites({
-        maxResults: 5
+        maxResults: me.isBusinessConnected ? 10 : 5,
       }).then(function (favoriteResources) {
         $scope.favoriteResources = favoriteResources || [];
       })

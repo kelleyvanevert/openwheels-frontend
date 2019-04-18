@@ -48,23 +48,24 @@ angular.module('owm.resource.edit.price', [])
 
     $scope.reset = reset;
 
+    // returns `true` in case of errors
     $scope.checkInput = function (e) {
       var dayRateTotal = $scope.resource.dayRateTotal,
         hourRate = $scope.resource.hourRate,
         kilometerRate = $scope.resource.kilometerRate,
-        providerId = $scope.me.provider.id;
+        me = $scope.me;
 
       if(e === 'dayRateTotal' && !$scope.resource.kilometerRate.$touched) {
-        return dayRateTotal < 15 && providerId === 1;
+        return dayRateTotal < 15 && (me.provider.id === 1 || me.isBusinessConnected);
       }
       else if(e === 'hourRate' && !$scope.resource.kilometerRate.$touched) {
-        return hourRate < 1.5 && providerId === 1;
+        return hourRate < 1.5 && (me.provider.id === 1 || me.isBusinessConnected);
       }
       else if(e === 'kilometerRate' && !$scope.resource.kilometerRate.$touched) {
-        return kilometerRate < 0.05 && providerId === 1;
+        return kilometerRate < 0.05 && (me.provider.id === 1 || me.isBusinessConnected);
       }
       else {
-        return kilometerRate < 0.05 || hourRate < 1.5 || dayRateTotal < 15 && providerId === 1;
+        return kilometerRate < 0.05 || hourRate < 1.5 || dayRateTotal < 15 && (me.provider.id === 1 || me.isBusinessConnected);
       }
     };
 
