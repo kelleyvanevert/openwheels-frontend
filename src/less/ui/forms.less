@@ -684,3 +684,17 @@
 .mywheels-form .input-toggle ng-md-icon {
     color: #555;
 }
+
+
+
+
+
+md-input-container > ng-md-icon + input {
+    margin-left: 0 !important;
+    padding-left: 36px !important;
+}
+md-input-container:not(.md-input-focused) label:not(.md-no-float):not(.md-container-ignore),
+md-input-container:not(.md-input-focused) .md-placeholder {
+    -webkit-transform: translate3d(36px, 28px, 0) scale(1);
+    transform: translate3d(36px, 28px, 0) scale(1);
+}

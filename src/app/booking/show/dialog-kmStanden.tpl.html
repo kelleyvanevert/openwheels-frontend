@@ -46,7 +46,7 @@
 
 
     <!-- Finalize trip -->
-    <div ng-if="details.bookingEnded && booking.trip.odoBegin && booking.trip.odoEnd && (booking.trip.updatedBy.id !== me.id) && !booking.trip.finalized">
+    <div ng-if="booking.trip.odoBegin && booking.trip.odoEnd && (booking.trip.updatedBy.id !== me.id) && !booking.trip.finalized">
 
       <p><strong>Controleer kilometers</strong></p>
 
@@ -71,7 +71,7 @@
 
 
     <!-- Trip has been finalized -->
-    <div ng-if="details.bookingEnded && booking.trip.finalized">
+    <div ng-if="booking.trip.finalized">
 
       <p><strong>Kilometerstanden</strong></p>
 
