@@ -1,6 +1,6 @@
 'use strict';
 angular.module('owm.resource.edit.location', ['geocoderDirective'])
-  .controller('ResourceEditLocationController', function ($q, $filter, $timeout, $log, alertService, personService, resourceService, $scope, $state) {
+  .controller('ResourceEditLocationController', function ($q, $filter, $timeout, $log, alertService, personService, resourceService, $scope, $state, unwrap) {
 
     $scope.ownerflow = $state.current.name === 'owm.resource.create.location' ? true : false;
     $scope.locationtext = null;
@@ -152,8 +152,8 @@ angular.module('owm.resource.edit.location', ['geocoderDirective'])
       $scope.clickedAddress = address;
       $scope.resource.city = address.city;
       $scope.resource.location = address.route + ' ' + address.streetNumber;
-      $scope.resource.latitude = a.geometry.location.lat();
-      $scope.resource.longitude = a.geometry.location.lng();
+      $scope.resource.latitude = unwrap(a.geometry.location.lat);
+      $scope.resource.longitude = unwrap(a.geometry.location.lng);
       if ($scope.ownerflow) { //if in the ownerflow
         //set me
         $scope.me.city = address.city;
@@ -179,8 +179,8 @@ angular.module('owm.resource.edit.location', ['geocoderDirective'])
       var latLng, lat, lng;
       if (args.length) {
         latLng = args[0].latLng;
-        lat = latLng.lat();
-        lng = latLng.lng();
+        lat = unwrap(latLng.lat);
+        lng = unwrap(latLng.lng);
         $scope.resource.latitude = lat;
         $scope.resource.longitude = lng;
 
