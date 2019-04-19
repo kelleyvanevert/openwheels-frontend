@@ -118,7 +118,7 @@ angular.module('owm.resource', [
                   throw 'place not found (null returned by API)';
                 } else {
                   place.nicename = $filter('toTitleCase')($filter('replaceDashToSpace')(place.name || ''));
-                  place.picture = place.picture || 'https://mywheels.nl/autodelen/wp-content/uploads/2019/04/parkeerplaats_2.jpg';
+                  place.picture = place.picture || 'https://mywheels.nl/autodelen/wp-content/uploads/2019/01/stads2.jpg';
                   resolve(place);
                 }
               })
