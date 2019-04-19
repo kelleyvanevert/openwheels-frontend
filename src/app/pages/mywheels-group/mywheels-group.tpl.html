@@ -103,43 +103,55 @@
 
         <div class="row" style="padding: 5rem 0;">
             <div class="rpad col-xs-12 col-md-6 col-md-push-6">
-                <div class="feature-pad">
+                <div class="feature-pad" style="padding-top: 3rem;">
                     <h2 style="
                         font-size: 2.6rem;
                         color: #333;
                     ">Vaste maandprijs per auto</h2>
                     <p class="size-3">
-                        MyWheels biedt een overzichtelijk kostenplaatje van vaste maandprijzen per auto. We rekenen geen opstartkosten of kosten per medewerker.
+                        Voor elke auto dat op het platform wordt aangesloten geldt een maandprijs. Er worden geen opstartkosten of kosten per medewerker berekend.
                     </p>
-                </div>
-            </div>
-            <div class="rpad col-xs-12 col-md-6 col-md-pull-6">
-                <div class="feature-img feature-img-textual">
-                    <ul class="size-3 list-unstyled list-spaced">
-                        <li style="border-bottom: 1px solid #ccc;">1 tot 4 auto's: <strong style="color: #337088;">{{ 45 | currency }}</strong> per auto</li>
-                        <li style="border-bottom: 1px solid #ccc;">4 tot 10 auto's: <strong style="color: #337088;">{{ 40 | currency }}</strong> per auto</li>
-                        <li style="border-bottom: 1px solid #ccc;">10 tot 20 auto's: <strong style="color: #337088;">{{ 35 | currency }}</strong> per auto</li>
-                        <li style="border-bottom: 1px solid #ccc;">20 tot 50 auto's: <strong style="color: #337088;">{{ 32.5 | currency }}</strong> per auto</li>
-                        <li>50+ auto's: <strong style="color: #337088;">{{ 30 | currency }}</strong> per auto</li>
-                    </ul>
                     <div style="
                         margin-top: 3rem;
                     ">
                         <strong>Keyless</strong>
-                        <p>De kosten van de hardware (MyWheels Open technologie) bedragen eenmalig {{ 515 | currency }} incl. in- en uitbouwkosten, excl. btw.<p> 
-                        <p>Je kunt een paslezer laten plaatsen. De kosten daarvan zijn additioneel {{ 90 | currency }} excl btw.<p>
+                        <p>De kosten van de hardware (MyWheels Open technologie) bedragen eenmalig {{ 515 | currency }} incl. in- en uitbouwkosten, excl. btw. Je kunt een tevens paslezer laten plaatsen. De kosten daarvan zijn additioneel {{ 90 | currency }} excl btw.<p>
                         <p>Maandelijkse kosten voor de connectiviteit aan de leverancier van de hardware zijn {{ 13.95 | currency }} per maand (prijswijzigingen voorbehouden).</p>
 
                         <strong>Additionele diensten</strong>
                         <p>Het is mogelijk om het wagenparkbeheer van de auto volledig uit handen geven aan MyWheels. Denk hierbij aan:</p>
-                        <ul>
+                        <ul style="margin-bottom: 1rem;">
                             <li>De afhandeling van schade;</li>
                             <li>De afhandeling van boetes;</li>
                             <li>Periodieke schoonmaak op locatie.</li>
                         </ul>
-                        <br>
-                        <p>Prijzen op aanvraag.</p>
+                        <p><em>Prijzen op aanvraag.</em></p>
                     </div>
+                </div>
+            </div>
+            <div class="rpad col-xs-12 col-md-6 col-md-pull-6">
+                <div class="feature-img feature-img-textual">
+                    <div style="float: left; width: 49%; text-align: center; padding: 4rem 0;">
+                        <p style="margin: 0;"><em>1 tot 4 auto's</em></p>
+                        <p class="size-3"><strong class="size-6">{{ 45 | currency }}</strong> per auto</p>
+                    </div>
+                    <div style="float: left; width: 49%; text-align: center; padding: 4rem 0;">
+                        <p style="margin: 0;"><em>4 tot 10 auto's</em></p>
+                        <p class="size-3"><strong class="size-6">{{ 40 | currency }}</strong> per auto</p>
+                    </div>
+                    <div style="float: left; width: 49%; text-align: center; padding: 4rem 0;">
+                        <p style="margin: 0;"><em>10 tot 20 auto's</em></p>
+                        <p class="size-3"><strong class="size-6">{{ 35 | currency }}</strong> per auto</p>
+                    </div>
+                    <div style="float: left; width: 49%; text-align: center; padding: 4rem 0;">
+                        <p style="margin: 0;"><em>20 tot 50 auto's</em></p>
+                        <p class="size-3"><strong class="size-6">{{ 32.5 | currency }}</strong> per auto</p>
+                    </div>
+                    <div style="float: left; width: 49%; text-align: center; padding: 4rem 0;">
+                        <p style="margin: 0;"><em>50+ auto's</em></p>
+                        <p class="size-3"><strong class="size-6">{{ 30 | currency }}</strong> per auto</p>
+                    </div>
+                    <div style="clear: both;"></div>
                 </div>
             </div>
         </div>
@@ -150,15 +162,15 @@
                     <h2 style="
                         font-size: 2.6rem;
                         color: #333;
-                    ">Lease-mogelijkheden</h2>
+                    ">Leasemogelijkheden</h2>
                     <p class="size-3">
                         Via MyWheels kun je exclusief een (elektrische) auto voor jouw groep leasen. Kies zelf een automodel en contractduur. De auto's zijn standaard uitgerust met keyless technologie. Prijzen op aanvraag.
                     </p>
                 </div>
             </div>
             <div class="rpad col-xs-12 col-md-6">
-                <div class="feature-img feature-img-textual">
-                    <p>Hier een foto van een elektrische deelauto.</p>
+                <div class="feature-img">
+                    <img style="width: 100%;" class="img-responsive" ng-src="assets/img/photo/elektrisch.jpg" />
                 </div>
             </div>
         </div>
@@ -176,7 +188,7 @@
     <div
         class="container container-transitional
                 mywheels-ik-doe-mee"
-        style="padding-top: 0;"
+        style="padding-top: 0; padding-bottom: 10rem;"
     >
         <div class="rpad col-sm-8 col-sm-offset-2">
             <div style="padding-top: 1em;">
@@ -195,44 +207,6 @@
     </div>
     <!-- /IK DOE MEE! -->
 
-    <!-- ADAVANTAGES -->
-    <div class="advantage-mywheels">
-        <div class="container container-transitional">
-            <div class="row">
-                <div class="rpad col-xs-12">
-                    <h2 style="color: #333; text-align: center; padding: 1rem 0;">Veelgestelde vragen</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="rpad col-sm-6 col-xs-12">
-
-                <div class="card mw faq" ng-repeat="faq in FAQ.left">
-                    <div class="card-heading" ng-click="faq.open = !faq.open;">
-                    <h4 class="card-title">{{ faq.question }}</h4>
-                    </div>
-                    <div class="panel-body" uib-collapse="!faq.open">
-                    <p>{{ faq.answer }}</p>
-                    </div>
-                </div>
-
-                </div>
-                <div class="rpad col-sm-6 col-xs-12">
-
-                <div class="card mw faq" ng-repeat="faq in FAQ.right">
-                    <div class="card-heading" ng-click="faq.open = !faq.open;">
-                    <h4 class="card-title">{{ faq.question }}</h4>
-                    </div>
-                    <div class="panel-body" uib-collapse="!faq.open">
-                    <p>{{ faq.answer }}</p>
-                    </div>
-                </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /ADVANTAGES -->
-
     <!-- TRIANGLE BAR HOME -->
     <div class="triangle--bar--home triangle--bar--home-lightgray"></div>
     <!-- /TRIANGLE BAR -->
@@ -241,11 +215,11 @@
         <div class="container-home">
             <h2 class="footer-logo-row-header">Onze partners</h2>
             <div class="partner_logos">
-                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/zutphen_energie.svg" style="height: 120px;" /></div>
-                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/stichting_duurzaam_waterland.png" style="height: 60px;" /></div>
-                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/stichting_vitaaldorp_everdingen.png" style="height: 60px;" /></div>
-                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/duurzaam_hoonhorst.png" style="height: 110px;" /></div>
-                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/hely.png" style="height: 90px;" /></div>
+                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/zutphen_energie.svg" style="height: 84px;" /></div>
+                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/stichting_duurzaam_waterland.png" style="height: 42px;" /></div>
+                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/stichting_vitaaldorp_everdingen.png" style="height: 42px;" /></div>
+                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/duurzaam_hoonhorst.png" style="height: 77px;" /></div>
+                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/hely.png" style="height: 63px;" /></div>
             </div>
         </div>
     </div>

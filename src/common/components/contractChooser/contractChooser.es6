@@ -19,6 +19,7 @@ angular.module('owm.components')
       disableAutoRequestGo: '=',
       disableChoice: '=',
       enableCompany: '=',
+      disableMiddle: '=',
     },
     templateUrl: 'components/contractChooser/contractChooser.tpl.html',
     controller: function ($scope) {

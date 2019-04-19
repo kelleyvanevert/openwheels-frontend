@@ -104,7 +104,7 @@ module.exports = {
 
       'vendor_custom/angular-load.js',
 
-      'node_modules/snarkdown/dist/snarkdown.umd.js',
+      'vendor_custom/snarkdown.js',
     ],
     fonts: [
       'vendor/font-awesome/fonts/*'
