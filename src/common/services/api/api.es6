@@ -39,9 +39,41 @@ angular.module('api', [])
 
   var api = {};
 
+  // A small caching feature for the API,
+  //  using the opt-in flag `options.cache`.
+  // If you set `options.cache === "hot"`, then
+  //  caching will only pertain to unresolved
+  //  fetching operations.
+  const apiPromisesCache = [];
+
   api.createRpcMethod = function (rpcMethod, isAnonymousMethod) {
-    return function (rpcParams, multiPartParams) {
-      return api.invokeRpcMethod(rpcMethod, rpcParams, multiPartParams, isAnonymousMethod);
+    return function (rpcParams, multiPartParams, options) {
+      options = options || {};
+      if (options.cache) {
+        const i = _.findIndex(apiPromisesCache, function (item) {
+          return item.rpcMethod === rpcMethod
+              && angular.equals(item.rpcParams, rpcParams)
+              && angular.equals(item.multiPartParams, multiPartParams);
+        });
+        if (i >= 0) {
+          const promise = apiPromisesCache[i].apiPromise;
+          if (options.cache === "hot" && promise.$$state.status !== 0) {
+            apiPromisesCache.splice(i, 1);
+          } else {
+            return promise;
+          }
+        }
+      }
+      var apiPromise = api.invokeRpcMethod(rpcMethod, rpcParams, multiPartParams, isAnonymousMethod);
+      if (options.cache) {
+        apiPromisesCache.push({
+          rpcMethod: rpcMethod,
+          rpcParams: rpcParams,
+          multiPartParams: multiPartParams,
+          apiPromise: apiPromise,
+        });
+      }
+      return apiPromise;
     };
   };
 
