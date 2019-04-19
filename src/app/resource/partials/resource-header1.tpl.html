@@ -8,7 +8,11 @@
       <i class="fa fa-chevron-right"></i>
     </div>
 
-    <div class="pull-right text-right" style="display: flex; justify-content: center; flex-direction: column; height: 90px;">
+    <div
+      class="pull-right text-right"
+      style="display: flex; justify-content: center; flex-direction: column; height: 90px;"
+      ng-if="!me.isBusinessConnected"
+    >
       <div>{{ resource.price.dayRateTotal | currency }}</div>
       <div ng-if="resource.price.kmFree" class="text-success">
         <small hide-xs>{{ 'FREE_KM_DAY' | translate }}</small>

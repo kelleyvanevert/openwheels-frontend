@@ -33,7 +33,7 @@ angular.module('owmlanding.mywheels-lease', ['slick'])
       question: 'Hoe verhuur ik mijn leaseauto?',
       answer: 'Verhuren is heel makkelijk: nieuwe huurverzoeken worden automatisch geaccepteerd. Door de MyWheels Open technologie opent een huurder jouw auto met zijn of haar smartphone. Het enige dat jij hoeft te doen, is het bijhouden van de kalender van je auto.',
     }, {
-      question: 'Hoe veel dagen moet mijn auto beschikbaar zijn?',
+      question: 'Hoeveel dagen moet mijn auto beschikbaar zijn?',
       answer: 'We verwachten dat jouw auto minimaal 10 dagen per beschikbaar is voor autodelen, waarvan 4 dagen in het weekeinde.',
     }, {
       question: 'Waarom is de leaseprijs zo voordelig?',

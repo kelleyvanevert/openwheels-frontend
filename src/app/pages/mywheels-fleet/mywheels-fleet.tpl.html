@@ -52,7 +52,7 @@
                         color: #333;
                     ">Gemakkelijk op weg</h2>
                     <p class="size-3">
-                        Medewerkers kunnen auto's direct reserveren, openen en sluiten via MyWheels.nl en de MyWheels app voor Android en iOS / iPhone.
+                        Medewerkers kunnen auto's direct reserveren, openen en sluiten via mywheels.nl en de MyWheels app voor Android en iPhone.
                     </p>
                     <p class="size-3" style="text-align: center;">
                         <ng-md-icon icon="phone_android" size="28" style="color: #555; height: 28px; width: 28px;"></ng-md-icon>
@@ -79,7 +79,7 @@
                         Bekijk in een overzichtelijke kalender wanneer de auto's gereserveerd zijn, voeg nieuwe medewerkers toe of wijzig reserveringen van medewerkers.
                         </p>
                     <p class="size-3">
-                        Een sluitende ritregistratie nodig voor de Belastingdienst? Download eenvoudig een overzicht van alle ritten in jouw auto's.
+                        Een sluitende ritregistratie nodig voor de Belastingdienst? Download eenvoudig een overzicht van alle ritten.
                     </p>
                 </div>
             </div>
@@ -111,43 +111,55 @@
 
         <div class="row" style="padding: 5rem 0;">
             <div class="rpad col-xs-12 col-md-6 col-md-push-6">
-                <div class="feature-pad">
+                <div class="feature-pad" style="padding-top: 3rem;">
                     <h2 style="
                         font-size: 2.6rem;
                         color: #333;
                     ">Vaste maandprijs per auto</h2>
                     <p class="size-3">
-                        MyWheels biedt een overzichtelijk kostenplaatje van vaste maandprijzen per auto. We rekenen geen opstartkosten of kosten per medewerker.
+                        Voor elke auto dat op het platform wordt aangesloten geldt een maandprijs. Er worden geen opstartkosten of kosten per medewerker berekend.
                     </p>
-                </div>
-            </div>
-            <div class="rpad col-xs-12 col-md-6 col-md-pull-6">
-                <div class="feature-img feature-img-textual">
-                    <ul class="size-3 list-unstyled list-spaced">
-                        <li style="border-bottom: 1px solid #ccc;">1 tot 4 auto's: <strong style="color: #337088;">{{ 45 | currency }}</strong> per auto</li>
-                        <li style="border-bottom: 1px solid #ccc;">4 tot 10 auto's: <strong style="color: #337088;">{{ 40 | currency }}</strong> per auto</li>
-                        <li style="border-bottom: 1px solid #ccc;">10 tot 20 auto's: <strong style="color: #337088;">{{ 35 | currency }}</strong> per auto</li>
-                        <li style="border-bottom: 1px solid #ccc;">20 tot 50 auto's: <strong style="color: #337088;">{{ 32.5 | currency }}</strong> per auto</li>
-                        <li>50+ auto's: <strong style="color: #337088;">{{ 30 | currency }}</strong> per auto</li>
-                    </ul>
                     <div style="
                         margin-top: 3rem;
                     ">
                         <strong>Keyless</strong>
-                        <p>De kosten van de hardware (MyWheels Open technologie) bedragen eenmalig {{ 515 | currency }} incl. in- en uitbouwkosten, excl. btw.<p> 
-                        <p>Je kunt een paslezer laten plaatsen. De kosten daarvan zijn additioneel {{ 90 | currency }} excl btw.<p>
+                        <p>De kosten van de hardware (MyWheels Open technologie) bedragen eenmalig {{ 515 | currency }} incl. in- en uitbouwkosten, excl. btw. Je kunt een tevens paslezer laten plaatsen. De kosten daarvan zijn additioneel {{ 90 | currency }} excl btw.<p>
                         <p>Maandelijkse kosten voor de connectiviteit aan de leverancier van de hardware zijn {{ 13.95 | currency }} per maand (prijswijzigingen voorbehouden).</p>
 
                         <strong>Additionele diensten</strong>
                         <p>Het is mogelijk om het wagenparkbeheer van de auto volledig uit handen geven aan MyWheels. Denk hierbij aan:</p>
-                        <ul>
+                        <ul style="margin-bottom: 1rem;">
                             <li>De afhandeling van schade;</li>
                             <li>De afhandeling van boetes;</li>
                             <li>Periodieke schoonmaak op locatie.</li>
                         </ul>
-                        <br>
-                        <p>Prijzen op aanvraag.</p>
+                        <p><em>Prijzen op aanvraag.</em></p>
                     </div>
+                </div>
+            </div>
+            <div class="rpad col-xs-12 col-md-6 col-md-pull-6">
+                <div class="feature-img feature-img-textual">
+                    <div style="float: left; width: 49%; text-align: center; padding: 4rem 0;">
+                        <p style="margin: 0;"><em>1 tot 4 auto's</em></p>
+                        <p class="size-3"><strong class="size-6">{{ 45 | currency }}</strong> per auto</p>
+                    </div>
+                    <div style="float: left; width: 49%; text-align: center; padding: 4rem 0;">
+                        <p style="margin: 0;"><em>4 tot 10 auto's</em></p>
+                        <p class="size-3"><strong class="size-6">{{ 40 | currency }}</strong> per auto</p>
+                    </div>
+                    <div style="float: left; width: 49%; text-align: center; padding: 4rem 0;">
+                        <p style="margin: 0;"><em>10 tot 20 auto's</em></p>
+                        <p class="size-3"><strong class="size-6">{{ 35 | currency }}</strong> per auto</p>
+                    </div>
+                    <div style="float: left; width: 49%; text-align: center; padding: 4rem 0;">
+                        <p style="margin: 0;"><em>20 tot 50 auto's</em></p>
+                        <p class="size-3"><strong class="size-6">{{ 32.5 | currency }}</strong> per auto</p>
+                    </div>
+                    <div style="float: left; width: 49%; text-align: center; padding: 4rem 0;">
+                        <p style="margin: 0;"><em>50+ auto's</em></p>
+                        <p class="size-3"><strong class="size-6">{{ 30 | currency }}</strong> per auto</p>
+                    </div>
+                    <div style="clear: both;"></div>
                 </div>
             </div>
         </div>
@@ -158,7 +170,7 @@
                     <h2 style="
                         font-size: 2.6rem;
                         color: #333;
-                    ">Lease-mogelijkheden</h2>
+                    ">Leasemogelijkheden</h2>
                     <p class="size-3">
                         Heeft jouw bedrijf nog geen wagenpark of zijn de auto's aan vervanging toe? Lease dan een MyWheels deelauto die exclusief voor jouw medewerkers beschikbaar is. Je kunt zelf een automodel en contractduur kiezen. De auto's zijn standaard uitgerust met keyless technologie. Prijzen op aanvraag.
                     </p>
@@ -211,11 +223,11 @@
         <div class="container-home">
             <h2 class="footer-logo-row-header">Onze partners</h2>
             <div class="partner_logos">
-                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/railtraxx.svg" style="height: 70px;" /></div>
-                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/omgevingsdienst_haaglanden.png" style="height: 90px;" /></div>
-                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/ggd_hart_voor_brabant.svg" style="height: 60px;" /></div>
-                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/multilease.svg" style="height: 60px;" /></div>
-                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/gemeente_lansingerland.png" style="height: 80px;" /></div>
+                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/railtraxx.svg" style="height: 50px;" /></div>
+                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/omgevingsdienst_haaglanden.png" style="height: 63px;" /></div>
+                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/ggd_hart_voor_brabant.svg" style="height: 42px;" /></div>
+                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/multilease.svg" style="height: 42px;" /></div>
+                <div class="logo"><img class="img-responsive" ng-src="assets/img/partners/gemeente_lansingerland.png" style="height: 56px;" /></div>
             </div>
         </div>
     </div>
