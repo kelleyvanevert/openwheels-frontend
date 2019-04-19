@@ -26,7 +26,7 @@
                   ng-if="!details.bookingStarted && contract.type.id === 60"
                   initial-text="verwijderen"
                   confirm-text="zeker?"
-                  on-confirm="extraDrivers.removeForSure(inviteRequest)"
+                  on-confirm="removeDriver(inviteRequest)"
                 ></inline-confirm>
               </span>
               <span style="display: block; overflow: hidden; text-overflow: ellipsis;">
@@ -49,7 +49,7 @@
                   ng-if="!details.bookingStarted && contract.type.id === 60"
                   initial-text="verwijderen"
                   confirm-text="zeker?"
-                  on-confirm="extraDrivers.removeForSure(inviteRequest)"
+                  on-confirm="removeDriver(inviteRequest)"
                 ></inline-confirm>
               </span>
               <span style="display: block; overflow: hidden; text-overflow: ellipsis;">
