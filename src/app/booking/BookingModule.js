@@ -189,9 +189,21 @@ angular.module('owm.booking', [
           }
         }
 
-        progress.showPaymentScreen = perspective.isContractHolder &&
-          ((details.requested && details.firstTime) || booking.approved === 'BUY_VOUCHER') &&
-          ['cancelled', 'owner_cancelled', 'rejected'].indexOf(booking.status) < 0;
+        progress.showPaymentScreen = true &&
+          // Don't show payment screen to extra drivers on contract
+          perspective.isContractHolder &&
+          (
+            // Normal situation: you are asked to pay after the reservation has been accepted
+            booking.approved === 'BUY_VOUCHER' ||
+            // But first-time users are asked to pay directly.
+            // Edge-case fix: borg-contract users (e.g. non-Go) have a credit limit,
+            //  and should therefore not see the payment screen.
+            // This logic is usually dealt with by the API, for non-first-time users,
+            //  by having the `approved` flag jump over "BUY_VOUCHER" to "OK".
+            (details.requested && details.firstTime && contract.type.id === 60)
+          ) &&
+          // Don't show payment screen if rejected or cancelled (either by renter or owner)
+          (!details.cancelled && !details.rejected);
 
         if (progress.showPaymentScreen && account.disapprovedAccount && !account.approved) {
           // => this person has tried to pay, but was disapproved

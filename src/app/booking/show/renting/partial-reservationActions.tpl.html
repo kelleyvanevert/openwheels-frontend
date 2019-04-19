@@ -40,7 +40,7 @@
             Wijzig extra bestuurders
           </a>
         </div>
-        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!details.bookingStarted && !perspective.isContractor && !booking.person.isBusinessConnected">
+        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!details.bookingStarted && !perspective.isContractor && !me.isBusinessConnected">
           <a
             ng-click="editRiskReductionDialog($event)"
             class="mywheels-btn mywheels-btn-action"
@@ -50,7 +50,7 @@
             {{ booking.riskReduction ? 'Verlaag eigen risico niet' : 'Verlaag eigen risico' }}
           </a>
         </div>
-        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!details.bookingStarted && !booking.person.isBusinessConnected">
+        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!details.bookingStarted && !me.isBusinessConnected">
           <a
             ng-click="discountCodeDialog($event)"
             class="mywheels-btn mywheels-btn-action"
