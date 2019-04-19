@@ -218,9 +218,9 @@ angular.module('owm.booking', [
         if (account.disapprovedAccount && !account.approved) {
           needsToPay = true;
         }
-        // if (booking.approved !== 'OK' && !details.accepted) {
-        //   needsToPay = true;
-        // }
+        if (booking.approved !== 'OK' && !details.accepted && contract.type.id === 60) {
+          needsToPay = true;
+        }
 
         progress.steps = {
           accountCheck: {
