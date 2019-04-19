@@ -439,9 +439,16 @@ angular.module('owm.booking.show', [])
         };
         
         dialogScope.currentCredit = null;
-        $scope.getCurrentCredit().then(function (currentCredit) {
-          dialogScope.currentCredit = currentCredit;
-        });
+        function fetchCredit () {
+          $scope.getCurrentCredit().then(function (currentCredit) {
+            dialogScope.currentCredit = currentCredit;
+          });
+        }
+        fetchCredit();
+
+        dialogScope.removeDriver = function (inviteRequest) {
+          $scope.extraDrivers.removeForSure(inviteRequest).then(fetchCredit);
+        };
 
         dialogScope.extraDrivers = $scope.extraDrivers;
         dialogScope.details = $scope.details;
@@ -466,6 +473,7 @@ angular.module('owm.booking.show', [])
           }))
           .then(function () {
             alertService.add('success', 'De extra bestuurders zijn uitgenodigd.', 4000);
+            fetchCredit();
             $scope.extraDrivers.load();
           })
           .catch(function (e) {
@@ -1260,7 +1268,7 @@ angular.module('owm.booking.show', [])
       });
     },
     removeForSure: function (inviteRequest) {
-      extraDriverService.removeDriver({
+      return extraDriverService.removeDriver({
         booking: $scope.booking.id,
         email: inviteRequest.recipient.email,
       })
