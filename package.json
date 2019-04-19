@@ -3,9 +3,6 @@
   "name": "openwheels",
   "version": "2.55.0",
   "homepage": "https://github.com/OpenWheels",
-  "dependencies": {
-    "snarkdown": "^1.2.2"
-  },
   "devDependencies": {
     "@babel/core": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
