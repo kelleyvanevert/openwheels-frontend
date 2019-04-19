@@ -25,7 +25,11 @@
       </section>
     </div>
     <div class="nopad col-sm-4">
-      <section class="contract-choice contract-choice--middle" ng-class="{'contract-choice--middle--small': $mdMedia('xs')}">
+      <section class="contract-choice" ng-class="{
+        'contract-choice--middle': !disableMiddle,
+        'contract-choice--border': disableMiddle,
+        'contract-choice--middle--small': $mdMedia('xs')
+      }">
         <h3 same-height="headercontract">MyWheels Member</h3>
         <section>
           <div class="pay" same-height="aa">Betaal achteraf per SEPA incasso<span ng-if="!enableCompany"> *</span></div>
