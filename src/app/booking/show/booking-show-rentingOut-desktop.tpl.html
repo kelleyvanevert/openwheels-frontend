@@ -42,6 +42,9 @@
       <!-- Review schrijven teaser -->
       <div ng-include="'booking/show/partial-placeReview.tpl.html'" ng-if="showReviewTeaser && accepted"></div>
 
+      <!-- Geakkordeerde kilometerstanden -->
+      <div ng-include="'booking/show/partial-kilometerStanden.tpl.html'" ng-if="!details.requested && booking.approved === 'OK'"></div>
+
       <!-- Opbrengsten -->
       <booking-invoices booking="booking" view-as="owner"
         ng-if="!me.isBusinessConnected && !details.requested && booking.approved === 'OK'"
