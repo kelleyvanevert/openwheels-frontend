@@ -10,9 +10,11 @@ module.exports = {
       'src/**/*Module.js', // modules first
       'src/**/*.js',
     ],
-    es6: [
+    next: [
       'src/**/*Module.es6', // modules first
+      'src/**/*Module.ts', // modules first
       'src/**/*.es6',
+      'src/**/*.ts',
     ],
     atpl: [ 'src/app/**/*.tpl.html' ],
     ctpl: [ 'src/common/**/*.tpl.html' ],

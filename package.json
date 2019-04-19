@@ -8,7 +8,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
+    "@babel/preset-typescript": "^7.3.3",
     "colors": "^1.0.3",
     "connect-modrewrite": "^0.8.1",
     "grunt": "~0.4.1",
@@ -41,6 +43,7 @@
     "lodash": "^2.4.1",
     "minimist": "^1.1.0",
     "time-grunt": "~0.1.0",
+    "typescript": "^3.4.4",
     "uuid": "^2.0.1"
   }
 }

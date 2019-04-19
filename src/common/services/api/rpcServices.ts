@@ -1,63 +1,104 @@
 'use strict';
 
-angular.module('rpcServices', [])
+import {
+  IContract,
+  IProviderInfo,
+  IPlace,
+} from "../../types";
 
-.service('personService', function (api) {
-  var m = function (name, isAnonymous) {
-    return api.createRpcMethod('person.' + name, isAnonymous);
-  };
+abstract class MWService {
+  m: (methodName: string, isAnonymous?: boolean, middleware?) => any;
+
+  constructor (api, namespace) {
+    this.m = function (name, isAnonymous?, middleware?) {
+      return api.createRpcMethod(namespace + '.' + name, isAnonymous);
+    };
+  }
+}
+
+class ProviderInfoService extends MWService {
+  constructor (api) {
+    super(api, "providerinfo");
+  }
+
+  getInfo2 = this.m("getInfoByProvider", undefined, info => {
+    if (!info.extraInfo) {
+      info.extraInfo = {};
+    }
+    if (!info.extraInfo.personProfileBlacklist) {
+      info.extraInfo.personProfileBlacklist = {};
+    }
+    return info;
+  }) as (params: { provider: number; }) => Promise<IProviderInfo>;
+}
+
+class PlaceService extends MWService {
+  constructor (api) {
+    super(api, "place");
+  }
+
+  search = this.m("search") as (params: { place: string; }) => Promise<IPlace>;
+}
+
+class ContractService extends MWService {
+  constructor (api) {
+    super(api, "contract");
+  }
+
+  get = this.m("get");
+  all = this.m("all");
+  alter = this.m("alter");
+  create = this.m("create");
+  allTypes = this.m("allTypes");
+
+  forDriver     = this.m("forDriver")     as (params: { person: number; }) => Promise<IContract[]>;
+  forContractor = this.m("forContractor") as (params: { person: number; }) => Promise<IContract[]>;
+
+  forBooking = this.m("forBooking");
+  addPerson = this.m("addPerson");
+  removePerson = this.m("removePerson");
+  invitePerson = this.m("invitePerson");
+  requestContract = this.m("requestContract");
+}
+
+class PersonService extends MWService {
+  constructor (api) {
+    super(api, "person");
+  }
 
   /* REQUIRES parameter version=2 (version 1 deprecated on 13-5-2015) */
-  this.get = m('get');
+  get = this.m("get");
 
   /* REQUIRES parameter version=2 (version 1 deprecated on 19-5-2015) */
-  this.me = m('me');
+  me = this.m("me");
 
   /* REQUIRES parameter version=2 (version 1 deprecated on 19-5-2015) */
-  this.meAnonymous = m('me', true);
+  meAnonymous = this.m("me", true);
 
-  this.validateEmail = m('validateEmail');
-  this.alter = m('alter');
-  this.search = m('search');
-  this.dropPhoneWithPhoneId = m('dropPhoneWithPhoneId');
-  this.alterPhoneWithPhoneId = m('alterPhoneWithPhoneId');
-  this.addPhoneWithPersonId = m('addPhoneWithPersonId');
-  this.alterEmail = m('alterEmail');
-  this.sendResetPassword = m('sendResetPassword');
-  this.resetPassword = m('resetPassword');
-  this.addLicenseImages = m('addLicenseImages');
-  this.setProfileImage = m('setProfileImage');
-  this.emailBookingLink = m('emailBookingLink');
-  this.emailPreferenceToNone = m('emailPreferenceToNone');
-  this.sendVerificationCode = m('sendVerificationCode');
-  this.verifyPhoneNumber = m('verifyPhoneNumber');
-  this.addPhoneNumber = m('addPhoneNumber');
-})
+  validateEmail = this.m("validateEmail");
+  alter = this.m("alter");
+  search = this.m("search");
+  dropPhoneWithPhoneId = this.m("dropPhoneWithPhoneId");
+  alterPhoneWithPhoneId = this.m("alterPhoneWithPhoneId");
+  addPhoneWithPersonId = this.m("addPhoneWithPersonId");
+  alterEmail = this.m("alterEmail");
+  sendResetPassword = this.m("sendResetPassword");
+  resetPassword = this.m("resetPassword");
+  addLicenseImages = this.m("addLicenseImages");
+  setProfileImage = this.m("setProfileImage");
+  emailBookingLink = this.m("emailBookingLink");
+  emailPreferenceToNone = this.m("emailPreferenceToNone");
+  sendVerificationCode = this.m("sendVerificationCode");
+  verifyPhoneNumber = this.m("verifyPhoneNumber");
+  addPhoneNumber = this.m("addPhoneNumber");
+}
 
-.service('placeService', function (api) {
-  var m = function (name) {
-    return api.createRpcMethod('place.' + name);
-  };
-  this.search = m('search');
-})
 
-.service('contractService', function (api) {
-  var m = function (name) {
-    return api.createRpcMethod('contract.' + name);
-  };
-  this.get = m('get');
-  this.all = m('all');
-  this.alter = m('alter');
-  this.create = m('create');
-  this.allTypes = m('allTypes');
-  this.forDriver = m('forDriver');
-  this.forContractor = m('forContractor');
-  this.forBooking = m('forBooking');
-  this.addPerson = m('addPerson');
-  this.removePerson = m('removePerson');
-  this.invitePerson = m('invitePerson');
-  this.requestContract = m('requestContract');
-})
+angular.module("rpcServices", [])
+
+.service("personService", PersonService)
+.service("placeService", PlaceService)
+.service("contractService", ContractService)
 
 .service('chipcardService', function (api) {
   var m = function (name) {
@@ -74,7 +115,7 @@ angular.module('rpcServices', [])
 })
 
 .service('resourceService', function (api) {
-  var m = function (name, isAnonymous) {
+  var m = function (name, isAnonymous = false) {
     return api.createRpcMethod('resource.' + name, isAnonymous);
   };
   this.all = m('all');
@@ -389,21 +430,5 @@ angular.module('rpcServices', [])
   };
 })
 
-.service('providerInfoService', function (api) {
-  var m = function (name) {
-    return api.createRpcMethod('providerinfo.' + name);
-  };
-  var _getInfo = m('getInfoByProvider');
-  this.getInfo = function (params) {
-    return _getInfo(params).then(info => {
-      if (!info.extraInfo) {
-        info.extraInfo = {};
-      }
-      if (!info.extraInfo.personProfileBlacklist) {
-        info.extraInfo.personProfileBlacklist = {};
-      }
-      return info;
-    });
-  };
-})
+.service('providerInfoService', ProviderInfoService)
 ;

@@ -177,12 +177,16 @@ module.exports = function (grunt) {
         sourceMap: true,
         presets: [
           '@babel/preset-env',
+          '@babel/preset-typescript',
+        ],
+        plugins: [
+          '@babel/plugin-proposal-class-properties',
         ],
       },
       dist: {
         files: [
           {
-            src: '<%= app_files.es6 %>',
+            src: '<%= app_files.next %>',
             dest: '<%= build_dir %>/',
             ext: '.js',
             cwd: '.',
@@ -460,7 +464,7 @@ module.exports = function (grunt) {
       },
 
       jssrc_babel: {
-        files: '<%= app_files.es6 %>',
+        files: '<%= app_files.next %>',
         tasks: [ 'babel' ]
       },
 

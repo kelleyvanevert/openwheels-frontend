@@ -108,7 +108,7 @@ angular.module('owm.resource', [
     },
     resolve: {
       place: ['$q', '$state', '$stateParams', 'placeService', '$log', '$filter',
-        function ($q, $state, $stateParams, placeService, $log, $filter) {
+        function ($q, $state, $stateParams, placeService: PlaceService, $log, $filter) {
           return $q(function (resolve, reject) {
             placeService.search({
               place: $stateParams.city,
