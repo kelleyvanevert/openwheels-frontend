@@ -57,6 +57,7 @@
     }
 
     var dateTimePicker = function (element, options) {
+        console.log("dtp options", options);
         var picker = {},
             date,
             viewDate,
@@ -66,7 +67,7 @@
             widget = false,
             use24Hours,
             minViewModeNumber = 0,
-            maxViewModeNumber = 1,
+            maxViewModeNumber = (options.viewMode === 'years') ? 2 : 1,
             actualFormat,
             parseFormats,
             currentViewMode,
@@ -92,7 +93,7 @@
                     navStep: 100
                 }
             ],
-            viewModes = ['days', 'months'],
+            viewModes = ['days', 'months', 'years'],
             verticalModes = ['top', 'bottom', 'auto'],
             horizontalModes = ['left', 'right', 'auto'],
             toolbarPlacements = ['default', 'top', 'bottom'],
