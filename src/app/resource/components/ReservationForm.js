@@ -238,7 +238,7 @@ angular.module('owm.resource.reservationForm', [])
       return;// reject();
     }
 
-    if ($scope.person.isBusinessConnected) {
+    if ($scope.person && $scope.person.isBusinessConnected) {
       $scope.price = {}; // a bit of a hack
     } else {
       // If available, determine rental price

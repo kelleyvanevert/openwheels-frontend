@@ -1,7 +1,5 @@
 'use strict';
 
-window.sayHi = (...[a, b]) => console.log(`${a}, ${b}!`)
-
 angular.module('openwheels', [
 /* Framework */
   'ngAria',
@@ -455,7 +453,7 @@ angular.module('openwheels', [
   function possiblyRedirectToProfileFlow (e) {
     if (authService.user.isAuthenticated) {
       const me = authService.user.identity;
-      const shouldFlow = me.isBusinessConnected && !me.flowCompleted;
+      const shouldFlow = me && me.isBusinessConnected && !me.flowCompleted;
       const onDashboard = $state.includes('owm.person.dashboard');
       const onLandingPage = $state.includes('owmlanding');
       if (shouldFlow && !onDashboard && !onLandingPage) {
@@ -626,6 +624,8 @@ angular.module('openwheels', [
   }
 
   function bootstrap(config) {
+    window.IS_DEELAUTO = !!config.app_url.match(/deelauto/);
+
     if (isValidConfig(config)) {
       angular.module('openwheels.config', []).constant('appConfig', {
         appId: config.app_id,
