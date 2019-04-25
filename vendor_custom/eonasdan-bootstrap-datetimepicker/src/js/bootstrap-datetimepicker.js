@@ -57,7 +57,6 @@
     }
 
     var dateTimePicker = function (element, options) {
-        console.log("dtp options", options);
         var picker = {},
             date,
             viewDate,

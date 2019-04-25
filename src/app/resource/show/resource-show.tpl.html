@@ -130,7 +130,7 @@
                     <div style="max-width: 50rem; margin-left: auto; margin-right: auto;">
                         <!-- price -->
                         <!--<div ng-include="'resource/partials/resource-price.tpl.html'"></div>-->
-                        <resource-pricing resource="resource" is-business="me.isBusinessConnected" />
+                        <resource-pricing resource="resource" is-business="me && me.isBusinessConnected" />
                     </div>
                 </div>
                 <div class="card-body" style="padding-top: 0;">
@@ -275,7 +275,7 @@
         <div ng-if="isWindowSizeMD" class="col-md-4 hidden-xs hidden-sm">
             <div class="card">
                 <div class="card-body">
-                    <resource-pricing resource="resource" is-business="me.isBusinessConnected" />
+                    <resource-pricing resource="resource" is-business="me && me.isBusinessConnected" />
                 </div>
             </div>
 
