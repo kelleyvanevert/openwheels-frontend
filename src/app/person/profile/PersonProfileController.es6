@@ -103,7 +103,8 @@ angular.module('owm.person.profile', [])
       const date = moment([$scope.dateOfBirth.day, $scope.dateOfBirth.month, $scope.dateOfBirth.year].join("-"), "DD-MM-YYYY");
       const valid = !!($scope.dateOfBirth.day && $scope.dateOfBirth.month && $scope.dateOfBirth.year && date.isValid() && date.isBefore(moment()));
       form.dateOfBirth.$setValidity("validAndPast", valid);
-      $scope.person.dateOfBirth = date.format("YYYY-MM-DD");
+      form.dateOfBirth.$setViewValue(date.format("YYYY-MM-DD"));
+      $scope.person.dateOfBirth = valid ? date.format("YYYY-MM-DD") : null;
       console.log($scope.person.dateOfBirth, valid);
     };
 

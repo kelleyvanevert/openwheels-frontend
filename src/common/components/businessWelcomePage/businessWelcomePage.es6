@@ -206,6 +206,7 @@ angular.module('owm.components')
         const date = moment([$scope.dateOfBirth.day, $scope.dateOfBirth.month, $scope.dateOfBirth.year].join("-"), "DD-MM-YYYY");
         const valid = !!($scope.dateOfBirth.day && $scope.dateOfBirth.month && $scope.dateOfBirth.year && date.isValid() && date.isBefore(moment()));
         form.dateOfBirth.$setValidity("validAndPast", valid);
+        // form.dateOfBirth.$setViewValue(date.format("YYYY-MM-DD"));
         $scope.person.dateOfBirth = date.format("YYYY-MM-DD");
         console.log($scope.person.dateOfBirth, valid);
       };
