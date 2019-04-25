@@ -218,34 +218,58 @@
                 </div><!-- /.row -->
 
                 <div class="row">
-                  <div class="col-xs-12 col-sm-6" ng-if="!$root.providerInfo.extraInfo.personProfileBlacklist.dateOfBirth">
+                  <div class="col-xs-12 col-sm-9" ng-if="!$root.providerInfo.extraInfo.personProfileBlacklist.dateOfBirth">
                     <div ng-if="!$root.providerInfo.extraInfo.personProfileBlacklist.dateOfBirth">
                       <div class="form-group">
                         <p style="margin: .5rem 0"><label>Geboortedatum*</label></p>
-                        <div class="form-group mw-datepicker mw-icon"
-                            bootstrap-date-time-picker="dateConfig">
-                          <ng-md-icon aria-hidden="true" icon="today"></ng-md-icon>
-                          <input type="text" autocomplete="off" name="dateOfBirth" id="date" placeholder="Datum" required
-                                ng-model="bladate"
-                                ng-change="setDateOfBirth(extraInfoForm)" />
-                          <div class="text-danger" ng-show="extraInfoForm.dateOfBirth.$touched && (extraInfoForm.dateOfBirth.$error.required || extraInfoForm.dateOfBirth.$error.validAndPast)">
-                            Voer een geldige geboortedatum in
+                        <input name="dateOfBirth" type="text" style="display: none;" required ng-model="person.dateOfBirth" />
+
+                        <div class="row">
+                          <div class="col-xs-4">
+                            <div class="form-group mw-icon">
+                              <ng-md-icon aria-hidden="true" icon="today"></ng-md-icon>
+                              <input type="number" id="day" inputmode="numeric" pattern="[0-9]*" ng-model="dateOfBirth.day" placeholder="DD" maxlength="2" max="31" min="0" ng-change="setDateOfBirth(extraInfoForm)" />
+                            </div>
                           </div>
+                          <div class="col-xs-4">
+                            <div class="form-group mw-button">
+                            <md-button class="md-icon-button" ng-click="">
+                              <ng-md-icon icon="keyboard_arrow_down" aria-hidden="true"></ng-md-icon>
+                            </md-button>
+                              <select id="month" ng-model="dateOfBirth.month" ng-options="month.value as month.label for month in months" class="maand" ng-change="setDateOfBirth(extraInfoForm)">
+                                  <option value="-1">maand</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-xs-4">
+                            <div class="form-group">
+                              <input type="number" id="year" inputmode="numeric" pattern="[0-9]*" ng-model="dateOfBirth.year" placeholder="JJJJ" maxlength="4" max="2016" min="1900" ng-change="setDateOfBirth(extraInfoForm)" />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="text-danger" ng-show="extraInfoForm.dateOfBirth.$touched && (extraInfoForm.dateOfBirth.$error.required || extraInfoForm.dateOfBirth.$error.validAndPast)">
+                          Voer een geldige geboortedatum in
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="col-xs-12 col-sm-6" ng-if="!$root.providerInfo.extraInfo.personProfileBlacklist.gender">
+                  <div class="col-xs-12 col-sm-3" ng-if="!$root.providerInfo.extraInfo.personProfileBlacklist.gender">
                     <div ng-if="!$root.providerInfo.extraInfo.personProfileBlacklist.gender">
                       <div class="form-group">
                         <p style="margin: .5rem 0"><label>Geslacht*</label></p>
-                        <select name="male" class="form-control" ng-model="person.male" required
-                          style="min-height: 4rem;"
-                          ng-options="visibility.value as visibility.label for visibility in [
-                            { label: 'vrouw', value: false },
-                            { label: 'man', value: true },
-                          ]">
-                        </select>
+                        <div class="form-group mw-button">
+                          <md-button class="md-icon-button" ng-click="">
+                            <ng-md-icon icon="keyboard_arrow_down" aria-hidden="true"></ng-md-icon>
+                          </md-button>
+                          <select name="male" class="form-control" ng-model="person.male" required
+                            style="min-height: 4rem;"
+                            ng-options="visibility.value as visibility.label for visibility in [
+                              { label: 'vrouw', value: false },
+                              { label: 'man', value: true },
+                            ]">
+                          </select>
+                        </div>
                         <div class="text-danger" ng-show="extraInfoForm.male.$touched && extraInfoForm.male.$error.required">
                           Dit veld is verplicht
                         </div>

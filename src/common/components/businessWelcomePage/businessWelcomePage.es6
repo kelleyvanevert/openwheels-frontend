@@ -6,6 +6,8 @@ angular.module('owm.components')
   $state,
   $log,
   $timeout,
+  $translate,
+  API_DATE_FORMAT,
 
   alertService,
 
@@ -38,6 +40,7 @@ angular.module('owm.components')
           vertical: 'bottom',
         },
         width: '20em',
+        viewMode: 'years',
       };
 
       $scope.numSteps = 2;
@@ -173,11 +176,38 @@ angular.module('owm.components')
         $scope.person.drivingLicenseValidUntil = date.format("YYYY-MM-DD");
       };
 
+      const m = $scope.person.dateOfBirth ? moment($scope.person.dateOfBirth, API_DATE_FORMAT) : null;
+      $scope.dateOfBirth = m ? {
+        day: m.date(),
+        month: m.month() + 1,
+        year: m.year(),
+      } : {
+        day: null,
+        month: null,
+        year: null,
+      };
+
+      $scope.months = [
+        {label: $translate.instant('JANUARY'), value: 1},
+        {label: $translate.instant('FEBRUARY'), value: 2},
+        {label: $translate.instant('MARCH'), value: 3},
+        {label: $translate.instant('APRIL'), value: 4},
+        {label: $translate.instant('MAY'), value: 5},
+        {label: $translate.instant('JUNE'), value: 6},
+        {label: $translate.instant('JULY'), value: 7},
+        {label: $translate.instant('AUGUST'), value: 8},
+        {label: $translate.instant('SEPTEMBER'), value: 9},
+        {label: $translate.instant('OCTOBER'), value: 10},
+        {label: $translate.instant('NOVEMBER'), value: 11},
+        {label: $translate.instant('DECEMBER'), value: 12},
+      ];
+
       $scope.setDateOfBirth = form => {
-        const date = moment(form.dateOfBirth.$viewValue, dateConfig.format);
-        const valid = date.isValid() && date.isBefore(moment());
+        const date = moment([$scope.dateOfBirth.day, $scope.dateOfBirth.month, $scope.dateOfBirth.year].join("-"), "DD-MM-YYYY");
+        const valid = !!($scope.dateOfBirth.day && $scope.dateOfBirth.month && $scope.dateOfBirth.year && date.isValid() && date.isBefore(moment()));
         form.dateOfBirth.$setValidity("validAndPast", valid);
         $scope.person.dateOfBirth = date.format("YYYY-MM-DD");
+        console.log($scope.person.dateOfBirth, valid);
       };
 
     },
