@@ -38,6 +38,7 @@ angular.module('owm.components')
           vertical: 'bottom',
         },
         width: '20em',
+        viewMode: 'years',
       };
 
       $scope.numSteps = 2;

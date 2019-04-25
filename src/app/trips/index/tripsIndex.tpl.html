@@ -79,6 +79,8 @@
           </div>
         </div>
       </div>
+
+      <contract-banner ng-if="me.numberOfBookings >= 5 && me.numberOfBookings <= 10" />
     </div>
     <div class="rpad col-md-8">
       <div class="card mw" ng-if="(!totalBookings.asOwner && !totalBookings.asRenter) || renew">
