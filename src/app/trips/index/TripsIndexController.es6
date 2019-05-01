@@ -70,7 +70,7 @@ angular.module('owm.trips.index', [])
     }&until=${
       moment($scope.currentTimeFrame.untilDate, dateConfig.format).format("YYYY-MM-DD")
     }${
-      $scope.me.isBusinessConnected ? "&showTax=true" : ""
+      ($scope.me.isBusinessConnected || $scope.me.isCompany) ? "&showTax=true" : ""
     }${
       $scope.showCancelled ? "&cancelled=true" : ""
     }${
