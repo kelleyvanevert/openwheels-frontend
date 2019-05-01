@@ -13,7 +13,6 @@ angular.module('owm.trips.index', [])
   $scope.renew = false;
   $scope.now = moment().format(API_DATE_FORMAT);
 
-
   $scope.mobile = (mobileDetectService.phone() || mobileDetectService.mobile() || mobileDetectService.tablet());
 
   var dateTimeConfig = {
@@ -61,6 +60,23 @@ angular.module('owm.trips.index', [])
  
   $scope.showCancelled = ($stateParams.cancelled === 'true');
   $scope.otherOnContract = $stateParams.otherOnContract ? ($stateParams.otherOnContract === 'true') : me.isBusinessConnected;
+
+  $scope.spreadsheetLink = (
+    which = "ritten", // | "verhuringen"
+    extension = "xlsx" // | "xls" | "csv"
+  ) => {
+    return `${appConfig.serverUrl}/mw-services-api/v1/report/${which}-op-mywheels.${extension}?from=${
+      moment($scope.currentTimeFrame.fromDate, dateConfig.format).format("YYYY-MM-DD")
+    }&until=${
+      moment($scope.currentTimeFrame.untilDate, dateConfig.format).format("YYYY-MM-DD")
+    }${
+      $scope.me.isBusinessConnected ? "&showTax=true" : ""
+    }${
+      $scope.showCancelled ? "&cancelled=true" : ""
+    }${
+      $scope.otherOnContract ? "&otherOnContract=true" : ""
+    }`;
+  };
 
   // Load all bookings for this person in the role of either a renter or an owner with pagination
   $scope.loadBookings = function (role) {
