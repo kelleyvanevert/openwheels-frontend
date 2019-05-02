@@ -3,7 +3,7 @@
 angular.module('owm.trips.index', [])
 
 .controller('TripsIndexController', function ($log, $timeout, $q, $location, API_DATE_FORMAT, alertService, bookingService, me, $scope, linksService,
-  metaInfoService, appConfig, $stateParams, $state, mobileDetectService) {
+  metaInfoService, appConfig, $stateParams, $state, mobileDetectService, tokenService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/trips'});
   metaInfoService.set({canonical: 'https://mywheels.nl/trips'});
@@ -61,6 +61,7 @@ angular.module('owm.trips.index', [])
   $scope.showCancelled = ($stateParams.cancelled === 'true');
   $scope.otherOnContract = $stateParams.otherOnContract ? ($stateParams.otherOnContract === 'true') : me.isBusinessConnected;
 
+  const token = tokenService.getToken();
   $scope.spreadsheetLink = (
     which = "ritten", // | "verhuringen"
     extension = "xlsx" // | "xls" | "csv"
@@ -75,6 +76,8 @@ angular.module('owm.trips.index', [])
       $scope.showCancelled ? "&cancelled=true" : ""
     }${
       $scope.otherOnContract ? "&otherOnContract=true" : ""
+    }${
+      (token && token.accessToken) ? "&access_token=" + token.accessToken : ""
     }`;
   };
 
