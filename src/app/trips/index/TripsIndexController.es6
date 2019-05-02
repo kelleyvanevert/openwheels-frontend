@@ -3,7 +3,7 @@
 angular.module('owm.trips.index', [])
 
 .controller('TripsIndexController', function ($log, $timeout, $q, $location, API_DATE_FORMAT, alertService, bookingService, me, $scope, linksService,
-  metaInfoService, appConfig, $stateParams, $state, mobileDetectService) {
+  metaInfoService, appConfig, $stateParams, $state, mobileDetectService, tokenService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/trips'});
   metaInfoService.set({canonical: 'https://mywheels.nl/trips'});
@@ -12,7 +12,6 @@ angular.module('owm.trips.index', [])
   $scope.showLoaderSpinner = false;
   $scope.renew = false;
   $scope.now = moment().format(API_DATE_FORMAT);
-
 
   $scope.mobile = (mobileDetectService.phone() || mobileDetectService.mobile() || mobileDetectService.tablet());
 
@@ -61,6 +60,26 @@ angular.module('owm.trips.index', [])
  
   $scope.showCancelled = ($stateParams.cancelled === 'true');
   $scope.otherOnContract = $stateParams.otherOnContract ? ($stateParams.otherOnContract === 'true') : me.isBusinessConnected;
+
+  const token = tokenService.getToken();
+  $scope.spreadsheetLink = (
+    which = "ritten", // | "verhuringen"
+    extension = "xlsx" // | "xls" | "csv"
+  ) => {
+    return `${appConfig.serverUrl}/mw-services-api/v1/report/${which}-op-mywheels.${extension}?from=${
+      moment($scope.currentTimeFrame.fromDate, dateConfig.format).format("YYYY-MM-DD")
+    }&until=${
+      moment($scope.currentTimeFrame.untilDate, dateConfig.format).format("YYYY-MM-DD")
+    }${
+      ($scope.me.isBusinessConnected || $scope.me.isCompany) ? "&showTax=true" : ""
+    }${
+      $scope.showCancelled ? "&cancelled=true" : ""
+    }${
+      $scope.otherOnContract ? "&otherOnContract=true" : ""
+    }${
+      (token && token.accessToken) ? "&access_token=" + token.accessToken : ""
+    }`;
+  };
 
   // Load all bookings for this person in the role of either a renter or an owner with pagination
   $scope.loadBookings = function (role) {
