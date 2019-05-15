@@ -44,7 +44,7 @@ angular.module('owm.components')
         $scope.contracts = contracts;
         $scope.has = computeHas(contracts);
 
-        if (contracts.length === 0 && !$scope.disableAutoRequestGo) {
+        if ($scope.loadedContracts && contracts.length === 0 && !$scope.disableAutoRequestGo) {
           depositService.requestContractAndPay({
             person: $scope.me.id,
             contractType: 60,
@@ -63,7 +63,10 @@ angular.module('owm.components')
         contractService.forContractor({
           person: $scope.me.id
         })
-        .then(init);
+        .then(function (contracts) {
+          $scope.loadedContracts = true;
+          init(contracts);
+        });
       }
 
       $scope.select = contractTypeName => {
