@@ -1,0 +1,40 @@
+
+<div ui-sref="owm.resource.show({ resourceId: $ctrl.resource.id, city: citySlug })">
+  <div layout="column" style="flex-grow: 1;">
+    <div class="visible-xs-block">
+      <h4 style="color: #333; font-size: 1.8rem; margin: 0; padding: 1.3rem 0 0;">{{ $ctrl.resource.alias }}</h4>
+    </div>
+
+    <div layout="row" style="padding: .8rem 0; margin: 0 -1rem; flex-grow: 1; justify-content: space-around; flex-wrap: wrap; line-height: 2;">
+
+      <div style="padding: .5rem 1rem;">
+        <img ng-src="{{ $ctrl.resource | resourcePicture: 'normal' }}" class="img-user-normal" alt="{{ $ctrl.resource.alias }}" />
+      </div>
+
+      <div class="hidden-xs" style="padding: .5rem 2rem; width: 16rem;">
+        <a style="font-weight: bold;" ui-sref="owm.resource.show({ resourceId: $ctrl.resource.id, city: citySlug })">{{ $ctrl.resource.alias }}</a>
+      </div>
+
+      <div style="padding: .5rem 1rem; flex-grow: 1;">
+        <div class="truncate">
+          {{ $ctrl.resource.location }}, {{ $ctrl.resource.city }}
+        </div>
+        <div class="truncate" style="color: #777;">
+          {{ $ctrl.resource.owner | fullname }}
+        </div>
+      </div>
+
+      <div
+        ng-if="!me.isBusinessConnected"
+        style="padding: .5rem 1rem; min-width: 10rem; display: flex; justify-content: center; flex-direction: column; align-items: flex-end;"
+      >
+        <div>{{ $ctrl.resource.price.dayRateTotal | currency }}</div>
+        <div ng-if="$ctrl.resource.price.kmFree" class="text-success">
+          <small hide-xs>{{ 'FREE_KM_DAY' | translate }}</small>
+          <small hide-gt-xs>{{ 'FREE_KM_DAY_SHORT' | translate }}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

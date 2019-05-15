@@ -1,0 +1,117 @@
+
+<div ui-sref="owm.booking.show({ bookingId: $ctrl.booking.id })">
+  <div layout="column" style="flex-grow: 1;">
+    <h4 class="visible-xs-block" style="color: #333; font-size: 1.8rem; margin: 0; padding: 1.3rem 0 0;">{{ $ctrl.booking.resource.alias }}</h4>
+
+    <div layout="row" style="padding: .8rem 0; margin: 0 -1rem; flex-grow: 1; justify-content: space-around; flex-wrap: wrap; line-height: 2;">
+
+      <div style="padding: .5rem 1rem;">
+        <img class="media-object img-user-normal pull-left align-middle" person-profile-image="{ person: $ctrl.booking.person, size: 'normal' }" />
+      </div>
+
+      <div style="padding: .5rem 2rem; width: 16rem;">
+        <div ng-if="$ctrl.booking.beginBooking && !$ctrl.booking.beginRequested">
+          <div>
+            <datetime datetime="{{ $ctrl.booking.beginBooking }}"></datetime>
+            <datetime datetime="{{ $ctrl.booking.endBooking }}"></datetime>
+          </div>
+        </div>
+        <div ng-if="$ctrl.booking.beginRequested">
+          <div>
+            <datetime datetime="{{ $ctrl.booking.beginRequested }}"></datetime>
+            <datetime datetime="{{ $ctrl.booking.endRequested }}"></datetime>
+          </div>
+        </div>
+      </div>
+
+      <div class="hidden-xs" style="padding: .5rem 1rem; flex-grow: 1;">
+        <div class="truncate">
+          {{ $ctrl.booking.person | fullname }}
+        </div>
+        <div class="truncate" style="color: #777;">
+          {{ $ctrl.booking.resource.alias }}
+        </div>
+      </div>
+
+      <div style="padding: .5rem 1rem; min-width: 10rem; display: flex; justify-content: center; flex-direction: column; align-items: flex-end;">
+        <div
+          ng-if="$ctrl.booking.status === 'accepted' &&
+                 $ctrl.booking.approved !== 'BUY_VOUCHER' &&
+                 ($ctrl.booking.ok || $ctrl.booking.endBooking < now)"
+        >
+          <span
+            ng-if="(now < $ctrl.booking.beginBooking || $ctrl.booking.trip.odoBegin || $ctrl.booking.trip.finalized || $ctrl.booking.resource.boardcomputer)"
+            class="text-success"
+            style="font-weight: bold;"
+          >
+            Geaccepteerd
+          </span>
+          <span
+            ng-if="!(now < $ctrl.booking.beginBooking || $ctrl.booking.trip.odoBegin || $ctrl.booking.trip.finalized || $ctrl.booking.resource.boardcomputer)"
+          >
+            <span uib-tooltip="Deze boeking is akkoord, je kunt de auto meegeven aan de huurder">Geaccepteerd</span>
+          </span>
+        </div>
+
+        <div
+          ng-if="$ctrl.booking.status === 'accepted' &&
+                 $ctrl.booking.approved === 'BUY_VOUCHER'"
+          class="list-item-booking-status"
+        >
+          <span uib-tooltip="Deze boeking is (nog) niet akkoord, geef de auto niet mee aan de huurder">Huurder moet nog betalen</span>
+        </div>
+
+        <div
+          ng-if="$ctrl.booking.status === 'accepted' &&
+                 $ctrl.booking.approved !== 'BUY_VOUCHER' &&
+                 !$ctrl.booking.ok && $ctrl.booking.endBooking > now"
+          class="list-item-booking-status"
+        >
+          <span uib-tooltip="Deze boeking is (nog) niet akkoord, geef de auto niet mee aan de huurder">De boeking is nog niet in orde</span>
+        </div>
+
+        <div
+          ng-if="$ctrl.booking.status === 'rejected'"
+          class="list-item-booking-status"
+        >
+          Afgewezen
+        </div>
+
+        <div
+          ng-if="['cancelled', 'owner_cancelled'].indexOf($ctrl.booking.status) >= 0"
+          class="list-item-booking-status"
+        >
+          Geannuleerd
+        </div>
+
+        <div
+          ng-if="$ctrl.booking.status === 'requested'"
+        >
+          <button class="mywheels-btn mywheels-btn-call-to-action"
+                md-ink-ripple="#4b702c"
+                ui-sref="owm.booking.show({ bookingId: $ctrl.booking.id })"
+                style="white-space: nowrap;">
+            Reageer
+          </button>
+        </div>
+
+        <div
+          ng-if="$ctrl.booking.status === 'accepted' &&
+                 now > $ctrl.booking.beginBooking &&
+                 !$ctrl.booking.resource.boardcomputer &&
+                 ($ctrl.booking.approved === 'OK' || !$ctrl.booking.approved) &&
+                 !$ctrl.booking.trip.odoBegin &&
+                 !$ctrl.booking.trip.finalized"
+        >
+          <button class="mywheels-btn mywheels-btn-call-to-action"
+                md-ink-ripple="#4b702c"
+                ui-sref="owm.booking.show({ bookingId: $ctrl.booking.id })"
+                style="white-space: nowrap;">
+            Administreer rit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

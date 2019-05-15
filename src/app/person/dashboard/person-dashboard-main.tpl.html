@@ -123,7 +123,12 @@
           <h2 class="card-title">{{ 'CURRENT_BOOKINGS' | translate }}</h2>
         </div>
         <div class="card-body">
-          <div ng-repeat="b in bookings | limitTo: 5" ng-include="'booking/list/partial/booking-list-item.tpl.html'"></div>
+          <div style="border-bottom: 1px solid #e5e5e5;">
+            <div style="border-top: 1px solid #e5e5e5;" ng-repeat="b in bookings | limitTo: 5">
+              <list-item-booking-renter booking="b" me="me" />
+            </div>
+          </div>
+
           <center style="margin-top: 2rem">
             <a type="button" name="button" class="mywheels-btn mywheels-btn-big mywheels-btn-default mywheels-btn-big" ui-sref="owm.trips" md-ink-ripple="#3a6d81">
               Bekijk alles <span ng-if="totalBookings > 2">({{ totalBookings }})</span>
@@ -152,11 +157,11 @@
           </h2>
         </div>
         <div class="card-body" id="resource-info">
-          <ul class="list-row booking-list">
-            <li ng-repeat="b in rentals" ui-sref="owm.booking.show({ bookingId: b.id })"
-                ng-include="'booking/list/partial/booking-list-item--owner.tpl.html'">
-            </li>
-          </ul>
+          <div style="border-bottom: 1px solid #e5e5e5;">
+            <div style="border-top: 1px solid #e5e5e5;" ng-repeat="b in bookings | limitTo: 5">
+              <list-item-booking-owner booking="b" me="me" />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -167,10 +172,11 @@
             <h2 class="card-title">{{ 'CURRENT_BOOKINGS_AS_EXTRA_DRIVER' | translate }}</h2>
           </div>
           <div class="card-body">
-            <ul class="list-row booking-list booking-dashboard no-border" layout="row" layout-wrap>
-              <li ng-repeat="extraDriverBooking in extraDriverBookings | limitTo: 2" ng-include="'booking/list/partial/booking-list-item-extra-driver.tpl.html'" class="no-border" flex-gt-xs="50">
-              </li>
-            </ul>
+            <div style="border-bottom: 1px solid #e5e5e5;">
+              <div style="border-top: 1px solid #e5e5e5;" ng-repeat="extraDriverBooking in extraDriverBookings | limitTo: 5">
+                <list-item-booking-renter booking="extraDriverBooking" me="me" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -184,11 +190,11 @@
 
         <div class="card-body">
           <div ng-if="membersResources.length >= 1">
-            <ul class="list-row">
-              <li ng-repeat="resource in membersResources" ng-click="selectFavoriteResource(resource)">
-                <div ng-include="'resource/partials/resource-header1.tpl.html'"></div>
-              </li>
-            </ul>
+            <div style="border-bottom: 1px solid #e5e5e5;">
+              <div style="border-top: 1px solid #e5e5e5;" ng-repeat="resource in membersResources">
+                <list-item-favorite resource="resource" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -202,11 +208,11 @@
 
         <div class="card-body">
           <div>
-            <ul class="list-row">
-              <li ng-repeat="resource in favoriteResources" ng-click="selectFavoriteResource(resource)">
-                <div ng-include="'resource/partials/resource-header1.tpl.html'"></div>
-              </li>
-            </ul>
+            <div style="border-bottom: 1px solid #e5e5e5;">
+              <div style="border-top: 1px solid #e5e5e5;" ng-repeat="resource in favoriteResources">
+                <list-item-favorite resource="resource" />
+              </div>
+            </div>
             <center>
               <a ui-sref="owm.resource.search.list" class="mywheels-btn mywheels-btn-normal mywheels-btn-big">{{ 'SHOW_MORE_RESOURCES' | translate }}</a>
             </center>

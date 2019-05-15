@@ -268,13 +268,6 @@ angular.module('owm.person.dashboard', [])
     });
   }
 
-  $scope.selectFavoriteResource = function (resource) {
-    $state.go('owm.resource.show', {
-      resourceId: resource.id,
-      city: (resource.city || '').toLowerCase().replace(/ /g, '-')
-    });
-  };
-
   $scope.getBookingListAsExtraDriver = function () {
     extraDriverService.getExtraDriverBookingList({
       person: $scope.me.id,
@@ -282,7 +275,10 @@ angular.module('owm.person.dashboard', [])
       offset: 0
     })
     .then(function (data) {
-      $scope.extraDriverBookings = data.result;
+      $scope.extraDriverBookings = data.result.map(function (obj) {
+        obj.booking.resource = obj.resource;
+        return obj.booking;
+      });
     })
     .catch(function () {
       $scope.extraDriverBookings = [];
