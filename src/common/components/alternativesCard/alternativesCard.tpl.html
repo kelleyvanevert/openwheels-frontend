@@ -1,0 +1,33 @@
+
+<div
+  class="card mw"
+  id="resourceAlternatives"
+  ng-if="resourceAlternatives && resourceAlternatives.length > 0"
+>
+  <div class="card-heading">
+    <h3 ng-if="$ctrl.booking" class="card-title">Alternatieven</h3>
+    <h3 ng-if="$ctrl.resource" class="card-title">Alternatieven in de buurt</h3>
+  </div>
+
+  <div class="card-body">
+    <p ng-if="$ctrl.booking">Verhoog de kans op een auto en reserveer meerdere auto's. Zodra één huurverzoek geaccepteerd wordt, worden de andere huurverzoeken automatisch geannuleerd.</p>
+    <ul class="list-row">
+      <li ng-repeat="resource in resourceAlternatives" ng-click="selectResourceAlternative(resource)" ga-track-event="['interaction', 'selectResourceAlternative', 'bookingShow']">
+        <div><div ng-include="'resource/partials/resource-header4.tpl.html'"></div></div>
+      </li>
+    </ul>
+
+    <ul class="list-inline text-center">
+      <li id="dashboard_rent_a_car">
+        <a ui-sref="owm.resource.search.list({
+          start: startDate,
+          end: endDate,
+          type: $ctrl.booking.resource.resourceType,
+          seats: $ctrl.booking.resource.numberOfSeats
+        })" class="btn btn-success btn-lg"  ga-track-event="['interaction', 'selectAllResourceAlternatives', 'bookingShow']">
+          Bekijk alle auto's
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

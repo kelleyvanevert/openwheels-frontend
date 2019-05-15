@@ -1,0 +1,118 @@
+
+<div ui-sref="owm.booking.show({ bookingId: $ctrl.booking.id })">
+  <div layout="column" style="flex-grow: 1;">
+    <div class="visible-xs-block">
+      <h4 style="color: #333; font-size: 1.8rem; margin: 0; padding: 1.3rem 0 0;">{{ $ctrl.booking.resource.alias }}</h4>
+      <div>{{ $ctrl.booking.resource.owner | fullname }}</div>
+    </div>
+
+    <div layout="row" style="padding: .8rem 0; margin: 0 -1rem; flex-grow: 1; justify-content: space-around; flex-wrap: wrap; line-height: 2;">
+
+      <div style="padding: .5rem 1rem;">
+        <img ng-src="{{ $ctrl.booking.resource | resourcePicture: 'normal' }}" class="img-user-normal" alt="{{ $ctrl.booking.resource.alias }}" />
+      </div>
+
+      <div style="padding: .5rem 2rem; width: 16rem;">
+        <div ng-if="$ctrl.booking.beginBooking && !$ctrl.booking.beginRequested">
+          <div>
+            <datetime datetime="{{ $ctrl.booking.beginBooking }}"></datetime>
+            <datetime datetime="{{ $ctrl.booking.endBooking }}"></datetime>
+          </div>
+        </div>
+        <div ng-if="$ctrl.booking.beginRequested">
+          <div>
+            <datetime datetime="{{ $ctrl.booking.beginRequested }}"></datetime>
+            <datetime datetime="{{ $ctrl.booking.endRequested }}"></datetime>
+          </div>
+        </div>
+      </div>
+
+      <div class="hidden-xs" style="padding: .5rem 1rem; flex-grow: 1;">
+        <div class="truncate">
+          {{ $ctrl.booking.resource.alias }}
+        </div>
+        <div class="truncate" style="color: #777;">
+          {{ $ctrl.booking.resource.owner | fullname }}
+        </div>
+      </div>
+
+
+      <div
+        ng-if="$ctrl.me && $ctrl.booking.person.id !== $ctrl.me.id"
+        style="
+          padding: .5rem 1rem;
+          min-width: 10rem; max-width: 26rem;
+          color: #777;
+          font-style: italic;
+          text-align: center;
+        "
+      >
+        Je bent medebestuurder op deze rit
+        van {{ $ctrl.booking.person.firstName }}
+      </div>
+      <div
+        ng-if="!($ctrl.me && $ctrl.booking.person.id !== $ctrl.me.id)"
+        style="
+          padding: .5rem 1rem;
+          min-width: 10rem;
+          max-width: 26rem;
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+          align-items: flex-end;
+        "
+      >
+
+        <span
+          ng-if="$ctrl.booking.status === 'accepted' && $ctrl.booking.approved !== 'BUY_VOUCHER'"
+          class="text-success"
+          style="font-weight: bold;"
+        >
+          Geaccepteerd
+        </span>
+        <span
+          ng-if="$ctrl.booking.status === 'requested'"
+          class="list-item-booking-status"
+        >
+          In aanvraag
+        </span>
+        <span
+          ng-if="$ctrl.booking.status === 'rejected'"
+          class="text-danger"
+          style="font-weight: bold;"
+        >
+          Afgewezen
+        </span>
+        <span
+          ng-if="['cancelled', 'owner_cancelled'].indexOf($ctrl.booking.status) >= 0"
+          class="text-danger"
+          style="font-weight: bold;"
+        >
+          Geannuleerd
+        </span>
+
+        <div ng-if="$ctrl.booking.status === 'accepted' && $ctrl.booking.approved === 'BUY_VOUCHER'">
+          <button class="mywheels-btn mywheels-btn-call-to-action"
+                md-ink-ripple="#4b702c"
+                ui-sref="owm.booking.show({ bookingId: $ctrl.booking.id })"
+                style="white-space: nowrap;">
+            Betaal rit
+          </button>
+        </div>
+
+        <!-- De conditie (booking.person.id === me.id) checkt of je de daadwerkelijke huurder bent,
+              of dat de verhuring door een contractant is gedaan. -->
+        <div ng-if="$ctrl.booking.person.id === me.id &&
+          $ctrl.booking.status === 'accepted' && now > $ctrl.booking.beginBooking && !$ctrl.booking.resource.boardcomputer && ($ctrl.booking.approved === 'OK' || !$ctrl.booking.approved) && !$ctrl.booking.trip.odoBegin && !$ctrl.booking.trip.finalized">
+          <button class="mywheels-btn mywheels-btn-call-to-action"
+                md-ink-ripple="#4b702c"
+                ui-sref="owm.booking.show({ bookingId: $ctrl.booking.id })"
+                style="white-space: nowrap;">
+            Administreer rit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

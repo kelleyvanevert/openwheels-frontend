@@ -218,9 +218,9 @@ angular.module('owm.booking', [
         if (account.disapprovedAccount && !account.approved) {
           needsToPay = true;
         }
-        // if (booking.approved !== 'OK' && !details.accepted) {
-        //   needsToPay = true;
-        // }
+        if (booking.approved !== 'OK' && !details.accepted && contract.type.id === 60 && credit.value < 1) {
+          needsToPay = true;
+        }
 
         progress.steps = {
           accountCheck: {
@@ -290,7 +290,7 @@ angular.module('owm.booking', [
         // Determine summary text
         if (!progress.steps.accepted.checked) {
           progress.summary = 'We hebben de reservering naar verhuurder ' + $filter('fullname')(booking.resource.owner) + ' gestuurd.';
-          if (!progress.steps.payment.checked) {
+          if (!progress.steps.payment.checked && progress.showPaymentScreen) {
             progress.summary += ' Je kunt alvast betalen. De reservering is dan direct definitief na acceptatie door ' + booking.resource.owner.firstName + '.';
           }
           else {
