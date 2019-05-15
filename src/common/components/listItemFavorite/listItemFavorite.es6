@@ -6,7 +6,7 @@ angular.module("owm.components")
   bindings: {
     resource: "=",
   },
-  controller: function ($scope) {
+  controller: ['$scope', function ($scope) {
     $scope.citySlug = (this.resource.city || '').toLowerCase().replace(/ /g, '-');
-  },
+  }],
 });
