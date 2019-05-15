@@ -6,7 +6,7 @@ angular.module("owm.components")
   bindings: {
     booking: "=",
   },
-  controller ($scope, API_DATE_FORMAT) {
+  controller: ['$scope', 'API_DATE_FORMAT', function ($scope, API_DATE_FORMAT) {
     $scope.now = moment().format(API_DATE_FORMAT);
-  },
+  }],
 });
