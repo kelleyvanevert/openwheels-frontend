@@ -290,7 +290,7 @@ angular.module('rpcServices', [])
         var arr = sortFilterConversations(data);
         return {
           result: arr,
-          total: arr.length,
+          total: arr.length === 0 ? 0 : arr[0].total,
         };
       } else {
         return {

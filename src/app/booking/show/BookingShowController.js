@@ -707,10 +707,6 @@ angular.module('owm.booking.show', [])
           moment().isBefore(moment(booking.endBooking))
         );
       }());
-
-      if ($scope.requested) {
-        loadAlternatives();
-      }
     }
 
     if ($scope.userPerspective === 'owner' || ($scope.userPerspective === 'contract_holder' && resource.owner.id === me.id)) {
@@ -1331,57 +1327,6 @@ angular.module('owm.booking.show', [])
     }
     return dfd.promise;
   }
-
-  /*
-  * load alternatives for requested bookings
-  */
-  function loadAlternatives() {
-    var URL_DATE_TIME_FORMAT = 'YYMMDDHHmm';
-    $scope.startDate = moment($scope.booking.beginRequested).format(URL_DATE_TIME_FORMAT);
-    $scope.endDate = moment($scope.booking.endRequested).format(URL_DATE_TIME_FORMAT);
-
-    var params = {};
-
-    params.timeframe = {
-      startDate: $scope.booking.beginRequested,
-      endDate: $scope.booking.endRequested
-    };
-
-    params.location = {
-      latitude: $scope.booking.person.latitude,
-      longitude: $scope.booking.person.longitude
-    };
-
-    params.filters = {
-      minSeats: $scope.booking.resource.numberOfSeats,
-      resourceType: $scope.booking.resource.resourceType
-    };
-
-    params.radius = 5000;
-    params.maxresults = 4;
-    params.person = $scope.booking.person.id;
-    params.sort = 'relevance';
-
-    resourceService.searchV3(params)
-    .then(function (alternatives) {
-      // remove current resource
-      $scope.resourceAlternatives = alternatives.results;
-      for (var i=0; i<$scope.resourceAlternatives.length; i++) {
-        if ($scope.resourceAlternatives[i].id === booking.resource.id) {
-          $scope.resourceAlternatives.splice(i, 1);
-        }
-      }
-    });
-  }
-
-  $scope.selectResourceAlternative = function (resource) {
-    $state.go('owm.resource.show', {
-      resourceId: resource.id,
-      city: (resource.city || '').toLowerCase().replace(/ /g, '-'),
-      start: $scope.startDate,
-      end: $scope.endDate
-    });
-  };
 
   /*
   * Chat
