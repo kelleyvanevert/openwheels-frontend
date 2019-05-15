@@ -361,6 +361,11 @@ interface InvoiceLine {
       },
     },
     resolve: {
+      me: ['authService', function (authService) {
+        return authService.userPromise().then(function (user) {
+          return user.isAuthenticated ? user.identity : null;
+        });
+      }],
       instantPayment: ['instantPaymentService', '$stateParams', 'paymentSucceeded', function (instantPaymentService, $stateParams, paymentSucceeded) {
         if (paymentSucceeded) {
           return null;
