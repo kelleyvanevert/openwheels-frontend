@@ -7,7 +7,7 @@ angular.module("owm.components")
     booking: "=",
     me: "=", // (jsut to determine whether 'extra driver' or not)
   },
-  controller ($scope, API_DATE_FORMAT) {
+  controller: function ($scope, API_DATE_FORMAT) {
     $scope.now = moment().format(API_DATE_FORMAT);
   },
 });
