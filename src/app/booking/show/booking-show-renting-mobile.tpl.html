@@ -151,8 +151,8 @@
     </div><!-- /.card -->
 
     <!-- Alternatieven, voor als de reservering nog niet compleet is -->
-    <div ng-if="!progress.reservationCompleted">
-      <div ng-include="'booking/show/renting/partial-alternatives.tpl.html'" ng-if="!perspective.isContractor"></div>
+    <div ng-if="!progress.reservationCompleted && !perspective.isContractor && details.requested && (!paymentInit || credit.value !== 0 || debt.value !== 0)">
+      <alternatives-card booking="booking"></alternatives-card>
     </div>
 
     <!-- Huurovereenkomst -->
