@@ -85,6 +85,10 @@
       <ng-md-icon icon="settings" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_PROFILE' | translate }}</p>
     </md-list-item>
 
+    <md-list-item id="menuContracts" class="menu-item-contracts" ng-click="navigate('owm.person.contract')">
+      <ng-md-icon icon="content_paste" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'MY_CONTRACTS' | translate }}</p>
+    </md-list-item>
+
     <md-list-item id="menuMessages" class="menu-item-invite" ng-click="navigate('invite')" ng-if="user.identity.provider.id === 1">
       <ng-md-icon icon="share" alt="Icoon" aria-label="Icoon"></ng-md-icon><p>{{ 'INVITE_FRIENDS_MENU' | translate }}</p>
     </md-list-item>
