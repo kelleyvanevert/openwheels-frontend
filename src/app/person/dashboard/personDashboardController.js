@@ -5,6 +5,7 @@ angular.module('owm.person.dashboard', [])
 .controller('PersonDashboardController', function ($q, $scope, $sce, $state, me, bookingList, rentalList, actions, person,
   homeAddressPrefill, $filter, hasBooked,
   unwrap,
+  contractService,
   authService, bookingService, alertService, boardcomputerService, actionService, resourceService, resourceQueryService,
   blogItems, $localStorage, personService, extraDriverService, dialogService, $translate, $timeout, Analytics, metaInfoService, appConfig, $window) {
 
@@ -162,6 +163,8 @@ angular.module('owm.person.dashboard', [])
     loadResources();
   }
 
+  loadContracts();
+
   if(me.registerSource === 'facebook_register') {
     Analytics.trackEvent('person', 'created', me.id, undefined, true);
     saveRegisterSource('facebook_login');
@@ -170,7 +173,7 @@ angular.module('owm.person.dashboard', [])
   //Syntus Utrecht offer for MyWheels Open
   if ($scope.me.zipcode) {
     $scope.zipcode = $scope.me.zipcode.substring(0, 4);
-    $scope.MyWheelsOpenUtrecht = ($scope.zipcode >= 3400 && $scope.zipcode <= 4133 && ['Culemborg', 'Den Haag', '\'s-Gravenhage'].indexOf($scope.me.city) < 0) ? true : false;
+    $scope.MyWheelsOpenUtrecht = ($scope.zipcode >= 3400 && $scope.zipcode <= 4133 && ['Amsterdam', 'Culemborg', 'Den Haag', '\'s-Gravenhage'].indexOf($scope.me.city) < 0) ? true : false;
   } else {
     $scope.MyWheelsOpenUtrecht = false;
   }
@@ -284,5 +287,18 @@ angular.module('owm.person.dashboard', [])
       $scope.extraDriverBookings = [];
     });
   };
+
+  $scope.contracts = [];
+  function loadContracts() {
+    contractService.forDriver({
+      person: $scope.me.id
+    })
+    .then(function (contracts) {
+      $scope.contracts = contracts;
+      $scope.hasGoContract = contracts.reduce(function (hasGoContract, contract) {
+        return hasGoContract || contract.type.id === 60;
+      }, false);
+    });
+  }
 
 });
