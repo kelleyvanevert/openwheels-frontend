@@ -12,8 +12,7 @@ angular.module('owm.components')
   angularLoad,
 
   API_DATE_FORMAT,
-  
-  contractService,
+
   resourceService,
   bookingService,
   extraDriverService,
@@ -23,6 +22,7 @@ angular.module('owm.components')
     restrict: 'E',
     scope: {
       me: '=',
+      contracts: '=',
     },
     templateUrl: 'components/resourceDashboard/resourceDashboard.tpl.html',
     controller: function ($scope, $element) {
@@ -364,14 +364,11 @@ angular.module('owm.components')
         //   - Check whether person is `isBusinessConnected`
         //   - If so, just pick the first contract (assumption: there should only be one)
 
-        const contracts = await contractService.forDriver({
-          person: $scope.me.id
-        });
         if ($scope.me.isBusinessConnected) {
           console.debug('Showing resource dashboard for business user');
-          focus.contract = contracts[0];
+          focus.contract = $scope.contracts[0];
         } else {
-          focus.contract = contracts.reduce((companyContract, contract) => {
+          focus.contract = $scope.contracts.reduce((companyContract, contract) => {
             return companyContract || (contract.type.id === 15 ? contract : null) || (contract.type.id === 65 && contract.contractor.id === $scope.me.id ? contract : null);
           }, null);
           if (focus.contract) {
