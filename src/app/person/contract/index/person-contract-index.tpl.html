@@ -70,9 +70,22 @@
         <p>
           <strong>{{ 'PERSON.CONTRACT.OTHER_CONTRACTS_PERSONS' | translate }}</strong>
         </p>
+
+        <form name="form" style="margin-bottom: 20px;">
+          <div class="input-group" ng-class="{ 'has-error' : form.email.$error.email }">
+            <input type="email" required name="email" class="form-control" placeholder="{{ 'EMAIL' | translate }}" ng-model="contract.emailToAdd" />
+            <div class="input-group-btn">
+              <button class="btn btn-default"
+                ng-disabled="form.email.$error.required || form.email.$error.email"
+                ng-click="addPerson($index)">{{ 'ADD' | translate }}</button>
+            </div>
+          </div>
+        </form>
+
         <p style="text-align: center;" ng-if="contract.showLoaderSpinner">
           <spinner />
         </p>
+
         <p ng-if="!contract.showLoaderSpinner && contract.personsOnContracts.length === 0">
           Je hebt geen extra bestuurders uitgenodigd om mee te rijden op dit contract. Voer een e-mailadres in om een extra bestuurder uit te nodigen.
           <a href="https://mywheels.nl/autodelen/veelgestelde-vragen/iemand-anders-contract-gebruik-maken/">Wat is dit?</a>
@@ -104,16 +117,6 @@
           </button>
         </div>
 
-        <form name="form">
-          <div class="input-group" ng-class="{ 'has-error' : form.email.$error.email }">
-            <input type="email" required name="email" class="form-control" placeholder="{{ 'EMAIL' | translate }}" ng-model="contract.emailToAdd" />
-            <div class="input-group-btn">
-              <button class="btn btn-default"
-                ng-disabled="form.email.$error.required || form.email.$error.email"
-                ng-click="addPerson($index)">{{ 'ADD' | translate }}</button>
-            </div>
-          </div>
-        </form>
       </div>
 
     </div>
