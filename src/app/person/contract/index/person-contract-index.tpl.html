@@ -32,7 +32,7 @@
         <button class="btn btn-default" ng-click="endContract($index)">{{ 'CONTRACT_END_ACTION' | translate }}</button>
       </span>
 
-      <div id="edit_contract_button" ng-if="contract.type.id !== 60">
+      <div id="edit_contract_button" ng-if="contract.type.id !== 60 && !me.isBusinessConnected">
         <br>
 
         <form name="editForm">
