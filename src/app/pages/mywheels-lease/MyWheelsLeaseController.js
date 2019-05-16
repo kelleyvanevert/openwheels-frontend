@@ -2,7 +2,11 @@
 
 angular.module('owmlanding.mywheels-lease', ['slick'])
 
-.controller('MyWheelsLeaseController', function ($scope, $log, metaInfoService, appConfig, $anchorScroll, formSubmissionService, personService,
+.controller('MyWheelsLeaseController', function ($state) {
+  $state.go('home');
+})
+
+.controller('MyWheelsLeaseController_REMOVED', function ($scope, $log, metaInfoService, appConfig, $anchorScroll, formSubmissionService, personService,
   Analytics) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/lease'});
