@@ -79,18 +79,18 @@ angular.module('owm.pages', [
     },
   })
 
-  .state('owmlanding.mywheels-lease', {
-    url: '/lease',
-    views: {
-      'toolbar@shell': {
-        templateUrl: 'pages/mywheels-lease/toolbar.tpl.html',
-      },
-      'main-full@shell': {
-        templateUrl: 'pages/mywheels-lease/mywheels-lease.tpl.html',
-        controller: 'MyWheelsLeaseController'
-      },
-    },
-  })
+  // .state('owmlanding.mywheels-lease', {
+  //   url: '/lease',
+  //   views: {
+  //     'toolbar@shell': {
+  //       templateUrl: 'pages/mywheels-lease/toolbar.tpl.html',
+  //     },
+  //     'main-full@shell': {
+  //       templateUrl: 'pages/mywheels-lease/mywheels-lease.tpl.html',
+  //       controller: 'MyWheelsLeaseController'
+  //     },
+  //   },
+  // })
 
   .state('owmlanding.mywheels-zakelijk', {
     url: '/zakelijk',
