@@ -18,57 +18,7 @@
       <em ng-if="!booking.remarkRequester">Geen kenmerk</em>
     </p>
 
-    <div class="media media--bordered">
-
-      <div class="media-object pull-left">
-        <div class="row">
-          <div ng-class="{  'col-sm-6': (booking.beginBooking && booking.beginRequested), 'col-sm-12': !(booking.beginBooking && booking.beginRequested) }" ng-if="booking.beginBooking">
-            <div class="booking__timeframe booking__timeframe--accepted">
-              <datetime datetime="{{ booking.beginBooking }}"></datetime>
-              <datetime datetime="{{ booking.endBooking }}"></datetime>
-              <span class="tag tag-{{ booking.status }}">{{ booking.status | bookingStatus }}</span>
-            </div>
-          </div>
-          <div ng-class="{  'col-sm-6': (booking.beginBooking && booking.beginRequested), 'col-sm-12': !(booking.beginBooking && booking.beginRequested) }" ng-if="booking.beginRequested">
-            <div class="booking__timeframe booking__timeframe--requested">
-              <datetime datetime="{{ booking.beginRequested }}"></datetime>
-              <datetime datetime="{{ booking.endRequested }}"></datetime>
-              <span ng-if="!booking.beginBooking" class="tag tag-{{ booking.status }}">{{ booking.status | bookingStatus }}</span>
-              <span ng-if="booking.beginBooking" class="tag tag-requested">{{ 'requested' | bookingStatus }}</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <div class="media-body">
-
-        <div id="booking-list-item-owner_ok" class="pull-right text-right" ng-if="perspective.isProviderAdmin || booking.person.id === me.id">
-          <!-- OK ICON !-->
-          <span ng-if="booking.ok && booking.approved !== 'BUY_VOUCHER'">
-            <i class="fa fa-check-circle fa-2x text-success" uib-tooltip="Deze boeking is akkoord, je kunt de auto meegeven aan de huurder"></i>
-          </span>
-          <span ng-if="!booking.ok || booking.approved === 'BUY_VOUCHER'">
-            <i class="fa fa-exclamation-circle fa-2x text-danger" uib-tooltip="Deze boeking is (nog) niet akkoord, geef de auto niet mee aan de huurder"></i>
-          </span>
-          <!-- EDIT BUTTON -->
-          <a ng-click="hide()" ui-sref="owm.booking.show({ bookingId: booking.id })" class="text-muted"><i class="fa fa-2x fa-fw fa-cog text-muted" uib-tooltip="{{ 'EDIT' | translate }}"></i></a>
-        </div>
-
-        <!-- RESOURCE INFO -->
-        <div class="booking__info">
-          <div class="booking__resource truncate">
-            {{ booking.person | fullname }}
-          </div>
-          <div class="booking__resource__owner truncate">
-            <i class="fa fa-fw fa-user"></i> {{ booking.resource.alias }}
-          </div>
-          <div class="booking__resource__location truncate">
-            <i class="fa fa-fw fa-map-marker"></i> {{ booking.resource.location }} {{ booking.resource.streetNumber }}
-          </div>
-        </div>
-
-      </div>
-    </div>
+    <list-item-booking-owner booking="booking" />
 
     <!-- Trip has been finalized -->
     <div ng-if="booking.trip.finalized">
