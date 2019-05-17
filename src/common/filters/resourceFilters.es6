@@ -1,7 +1,7 @@
 
 angular.module("filters.resource", [])
 
-.filter("resourcePicture", function ($filter) {
+.filter("resourcePicture", function ($filter, appConfig) {
   return function (resource, size = "normal") {
     if (!resource || !resource.pictures || !resource.pictures.length) {
       return defaultPicture(size);
