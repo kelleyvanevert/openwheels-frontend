@@ -6,7 +6,7 @@ angular.module('owm.message.index', [])
   $timeout,
   appConfig, me,
   messageService, metaInfoService,
-  $scope, $rootScope
+  $scope, $rootScope, $q
 ) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/messages'});
@@ -14,47 +14,40 @@ angular.module('owm.message.index', [])
 
   $scope.me = me;
 
+  const PAGE_SIZE = 3;
+
   $scope.loading = true;
   $scope.error = false;
   $scope.conversations = [];
   $scope.detailFocus = false; // for mobile
 
-  $scope.conversationsDynamic = {
-    PAGE_SIZE: 5,
-    total: 0,
-    pageStatuses: {},
-    async fetchPage (pageNumber) {
-      const offset = pageNumber * this.PAGE_SIZE;
-      const limit = this.PAGE_SIZE;
-      const { result, total } = await messageService.getMyConversations({ offset, limit });
-      if (result.length === 0 && pageNumber > 0) {
-        return result;
-      }
-      this.total = total;
-      result.forEach((conversation, i) => {
-        conversation.other = (conversation.sender.id !== me.id) ? conversation.sender : conversation.recipient;
-        $scope.conversations[offset + i] = conversation;
-      });
-      return result;
-    },
-    getItemAtIndex (i) {
-      const item = $scope.conversations[i];
-      if (item) {
-        return item;
-      } else {
-        const pageNumber = Math.floor(i / this.PAGE_SIZE);
-        if (!this.pageStatuses[pageNumber]) {
-          this.pageStatuses[pageNumber] = true;
-          this.fetchPage(pageNumber);
-        }
-      }
-    },
-    getLength () {
-      return this.total;
-    },
-  };
+  $scope.hasMore = false;
 
-  $scope.conversationsDynamic.fetchPage(0).then(firstPage => {
+  $scope.fetchNextPage = function () {
+    return $q(function (resolve, reject) {
+      $scope.loading = true;
+
+      const offset = $scope.conversations.length;
+      const limit = PAGE_SIZE;
+      messageService.getMyConversations({ offset, limit }).then(({ result, total }) => {
+        result.forEach((conversation, i) => {
+          conversation.other = (conversation.sender.id !== me.id) ? conversation.sender : conversation.recipient;
+          $scope.conversations[offset + i] = conversation;
+        });
+        if (total && total > $scope.conversations.length) {
+          $scope.hasMore = true;
+        } else if (total && total <= $scope.conversations.length) {
+          $scope.hasMore = false;
+        }
+
+        $scope.loading = false;
+        resolve(result);
+      });
+    });
+  }
+
+  // kick-off
+  $scope.fetchNextPage().then(firstPage => {
     if ($rootScope.isWindowSizeMD && firstPage.length > 0) {
       // only automatically select the first conversation if on desktop
       $scope.selectedConversation = firstPage[0];
