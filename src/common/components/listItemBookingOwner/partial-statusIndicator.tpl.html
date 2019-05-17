@@ -1,0 +1,76 @@
+
+<div
+  ng-if="$ctrl.booking.status === 'accepted' &&
+          $ctrl.booking.approved !== 'BUY_VOUCHER' &&
+          ($ctrl.booking.ok || $ctrl.booking.endBooking < now)"
+>
+  <span
+    ng-if="(now < $ctrl.booking.beginBooking || $ctrl.booking.trip.odoBegin || $ctrl.booking.trip.finalized || $ctrl.booking.resource.boardcomputer)"
+    class="text-success"
+  >
+    Geaccepteerd
+  </span>
+  <span
+    ng-if="!(now < $ctrl.booking.beginBooking || $ctrl.booking.trip.odoBegin || $ctrl.booking.trip.finalized || $ctrl.booking.resource.boardcomputer)"
+  >
+    <span uib-tooltip="Deze boeking is akkoord, je kunt de auto meegeven aan de huurder">Geaccepteerd</span>
+  </span>
+</div>
+
+<div
+  ng-if="$ctrl.booking.status === 'accepted' &&
+          $ctrl.booking.approved === 'BUY_VOUCHER'"
+  class="list-item-booking-status"
+>
+  <span uib-tooltip="Deze boeking is (nog) niet akkoord, geef de auto niet mee aan de huurder">Huurder moet nog betalen</span>
+</div>
+
+<div
+  ng-if="$ctrl.booking.status === 'accepted' &&
+          $ctrl.booking.approved !== 'BUY_VOUCHER' &&
+          !$ctrl.booking.ok && $ctrl.booking.endBooking > now"
+  class="list-item-booking-status"
+>
+  <span uib-tooltip="Deze boeking is (nog) niet akkoord, geef de auto niet mee aan de huurder">De boeking is nog niet in orde</span>
+</div>
+
+<div
+  ng-if="$ctrl.booking.status === 'rejected'"
+  class="list-item-booking-status"
+>
+  Afgewezen
+</div>
+
+<div
+  ng-if="['cancelled', 'owner_cancelled'].indexOf($ctrl.booking.status) >= 0"
+  class="list-item-booking-status"
+>
+  Geannuleerd
+</div>
+
+<div
+  ng-if="$ctrl.booking.status === 'requested'"
+>
+  <button class="mywheels-btn mywheels-btn-call-to-action"
+        md-ink-ripple="#4b702c"
+        ui-sref="owm.booking.show({ bookingId: $ctrl.booking.id })"
+        style="white-space: nowrap;">
+    Reageer
+  </button>
+</div>
+
+<div
+  ng-if="$ctrl.booking.status === 'accepted' &&
+          now > $ctrl.booking.beginBooking &&
+          !$ctrl.booking.resource.boardcomputer &&
+          ($ctrl.booking.approved === 'OK' || !$ctrl.booking.approved) &&
+          !$ctrl.booking.trip.odoBegin &&
+          !$ctrl.booking.trip.finalized"
+>
+  <button class="mywheels-btn mywheels-btn-call-to-action"
+        md-ink-ripple="#4b702c"
+        ui-sref="owm.booking.show({ bookingId: $ctrl.booking.id })"
+        style="white-space: nowrap;">
+    Administreer rit
+  </button>
+</div>
