@@ -32,6 +32,7 @@ angular.module('owm.components')
         numCars: '',
         model: '',
         comment: '',
+        streetNumber: '',
       };
       $scope.formSendStatus = false;
 
@@ -43,6 +44,9 @@ angular.module('owm.components')
           $scope.formEntry.firstName = user.firstName;
           $scope.formEntry.surname = (user.preposition ? (user.preposition + ' ') : '') + user.surname;
           $scope.formEntry.zipcode = user.zipcode;
+          if ($scope.extraFields.streetNumber) {
+            $scope.formEntry.streetNumber = user.streetNumber;
+          }
           if (user.phoneNumbers && user.phoneNumbers.length > 0) {
             var preferred = user.phoneNumbers[0].number;
             for (var i = 0; i < user.phoneNumbers.length; i++) {
