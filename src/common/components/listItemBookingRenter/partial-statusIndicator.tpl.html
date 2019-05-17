@@ -1,0 +1,59 @@
+
+<div
+  ng-if="$ctrl.me && $ctrl.booking.person.id !== $ctrl.me.id"
+  style="
+    color: #777;
+    font-style: italic;
+  "
+>
+  Je bent medebestuurder op deze rit
+  van {{ $ctrl.booking.person.firstName }}
+</div>
+<div ng-if="!($ctrl.me && $ctrl.booking.person.id !== $ctrl.me.id)">
+
+  <span
+    ng-if="$ctrl.booking.status === 'accepted' && $ctrl.booking.approved !== 'BUY_VOUCHER'"
+    class="text-success"
+  >
+    Geaccepteerd
+  </span>
+  <span
+    ng-if="$ctrl.booking.status === 'requested'"
+    class="list-item-booking-status"
+  >
+    In aanvraag
+  </span>
+  <span
+    ng-if="$ctrl.booking.status === 'rejected'"
+    class="text-danger"
+  >
+    Afgewezen
+  </span>
+  <span
+    ng-if="['cancelled', 'owner_cancelled'].indexOf($ctrl.booking.status) >= 0"
+    class="text-danger"
+  >
+    Geannuleerd
+  </span>
+
+  <div ng-if="$ctrl.booking.status === 'accepted' && $ctrl.booking.approved === 'BUY_VOUCHER'">
+    <button class="mywheels-btn mywheels-btn-call-to-action"
+          md-ink-ripple="#4b702c"
+          ui-sref="owm.booking.show({ bookingId: $ctrl.booking.id })"
+          style="white-space: nowrap;">
+      Betaal rit
+    </button>
+  </div>
+
+  <!-- De conditie (booking.person.id === me.id) checkt of je de daadwerkelijke huurder bent,
+        of dat de verhuring door een contractant is gedaan. -->
+  <div ng-if="$ctrl.booking.person.id === me.id &&
+    $ctrl.booking.status === 'accepted' && now > $ctrl.booking.beginBooking && !$ctrl.booking.resource.boardcomputer && ($ctrl.booking.approved === 'OK' || !$ctrl.booking.approved) && !$ctrl.booking.trip.odoBegin && !$ctrl.booking.trip.finalized">
+    <button class="mywheels-btn mywheels-btn-call-to-action"
+          md-ink-ripple="#4b702c"
+          ui-sref="owm.booking.show({ bookingId: $ctrl.booking.id })"
+          style="white-space: nowrap;">
+      Administreer rit
+    </button>
+  </div>
+</div>
