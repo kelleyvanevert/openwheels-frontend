@@ -33,7 +33,18 @@
                         required="true"
                         placeholder="Postcode" />
                 <div ng-show="form.$submitted || form.zipcode.$touched">
-                  <div class="text-danger" ng-show="form.zipcode.$error.required">Vul je postcode in.</div>
+                  <div class="text-danger" ng-show="form.zipcode.$error.required">Vul ajb je postcode in.</div>
+                </div>
+            </div>
+            <div class="form-group" ng-if="extraFields.streetNumber">
+                <input type="text"
+                        name="streetNumber"
+                        ng-model="formEntry.streetNumber"
+                        md-select-on-focus
+                        required="true"
+                        placeholder="Huisnummer" />
+                <div ng-show="form.$submitted || form.streetNumber.$touched">
+                  <div class="text-danger" ng-show="form.streetNumber.$error.required">Vul ajb je huisnummer in.</div>
                 </div>
             </div>
             <div class="form-group">

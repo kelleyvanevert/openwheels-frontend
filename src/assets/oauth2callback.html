@@ -12,7 +12,7 @@ Een moment alsjeblieft, je wordt doorverwezen...
 <script type="text/javascript">
 
 var noop = function () {};
-var $log = window.console || { debug: noop, log: noop };
+var $log = (window.console && window.console.debug) ? window.console : { debug: noop, log: noop };
 var tokenService = mw.tokenServiceFactory(window, window.console);
 
 var DEFAULT_SUCCESS_PATH = '/';
