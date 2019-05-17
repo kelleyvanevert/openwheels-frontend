@@ -14,7 +14,7 @@ angular.module('owm.message.index', [])
 
   $scope.me = me;
 
-  const PAGE_SIZE = 3;
+  const PAGE_SIZE = 15;
 
   $scope.loading = true;
   $scope.error = false;
