@@ -28,7 +28,6 @@ angular.module('owm.shell', [])
             .then(function (info) {
 
               info.isBusiness = user.identity.isBusinessConnected;
-              info.extraInfo.timePickerInterval = 5;
 
               // interface ProviderInfo {
               //   extraInfo: any | ProviderExtraInfo;
