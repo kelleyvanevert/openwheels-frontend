@@ -13,7 +13,7 @@
  */
 angular.module('timeframePickerDirective', [])
 
-.directive('timeframePicker', function timeframePicker ($log, API_DATE_FORMAT, mobileDetectService) {
+.directive('timeframePicker', function timeframePicker ($log, $rootScope, mobileDetectService) {
 
   // Configuration, constants, helpers
   // =====
@@ -37,9 +37,11 @@ angular.module('timeframePickerDirective', [])
     width: '20em',
   });
 
+  var timePickerInterval = $rootScope.timePickerInterval;
+
   var timeConfig = Object.assign({}, dateTimeConfig, {
     format: 'HH:mm',
-    stepping: 15, // minute step size
+    stepping: timePickerInterval, // minute step size
     widgetPositioning: { // with knowledge of the html (!)
       horizontal: 'right',
       vertical: 'bottom',
@@ -49,8 +51,8 @@ angular.module('timeframePickerDirective', [])
 
   function getStartOfThisQuarter () {
     var mom = moment();
-    var quarter = Math.floor((mom.minutes() | 0) / 15); // returns 0, 1, 2 or 3
-    var minutes = (quarter * 15) % 60;
+    var quarter = Math.floor((mom.minutes() | 0) / timePickerInterval); // returns 0, 1, 2 or 3 (if timePickerInterval = 15)
+    var minutes = (quarter * timePickerInterval) % 60;
     mom.minutes(minutes);
     return mom;
   }

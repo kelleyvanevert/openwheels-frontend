@@ -1,7 +1,7 @@
 'use strict';
 angular.module('owm.resource.show.calendar.blocking', [])
 
-	.controller('ResourceShowCalendarBlockingController', function ($location, $scope, $state, $filter, $uibModalInstance, blocking, API_DATE_FORMAT) {
+	.controller('ResourceShowCalendarBlockingController', function ($location, $rootScope, $scope, $state, $filter, $uibModalInstance, blocking, API_DATE_FORMAT) {
 		$scope.blocking = angular.copy(blocking);
 
 		$scope.dateConfig = {
@@ -27,7 +27,7 @@ angular.module('owm.resource.show.calendar.blocking', [])
 			format: 'HH:i',
 
 			//options
-			interval: 15
+			interval: $rootScope.timePickerInterval || 15
 		};
 
 

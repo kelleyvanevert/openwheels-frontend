@@ -757,7 +757,7 @@ angular.module('owm.booking.show', [])
     format: 'HH:i',
 
     //options
-    interval: 15,
+    interval: $rootScope.timePickerInterval || 15,
     container: 'body'
   };
 
