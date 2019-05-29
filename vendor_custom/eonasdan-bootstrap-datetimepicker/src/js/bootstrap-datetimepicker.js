@@ -766,7 +766,7 @@
                     currentQuarter = viewDate.clone().startOf('d'),
                     html = [],
                     row = $('<tr>'),
-                    step = options.stepping === 1 ? 15 : options.stepping;
+                    step = options.stepping || 15;
 
                 while (currentQuarter.isSame(viewDate, 'd')) {
                     row = $('<tr>');
