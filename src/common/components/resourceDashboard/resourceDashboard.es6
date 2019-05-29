@@ -25,7 +25,9 @@ angular.module('owm.components')
       contracts: '=',
     },
     templateUrl: 'components/resourceDashboard/resourceDashboard.tpl.html',
-    controller: function ($scope, $element) {
+    controller: function ($scope, $rootScope, $element) {
+
+      const timePickerInterval = $rootScope.timePickerInterval;
 
       // PUBLIC
 
@@ -342,7 +344,6 @@ angular.module('owm.components')
       init();
       async function init () {
 
-        const timePickerInterval = $rootScope.timePickerInterval;
         moment.fn.roundNext15Min = function () {
           let intervals = Math.floor(this.minutes() / timePickerInterval);
           if (this.minutes() % timePickerInterval != 0) {
