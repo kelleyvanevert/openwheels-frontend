@@ -1465,3 +1465,33 @@ ul.list-unstyled.list-with-icons {
 .list-item-line {
     padding: .5rem 0;
 }
+
+.well.upload-well {
+    cursor: pointer;
+    min-height: 12rem;
+    padding: 24px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    &:hover {
+        border: 2px solid #ccc;
+        background: #eee;
+        padding: 23px;
+    }
+
+    &.dragover,
+    &.dragover:hover {
+        border: 2px solid darken(@mywheels-blue, 10%);
+        padding: 23px;
+        background: repeating-linear-gradient(
+            45deg,
+            #eee,
+            #eee 10px,
+            #ddd 10px,
+            #ddd 20px
+        );
+    }
+}

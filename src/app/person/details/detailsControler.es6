@@ -6,6 +6,8 @@ angular.module('owm.person.details', [])
   discountService, contractService, account2Service, person, alertService, personService, authService, me, dutchZipcodeService,
   $sessionStorage,
   payRedirect,
+  rentalcountryService,
+  driverlicenseService,
   voucherService, $q, appConfig, paymentService, bookingService, invoice2Service, API_DATE_FORMAT, $anchorScroll, Analytics, metaInfoService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard/details/' + $stateParams.pageNumber});
@@ -21,6 +23,7 @@ angular.module('owm.person.details', [])
   $scope.showFirst = $scope.pageNumber === 1 ? true : false;
   $scope.showSecond = $scope.pageNumber === 2 ? true : false;
   $scope.showThird = $scope.pageNumber === 3 ? true : false;
+  $scope.foreignLicense = Boolean($stateParams.foreignLicense);
   $scope.person = null;
 
   $scope.checkedLater = false;
@@ -95,6 +98,62 @@ angular.module('owm.person.details', [])
   $scope.validLicenseMax = moment().add('years', 30).format('YYYY');
   $scope.onlyNumbers = /^\d+$/;
 
+  $scope.licensePage = {
+    country: "NL",
+  };
+
+  $scope.uploadLicenseImages = function () {
+    console.log($scope.licensePage.front);
+
+    if (!$scope.licensePage.front || !$scope.licensePage.back) {
+      console.log("no file[s] selected");
+      return;
+    }
+
+    if ($scope.licensePage.front.$error || $scope.licensePage.back.$error) {
+      console.log("error?", $scope.licensePage.front.$error, $scope.licensePage.back.$error);
+      return;
+    }
+
+    driverlicenseService.upload({
+      person: me.id,
+      driverLicenseCountry: $scope.licensePage.country,
+    }, {
+      frontImage: $scope.licensePage.front,
+      backImage: $scope.licensePage.back,
+    })
+    .then(function (results) {
+      console.log("driver license uploaded!", results);
+    })
+    .catch(function (err) {
+      console.log("driver license upload error!", err);
+      alertService.addError(err);
+    })
+    .finally(function () {
+    });
+
+    // Upload.upload({
+    //   url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+    //   data: {
+    //     username: $scope.username,
+    //     file: file  
+    //   },
+    // }).then(function (resp) {
+    //     $timeout(function() {
+    //         $scope.log = 'file: ' +
+    //         resp.config.data.file.name +
+    //         ', Response: ' + JSON.stringify(resp.data) +
+    //         '\n' + $scope.log;
+    //     });
+    // }, null, function (evt) {
+    //     var progressPercentage = parseInt(100.0 *
+    //         evt.loaded / evt.total);
+    //     $scope.log = 'progress: ' + progressPercentage + 
+    //       '% ' + evt.config.data.file.name + '\n' + 
+    //       $scope.log;
+    // });
+  }
+
 
   // view logic
   $scope.withSidebar = !$scope.isBlocked && $scope.isbooking;
@@ -105,6 +164,17 @@ angular.module('owm.person.details', [])
 
   function initLicensePage() {
     if($scope.showSecond) {
+      if (!$scope.licenseAllowedCountries) {
+        rentalcountryService.all().then(arr => {
+          $scope.licenseAllowedCountries = arr.map(item => {
+            if (item.alpha2 === "BE") {
+              item.endonym = "Belgique / België";
+            }
+            return item;
+          });
+        })
+      }
+
       authService.me(!!'forceReload')
         .then(function (me) {
           initPerson(me);
@@ -195,6 +265,7 @@ angular.module('owm.person.details', [])
     };
 
     $scope.driverLicenseNumber = $scope.person.driverLicenseNumber;
+    $scope.licensePage.country = $scope.person.driverLicenseCountry || "NL";
 
     if($scope.showThird) {
       account2Service.forMe({
@@ -249,59 +320,63 @@ angular.module('owm.person.details', [])
   }
 
   $scope.submitDriverLicense = function () {
-    if($scope.driverLicenseNumber !== undefined && $scope.driverLicenseNumber.length === 10 && ['3', '4', '5'].indexOf($scope.driverLicenseNumber.charAt(0)) >= 0)
-    {
-      if($scope.driverLicenseNumberRepeat !== undefined && $scope.driverLicenseNumberRepeat.length === 10)
+    if ($scope.licensePage.country === "NL") {
+      if($scope.driverLicenseNumber !== undefined && $scope.driverLicenseNumber.length === 10 && ['3', '4', '5'].indexOf($scope.driverLicenseNumber.charAt(0)) >= 0)
       {
-        if(
-          !isNaN($scope.licenseDate.day) &&
-          $scope.licenseDataForm.day.$valid &&
-          !isNaN($scope.licenseDate.month) &&
-          $scope.licenseDataForm.month.$valid &&
-          !isNaN($scope.licenseDate.year) &&
-          $scope.licenseDataForm.year.$valid)
+        if($scope.driverLicenseNumberRepeat !== undefined && $scope.driverLicenseNumberRepeat.length === 10)
         {
-          if($scope.driverLicenseNumber === $scope.driverLicenseNumberRepeat) {
+          if(
+            !isNaN($scope.licenseDate.day) &&
+            $scope.licenseDataForm.day.$valid &&
+            !isNaN($scope.licenseDate.month) &&
+            $scope.licenseDataForm.month.$valid &&
+            !isNaN($scope.licenseDate.year) &&
+            $scope.licenseDataForm.year.$valid)
+          {
+            if($scope.driverLicenseNumber === $scope.driverLicenseNumberRepeat) {
 
-            var newProps = $filter('returnDirtyItems')( angular.copy($scope.person), $scope.licenseDataForm);
-            var licenseDateExpire = $scope.licenseDate.year + '-' + $scope.licenseDate.month+ '-' + $scope.licenseDate.day;
+              var newProps = $filter('returnDirtyItems')( angular.copy($scope.person), $scope.licenseDataForm);
+              var licenseDateExpire = $scope.licenseDate.year + '-' + $scope.licenseDate.month+ '-' + $scope.licenseDate.day;
 
-            newProps.driverLicenseNumber = $scope.driverLicenseNumber;
-            newProps.drivingLicenseValidUntil = licenseDateExpire;
+              newProps.driverLicenseNumber = $scope.driverLicenseNumber;
+              newProps.drivingLicenseValidUntil = licenseDateExpire;
 
-            alertService.closeAll();
-            alertService.load();
-            $scope.isBusy = true;
+              alertService.closeAll();
+              alertService.load();
+              $scope.isBusy = true;
 
-            personService.alter({
-              id: person.id,
-              newProps: newProps
-            })
-            .then(function () {
-              Analytics.trackEvent('person', 'driverlicense_uploaded', undefined, undefined, true);
-              $scope.licenseUploaded = true;
-              $scope.nextSection();
-            })
-            .catch(function (err) {
-              alertService.addError(err);
-              $scope.isBusy = false;
-            })
-            .finally(function () {
-              alertService.loaded();
-              $scope.isBusy = false;
-            });
+              personService.alter({
+                id: person.id,
+                newProps: newProps
+              })
+              .then(function () {
+                Analytics.trackEvent('person', 'driverlicense_uploaded', undefined, undefined, true);
+                $scope.licenseUploaded = true;
+                $scope.nextSection();
+              })
+              .catch(function (err) {
+                alertService.addError(err);
+                $scope.isBusy = false;
+              })
+              .finally(function () {
+                alertService.loaded();
+                $scope.isBusy = false;
+              });
 
+            } else {
+              $scope.licenseNumberMatch = false;
+            }
           } else {
-            $scope.licenseNumberMatch = false;
+            $scope.licenseDateValid = false;
           }
         } else {
-          $scope.licenseDateValid = false;
+          $scope.licenseNumberRepeatValid = false;
         }
       } else {
-        $scope.licenseNumberRepeatValid = false;
+        $scope.licenseNumberValid = false;
       }
     } else {
-      $scope.licenseNumberValid = false;
+      $scope.uploadLicenseImages();
     }
   };
 
