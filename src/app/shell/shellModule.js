@@ -21,13 +21,14 @@ angular.module('owm.shell', [])
         });
         return dfd.promise;
       }],
-      me: ['authService', 'providerInfoService', '$rootScope', function (authService, providerInfoService, $rootScope) {
+      me: ['authService', 'providerInfoService', '$rootScope', function (authService, providerInfoService, $log, $rootScope) {
         return authService.userPromise().then(function (user) {
           if (user.isAuthenticated) {
             return providerInfoService.getInfo({ provider: user.identity.provider.id })
             .then(function (info) {
 
               info.isBusiness = user.identity.isBusinessConnected;
+              info.extraInfo.timePickerInterval = 5;
 
               // interface ProviderInfo {
               //   extraInfo: any | ProviderExtraInfo;
@@ -49,6 +50,7 @@ angular.module('owm.shell', [])
 
               // interface ProviderExtraInfo {
               //   emergencyNumber: string;
+              //   timePickerInterval?: number;
               //   welcomeText: markdown;
               //   logo: URL;
               //   helpText: markdown;
@@ -58,6 +60,10 @@ angular.module('owm.shell', [])
               // }
 
               $rootScope.providerInfo = info;
+
+              $rootScope.timePickerInterval = (info ? info.extraInfo : {}).timePickerInterval || 15;
+              $log.debug('timePickerInterval', $rootScope.timePickerInterval);
+
               return user.identity;
             });
           } else {
