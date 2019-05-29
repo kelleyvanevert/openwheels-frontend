@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('personalDataDirective', [])
 
 .directive('personalData', function () {
@@ -11,8 +9,63 @@ angular.module('personalDataDirective', [])
       resource: '=resource'
     },
     templateUrl: 'directives/personalData/personalData.tpl.html',
-    controller: function ($scope, $rootScope, $log, $state, $location, $stateParams, $filter, personService, authService,resourceService,
+    controller: function ($scope, $rootScope, $q, $log, $state, $location, $stateParams, $filter, personService, authService,resourceService,
       $anchorScroll, $timeout, alertService, account2Service, accountService, dutchZipcodeService, Analytics, $translate, featuresService) {
+
+      const _cache = {};
+
+      function performGeocode(params, cont, key, it = 0) {
+        return $q((resolve, reject) => {
+          if (_cache[key]) {
+            console.log("cache hit", key);
+            resolve(_cache[key])
+          } else if (it >= 20) {
+            // console.log("max retries", debugId || params);
+            reject("max retries");
+          } else if (!window.google) {
+            // console.log("defer geocode because google not loaded yet", debugId || params);
+            $timeout(() => {
+              if (!cont()) {
+                console.log("don't continue");
+                reject("stale");
+              } else {
+                performGeocode(params, cont, key, it + 1).then(resolve).catch(reject);
+              }
+            }, 300);
+          } else {
+            // console.log("start geocode", debugId || params);
+            const geocoder = new window.google.maps.Geocoder();
+            geocoder.geocode(params, (results, status) => {
+              if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                // console.log("over query limit, retrying in 1000ms...", debugId || params);
+                $timeout(() => {
+                  if (!cont()) {
+                    console.log("don't continue");
+                    reject("stale");
+                  } else {
+                    console.log("  over limit")
+                    performGeocode(params, cont, key, it + 1).then(resolve).catch(reject);
+                  }
+                }, 300);
+              } else if (status !== google.maps.GeocoderStatus.OK) {
+                // console.log("error geocoding", status, debugId || params);
+                reject(`status: ${status}`);
+              } else {
+                _cache[key] = results;
+                resolve(results);
+              }
+            });
+          }
+        });
+      }
+
+      $scope.countries = [
+        { value: "Nederland", iso: "nl" },
+        { value: "België", iso: "be" },
+        { value: "Frankrijk", iso: "fr" },
+        { value: "Duitsland", iso: "de" },
+      ];
+
       //person info
       var masterPerson = null;
       var that;
@@ -318,60 +371,135 @@ angular.module('personalDataDirective', [])
           });
         }
       };
+
+      const lookingUpAddress = $scope.lookingUpAddress = {
+        loading: false,
+      };
+
+      function lookupAddress(country, zip, streetNo) {
+        function mostRecent() {
+          return lookingUpAddress.country === country &&
+            lookingUpAddress.zip === zip &&
+            lookingUpAddress.streetNo === streetNo;
+        }
+
+        lookingUpAddress.loading = false;
+        delete lookingUpAddress.result;
+        delete lookingUpAddress.failed;
+        delete lookingUpAddress.country;
+        delete lookingUpAddress.zip;
+        delete lookingUpAddress.streetNo;
+
+        if (!zip || !streetNo) {
+          console.log("not looking up because no data");
+          return;
+        }
+
+        lookingUpAddress.loading = true;
+        lookingUpAddress.country = country;
+        lookingUpAddress.zip = zip;
+        lookingUpAddress.streetNo = streetNo;
+
+        $timeout(() => {
+          if (!mostRecent()) return console.log("abort [0]");
+
+          performGeocode({
+            componentRestrictions: {
+              country: country,
+              postalCode: zip,
+            }
+          }, mostRecent, `zip: ${zip}, ${country}`)
+          .then(results => {
+            if (!mostRecent()) return console.log("abort [1]");
+
+            const location = results[0].geometry.location.toJSON();
+            performGeocode({
+              location,
+            }, mostRecent, `location: ${location.lat}, ${location.lng}`)
+            .then(results => {
+              if (!mostRecent()) return console.log("abort [2]");
+
+              const street_name = results[0].address_components
+                .filter(comp => ["route", "street_address"].indexOf(comp.types[0]) >= 0)
+                .map(comp => comp.long_name)
+                .join(" ");
+              const address = `${street_name} ${streetNo}`;
+              console.log("ADD", address, results[0]);
+              performGeocode({
+                address,
+                componentRestrictions: {
+                  country: country,
+                  postalCode: zip,
+                }
+              }, mostRecent, `address: ${address}, ${zip}, ${country}`)
+              .then(results => {
+                if (!mostRecent()) return console.log("abort [3]");
+
+                lookingUpAddress.loading = false;
+                lookingUpAddress.result = results[0];
+                console.log(" >>", results[0]);
+              })
+              .catch(() => {
+                if (!mostRecent()) return console.log("abort [3]");
+
+                lookingUpAddress.loading = false;
+                lookingUpAddress.failed = true;
+              })
+            })
+            .catch(() => {
+              if (!mostRecent()) return console.log("abort [2]");
+
+              lookingUpAddress.loading = false;
+              lookingUpAddress.failed = true;
+            })
+          })
+          .catch(() => {
+            if (!mostRecent()) return console.log("abort [1]");
+
+            lookingUpAddress.loading = false;
+            lookingUpAddress.failed = true;
+          })
+        }, 500);
+      }
+
       var inputs = {
         init: function () {
           this.adress();
         },
         adress: function () {
-          var _this = this;
-          $scope.$watch('[person.zipcode, person.streetNumber]', function (newValue, oldValue) {
-            var country;
-
-            if (newValue !== oldValue) {
-              if (!(newValue[0] && newValue[1])) {
+          $scope.$watch('[person.country, person.zipcode, person.streetNumber]',
+            ([newCountry, newZip, newStreetNo], [oldCountry, oldZip, oldStreetNo]) => {
+              if (newCountry === oldCountry && newZip === oldZip && newStreetNo === oldStreetNo) {
                 return;
               }
-              switch (($scope.person.country || '').toLowerCase()) {
-              case 'nl':
-              case 'nederland':
-                country = 'nl';
-                break;
-              case 'be':
-              case 'belgie':
-              case 'belgië':
-                country = 'be';
-                break;
-              default:
-                country = 'nl';
-              }
 
-              $scope.zipcodeAutocompleting = true;
-              dutchZipcodeService.autocomplete({
-                  country: country,
-                  zipcode: _this.stripWhitespace(newValue[0]),
-                  streetNumber: newValue[1]
-                })
-                .then(function (data) {
-                  /*jshint sub: true */
-                  $scope.person.city = data[0].city;
-                  $scope.person.streetName = data[0].street;
-                  $scope.person.latitude = data[0].lat;
-                  $scope.person.longitude = data[0].lng;
-                }, function (error) {
-                  if ($scope.person.zipcode !== newValue[0] || $scope.person.streetNumber !== newValue[1]) {
-                    //resolved too late
-                    return;
-                  }
-                  $scope.person.city = null;
-                  $scope.person.streetName = null;
-                  $scope.person.latitude = null;
-                  $scope.person.longitude = null;
-                })
-                .finally(function () {
-                  $scope.zipcodeAutocompleting = false;
-                });
-            }
-          }, true);
+              lookupAddress($scope.person.country, newZip, newStreetNo);
+
+              // dutchZipcodeService.autocomplete({
+              //     country: country,
+              //     zipcode: _this.stripWhitespace(newValue[0]),
+              //     streetNumber: newValue[1]
+              //   })
+              //   .then(function (data) {
+              //     /*jshint sub: true */
+              //     $scope.person.city = data[0].city;
+              //     $scope.person.streetName = data[0].street;
+              //     $scope.person.latitude = data[0].lat;
+              //     $scope.person.longitude = data[0].lng;
+              //   }, function (error) {
+              //     if ($scope.person.zipcode !== newValue[0] || $scope.person.streetNumber !== newValue[1]) {
+              //       //resolved too late
+              //       return;
+              //     }
+              //     $scope.person.city = null;
+              //     $scope.person.streetName = null;
+              //     $scope.person.latitude = null;
+              //     $scope.person.longitude = null;
+              //   })
+              //   .finally(function () {
+              //     $scope.lookingUpAddress = false;
+              //   });
+            }, true);
         },
         stripWhitespace: function (str) { //remove all spaces
           var out = str;

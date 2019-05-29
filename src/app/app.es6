@@ -248,7 +248,7 @@ angular.module('openwheels', [
   
   uiGmapGoogleMapApiProvider.configure({
     key: appConfig.gmaps_js_api_key,
-    v: '3.34.0',
+    v: '3.35.0',
     libraries: 'places',
     language: 'nl'
   });

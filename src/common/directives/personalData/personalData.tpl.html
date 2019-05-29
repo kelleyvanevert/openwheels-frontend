@@ -94,22 +94,25 @@
         <!-- /phone number -->
 
         <h3>{{ 'MY_PROFILE_ADDRESS' | translate }}</h3>
+        <!-- country -->
+        <div class="icon home field">
+            <select id="country" name="country" ng-model="person.country" ng-options="c.value as c.value for c in countries" required></select>
+        </div>
+        <!-- /country -->
+
         <div class="responsive">
             <div id="zipcode_group" class="icon home field">
-                <input type="text" name="zipcode" id="zipcode" ng-model="person.zipcode" placeholder="{{ 'ZIPCODE' | translate }}" ng-pattern="/^[1-9][0-9]{3} ?[A-Z,a-z]{2}$/">
-                <md-progress-circular class="md-hue-2 right-addon" md-diameter="20px" ng-if="zipcodeAutocompleting"></md-progress-circular>
+                <input type="text" name="zipcode" id="zipcode" ng-model="person.zipcode" placeholder="{{ 'ZIPCODE' | translate }}" required>
 
                 <div class="err-block" ng-show="personalDataForm.$submitted && !person.zipcode">
-                    <span class="text-danger" ng-show="!personalDataForm.zipcode.$error.pattern">{{ 'REQUIRED' | translate }}</span>
-                    <span class="text-danger" ng-show="personalDataForm.zipcode.$error.pattern">Verkeerd formaat</span>
+                    <span class="text-danger">{{ 'REQUIRED' | translate }}</span>
                 </div>
             </div>
             <!-- /zipcode -->
 
             <!-- streetNumber -->
             <div id="streetNumber_group" class="icon home field">
-                <input type="text" name="streetNumber" id="streetNumber" ng-model="person.streetNumber" placeholder="{{ 'STREET_NUMBER' | translate }}">
-                <md-progress-circular class="md-hue-2 right-addon" md-diameter="20px" ng-if="zipcodeAutocompleting"></md-progress-circular>
+                <input type="text" name="streetNumber" id="streetNumber" ng-model="person.streetNumber" placeholder="{{ 'STREET_NUMBER' | translate }}" required>
 
                 <div class="err-block" ng-show="personalDataForm.$submitted && !person.streetNumber">
                     <span class="text-danger">{{ 'REQUIRED' | translate }}</span>
@@ -117,25 +120,34 @@
             </div>
             <!-- /streetNumber -->
         </div>
-        <!-- streetName -->
-        <div id="streetName_group" class="icon home field">
-            <input type="text" name="streetName" id="streetName" ng-model="person.streetName" placeholder="{{ 'STREET_NAME' | translate }} " ng-readonly="person.country === 'Nederland'">
 
-            <div class="err-block" ng-show="personalDataForm.$submitted && !person.streetName">
-                <span>{{ 'ENTER_ZIPCODE_STREET_NUMBER' | translate }}</span>
-            </div>
+        <div ng-if="person.zipcode && person.streetNumber">
+            <inline-spinner ng-if="lookingUpAddress.loading" />
+            <span ng-if="lookingUpAddress.result">{{ lookingUpAddress.result.formatted_address }}</span>
+            <span ng-if="lookingUpAddress.failed">Adres niet gevonden</span>
         </div>
-        <!-- /streetName -->
 
-        <!-- city -->
-        <div id="city_group" class="icon home field">
-            <input type="text" name="city" id="city" ng-model="person.city" placeholder="{{ 'CITY' | translate }} " ng-readonly="person.country === 'Nederland'">
+        <div ng-if="false">
+            <!-- streetName -->
+            <div id="streetName_group" class="icon home field">
+                <input type="text" name="streetName" id="streetName" ng-model="person.streetName" placeholder="{{ 'STREET_NAME' | translate }} " ng-readonly="person.country === 'Nederland'">
 
-            <div class="err-block" ng-show="personalDataForm.$submitted && !person.city">
-                <span>{{ 'ENTER_ZIPCODE_STREET_NUMBER' | translate }}</span>
+                <div class="err-block" ng-show="personalDataForm.$submitted && !person.streetName">
+                    <span>{{ 'ENTER_ZIPCODE_STREET_NUMBER' | translate }}</span>
+                </div>
             </div>
+            <!-- /streetName -->
+
+            <!-- city -->
+            <div id="city_group" class="icon home field">
+                <input type="text" name="city" id="city" ng-model="person.city" placeholder="{{ 'CITY' | translate }} " ng-readonly="person.country === 'Nederland'">
+
+                <div class="err-block" ng-show="personalDataForm.$submitted && !person.city">
+                    <span>{{ 'ENTER_ZIPCODE_STREET_NUMBER' | translate }}</span>
+                </div>
+            </div>
+            <!-- /city -->
         </div>
-        <!-- /city -->
 
         <!-- iban -->
         <h3 ng-if="!ibanIsDefined">{{ 'PAY_OUT_DATA' | translate }}</h3>
