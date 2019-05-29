@@ -30,7 +30,7 @@
             Beëindig nu
           </a>
         </div>
-        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!extraDrivers.noPermission && !details.bookingStarted && !perspective.isContractor">
+        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!extraDrivers.noPermission && !details.bookingStarted && !perspective.isContractor && !me.isBusinessConnected">
           <a
             ng-click="extraDriversDialog($event)"
             class="mywheels-btn mywheels-btn-action"
@@ -40,7 +40,7 @@
             Wijzig extra bestuurders
           </a>
         </div>
-        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!details.bookingStarted && !perspective.isContractor && !me.isBusinessConnected">
+        <div class="col-xxs-12 col-xs-6" style="padding: 0;" ng-if="!details.bookingStarted && !perspective.isContractor && !me.isBusinessConnected && contract.ownRiskWaiver !== 'month'">
           <a
             ng-click="editRiskReductionDialog($event)"
             class="mywheels-btn mywheels-btn-action"
