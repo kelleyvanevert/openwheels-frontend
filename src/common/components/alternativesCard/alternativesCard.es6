@@ -37,7 +37,10 @@ angular.module("owm.components")
       };
     } else if (this.resource) {
       params = {
-        location: this.resource.location,
+        location: {
+          latitude: this.resource.lat,
+          longitude: this.resource.lng
+        },
         radius: 5000,
         maxresults: 4,
         sort: "relevance",
