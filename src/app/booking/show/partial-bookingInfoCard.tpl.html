@@ -60,10 +60,10 @@
     <div ng-if="perspective.isRenter && !me.isBusinessConnected">
       <ul class="list-de-emphasized">
         <li>
-          <span ng-if="booking.riskReduction">
+          <span ng-if="booking.riskReduction || contract.ownRiskWaiver === 'month'">
             Eigen risico: verlaagd
           </span>
-          <span ng-if="!booking.riskReduction">
+          <span ng-if="!booking.riskReduction && contract.ownRiskWaiver !== 'month'">
             Eigen risico: niet verlaagd
           </span>
         </li>
