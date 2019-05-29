@@ -162,6 +162,12 @@
               <list-item-booking-owner booking="b" me="me" />
             </div>
           </div>
+
+          <center style="margin-top: 2rem">
+            <a type="button" name="button" class="mywheels-btn mywheels-btn-big mywheels-btn-default mywheels-btn-big" ui-sref="owm.trips" md-ink-ripple="#3a6d81">
+              Bekijk alles <span ng-if="totalRentals > 2">({{ totalRentals }})</span>
+            </a>
+          </center>
         </div>
       </div>
 

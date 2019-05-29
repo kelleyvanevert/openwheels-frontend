@@ -342,16 +342,17 @@ angular.module('owm.components')
       init();
       async function init () {
 
+        const timePickerInterval = $rootScope.timePickerInterval;
         moment.fn.roundNext15Min = function () {
-          let intervals = Math.floor(this.minutes() / 15);
-          if (this.minutes() % 15 != 0) {
+          let intervals = Math.floor(this.minutes() / timePickerInterval);
+          if (this.minutes() % timePickerInterval != 0) {
             intervals++;
           }
-          if(intervals == 4) {
+          if(intervals == (60 / timePickerInterval)) {
             this.add('hours', 1);
             intervals = 0;
           }
-          this.minutes(intervals * 15);
+          this.minutes(intervals * timePickerInterval);
           this.seconds(0);
           return this;
         }
