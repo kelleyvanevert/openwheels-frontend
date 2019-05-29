@@ -765,14 +765,15 @@
                 var table = widget.find('.timepicker-quarters table'),
                     currentQuarter = viewDate.clone().startOf('d'),
                     html = [],
-                    row = $('<tr>');
+                    row = $('<tr>'),
+                    step = options.stepping === 1 ? 15 : options.stepping;
 
                 while (currentQuarter.isSame(viewDate, 'd')) {
                     row = $('<tr>');
                     html.push(row);
 
                     row.append('<td data-action="selectQuarter" data-quarter="'+currentQuarter.format('HH:mm')+'" class="quarter"><span class="tp-pickable tp-pickable-hour">' + currentQuarter.format('HH') + '</span>:<span class="tp-pickable tp-pickable-minute">' + currentQuarter.format('mm') + '</span></td>');
-                    currentQuarter.add(15, 'minutes');
+                    currentQuarter.add(step, 'minutes');
                 }
                 table.empty().append(html);
             },

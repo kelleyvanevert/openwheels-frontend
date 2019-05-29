@@ -21,7 +21,7 @@ angular.module('owm.shell', [])
         });
         return dfd.promise;
       }],
-      me: ['authService', 'providerInfoService', '$rootScope', function (authService, providerInfoService, $log, $rootScope) {
+      me: ['authService', 'providerInfoService', '$log', '$rootScope', function (authService, providerInfoService, $log, $rootScope) {
         return authService.userPromise().then(function (user) {
           if (user.isAuthenticated) {
             return providerInfoService.getInfo({ provider: user.identity.provider.id })
