@@ -16,61 +16,74 @@
   </div>
   <div class="row">
     <div class="rpad col-md-4" ng-show="($root.isWindowSizeMD || !detailFocus) && !(!$root.isWindowSizeMD && conversations.length === 0)">
-      <div class="sidebar card mw chat-in-page-height" style="overflow-y: auto;">
-        <div class="card-body">
+      <div class="sidebar card mw chat-in-page-height" style="overflow-y: auto; display: flex; flex-direction: column; justify-content: start;">
+        <div class="card-body" style="flex-grow: 1; display: flex; flex-direction: column; justify-content: start; padding-bottom: 1rem;">
           
-          <ul class="list-unstyled list-row h-escape master-list"
-              ng-if="loading || (!loading && !error && conversations.length === 0)">
-            <li class="h-pad master-list-item"
-                style="padding-top: 10px; padding-bottom: 10px;"
-                ng-repeat="i in [0,1,2]">
-              <div class="media">
-                <div class="media-object img-user-small pull-left"
-                     style="margin-top: 0; margin-bottom: 0; border-radius: 999px; background: #ddd;">
-                </div>
+          <div class="h-escape" ng-if="conversations.length > 0" style="flex-grow: 1; display: flex; flex-direction: column; justify-content: start;">
+            <ul class="list-unstyled list-row master-list" style="margin-bottom: 0;">
+              <li class="h-pad master-list-item"
+                  ng-class="{ selected: conversation === selectedConversation }"
+                  ng-click="selectConversation(conversation)"
+                  ng-repeat="conversation in conversations"
+                  style="padding-top: 10px; padding-bottom: 10px;">
 
-                <div class="media-body" style="padding-right: 0; padding-top: 0; padding-bottom: 0;">
-                  <div class="single-line">
-                    <span class="skel inline" ng-class="{ noanim: conversations.length === 0 }" style="width: 30%; height: 2rem;"></span>
-                  </div>
-                  <div class="single-line">
-                    <span class="skel inline" ng-class="{ noanim: conversations.length === 0 }" style="width: 80%; height: 2rem;"></span>
-                  </div>
-                </div>
-              </div>
-            </li>
-          </ul>
+                <div class="media">
+                  <img style="margin-top: 0; margin-bottom: 0;"
+                      class="media-object img-user-small pull-left"
+                      ng-src="{{ '/person/' + conversation.other.id + '/72/72/profile.png' }}" />
 
-          <ul class="list-unstyled list-row h-escape master-list"
-              ng-if="conversations && conversations.length > 0">
-            <li class="h-pad master-list-item"
-                ng-class="{ selected: conversation === selectedConversation }"
-                ng-click="selectConversation(conversation)"
-                ng-repeat="conversation in conversations"
-                style="padding-top: 10px; padding-bottom: 10px;">
-
-              <div class="media">
-                <img style="margin-top: 0; margin-bottom: 0;"
-                     class="media-object img-user-small pull-left"
-                     person-profile-image="{ person: conversation.other, size: 'small' }" />
-
-                <div class="media-body" style="padding-right: 0; padding-top: 0; padding-bottom: 0;">
-                  <div class="single-line">
-                    <strong>{{ conversation.other.firstName }}</strong>
-                    <small style="margin-left: 5px;" class="text-muted">
-                      <i class="fa fa-circle"></i>&nbsp;<span am-time-ago="conversation.date"></span>
-                    </small>
-                  </div>
-                  <div class="single-line">
-                    {{ conversation.sender.id === me.id ? 'Jij: ' : '' }}
-                    {{ conversation.text }}
+                  <div class="media-body" style="padding-right: 0; padding-top: 0; padding-bottom: 0;">
+                    <div class="single-line">
+                      <span>
+                        <strong>{{ conversation.other.firstName }}</strong>
+                        <small style="margin-left: 5px;" class="text-muted">
+                          <i class="fa fa-circle"></i>&nbsp;<span am-time-ago="conversation.date"></span>
+                        </small>
+                      </span>
+                    </div>
+                    <div class="single-line">
+                      {{ conversation.sender.id === me.id ? 'Jij: ' : '' }}
+                      {{ conversation.text }}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </li>
+            </ul>
 
-            </li>
-          </ul>
-        
+            <ul class="list-unstyled list-row master-list"
+                style="margin-top: 0;"
+                ng-if="loading || (!loading && !error && conversations.length === 0)">
+              <li class="h-pad master-list-item"
+                  style="padding-top: 10px; padding-bottom: 10px;"
+                  ng-repeat="i in [0,1,2]">
+                <div class="media">
+                  <div class="media-object img-user-small pull-left"
+                      style="margin-top: 0; margin-bottom: 0; border-radius: 999px; background: #ddd;">
+                  </div>
+
+                  <div class="media-body" style="padding-right: 0; padding-top: 0; padding-bottom: 0;">
+                    <div class="single-line">
+                      <span class="skel inline" ng-class="{ noanim: conversations.length === 0 }" style="width: 30%; height: 2rem;"></span>
+                    </div>
+                    <div class="single-line">
+                      <span class="skel inline" ng-class="{ noanim: conversations.length === 0 }" style="width: 80%; height: 2rem;"></span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <div ng-if="!loading && hasMore">
+              <p style="text-align: center; margin: 2rem 0;">
+                <button class="mywheels-btn mywheels-btn-default"
+                        md-ink-ripple="#4b702c"
+                        ng-click="fetchNextPage()"
+                        style="white-space: nowrap;">
+                  Meer laden
+                </button>
+              </p>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

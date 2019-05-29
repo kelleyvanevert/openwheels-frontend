@@ -3,17 +3,14 @@
 angular.module('owm.finance.invoice', [])
 
 .controller('InvoiceResultController', function (
-  $window,
   $state,
   $scope,
-  $log,
   appConfig,
 
   orderStatusId,
   paymentSucceeded,
   paymentFailed,
-  
-  alertService,
+
   metaInfoService
 ) {
 
@@ -34,22 +31,16 @@ angular.module('owm.finance.invoice', [])
 })
 
 .controller('InvoiceController', function (
-  $window,
-  $state,
   $scope,
-  $log,
   appConfig,
 
-  instantPaymentService,
-  instaPayRedirect,
+  buyVoucherRedirect,
 
-  me,
   invoiceGroups_simplified,
   credit,
-  
+
   $stateParams,
-  
-  alertService,
+
   metaInfoService
 ) {
 
@@ -81,36 +72,42 @@ angular.module('owm.finance.invoice', [])
   // Redirects
 
   $scope.payMain = function () {
-    var redirectTo = appConfig.appUrl + $state.href('owm.finance.invoice', null, { inherit: false });
-
-    $scope.makingMainInstantPayment = true;
-    instantPaymentService.create({
-      person: me.id,
-      invoiceGroup: $scope.mainInvoiceGroup.id,
-    })
-    .then(function (mainInstantPayment) {
-      instaPayRedirect(mainInstantPayment, redirectTo);
-    })
-    .catch(function (e) {
-      console.log('error creating next instapay for ALL invoices', e);
-      alertService.addError(e);
+    buyVoucherRedirect({
+      amount: $scope.mainInvoiceGroup.total - $scope.currentCredit,
+      afterPayment: {
+        redirect: {
+          state: 'owm.finance.invoice',
+          params: {
+            orderStatusId: 100, // fake it
+          },
+        },
+        paymentErrorRedirect: {
+          state: 'owm.finance.invoice',
+          params: {
+            orderStatusId: 0, // fake it
+          },
+        },
+      },
     });
   };
 
   $scope.payAll = function () {
-    var redirectTo = appConfig.appUrl + $state.href('owm.finance.invoice', null, { inherit: false });
-
-    $scope.makingAllInstantPayment = true;
-    instantPaymentService.create({
-      person: me.id,
-      invoiceGroup: null,
-    })
-    .then(function (allInstantPayment) {
-      instaPayRedirect(allInstantPayment, redirectTo);
-    })
-    .catch(function (e) {
-      console.log('error creating next instapay for ALL invoices', e);
-      alertService.addError(e);
+    buyVoucherRedirect({
+      amount: $scope.totalAllInvoiceGroups - $scope.currentCredit,
+      afterPayment: {
+        redirect: {
+          state: 'owm.finance.invoice',
+          params: {
+            orderStatusId: 100, // fake it
+          },
+        },
+        paymentErrorRedirect: {
+          state: 'owm.finance.invoice',
+          params: {
+            orderStatusId: 0, // fake it
+          },
+        },
+      },
     });
   };
 

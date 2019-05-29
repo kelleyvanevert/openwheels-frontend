@@ -128,6 +128,7 @@ angular.module('openwheels', [
   'filters.percentage',
   'filters.bookingStatus',
   'filters.booking',
+  'filters.resource',
   'filters.translateOrDefault',
   'filters.removeEntersFilter',
 

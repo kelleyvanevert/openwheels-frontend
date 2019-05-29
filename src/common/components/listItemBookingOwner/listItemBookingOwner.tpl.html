@@ -1,0 +1,47 @@
+
+<div ui-sref="owm.booking.show({ bookingId: $ctrl.booking.id })">
+
+  <h4 class="visible-xs-block" style="color: #333; font-size: 1.8rem; margin: 0; padding: 1.3rem 0 0;">{{ $ctrl.booking.resource.alias }}</h4>
+
+  <div class="row is-flex list-item">
+
+    <div class="col-sm-2 col-xs-4">
+      <img class="media-object img-user-normal pull-left align-middle" person-profile-image="{ person: $ctrl.booking.person, size: 'normal' }" />
+    </div>
+
+    <div class="col-sm-3 col-xs-8">
+      <div ng-if="$ctrl.booking.beginBooking && !$ctrl.booking.beginRequested">
+        <div>
+          <datetime class="list-item-line" datetime="{{ $ctrl.booking.beginBooking }}"></datetime>
+          <datetime class="list-item-line" datetime="{{ $ctrl.booking.endBooking }}"></datetime>
+        </div>
+      </div>
+      <div ng-if="$ctrl.booking.beginRequested">
+        <div>
+          <datetime class="list-item-line" datetime="{{ $ctrl.booking.beginRequested }}"></datetime>
+          <datetime class="list-item-line" datetime="{{ $ctrl.booking.endRequested }}"></datetime>
+        </div>
+      </div>
+      <div
+        class="list-item-line visible-xs-block"
+        ng-include="'components/listItemBookingOwner/partial-statusIndicator.tpl.html'"
+      ></div>
+    </div>
+
+    <div class="col-sm-4 hidden-xs">
+      <div class="list-item-line truncate">
+        {{ $ctrl.booking.person | fullname }}
+      </div>
+      <div class="list-item-line truncate" style="color: #777;">
+        {{ $ctrl.booking.resource.alias }}
+      </div>
+    </div>
+
+    <div
+      class="col-sm-3 hidden-xs v-mid"
+      style="text-align: right"
+      ng-include="'components/listItemBookingOwner/partial-statusIndicator.tpl.html'"
+    ></div>
+  </div>
+
+</div>

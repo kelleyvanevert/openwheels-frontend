@@ -3,10 +3,10 @@
 angular.module('owm.message.index', [])
 
 .controller('MessageIndexController', function (
-  $log, $filter, $timeout,
+  $timeout,
   appConfig, me,
-  messageService, chatPopupService, metaInfoService,
-  $scope, $rootScope
+  messageService, metaInfoService,
+  $scope, $rootScope, $q
 ) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/messages'});
@@ -14,27 +14,47 @@ angular.module('owm.message.index', [])
 
   $scope.me = me;
 
+  const PAGE_SIZE = 15;
+
   $scope.loading = true;
   $scope.error = false;
   $scope.conversations = [];
   $scope.detailFocus = false; // for mobile
 
-  messageService.getMyConversations()
-  .then(function (conversations) {
-    conversations = conversations.result;
-    conversations.forEach(function (conversation) {
-      conversation.other = (conversation.sender.id !== me.id) ? conversation.sender : conversation.recipient;
-    });
+  $scope.hasMore = false;
 
-    $scope.conversations = conversations;
-    if ($rootScope.isWindowSizeMD && $scope.conversations.length > 0) {
+  $scope.fetchNextPage = function () {
+    return $q(function (resolve, reject) {
+      $scope.loading = true;
+
+      const offset = $scope.conversations.length;
+      const limit = PAGE_SIZE;
+      messageService.getMyConversations({ offset, limit }).then(({ result, total }) => {
+        result.forEach((conversation, i) => {
+          conversation.other = (conversation.sender.id !== me.id) ? conversation.sender : conversation.recipient;
+          $scope.conversations[offset + i] = conversation;
+        });
+        if (total && total > $scope.conversations.length) {
+          $scope.hasMore = true;
+        } else if (total && total <= $scope.conversations.length) {
+          $scope.hasMore = false;
+        }
+
+        $scope.loading = false;
+        resolve(result);
+      });
+    });
+  }
+
+  // kick-off
+  $scope.fetchNextPage().then(firstPage => {
+    if ($rootScope.isWindowSizeMD && firstPage.length > 0) {
       // only automatically select the first conversation if on desktop
-      $scope.selectedConversation = $scope.conversations[0];
+      $scope.selectedConversation = firstPage[0];
       $scope.detailFocus = true;
     }
     $scope.loading = false;
-  })
-  .catch(function () {
+  }).catch(() => {
     $scope.error = true;
     $scope.loading = false;
   });
