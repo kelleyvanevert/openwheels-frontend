@@ -37,7 +37,7 @@ angular.module('timeframePickerDirective', [])
     width: '20em',
   });
 
-  var timePickerInterval = $rootScope.timePickerInterval;
+  var timePickerInterval = $rootScope.timePickerInterval || 15;
 
   var timeConfig = Object.assign({}, dateTimeConfig, {
     format: 'HH:mm',
