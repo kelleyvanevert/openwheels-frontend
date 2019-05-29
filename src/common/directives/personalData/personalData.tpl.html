@@ -106,7 +106,7 @@
                 ng-focus="handleFocus()"
                 ng-blur="handleBlur()" />
 
-            <div class="err-block" ng-if="personalDataForm.$submitted && (!addressSearch.address || addressSearch.error)">
+            <div class="err-block" ng-if="personalDataForm.$submitted && (!addressSearch.address || addressSearch.error) && !alreadyHasAddress">
                 <span class="text-danger">Vul a.j.b. een geldig adres in, inclusief straat en huisnummer.</span>
             </div>
         </div>

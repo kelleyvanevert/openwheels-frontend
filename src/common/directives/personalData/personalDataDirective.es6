@@ -302,6 +302,7 @@ angular.module('personalDataDirective', [])
             };
 
             if (person.streetName && person.streetNumber) {
+              $scope.alreadyHasAddress = true;
               $scope.addressSearch.address = `${person.streetName} ${person.streetNumber}, ${person.zipcode}, ${person.city}, ${person.country}`;
             }
           });
@@ -351,7 +352,9 @@ angular.module('personalDataDirective', [])
             }
           });
           if (!found.streetNumber || !found.streetName || !address.geometry || !address.geometry.location) {
-            $scope.addressSearch.error = "not_enough_info";
+            if (!$scope.person || !$scope.person.streetNumber) {
+              $scope.addressSearch.error = "not_enough_info";
+            }
           } else {
             delete $scope.addressSearch.error;
             angular.merge($scope.person, found, {
@@ -360,7 +363,9 @@ angular.module('personalDataDirective', [])
             });
           }
         } else {
-          $scope.addressSearch.error = "not_enough_info";
+          if (!$scope.person || !$scope.person.streetNumber) {
+            $scope.addressSearch.error = "not_enough_info";
+          }
         }
       });
 
