@@ -9,55 +9,8 @@ angular.module('personalDataDirective', [])
       resource: '=resource'
     },
     templateUrl: 'directives/personalData/personalData.tpl.html',
-    controller: function ($scope, $rootScope, $q, $log, $state, $location, $stateParams, $filter, personService, authService,resourceService,
+    controller: function ($scope, $rootScope, unwrap, $q, $log, $state, $location, $stateParams, $filter, personService, authService,resourceService,
       $anchorScroll, $timeout, alertService, account2Service, accountService, dutchZipcodeService, Analytics, $translate, featuresService) {
-
-      const _cache = {};
-
-      function performGeocode(params, cont, key, it = 0) {
-        return $q((resolve, reject) => {
-          if (_cache[key]) {
-            console.log("cache hit", key);
-            resolve(_cache[key])
-          } else if (it >= 20) {
-            // console.log("max retries", debugId || params);
-            reject("max retries");
-          } else if (!window.google) {
-            // console.log("defer geocode because google not loaded yet", debugId || params);
-            $timeout(() => {
-              if (!cont()) {
-                console.log("don't continue");
-                reject("stale");
-              } else {
-                performGeocode(params, cont, key, it + 1).then(resolve).catch(reject);
-              }
-            }, 300);
-          } else {
-            // console.log("start geocode", debugId || params);
-            const geocoder = new window.google.maps.Geocoder();
-            geocoder.geocode(params, (results, status) => {
-              if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-                // console.log("over query limit, retrying in 1000ms...", debugId || params);
-                $timeout(() => {
-                  if (!cont()) {
-                    console.log("don't continue");
-                    reject("stale");
-                  } else {
-                    console.log("  over limit")
-                    performGeocode(params, cont, key, it + 1).then(resolve).catch(reject);
-                  }
-                }, 300);
-              } else if (status !== google.maps.GeocoderStatus.OK) {
-                // console.log("error geocoding", status, debugId || params);
-                reject(`status: ${status}`);
-              } else {
-                _cache[key] = results;
-                resolve(results);
-              }
-            });
-          }
-        });
-      }
 
       $scope.countries = [
         { value: "Nederland", iso: "nl" },
@@ -129,7 +82,15 @@ angular.module('personalDataDirective', [])
           // check if person had verified phone numbers
           that.initPhoneNumbers();
 
-          var newProps = $filter('returnDirtyItems')(angular.copy($scope.person), $scope.personalDataForm);
+          var newProps = {
+            ...$filter('returnDirtyItems')(angular.copy($scope.person), $scope.personalDataForm),
+            streetName: $scope.person.streetName,
+            streetNumber: $scope.person.streetNumber,
+            city: $scope.person.city,
+            zipcode: $scope.person.zipcode,
+            latitude: $scope.person.latitude,
+            longitude: $scope.person.longitude,
+          };
 
           // don't alter firstname or surname if value isn't changed
           if(masterPerson.firstName === $scope.person.firstName) {
@@ -140,12 +101,6 @@ angular.module('personalDataDirective', [])
           }
 
           // add fields not in form
-          if (newProps.zipcode || newProps.streetNumber) {
-            newProps.streetName = $scope.person.streetName;
-            newProps.city = $scope.person.city;
-            newProps.latitude = $scope.person.latitude;
-            newProps.longitude = $scope.person.longitude;
-          }
           if($scope.person.companyName) {
             newProps.isCompany = true;
           }
@@ -164,6 +119,7 @@ angular.module('personalDataDirective', [])
             phoneNumbers = $scope.verifiedPhoneNumbers,
             city = $scope.person.city,
             zipcode = $scope.person.zipcode,
+            streetName = $scope.person.streetName,
             streetNumber = $scope.person.streetNumber;
 
           // add phone numbers (not automatically included by 'returnDirtyItems')
@@ -192,7 +148,7 @@ angular.module('personalDataDirective', [])
             if (year && month && day) {
               if (phoneNumbers) {
                 if (male) {
-                  if (streetNumber && zipcode && city && containsStreetNumber(streetNumber)) {
+                  if (streetName && streetNumber && zipcode && city && containsStreetNumber(streetNumber)) {
                     // save persons info
                     personService.alter({
                       person: $scope.person.id,
@@ -246,7 +202,7 @@ angular.module('personalDataDirective', [])
                       alertService.loaded();
                     });
                   } else {
-                    alertService.add('danger', 'Vul je postcode en huisnummer in zodat we je post kunnen sturen.', 5000);
+                    alertService.add('danger', 'Vul een geldig adres in, inclusief straatnaam en huisnummer, zodat we je post kunnen sturen.', 5000);
                     alertService.loaded();
                   }
                 } else {
@@ -344,6 +300,10 @@ angular.module('personalDataDirective', [])
               month: Number(moment($scope.person.dateOfBirth).format('MM')),
               year: Number(moment($scope.person.dateOfBirth).format('YYYY'))
             };
+
+            if (person.streetName && person.streetNumber) {
+              $scope.addressSearch.address = `${person.streetName} ${person.streetNumber}, ${person.zipcode}, ${person.city}, ${person.country}`;
+            }
           });
         },
         initPhoneNumbers: function () {
@@ -372,145 +332,39 @@ angular.module('personalDataDirective', [])
         }
       };
 
-      const lookingUpAddress = $scope.lookingUpAddress = {
-        loading: false,
-      };
+      $scope.addressSearch = {};
 
-      function lookupAddress(country, zip, streetNo) {
-        function mostRecent() {
-          return lookingUpAddress.country === country &&
-            lookingUpAddress.zip === zip &&
-            lookingUpAddress.streetNo === streetNo;
-        }
-
-        lookingUpAddress.loading = false;
-        delete lookingUpAddress.result;
-        delete lookingUpAddress.failed;
-        delete lookingUpAddress.country;
-        delete lookingUpAddress.zip;
-        delete lookingUpAddress.streetNo;
-
-        if (!zip || !streetNo) {
-          console.log("not looking up because no data");
-          return;
-        }
-
-        lookingUpAddress.loading = true;
-        lookingUpAddress.country = country;
-        lookingUpAddress.zip = zip;
-        lookingUpAddress.streetNo = streetNo;
-
-        $timeout(() => {
-          if (!mostRecent()) return console.log("abort [0]");
-
-          performGeocode({
-            componentRestrictions: {
-              country: country,
-              postalCode: zip,
+      $scope.$watch('addressSearch.address', address => {
+        if (address && address.address_components) {
+          const found = {};
+          address.address_components.map(({ short_name, long_name, types }) => {
+            if (types[0] === "street_number") {
+              found.streetNumber = long_name;
+            } else if (types[0] === "route" || types[0] === "street_address") {
+              found.streetName = long_name;
+            } else if (types[0] === "locality") {
+              found.city = long_name;
+            } else if (types[0] === "country") {
+              found.country = long_name;
+            } else if (types[0] === "postal_code") {
+              found.zipcode = long_name;
             }
-          }, mostRecent, `zip: ${zip}, ${country}`)
-          .then(results => {
-            if (!mostRecent()) return console.log("abort [1]");
-
-            const location = results[0].geometry.location.toJSON();
-            performGeocode({
-              location,
-            }, mostRecent, `location: ${location.lat}, ${location.lng}`)
-            .then(results => {
-              if (!mostRecent()) return console.log("abort [2]");
-
-              const street_name = results[0].address_components
-                .filter(comp => ["route", "street_address"].indexOf(comp.types[0]) >= 0)
-                .map(comp => comp.long_name)
-                .join(" ");
-              const address = `${street_name} ${streetNo}`;
-              console.log("ADD", address, results[0]);
-              performGeocode({
-                address,
-                componentRestrictions: {
-                  country: country,
-                  postalCode: zip,
-                }
-              }, mostRecent, `address: ${address}, ${zip}, ${country}`)
-              .then(results => {
-                if (!mostRecent()) return console.log("abort [3]");
-
-                lookingUpAddress.loading = false;
-                lookingUpAddress.result = results[0];
-                console.log(" >>", results[0]);
-              })
-              .catch(() => {
-                if (!mostRecent()) return console.log("abort [3]");
-
-                lookingUpAddress.loading = false;
-                lookingUpAddress.failed = true;
-              })
-            })
-            .catch(() => {
-              if (!mostRecent()) return console.log("abort [2]");
-
-              lookingUpAddress.loading = false;
-              lookingUpAddress.failed = true;
-            })
-          })
-          .catch(() => {
-            if (!mostRecent()) return console.log("abort [1]");
-
-            lookingUpAddress.loading = false;
-            lookingUpAddress.failed = true;
-          })
-        }, 500);
-      }
-
-      var inputs = {
-        init: function () {
-          this.adress();
-        },
-        adress: function () {
-          $scope.$watch('[person.country, person.zipcode, person.streetNumber]',
-            ([newCountry, newZip, newStreetNo], [oldCountry, oldZip, oldStreetNo]) => {
-              if (newCountry === oldCountry && newZip === oldZip && newStreetNo === oldStreetNo) {
-                return;
-              }
-
-              lookupAddress($scope.person.country, newZip, newStreetNo);
-
-              // dutchZipcodeService.autocomplete({
-              //     country: country,
-              //     zipcode: _this.stripWhitespace(newValue[0]),
-              //     streetNumber: newValue[1]
-              //   })
-              //   .then(function (data) {
-              //     /*jshint sub: true */
-              //     $scope.person.city = data[0].city;
-              //     $scope.person.streetName = data[0].street;
-              //     $scope.person.latitude = data[0].lat;
-              //     $scope.person.longitude = data[0].lng;
-              //   }, function (error) {
-              //     if ($scope.person.zipcode !== newValue[0] || $scope.person.streetNumber !== newValue[1]) {
-              //       //resolved too late
-              //       return;
-              //     }
-              //     $scope.person.city = null;
-              //     $scope.person.streetName = null;
-              //     $scope.person.latitude = null;
-              //     $scope.person.longitude = null;
-              //   })
-              //   .finally(function () {
-              //     $scope.lookingUpAddress = false;
-              //   });
-            }, true);
-        },
-        stripWhitespace: function (str) { //remove all spaces
-          var out = str;
-          while (out.indexOf(' ') >= 0) {
-            out = out.replace(' ', '');
+          });
+          if (!found.streetNumber || !found.streetName || !address.geometry || !address.geometry.location) {
+            $scope.addressSearch.error = "not_enough_info";
+          } else {
+            delete $scope.addressSearch.error;
+            angular.merge($scope.person, found, {
+              latitude: unwrap(address.geometry.location.lat),
+              longitude: unwrap(address.geometry.location.lng),
+            });
           }
-          return out;
+        } else {
+          $scope.addressSearch.error = "not_enough_info";
         }
-      };
+      });
+
       personPage.init();
-      inputs.init();
 
     }
   };
