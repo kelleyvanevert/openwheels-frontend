@@ -148,9 +148,7 @@ angular.module('owm.person.details', [])
       if (!$scope.licenseAllowedCountries) {
         rentalcountryService.all().then(arr => {
           $scope.licenseAllowedCountries = arr.map(item => {
-            if (item.alpha2 === "BE") {
-              item.endonym = "Belgique / België";
-            }
+            // item.emoji = item.alpha2.split("").map(s => String.fromCodePoint(s.charCodeAt(0) - 65 + 127462)).join("");
             return item;
           });
         })
@@ -360,9 +358,17 @@ angular.module('owm.person.details', [])
         $scope.licenseNumberValid = false;
       }
     } else {
-      $scope.uploadLicenseImages().then(() => {
+      alertService.closeAll();
+      alertService.load();
+      $scope.isBusy = true;
+      $scope.uploadLicenseImages()
+      .then(() => {
         $scope.licenseUploaded = true;
         $scope.nextSection();
+      })
+      .finally(() => {
+        alertService.loaded();
+        $scope.isBusy = false;
       });
     }
   };

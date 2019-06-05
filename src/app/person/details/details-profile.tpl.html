@@ -195,8 +195,8 @@
                                                                 accept="image/*"
                                                                 required
                                                                 ngf-pattern="'image/*'"
-                                                                ngf-min-size="800KB"
-                                                                ngf-max-size="20MB"
+                                                                ngf-min-size="1MB"
+                                                                ngf-max-size="10MB"
                                                                 ngf-min-width="500"
                                                                 ngf-min-height="500"
                                                             >
@@ -206,7 +206,7 @@
                                                                 De foto moet minimaal 500px breed en hoog zijn.
                                                             </p>
                                                             <p class="text-danger" ng-show="licensePicturesForm.front.$error.minSize || licensePicturesForm.front.$error.maxSize">
-                                                                De bestandsgrootte van de foto moet tenminste 800 kB zijn, en niet meer dan 20 MB.
+                                                                De bestandsgrootte van de foto moet tussen de 1 en 10 megabyte liggen.
                                                             </p>
                                                             <p class="text-danger" ng-show="licensePicturesForm.front.$error.pattern">
                                                                 Selecteer ajb een foto-bestand.
@@ -242,8 +242,8 @@
                                                                 accept="image/*"
                                                                 required
                                                                 ngf-pattern="'image/*'"
-                                                                ngf-min-size="800KB"
-                                                                ngf-max-size="20MB"
+                                                                ngf-min-size="1MB"
+                                                                ngf-max-size="10MB"
                                                                 ngf-min-width="500"
                                                                 ngf-min-height="500"
                                                             >
@@ -253,7 +253,7 @@
                                                                 De foto moet minimaal 500px breed en hoog zijn.
                                                             </p>
                                                             <p class="text-danger" ng-show="licensePicturesForm.back.$error.minSize || licensePicturesForm.back.$error.maxSize">
-                                                                De bestandsgrootte van de foto moet tenminste 800 kB zijn, en niet meer dan 20 MB.
+                                                                De bestandsgrootte van de foto moet tussen de 1 en 10 megabyte liggen.
                                                             </p>
                                                             <p class="text-danger" ng-show="licensePicturesForm.back.$error.pattern">
                                                                 Selecteer ajb een foto-bestand.
