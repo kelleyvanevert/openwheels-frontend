@@ -93,49 +93,31 @@
         </div>
         <!-- /phone number -->
 
-        <h3>{{ 'MY_PROFILE_ADDRESS' | translate }}</h3>
-        <div class="responsive">
-            <div id="zipcode_group" class="icon home field">
-                <input type="text" name="zipcode" id="zipcode" ng-model="person.zipcode" placeholder="{{ 'ZIPCODE' | translate }}" ng-pattern="/^[1-9][0-9]{3} ?[A-Z,a-z]{2}$/">
-                <md-progress-circular class="md-hue-2 right-addon" md-diameter="20px" ng-if="zipcodeAutocompleting"></md-progress-circular>
+        <h3>Adres</h3>
 
-                <div class="err-block" ng-show="personalDataForm.$submitted && !person.zipcode">
-                    <span class="text-danger" ng-show="!personalDataForm.zipcode.$error.pattern">{{ 'REQUIRED' | translate }}</span>
-                    <span class="text-danger" ng-show="personalDataForm.zipcode.$error.pattern">Verkeerd formaat</span>
-                </div>
-            </div>
-            <!-- /zipcode -->
+        <div class="icon location field">
+            <input type="text"
+                g-places-autocomplete
+                force-selection="true"
+                ng-model="addressSearch.address"
+                class="form-control"
+                placeholder="Zoek op straat en huisnummer"
+                style="font-weight: normal; line-height: inherit !important; height: 40px !important;"
+                ng-focus="handleFocus()"
+                ng-blur="handleBlur()" />
 
-            <!-- streetNumber -->
-            <div id="streetNumber_group" class="icon home field">
-                <input type="text" name="streetNumber" id="streetNumber" ng-model="person.streetNumber" placeholder="{{ 'STREET_NUMBER' | translate }}">
-                <md-progress-circular class="md-hue-2 right-addon" md-diameter="20px" ng-if="zipcodeAutocompleting"></md-progress-circular>
-
-                <div class="err-block" ng-show="personalDataForm.$submitted && !person.streetNumber">
-                    <span class="text-danger">{{ 'REQUIRED' | translate }}</span>
-                </div>
-            </div>
-            <!-- /streetNumber -->
-        </div>
-        <!-- streetName -->
-        <div id="streetName_group" class="icon home field">
-            <input type="text" name="streetName" id="streetName" ng-model="person.streetName" placeholder="{{ 'STREET_NAME' | translate }} " ng-readonly="person.country === 'Nederland'">
-
-            <div class="err-block" ng-show="personalDataForm.$submitted && !person.streetName">
-                <span>{{ 'ENTER_ZIPCODE_STREET_NUMBER' | translate }}</span>
+            <div class="err-block" ng-if="personalDataForm.$submitted && (!addressSearch.address || addressSearch.error) && !alreadyHasAddress">
+                <span class="text-danger">Vul a.j.b. een geldig adres in, inclusief straat en huisnummer.</span>
             </div>
         </div>
-        <!-- /streetName -->
 
-        <!-- city -->
-        <div id="city_group" class="icon home field">
-            <input type="text" name="city" id="city" ng-model="person.city" placeholder="{{ 'CITY' | translate }} " ng-readonly="person.country === 'Nederland'">
-
-            <div class="err-block" ng-show="personalDataForm.$submitted && !person.city">
-                <span>{{ 'ENTER_ZIPCODE_STREET_NUMBER' | translate }}</span>
-            </div>
+        <div ng-if="false">
+            <div>straat: {{ person.streetName }}</div>
+            <div>huisnummer: {{ person.streetNumber }}</div>
+            <div>postcode: {{ person.zipcode }}</div>
+            <div>stad: {{ person.city }}</div>
+            <div>locatie: {{ person.latitude }}, {{ person.longitude }}</div>
         </div>
-        <!-- /city -->
 
         <!-- iban -->
         <h3 ng-if="!ibanIsDefined">{{ 'PAY_OUT_DATA' | translate }}</h3>
