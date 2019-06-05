@@ -100,6 +100,8 @@ angular.module('owm.person.details', [])
 
   $scope.licensePage = {
     country: "NL",
+    driverLicense: "",
+    driverLicenseRepeat: "",
   };
 
   $scope.uploadLicenseImages = function () {
@@ -243,7 +245,7 @@ angular.module('owm.person.details', [])
       year: Number(moment($scope.person.drivingLicenseValidUntil).format('YYYY'))
     };
 
-    $scope.driverLicenseNumber = $scope.person.driverLicenseNumber;
+    $scope.licensePage.driverLicense = $scope.person.driverLicenseNumber;
     $scope.licensePage.country = $scope.person.driverLicenseCountry || "NL";
 
     if($scope.showThird) {
@@ -303,9 +305,9 @@ angular.module('owm.person.details', [])
     $scope.dl_submitted = true;
 
     if ($scope.licensePage.country === "NL") {
-      if($scope.driverLicenseNumber !== undefined && $scope.driverLicenseNumber.length === 10 && ['3', '4', '5'].indexOf($scope.driverLicenseNumber.charAt(0)) >= 0)
+      if($scope.licensePage.driverLicense !== undefined && $scope.licensePage.driverLicense.length === 10 && ['3', '4', '5'].indexOf($scope.licensePage.driverLicense.charAt(0)) >= 0)
       {
-        if($scope.driverLicenseNumberRepeat !== undefined && $scope.driverLicenseNumberRepeat.length === 10)
+        if($scope.licensePage.driverLicenseRepeat !== undefined && $scope.licensePage.driverLicenseRepeat.length === 10)
         {
           if(
             !isNaN($scope.licenseDate.day) &&
@@ -315,12 +317,12 @@ angular.module('owm.person.details', [])
             !isNaN($scope.licenseDate.year) &&
             $scope.licenseDataForm.year.$valid)
           {
-            if($scope.driverLicenseNumber === $scope.driverLicenseNumberRepeat) {
+            if($scope.licensePage.driverLicense === $scope.licensePage.driverLicenseRepeat) {
 
               var newProps = $filter('returnDirtyItems')( angular.copy($scope.person), $scope.licenseDataForm);
               var licenseDateExpire = $scope.licenseDate.year + '-' + $scope.licenseDate.month+ '-' + $scope.licenseDate.day;
 
-              newProps.driverLicenseNumber = $scope.driverLicenseNumber;
+              newProps.driverLicenseNumber = $scope.licensePage.driverLicense;
               newProps.drivingLicenseValidUntil = licenseDateExpire;
 
               alertService.closeAll();
