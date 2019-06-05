@@ -193,6 +193,7 @@
                                                                 class="well well-lg upload-well"
                                                                 ngf-drag-over-class="'dragover'"
                                                                 accept="image/*"
+                                                                required
                                                                 ngf-pattern="'image/*'"
                                                                 ngf-min-size="800KB"
                                                                 ngf-max-size="20MB"
@@ -208,6 +209,9 @@
                                                                 De bestandsgrootte van de foto moet tenminste 800 kB zijn, en niet meer dan 20 MB.
                                                             </p>
                                                             <p class="text-danger" ng-show="licensePicturesForm.front.$error.pattern">
+                                                                Selecteer ajb een foto-bestand.
+                                                            </p>
+                                                            <p class="text-danger" ng-show="licensePicturesForm.front.$error.required && dl_submitted">
                                                                 Selecteer ajb een foto-bestand.
                                                             </p>
                                                         </div>
@@ -236,6 +240,7 @@
                                                                 class="well well-lg upload-well"
                                                                 ngf-drag-over-class="'dragover'"
                                                                 accept="image/*"
+                                                                required
                                                                 ngf-pattern="'image/*'"
                                                                 ngf-min-size="800KB"
                                                                 ngf-max-size="20MB"
@@ -251,6 +256,9 @@
                                                                 De bestandsgrootte van de foto moet tenminste 800 kB zijn, en niet meer dan 20 MB.
                                                             </p>
                                                             <p class="text-danger" ng-show="licensePicturesForm.back.$error.pattern">
+                                                                Selecteer ajb een foto-bestand.
+                                                            </p>
+                                                            <p class="text-danger" ng-show="licensePicturesForm.back.$error.required && dl_submitted">
                                                                 Selecteer ajb een foto-bestand.
                                                             </p>
                                                         </div>

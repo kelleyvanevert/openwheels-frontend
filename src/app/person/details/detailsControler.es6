@@ -103,55 +103,34 @@ angular.module('owm.person.details', [])
   };
 
   $scope.uploadLicenseImages = function () {
-    console.log($scope.licensePage.front);
+    return $q(function (resolve, reject) {
+      if (!$scope.licensePage.front || !$scope.licensePage.back) {
+        reject("no file[s] selected");
+        return;
+      }
 
-    if (!$scope.licensePage.front || !$scope.licensePage.back) {
-      console.log("no file[s] selected");
-      return;
-    }
+      if ($scope.licensePage.front.$error || $scope.licensePage.back.$error) {
+        reject($scope.licensePage.front.$error || $scope.licensePage.back.$error);
+        return;
+      }
 
-    if ($scope.licensePage.front.$error || $scope.licensePage.back.$error) {
-      console.log("error?", $scope.licensePage.front.$error, $scope.licensePage.back.$error);
-      return;
-    }
-
-    driverlicenseService.upload({
-      person: me.id,
-      driverLicenseCountry: $scope.licensePage.country,
-    }, {
-      frontImage: $scope.licensePage.front,
-      backImage: $scope.licensePage.back,
-    })
-    .then(function (results) {
-      console.log("driver license uploaded!", results);
-    })
-    .catch(function (err) {
-      console.log("driver license upload error!", err);
-      alertService.addError(err);
-    })
-    .finally(function () {
+      driverlicenseService.upload({
+        person: me.id,
+        driverLicenseCountry: $scope.licensePage.country,
+      }, {
+        frontImage: $scope.licensePage.front,
+        backImage: $scope.licensePage.back,
+      })
+      .then(function (results) {
+        console.log("driver license uploaded!", results);
+        resolve(results);
+      })
+      .catch(function (err) {
+        console.log("driver license upload error!", err);
+        alertService.addError(err);
+        reject(err);
+      });
     });
-
-    // Upload.upload({
-    //   url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
-    //   data: {
-    //     username: $scope.username,
-    //     file: file  
-    //   },
-    // }).then(function (resp) {
-    //     $timeout(function() {
-    //         $scope.log = 'file: ' +
-    //         resp.config.data.file.name +
-    //         ', Response: ' + JSON.stringify(resp.data) +
-    //         '\n' + $scope.log;
-    //     });
-    // }, null, function (evt) {
-    //     var progressPercentage = parseInt(100.0 *
-    //         evt.loaded / evt.total);
-    //     $scope.log = 'progress: ' + progressPercentage + 
-    //       '% ' + evt.config.data.file.name + '\n' + 
-    //       $scope.log;
-    // });
   }
 
 
@@ -319,7 +298,10 @@ angular.module('owm.person.details', [])
     $scope.alerts = alerts;
   }
 
+  $scope.dl_submitted = false;
   $scope.submitDriverLicense = function () {
+    $scope.dl_submitted = true;
+
     if ($scope.licensePage.country === "NL") {
       if($scope.driverLicenseNumber !== undefined && $scope.driverLicenseNumber.length === 10 && ['3', '4', '5'].indexOf($scope.driverLicenseNumber.charAt(0)) >= 0)
       {
@@ -376,7 +358,10 @@ angular.module('owm.person.details', [])
         $scope.licenseNumberValid = false;
       }
     } else {
-      $scope.uploadLicenseImages();
+      $scope.uploadLicenseImages().then(() => {
+        $scope.licenseUploaded = true;
+        $scope.nextSection();
+      });
     }
   };
 
