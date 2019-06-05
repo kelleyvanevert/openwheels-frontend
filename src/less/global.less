@@ -1476,22 +1476,23 @@ ul.list-unstyled.list-with-icons {
     align-items: center;
     flex-direction: column;
 
+    border: 3px dotted #ccc;
+    background: #f5f5f5;
+
     &:hover {
-        border: 2px solid #ccc;
+        border: 3px dotted #bbb;
         background: #eee;
-        padding: 23px;
     }
 
     &.dragover,
     &.dragover:hover {
-        border: 2px solid darken(@mywheels-blue, 10%);
+        border: 3px dotted darken(@mywheels-blue, 10%);
         padding: 23px;
-        background: repeating-linear-gradient(
-            45deg,
-            #eee,
-            #eee 10px,
-            #ddd 10px,
-            #ddd 20px
+        background: repeating-linear-gradient(45deg,
+            #aaccda,
+            #aaccda 10px,
+            #dbe8ee 10px,
+            #dbe8ee 20px
         );
     }
 }

@@ -156,8 +156,8 @@
                                                 </div>
                                             </form>
 
-                                            <div ng-if="licensePage.country !== 'NL'">
-                                                <h3>Upload foto's rijbewijs</h3>
+                                            <form name="licensePicturesForm" ng-if="licensePage.country !== 'NL'">
+                                                <h3 style="margin-top: 1.5em;">Upload foto's rijbewijs</h3>
                                                 <p>Upload een foto van zowel de voorzijde als de achterzijde van je rijbewijs. Let hierbij op de volgende punten:</p>
 
                                                 <div class="row is-flex" style="text-align: center; margin-bottom: 2rem;">
@@ -181,49 +181,93 @@
 
                                                 <div class="row is-flex">
                                                     <div class="col-xs-12 col-md-6">
-                                                        <div
-                                                            ngf-drop
-                                                            ngf-select
-                                                            ng-model="licensePage.front"
-                                                            class="well well-lg upload-well"
-                                                            ngf-drag-over-class="'dragover'"
-                                                            accept="image/*"
-                                                            ngf-pattern="'image/*'"
-                                                            ngf-min-size="800KB"
-                                                            ngf-max-size="20MB"
-                                                            ngf-min-width="500"
-                                                            ngf-min-height="500"
-                                                        >
-                                                            <div><strong>Foto voorkant</strong></div>
-                                                            <div><em>Sleep een foto of klik om een foto te selecteren</em></div>
+                                                        <p>
+                                                            <strong>Foto voorkant</strong>
+                                                        </p>
+                                                        <div ng-show="!licensePage.front">
+                                                            <div
+                                                                ngf-drop
+                                                                ngf-select
+                                                                ng-model="licensePage.front"
+                                                                name="front"
+                                                                class="well well-lg upload-well"
+                                                                ngf-drag-over-class="'dragover'"
+                                                                accept="image/*"
+                                                                ngf-pattern="'image/*'"
+                                                                ngf-min-size="800KB"
+                                                                ngf-max-size="20MB"
+                                                                ngf-min-width="500"
+                                                                ngf-min-height="500"
+                                                            >
+                                                                <em>Sleep een foto of klik om een foto te selecteren</em>
+                                                            </div>
+                                                            <p class="text-danger" ng-show="licensePicturesForm.front.$error.minHeight || licensePicturesForm.front.$error.minWidth ">
+                                                                De foto moet minimaal 500px breed en hoog zijn.
+                                                            </p>
+                                                            <p class="text-danger" ng-show="licensePicturesForm.front.$error.minSize || licensePicturesForm.front.$error.maxSize">
+                                                                De bestandsgrootte van de foto moet tenminste 800 kB zijn, en niet meer dan 20 MB.
+                                                            </p>
+                                                            <p class="text-danger" ng-show="licensePicturesForm.front.$error.pattern">
+                                                                Selecteer ajb een foto-bestand.
+                                                            </p>
                                                         </div>
-                                                        <div ng-if="licensePage.front">
-                                                            <img class="img-responsive" ngf-thumbnail="licensePage.front">
-                                                        </div>
+                                                        <p ng-if="licensePage.front">
+                                                            <img
+                                                                class="img-responsive"
+                                                                ng-src="/assets/uploadspinner.gif"
+                                                                ngf-thumbnail="licensePage.front"
+                                                                ngf-size="{ width: 300, height: 200, quality: 0.9 }"
+                                                            />
+                                                        </p>
+                                                        <p ng-if="licensePage.front">
+                                                            (<a href="#" ng-click="licensePage.front = null">Ander bestand uploaden</a>)
+                                                        </p>
                                                     </div>
                                                     <div class="col-xs-12 col-md-6">
-                                                        <div
-                                                            ngf-drop
-                                                            ngf-select
-                                                            ng-model="licensePage.back"
-                                                            class="well well-lg upload-well"
-                                                            ngf-drag-over-class="'dragover'"
-                                                            accept="image/*"
-                                                            ngf-pattern="'image/*'"
-                                                            ngf-min-size="800KB"
-                                                            ngf-max-size="20MB"
-                                                            ngf-min-width="500"
-                                                            ngf-min-height="500"
-                                                        >
-                                                            <div><strong>Foto achterkant</strong></div>
-                                                            <div><em>Sleep een foto of klik om een foto te selecteren</em></div>
+                                                        <p>
+                                                            <strong>Foto achterkant</strong>
+                                                        </p>
+                                                        <div ng-show="!licensePage.back">
+                                                            <div
+                                                                ngf-drop
+                                                                ngf-select
+                                                                ng-model="licensePage.back"
+                                                                name="back"
+                                                                class="well well-lg upload-well"
+                                                                ngf-drag-over-class="'dragover'"
+                                                                accept="image/*"
+                                                                ngf-pattern="'image/*'"
+                                                                ngf-min-size="800KB"
+                                                                ngf-max-size="20MB"
+                                                                ngf-min-width="500"
+                                                                ngf-min-height="500"
+                                                            >
+                                                                <em>Sleep een foto of klik om een foto te selecteren</em>
+                                                            </div>
+                                                            <p class="text-danger" ng-show="licensePicturesForm.back.$error.minHeight || licensePicturesForm.back.$error.minWidth ">
+                                                                De foto moet minimaal 500px breed en hoog zijn.
+                                                            </p>
+                                                            <p class="text-danger" ng-show="licensePicturesForm.back.$error.minSize || licensePicturesForm.back.$error.maxSize">
+                                                                De bestandsgrootte van de foto moet tenminste 800 kB zijn, en niet meer dan 20 MB.
+                                                            </p>
+                                                            <p class="text-danger" ng-show="licensePicturesForm.back.$error.pattern">
+                                                                Selecteer ajb een foto-bestand.
+                                                            </p>
                                                         </div>
-                                                        <div ng-if="licensePage.back">
-                                                            <img class="img-responsive" ngf-thumbnail="licensePage.back">
-                                                        </div>
+                                                        <p ng-if="licensePage.back">
+                                                            <img
+                                                                class="img-responsive"
+                                                                ng-src="/assets/uploadspinner.gif"
+                                                                ngf-thumbnail="licensePage.back"
+                                                                ngf-size="{ width: 300, height: 200, quality: 0.9 }"
+                                                            />
+                                                        </p>
+                                                        <p ng-if="licensePage.back">
+                                                            (<a href="#" ng-click="licensePage.back = null">Ander bestand uploaden</a>)
+                                                        </p>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </form>
 
                                             <div ng-if="licensePage.country === 'NL'">
                                                 <form class="mywheels-form ng-pristine ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength ng-valid" name="licenseDataForm">
