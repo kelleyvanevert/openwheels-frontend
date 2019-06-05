@@ -360,6 +360,20 @@ angular.module('rpcServices', [])
   this.forPerson = m('forPerson');
 })
 
+.service('rentalcountryService', function (api) {
+  var m = function (name) {
+    return api.createRpcMethod('rentalcountry.' + name);
+  };
+  this.all = m('all');
+})
+
+.service('driverlicenseService', function (api) {
+  var m = function (name) {
+    return api.createRpcMethod('driverlicense.' + name);
+  };
+  this.upload = m('upload');
+})
+
 .service('damageService', function (api) {
   var m = function (name) {
     return api.createRpcMethod('damage.' + name);

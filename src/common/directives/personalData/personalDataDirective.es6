@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('personalDataDirective', [])
 
 .directive('personalData', function () {
@@ -11,8 +9,16 @@ angular.module('personalDataDirective', [])
       resource: '=resource'
     },
     templateUrl: 'directives/personalData/personalData.tpl.html',
-    controller: function ($scope, $rootScope, $log, $state, $location, $stateParams, $filter, personService, authService,resourceService,
+    controller: function ($scope, $rootScope, unwrap, $q, $log, $state, $location, $stateParams, $filter, personService, authService,resourceService,
       $anchorScroll, $timeout, alertService, account2Service, accountService, dutchZipcodeService, Analytics, $translate, featuresService) {
+
+      $scope.countries = [
+        { value: "Nederland", iso: "nl" },
+        { value: "België", iso: "be" },
+        { value: "Frankrijk", iso: "fr" },
+        { value: "Duitsland", iso: "de" },
+      ];
+
       //person info
       var masterPerson = null;
       var that;
@@ -76,7 +82,15 @@ angular.module('personalDataDirective', [])
           // check if person had verified phone numbers
           that.initPhoneNumbers();
 
-          var newProps = $filter('returnDirtyItems')(angular.copy($scope.person), $scope.personalDataForm);
+          var newProps = {
+            ...$filter('returnDirtyItems')(angular.copy($scope.person), $scope.personalDataForm),
+            streetName: $scope.person.streetName,
+            streetNumber: $scope.person.streetNumber,
+            city: $scope.person.city,
+            zipcode: $scope.person.zipcode,
+            latitude: $scope.person.latitude,
+            longitude: $scope.person.longitude,
+          };
 
           // don't alter firstname or surname if value isn't changed
           if(masterPerson.firstName === $scope.person.firstName) {
@@ -87,12 +101,6 @@ angular.module('personalDataDirective', [])
           }
 
           // add fields not in form
-          if (newProps.zipcode || newProps.streetNumber) {
-            newProps.streetName = $scope.person.streetName;
-            newProps.city = $scope.person.city;
-            newProps.latitude = $scope.person.latitude;
-            newProps.longitude = $scope.person.longitude;
-          }
           if($scope.person.companyName) {
             newProps.isCompany = true;
           }
@@ -111,6 +119,7 @@ angular.module('personalDataDirective', [])
             phoneNumbers = $scope.verifiedPhoneNumbers,
             city = $scope.person.city,
             zipcode = $scope.person.zipcode,
+            streetName = $scope.person.streetName,
             streetNumber = $scope.person.streetNumber;
 
           // add phone numbers (not automatically included by 'returnDirtyItems')
@@ -139,7 +148,7 @@ angular.module('personalDataDirective', [])
             if (year && month && day) {
               if (phoneNumbers) {
                 if (male) {
-                  if (streetNumber && zipcode && city && containsStreetNumber(streetNumber)) {
+                  if (streetName && streetNumber && zipcode && city && containsStreetNumber(streetNumber)) {
                     // save persons info
                     personService.alter({
                       person: $scope.person.id,
@@ -193,7 +202,7 @@ angular.module('personalDataDirective', [])
                       alertService.loaded();
                     });
                   } else {
-                    alertService.add('danger', 'Vul je postcode en huisnummer in zodat we je post kunnen sturen.', 5000);
+                    alertService.add('danger', 'Vul een geldig adres in, inclusief straatnaam en huisnummer, zodat we je post kunnen sturen.', 5000);
                     alertService.loaded();
                   }
                 } else {
@@ -291,6 +300,11 @@ angular.module('personalDataDirective', [])
               month: Number(moment($scope.person.dateOfBirth).format('MM')),
               year: Number(moment($scope.person.dateOfBirth).format('YYYY'))
             };
+
+            if (person.streetName && person.streetNumber) {
+              $scope.alreadyHasAddress = true;
+              $scope.addressSearch.address = `${person.streetName} ${person.streetNumber}, ${person.zipcode}, ${person.city}, ${person.country}`;
+            }
           });
         },
         initPhoneNumbers: function () {
@@ -318,71 +332,44 @@ angular.module('personalDataDirective', [])
           });
         }
       };
-      var inputs = {
-        init: function () {
-          this.adress();
-        },
-        adress: function () {
-          var _this = this;
-          $scope.$watch('[person.zipcode, person.streetNumber]', function (newValue, oldValue) {
-            var country;
 
-            if (newValue !== oldValue) {
-              if (!(newValue[0] && newValue[1])) {
-                return;
-              }
-              switch (($scope.person.country || '').toLowerCase()) {
-              case 'nl':
-              case 'nederland':
-                country = 'nl';
-                break;
-              case 'be':
-              case 'belgie':
-              case 'belgië':
-                country = 'be';
-                break;
-              default:
-                country = 'nl';
-              }
+      $scope.addressSearch = {};
 
-              $scope.zipcodeAutocompleting = true;
-              dutchZipcodeService.autocomplete({
-                  country: country,
-                  zipcode: _this.stripWhitespace(newValue[0]),
-                  streetNumber: newValue[1]
-                })
-                .then(function (data) {
-                  /*jshint sub: true */
-                  $scope.person.city = data[0].city;
-                  $scope.person.streetName = data[0].street;
-                  $scope.person.latitude = data[0].lat;
-                  $scope.person.longitude = data[0].lng;
-                }, function (error) {
-                  if ($scope.person.zipcode !== newValue[0] || $scope.person.streetNumber !== newValue[1]) {
-                    //resolved too late
-                    return;
-                  }
-                  $scope.person.city = null;
-                  $scope.person.streetName = null;
-                  $scope.person.latitude = null;
-                  $scope.person.longitude = null;
-                })
-                .finally(function () {
-                  $scope.zipcodeAutocompleting = false;
-                });
+      $scope.$watch('addressSearch.address', address => {
+        if (address && address.address_components) {
+          const found = {};
+          address.address_components.map(({ short_name, long_name, types }) => {
+            if (types[0] === "street_number") {
+              found.streetNumber = long_name;
+            } else if (types[0] === "route" || types[0] === "street_address") {
+              found.streetName = long_name;
+            } else if (types[0] === "locality") {
+              found.city = long_name;
+            } else if (types[0] === "country") {
+              found.country = long_name;
+            } else if (types[0] === "postal_code") {
+              found.zipcode = long_name;
             }
-          }, true);
-        },
-        stripWhitespace: function (str) { //remove all spaces
-          var out = str;
-          while (out.indexOf(' ') >= 0) {
-            out = out.replace(' ', '');
+          });
+          if (!found.streetNumber || !found.streetName || !address.geometry || !address.geometry.location) {
+            if (!$scope.person || !$scope.person.streetNumber) {
+              $scope.addressSearch.error = "not_enough_info";
+            }
+          } else {
+            delete $scope.addressSearch.error;
+            angular.merge($scope.person, found, {
+              latitude: unwrap(address.geometry.location.lat),
+              longitude: unwrap(address.geometry.location.lng),
+            });
           }
-          return out;
+        } else {
+          if (!$scope.person || !$scope.person.streetNumber) {
+            $scope.addressSearch.error = "not_enough_info";
+          }
         }
-      };
+      });
+
       personPage.init();
-      inputs.init();
 
     }
   };

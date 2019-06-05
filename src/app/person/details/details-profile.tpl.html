@@ -134,10 +134,6 @@
                                             <ul class="checklist">
                                                 <li>
                                                     <ng-md-icon icon="check"></ng-md-icon>
-                                                    <span>{{ 'LICENSE_NOT_FOREIGN' | translate }}</span>
-                                                </li>
-                                                <li>
-                                                    <ng-md-icon icon="check"></ng-md-icon>
                                                     <span>{{ 'LICENSE_VALID' | translate }}</span>
                                                 </li>
                                                 <li>
@@ -147,39 +143,174 @@
                                             </ul>
                                         </div>
 
-                                        <div class="ng-isolate-scope" aria-hidden="true">
-                                            <form class="mywheels-form ng-pristine ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength ng-valid" name="licenseDataForm">
-                                                <div class="licenseNumberGroup">
-                                                    <h3 class="ng-binding">{{ 'LICENSE_NUMBER' | translate }}</h3>
-                                                    <div id="licenseNumber_group" class="icon payment">
-                                                        <input name="driverLicenseNumber" id="driverLicenseNumber" ng-model="driverLicenseNumber" placeholder="Rijbewijsnummer" class="ng-pristine ng-untouched ng-valid" aria-invalid="false" type="text" pattern="[0-9]*" maxlength="10" ng-change="licenseNumberValid = true" required>
-                                                    </div>
-                                                    <div id="licenseNumberRepeat_group" class="icon replay" ng-show="driverLicenseNumber.length === 10">
-                                                        <input ng-paste="$event.preventDefault();" name="driverLicenseNumberRepeat" id="driverLicenseNumberRepeat" ng-model="driverLicenseNumberRepeat" placeholder="Voer opnieuw je rijbewijsnummer in" class="ng-pristine ng-untouched ng-valid" aria-invalid="false" type="text" pattern="[0-9]*" maxlength="10" required>
-                                                    </div>
-                                                    <div class="err-block" ng-if="!isBusy && (!licenseNumberValid || !licenseNumberRepeatValid || !licenseNumberMatch)" aria-hidden="true">
-                                                        <span class="text-danger ng-binding" aria-hidden="true" ng-show="!licenseNumberValid">{{ 'INCORRECT_LICENSE' | translate }}</span>
-                                                        <span class="text-danger ng-binding" aria-hidden="true" ng-show="(!licenseNumberRepeatValid || !licenseNumberMatch) && licenseNumberValid && driverLicenseNumber !== driverLicenseNumberRepeat">{{ 'LICENSE_NUMBERS_NO_MATCH' | translate }}</span>
-                                                    </div>
-                                                </div>
+                                        <spinner ng-if="!licenseAllowedCountries" />
 
-                                                <div class="autoDateInput">
-                                                    <h3 class="ng-binding">{{ 'LICENSE_DATE' | translate }}</h3>
-                                                    <div id="date" class="icon date">
-                                                        <input id="day" name="day" inputmode="numeric" pattern="[0-9]*" ng-model="licenseDate.day" placeholder="DD" maxlength="2" max="31" min="0" class="ng-pristine ng-untouched ng-valid ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength" aria-invalid="false" type="number" required="">
-                                                        
-                                                        <select id="month" name="month" ng-model="licenseDate.month" ng-options="month.value as month.label for month in months" class="maand">
-                                                            <option value="">maand</option>
+                                        <div ng-show="licenseAllowedCountries">
+                                            <h3 style="margin-top: 2rem;">Land van uitgifte</h3>
+                                            <form class="mywheels-form">
+                                                <div class="form-group">
+                                                    <div class="select-icon" ng-if="licenseAllowedCountries">
+                                                        <select name="licenseCountry" ng-model="licensePage.country" ng-options="o.alpha2 as o.endonym for o in licenseAllowedCountries" required>
                                                         </select>
-                                                        
-                                                        <input id="year" name="year" inputmode="numeric" pattern="[0-9]*" ng-model="licenseDate.year" placeholder="JJJJ" maxlength="4" max="{{ validLicenseMax }}" min="{{ validLicenseMin }}" class="ng-pristine ng-untouched ng-valid ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength" aria-invalid="false" type="number" required="">
-                                                    </div>
-
-                                                    <div class="err-block" ng-if="!isBusy && (!licenseDateValid || !licenseDataForm.day.$valid || !licenseDataForm.month.$valid || (!licenseDataForm.year.$valid && licenseDataForm.year.$viewValue.length > 3))" aria-hidden="true">
-                                                        <span class="text-danger ng-binding" aria-hidden="true">{{ 'LICENSE_DATE_INVALID' | translate }}</span>
                                                     </div>
                                                 </div>
                                             </form>
+
+                                            <form name="licensePicturesForm" ng-if="licensePage.country !== 'NL'">
+                                                <h3 style="margin-top: 1.5em;">Upload foto's rijbewijs</h3>
+                                                <p>Upload een foto van zowel de voorzijde als de achterzijde van je rijbewijs. Let hierbij op de volgende punten:</p>
+
+                                                <div class="row is-flex" style="text-align: center; margin-bottom: 2rem;">
+                                                    <div class="col-xs-6 col-md-3">
+                                                        <ng-md-icon size="40" style="height: 40px; width: 40px; margin: 1rem auto 0; color: black;" icon="volledig_document"></ng-md-icon>
+                                                        <div>Zorg dat het hele document recht op de foto staat</div>
+                                                    </div>
+                                                    <div class="col-xs-6 col-md-3">
+                                                        <ng-md-icon size="40" style="height: 40px; width: 40px; margin: 1rem auto 0; color: black;" icon="voldoende_licht"></ng-md-icon>
+                                                        <div>Zorg voor voldoende licht</div>
+                                                    </div>
+                                                    <div class="col-xs-6 col-md-3">
+                                                        <ng-md-icon size="40" style="height: 40px; width: 40px; margin: 1rem auto 0; color: black;" icon="geen_flits"></ng-md-icon>
+                                                        <div>Gebruik geen flits</div>
+                                                    </div>
+                                                    <div class="col-xs-6 col-md-3">
+                                                        <ng-md-icon size="40" style="height: 40px; width: 40px; margin: 1rem auto 0; color: black;" icon="geen_reflecties"></ng-md-icon>
+                                                        <div>Zorg dat er geen reflecties ontstaan</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row is-flex">
+                                                    <div class="col-xs-12 col-md-6">
+                                                        <p>
+                                                            <strong>Foto voorkant</strong>
+                                                        </p>
+                                                        <div ng-show="!licensePage.front">
+                                                            <div
+                                                                ngf-drop
+                                                                ngf-select
+                                                                ng-model="licensePage.front"
+                                                                name="front"
+                                                                class="well well-lg upload-well"
+                                                                ngf-drag-over-class="'dragover'"
+                                                                accept="image/*"
+                                                                required
+                                                                ngf-pattern="'image/*'"
+                                                                ngf-min-size="800KB"
+                                                                ngf-max-size="20MB"
+                                                                ngf-min-width="500"
+                                                                ngf-min-height="500"
+                                                            >
+                                                                <em>Sleep een foto of klik om een foto te selecteren</em>
+                                                            </div>
+                                                            <p class="text-danger" ng-show="licensePicturesForm.front.$error.minHeight || licensePicturesForm.front.$error.minWidth ">
+                                                                De foto moet minimaal 500px breed en hoog zijn.
+                                                            </p>
+                                                            <p class="text-danger" ng-show="licensePicturesForm.front.$error.minSize || licensePicturesForm.front.$error.maxSize">
+                                                                De bestandsgrootte van de foto moet tenminste 800 kB zijn, en niet meer dan 20 MB.
+                                                            </p>
+                                                            <p class="text-danger" ng-show="licensePicturesForm.front.$error.pattern">
+                                                                Selecteer ajb een foto-bestand.
+                                                            </p>
+                                                            <p class="text-danger" ng-show="licensePicturesForm.front.$error.required && dl_submitted">
+                                                                Selecteer ajb een foto-bestand.
+                                                            </p>
+                                                        </div>
+                                                        <p ng-if="licensePage.front">
+                                                            <img
+                                                                class="img-responsive"
+                                                                ng-src="/assets/uploadspinner.gif"
+                                                                ngf-thumbnail="licensePage.front"
+                                                                ngf-size="{ width: 300, height: 200, quality: 0.9 }"
+                                                            />
+                                                        </p>
+                                                        <p ng-if="licensePage.front">
+                                                            (<a href="#" ng-click="licensePage.front = null">Ander bestand uploaden</a>)
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-xs-12 col-md-6">
+                                                        <p>
+                                                            <strong>Foto achterkant</strong>
+                                                        </p>
+                                                        <div ng-show="!licensePage.back">
+                                                            <div
+                                                                ngf-drop
+                                                                ngf-select
+                                                                ng-model="licensePage.back"
+                                                                name="back"
+                                                                class="well well-lg upload-well"
+                                                                ngf-drag-over-class="'dragover'"
+                                                                accept="image/*"
+                                                                required
+                                                                ngf-pattern="'image/*'"
+                                                                ngf-min-size="800KB"
+                                                                ngf-max-size="20MB"
+                                                                ngf-min-width="500"
+                                                                ngf-min-height="500"
+                                                            >
+                                                                <em>Sleep een foto of klik om een foto te selecteren</em>
+                                                            </div>
+                                                            <p class="text-danger" ng-show="licensePicturesForm.back.$error.minHeight || licensePicturesForm.back.$error.minWidth ">
+                                                                De foto moet minimaal 500px breed en hoog zijn.
+                                                            </p>
+                                                            <p class="text-danger" ng-show="licensePicturesForm.back.$error.minSize || licensePicturesForm.back.$error.maxSize">
+                                                                De bestandsgrootte van de foto moet tenminste 800 kB zijn, en niet meer dan 20 MB.
+                                                            </p>
+                                                            <p class="text-danger" ng-show="licensePicturesForm.back.$error.pattern">
+                                                                Selecteer ajb een foto-bestand.
+                                                            </p>
+                                                            <p class="text-danger" ng-show="licensePicturesForm.back.$error.required && dl_submitted">
+                                                                Selecteer ajb een foto-bestand.
+                                                            </p>
+                                                        </div>
+                                                        <p ng-if="licensePage.back">
+                                                            <img
+                                                                class="img-responsive"
+                                                                ng-src="/assets/uploadspinner.gif"
+                                                                ngf-thumbnail="licensePage.back"
+                                                                ngf-size="{ width: 300, height: 200, quality: 0.9 }"
+                                                            />
+                                                        </p>
+                                                        <p ng-if="licensePage.back">
+                                                            (<a href="#" ng-click="licensePage.back = null">Ander bestand uploaden</a>)
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                            <div ng-show="licensePage.country === 'NL'">
+                                                <form class="mywheels-form ng-pristine ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength ng-valid" name="licenseDataForm">
+                                                    <div class="licenseNumberGroup">
+                                                        <h3 class="ng-binding">{{ 'LICENSE_NUMBER' | translate }}</h3>
+                                                        <div id="licenseNumber_group" class="icon payment">
+                                                            <input name="driverLicenseNumber" id="driverLicenseNumber" ng-model="licensePage.driverLicense" placeholder="Rijbewijsnummer" class="ng-pristine ng-untouched ng-valid" aria-invalid="false" type="text" pattern="[0-9]*" maxlength="10" ng-change="licenseNumberValid = true" required>
+                                                        </div>
+                                                        <div id="licenseNumberRepeat_group" class="icon replay" ng-show="licensePage.driverLicense.length === 10">
+                                                            <input ng-paste="$event.preventDefault();" name="driverLicenseNumberRepeat" id="driverLicenseNumberRepeat" ng-model="licensePage.driverLicenseRepeat" placeholder="Voer opnieuw je rijbewijsnummer in" class="ng-pristine ng-untouched ng-valid" aria-invalid="false" type="text" pattern="[0-9]*" maxlength="10" required>
+                                                        </div>
+                                                        <div class="err-block" ng-if="!isBusy && (!licenseNumberValid || !licenseNumberRepeatValid || !licenseNumberMatch)" aria-hidden="true">
+                                                            <span class="text-danger ng-binding" aria-hidden="true" ng-show="!licenseNumberValid">{{ 'INCORRECT_LICENSE' | translate }}</span>
+                                                            <span class="text-danger ng-binding" aria-hidden="true" ng-show="(!licenseNumberRepeatValid || !licenseNumberMatch) && licenseNumberValid && licensePage.driverLicense !== licensePage.driverLicenseRepeat">{{ 'LICENSE_NUMBERS_NO_MATCH' | translate }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="autoDateInput">
+                                                        <h3 class="ng-binding">{{ 'LICENSE_DATE' | translate }}</h3>
+                                                        <div id="date" class="icon date">
+                                                            <input id="day" name="day" inputmode="numeric" pattern="[0-9]*" ng-model="licenseDate.day" placeholder="DD" maxlength="2" max="31" min="0" class="ng-pristine ng-untouched ng-valid ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength" aria-invalid="false" type="number" required="">
+                                                            
+                                                            <select id="month" name="month" ng-model="licenseDate.month" ng-options="month.value as month.label for month in months" class="maand">
+                                                                <option value="">maand</option>
+                                                            </select>
+                                                            
+                                                            <input id="year" name="year" inputmode="numeric" pattern="[0-9]*" ng-model="licenseDate.year" placeholder="JJJJ" maxlength="4" max="{{ validLicenseMax }}" min="{{ validLicenseMin }}" class="ng-pristine ng-untouched ng-valid ng-valid-min ng-valid-max ng-valid-pattern ng-valid-maxlength" aria-invalid="false" type="number" required="">
+                                                        </div>
+
+                                                        <div class="err-block" ng-if="!isBusy && (!licenseDateValid || !licenseDataForm.day.$valid || !licenseDataForm.month.$valid || (!licenseDataForm.year.$valid && licenseDataForm.year.$viewValue.length > 3))" aria-hidden="true">
+                                                            <span class="text-danger ng-binding" aria-hidden="true">{{ 'LICENSE_DATE_INVALID' | translate }}</span>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
 
