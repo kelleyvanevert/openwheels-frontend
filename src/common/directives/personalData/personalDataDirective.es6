@@ -9,8 +9,8 @@ angular.module('personalDataDirective', [])
       resource: '=resource'
     },
     templateUrl: 'directives/personalData/personalData.tpl.html',
-    controller: function ($scope, $rootScope, unwrap, $q, $log, $state, $location, $stateParams, $filter, personService, authService,resourceService,
-      $anchorScroll, $timeout, alertService, account2Service, accountService, dutchZipcodeService, Analytics, $translate, featuresService) {
+    controller: function ($scope, $rootScope, unwrap, $q, $log, $element, $state, $location, $stateParams, $filter, personService, authService,resourceService,
+      $anchorScroll, $timeout, alertService, autocompleteOptions, account2Service, accountService, dutchZipcodeService, Analytics, $translate, featuresService) {
 
       $scope.countries = [
         { value: "Nederland", iso: "nl" },
@@ -149,6 +149,7 @@ angular.module('personalDataDirective', [])
               if (phoneNumbers) {
                 if (male) {
                   if (streetName && streetNumber && zipcode && city && containsStreetNumber(streetNumber)) {
+
                     // save persons info
                     personService.alter({
                       person: $scope.person.id,
@@ -302,8 +303,7 @@ angular.module('personalDataDirective', [])
             };
 
             if (person.streetName && person.streetNumber) {
-              $scope.alreadyHasAddress = true;
-              $scope.addressSearch.address = `${person.streetName} ${person.streetNumber}, ${person.zipcode}, ${person.city}, ${person.country}`;
+              $scope.addressSearch.found = {};
             }
           });
         },
@@ -333,12 +333,21 @@ angular.module('personalDataDirective', [])
         }
       };
 
-      $scope.addressSearch = {};
+      const { componentRestrictions: __, ...rest } = autocompleteOptions;
+      $scope.autocompleteOptions = rest;
 
-      $scope.$watch('addressSearch.address', address => {
-        if (address && address.address_components) {
-          const found = {};
-          address.address_components.map(({ short_name, long_name, types }) => {
+      // Step 0: show google autocomplete searchbar [found = falsey]
+      // Step 1: split into components, allow changes and try to fetch more accurate lat/lng [found = object]
+      $scope.addressSearch = {
+        // address?: google autocomplete result
+        // found?: parsed version of previously google-found address, or just empty object in case of existing data
+        // error
+      };
+
+      function extract(address) {
+        // `address` is single geocoder result
+        return angular.merge(
+          address.address_components.reduce((found, { short_name, long_name, types }) => {
             if (types[0] === "street_number") {
               found.streetNumber = long_name;
             } else if (types[0] === "route" || types[0] === "street_address") {
@@ -350,24 +359,79 @@ angular.module('personalDataDirective', [])
             } else if (types[0] === "postal_code") {
               found.zipcode = long_name;
             }
-          });
-          if (!found.streetNumber || !found.streetName || !address.geometry || !address.geometry.location) {
-            if (!$scope.person || !$scope.person.streetNumber) {
-              $scope.addressSearch.error = "not_enough_info";
-            }
+            return found;
+          }, {}),
+          (address.geometry && address.geometry.location)
+            ? {
+                latitude: unwrap(address.geometry.location.lat),
+                longitude: unwrap(address.geometry.location.lng),
+              }
+            : {}
+        );
+      }
+
+      $scope.backToAutocomplete = () => {
+        delete $scope.addressSearch.found;
+        delete $scope.addressSearch.address;
+        delete $scope.person.streetName;
+        delete $scope.person.streetNumber;
+        delete $scope.person.zipcode;
+        delete $scope.person.country;
+        delete $scope.person.city;
+        $timeout(() => {
+          $element.find("#autocomplete_address_search").focus();
+        }, 0);
+      };
+
+      $scope.selectAutocompleteAddress = () => {
+        const address = $scope.addressSearch.address;
+        if (!$scope.addressSearch.found && address && address.address_components) {
+          const found = extract(address);
+          console.log(address, found);
+          if (!found.streetName || !found.city || !found.country || !found.latitude || !found.longitude) {
+            $scope.addressSearch.error = "not_enough_info";
+            $scope.addressSearch.address = null;
           } else {
             delete $scope.addressSearch.error;
-            angular.merge($scope.person, found, {
-              latitude: unwrap(address.geometry.location.lat),
-              longitude: unwrap(address.geometry.location.lng),
-            });
-          }
-        } else {
-          if (!$scope.person || !$scope.person.streetNumber) {
-            $scope.addressSearch.error = "not_enough_info";
+            $scope.addressSearch.found = found;
+            angular.merge($scope.person, found);
           }
         }
-      });
+      };
+
+      const _additionalGeocode = {};
+      $scope.onSplitAddressChange = () => {
+        const promise = _additionalGeocode.mostRecent = $q((resolve, reject) => {
+          $timeout(() => {
+            if (promise !== _additionalGeocode.mostRecent) {
+              // console.log("skipping result because not most recent [before geocode]");
+              return;
+            }
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({
+              address: `${$scope.person.streetName}, ${$scope.person.streetNumber}, ${$scope.person.city}`,
+              componentRestrictions: { country: $scope.person.country },
+            }, (results, status) => {
+              if (promise !== _additionalGeocode.mostRecent) {
+                // console.log("skipping result because not most recent [on geocode result]");
+                return;
+              }
+              if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                $timeout($scope.onSplitAddressChange, 500);
+              } else if (status === google.maps.GeocoderStatus.OK) {
+                const found = extract(results[0]);
+                // console.log(found);
+                if (found.streetName && found.streetNumber && found.latitude && found.longitude) {
+                  // console.log("merge");
+                  // $scope.addressSearch.found = found;
+                  angular.merge($scope.person, found);
+                  $scope.$apply();
+                }
+              }
+            });
+          }, 500);
+        });
+      };
 
       personPage.init();
 
