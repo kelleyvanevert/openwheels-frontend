@@ -259,8 +259,6 @@ angular.module('openwheels', [
 })
 
 .config(function (appConfig, uiGmapGoogleMapApiProvider) {
-  appConfig.gmaps_js_api_key = appConfig.test.gmaps_js_api_key || 'AIzaSyC1QrtfmsYNsJAfx9OOl5QX0oNpMVo3fbw';
-  
   uiGmapGoogleMapApiProvider.configure({
     key: appConfig.gmaps_js_api_key,
     v: '3.35.0',
@@ -666,6 +664,7 @@ angular.module('openwheels', [
         authEndpoint: config.auth_endpoint,
         tokenEndpoint: config.token_endpoint,
         gtmContainerId: config.gtm_container_id || null,
+        gmaps_js_api_key: (config.test || {}).gmaps_js_api_key || config.gmaps_js_api_key,
         ga_tracking_id: config.ga_tracking_id || null,
         fbAppId: config.fb_app_id || null,
         features: config.features || {},
