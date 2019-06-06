@@ -40,24 +40,25 @@ angular.module('owm.booking.show', [])
   if ($scope.me.driverLicenseStatus === "pending") {
     const POLL_INTERVAL = 3000;
     const POLL_TIMEOUT = 45000;
+    let _timeout;
 
     function requestPoll(i) {
       if (i >= POLL_TIMEOUT / POLL_INTERVAL) {
-        console.log("poll timeout reached");
+        // console.log("poll timeout reached");
       } else {
-        $timeout(() => licensePendingPoll(i), POLL_INTERVAL);
+        _timeout = $timeout(() => licensePendingPoll(i), POLL_INTERVAL);
       }
     }
 
     function licensePendingPoll(i = 0) {
-      console.log("pending poll #", i)
+      // console.log("pending poll #", i)
 
       personService.me()
       .then(me => {
-        console.log("status", me.driverLicenseStatus);
+        // console.log("status", me.driverLicenseStatus);
 
         if (me.driverLicenseStatus !== "pending") {
-          console.log("resolved!");
+          // console.log("resolved!");
           $scope.me = me;
           $state.reload();
         } else if (me.driverLicenseStatus === "pending") {
@@ -71,6 +72,12 @@ angular.module('owm.booking.show', [])
     }
 
     licensePendingPoll();
+
+    $scope.$on("$destroy", function () {
+      if (_timeout) {
+        $timeout.cancel(_timeout);
+      }
+    });
   }
 
   $scope.getCurrentCredit = function () {
@@ -886,7 +893,7 @@ angular.module('owm.booking.show', [])
     }
 
     if (action === 'openDoor') {
-      console.log(booking.resource.askDamage);
+      // console.log(booking.resource.askDamage);
       if (!booking || booking.trip.begin || !booking.resource.askDamage || !booking.resource.askCleanliness) {
         // If there is no related booking, or the trip has indeed already begun or askDamage or askCleanliness is false,
         //  just open the door and be done with it.

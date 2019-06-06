@@ -99,26 +99,31 @@ angular.module('owm.person.details', [])
   $scope.onlyNumbers = /^\d+$/;
 
 
+
+  console.log("$scope.person", $scope.person);
+
   const POLL_INTERVAL = 3000;
   const POLL_TIMEOUT = 45000;
+  let _timeout;
 
   function requestPoll(i) {
     if (i >= POLL_TIMEOUT / POLL_INTERVAL) {
-      console.log("poll timeout reached");
+      // console.log("poll timeout reached");
     } else {
       $timeout(() => licensePendingPoll(i), POLL_INTERVAL);
     }
   }
 
   function licensePendingPoll(i = 0) {
-    console.log("pending poll #", i)
+    // console.log("pending poll #", i)
 
     personService.me()
     .then(me => {
-      console.log("status", me.driverLicenseStatus);
-      $scope.person.driverLicenseStatus = me.driverLicenseStatus;
-      $scope.person.status = me.status;
+      angular.merge($scope.person, me);
+      // $scope.person.driverLicenseStatus = me.driverLicenseStatus;
+      // $scope.person.status = me.status;
 
+      console.log("poll me driverlicense status", me.driverLicenseStatus, "$scope.person", $scope.person);
       if (me.driverLicenseStatus !== "pending") {
         $scope.isBusy = false;
       } else if (me.driverLicenseStatus === "pending") {
@@ -130,6 +135,12 @@ angular.module('owm.person.details', [])
       requestPoll(i + 1);
     });
   }
+
+  $scope.$on("$destroy", function () {
+    if (_timeout) {
+      $timeout.cancel(_timeout);
+    }
+  });
 
   $scope.licensePage = {
     country: "NL",
@@ -157,11 +168,11 @@ angular.module('owm.person.details', [])
         backImage: $scope.licensePage.back,
       })
       .then(function (results) {
-        console.log("driver license uploaded!", results);
+        // console.log("driver license uploaded!", results);
         resolve(results);
       })
       .catch(function (err) {
-        console.log("driver license upload error!", err);
+        // console.log("driver license upload error!", err);
         alertService.addError(err);
         reject(err);
       });
