@@ -312,7 +312,7 @@ angular.module('owm.booking', [
         else if (progress.steps.accepted.checked && !progress.steps.payment.checked) {
           if (perspective.isContractHolder) {
             if (details.showPendingNotice) {
-              progress.summary = 'Je reservering is gemaakt. Je account wordt automatisch gecontroleerd, dit duurt meestal zo\'n 20 seconden.';
+              progress.summary = 'Je reservering is gemaakt. Je account wordt automatisch gecontroleerd, dit duurt meestal zo\'n 30 seconden.';
             } else if (details.showBookOnlyNotice) {
               progress.summary = 'Je reservering is gemaakt. Je account moet nog handmatig gecontroleerd worden, maar je kunt wel alvast betalen.';
             } else {

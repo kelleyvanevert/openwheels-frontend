@@ -88,6 +88,7 @@ angular.module('personalDataDirective', [])
             streetNumber: $scope.person.streetNumber,
             city: $scope.person.city,
             zipcode: $scope.person.zipcode,
+            country: $scope.person.country,
             latitude: $scope.person.latitude,
             longitude: $scope.person.longitude,
           };
@@ -148,7 +149,7 @@ angular.module('personalDataDirective', [])
             if (year && month && day) {
               if (phoneNumbers) {
                 if (male) {
-                  if (streetName && streetNumber && zipcode && city && containsStreetNumber(streetNumber)) {
+                  if (streetName && streetNumber && city && containsStreetNumber(streetNumber)) {
 
                     // save persons info
                     personService.alter({
@@ -395,9 +396,6 @@ angular.module('personalDataDirective', [])
             delete $scope.addressSearch.error;
             $scope.addressSearch.found = found;
             angular.merge($scope.person, found);
-            if (!found.zipcode) {
-              $scope.person.zipcode = "(onbekend)";
-            }
             $timeout(() => {
               $element.find("#streetNumber").focus();
             }, 0);
@@ -428,10 +426,9 @@ angular.module('personalDataDirective', [])
                 const found = extract(results[0]);
                 // console.log(found);
                 if (found.streetName && found.latitude && found.longitude) {
-                  // console.log("merge");
-                  // $scope.addressSearch.found = found;
-                  angular.merge($scope.person, found);
-                  $scope.$apply();
+                  if (found.streetName === $scope.person.streetName) {
+                    angular.merge($scope.person, found);
+                  }
                 }
               }
             });
