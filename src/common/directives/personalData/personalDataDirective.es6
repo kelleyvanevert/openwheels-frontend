@@ -395,6 +395,9 @@ angular.module('personalDataDirective', [])
             delete $scope.addressSearch.error;
             $scope.addressSearch.found = found;
             angular.merge($scope.person, found);
+            if (!found.zipcode) {
+              $scope.person.zipcode = "(onbekend)";
+            }
             $timeout(() => {
               $element.find("#streetNumber").focus();
             }, 0);
@@ -424,7 +427,7 @@ angular.module('personalDataDirective', [])
               } else if (status === google.maps.GeocoderStatus.OK) {
                 const found = extract(results[0]);
                 // console.log(found);
-                if (found.streetName && found.streetNumber && found.latitude && found.longitude) {
+                if (found.streetName && found.latitude && found.longitude) {
                   // console.log("merge");
                   // $scope.addressSearch.found = found;
                   angular.merge($scope.person, found);

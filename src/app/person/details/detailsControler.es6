@@ -99,11 +99,14 @@ angular.module('owm.person.details', [])
   $scope.onlyNumbers = /^\d+$/;
 
 
+  const POLL_INTERVAL = 3000;
+  const POLL_TIMEOUT = 45000;
+
   function requestPoll(i) {
-    if (i >= 20) {
+    if (i >= POLL_TIMEOUT / POLL_INTERVAL) {
       console.log("poll timeout reached");
     } else {
-      $timeout(() => licensePendingPoll(i), 1000);
+      $timeout(() => licensePendingPoll(i), POLL_INTERVAL);
     }
   }
 

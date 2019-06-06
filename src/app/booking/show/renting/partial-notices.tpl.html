@@ -48,8 +48,12 @@
   </div>
 </div>
 
+<pending-info-card
+  ng-if="details.showPendingNotice"
+/>
+
 <book-only-info-card
-  ng-if="showBookOnlyNotice"
+  ng-if="!details.showPendingNotice && details.showBookOnlyNotice"
 />
 
 <!-- Wait for acceptation alert -->

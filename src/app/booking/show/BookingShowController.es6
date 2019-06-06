@@ -19,6 +19,7 @@ angular.module('owm.booking.show', [])
 
   buyVoucherRedirect,
 
+  personService,
   extraDriverService,
   bookingService,
   alertService,
@@ -35,6 +36,42 @@ angular.module('owm.booking.show', [])
   $scope
 ) {
   // $scope = { account, me, perspective, details, flowContinuation, resource, booking, contract }
+
+  if ($scope.me.driverLicenseStatus === "pending") {
+    const POLL_INTERVAL = 3000;
+    const POLL_TIMEOUT = 45000;
+
+    function requestPoll(i) {
+      if (i >= POLL_TIMEOUT / POLL_INTERVAL) {
+        console.log("poll timeout reached");
+      } else {
+        $timeout(() => licensePendingPoll(i), POLL_INTERVAL);
+      }
+    }
+
+    function licensePendingPoll(i = 0) {
+      console.log("pending poll #", i)
+
+      personService.me()
+      .then(me => {
+        console.log("status", me.driverLicenseStatus);
+
+        if (me.driverLicenseStatus !== "pending") {
+          console.log("resolved!");
+          $scope.me = me;
+          $state.reload();
+        } else if (me.driverLicenseStatus === "pending") {
+          requestPoll(i + 1);
+        }
+      })
+      .catch(function (err) {
+        // if the API fails we can't really do anything
+        requestPoll(i + 1);
+      });
+    }
+
+    licensePendingPoll();
+  }
 
   $scope.getCurrentCredit = function () {
     return voucherService
@@ -615,9 +652,7 @@ angular.module('owm.booking.show', [])
   $scope.requested = ($scope.booking.status === 'requested');
   $scope.accepted = ($scope.booking.status === 'accepted');
   $scope.firstTime = ($scope.booking.person.numberOfBookings === 0);
-
-  $scope.showBookOnlyNotice = !booking.ok && (booking.person.status === 'book-only');
-
+  
   $scope.userInput = {
     acceptRejectRemark: ''
   };

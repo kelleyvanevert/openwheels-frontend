@@ -392,12 +392,17 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-sm-10 col-sm-offset-1">
+                                    <div class="col-sm-10 col-sm-offset-1" style="text-align: center;">
                                         <spinner />
-                                        <p style="font-size: 120%; text-align: center;">
-                                            <span ng-if="isBusy === 'creating_booking'">Je reservering wordt gemaakt...</span>
-                                            <span ng-if="isBusy === 'checking_account'">Je account wordt gecontroleerd...</span>
-                                            <span ng-if="isBusy === true">Nog heel even wachten...</span>
+                                        <p ng-if="isBusy === 'creating_booking'" style="font-size: 120%;">
+                                            Je reservering wordt gemaakt...
+                                        </p>
+                                        <div ng-if="isBusy === 'checking_account'">
+                                            <p style="font-size: 120%;">Je account wordt gecontroleerd...</p>
+                                            <p>Een moment geduld, dit duurt meestal ongeveer 20 seconden...</p>
+                                        </div>
+                                        <p ng-if="isBusy === true" style="font-size: 120%;">
+                                            Nog heel even wachten...
                                         </p>
                                     </div>
                                 </div>
