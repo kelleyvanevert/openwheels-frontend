@@ -387,7 +387,7 @@ angular.module('personalDataDirective', [])
         const address = $scope.addressSearch.address;
         if (!$scope.addressSearch.found && address && address.address_components) {
           const found = extract(address);
-          console.log(address, found);
+          // console.log(address, found);
           if (!found.streetName || !found.city || !found.country || !found.latitude || !found.longitude) {
             $scope.addressSearch.error = "not_enough_info";
             $scope.addressSearch.address = null;
@@ -395,6 +395,9 @@ angular.module('personalDataDirective', [])
             delete $scope.addressSearch.error;
             $scope.addressSearch.found = found;
             angular.merge($scope.person, found);
+            $timeout(() => {
+              $element.find("#streetNumber").focus();
+            }, 0);
           }
         }
       };

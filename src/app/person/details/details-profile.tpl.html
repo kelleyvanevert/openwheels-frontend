@@ -385,7 +385,7 @@
                                 <div class="row">
                                     <div class="col-sm-10 col-sm-offset-1">
                                         <h2 class="card-title">
-                                            Je boeking wordt gemaakt...
+                                            Je reservering wordt gemaakt...
                                         </h2>
                                     </div>
                                 </div>
@@ -393,8 +393,12 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-10 col-sm-offset-1">
-                                        <md-progress-circular style="float: left;" md-mode="indeterminate"></md-progress-circular>
-                                        <p style="font-weight: bold; margin: 10px 0;">Nog heel even wachten...</p>
+                                        <spinner />
+                                        <p style="font-size: 120%; text-align: center;">
+                                            <span ng-if="isBusy === 'creating_booking'">Je reservering wordt gemaakt...</span>
+                                            <span ng-if="isBusy === 'checking_account'">Je account wordt gecontroleerd...</span>
+                                            <span ng-if="isBusy === true">Nog heel even wachten...</span>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -535,7 +539,7 @@
                     <!--/ card -->
                 </div>
                 <div class="rpad col-md-4 col-xs-12" ng-show="withSidebar">
-                    <div class="card" ng-if="!booking.ok && booking.person.status === 'book-only'">
+                    <div class="card" ng-if="booking.id && !booking.ok && person.status === 'book-only' && person.driverLicenseStatus !== 'pending'">
                         <div class="card-body card-inverse mw-warning">
                             <h2 class="text-white">Je account is nog niet actief</h2>
                             <div class="text-white">
@@ -548,7 +552,7 @@
                         </div>
                     </div>
 
-                    <section resource-sidebar ng-if="isbooking && (!showThird || (showThird && !isBusy))"></section>
+                    <section resource-sidebar ng-if="isbooking"></section>
                 </div>
             </div>
         </div>
