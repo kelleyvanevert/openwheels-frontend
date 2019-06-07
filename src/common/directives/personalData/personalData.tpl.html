@@ -95,28 +95,51 @@
 
         <h3>Adres</h3>
 
-        <div class="icon location field">
+        <div class="icon location field" ng-show="!addressSearch.found">
             <input type="text"
+                id="autocomplete_address_search"
                 g-places-autocomplete
+                options="autocompleteOptions"
                 force-selection="true"
                 ng-model="addressSearch.address"
                 class="form-control"
-                placeholder="Zoek op straat en huisnummer"
+                placeholder="Straatnaam en huisnummer"
                 style="font-weight: normal; line-height: inherit !important; height: 40px !important;"
                 ng-focus="handleFocus()"
-                ng-blur="handleBlur()" />
+                ng-blur="handleBlur()"
+                ng-change="selectAutocompleteAddress()"
+            />
 
-            <div class="err-block" ng-if="personalDataForm.$submitted && (!addressSearch.address || addressSearch.error) && !alreadyHasAddress">
-                <span class="text-danger">Vul a.j.b. een geldig adres in, inclusief straat en huisnummer.</span>
+            <div class="err-block" ng-if="addressSearch.error">
+                <span class="text-danger">Vul a.j.b. een straatnaam in</span>
             </div>
         </div>
+        <div ng-if="addressSearch.found">
+            <div class="responsive">
+                <!-- streetName -->
+                <div id="streetName_group" class="icon home field">
+                    <input type="text" name="streetName" id="streetName" ng-focus="backToAutocomplete()" ng-model="person.streetName" placeholder="{{ 'STREET_NAME' | translate }}">
 
-        <div ng-if="false">
-            <div>straat: {{ person.streetName }}</div>
-            <div>huisnummer: {{ person.streetNumber }}</div>
-            <div>postcode: {{ person.zipcode }}</div>
-            <div>stad: {{ person.city }}</div>
-            <div>locatie: {{ person.latitude }}, {{ person.longitude }}</div>
+                    <div class="err-block" ng-show="personalDataForm.$submitted && !person.streetName">
+                        <span class="text-danger">{{ 'REQUIRED' | translate }}</span>
+                    </div>
+                </div>
+                <!-- /streetName -->
+
+                <!-- streetNumber -->
+                <div id="streetNumber_group" class="icon home field">
+                    <input type="text" name="streetNumber" id="streetNumber" ng-change="onSplitAddressChange()" ng-model="person.streetNumber" placeholder="{{ 'STREET_NUMBER' | translate }}">
+
+                    <div class="err-block" ng-show="personalDataForm.$submitted && !person.streetNumber">
+                        <span class="text-danger">{{ 'REQUIRED' | translate }}</span>
+                    </div>
+                </div>
+                <!-- /streetNumber -->
+            </div>
+
+            <div style="margin: 1rem 0;">
+                <em>{{ person.city }}, {{ person.country }}</em>
+            </div>
         </div>
 
         <!-- iban -->
