@@ -13,7 +13,7 @@ angular.module('owm.person.details', [])
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard/details/' + $stateParams.pageNumber});
   metaInfoService.set({canonical: 'https://mywheels.nl/dashboard/details/' + $stateParams.pageNumber});
 
-  $scope.isBusy = false;
+  $scope.isBusy = false; // false | "creating_booking" | "checking_account"
   $scope.me = me;
 
   //person info
@@ -98,6 +98,51 @@ angular.module('owm.person.details', [])
   $scope.validLicenseMax = moment().add('years', 30).format('YYYY');
   $scope.onlyNumbers = /^\d+$/;
 
+
+
+  console.log("$scope.person", $scope.person);
+
+  const POLL_INTERVAL = 3000;
+  const POLL_TIMEOUT = 45000;
+  let _timeout;
+
+  function requestPoll(i) {
+    if (i >= POLL_TIMEOUT / POLL_INTERVAL) {
+      // console.log("poll timeout reached");
+    } else {
+      $timeout(() => licensePendingPoll(i), POLL_INTERVAL);
+    }
+  }
+
+  function licensePendingPoll(i = 0) {
+    // console.log("pending poll #", i)
+
+    personService.me()
+    .then(newMe => {
+      angular.merge($scope.person, newMe);
+      // $scope.person.driverLicenseStatus = me.driverLicenseStatus;
+      // $scope.person.status = me.status;
+
+      console.log("poll me driverlicense status", newMe.driverLicenseStatus, "$scope.person", $scope.person);
+      if (newMe.driverLicenseStatus !== "pending") {
+        angular.merge(me, newMe); // dirty hack !
+        $scope.isBusy = false;
+      } else if (newMe.driverLicenseStatus === "pending") {
+        requestPoll(i + 1);
+      }
+    })
+    .catch(function (err) {
+      // if the API fails we can't really do anything
+      requestPoll(i + 1);
+    });
+  }
+
+  $scope.$on("$destroy", function () {
+    if (_timeout) {
+      $timeout.cancel(_timeout);
+    }
+  });
+
   $scope.licensePage = {
     country: "NL",
     driverLicense: "",
@@ -124,11 +169,11 @@ angular.module('owm.person.details', [])
         backImage: $scope.licensePage.back,
       })
       .then(function (results) {
-        console.log("driver license uploaded!", results);
+        // console.log("driver license uploaded!", results);
         resolve(results);
       })
       .catch(function (err) {
-        console.log("driver license upload error!", err);
+        // console.log("driver license upload error!", err);
         alertService.addError(err);
         reject(err);
       });
@@ -147,10 +192,13 @@ angular.module('owm.person.details', [])
     if($scope.showSecond) {
       if (!$scope.licenseAllowedCountries) {
         rentalcountryService.all().then(arr => {
-          $scope.licenseAllowedCountries = arr.map(item => {
-            // item.emoji = item.alpha2.split("").map(s => String.fromCodePoint(s.charCodeAt(0) - 65 + 127462)).join("");
-            return item;
-          });
+          const i = _.findIndex(arr, { alpha2: "NL" });
+          if (i) {
+            const nl = arr[i];
+            arr.splice(i, 1);
+            arr.unshift(nl);
+          }
+          $scope.licenseAllowedCountries = arr;
         })
       }
 
@@ -257,7 +305,7 @@ angular.module('owm.person.details', [])
       });
     }
 
-    initAlerts();
+    alertService.loaded($scope);
   }
 
   var inputs = {
@@ -288,16 +336,6 @@ angular.module('owm.person.details', [])
   };
   inputs.init();
 
-  function initAlerts() {
-    var p = $scope.person;
-    var alerts = {
-      contactData: (!p.streetName || !p.streetNumber || !p.city || (!p.phoneNumbers || !p.phoneNumbers.length)),
-      licenseData: (p.status === 'new')
-    };
-    alertService.loaded($scope);
-    $scope.alerts = alerts;
-  }
-
   $scope.dl_submitted = false;
   $scope.submitDriverLicense = function () {
     $scope.dl_submitted = true;
@@ -325,7 +363,7 @@ angular.module('owm.person.details', [])
 
               alertService.closeAll();
               alertService.load();
-              $scope.isBusy = true;
+              // $scope.isBusy = true;
 
               personService.alter({
                 id: person.id,
@@ -338,11 +376,11 @@ angular.module('owm.person.details', [])
               })
               .catch(function (err) {
                 alertService.addError(err);
-                $scope.isBusy = false;
+                // $scope.isBusy = false;
               })
               .finally(function () {
                 alertService.loaded();
-                $scope.isBusy = false;
+                // $scope.isBusy = false;
               });
 
             } else {
@@ -360,7 +398,7 @@ angular.module('owm.person.details', [])
     } else {
       alertService.closeAll();
       alertService.load();
-      $scope.isBusy = true;
+      // $scope.isBusy = true;
       $scope.uploadLicenseImages()
       .then(() => {
         $scope.licenseUploaded = true;
@@ -368,7 +406,7 @@ angular.module('owm.person.details', [])
       })
       .finally(() => {
         alertService.loaded();
-        $scope.isBusy = false;
+        // $scope.isBusy = false;
       });
     }
   };
@@ -398,7 +436,7 @@ angular.module('owm.person.details', [])
 
   $scope.createBookingFlow = function () {
     alertService.load();
-    $scope.isBusy = true;
+    $scope.isBusy = "creating_booking";
     if ($scope.isbooking) { //check if the recoure id is in the url
       if (bookingId) { //check if there is a bookingId in the url
         var _booking;
@@ -409,7 +447,8 @@ angular.module('owm.person.details', [])
           alertService.loaded();
           $scope.booking = booking;
           $scope.bookingFound = true;
-          $scope.isBusy = false;
+          $scope.isBusy = "checking_account";
+          licensePendingPoll();
         });
       } else { //if there is no booking Id in the url
         if (discountCode !== undefined) { //check if there is a discount code
