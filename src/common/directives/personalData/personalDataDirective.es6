@@ -88,6 +88,7 @@ angular.module('personalDataDirective', [])
             streetNumber: $scope.person.streetNumber,
             city: $scope.person.city,
             zipcode: $scope.person.zipcode,
+            country: $scope.person.country,
             latitude: $scope.person.latitude,
             longitude: $scope.person.longitude,
           };
@@ -148,7 +149,7 @@ angular.module('personalDataDirective', [])
             if (year && month && day) {
               if (phoneNumbers) {
                 if (male) {
-                  if (streetName && streetNumber && zipcode && city && containsStreetNumber(streetNumber)) {
+                  if (streetName && streetNumber && city && containsStreetNumber(streetNumber)) {
 
                     // save persons info
                     personService.alter({
@@ -387,7 +388,7 @@ angular.module('personalDataDirective', [])
         const address = $scope.addressSearch.address;
         if (!$scope.addressSearch.found && address && address.address_components) {
           const found = extract(address);
-          console.log(address, found);
+          // console.log(address, found);
           if (!found.streetName || !found.city || !found.country || !found.latitude || !found.longitude) {
             $scope.addressSearch.error = "not_enough_info";
             $scope.addressSearch.address = null;
@@ -395,6 +396,9 @@ angular.module('personalDataDirective', [])
             delete $scope.addressSearch.error;
             $scope.addressSearch.found = found;
             angular.merge($scope.person, found);
+            $timeout(() => {
+              $element.find("#streetNumber").focus();
+            }, 0);
           }
         }
       };
@@ -411,6 +415,7 @@ angular.module('personalDataDirective', [])
             geocoder.geocode({
               address: `${$scope.person.streetName}, ${$scope.person.streetNumber}, ${$scope.person.city}`,
               componentRestrictions: { country: $scope.person.country },
+              region: "nl"
             }, (results, status) => {
               if (promise !== _additionalGeocode.mostRecent) {
                 // console.log("skipping result because not most recent [on geocode result]");
@@ -421,11 +426,10 @@ angular.module('personalDataDirective', [])
               } else if (status === google.maps.GeocoderStatus.OK) {
                 const found = extract(results[0]);
                 // console.log(found);
-                if (found.streetName && found.streetNumber && found.latitude && found.longitude) {
-                  // console.log("merge");
-                  // $scope.addressSearch.found = found;
-                  angular.merge($scope.person, found);
-                  $scope.$apply();
+                if (found.streetName && found.latitude && found.longitude) {
+                  if (found.streetName === $scope.person.streetName) {
+                    angular.merge($scope.person, found);
+                  }
                 }
               }
             });
