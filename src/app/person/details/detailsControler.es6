@@ -192,10 +192,13 @@ angular.module('owm.person.details', [])
     if($scope.showSecond) {
       if (!$scope.licenseAllowedCountries) {
         rentalcountryService.all().then(arr => {
-          $scope.licenseAllowedCountries = arr.map(item => {
-            // item.emoji = item.alpha2.split("").map(s => String.fromCodePoint(s.charCodeAt(0) - 65 + 127462)).join("");
-            return item;
-          });
+          const i = _.findIndex(arr, { alpha2: "NL" });
+          if (i) {
+            const nl = arr[i];
+            arr.splice(i, 1);
+            arr.unshift(nl);
+          }
+          $scope.licenseAllowedCountries = arr;
         })
       }
 

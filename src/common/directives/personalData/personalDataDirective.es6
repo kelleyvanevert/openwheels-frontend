@@ -415,6 +415,7 @@ angular.module('personalDataDirective', [])
             geocoder.geocode({
               address: `${$scope.person.streetName}, ${$scope.person.streetNumber}, ${$scope.person.city}`,
               componentRestrictions: { country: $scope.person.country },
+              region: "nl"
             }, (results, status) => {
               if (promise !== _additionalGeocode.mostRecent) {
                 // console.log("skipping result because not most recent [on geocode result]");
