@@ -118,15 +118,16 @@ angular.module('owm.person.details', [])
     // console.log("pending poll #", i)
 
     personService.me()
-    .then(me => {
-      angular.merge($scope.person, me);
+    .then(newMe => {
+      angular.merge($scope.person, newMe);
       // $scope.person.driverLicenseStatus = me.driverLicenseStatus;
       // $scope.person.status = me.status;
 
-      console.log("poll me driverlicense status", me.driverLicenseStatus, "$scope.person", $scope.person);
-      if (me.driverLicenseStatus !== "pending") {
+      console.log("poll me driverlicense status", newMe.driverLicenseStatus, "$scope.person", $scope.person);
+      if (newMe.driverLicenseStatus !== "pending") {
+        angular.merge(me, newMe); // dirty hack !
         $scope.isBusy = false;
-      } else if (me.driverLicenseStatus === "pending") {
+      } else if (newMe.driverLicenseStatus === "pending") {
         requestPoll(i + 1);
       }
     })
