@@ -8,7 +8,7 @@ angular.module("owm.components")
     booking: "=",
     resource: "=", // a removed resource
   },
-  controller ($scope, $state, resourceService) {
+  controller: ['$scope', '$state', 'resourceService', function ($scope, $state, resourceService) {
 
     let params = {};
 
@@ -61,5 +61,5 @@ angular.module("owm.components")
         end: $scope.endDate
       });
     };
-  },
+  }],
 });
