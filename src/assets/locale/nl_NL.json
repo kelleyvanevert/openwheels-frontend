@@ -713,7 +713,7 @@
     "PAYMENT_APROVED_PAYED_FUEL_KEY_WAIT": "Wacht eerst op goedkeuring door de verhuurder.",
     "PAYMENT_APROVED_PAYED_FUEL_CARD": "Als de tank voor minder dan een kwart vol zit, is het tijd om bij te tanken. Deze auto heeft een tankpas waarmee je kosteloos kunt tanken. Je vindt hem in het dashboardkastje. De pincode van de tankpas vind je in de bevestigingsmail.",
     "PAYMENT_APROVED_PAYED_FUEL_PRICE": "Je betaalt per gereden kilometer {{ price }} euro voor de brandstof. Je hoeft de auto niet af te tanken. Moet je tanken tijdens de rit? Upload dan een kopie/foto van de tankbon bij het doorgeven van de kilometerstanden.",
-    "PAYMENT_APROVED_PAYED_LICENCE": "Je account is op dit moment nog niet actief, je kunt de auto dus ook nog niet ophalen. Een aantal van onze controles konden niet automatisch uitgevoerd worden voor jouw account. Zodra wij deze controles hebben uitgevoerd, ontvang je per mail bericht over het activeren van je account.",
+    "PAYMENT_APROVED_PAYED_LICENCE": "Je account is nog niet actief. Een aantal van onze controles kon niet automatisch uitgevoerd worden. Jouw account controleren we handmatig op werkdagen tussen 09.00 en 17.00 uur. Het is niet mogelijk om eerder van de auto gebruik te maken. Zodra wij deze controles hebben uitgevoerd, ontvang je per mail bericht.",
     "PAYMENT_APROVED_NICE_TRIP": "We wensen je een prettige rit!",
     "PAYMENT_FAILURE_TITLE": "De betaling is nog niet gelukt",
     "PAYMENT_FAILURE_BODY": "Wil je het opnieuw proberen?",
