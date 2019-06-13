@@ -314,7 +314,7 @@ angular.module('owm.booking', [
             if (details.showPendingNotice) {
               progress.summary = 'Je reservering is gemaakt. Je account wordt automatisch gecontroleerd, dit duurt meestal zo\'n 30 seconden.';
             } else if (details.showBookOnlyNotice) {
-              progress.summary = 'Je reservering is gemaakt. Je account moet nog handmatig gecontroleerd worden, maar je kunt wel alvast betalen.';
+              progress.summary = 'Je reservering is gemaakt. Je account moet op werkdagen tussen 09.00 en 17.00 uur handmatig gecontroleerd worden, maar je kunt wel alvast betalen.';
             } else {
               progress.summary = 'Je reservering is gemaakt. Je hoeft alleen nog de reservering te betalen.';
             }
@@ -325,7 +325,7 @@ angular.module('owm.booking', [
         }
         else if (progress.steps.accepted.checked && progress.steps.payment.checked) {
           if (details.showBookOnlyNotice) {
-            progress.summary = 'De reservering is geaccepteerd en het bedrag is betaald. Je account moet wel nog handmatig gecontroleerd worden. Zodra dit is gedaan, kan je verzekerd op weg.';
+            progress.summary = 'De reservering is geaccepteerd en het bedrag is betaald. Je account moet op werkdagen tussen 09.00 en 17.00 uur handmatig gecontroleerd worden. Zodra dit is gedaan, kan je verzekerd op weg.';
           } else {
             progress.summary = 'De reservering is geaccepteerd en het bedrag is betaald. Alles is in orde voor je rit en je kan goed verzekerd op weg.';
           }
