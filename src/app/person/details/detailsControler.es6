@@ -6,12 +6,14 @@ angular.module('owm.person.details', [])
   discountService, contractService, account2Service, person, alertService, personService, authService, me, dutchZipcodeService,
   $sessionStorage,
   payRedirect,
+  rentalcountryService,
+  driverlicenseService,
   voucherService, $q, appConfig, paymentService, bookingService, invoice2Service, API_DATE_FORMAT, $anchorScroll, Analytics, metaInfoService) {
 
   metaInfoService.set({url: appConfig.serverUrl + '/dashboard/details/' + $stateParams.pageNumber});
   metaInfoService.set({canonical: 'https://mywheels.nl/dashboard/details/' + $stateParams.pageNumber});
 
-  $scope.isBusy = false;
+  $scope.isBusy = false; // false | "creating_booking" | "checking_account"
   $scope.me = me;
 
   //person info
@@ -21,6 +23,7 @@ angular.module('owm.person.details', [])
   $scope.showFirst = $scope.pageNumber === 1 ? true : false;
   $scope.showSecond = $scope.pageNumber === 2 ? true : false;
   $scope.showThird = $scope.pageNumber === 3 ? true : false;
+  $scope.foreignLicense = Boolean($stateParams.foreignLicense);
   $scope.person = null;
 
   $scope.checkedLater = false;
@@ -96,6 +99,88 @@ angular.module('owm.person.details', [])
   $scope.onlyNumbers = /^\d+$/;
 
 
+
+  console.log("$scope.person", $scope.person);
+
+  const POLL_INTERVAL = 3000;
+  const POLL_TIMEOUT = 45000;
+  let _timeout;
+
+  function requestPoll(i) {
+    if (i >= POLL_TIMEOUT / POLL_INTERVAL) {
+      // console.log("poll timeout reached");
+    } else {
+      $timeout(() => licensePendingPoll(i), POLL_INTERVAL);
+    }
+  }
+
+  function licensePendingPoll(i = 0) {
+    // console.log("pending poll #", i)
+
+    personService.me()
+    .then(newMe => {
+      angular.merge($scope.person, newMe);
+      // $scope.person.driverLicenseStatus = me.driverLicenseStatus;
+      // $scope.person.status = me.status;
+
+      console.log("poll me driverlicense status", newMe.driverLicenseStatus, "$scope.person", $scope.person);
+      if (newMe.driverLicenseStatus !== "pending") {
+        angular.merge(me, newMe); // dirty hack !
+        $scope.isBusy = false;
+      } else if (newMe.driverLicenseStatus === "pending") {
+        requestPoll(i + 1);
+      }
+    })
+    .catch(function (err) {
+      // if the API fails we can't really do anything
+      requestPoll(i + 1);
+    });
+  }
+
+  $scope.$on("$destroy", function () {
+    if (_timeout) {
+      $timeout.cancel(_timeout);
+    }
+  });
+
+  $scope.licensePage = {
+    country: "NL",
+    driverLicense: "",
+    driverLicenseRepeat: "",
+  };
+
+  $scope.uploadLicenseImages = function () {
+    return $q(function (resolve, reject) {
+      if (!$scope.licensePage.front || !$scope.licensePage.back) {
+        reject("no file[s] selected");
+        return;
+      }
+
+      if ($scope.licensePage.front.$error || $scope.licensePage.back.$error) {
+        reject($scope.licensePage.front.$error || $scope.licensePage.back.$error);
+        return;
+      }
+
+      driverlicenseService.upload({
+        person: me.id,
+        driverLicenseCountry: $scope.licensePage.country,
+      }, {
+        frontImage: $scope.licensePage.front,
+        backImage: $scope.licensePage.back,
+      })
+      .then(function (results) {
+        // console.log("driver license uploaded!", results);
+        resolve(results);
+      })
+      .catch(function (err) {
+        // console.log("driver license upload error!", err);
+        alertService.addError(err);
+        reject(err);
+      });
+    });
+  }
+
+
   // view logic
   $scope.withSidebar = !$scope.isBlocked && $scope.isbooking;
 
@@ -105,6 +190,18 @@ angular.module('owm.person.details', [])
 
   function initLicensePage() {
     if($scope.showSecond) {
+      if (!$scope.licenseAllowedCountries) {
+        rentalcountryService.all().then(arr => {
+          const i = _.findIndex(arr, { alpha2: "NL" });
+          if (i) {
+            const nl = arr[i];
+            arr.splice(i, 1);
+            arr.unshift(nl);
+          }
+          $scope.licenseAllowedCountries = arr;
+        })
+      }
+
       authService.me(!!'forceReload')
         .then(function (me) {
           initPerson(me);
@@ -194,7 +291,8 @@ angular.module('owm.person.details', [])
       year: Number(moment($scope.person.drivingLicenseValidUntil).format('YYYY'))
     };
 
-    $scope.driverLicenseNumber = $scope.person.driverLicenseNumber;
+    $scope.licensePage.driverLicense = $scope.person.driverLicenseNumber;
+    $scope.licensePage.country = $scope.person.driverLicenseCountry || "NL";
 
     if($scope.showThird) {
       account2Service.forMe({
@@ -207,7 +305,7 @@ angular.module('owm.person.details', [])
       });
     }
 
-    initAlerts();
+    alertService.loaded($scope);
   }
 
   var inputs = {
@@ -238,70 +336,78 @@ angular.module('owm.person.details', [])
   };
   inputs.init();
 
-  function initAlerts() {
-    var p = $scope.person;
-    var alerts = {
-      contactData: (!p.streetName || !p.streetNumber || !p.city || (!p.phoneNumbers || !p.phoneNumbers.length)),
-      licenseData: (p.status === 'new')
-    };
-    alertService.loaded($scope);
-    $scope.alerts = alerts;
-  }
-
+  $scope.dl_submitted = false;
   $scope.submitDriverLicense = function () {
-    if($scope.driverLicenseNumber !== undefined && $scope.driverLicenseNumber.length === 10 && ['3', '4', '5'].indexOf($scope.driverLicenseNumber.charAt(0)) >= 0)
-    {
-      if($scope.driverLicenseNumberRepeat !== undefined && $scope.driverLicenseNumberRepeat.length === 10)
+    $scope.dl_submitted = true;
+
+    if ($scope.licensePage.country === "NL") {
+      if($scope.licensePage.driverLicense !== undefined && $scope.licensePage.driverLicense.length === 10 && ['3', '4', '5'].indexOf($scope.licensePage.driverLicense.charAt(0)) >= 0)
       {
-        if(
-          !isNaN($scope.licenseDate.day) &&
-          $scope.licenseDataForm.day.$valid &&
-          !isNaN($scope.licenseDate.month) &&
-          $scope.licenseDataForm.month.$valid &&
-          !isNaN($scope.licenseDate.year) &&
-          $scope.licenseDataForm.year.$valid)
+        if($scope.licensePage.driverLicenseRepeat !== undefined && $scope.licensePage.driverLicenseRepeat.length === 10)
         {
-          if($scope.driverLicenseNumber === $scope.driverLicenseNumberRepeat) {
+          if(
+            !isNaN($scope.licenseDate.day) &&
+            $scope.licenseDataForm.day.$valid &&
+            !isNaN($scope.licenseDate.month) &&
+            $scope.licenseDataForm.month.$valid &&
+            !isNaN($scope.licenseDate.year) &&
+            $scope.licenseDataForm.year.$valid)
+          {
+            if($scope.licensePage.driverLicense === $scope.licensePage.driverLicenseRepeat) {
 
-            var newProps = $filter('returnDirtyItems')( angular.copy($scope.person), $scope.licenseDataForm);
-            var licenseDateExpire = $scope.licenseDate.year + '-' + $scope.licenseDate.month+ '-' + $scope.licenseDate.day;
+              var newProps = $filter('returnDirtyItems')( angular.copy($scope.person), $scope.licenseDataForm);
+              var licenseDateExpire = $scope.licenseDate.year + '-' + $scope.licenseDate.month+ '-' + $scope.licenseDate.day;
 
-            newProps.driverLicenseNumber = $scope.driverLicenseNumber;
-            newProps.drivingLicenseValidUntil = licenseDateExpire;
+              newProps.driverLicenseNumber = $scope.licensePage.driverLicense;
+              newProps.drivingLicenseValidUntil = licenseDateExpire;
 
-            alertService.closeAll();
-            alertService.load();
-            $scope.isBusy = true;
+              alertService.closeAll();
+              alertService.load();
+              // $scope.isBusy = true;
 
-            personService.alter({
-              id: person.id,
-              newProps: newProps
-            })
-            .then(function () {
-              Analytics.trackEvent('person', 'driverlicense_uploaded', undefined, undefined, true);
-              $scope.licenseUploaded = true;
-              $scope.nextSection();
-            })
-            .catch(function (err) {
-              alertService.addError(err);
-              $scope.isBusy = false;
-            })
-            .finally(function () {
-              alertService.loaded();
-              $scope.isBusy = false;
-            });
+              personService.alter({
+                id: person.id,
+                newProps: newProps
+              })
+              .then(function () {
+                Analytics.trackEvent('person', 'driverlicense_uploaded', undefined, undefined, true);
+                $scope.licenseUploaded = true;
+                $scope.nextSection();
+              })
+              .catch(function (err) {
+                alertService.addError(err);
+                // $scope.isBusy = false;
+              })
+              .finally(function () {
+                alertService.loaded();
+                // $scope.isBusy = false;
+              });
 
+            } else {
+              $scope.licenseNumberMatch = false;
+            }
           } else {
-            $scope.licenseNumberMatch = false;
+            $scope.licenseDateValid = false;
           }
         } else {
-          $scope.licenseDateValid = false;
+          $scope.licenseNumberRepeatValid = false;
         }
       } else {
-        $scope.licenseNumberRepeatValid = false;
+        $scope.licenseNumberValid = false;
       }
     } else {
-      $scope.licenseNumberValid = false;
+      alertService.closeAll();
+      alertService.load();
+      // $scope.isBusy = true;
+      $scope.uploadLicenseImages()
+      .then(() => {
+        $scope.licenseUploaded = true;
+        $scope.nextSection();
+      })
+      .finally(() => {
+        alertService.loaded();
+        // $scope.isBusy = false;
+      });
     }
   };
 
@@ -330,7 +436,7 @@ angular.module('owm.person.details', [])
 
   $scope.createBookingFlow = function () {
     alertService.load();
-    $scope.isBusy = true;
+    $scope.isBusy = "creating_booking";
     if ($scope.isbooking) { //check if the recoure id is in the url
       if (bookingId) { //check if there is a bookingId in the url
         var _booking;
@@ -341,7 +447,8 @@ angular.module('owm.person.details', [])
           alertService.loaded();
           $scope.booking = booking;
           $scope.bookingFound = true;
-          $scope.isBusy = false;
+          $scope.isBusy = "checking_account";
+          licensePendingPoll();
         });
       } else { //if there is no booking Id in the url
         if (discountCode !== undefined) { //check if there is a discount code

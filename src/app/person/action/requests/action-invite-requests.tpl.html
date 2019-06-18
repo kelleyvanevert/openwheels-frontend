@@ -15,10 +15,10 @@
                         <td class="media">
                             <p ng-if="inviteRequest.status !== 'accepted'">
                                 <strong>{{ inviteRequest.sender.firstName }}</strong> ({{ inviteRequest.sender.email }})
-                                heeft je uitgenodigd om mee te rijden op zijn/haar rit van {{ inviteRequest.booking.beginBooking | amDateFormat : 'dddd DD MMMM' }} om {{ inviteRequest.booking.beginBooking | amDateFormat : 'HH:mm' }}.
+                                heeft je uitgenodigd om mee te rijden op zijn/haar rit van {{ (inviteRequest.booking.beginBooking || inviteRequest.booking.beginRequested) | amDateFormat : 'dddd DD MMMM' }} om {{ (inviteRequest.booking.beginBooking || inviteRequest.booking.beginRequested) | amDateFormat : 'HH:mm' }}.
                             </p>
                             <p ng-if="inviteRequest.status === 'accepted'">
-                                Je mag meerijden op de rit van <strong>{{ inviteRequest.sender.firstName }}</strong> ({{ inviteRequest.sender.email }}) van {{ inviteRequest.booking.beginBooking | amDateFormat : 'dddd DD MMMM' }} om {{ inviteRequest.booking.beginBooking | amDateFormat : 'HH:mm' }}.
+                                Je mag meerijden op de rit van <strong>{{ inviteRequest.sender.firstName }}</strong> ({{ inviteRequest.sender.email }}) van {{ (inviteRequest.booking.beginBooking || inviteRequest.booking.beginRequested) | amDateFormat : 'dddd DD MMMM' }} om {{ (inviteRequest.booking.beginBooking || inviteRequest.booking.beginRequested) | amDateFormat : 'HH:mm' }}.
                             </p>
                             <div class="text-right visible-xs-block">
                                 <button type="button" ng-show="inviteRequest.status === 'invited'" class="btn btn-success" ng-click="acceptBookingRequest(inviteRequest)" ng-bind="'INVITE_EXTRA_PERSON_STATUS_ACCEPT' | translate"></button>

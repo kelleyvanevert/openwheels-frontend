@@ -5,7 +5,7 @@ angular.module('owm.resource.search', [
     'owm.resource.search.map',
   ])
   .controller('ResourceSearchController', function ($location, me, $scope, $state, $stateParams, $uibModal, $mdMedia, $mdDialog,
-    $filter, $anchorScroll, appConfig, Geocoder, alertService, resourceService, resourceQueryService, user, place, Analytics,
+    $filter, $anchorScroll, appConfig, alertService, resourceService, resourceQueryService, user, place, Analytics,
     makeHomeAddressPrefill,
     $cookieStore, preloader, metaInfoService, $rootScope, API_DATE_FORMAT) {
 
