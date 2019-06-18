@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('personalDataDirective', [])
 
 .directive('personalData', function () {
@@ -11,8 +9,16 @@ angular.module('personalDataDirective', [])
       resource: '=resource'
     },
     templateUrl: 'directives/personalData/personalData.tpl.html',
-    controller: function ($scope, $rootScope, $log, $state, $location, $stateParams, $filter, personService, authService,resourceService,
-      $anchorScroll, $timeout, alertService, account2Service, accountService, dutchZipcodeService, Analytics, $translate, featuresService) {
+    controller: function ($scope, $rootScope, unwrap, $q, $log, $element, $state, $location, $stateParams, $filter, personService, authService,resourceService,
+      $anchorScroll, $timeout, alertService, autocompleteOptions, account2Service, accountService, dutchZipcodeService, Analytics, $translate, featuresService) {
+
+      $scope.countries = [
+        { value: "Nederland", iso: "nl" },
+        { value: "België", iso: "be" },
+        { value: "Frankrijk", iso: "fr" },
+        { value: "Duitsland", iso: "de" },
+      ];
+
       //person info
       var masterPerson = null;
       var that;
@@ -76,7 +82,16 @@ angular.module('personalDataDirective', [])
           // check if person had verified phone numbers
           that.initPhoneNumbers();
 
-          var newProps = $filter('returnDirtyItems')(angular.copy($scope.person), $scope.personalDataForm);
+          var newProps = {
+            ...$filter('returnDirtyItems')(angular.copy($scope.person), $scope.personalDataForm),
+            streetName: $scope.person.streetName,
+            streetNumber: $scope.person.streetNumber,
+            city: $scope.person.city,
+            zipcode: $scope.person.zipcode,
+            country: $scope.person.country,
+            latitude: $scope.person.latitude,
+            longitude: $scope.person.longitude,
+          };
 
           // don't alter firstname or surname if value isn't changed
           if(masterPerson.firstName === $scope.person.firstName) {
@@ -87,12 +102,6 @@ angular.module('personalDataDirective', [])
           }
 
           // add fields not in form
-          if (newProps.zipcode || newProps.streetNumber) {
-            newProps.streetName = $scope.person.streetName;
-            newProps.city = $scope.person.city;
-            newProps.latitude = $scope.person.latitude;
-            newProps.longitude = $scope.person.longitude;
-          }
           if($scope.person.companyName) {
             newProps.isCompany = true;
           }
@@ -111,6 +120,7 @@ angular.module('personalDataDirective', [])
             phoneNumbers = $scope.verifiedPhoneNumbers,
             city = $scope.person.city,
             zipcode = $scope.person.zipcode,
+            streetName = $scope.person.streetName,
             streetNumber = $scope.person.streetNumber;
 
           // add phone numbers (not automatically included by 'returnDirtyItems')
@@ -139,7 +149,8 @@ angular.module('personalDataDirective', [])
             if (year && month && day) {
               if (phoneNumbers) {
                 if (male) {
-                  if (streetNumber && zipcode && city && containsStreetNumber(streetNumber)) {
+                  if (streetName && streetNumber && city && containsStreetNumber(streetNumber)) {
+
                     // save persons info
                     personService.alter({
                       person: $scope.person.id,
@@ -193,7 +204,7 @@ angular.module('personalDataDirective', [])
                       alertService.loaded();
                     });
                   } else {
-                    alertService.add('danger', 'Vul je postcode en huisnummer in zodat we je post kunnen sturen.', 5000);
+                    alertService.add('danger', 'Vul een geldig adres in, inclusief straatnaam en huisnummer, zodat we je post kunnen sturen.', 5000);
                     alertService.loaded();
                   }
                 } else {
@@ -291,6 +302,10 @@ angular.module('personalDataDirective', [])
               month: Number(moment($scope.person.dateOfBirth).format('MM')),
               year: Number(moment($scope.person.dateOfBirth).format('YYYY'))
             };
+
+            if (person.streetName && person.streetNumber) {
+              $scope.addressSearch.found = {};
+            }
           });
         },
         initPhoneNumbers: function () {
@@ -318,71 +333,111 @@ angular.module('personalDataDirective', [])
           });
         }
       };
-      var inputs = {
-        init: function () {
-          this.adress();
-        },
-        adress: function () {
-          var _this = this;
-          $scope.$watch('[person.zipcode, person.streetNumber]', function (newValue, oldValue) {
-            var country;
 
-            if (newValue !== oldValue) {
-              if (!(newValue[0] && newValue[1])) {
-                return;
-              }
-              switch (($scope.person.country || '').toLowerCase()) {
-              case 'nl':
-              case 'nederland':
-                country = 'nl';
-                break;
-              case 'be':
-              case 'belgie':
-              case 'belgië':
-                country = 'be';
-                break;
-              default:
-                country = 'nl';
-              }
+      const { componentRestrictions: __, ...rest } = autocompleteOptions;
+      $scope.autocompleteOptions = rest;
 
-              $scope.zipcodeAutocompleting = true;
-              dutchZipcodeService.autocomplete({
-                  country: country,
-                  zipcode: _this.stripWhitespace(newValue[0]),
-                  streetNumber: newValue[1]
-                })
-                .then(function (data) {
-                  /*jshint sub: true */
-                  $scope.person.city = data[0].city;
-                  $scope.person.streetName = data[0].street;
-                  $scope.person.latitude = data[0].lat;
-                  $scope.person.longitude = data[0].lng;
-                }, function (error) {
-                  if ($scope.person.zipcode !== newValue[0] || $scope.person.streetNumber !== newValue[1]) {
-                    //resolved too late
-                    return;
-                  }
-                  $scope.person.city = null;
-                  $scope.person.streetName = null;
-                  $scope.person.latitude = null;
-                  $scope.person.longitude = null;
-                })
-                .finally(function () {
-                  $scope.zipcodeAutocompleting = false;
-                });
+      // Step 0: show google autocomplete searchbar [found = falsey]
+      // Step 1: split into components, allow changes and try to fetch more accurate lat/lng [found = object]
+      $scope.addressSearch = {
+        // address?: google autocomplete result
+        // found?: parsed version of previously google-found address, or just empty object in case of existing data
+        // error
+      };
+
+      function extract(address) {
+        // `address` is single geocoder result
+        return angular.merge(
+          address.address_components.reduce((found, { short_name, long_name, types }) => {
+            if (types[0] === "street_number") {
+              found.streetNumber = long_name;
+            } else if (types[0] === "route" || types[0] === "street_address") {
+              found.streetName = long_name;
+            } else if (types[0] === "locality") {
+              found.city = long_name;
+            } else if (types[0] === "country") {
+              found.country = long_name;
+            } else if (types[0] === "postal_code") {
+              found.zipcode = long_name;
             }
-          }, true);
-        },
-        stripWhitespace: function (str) { //remove all spaces
-          var out = str;
-          while (out.indexOf(' ') >= 0) {
-            out = out.replace(' ', '');
+            return found;
+          }, {}),
+          (address.geometry && address.geometry.location)
+            ? {
+                latitude: unwrap(address.geometry.location.lat),
+                longitude: unwrap(address.geometry.location.lng),
+              }
+            : {}
+        );
+      }
+
+      $scope.backToAutocomplete = () => {
+        delete $scope.addressSearch.found;
+        delete $scope.addressSearch.address;
+        delete $scope.person.streetName;
+        delete $scope.person.streetNumber;
+        delete $scope.person.zipcode;
+        delete $scope.person.country;
+        delete $scope.person.city;
+        $timeout(() => {
+          $element.find("#autocomplete_address_search").focus();
+        }, 0);
+      };
+
+      $scope.selectAutocompleteAddress = () => {
+        const address = $scope.addressSearch.address;
+        if (!$scope.addressSearch.found && address && address.address_components) {
+          const found = extract(address);
+          // console.log(address, found);
+          if (!found.streetName || !found.city || !found.country || !found.latitude || !found.longitude) {
+            $scope.addressSearch.error = "not_enough_info";
+            $scope.addressSearch.address = null;
+          } else {
+            delete $scope.addressSearch.error;
+            $scope.addressSearch.found = found;
+            angular.merge($scope.person, found);
+            $timeout(() => {
+              $element.find("#streetNumber").focus();
+            }, 0);
           }
-          return out;
         }
       };
+
+      const _additionalGeocode = {};
+      $scope.onSplitAddressChange = () => {
+        const promise = _additionalGeocode.mostRecent = $q((resolve, reject) => {
+          $timeout(() => {
+            if (promise !== _additionalGeocode.mostRecent) {
+              // console.log("skipping result because not most recent [before geocode]");
+              return;
+            }
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({
+              address: `${$scope.person.streetName}, ${$scope.person.streetNumber}, ${$scope.person.city}`,
+              componentRestrictions: { country: $scope.person.country },
+              region: "nl"
+            }, (results, status) => {
+              if (promise !== _additionalGeocode.mostRecent) {
+                // console.log("skipping result because not most recent [on geocode result]");
+                return;
+              }
+              if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                $timeout($scope.onSplitAddressChange, 500);
+              } else if (status === google.maps.GeocoderStatus.OK) {
+                const found = extract(results[0]);
+                // console.log(found);
+                if (found.streetName && found.latitude && found.longitude) {
+                  if (found.streetName === $scope.person.streetName) {
+                    angular.merge($scope.person, found);
+                  }
+                }
+              }
+            });
+          }, 500);
+        });
+      };
+
       personPage.init();
-      inputs.init();
 
     }
   };

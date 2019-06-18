@@ -25,7 +25,7 @@ angular.module('owm.booking', [
     },
     resolve: {
       me: ['authService', function (authService) {
-        return authService.me();
+        return authService.me(!!'forceReload');
       }],
       booking: ['$stateParams', 'bookingService', function ($stateParams, bookingService) {
         return bookingService.get({
@@ -114,6 +114,9 @@ angular.module('owm.booking', [
 
         details.cancelled = booking.status.match(/cancelled/);
         details.rejected = booking.status.match(/rejected/);
+
+        // the pending notice takes precedence over the book-only notice
+        details.showPendingNotice = !booking.ok && (booking.person.driverLicenseStatus === 'pending');
 
         details.showBookOnlyNotice = !booking.ok && (booking.person.status === 'book-only');
 
@@ -272,7 +275,12 @@ angular.module('owm.booking', [
           progress.steps.payment,
         ];
         
-        if (details.showBookOnlyNotice) {
+        if (details.showPendingNotice) {
+          progress.list.splice(1, 0, progress.steps.accountCheck);
+          progress.steps.accountCheck.checked = false;
+          progress.steps.accountCheck.stress = true;
+          progress.steps.accountCheck.text = 'Account wordt gecontroleerd';
+        } else if (details.showBookOnlyNotice) {
           progress.list.splice(1, 0, progress.steps.accountCheck);
           progress.steps.accountCheck.checked = false;
           progress.steps.accountCheck.stress = true;
@@ -291,7 +299,11 @@ angular.module('owm.booking', [
         if (!progress.steps.accepted.checked) {
           progress.summary = 'We hebben de reservering naar verhuurder ' + $filter('fullname')(booking.resource.owner) + ' gestuurd.';
           if (!progress.steps.payment.checked && progress.showPaymentScreen) {
-            progress.summary += ' Je kunt alvast betalen. De reservering is dan direct definitief na acceptatie door ' + booking.resource.owner.firstName + '.';
+            if (details.showPendingNotice) {
+              // noop
+            } else {
+              progress.summary += ' Je kunt alvast betalen. De reservering is dan direct definitief na acceptatie door ' + booking.resource.owner.firstName + '.';
+            }
           }
           else {
             progress.summary += ' Je ontvangt een mail als ' + booking.resource.owner.firstName + ' op je verzoek gereageerd heeft.';
@@ -299,8 +311,10 @@ angular.module('owm.booking', [
         }
         else if (progress.steps.accepted.checked && !progress.steps.payment.checked) {
           if (perspective.isContractHolder) {
-            if (details.showBookOnlyNotice) {
-              progress.summary = 'Je reservering is gemaakt. Je account moet nog handmatig gecontroleerd worden, maar je kunt wel alvast betalen.';
+            if (details.showPendingNotice) {
+              progress.summary = 'Je reservering is gemaakt. Je account wordt automatisch gecontroleerd, dit duurt meestal zo\'n 30 seconden.';
+            } else if (details.showBookOnlyNotice) {
+              progress.summary = 'Je reservering is gemaakt. Je account moet op werkdagen tussen 09.00 en 17.00 uur handmatig gecontroleerd worden, maar je kunt wel alvast betalen.';
             } else {
               progress.summary = 'Je reservering is gemaakt. Je hoeft alleen nog de reservering te betalen.';
             }
@@ -311,7 +325,7 @@ angular.module('owm.booking', [
         }
         else if (progress.steps.accepted.checked && progress.steps.payment.checked) {
           if (details.showBookOnlyNotice) {
-            progress.summary = 'De reservering is geaccepteerd en het bedrag is betaald. Je account moet wel nog handmatig gecontroleerd worden. Zodra dit is gedaan, kan je verzekerd op weg.';
+            progress.summary = 'De reservering is geaccepteerd en het bedrag is betaald. Je account moet op werkdagen tussen 09.00 en 17.00 uur handmatig gecontroleerd worden. Zodra dit is gedaan, kan je verzekerd op weg.';
           } else {
             progress.summary = 'De reservering is geaccepteerd en het bedrag is betaald. Alles is in orde voor je rit en je kan goed verzekerd op weg.';
           }

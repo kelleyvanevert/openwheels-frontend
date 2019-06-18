@@ -125,7 +125,7 @@ angular.module('owm.person', [
    * dashboard/details
    */
   $stateProvider.state('owm.person.details', {
-    url: '/details/:pageNumber?city&resourceId&bookingId&startDate&endDate&discountCode&remarkRequester&contractId&riskReduction',
+    url: '/details/:pageNumber?city&resourceId&bookingId&startDate&endDate&discountCode&remarkRequester&contractId&riskReduction&foreignLicense',
     views: {
       'main-full@shell': {
         templateUrl: 'person/details/details-profile.tpl.html',
