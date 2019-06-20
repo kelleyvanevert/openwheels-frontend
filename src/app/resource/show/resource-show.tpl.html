@@ -298,7 +298,7 @@
 <!-- "book now" floating bottom toolbar, for mobile -->
 <md-toolbar class="md-hue-2 fixed-call-to-action" ng-if="removed === false && !showBookingForm" hide-gt-xs>
     <div class="md-toolbar-tools">
-        <md-button class="md-raised md-primary" ng-click="toggleBookingForm()" ng-if="!openDialogSpinner" ga-track-event="['booking', 'created_pre', user.isAuthenticated, null, true]">{{ 'BOOK_A_CAR' | translate }}</md-button>
+        <md-button class="md-raised md-primary" ng-click="toggleBookingForm()" ng-if="!openDialogSpinner">{{ 'BOOK_A_CAR' | translate }}</md-button>
         <md-button class="md-raised md-primary" ng-if="openDialogSpinner"><inline-spinner /></md-button>
     </div>
     <div class="satisfaction" ng-if="resource.rating_totals.senders > 0">{{ satisfaction }} {{ 'SATISFACTION_RENTERS' | translate }}</div>
