@@ -145,7 +145,7 @@
       <button class="mywheels-btn mywheels-btn-big mywheels-btn-call-to-action"
               style="width: 100%;"
               md-ink-ripple="#8f6700"
-              ga-track-event="['booking', 'created_pre', user.isAuthenticated, null, true]"
+              ga-track-event="['booking', 'created_pre', analyticsUserCategory(), null, true]"
               ng-disabled="timeFrameError || discountCodeValidation.busy || discountCodeValidation.error || availability.available=='no' || loading.createBooking"
               ng-click="createBooking(booking)">
         {{ 'CREATE_BOOKING' | translate }}
