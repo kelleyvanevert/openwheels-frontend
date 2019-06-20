@@ -356,6 +356,14 @@ angular.module('owm.resource.reservationForm', [])
   }
   $scope.loading = {createBooking: false};
 
+  $scope.analyticsUserCategory = function () {
+    if (!authService.user || !authService.user.identity || authService.user.identity.status === 'new') {
+      return 'newUser';
+    } else {
+      return 'returningUser';
+    }
+  };
+
   $scope.createBooking = function (booking) {
     $scope.loading.createBooking = true;
 
