@@ -217,14 +217,23 @@
                                                                 Selecteer ajb een foto-bestand.
                                                             </p>
                                                         </div>
-                                                        <p ng-if="licensePage.front">
+                                                        <p class="license_page_rotation_buttons" ng-if="licensePage.front">
+                                                            <md-button class="md-icon-button" ng-click="licensePage.frontRotate = licensePage.frontRotate - 1">
+                                                                <ng-md-icon icon="rotate_left"></ng-md-icon>
+                                                            </md-button>
+                                                            <md-button class="md-icon-button" ng-click="licensePage.frontRotate = licensePage.frontRotate + 1">
+                                                                <ng-md-icon icon="rotate_right"></ng-md-icon>
+                                                            </md-button>
+                                                        </p>
+                                                        <div class="license_image_container" ng-if="licensePage.front">
                                                             <img
                                                                 class="img-responsive"
+                                                                ng-style="{ transform: 'rotate(' + (licensePage.frontRotate * 90) + 'deg)' }"
                                                                 ng-src="/assets/uploadspinner.gif"
                                                                 ngf-thumbnail="licensePage.front"
                                                                 ngf-size="{ width: 300, height: 200, quality: 0.9 }"
                                                             />
-                                                        </p>
+                                                        </div>
                                                         <p ng-if="licensePage.front">
                                                             (<a href="#" ng-click="licensePage.front = null">Ander bestand uploaden</a>)
                                                         </p>
@@ -264,14 +273,23 @@
                                                                 Selecteer ajb een foto-bestand.
                                                             </p>
                                                         </div>
-                                                        <p ng-if="licensePage.back">
+                                                        <p class="license_page_rotation_buttons" ng-if="licensePage.back">
+                                                            <md-button class="md-icon-button" ng-click="licensePage.backRotate = licensePage.backRotate - 1">
+                                                                <ng-md-icon icon="rotate_left"></ng-md-icon>
+                                                            </md-button>
+                                                            <md-button class="md-icon-button" ng-click="licensePage.backRotate = licensePage.backRotate + 1">
+                                                                <ng-md-icon icon="rotate_right"></ng-md-icon>
+                                                            </md-button>
+                                                        </p>
+                                                        <div class="license_image_container" ng-if="licensePage.back">
                                                             <img
                                                                 class="img-responsive"
+                                                                ng-style="{ transform: 'rotate(' + (licensePage.backRotate * 90) + 'deg)' }"
                                                                 ng-src="/assets/uploadspinner.gif"
                                                                 ngf-thumbnail="licensePage.back"
                                                                 ngf-size="{ width: 300, height: 200, quality: 0.9 }"
                                                             />
-                                                        </p>
+                                                        </div>
                                                         <p ng-if="licensePage.back">
                                                             (<a href="#" ng-click="licensePage.back = null">Ander bestand uploaden</a>)
                                                         </p>
