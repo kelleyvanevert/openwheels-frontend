@@ -147,7 +147,19 @@ angular.module('owm.person.details', [])
     country: "NL",
     driverLicense: "",
     driverLicenseRepeat: "",
+    front: null,
+    frontRotate: 0, // degrees (0-3, for steps of 90 degrees)
+    back: null,
+    backRotate: 0, //degrees (0-3, for steps of 90 degrees)
   };
+
+  $scope.$watch('licensePage.front', () => {
+    $scope.licensePage.frontRotate = 0;
+  });
+
+  $scope.$watch('licensePage.back', () => {
+    $scope.licensePage.backRotate = 0;
+  });
 
   $scope.uploadLicenseImages = function () {
     return $q(function (resolve, reject) {
@@ -161,9 +173,14 @@ angular.module('owm.person.details', [])
         return;
       }
 
+      $scope.licensePage.frontRotate = ($scope.licensePage.frontRotate % 4 + 4) % 4;
+      $scope.licensePage.backRotate = ($scope.licensePage.backRotate % 4 + 4) % 4;
+
       driverlicenseService.upload({
         person: me.id,
         driverLicenseCountry: $scope.licensePage.country,
+        frontImageRotation: ($scope.licensePage.frontRotate) * 90,
+        backImageRotation: ($scope.licensePage.backRotate) * 90,
       }, {
         frontImage: $scope.licensePage.front,
         backImage: $scope.licensePage.back,
