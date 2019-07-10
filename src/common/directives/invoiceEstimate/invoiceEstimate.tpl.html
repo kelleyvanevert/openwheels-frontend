@@ -24,8 +24,11 @@
             <div class="discount-line" ng-if="price.discount_rent">
               - incl. {{ price.discount_rent | currency }} korting
             </div>
+            <div class="discount-line" ng-if="price.discount_vacation_rent">
+              - incl. {{ price.discount_vacation_rent | currency }} meerdagenkorting
+            </div>
           </td>
-          <td class="price">{{ price.rent | currency }}</td>
+          <td class="price">{{ (price.rent - price.discount_vacation_rent) | currency }}</td>
         </tr>
         <tr>
           <td class="description">
@@ -99,14 +102,20 @@
                         controller: estimateDialogController,
                       }" >{{ price.estimate_km_total }} km</a>
                 </div>
+                <div class="discount-line" ng-if="price.free_km_total">
+                  - {{ price.free_km_total }} km gratis
+                </div>
                 <div class="discount-line" ng-if="price.discount_per_km">
                   - incl. {{ price.discount_per_km | currency }} korting per km
                 </div>
                 <div class="discount-line" ng-if="price.discount_km_points_included">
                   - incl. {{ price.discount_km_points_included | currency }} beheerdersvergoeding
                 </div>
+                <div class="discount-line" ng-if="price.discount_vacation_km">
+                  - incl. {{ price.discount_vacation_km | currency }} meerdagenkorting
+                </div>
               </td>
-              <td class="price">{{ price.km_price_rate | currency }}</td>
+              <td class="price">{{ price.km_price_rate - price.discount_vacation_km | currency }}</td>
             </tr>
             <tr ng-if="!resource.refuelByRenter">
               <td class="description">
@@ -142,7 +151,7 @@
                   <ng-md-icon size="20" icon="info_italic" class="info-icon bg" info-dialog="schattingKilometerkosten" info-dialog-params="{ resource: resource, title: totalText }"></ng-md-icon>
                 </div>
               </td>
-              <td class="price">{{ price.total + price.km_price_fuel + price.km_price_rate | currency }}</td>
+              <td class="price">{{ price.total + price.km_price_fuel + price.km_price_rate - price.discount_vacation_km | currency }}</td>
             </tr>
           </tbody>
         </table>

@@ -49,6 +49,9 @@ params:
                 <div class="discount-line" ng-if="params.controller.estimatedPrice.discount_km_points_included">
                   - incl. {{ params.controller.estimatedPrice.discount_km_points_included | currency }} beheerdersvergoeding
                 </div>
+                <div class="discount-line" ng-if="params.price.discount_vacation_km">
+                  - incl. {{ params.price.discount_vacation_km | currency }} meerdagenkorting
+                </div>
               </td>
               <td class="price">{{ params.controller.estimatedPrice.km_price_rate | currency }}</td>
             </tr>

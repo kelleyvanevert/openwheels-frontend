@@ -74,6 +74,10 @@
                             <span class="tag tag-warning mw-badge mw-badge-new">Nieuw</span>
                             <span class="bullet"></span>
                         </span>
+                        <span ng-if="resource.price.vacationShortRate || resource.price.vacationLongRate">
+                            <span class="tag tag-warning mw-badge mw-badge-discount" info-dialog="meerdagenkorting" info-dialog-params="{ resource: resource }"><ng-md-icon size="16" icon="local_offer"></ng-md-icon> Meerdagenkorting</span>
+                            <span class="bullet"></span>
+                        </span>
                         <span class="subtitle-feature">
                             {{ (resource.brand | toTitleCase) || ('UNKNOWN_BRAND' | translate) }}
                             <span ng-if="resource.model">{{ resource.model }}</span>

@@ -7,10 +7,13 @@
                     <div class="discount-line" ng-if="booking.details && booking.details.booking_price.discount_rent">
                       - incl. {{ booking.details.booking_price.discount_rent | currency }} korting
                     </div>
+                    <div class="discount-line" ng-if="booking.details && booking.details.booking_price.discount_vacation_rent">
+                      - incl. {{ booking.details.booking_price.discount_vacation_rent | currency }} meerdagenkorting
+                    </div>
 
                     <span ng-if="!booking.details">Huur</span> <!-- still loading -->
                 </td>
-                <td class="text-right">{{ booking.details.booking_price.rent | currency }}</td>
+                <td class="text-right">{{ booking.details.booking_price.rent - booking.details.booking_price.discount_vacation_rent | currency }}</td>
             </tr>
             <tr class="bt">
                 <td>
@@ -159,7 +162,7 @@
                               booking: booking,
                               price: booking.details.booking_price,
                               controller: estimateDialogController,
-                            }" >{{ booking.details.booking_price.estimate_km_total }} km</a>
+                            }" >{{ booking.details.booking_price.estimate_km_total - booking.details.booking_price.discount_vacation_km }} km</a>
                     </div>
 
                     <div class="discount-line" ng-if="booking.details && booking.details.booking_price.discount_per_km">
@@ -168,8 +171,11 @@
                     <div class="discount-line" ng-if="booking.details && booking.details.booking_price.discount_km_points_included">
                         - incl. {{ booking.details.booking_price.discount_km_points_included | currency }} beheerdersvergoeding
                     </div>
+                    <div class="discount-line" ng-if="booking.details && booking.details.booking_price.discount_vacation_km">
+                        - incl. {{ booking.details.booking_price.discount_vacation_km | currency }} meerdagenkorting
+                    </div>
                 </td>
-                <td class="text-right">{{ booking.details.booking_price.km_price_rate | currency }}</td>
+                <td class="text-right">{{ booking.details.booking_price.km_price_rate - booking.details.booking_price.discount_vacation_km | currency }}</td>
             </tr>
 
             <tr class="bt">
@@ -198,7 +204,7 @@
                     <ng-md-icon size="20" icon="info_italic" class="info-icon bg" info-dialog="schattingKilometerkosten" info-dialog-params="{ resource: booking.resource, title: (booking.details.discount > 0 || booking.details.friend_invite_discount > 0) ? 'Totale huurkosten' : 'Totaal te betalen' }"></ng-md-icon>
                 </td>
                 <td class="text-right">
-                    <strong>{{ (booking.details.booking_price.total + booking.details.booking_price.km_price_rate + booking.details.booking_price.km_price_fuel) | currency }}</strong>
+                    <strong>{{ (booking.details.booking_price.total + booking.details.booking_price.km_price_rate + booking.details.booking_price.km_price_fuel  - booking.details.booking_price.discount_vacation_km) | currency }}</strong>
                 </td>
             </tr>
 
@@ -219,7 +225,7 @@
                     <strong>Totaal te betalen</strong>
                 </td>
                 <td class="text-right">
-                    <strong>{{ (booking.details.booking_price.total + booking.details.booking_price.km_price_rate + booking.details.booking_price.km_price_fuel - booking.details.discount - booking.details.friend_invite_discount) | currency }}</strong>
+                    <strong>{{ (booking.details.booking_price.total + booking.details.booking_price.km_price_rate + booking.details.booking_price.km_price_fuel - booking.details.discount - booking.details.friend_invite_discount - booking.details.booking_price.discount_vacation_km) | currency }}</strong>
                 </td>
             </tr>
 
