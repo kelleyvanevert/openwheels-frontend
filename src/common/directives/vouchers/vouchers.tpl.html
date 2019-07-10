@@ -162,7 +162,7 @@
                               booking: booking,
                               price: booking.details.booking_price,
                               controller: estimateDialogController,
-                            }" >{{ booking.details.booking_price.estimate_km_total - booking.details.booking_price.discount_vacation_km }} km</a>
+                            }" >{{ booking.details.booking_price.estimate_km_total }} km</a>
                     </div>
 
                     <div class="discount-line" ng-if="booking.details && booking.details.booking_price.discount_per_km">

@@ -57,7 +57,16 @@ angular.module('invoiceEstimateDirective', [])
           controller.estimatedPrice.discount_km_points_included = Math.min(controller.estimatedPrice.km_price_rate, $scope.price.discount_km_points_remaining || 0);
           controller.estimatedPrice.km_price_rate -= controller.estimatedPrice.discount_km_points_included;
 
-          controller.estimatedPrice.km_price_rate -= $scope.price.discount_vacation_km;
+          var rt = 0;
+          if ($scope.resource.price.vacationKilometerReduction) {
+            if ($scope.price.time_days >= 7) {
+              rt = $scope.resource.price.vacationLongRate;
+            } else if ($scope.price.time_days >= 3) {
+              rt = $scope.resource.price.vacationShortRate;
+            }
+          }
+          controller.estimatedPrice.discount_vacation_km = controller.estimatedPrice.km_price_rate * rt;
+          controller.estimatedPrice.km_price_rate -= controller.estimatedPrice.discount_vacation_km;
           controller.estimatedPrice.km_price_rate = Math.max(controller.estimatedPrice.km_price_rate, 0);
 
           controller.estimatedPrice.rit_totaal = $scope.price.total + $scope.price.km_price_fuel + $scope.price.km_price_rate - $scope.price.discount_vacation_km;
