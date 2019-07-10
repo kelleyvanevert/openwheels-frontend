@@ -46,14 +46,6 @@ angular.module('AB', ['Cookies'])
 
 
   // currently running experiments
-
-  var priceLocOptions = [
-    'resourceFeatures', // 50%
-    'reservationForm', // 50%
-  ];
-  if ($rootScope.experiments.priceLoc === undefined) {
-    var chosen = priceLocOptions[Math.floor(Math.random() * priceLocOptions.length)];
-    $rootScope.experiment('priceLoc', chosen);
-  }
+  // (none)
 
 });

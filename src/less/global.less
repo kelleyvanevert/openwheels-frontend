@@ -1496,3 +1496,31 @@ ul.list-unstyled.list-with-icons {
         );
     }
 }
+
+
+.license_page_rotation_buttons {
+    margin: 0;
+    text-align: center;
+}
+
+.license_image_container {
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.license_image_container::before {
+    content: "";
+    width: 1px;
+    margin-left: -1px;
+    float: left;
+    height: 0;
+    padding-top: 100%;
+}
+
+.license_image_container::after { /* to clear float */
+    content: "";
+    display: table;
+    clear: both;
+}
