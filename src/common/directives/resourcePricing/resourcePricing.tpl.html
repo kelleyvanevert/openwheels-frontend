@@ -16,56 +16,48 @@
       <div class="pad">
         <span class="price is-1">{{ resource.price.dayRateTotal | currency }}</span>
         <span class="annotation">per dag <span class="hourly">/ {{ resource.price.hourRate | currency }} per uur</span></span>
-        <div class="sub-price-line" ng-if="($root.experiments.priceLoc === 'resourceFeatures')">
-          *excl. <span ng-if="resource.refuelByRenter">kilometerkosten</span>
-                <span ng-if="!resource.refuelByRenter">kilometer- en brandstofkosten</span>
+        <div class="sub-price-line">
+
+          <!-- KILOMETERPRIJS -->
+
+          <!-- geen gratis kilometers -->
+          <div ng-if="!resource.price.kmFree">
+            <span info-dialog="kilometerkosten" info-dialog-params="{ resource: resource }">
+              + kilometerprijs {{ resource.price.kilometerRate | currency }} per km
+            </span>
+          </div>
+
+          <!-- wel gratis kilometers -->
+          <div ng-if="resource.price.kmFree">
+            <span info-dialog="kilometerkosten" info-dialog-params="{ resource: resource }">
+              + 100 km vrij, {{ resource.price.kilometerRate | currency }} per extra km
+            </span>
+          </div>
+
+
+          <!-- BRANDSTOFBELEID -->
+
+          <!-- zelf tanken -->
+          <div>
+            <span info-dialog="zelfTanken" ng-if="resource.refuelByRenter">
+              zelf tanken
+            </span>
+          </div>
+
+          <div ng-if="!resource.refuelByRenter">
+            <span info-dialog="vasteBrandstofprijs" info-dialog-params="{ tankpas: resource.fuelCardCar }">
+              + brandstof {{ resource.price.fuelPerKilometer | currency }} per km
+            </span>
+          </div>
+
+          <!-- <div ng-if="resource.price.vacationShortRate || resource.price.vacationLongRate">
+            <span info-dialog="meerdagenkorting" info-dialog-params="{ resource: resource }">
+              <ng-md-icon size="16" style="height: 16px; width: 16px;" icon="local_offer"></ng-md-icon> tot 25% meerdagenkorting
+            </span>
+          </div> -->
+
         </div>
       </div>
-    </div>
-    <div class="secondary" ng-if="($root.experiments.priceLoc === 'reservationForm')">
-
-      <!-- KILOMETERPRIJS -->
-
-      <!-- geen gratis kilometers -->
-      <div class="secondary-item" info-dialog="kilometerkosten" info-dialog-params="{ resource: resource }" ng-if="!resource.price.kmFree">
-        <ng-md-icon icon="directions_car"></ng-md-icon>
-        <div class="lines">
-          <div class="line underline"><span class="price">{{ resource.price.kilometerRate | currency }}</span> per km</div>
-        </div>
-      </div>
-
-      <!-- wel gratis kilometers -->
-      <div class="secondary-item" info-dialog="kilometerkosten" info-dialog-params="{ resource: resource }" ng-if="resource.price.kmFree">
-        <ng-md-icon icon="directions_car"></ng-md-icon>
-        <div class="lines">
-          <div class="line"><span class="free-km">{{ (showPricePerHour ? 'FREE_KM_HOUR' : 'FREE_KM_DAY') | translate }}</span></div>
-          <div class="line underline"><span class="price">{{ resource.price.kilometerRate | currency }}</span> per extra km</div>
-        </div>
-      </div>
-
-
-
-      <!-- BRANDSTOFBELEID -->
-
-      <!-- zelf tanken -->
-      <div class="secondary-item" info-dialog="zelfTanken" ng-if="resource.refuelByRenter">
-        <ng-md-icon icon="local_gas_station"></ng-md-icon>
-        <div class="lines">
-          <div class="line refuel-by-renter underline">zelf tanken</div>
-        </div>
-      </div>
-
-      <!-- vaste prijs per km -->
-      <!-- (the `hidden-md` is an ugly fix, dependent on the specific current layout) -->
-      <div class="plus hidden-md" ng-if="!resource.refuelByRenter">+</div>
-
-      <div class="secondary-item" info-dialog="vasteBrandstofprijs" info-dialog-params="{ tankpas: resource.fuelCardCar }" ng-if="!resource.refuelByRenter">
-        <ng-md-icon icon="local_gas_station"></ng-md-icon>
-        <div class="lines">
-          <div class="line km-rate underline"><span class="price">{{ resource.price.fuelPerKilometer | currency }}</span> per km</div>
-        </div>
-      </div>
-
     </div>
   </div>
 </div>

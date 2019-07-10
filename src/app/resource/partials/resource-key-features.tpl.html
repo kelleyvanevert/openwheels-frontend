@@ -30,39 +30,4 @@
       {{ resource.numberOfBookings | wasBookedTimes }}
     </div>
   </div>
-
-  <div ng-if="($root.experiments.priceLoc === 'resourceFeatures') && !me.isBusinessConnected" layout="column" layout-gt-xs="row" layout-align="center start" class="key-features-row">
-
-    <!-- KILOMETERPRIJS -->
-
-    <!-- geen gratis kilometers    //  ng-click="infoDialog('kilometerkosten')" -->
-    <div flex-gt-sm="40" flex="100" class="item" info-dialog="kilometerkosten" info-dialog-params="{ resource: resource }" ng-if="!resource.price.kmFree">
-      <ng-md-icon icon="directions_car"></ng-md-icon>
-      <span class="underline"><span class="price">{{ resource.price.kilometerRate | currency }}</span> per km</span>
-    </div>
-
-    <!-- wel gratis kilometers     // ng-click="infoDialog('kilometerkosten')" -->
-    <div flex-gt-sm="40" flex="100" class="item" info-dialog="kilometerkosten" info-dialog-params="{ resource: resource }" ng-if="resource.price.kmFree">
-      <ng-md-icon icon="directions_car"></ng-md-icon>
-      <span class="free-km">{{ (showPricePerHour ? 'FREE_KM_HOUR' : 'FREE_KM_DAY') | translate }}</span><br />
-      <span class="underline">daarna <span class="price">{{ resource.price.kilometerRate | currency }}</span> per km</span>
-    </div>
-
-
-
-    <!-- BRANDSTOFBELEID -->
-
-    <!-- zelf tanken    // ng-click="infoDialog('zelfTanken')" -->
-    <div flex-gt-sm="40" flex="100" class="item" info-dialog="zelfTanken" ng-if="resource.refuelByRenter">
-      <ng-md-icon icon="local_gas_station"></ng-md-icon>
-      <span class="underline">Zelf tanken</span>
-    </div>
-
-    <!-- vaste prijs per km   // ng-click="infoDialog('vasteBrandstofprijs')" -->
-    <div flex-gt-sm="40" flex="100" class="item" info-dialog="vasteBrandstofprijs" info-dialog-params="{ tankpas: resource.fuelCardCar }" ng-if="!resource.refuelByRenter">
-      <ng-md-icon icon="local_gas_station"></ng-md-icon>
-      <span class="underline"><span class="price">{{ resource.price.fuelPerKilometer | currency }}</span> per km</span>
-    </div>
-
-  </div>
 </div>
