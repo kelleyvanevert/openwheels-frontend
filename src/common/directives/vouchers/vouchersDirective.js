@@ -133,7 +133,19 @@ angular.module('vouchersDirective', [])
               controller.estimatedPrice.discount_km_points_included = Math.min(controller.estimatedPrice.km_price_rate, price.discount_km_points_remaining || 0);
               controller.estimatedPrice.km_price_rate -= controller.estimatedPrice.discount_km_points_included;
 
-              controller.estimatedPrice.rit_totaal = price.total + price.km_price_fuel + price.km_price_rate;
+              var rt = 0;
+              if (booking.resource.price.vacationKilometerReduction) {
+                if (price.time_days >= 7) {
+                  rt = booking.resource.price.vacationLongRate;
+                } else if (price.time_days >= 3) {
+                  rt = booking.resource.price.vacationShortRate;
+                }
+              }
+              controller.estimatedPrice.discount_vacation_km = controller.estimatedPrice.km_price_rate * rt;
+              controller.estimatedPrice.km_price_rate -= controller.estimatedPrice.discount_vacation_km;
+              controller.estimatedPrice.km_price_rate = Math.max(controller.estimatedPrice.km_price_rate, 0);
+
+              controller.estimatedPrice.rit_totaal = price.total + price.km_price_fuel + price.km_price_rate - price.discount_vacation_km;
               controller.estimatedPrice.rit_totaal_estimate = price.total + controller.estimatedPrice.km_price_fuel + controller.estimatedPrice.km_price_rate;
               controller.estimatedPrice.rit_totaal_diff = Math.abs(controller.estimatedPrice.rit_totaal_estimate - controller.estimatedPrice.rit_totaal);
             },

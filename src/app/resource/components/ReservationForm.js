@@ -200,7 +200,7 @@ angular.module('owm.resource.reservationForm', [])
           var possiblePreviousChoice = _.find(contracts, {
             id: parseInt($localStorage.contractChoice),
           });
-          if (possiblePreviousChoice) {
+          if (possiblePreviousChoice && possiblePreviousChoice.type.name !== 'MyWheels Free') {
             booking.contract = possiblePreviousChoice;
           } else if (contracts.length > 0) {
             booking.contract = contracts[0];
