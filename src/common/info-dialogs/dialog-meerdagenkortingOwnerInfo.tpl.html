@@ -1,0 +1,49 @@
+
+<!--
+params:
+  vacationShortRate
+  vacationLongRate
+  vacationKilometerReduction
+-->
+<md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="40" flex-xl="30"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3 class="with-close-button">
+      <ng-md-icon icon="local_offer" size="28"></ng-md-icon>
+      Meerdagenkorting
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+    <p>
+      Met meerdagenkorting krijgt de huurder korting bij langere meerdaagse huringen.
+      <span ng-if="params.vacationKilometerReduction">Deze korting geldt over de huurkosten en over de kilometerkosten. De brandstofkosten zijn niet inbegrepen.</span>
+      <span ng-if="!params.vacationKilometerReduction">Deze korting geldt over de huurkosten. De kilometerkosten en brandstofkosten zijn niet inbegrepen.</span>
+    </p>
+    <div layout="row" layout-align="center start" style="margin: 2rem 0;">
+
+      <div flex="50">
+        <div style="text-align: center; padding: 0 .5rem; border-right: 1px solid #ddd;">
+          <p><strong>{{ params.vacationShortRate | percentage }} korting</strong></p>
+          <p>Bij 3x de dagprijs of meer</p>
+        </div>
+      </div>
+
+      <div flex="50">
+        <div style="text-align: center; padding: 0 .5rem;">
+          <p><strong>{{ params.vacationLongRate | percentage }} korting</strong></p>
+          <p>Bij 7x de dagprijs of meer</p>
+        </div>
+      </div>
+
+    </div>
+    <div class="dialog-buttons-right" style="margin: .5rem -.5rem -.5rem 0;">
+      <button class="mywheels-btn mywheels-btn-border"
+              md-ink-ripple="#4b702c"
+              ng-click="hide()"
+              style="white-space: nowrap;">
+        Sluiten
+      </button>
+    </div>
+  </md-dialog-content>
+</md-dialog>

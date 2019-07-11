@@ -1,0 +1,29 @@
+
+<!--
+params:
+  vacationShortRate
+  vacationLongRate
+  vacationKilometerReduction
+-->
+<md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="40" flex-xl="30"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3 class="with-close-button">
+      <ng-md-icon icon="local_gas_station" size="28"></ng-md-icon>
+      Brandstofprijs
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+    <ul>
+      <li>
+        <strong>Zelf tanken.</strong>
+        Je geeft de auto met een volle tank mee aan de huurder, en de huurder heeft de auto weer met een volle tank terug. Je ontvangt geen brandstofprijs per km.
+      </li>
+      <li>
+        <strong>Brandstofprijs per kilometer.</strong>
+        De huurder betaalt een vast bedrag per gereden kilometer om de brandstofkosten te dekken. Moet de huurder onverhoopt toch tanken, dan kan hij/zij een tankbon via MyWheels declareren.
+      </li>
+    </ul>
+  </md-dialog-content>
+</md-dialog>
