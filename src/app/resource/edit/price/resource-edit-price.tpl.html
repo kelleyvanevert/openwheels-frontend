@@ -48,29 +48,41 @@
     <!-- may be hidden by branding css -->
     <div id="resource_settings_fuel">
       <div id="resource_settings_refuel_by_renter" class="form-group">
-        <label>
+        <label info-dialog="brandstofprijsOwnerInfo">
           {{ 'RESOURCE_REFUEL_BY_RENTER_LABEL' | translate }}
-          <info-icon tooltip-html="'INFO_RESOURCE_EDIT_REFUEL_BY_RENTER' | translate"></info-icon>
+          <ng-md-icon size="20" icon="info_italic" class="info-icon bg"></ng-md-icon>
         </label>
-        <div class="input-group">
-          <span class="input-group-addon">
-            <input type="checkbox" ng-model="resource.refuelByRenter" name="refuelByRenter" id="refuelByRenter">
-          </span>
-          <input class="form-control" readonly value="Zelf tanken" />
-        </div>
+        <md-radio-group ng-model="fields.refuelByRenter" class="md-primary" style="display: flex;">
+          <md-radio-button style="margin: 0 1rem 0 0;" value="true">Zelf tanken</md-radio-button>
+          <md-radio-button style="margin: 0 1rem 0 0;" value="">Brandstofprijs per kilometer</md-radio-button>
+        </md-radio-group>
       </div>
 
       <div class="form-group">
-        <label ng-class="{ 'text-muted': resource.refuelByRenter }">{{ 'FUEL_PRICE_PER_KM' | translate }}</label>
+        <label ng-class="{ 'text-muted': fields.refuelByRenter === 'true' }">{{ 'FUEL_PRICE_PER_KM' | translate }}</label>
         <div class="input-group">
           <span class="input-group-addon">€</span>
           <input type="text" smart-float id="fuelPerKilometer" name="fuelPerKilometer" class="form-control"
-                 ng-model="resource.fuelPerKilometer" ng-disabled="resource.refuelByRenter">
+                 ng-model="resource.fuelPerKilometer" ng-disabled="fields.refuelByRenter === 'true'">
         </div>
       </div>
     </div>
 
-    <div class="form-group">
+    <!-- may be hidden by branding css -->
+    <div id="vacation_discount">
+      <div class="form-group">
+        <label info-dialog="meerdagenkortingOwnerInfo" info-dialog-params="vacationDiscountSettings">
+          Meerdagenkorting
+          <ng-md-icon size="20" icon="info_italic" class="info-icon bg"></ng-md-icon>
+        </label>
+        <md-radio-group ng-model="fields.vacationDiscount" class="md-primary" style="display: flex;">
+          <md-radio-button style="margin: 0 1rem 0 0;" value="true">Aan</md-radio-button>
+          <md-radio-button style="margin: 0 1rem 0 0;" value="">Uit</md-radio-button>
+        </md-radio-group>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-top: 3rem;">
       <button type="button" class="btn btn-default" ng-disabled="form.$pristine" ng-click="reset()">{{ 'CANCEL' | translate }}</button>
       <button type="button" class="btn btn-primary" ng-disabled="form.$pristine || checkInput('all')" ng-click="save()">{{ 'SUBMIT' | translate }}</button>
     </div>
