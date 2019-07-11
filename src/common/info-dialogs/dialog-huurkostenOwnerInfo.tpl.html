@@ -1,0 +1,30 @@
+
+<!--
+params:
+  vacationShortRate
+  vacationLongRate
+  vacationKilometerReduction
+-->
+<md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="40" flex-xl="30"
+           class="info-dialog">
+  <md-dialog-content class="md-dialog-content">
+    <h3 class="with-close-button">
+      <ng-md-icon icon="directions_car" size="28"></ng-md-icon>
+      Vaste huurkosten
+      <md-button class="md-icon-button close-button" ng-click="hide()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </h3>
+    <p>De vaste huurkosten zijn de kosten die de huurder betaalt op basis van de lengte van de verhuurperiode.</p>
+    <ul>
+      <li>
+        <strong>Dagprijs.</strong>
+        De dagprijs is het maximale bedrag dat de huurder betaalt per 24 uur.
+      </li>
+      <li>
+        <strong>Uurprijs.</strong>
+        Naast de dagprijs kun je ook een uurprijs instellen voor kortere verhuurperiodes. Let: de dagprijs geldt dan als maximum per 24 uur.
+      </li>
+    </ul>
+  </md-dialog-content>
+</md-dialog>

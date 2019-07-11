@@ -3,9 +3,9 @@
   <form name="form">
 
     <div id="resource_settings_price_per_day" class="form-group">
-      <label>
-        {{ 'PRICE_PER_DAY' | translate }}
-        <info-icon tooltip-html="'INFO_RESOURCE_EDIT_PRICE_PER_DAY' | translate"></info-icon>
+      <label info-dialog="huurkostenOwnerInfo">
+        Dagprijs
+        <ng-md-icon size="20" icon="info_italic" class="info-icon bg"></ng-md-icon>
       </label>
       <div class="input-group" ng-class="form.dayRateTotal.$touched ? checkInput('dayRateTotal') ? 'has-error' : '' : ''">
         <span class="input-group-addon">€</span>
@@ -21,9 +21,9 @@
     </div>
 
     <div id="resource_settings_price_per_hour" class="form-group">
-      <label>
-        {{ 'PRICE_PER_HOUR' | translate }}
-        <info-icon tooltip-html="'INFO_RESOURCE_EDIT_PRICE_PER_HOUR' | translate"></info-icon>
+      <label info-dialog="huurkostenOwnerInfo">
+        Uurprijs
+        <ng-md-icon size="20" icon="info_italic" class="info-icon bg"></ng-md-icon>
       </label>
       <div class="input-group" ng-class="form.hourRate.$touched ? checkInput('hourRate') ? 'has-error' : '' : ''">
         <span class="input-group-addon">€</span>
