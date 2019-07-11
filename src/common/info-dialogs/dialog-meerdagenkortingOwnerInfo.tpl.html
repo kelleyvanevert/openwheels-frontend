@@ -1,7 +1,9 @@
 
 <!--
 params:
-  resource
+  vacationShortRate
+  vacationLongRate
+  vacationKilometerReduction
 -->
 <md-dialog flex-xs="90" flex-sm="60" flex-md="50" flex-lg="40" flex-xl="30"
            class="info-dialog">
@@ -13,25 +15,23 @@ params:
         <ng-md-icon icon="close"></ng-md-icon>
       </md-button>
     </h3>
-    <p></p>
     <p>
-      Met deze auto krijg je korting bij langere meerdaagse huringen.
-      <span ng-if="params.resource.price.vacationKilometerReduction">Deze korting geldt over de huurkosten en over de kilometerkosten.</span>
-      <span ng-if="!params.resource.price.vacationKilometerReduction">Deze korting geldt over de huurkosten.</span>
-      De brandstofkosten zijn niet inbegrepen.
+      Met meerdagenkorting krijgt de huurder korting bij langere meerdaagse huringen.
+      <span ng-if="params.vacationKilometerReduction">Deze korting geldt over de huurkosten en over de kilometerkosten. De brandstofkosten zijn niet inbegrepen.</span>
+      <span ng-if="!params.vacationKilometerReduction">Deze korting geldt over de huurkosten. De kilometerkosten en brandstofkosten zijn niet inbegrepen.</span>
     </p>
     <div layout="row" layout-align="center start" style="margin: 2rem 0;">
 
       <div flex="50">
         <div style="text-align: center; padding: 0 .5rem; border-right: 1px solid #ddd;">
-          <p><strong>{{ params.resource.price.vacationShortRate | percentage }} korting</strong></p>
+          <p><strong>{{ params.vacationShortRate | percentage }} korting</strong></p>
           <p>Bij 3x de dagprijs of meer</p>
         </div>
       </div>
 
       <div flex="50">
         <div style="text-align: center; padding: 0 .5rem;">
-          <p><strong>{{ params.resource.price.vacationLongRate | percentage }} korting</strong></p>
+          <p><strong>{{ params.vacationLongRate | percentage }} korting</strong></p>
           <p>Bij 7x de dagprijs of meer</p>
         </div>
       </div>
