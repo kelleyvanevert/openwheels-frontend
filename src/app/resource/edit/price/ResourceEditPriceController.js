@@ -2,26 +2,55 @@
 
 angular.module('owm.resource.edit.price', [])
 
-  .controller('ResourceEditPriceController', function ($filter, $scope, alertService, resourceService) {
+  .controller('ResourceEditPriceController', function ($q, $filter, $scope, alertService, resourceService) {
 
-// Require $scope.resource
+    $scope.vacationDiscountSettings = {
+      vacationShortRate: 0.15,
+      vacationLongRate: 0.25,
+      vacationKilometerReduction: true
+    };
+
     var master = $scope.resource;
 
-// Work on a copy
-    $scope.resource = angular.copy(master);
+    $scope.reset = function () {
+      $scope.resource = angular.copy(master);
+      $scope.fields = {
+        refuelByRenter: master.refuelByRenter ? 'true' : '',
+        vacationDiscount: (master.price.vacationShortRate || master.price.vacationLongRate) ? 'true' : ''
+      };
+      if ($scope.form) {
+        $scope.form.$setPristine();
+      }
+    };
+
+    $scope.reset();
 
     $scope.save = function () {
       alertService.load();
       var newProps = $filter('returnDirtyItems')(angular.copy($scope.resource), $scope.form);
 
-      if(newProps.refuelByRenter){
+      newProps.refuelByRenter = !!$scope.fields.refuelByRenter;
+
+      if (newProps.refuelByRenter) {
         newProps.fuelPerKilometer = 0;
       }
 
-      resourceService.alter({
-        id: $scope.resource.id,
-        newProps: newProps
+      var priceNewProps = $scope.fields.vacationDiscount ? $scope.vacationDiscountSettings : {
+        vacationShortRate: 0,
+        vacationLongRate: 0,
+        vacationKilometerReduction: true
+      };
+
+      resourceService.alterPrice({
+        resource: $scope.resource.id,
+        newProps: priceNewProps
       })
+        .then(function () {
+          return resourceService.alter({
+            id: $scope.resource.id,
+            newProps: newProps
+          });
+        })
         .then(function (resource) {
           if(resource.minimumAge !== $scope.resource.minimumAge && resource.price.dayRateTotal >= 45) {
             alertService.add('success', 'De minimum leeftijd van jouw auto is automatisch verhoogd naar ' + resource.minimumAge + ' omdat de dagprijs hoger dan 45 euro is.' , 5000);
@@ -30,12 +59,10 @@ angular.module('owm.resource.edit.price', [])
           }
 
           // Update master
-          angular.forEach(newProps, function (value, key) {
-            master[key] = resource[key];
-          });
+          master = resource;
 
           // Update working copy
-          reset();
+          $scope.reset();
         })
         .catch(function (err) {
           alertService.addError(err);
@@ -45,8 +72,6 @@ angular.module('owm.resource.edit.price', [])
         });
 
     };
-
-    $scope.reset = reset;
 
     // returns `true` in case of errors
     $scope.checkInput = function (e) {
@@ -68,10 +93,4 @@ angular.module('owm.resource.edit.price', [])
         return kilometerRate < 0.05 || hourRate < 1.5 || dayRateTotal < 15 && (me.provider.id === 1 || me.isBusinessConnected);
       }
     };
-
-    function reset() {
-      $scope.resource = angular.copy(master);
-      $scope.form.$setPristine();
-    }
-
   });

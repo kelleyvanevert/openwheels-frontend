@@ -80,6 +80,7 @@ angular.module('rpcServices', [])
   this.all = m('all');
   this.get = m('get');
   this.alter = m('alter');
+  this.alterPrice = m('alterPrice');
   this.select = m('select');
   this.forOwner = m('forOwner');
   this.search = m('search');
